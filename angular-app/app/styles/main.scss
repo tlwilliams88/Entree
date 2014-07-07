@@ -1,0 +1,40 @@
+$sidebar--background: #433c35;
+
+$side-nav__selected--background: #2a2621;
+$side-nav__selected--text: white;
+$side-nav--text: #9f8e7c; 
+
+
+.sidebar {
+  background-color: $sidebar__background;
+}
+
+.content {
+  height: 500px;
+  background-color: blue;
+}
+
+// .sidebar {
+//   width: 330px;
+//   height: 100%;
+//   float: left;
+
+//   .side-nav {
+//     color: $side-nav--text;
+    
+//     li {
+//       padding: 35px 45px;
+//       list-style-type: none;
+//       font-size: 20px;
+//     }
+//   }
+
+//   .dsr {
+//     background-color: #373029;
+//     height: 340px;
+//   }
+// }
+
+// html, body {
+//   height: 100%;
+// }

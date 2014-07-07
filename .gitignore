@@ -184,3 +184,10 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+# Angular App
+*.DS_Store
+bower_components/
+.sass-cache
+dist/
+.tmp/
