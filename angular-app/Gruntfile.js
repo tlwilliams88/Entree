@@ -384,6 +384,13 @@ module.exports = function (grunt) {
         singleRun: true,
         configFile: 'test/karma.conf.js'
       }
+    },
+
+    "bower-install-simple": {
+      options: {
+        color:       true,
+        production:  false
+      }
     }
   });
 
@@ -417,6 +424,8 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'npm-install',
+    'bower-install-simple',
     'clean:dist',
     'wiredep',
     'useminPrepare',
