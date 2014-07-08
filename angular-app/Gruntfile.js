@@ -35,13 +35,13 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: ['newer:jshint:all', 'karma'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
       },
       jsTest: {
-        files: ['test/spec/{,*/}*.js'],
+        files: ['test/unit/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
       compass: {
@@ -126,7 +126,7 @@ module.exports = function (grunt) {
         options: {
           jshintrc: 'test/.jshintrc'
         },
-        src: ['test/spec/{,*/}*.js']
+        src: ['test/unit/{,*/}*.js']
       }
     },
 
@@ -381,8 +381,8 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
-        singleRun: true
+        singleRun: true,
+        configFile: 'test/karma.conf.js'
       }
     }
   });
@@ -425,12 +425,13 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
-    'cdnify',
+    // 'cdnify',
     'cssmin',
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin'
+    'htmlmin',
+    'karma'
   ]);
 
   grunt.registerTask('default', [
