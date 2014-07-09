@@ -73,31 +73,23 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
-              // connect().use(
-              //   '/bower_components',
-              //   connect.static('./bower_components')
-              // ),
               connect.static(appConfig.app)
             ];
           }
         }
       },
-      test: {
-        options: {
-          port: 9001,
-          middleware: function (connect) {
-            return [
-              connect.static('.tmp'),
-              connect.static('test'),
-              // connect().use(
-              //   '/bower_components',
-              //   connect.static('./bower_components')
-              // ),
-              connect.static(appConfig.app)
-            ];
-          }
-        }
-      },
+      // test: {
+      //   options: {
+      //     port: 9001,
+      //     middleware: function (connect) {
+      //       return [
+      //         connect.static('.tmp'),
+      //         connect.static('test'),
+      //         connect.static(appConfig.app)
+      //       ];
+      //     }
+      //   }
+      // },
       dist: {
         options: {
           open: true,
@@ -383,7 +375,6 @@ module.exports = function (grunt) {
     'clean:server',
     'concurrent:test',
     'autoprefixer',
-    'connect:test',
     'karma'
   ]);
 
