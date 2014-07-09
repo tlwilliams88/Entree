@@ -11,14 +11,14 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'bower_components/angular/angular.js',
-      'bower_components/angular-mocks/angular-mocks.js',
-      'bower_components/angular-animate/angular-animate.js',
-      'bower_components/angular-cookies/angular-cookies.js',
-      'bower_components/angular-resource/angular-resource.js',
-      'bower_components/angular-route/angular-route.js',
-      'bower_components/angular-touch/angular-touch.js',
-      'bower_components/angular-sanitize/angular-sanitize.js',
+      'app/lib/angular/angular.js',
+      'app/lib/angular-mocks/angular-mocks.js',
+      'app/lib/angular-animate/angular-animate.js',
+      'app/lib/angular-cookies/angular-cookies.js',
+      'app/lib/angular-resource/angular-resource.js',
+      'app/lib/angular-route/angular-route.js',
+      'app/lib/angular-touch/angular-touch.js',
+      'app/lib/angular-sanitize/angular-sanitize.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/mock/**/*.js',
@@ -29,7 +29,7 @@ module.exports = function(config) {
     exclude: [],
 
     // web server port
-    port: 8080,
+    port: 9001,
 
     // level of logging
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
@@ -38,6 +38,11 @@ module.exports = function(config) {
 
     // enable / disable watching file and executing tests whenever any file changes
     autoWatch: false,
+
+    reporters: ['dots', 'junit'],
+    junitReporter: {
+      outputFile: 'test/test-results/test-results.xml'
+    },
 
 
     // Start these browsers, currently available:
@@ -48,7 +53,7 @@ module.exports = function(config) {
     // - Safari (only Mac)
     // - PhantomJS
     // - IE (only Windows)
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
 
     // Continuous Integration mode

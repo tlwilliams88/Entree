@@ -1,0 +1,80 @@
+$sidebar__background--light: #433c35;
+$sidebar__background--dark: #373029;
+$sidebar__text: #9f8e7c; 
+
+$sidebar-nav__border: #706457; 
+$sidebar-nav__background--selected: #2a2621;
+$sidebar-nav__text--selected: white;
+
+.sidebar {
+  height: 100%;
+  float: left;
+  color: $sidebar__text;
+  font-size: 20px;
+  padding: 0;
+  width: 250px;
+  background-color: $sidebar__background--light;
+  background-image: url('../images/Nav-Image.jpg');
+  background-position:center bottom;
+  background-repeat: no-repeat; 
+
+  a {
+    color: $gold;
+    text-decoration: none;
+    font-weight: 100;
+  }
+
+  .sidebar-logo {
+    padding: 25px 0;
+    background-color: $sidebar__background--dark;
+
+    img {
+      height: 100px;
+    }
+  }
+
+  .sidebar-nav ul { 
+    margin-bottom: 0; 
+    
+    // nav menu items
+    li {
+      padding: 19px 45px;
+      color: $sidebar--text;
+      cursor: pointer;
+      border-top: 1px solid $sidebar-nav__border;
+      font-weight: 400;
+
+      &.is-selected {
+        color: $sidebar-nav__text--selected;
+        background-color: $sidebar-nav__background--selected;
+        border-left: 3px solid $gold;
+      }
+    }
+  }
+
+  .sidebar-dsr {
+    height: 260px;
+    text-align: center;
+    padding: 32px;
+    font-size: 18px;
+    background-color: $sidebar__background--dark;
+    border-bottom: 1px solid $sidebar-nav__border;
+    border-top: 1px solid $sidebar-nav__border;
+
+    .contact-info {
+      margin-top: 15px;
+      margin-bottom: 5px;
+      
+      // contact info items
+      span {
+        color: white;
+        display: block;
+      }
+    }
+  }
+
+  .sidebar-meta {
+    font-size: 16px;
+    font-weight: 100;
+  }
+}
