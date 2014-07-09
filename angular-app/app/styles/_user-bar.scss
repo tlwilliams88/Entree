@@ -12,6 +12,17 @@ $user-bar__border: #c3bc9c;
 
 .user-bar--upper {
   @include user-bar($user-bar__background--upper, 100px, 18px);
+
+  .user-info {
+    .user-info__name {
+      font-size: 18px;
+      font-weight: 400;
+    }
+
+    span {
+      display: block;
+    }
+  }
 }
 
 .user-bar--lower {

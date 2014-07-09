@@ -21,7 +21,6 @@ module.exports = function(config) {
       'app/lib/angular-sanitize/angular-sanitize.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
       'test/unit/**/*.js'
     ],
 

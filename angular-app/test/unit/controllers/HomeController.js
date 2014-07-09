@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: HomeCtrl', function () {
+describe('Controller: HomeController', function () {
 
   // load the controller's module
   beforeEach(module('bekApp'));
@@ -11,7 +11,7 @@ describe('Controller: HomeCtrl', function () {
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainCtrl = $controller('HomeCtrl', {
+    MainCtrl = $controller('HomeController', {
       $scope: scope
     });
   }));

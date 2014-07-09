@@ -20,7 +20,8 @@ body {
 }
 .main-content {
   width: calc(100% - 250px);
-  float: right;
+  float: left;
+  padding-left: 15px;
 }
 .page-content {
   padding-top: 30px;
@@ -63,7 +64,7 @@ $color--paid: #04a773;
 
   .featured-item__detail {
     padding: 15px;
-    border-top: 1px solid tan;
+    border-top: 1px solid #e1ddcd;
   }
 }
 

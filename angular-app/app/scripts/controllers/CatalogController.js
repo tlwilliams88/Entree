@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name bekApp.controller:MainCtrl
+ * @name bekApp.controller:CatalogController
  * @description
- * # MainCtrl
+ * # CatalogController
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeCtrl', function ($scope) {
+  .controller('CatalogController', function ($scope) {
     
     $scope.orders = [
       {
