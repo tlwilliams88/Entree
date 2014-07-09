@@ -386,7 +386,7 @@ module.exports = function (grunt) {
       }
     },
 
-    "bower-install-simple": {
+    'bower-install-simple': {
       options: {
         color:       true,
         production:  false
