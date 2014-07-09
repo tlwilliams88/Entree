@@ -17,7 +17,7 @@ module.exports = function (grunt) {
 
   // Configurable paths for the application
   var appConfig = {
-    app: require('./bower.json').appPath || 'app',
+    app: 'app',
     dist: 'dist'
   };
 
@@ -29,10 +29,6 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      bower: {
-        files: ['bower.json'],
-        tasks: ['wiredep']
-      },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
         tasks: ['newer:jshint:all', 'karma'],
@@ -77,10 +73,10 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               connect.static('.tmp'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
+              // connect().use(
+              //   '/bower_components',
+              //   connect.static('./bower_components')
+              // ),
               connect.static(appConfig.app)
             ];
           }
@@ -93,10 +89,10 @@ module.exports = function (grunt) {
             return [
               connect.static('.tmp'),
               connect.static('test'),
-              connect().use(
-                '/bower_components',
-                connect.static('./bower_components')
-              ),
+              // connect().use(
+              //   '/bower_components',
+              //   connect.static('./bower_components')
+              // ),
               connect.static(appConfig.app)
             ];
           }
@@ -160,21 +156,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Automatically inject Bower components into the app
-    wiredep: {
-      options: {
-        cwd: '<%= yeoman.app %>'
-      },
-      app: {
-        src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
-      },
-      sass: {
-        src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        ignorePath: /(\.\.\/){1,2}bower_components\//
-      }
-    },
-
     // Compiles Sass to CSS and generates necessary files if requested
     compass: {
       options: {
@@ -184,7 +165,6 @@ module.exports = function (grunt) {
         imagesDir: '<%= yeoman.app %>/images',
         javascriptsDir: '<%= yeoman.app %>/scripts',
         fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: './bower_components',
         httpImagesPath: '/images',
         httpGeneratedImagesPath: '/images/generated',
         httpFontsPath: '/styles/fonts',
@@ -325,13 +305,6 @@ module.exports = function (grunt) {
       }
     },
 
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/*.html']
-      }
-    },
-
     // Copies remaining files to places other tasks can use
     copy: {
       dist: {
@@ -384,13 +357,6 @@ module.exports = function (grunt) {
         singleRun: true,
         configFile: 'test/karma.conf.js'
       }
-    },
-
-    'bower-install-simple': {
-      options: {
-        color:       true,
-        production:  false
-      }
     }
   });
 
@@ -402,7 +368,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'wiredep',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -425,14 +390,12 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    // 'wiredep',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
     'concat',
     'ngmin',
     'copy:dist',
-    // 'cdnify',
     'cssmin',
     'uglify',
     'filerev',
@@ -442,7 +405,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'npm-install',
-    // 'bower-install-simple',
     'newer:jshint',
     'test',
     'build'

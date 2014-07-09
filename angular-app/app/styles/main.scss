@@ -1,40 +1,75 @@
-$sidebar--background: #433c35;
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+// @import "compass/reset";
 
-$side-nav__selected--background: #2a2621;
-$side-nav__selected--text: white;
-$side-nav--text: #9f8e7c; 
+@import "compass";
 
+$gold: #e8aa30;
 
-.sidebar {
-  background-color: $sidebar__background;
+$background: #f3f1eb;
+$font-color: #504938;
+
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  // font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+  background-image: url('../images/Textured-BG.jpg');
+  background-color: $background;
+  color: $font-color;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+.main-content {
+  width: calc(100% - 250px);
+  float: right;
+}
+.page-content {
+  padding-top: 30px;
 }
 
-.content {
-  height: 500px;
-  background-color: blue;
+h1,h2,h3,h4 {
+  margin-top: 0;
+  letter-spacing: 0;
+}
+h3 {
+  font-size: 20px;
 }
 
-// .sidebar {
-//   width: 330px;
-//   height: 100%;
-//   float: left;
+// BOOTSTRAP FIX FOR SIDEBAR
+.container-fluid {
+  padding: 0;
+}
 
-//   .side-nav {
-//     color: $side-nav--text;
-    
-//     li {
-//       padding: 35px 45px;
-//       list-style-type: none;
-//       font-size: 20px;
-//     }
-//   }
+$color--late: #dc6a6a;
+$color--paid: #04a773;
+.text--late {
+  color: $color--late;
+}
+.text--paid {
+  color: $color--paid;
+}
 
-//   .dsr {
-//     background-color: #373029;
-//     height: 340px;
-//   }
-// }
+.featured-item {
+  margin-bottom: 15px;
+  background-color: white;
 
-// html, body {
-//   height: 100%;
-// }
+  img {
+    height: 175px;
+    width: 100%;
+  }
+
+  a {
+    display: block;
+  }
+
+  .featured-item__detail {
+    padding: 15px;
+    border-top: 1px solid tan;
+  }
+}
+
+
+@import 'sidebar';
+@import 'user-bar';
+@import 'components';
+@import 'order-summary';
+@import 'account-summary';
