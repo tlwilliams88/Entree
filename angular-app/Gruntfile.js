@@ -424,8 +424,6 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'npm-install',
-    'bower-install-simple',
     'clean:dist',
     'wiredep',
     'useminPrepare',
@@ -434,16 +432,17 @@ module.exports = function (grunt) {
     'concat',
     'ngmin',
     'copy:dist',
-    // 'cdnify',
+    'cdnify',
     'cssmin',
     'uglify',
     'filerev',
     'usemin',
-    'htmlmin',
-    'karma'
+    'htmlmin'
   ]);
 
   grunt.registerTask('default', [
+    'npm-install',
+    'bower-install-simple',
     'newer:jshint',
     'test',
     'build'
