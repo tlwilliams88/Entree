@@ -17,13 +17,12 @@ $order-summary__background: #ffffff;
 }
 .order-summary__header {
   font-weight: bold;
-  padding-left: 5px;
 }
 .order-summary__order {
   background-color: $order-summary__background;
   border: 1px solid $order-summary__border;
   margin-top: 10px;
-  margin-left: 5px;
+  margin-left: 0;
   margin-right: 5px;
 
   &.order-summary__order--paid {

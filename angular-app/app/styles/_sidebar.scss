@@ -43,6 +43,7 @@ $sidebar-nav__text--selected: white;
       cursor: pointer;
       border-top: 1px solid $sidebar-nav__border;
       font-weight: 400;
+      letter-spacing: 1px;
 
       &.is-selected {
         color: $sidebar-nav__text--selected;
