@@ -16,6 +16,7 @@ body {
   color: $font-color;
   font-weight: 100;
   font-size: 14px;
+  letter-spacing: 1px;
 }
 
 h1,h2,h3,h4 {
@@ -58,6 +59,7 @@ $color--paid: #04a773;
   img {
     height: 175px;
     width: 100%;
+    padding: 10px;
   }
 
   a {
@@ -71,9 +73,22 @@ $color--paid: #04a773;
   }
 }
 
+.sub-content{
+  padding-top: 20px;
+}
+
+::-webkit-input-placeholder {
+  font-style: italic;
+}
+ 
+::-moz-placeholder {
+  font-style: italic;
+}
+
 @import 'sidebar';
 @import 'user-bar';
 @import 'components';
 @import 'order-summary';
 @import 'account-summary';
+@import 'catalog';
 @import 'recent-activity';

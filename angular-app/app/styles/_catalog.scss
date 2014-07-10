@@ -1,0 +1,19 @@
+ul.horizontal-slide {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    white-space: nowrap;
+    overflow-x: auto;
+
+  .item-holder {
+    display: inline-block;
+    float: none;
+    padding: 0;
+    width: 175px;
+    margin-left: 10px;
+  }
+
+  .item-holder:first-child {
+    margin-left: 0;
+  }
+}
