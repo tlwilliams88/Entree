@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(.) styles/vendor.css -->
+    <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
     <!-- endbuild -->
@@ -19,19 +19,31 @@
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <div class="container-fluid">
-      <div class="sidebar">
+      <div class="sidebar hidden-sm hidden-xs">
         <div class="sidebar-logo text-center">
           <img src="images/bek-logo.png" alt="logo" />
         </div>
         
         <nav class="sidebar-nav">
           <ul class="list-unstyled">
-            <li>Home</li>
-            <li class="is-selected">Orders</li>
-            <li>Product Catalog</li>
-            <li>Reports</li>
-            <li>Invoices</li>
-            <li>Admin</li>
+            <a href="/home">
+              <li>Home</li>
+            </a>
+            <a href="/orders">
+              <li>Orders</li>
+            </a>
+            <a href="/catalog">
+              <li>Product Catalog</li>
+            </a>
+            <a href="/reports">
+              <li>Reports</li>
+            </a>
+            <a href="/invoices">
+              <li>Invoices</li>
+            </a>
+            <a href="/admin">
+              <li>Admin</li>
+            </a>
           </ul>
         </nav>
         <div class="sidebar-dsr">
@@ -49,28 +61,28 @@
         </div>
       </div>
       
-      <div class="row main-content">
+      <div class="row page-content">
         <div class="col-sm-12">
           <div class="row user-bar--upper">
-            <div class="col-sm-4">
+            <div class="col-lg-4">
               <select name="" id="">
                 <option value="">Jimmy's Chicken Shack</option>
                 <option value="">El Fenix</option>
               </select>
             </div>
-            <div class="col-sm-3">
+            <div class="col-lg-3">
               <input type="text" placeholder="Search by keyword" />
             </div>
-            <div class="col-sm-2 text-center">
+            <div class="col-lg-2 text-center">
               
-              <img src="" alt="not" style="height:75px;width:75px;">
+              <img src="" alt="not" style="height:60px;width:60px;">
             </div>
             <div class="col-sm-3">
               <div class="user-info pull-left text-right" style="display:inline-block;">
                 <span class="user-info__name">Stephen Broussard</span>
                 <span>Kitchen Manager</span>
               </div>
-              <img src="" alt="" style="height:75px;width:75px;display:inline-block;" class="pull-right">
+              <img src="" alt="" style="height:60px;width:60px;" class="pull-right">
             </div>
           </div>
           <div class="row user-bar--lower">
@@ -82,55 +94,67 @@
             </div>
           </div>
           
-          <div class="row page-content">
+          <div class="view">
             <div ng-view=""></div>
           </div>
           
           
         </div>
-        </div> <!-- end content -->
-        </div> <!-- end container -->
-        <!-- Add your site or application content here -->
-        <!--     <div class="container">
-          <div class="header">
-            <ul class="nav nav-pills pull-right">
-              <li class="active"><a ng-href="#">Home</a></li>
-              <li><a ng-href="#/about">About</a></li>
-              <li><a ng-href="#">Contact</a></li>
-            </ul>
-            <h3 class="text-muted">bek</h3>
-          </div>
-          <div ng-view=""></div>
-          <div class="footer">
-            <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-          </div>
-        </div> -->
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-        <script>
-        //    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        //    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        //    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        //    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        //    ga('create', 'UA-XXXXX-X');
-        //    ga('send', 'pageview');
-        </script>
-        <!--[if lt IE 9]>
-        <script src="lib/es5-shim/es5-shim.js"></script>
-        <script src="lib/json3/lib/json3.min.js"></script>
-        <![endif]-->
-        <!-- build:js(.) scripts/vendor.js -->
-        <script src="lib/angular/angular.js"></script>
-        <script src="lib/json3/lib/json3.js"></script>
-        <script src="lib/angular-resource/angular-resource.js"></script>
-        <script src="lib/angular-cookies/angular-cookies.js"></script>
-        <script src="lib/angular-sanitize/angular-sanitize.js"></script>
-        <script src="lib/angular-animate/angular-animate.js"></script>
-        <script src="lib/angular-touch/angular-touch.js"></script>
-        <script src="lib/angular-route/angular-route.js"></script>
-        <!-- endbuild -->
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/home.js"></script>
-        <!-- endbuild -->
-      </body>
-    </html>
+      </div> <!-- end content -->
+    </div> <!-- end container -->
+
+
+    <!-- Add your site or application content here -->
+<!--     <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a ng-href="#">Home</a></li>
+          <li><a ng-href="#/about">About</a></li>
+          <li><a ng-href="#">Contact</a></li>
+        </ul>
+        <h3 class="text-muted">bek</h3>
+      </div>
+
+      <div ng-view=""></div>
+
+      <div class="footer">
+        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
+      </div>
+    </div> -->
+
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+    //    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    //    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    //    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    //    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    //    ga('create', 'UA-XXXXX-X');
+    //    ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]>
+    <script src="lib/es5-shim/es5-shim.js"></script>
+    <script src="lib/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js(app) scripts/vendor.js -->
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/json3/lib/json3.js"></script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-touch/angular-touch.js"></script>
+    <script src="lib/angular-route/angular-route.js"></script>
+    <script src="lib/angular-ui-router/angular-ui-router.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/HomeController.js"></script>
+    <script src="scripts/controllers/CatalogController.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

@@ -2,31 +2,35 @@ $user-bar__background--upper: #f1efe5;
 $user-bar__background--lower: white;
 $user-bar__border: #c3bc9c;
 
-@mixin user-bar($background-color, $height, $padding) {
+@mixin user-bar($background-color, $padding) {
   background-color: $background-color;
-  height: $height;
   border-bottom: 1px solid $user-bar__border;
   padding-top: $padding;
   padding-bottom: $padding;
 }
 
 .user-bar--upper {
-  @include user-bar($user-bar__background--upper, 100px, 18px);
+  @include user-bar($user-bar__background--upper, 18px);
 
   .user-info {
     .user-info__name {
       font-size: 18px;
-      font-weight: 400;
+    }
+
+    .user-info__job-title {
+      color: #a89f88;
+      font-size: 16px;
     }
 
     span {
       display: block;
+      font-weight: 400;
     }
   }
 }
 
 .user-bar--lower {
-  @include user-bar($user-bar__background--lower, 90px, 14px);
+  @include user-bar($user-bar__background--lower, 14px);
 
   .user-bar-welcome {
     font-size: 35px;

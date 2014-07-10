@@ -29,7 +29,6 @@ body {
 
 h1,h2,h3,h4 {
   margin-top: 0;
-  letter-spacing: 0;
 }
 h3 {
   font-size: 20px;
@@ -38,6 +37,14 @@ h3 {
 // BOOTSTRAP FIX FOR SIDEBAR
 .container-fluid {
   padding: 0;
+}
+.page-content {
+  width: calc(100% - 250px);
+  float: left;
+  margin-left: 0px;
+}
+.view {
+  padding-top: 30px;
 }
 
 $color--late: #dc6a6a;
@@ -49,6 +56,10 @@ $color--paid: #04a773;
   color: $color--paid;
 }
 
+
+.featured-items {
+  padding-left: 15px;
+}
 .featured-item {
   margin-bottom: 15px;
   background-color: white;
@@ -61,6 +72,7 @@ $color--paid: #04a773;
 
   a {
     display: block;
+    letter-spacing: 1px;
   }
 
   .featured-item__detail {
@@ -88,3 +100,4 @@ $color--paid: #04a773;
 @import 'order-summary';
 @import 'account-summary';
 @import 'catalog';
+@import 'recent-activity';
