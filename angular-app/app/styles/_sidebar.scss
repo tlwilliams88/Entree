@@ -7,8 +7,6 @@ $sidebar-nav__background--selected: #2a2621;
 $sidebar-nav__text--selected: white;
 
 .sidebar {
-  height: 100%;
-  float: left;
   color: $sidebar__text;
   font-size: 20px;
   padding: 0;
@@ -18,6 +16,10 @@ $sidebar-nav__text--selected: white;
   background-position:center bottom;
   background-repeat: no-repeat; 
 
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  
   a {
     color: $gold;
     text-decoration: none;
@@ -38,7 +40,7 @@ $sidebar-nav__text--selected: white;
     
     // nav menu items
     li {
-      padding: 19px 45px;
+      padding: 19px 25px;
       color: $sidebar--text;
       cursor: pointer;
       border-top: 1px solid $sidebar-nav__border;
@@ -77,5 +79,8 @@ $sidebar-nav__text--selected: white;
   .sidebar-meta {
     font-size: 16px;
     font-weight: 100;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 }
