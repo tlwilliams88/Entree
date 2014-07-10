@@ -19,16 +19,15 @@ angular
   ])
 .config(function($stateProvider, $urlRouterProvider) {
   $stateProvider
-    .state('main', {
-        url: '',
-        templateUrl: 'views/main.html'
+    .state('menu', {
+        templateUrl: 'views/menu.html'
     })
-    .state('main.home', {
+    .state('menu.home', {
         url: '/home',
         templateUrl: 'views/home.html',
         controller: 'HomeController'
     })
-    .state('main.catalog', {
+    .state('menu.catalog', {
         url: '/catalog',
         templateUrl: 'views/catalog.html',
         controller: 'CatalogController'
@@ -40,6 +39,8 @@ angular
     //         $scope.item = $stateParams.item;
     //     }
     });
+  $urlRouterProvider.when('', '/home');
+  $urlRouterProvider.when('/', '/home');
 });
   // .config(function ($routeProvider) {
   //   $routeProvider

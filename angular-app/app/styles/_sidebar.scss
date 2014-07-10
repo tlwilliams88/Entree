@@ -48,11 +48,13 @@ $sidebar-nav__text--selected: white;
       font-weight: 400;
       letter-spacing: 1px;
 
-      &.is-selected {
-        color: $sidebar-nav__text--selected;
-        background-color: $sidebar-nav__background--selected;
-        border-left: 3px solid $gold;
-      }
+    }
+    
+    .is-selected li {
+      color: $sidebar-nav__text--selected;
+      background-color: $sidebar-nav__background--selected;
+      border-left: 3px solid $gold;
+      padding-left: 22px;
     }
   }
 
