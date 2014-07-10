@@ -19,6 +19,7 @@ module.exports = function(config) {
       'app/lib/angular-route/angular-route.js',
       'app/lib/angular-touch/angular-touch.js',
       'app/lib/angular-sanitize/angular-sanitize.js',
+      'app/lib/angular-ui-router/angular-ui-router.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'
