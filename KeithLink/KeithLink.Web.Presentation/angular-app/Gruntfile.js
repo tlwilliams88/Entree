@@ -384,6 +384,19 @@ module.exports = function (grunt) {
         singleRun: true,
         configFile: 'test/karma.conf.js'
       }
+    },  
+
+    // start mock api server 
+    run: {
+      mock_server: {
+        options: {
+          wait: false
+        },
+        // cmd: "node", // but that's the default
+        args: [
+          'mockApi/apiserver.js'
+        ]
+      }
     }
   });
 
@@ -398,6 +411,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
+      'run:mock_server',
       'watch'
     ]);
   });
