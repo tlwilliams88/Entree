@@ -190,5 +190,6 @@ FakesAssemblies/
 angular-app/bower_components/
 angular-app/.sass-cache
 angular-app/dist/
+angular-app/dist-dev/
 angular-app/.tmp/
 angular-app/test/test-results/

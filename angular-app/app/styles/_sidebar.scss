@@ -50,7 +50,13 @@ $sidebar-nav__text--selected: white;
       border-top: 1px solid $sidebar-nav__border;
       font-weight: 400;
       letter-spacing: 1px;
-
+      
+      // menu icons
+      .sidebar-nav__icon {
+        width: 30px;
+        display: inline-block;
+        text-align: center;
+      }
     }
     
     .is-selected li {

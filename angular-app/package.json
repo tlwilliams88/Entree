@@ -43,7 +43,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "start": "http-server dist-dev/",
+    "start": "http-server dist/",
     "test": "grunt test"
   }
 }

@@ -8,22 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', function ($scope) {
+  .controller('CatalogController', ['$scope', 'CategoryService', function ($scope, CategoryService) {
     
-    $scope.orders = [
-      {
-        orderNum: 212342342,
-        deliveryDate: '12/13/2014',
-        totalCost: '1234.32',
-        status: 'Open',
-        paymentStatus: 'N/A'
-      }
-    ];
+    CategoryService.getCategories().then(function(data) {
+      $scope.categories = data.data.categories;
+    });
 
-    $scope.locations = [
-      'Jimmy\'s Chicken Shack',
-      'Torchy\'s Tacos'
-    ];
-
-
-  });
+  }]);
