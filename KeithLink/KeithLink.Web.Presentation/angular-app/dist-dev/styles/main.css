@@ -1,0 +1,373 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000311}}
+body {
+  font-family: 'Source Sans Pro', sans-serif;
+  background-image: url("../images/Textured-BG.jpg");
+  background-color: #f3f1eb;
+  color: #504938;
+  font-weight: 100;
+  font-size: 14px;
+  letter-spacing: 1px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000322}}
+h1, h2, h3, h4 {
+  margin-top: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000325}}
+h3 {
+  font-size: 20px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000330}}
+.container-fluid {
+  padding: 0;
+  position: relative;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000334}}
+.page-content {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000338}}
+.view {
+  padding-top: 30px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000344}}
+.text--late {
+  color: #dc6a6a;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000347}}
+.text--paid {
+  color: #04a773;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000352}}
+.featured-items {
+  padding-left: 15px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000355}}
+.featured-item {
+  margin-bottom: 15px;
+  background-color: white;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000359}}
+.featured-item img {
+  height: 175px;
+  width: 100%;
+  padding: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000365}}
+.featured-item a {
+  display: block;
+  letter-spacing: 1px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000370}}
+.featured-item .featured-item__detail {
+  padding: 15px;
+  border-top: 1px solid #e1ddcd;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000376}}
+.sub-content {
+  padding-top: 20px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000380}}
+::-webkit-input-placeholder {
+  font-style: italic;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/main\.scss}line{font-family:\0000384}}
+::-moz-placeholder {
+  font-style: italic;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\000039}}
+.sidebar {
+  color: #9f8e7c;
+  font-size: 20px;
+  padding: 0;
+  width: 250px;
+  background-color: #433c35;
+  background-image: url("../images/Nav-Image.jpg");
+  background-position: center bottom;
+  background-repeat: no-repeat;
+  min-height: 925px;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000324}}
+.sidebar a {
+  color: #e8aa30;
+  text-decoration: none;
+  font-weight: 100;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000330}}
+.sidebar .sidebar-logo {
+  padding: 25px 0;
+  background-color: #373029;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000334}}
+.sidebar .sidebar-logo img {
+  height: 100px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000342}}
+.sidebar .sidebar-nav ul {
+  margin-bottom: 0;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000346}}
+.sidebar .sidebar-nav ul li {
+  padding: 19px 25px;
+  color: #9f8e7c;
+  cursor: pointer;
+  border-top: 1px solid #706457;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000356}}
+.sidebar .sidebar-nav ul .is-selected li {
+  color: white;
+  background-color: #2a2621;
+  border-left: 3px solid #e8aa30;
+  padding-left: 22px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000364}}
+.sidebar .sidebar-dsr {
+  height: 260px;
+  text-align: center;
+  padding: 32px;
+  font-size: 18px;
+  background-color: #373029;
+  border-bottom: 1px solid #706457;
+  border-top: 1px solid #706457;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000373}}
+.sidebar .sidebar-dsr .contact-info {
+  margin-top: 15px;
+  margin-bottom: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000378}}
+.sidebar .sidebar-dsr .contact-info span {
+  color: white;
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_sidebar\.scss}line{font-family:\0000385}}
+.sidebar .sidebar-meta {
+  font-size: 16px;
+  font-weight: 100;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000312}}
+.user-bar--upper {
+  background-color: #f1efe5;
+  border-bottom: 1px solid #c3bc9c;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000315}}
+.user-bar--upper .user-info {
+  display: inline-block;
+  padding-right: 15px;
+  padding-left: 15px;
+  vertical-align: middle;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000321}}
+.user-bar--upper .user-info div, .user-bar--upper .user-info .order-summary__order .order-col, .order-summary__order .user-bar--upper .user-info .order-col {
+  display: block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000325}}
+.user-bar--upper .user-info .user-info__name {
+  font-size: 18px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000329}}
+.user-bar--upper .user-info .user-info__job-title {
+  color: #a89f88;
+  font-size: 16px;
+  margin-right: 18px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000336}}
+.user-bar--upper img {
+  display: inline-block;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000341}}
+.user-bar--lower {
+  background-color: white;
+  border-bottom: 1px solid #c3bc9c;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_user-bar\.scss}line{font-family:\0000344}}
+.user-bar--lower .user-bar-welcome {
+  font-size: 35px;
+  line-height: 65px;
+  padding-left: 20px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_components\.scss}line{font-family:\000031}}
+button {
+  background-color: #489ecf;
+  border-radius: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: white;
+  font-size: 20px;
+  border: none;
+  height: 55px;
+  letter-spacing: 1px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_components\.scss}line{font-family:\0000313}}
+select {
+  border: 1px solid #c3bc9c;
+  background-color: white;
+  font-size: 20px;
+  padding: 15px;
+  height: 55px;
+  letter-spacing: 1px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_components\.scss}line{font-family:\0000323}}
+input[type='text'] {
+  border: 1px solid #c3bc9c;
+  height: 55px;
+  border-radius: 5px;
+  font-size: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
+  letter-spacing: 1px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\000035}}
+.order-summary {
+  font-size: 16px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\000038}}
+.order-summary .order-col, .order-summary .payment-status-col {
+  width: 20%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000311}}
+.order-summary .delivery-date-col, .order-summary .total-cost-col {
+  width: 17%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000314}}
+.order-summary .status-col {
+  width: 26%;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000318}}
+.order-summary__header {
+  font-weight: bold;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000321}}
+.order-summary__order {
+  background-color: white;
+  border: 1px solid #dad5c0;
+  margin-top: 10px;
+  margin-left: 0;
+  margin-right: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000328}}
+.order-summary__order.order-summary__order--paid {
+  border-left: 3px solid #04a773;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000331}}
+.order-summary__order.order-summary__order--late {
+  border-left: 3px solid #dc6a6a;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000336}}
+.order-summary__order div, .order-summary__order .order-col {
+  min-height: 95px;
+  padding-top: 37px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000341}}
+.order-summary__order .order-col {
+  background-color: #f1efe5;
+  border-right: 1px solid #dad5c0;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  line-height: 16px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000349}}
+.order-summary__order .order-col .order-col__date {
+  line-height: normal;
+  display: block;
+  margin-top: 12px;
+  font-size: 15px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_order-summary\.scss}line{font-family:\0000355}}
+.order-summary__order .order-col .order-col__number {
+  font-size: 22px;
+  font-weight: 400;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_account-summary\.scss}line{font-family:\000034}}
+.account-summary__balance, .account-summary__graph {
+  background-color: white;
+  border: 1px solid #ddd8c5;
+  padding: 20px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_account-summary\.scss}line{font-family:\000039}}
+.account-summary__balance .balance__amount, .account-summary__graph .balance__amount {
+  font-size: 32px;
+  font-weight: bold;
+  padding-top: 5px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_account-summary\.scss}line{font-family:\0000314}}
+.account-summary__balance .balance__term:not(:last-child), .account-summary__graph .balance__term:not(:last-child) {
+  border-right: 1px solid #ddd8c5;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_account-summary\.scss}line{font-family:\0000318}}
+.account-summary__graph {
+  border-top: none;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_catalog\.scss}line{font-family:\000031}}
+ul.horizontal-slide {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_catalog\.scss}line{font-family:\000038}}
+ul.horizontal-slide .item-holder {
+  display: inline-block;
+  float: none;
+  padding: 0;
+  width: 175px;
+  margin-left: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_catalog\.scss}line{font-family:\0000316}}
+ul.horizontal-slide .item-holder:first-child {
+  margin-left: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_recent-activity\.scss}line{font-family:\000031}}
+.notification {
+  padding-top: 15px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Users\/mknabe\/dev\/bek-app\/angular-app\/app\/styles\/_recent-activity\.scss}line{font-family:\000034}}
+.notification__message {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ddd9c6;
+  display: inline-block;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  font-size: 16px;
+}

@@ -1,0 +1,49 @@
+$user-bar__background--upper: #f1efe5;
+$user-bar__background--lower: white;
+$user-bar__border: #c3bc9c;
+
+@mixin user-bar($background-color, $padding) {
+  background-color: $background-color;
+  border-bottom: 1px solid $user-bar__border;
+  padding-top: $padding;
+  padding-bottom: $padding;
+}
+
+.user-bar--upper {
+  @include user-bar($user-bar__background--upper, 18px);
+
+  .user-info {
+    display: inline-block;
+    padding-right: 15px;
+    padding-left: 15px;
+    vertical-align: middle;
+
+    div {
+      display: block;
+    }
+
+    .user-info__name {
+      font-size: 18px;
+    }
+
+    .user-info__job-title {
+      color: #a89f88;
+      font-size: 16px;
+      margin-right: 18px;
+    }
+  }
+
+  img {
+    display: inline-block;
+  }
+}
+
+.user-bar--lower {
+  @include user-bar($user-bar__background--lower, 14px);
+
+  .user-bar-welcome {
+    font-size: 35px;
+    line-height: 65px;
+    padding-left: 20px;
+  }
+}
