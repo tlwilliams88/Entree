@@ -7,6 +7,7 @@ $gold: #e8aa30;
 
 $background: #f3f1eb;
 $font-color: #504938;
+$blue-color: #489ecf;
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -17,14 +18,6 @@ body {
   font-weight: 100;
   font-size: 14px;
   letter-spacing: 1px;
-}
-.main-content {
-  width: calc(100% - 250px);
-  float: left;
-  padding-left: 15px;
-}
-.page-content {
-  padding: 30px 20px 0 20px;
 }
 
 h1,h2,h3,h4 {
@@ -101,3 +94,4 @@ $color--paid: #04a773;
 @import 'account-summary';
 @import 'catalog';
 @import 'recent-activity';
+@import 'search-results';
