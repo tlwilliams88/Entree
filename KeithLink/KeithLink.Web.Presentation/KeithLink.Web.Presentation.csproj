@@ -126,30 +126,6 @@
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.WebData.2.0.20710.0\lib\net40\WebMatrix.WebData.dll</HintPath>
     </Reference>
-    <Reference Include="DotNetOpenAuth.AspNet, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.AspNet.4.1.4.12333\lib\net45-full\DotNetOpenAuth.AspNet.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.Core, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth.Consumer, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Consumer.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.Consumer.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OAuth, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OAuth.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OAuth.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.Core.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.dll</HintPath>
-    </Reference>
-    <Reference Include="DotNetOpenAuth.OpenId.RelyingParty, Version=4.1.0.0, Culture=neutral, PublicKeyToken=2780ccd10d57b246, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\DotNetOpenAuth.OpenId.RelyingParty.4.1.4.12333\lib\net45-full\DotNetOpenAuth.OpenId.RelyingParty.dll</HintPath>
-    </Reference>
     <Reference Include="System.Web.Http.OData, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.OData.4.0.0\lib\net40\System.Web.Http.OData.dll</HintPath>
@@ -176,92 +152,154 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Start\AuthConfig.cs" />
-    <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\jquery-ui.css" />
-    <Content Include="Content\themes\base\jquery.ui.accordion.css" />
-    <Content Include="Content\themes\base\jquery.ui.all.css" />
-    <Content Include="Content\themes\base\jquery.ui.autocomplete.css" />
-    <Content Include="Content\themes\base\jquery.ui.base.css" />
-    <Content Include="Content\themes\base\jquery.ui.button.css" />
-    <Content Include="Content\themes\base\jquery.ui.core.css" />
-    <Content Include="Content\themes\base\jquery.ui.datepicker.css" />
-    <Content Include="Content\themes\base\jquery.ui.dialog.css" />
-    <Content Include="Content\themes\base\jquery.ui.progressbar.css" />
-    <Content Include="Content\themes\base\jquery.ui.resizable.css" />
-    <Content Include="Content\themes\base\jquery.ui.selectable.css" />
-    <Content Include="Content\themes\base\jquery.ui.slider.css" />
-    <Content Include="Content\themes\base\jquery.ui.tabs.css" />
-    <Content Include="Content\themes\base\jquery.ui.theme.css" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\themes\base\minified\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\themes\base\minified\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\themes\base\minified\jquery-ui.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.accordion.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.autocomplete.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.button.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.core.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.datepicker.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.dialog.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.progressbar.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.resizable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.selectable.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
-    <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="angular-app\app\404.html" />
+    <Content Include="angular-app\app\favicon.ico" />
+    <Content Include="angular-app\app\images\admiral.jpg" />
+    <Content Include="angular-app\app\images\bek-logo.png" />
+    <Content Include="angular-app\app\images\green-apple.jpg" />
+    <Content Include="angular-app\app\images\Nav-Image.jpg" />
+    <Content Include="angular-app\app\images\Textured-BG-1.jpg" />
+    <Content Include="angular-app\app\images\Textured-BG.jpg" />
+    <Content Include="angular-app\app\images\Walnuts.jpg" />
+    <Content Include="angular-app\app\index.html" />
+    <Content Include="angular-app\app\lib\angular-animate\angular-animate.js" />
+    <Content Include="angular-app\app\lib\angular-animate\angular-animate.min.js" />
+    <Content Include="angular-app\app\lib\angular-cookies\angular-cookies.js" />
+    <Content Include="angular-app\app\lib\angular-cookies\angular-cookies.min.js" />
+    <Content Include="angular-app\app\lib\angular-mocks\angular-mocks.js" />
+    <Content Include="angular-app\app\lib\angular-resource\angular-resource.js" />
+    <Content Include="angular-app\app\lib\angular-resource\angular-resource.min.js" />
+    <Content Include="angular-app\app\lib\angular-route\angular-route.js" />
+    <Content Include="angular-app\app\lib\angular-route\angular-route.min.js" />
+    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.js" />
+    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="angular-app\app\lib\angular-scenario\angular-scenario.js" />
+    <Content Include="angular-app\app\lib\angular-scenario\jstd-scenario-adapter-config.js" />
+    <Content Include="angular-app\app\lib\angular-scenario\jstd-scenario-adapter.js" />
+    <Content Include="angular-app\app\lib\angular-touch\angular-touch.js" />
+    <Content Include="angular-app\app\lib\angular-touch\angular-touch.min.js" />
+    <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.js" />
+    <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.min.js" />
+    <Content Include="angular-app\app\lib\angular\angular-csp.css" />
+    <Content Include="angular-app\app\lib\angular\angular.js" />
+    <Content Include="angular-app\app\lib\angular\angular.min.js" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap-theme.css" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap-theme.min.css" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap.css" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap.min.css" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-sham.js" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-sham.min.js" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-shim.js" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-shim.min.js" />
+    <Content Include="angular-app\app\lib\icomoon\css\style.css" />
+    <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.svg" />
+    <Content Include="angular-app\app\lib\json3\lib\json3.js" />
+    <Content Include="angular-app\app\lib\json3\lib\json3.min.js" />
+    <Content Include="angular-app\app\lib\normalize.css\normalize.css" />
+    <Content Include="angular-app\app\robots.txt" />
+    <Content Include="angular-app\app\scripts\app.js" />
+    <Content Include="angular-app\app\scripts\controllers\CatalogController.js" />
+    <Content Include="angular-app\app\scripts\controllers\HomeController.js" />
+    <Content Include="angular-app\app\scripts\controllers\MenuController.js" />
+    <Content Include="angular-app\app\scripts\controllers\SearchController.js" />
+    <Content Include="angular-app\app\scripts\services\CategoryService.js" />
+    <Content Include="angular-app\app\scripts\services\ProductService.js" />
+    <Content Include="angular-app\app\scripts\services\ProfileService.js" />
+    <Content Include="angular-app\app\views\catalog.html" />
+    <Content Include="angular-app\app\views\home.html" />
+    <Content Include="angular-app\app\views\menu.html" />
+    <Content Include="angular-app\app\views\searchresults.html" />
+    <Content Include="angular-app\dist-dev\404.html" />
+    <Content Include="angular-app\dist-dev\favicon.ico" />
+    <Content Include="angular-app\dist-dev\images\admiral.jpg" />
+    <Content Include="angular-app\dist-dev\images\bek-logo.png" />
+    <Content Include="angular-app\dist-dev\images\green-apple.jpg" />
+    <Content Include="angular-app\dist-dev\images\Nav-Image.jpg" />
+    <Content Include="angular-app\dist-dev\images\Textured-BG-1.jpg" />
+    <Content Include="angular-app\dist-dev\images\Textured-BG.jpg" />
+    <Content Include="angular-app\dist-dev\images\Walnuts.jpg" />
+    <Content Include="angular-app\dist-dev\index.html" />
+    <Content Include="angular-app\dist-dev\lib\angular-animate\angular-animate.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-animate\angular-animate.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-cookies\angular-cookies.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-cookies\angular-cookies.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-mocks\angular-mocks.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-resource\angular-resource.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-resource\angular-resource.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-route\angular-route.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-route\angular-route.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-sanitize\angular-sanitize.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-sanitize\angular-sanitize.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-scenario\angular-scenario.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-scenario\jstd-scenario-adapter-config.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-scenario\jstd-scenario-adapter.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-touch\angular-touch.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-touch\angular-touch.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-ui-router\angular-ui-router.js" />
+    <Content Include="angular-app\dist-dev\lib\angular-ui-router\angular-ui-router.min.js" />
+    <Content Include="angular-app\dist-dev\lib\angular\angular-csp.css" />
+    <Content Include="angular-app\dist-dev\lib\angular\angular.js" />
+    <Content Include="angular-app\dist-dev\lib\angular\angular.min.js" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap-theme.css" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap-theme.min.css" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap.css" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap.min.css" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-sham.js" />
+    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-sham.min.js" />
+    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-shim.js" />
+    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-shim.min.js" />
+    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.svg" />
+    <Content Include="angular-app\dist-dev\lib\icomoon\style.css" />
+    <Content Include="angular-app\dist-dev\lib\json3\lib\json3.js" />
+    <Content Include="angular-app\dist-dev\lib\json3\lib\json3.min.js" />
+    <Content Include="angular-app\dist-dev\lib\normalize.css\normalize.css" />
+    <Content Include="angular-app\dist-dev\robots.txt" />
+    <Content Include="angular-app\dist-dev\scripts\app.js" />
+    <Content Include="angular-app\dist-dev\scripts\controllers\CatalogController.js" />
+    <Content Include="angular-app\dist-dev\scripts\controllers\HomeController.js" />
+    <Content Include="angular-app\dist-dev\scripts\controllers\MenuController.js" />
+    <Content Include="angular-app\dist-dev\styles\main.css" />
+    <Content Include="angular-app\dist-dev\views\catalog.html" />
+    <Content Include="angular-app\dist-dev\views\home.html" />
+    <Content Include="angular-app\dist-dev\views\menu.html" />
+    <Content Include="angular-app\dist-dev\views\searchresults.html" />
+    <Content Include="angular-app\dist\404.html" />
+    <Content Include="angular-app\dist\favicon.ico" />
+    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="angular-app\dist\fonts\icomoon.svg" />
+    <Content Include="angular-app\dist\images\admiral.fc409a37.jpg" />
+    <Content Include="angular-app\dist\images\bek-logo.b1f59622.png" />
+    <Content Include="angular-app\dist\images\green-apple.30e17ed2.jpg" />
+    <Content Include="angular-app\dist\images\Nav-Image.2a735098.jpg" />
+    <Content Include="angular-app\dist\images\Textured-BG-1.432f3a14.jpg" />
+    <Content Include="angular-app\dist\images\Textured-BG.432f3a14.jpg" />
+    <Content Include="angular-app\dist\images\Walnuts.ac7b8638.jpg" />
+    <Content Include="angular-app\dist\index.html" />
+    <Content Include="angular-app\dist\robots.txt" />
+    <Content Include="angular-app\dist\scripts\scripts.5d0b626e.js" />
+    <Content Include="angular-app\dist\scripts\vendor.b12b1956.js" />
+    <Content Include="angular-app\dist\styles\main.efea490f.css" />
+    <Content Include="angular-app\dist\styles\vendor.bb97aa06.css" />
+    <Content Include="angular-app\dist\views\catalog.html" />
+    <Content Include="angular-app\dist\views\home.html" />
+    <Content Include="angular-app\dist\views\menu.html" />
+    <Content Include="angular-app\dist\views\searchresults.html" />
+    <Content Include="angular-app\Gruntfile.js" />
+    <Content Include="angular-app\mockApi\apiserver.js" />
+    <Content Include="angular-app\test\karma-e2e.conf.js" />
+    <Content Include="angular-app\test\karma.conf.js" />
+    <Content Include="angular-app\test\test-results\test-results.xml" />
+    <Content Include="angular-app\test\unit\controllers\HomeController.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.8.2.js" />
-    <Content Include="Scripts\jquery-1.8.2.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.js" />
-    <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
-    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\knockout-2.2.0.debug.js" />
-    <Content Include="Scripts\knockout-2.2.0.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -269,44 +307,109 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Content\Site.css" />
-    <Content Include="Scripts\_references.js" />
-    <Content Include="Images\accent.png" />
-    <Content Include="Images\bullet.png" />
-    <Content Include="Images\heroAccent.png" />
-    <Content Include="Images\orderedList0.png" />
-    <Content Include="Images\orderedList1.png" />
-    <Content Include="Images\orderedList2.png" />
-    <Content Include="Images\orderedList3.png" />
-    <Content Include="Images\orderedList4.png" />
-    <Content Include="Images\orderedList5.png" />
-    <Content Include="Images\orderedList6.png" />
-    <Content Include="Images\orderedList7.png" />
-    <Content Include="Images\orderedList8.png" />
-    <Content Include="Images\orderedList9.png" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Account\_ChangePasswordPartial.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Account\_RemoveExternalLoginsPartial.cshtml" />
-    <Content Include="Views\Account\_SetPasswordPartial.cshtml" />
-    <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Manage.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
-    <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
-    <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="App_Start\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="angular-app\.editorconfig" />
+    <Content Include="angular-app\.jshintrc" />
+    <Content Include="angular-app\app\lib\angular-animate\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-animate\angular-animate.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-animate\bower.json" />
+    <Content Include="angular-app\app\lib\angular-animate\README.md" />
+    <Content Include="angular-app\app\lib\angular-cookies\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-cookies\angular-cookies.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-cookies\bower.json" />
+    <Content Include="angular-app\app\lib\angular-cookies\README.md" />
+    <Content Include="angular-app\app\lib\angular-mocks\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-mocks\bower.json" />
+    <Content Include="angular-app\app\lib\angular-mocks\README.md" />
+    <Content Include="angular-app\app\lib\angular-resource\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-resource\angular-resource.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-resource\bower.json" />
+    <Content Include="angular-app\app\lib\angular-resource\README.md" />
+    <Content Include="angular-app\app\lib\angular-route\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-route\angular-route.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-route\bower.json" />
+    <Content Include="angular-app\app\lib\angular-route\README.md" />
+    <Content Include="angular-app\app\lib\angular-sanitize\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-sanitize\bower.json" />
+    <Content Include="angular-app\app\lib\angular-sanitize\README.md" />
+    <Content Include="angular-app\app\lib\angular-scenario\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-scenario\bower.json" />
+    <Content Include="angular-app\app\lib\angular-scenario\README.md" />
+    <Content Include="angular-app\app\lib\angular-touch\.bower.json" />
+    <Content Include="angular-app\app\lib\angular-touch\angular-touch.min.js.map" />
+    <Content Include="angular-app\app\lib\angular-touch\bower.json" />
+    <Content Include="angular-app\app\lib\angular-touch\README.md" />
+    <Content Include="angular-app\app\lib\angular\.bower.json" />
+    <Content Include="angular-app\app\lib\angular\angular.min.js.gzip" />
+    <Content Include="angular-app\app\lib\angular\angular.min.js.map" />
+    <Content Include="angular-app\app\lib\angular\bower.json" />
+    <Content Include="angular-app\app\lib\angular\README.md" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\.bower.json" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\.gitignore" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\bower.json" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap-theme.css.map" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\css\bootstrap.css.map" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="angular-app\app\lib\bootstrap-css-only\README.md" />
+    <Content Include="angular-app\app\lib\es5-shim\.bower.json" />
+    <Content Include="angular-app\app\lib\es5-shim\bower.json" />
+    <Content Include="angular-app\app\lib\es5-shim\CHANGES" />
+    <Content Include="angular-app\app\lib\es5-shim\component.json" />
+    <Content Include="angular-app\app\lib\es5-shim\CONTRIBUTORS.md" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-sham.map" />
+    <Content Include="angular-app\app\lib\es5-shim\es5-shim.map" />
+    <Content Include="angular-app\app\lib\es5-shim\LICENSE" />
+    <Content Include="angular-app\app\lib\es5-shim\package.json" />
+    <Content Include="angular-app\app\lib\es5-shim\README.md" />
+    <Content Include="angular-app\app\lib\es5-shim\shims.json" />
+    <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.eot" />
+    <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.ttf" />
+    <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.woff" />
+    <Content Include="angular-app\app\lib\json3\.bower.json" />
+    <Content Include="angular-app\app\lib\json3\bower.json" />
+    <Content Include="angular-app\app\lib\json3\CHANGELOG.md" />
+    <Content Include="angular-app\app\lib\json3\CONTRIBUTING.md" />
+    <Content Include="angular-app\app\lib\json3\LICENSE" />
+    <Content Include="angular-app\app\lib\json3\README.md" />
+    <Content Include="angular-app\app\lib\normalize.css\.bower.json" />
+    <Content Include="angular-app\app\lib\normalize.css\bower.json" />
+    <Content Include="angular-app\app\lib\normalize.css\LICENSE.md" />
+    <Content Include="angular-app\app\lib\normalize.css\README.md" />
+    <Content Include="angular-app\app\styles\main.scss" />
+    <Content Include="angular-app\app\styles\_account-summary.scss" />
+    <Content Include="angular-app\app\styles\_catalog.scss" />
+    <Content Include="angular-app\app\styles\_components.scss" />
+    <Content Include="angular-app\app\styles\_order-summary.scss" />
+    <Content Include="angular-app\app\styles\_recent-activity.scss" />
+    <Content Include="angular-app\app\styles\_search-results.scss" />
+    <Content Include="angular-app\app\styles\_sidebar.scss" />
+    <Content Include="angular-app\app\styles\_user-bar.scss" />
+    <Content Include="angular-app\build.bat" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.eot" />
+    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.ttf" />
+    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.woff" />
+    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="angular-app\dist\fonts\icomoon.eot" />
+    <Content Include="angular-app\dist\fonts\icomoon.ttf" />
+    <Content Include="angular-app\dist\fonts\icomoon.woff" />
+    <Content Include="angular-app\package.json" />
+    <Content Include="angular-app\test\.jshintrc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -324,7 +427,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerPort>57890</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:49239/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
@@ -336,6 +439,10 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <PropertyGroup>
+    <PostBuildEvent>cd $(ProjectDir)angular-app
+build.bat</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
