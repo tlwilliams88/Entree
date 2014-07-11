@@ -7,8 +7,6 @@ $sidebar-nav__background--selected: #2a2621;
 $sidebar-nav__text--selected: white;
 
 .sidebar {
-  height: 100%;
-  float: left;
   color: $sidebar__text;
   font-size: 20px;
   padding: 0;
@@ -17,7 +15,12 @@ $sidebar-nav__text--selected: white;
   background-image: url('../images/Nav-Image.jpg');
   background-position:center bottom;
   background-repeat: no-repeat; 
+  min-height: 925px;
 
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  
   a {
     color: $gold;
     text-decoration: none;
@@ -33,23 +36,28 @@ $sidebar-nav__text--selected: white;
     }
   }
 
+  $border__size: 3px;
+  $padding__size: 25px;
+
   .sidebar-nav ul { 
     margin-bottom: 0; 
     
     // nav menu items
     li {
-      padding: 19px 45px;
+      padding: 19px $padding__size;
       color: $sidebar--text;
       cursor: pointer;
       border-top: 1px solid $sidebar-nav__border;
       font-weight: 400;
       letter-spacing: 1px;
 
-      &.is-selected {
-        color: $sidebar-nav__text--selected;
-        background-color: $sidebar-nav__background--selected;
-        border-left: 3px solid $gold;
-      }
+    }
+    
+    .is-selected li {
+      color: $sidebar-nav__text--selected;
+      background-color: $sidebar-nav__background--selected;
+      border-left: $border__size solid $gold;
+      padding-left: $padding__size - $border__size;
     }
   }
 
@@ -77,5 +85,8 @@ $sidebar-nav__text--selected: white;
   .sidebar-meta {
     font-size: 16px;
     font-weight: 100;
+    position: absolute;
+    bottom: 0;
+    left: 0;
   }
 }

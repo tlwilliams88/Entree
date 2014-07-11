@@ -13,6 +13,15 @@ $user-bar__border: #c3bc9c;
   @include user-bar($user-bar__background--upper, 18px);
 
   .user-info {
+    display: inline-block;
+    padding-right: 15px;
+    padding-left: 15px;
+    vertical-align: middle;
+
+    div {
+      display: block;
+    }
+
     .user-info__name {
       font-size: 18px;
     }
@@ -20,12 +29,12 @@ $user-bar__border: #c3bc9c;
     .user-info__job-title {
       color: #a89f88;
       font-size: 16px;
+      margin-right: 18px;
     }
+  }
 
-    span {
-      display: block;
-      font-weight: 400;
-    }
+  img {
+    display: inline-block;
   }
 }
 

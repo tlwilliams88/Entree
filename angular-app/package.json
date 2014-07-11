@@ -1,6 +1,8 @@
 {
   "name": "bek",
   "version": "0.0.0",
+  "description": "Ben E Keith eCommerce Angular Web App",
+  "repository": "http://scm.bekco.com/r/ecommerce.git",
   "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.1",
@@ -41,6 +43,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
+    "start": "http-server dist-dev/",
     "test": "grunt test"
   }
 }

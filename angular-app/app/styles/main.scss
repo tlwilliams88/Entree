@@ -30,11 +30,11 @@ h3 {
 // BOOTSTRAP FIX FOR SIDEBAR
 .container-fluid {
   padding: 0;
+  position: relative;
 }
 .page-content {
   width: calc(100% - 250px);
-  float: left;
-  margin-left: 0px;
+  margin-left: 250px;
 }
 .view {
   padding-top: 30px;
@@ -85,7 +85,6 @@ $color--paid: #04a773;
 ::-moz-placeholder {
   font-style: italic;
 }
-
 
 @import 'sidebar';
 @import 'user-bar';

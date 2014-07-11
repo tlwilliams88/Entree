@@ -18,7 +18,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+    dev: 'dist-dev'
   };
 
   // Define the configuration for all the tasks
@@ -130,7 +131,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      dev: '<%= yeoman.dev %>/{,*/}*'
     },
 
     // Add vendor prefixed styles
@@ -182,8 +184,8 @@ module.exports = function (grunt) {
         src: [
           '<%= yeoman.dist %>/scripts/{,*/}*.js',
           '<%= yeoman.dist %>/styles/{,*/}*.css',
-          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-          '<%= yeoman.dist %>/styles/fonts/*'
+          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          // '<%= yeoman.dist %>/styles/fonts/*'
         ]
       }
     },
@@ -310,7 +312,7 @@ module.exports = function (grunt) {
             '*.html',
             'views/{,*/}*.html',
             'images/{,*/}*.{webp}',
-            'fonts/*'
+            'styles/fonts/*'
           ]
         }, {
           expand: true,
@@ -324,6 +326,34 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      dev: {
+        files: [{
+          expand: true,
+          dot: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dev %>',
+          src: [
+            '*.{ico,png,txt}',
+            '.htaccess',
+            '*.html',
+            'views/{,*/}*.html',
+            'scripts/{,*/}*.js',
+            'images/{,*/}*.{webp}',
+            'lib/**/*.{js,css,eot,svg,ttf,woff}',
+            'styles/fonts/*'
+          ]
+        }, {
+          expand: true,
+          cwd: '<%= yeoman.app %>',
+          dest: '<%= yeoman.dev %>',
+          src: ['images/*']
+        }, {
+          expand: true,
+          cwd: '.tmp',
+          dest: '<%= yeoman.dev %>',
+          src: 'styles/*.css',
+        }]
       }
     },
 
@@ -370,6 +400,13 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve:' + target]);
   });
+
+  grunt.registerTask('dev', [
+    'clean:dev',
+    'compass:server',
+    'copy:dev',
+    'karma'
+  ]);
 
   grunt.registerTask('test', [
     'clean:server',

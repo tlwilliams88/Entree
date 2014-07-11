@@ -9,6 +9,7 @@
     <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
+    <link rel="stylesheet" href="lib/icomoon/style.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
@@ -18,110 +19,9 @@
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
-    <div class="container-fluid">
-      <div class="sidebar hidden-sm hidden-xs">
-        <div class="sidebar-logo text-center">
-          <img src="images/bek-logo.png" alt="logo" />
-        </div>
-        
-        <nav class="sidebar-nav">
-          <ul class="list-unstyled">
-            <a href="/home">
-              <li>Home</li>
-            </a>
-            <a href="/orders">
-              <li>Orders</li>
-            </a>
-            <a href="/catalog">
-              <li>Product Catalog</li>
-            </a>
-            <a href="/reports">
-              <li>Reports</li>
-            </a>
-            <a href="/invoices">
-              <li>Invoices</li>
-            </a>
-            <a href="/admin">
-              <li>Admin</li>
-            </a>
-          </ul>
-        </nav>
-        <div class="sidebar-dsr">
-          <p>Your Sales Rep</p>
-          <img src="" alt="dsr image" style="width:75px;height:75px;" />
-          <p class="contact-info">
-          <span>Heather Hill</span>
-          <span>(888) 912-2342</span>
-          </p>
-          <a class="text-uppercase" href="#">Email Me</a>
-        </div>
-        <div class="text-center sidebar-meta">
-          <span>Copyright 2014 Ben E. Keith</span>
-          <a href="#">benekeith.com</a>
-        </div>
-      </div>
-      
-      <div class="row page-content">
-        <div class="col-sm-12">
-          <div class="row user-bar--upper">
-            <div class="col-lg-4">
-              <select name="" id="">
-                <option value="">Jimmy's Chicken Shack</option>
-                <option value="">El Fenix</option>
-              </select>
-            </div>
-            <div class="col-lg-3">
-              <input type="text" placeholder="Search by keyword" />
-            </div>
-            <div class="col-lg-2 text-center">
-              
-              <img src="" alt="not" style="height:60px;width:60px;">
-            </div>
-            <div class="col-sm-3">
-              <div class="user-info pull-left text-right" style="display:inline-block;">
-                <span class="user-info__name">Stephen Broussard</span>
-                <span>Kitchen Manager</span>
-              </div>
-              <img src="" alt="" style="height:60px;width:60px;" class="pull-right">
-            </div>
-          </div>
-          <div class="row user-bar--lower">
-            <div class="col-md-9 user-bar-welcome">
-              Welcome Back Stephen!
-            </div>
-            <div class="col-md-3">
-              <button>Create An Order</button>
-            </div>
-          </div>
-          
-          <div class="view">
-            <div ng-view=""></div>
-          </div>
-          
-          
-        </div>
-      </div> <!-- end content -->
+
+    <div ui-view="" class="container-fluid">
     </div> <!-- end container -->
-
-
-    <!-- Add your site or application content here -->
-<!--     <div class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li class="active"><a ng-href="#">Home</a></li>
-          <li><a ng-href="#/about">About</a></li>
-          <li><a ng-href="#">Contact</a></li>
-        </ul>
-        <h3 class="text-muted">bek</h3>
-      </div>
-
-      <div ng-view=""></div>
-
-      <div class="footer">
-        <p><span class="glyphicon glyphicon-heart"></span> from the Yeoman team</p>
-      </div>
-    </div> -->
-
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
