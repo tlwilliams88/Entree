@@ -7,6 +7,7 @@ $gold: #e8aa30;
 
 $background: #f3f1eb;
 $font-color: #504938;
+$blue-color: #489ecf;
 
 body {
   font-family: 'Source Sans Pro', sans-serif;
@@ -92,3 +93,4 @@ $color--paid: #04a773;
 @import 'account-summary';
 @import 'catalog';
 @import 'recent-activity';
+@import 'search-results';

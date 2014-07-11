@@ -31,6 +31,7 @@ angular
         url: '/catalog',
         templateUrl: 'views/catalog.html',
         controller: 'CatalogController'
+
     // })
     // .state('list.item', {
     //     url: '/:item',
