@@ -187,9 +187,9 @@ FakesAssemblies/
 
 # Angular App
 *.DS_Store
-bower_components/
-.sass-cache
-dist/
-dist-dev/
-.tmp/
-test/test-results/
+/KeithLink/KeithLink.Web.Presentation/angular-app/bower_components/
+/KeithLink/KeithLink.Web.Presentation/angular-app/.sass-cache
+/KeithLink/KeithLink.Web.Presentation/angular-app/dist/
+/KeithLink/KeithLink.Web.Presentation/angular-app/dist-dev/
+/KeithLink/KeithLink.Web.Presentation/angular-app/.tmp/
+/KeithLink/KeithLink.Web.Presentation/angular-app/test/test-results/
