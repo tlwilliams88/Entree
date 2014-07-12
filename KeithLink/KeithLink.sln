@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Common.Tests", "K
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Presentation", "KeithLink.Web.Presentation\KeithLink.Web.Presentation.csproj", "{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.InternalSvc", "KeithLink.Svc.InternalSvc\KeithLink.Svc.InternalSvc.csproj", "{6E0FA18C-21B0-4862-ACBC-4B6D55516341}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -79,6 +81,10 @@ Global
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,5 +101,6 @@ Global
 		{878AA2E7-769B-409C-8285-3A7FACA750F9} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{E272DA17-C7F8-4F35-A4B0-E97D03D35754} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
+		{6E0FA18C-21B0-4862-ACBC-4B6D55516341} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 	EndGlobalSection
 EndGlobal
