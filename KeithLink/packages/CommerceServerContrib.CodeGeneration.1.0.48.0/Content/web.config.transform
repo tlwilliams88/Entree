@@ -1,0 +1,31 @@
+<configuration>
+  <configSections>
+    <section name="commerceServerCodeGeneration" type="CommerceServerContrib.CodeGeneration.Configuration.CommerceServerCodeGenerationConfigurationSection, CommerceServerContrib.CodeGeneration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a"/>
+  </configSections>
+  <commerceServerCodeGeneration>
+    <entitiesToIgnore>
+      <entity name="CommerceEntityDefinition"/>
+      <entity name="RelationshipDefinition"/>
+      <entity name="RelationshipTypeDefinition"/>
+      <entity name="PropertyDefinition"/>
+      <entity name="EntityMapping"/>
+      <entity name="DefinitionMapping"/>
+      <entity name="ConstraintBase"/>
+      <entity name="EnumerationEntry"/>
+      <entity name="EntityMetadata"/>
+      <entity name="AuthorizationDefinition"/>
+      <entity name="CommerceClaim"/>
+      <entity name="CommerceCache"/>
+      <entity name="Site"/>
+      <entity name="Solution"/>
+      <entity name="Channel"/>
+      <entity name="MembershipSettings"/>
+      <entity name="Image"/>
+      <entity name="StoreProfile"/>
+      <entity name="VEClientToken"/>
+      <entity name="VENearbyStore"/>
+      <entity name="ImageGalleryFile"/>
+      <entity name="ImageGallery"/>
+    </entitiesToIgnore>
+  </commerceServerCodeGeneration>
+</configuration>
