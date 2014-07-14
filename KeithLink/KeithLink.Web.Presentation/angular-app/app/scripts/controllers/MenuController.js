@@ -8,9 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('MenuController', function ($scope) {
+  .controller('MenuController', ['$scope', 'UserProfileService', function ($scope, UserProfileService) {
     
-    
+    $scope.isAdmin = UserProfileService.hasAdminRole();
+    $scope.isBuyer = UserProfileService.hasBuyerRole();
+    $scope.isPayer = UserProfileService.hasPayerRole();
 
-
-  });
+  }]);

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>CommerceServerContrib.CodeGeneration</id>
+    <version>1.0.48.0</version>
+    <title>Commerce Server 10 Code Generation</title>
+    <authors>commerceserver.net</authors>
+    <owners>commerceserver.net</owners>
+    <licenseUrl>http://cscodegen.codeplex.com/license</licenseUrl>
+    <projectUrl>http://cscodegen.codeplex.com/</projectUrl>
+    <iconUrl>http://www.brandonhubbard.ca/commerceserver/commerceserver.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Code Generation for Commerce Server 10.</description>
+    <releaseNotes>First version of the Code Generation nuget package.</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>CS10 commerceserver.net commerce server ecommerce CS CSContrib</tags>
+    <dependencies>
+      <dependency id="CommerceServerContrib.Configuration" version="1.0.0.0" />
+    </dependencies>
+  </metadata>
+</package>

@@ -18,43 +18,66 @@ angular
     'ui.router'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
-  $stateProvider
-    .state('menu', {
-        templateUrl: 'views/menu.html'
-    })
-    .state('menu.home', {
-        url: '/home',
-        templateUrl: 'views/home.html',
-        controller: 'HomeController'
-    })
-    .state('menu.catalog', {
-        url: '/catalog',
-        templateUrl: 'views/catalog.html',
-        controller: 'CatalogController'
-    })
-    .state('menu.products', {
-        url: '/products',
-        templateUrl: 'views/searchresults.html',
-controller:'SearchController'
-    })
-    .state('menu.catalog.category', {
-        url: '/category',
-        templateUrl: 'views/searchresults.html'
-    });
-  $urlRouterProvider.when('', '/home');
-  $urlRouterProvider.when('/', '/home');
+
+  // the $stateProvider determines path urls and their related controllers
+  $stateProvider
+    .state('menu', {
+      abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
+      templateUrl: 'views/menu.html',
+      controller: 'MenuController'
+    })
+    // /home
+    .state('menu.home', {
+      url: '/home',
+      templateUrl: 'views/home.html',
+      controller: 'HomeController'
+    })
+    .state('menu.catalog', {
+      abstract: true,
+      url: '/catalog',
+      template: '<div ui-view=""></div>'
+    })
+    // /catalog
+    .state('menu.catalog.home', {
+      url: '',
+      templateUrl: 'views/catalog.html',
+      controller: 'CatalogController'
+    })
+    .state('menu.catalog.products', {
+      abstract: true,
+      url: '/products',
+      template: '<div ui-view=""></div>'
+    })
+    // /catalog/products
+    .state('menu.catalog.products.home', {
+      url: '',
+      templateUrl: 'views/searchresults.html'
+    })
+    // /catalog/products/:productId (product details page)
+    .state('menu.catalog.products.details', {
+      url: '/:productId',
+      templateUrl: 'views/productdetails.html',
+      controller: function($scope, $stateParams) {
+        $scope.productId = $stateParams.productId;
+      }
+    })
+    // /catalog/category/:categoryId
+    .state('menu.catalog.category', {
+      url: '/category/:categoryId',
+      templateUrl: 'views/searchresults.html',
+      controller: function($scope, $stateParams) {
+        $scope.categoryId = $stateParams.categoryId;
+      }
+    })
+    // /catalog/brand/:brandId
+    .state('menu.catalog.brand', {
+      url: '/brand/:brandId',
+      templateUrl: 'views/searchresults.html',
+      controller: function($scope, $stateParams) {
+        $scope.brandId = $stateParams.brandId;
+      }
+    });
+  // redirect to /home route when going to '' or '/' paths
+  $urlRouterProvider.when('', '/home');
+  $urlRouterProvider.when('/', '/home');
 });
-  // .config(function ($routeProvider) {
-  //   $routeProvider
-  //     .when('/', {
-  //       templateUrl: 'views/home.html',
-  //       controller: 'HomeController'
-  //     })
-  //     .when('/catalog', {
-  //       templateUrl: 'views/catalog.html',
-  //       controller: 'CatalogController'
-  //     })
-  //     .otherwise({
-  //       redirectTo: '/'
-  //     });
-  // });
