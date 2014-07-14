@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.ETL
     {
         void ProcessStagedCategories();
         void ProcessStagedItems();
+        void ProcessStagedBranches();
     }
 }

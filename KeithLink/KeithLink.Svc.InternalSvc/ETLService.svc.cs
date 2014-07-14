@@ -18,7 +18,8 @@ namespace KeithLink.Svc.InternalSvc
         {
             ICategoryLogic categoryLogic = new CategoryLogicImpl();
             //categoryLogic.ProcessStagedCategories();
-            categoryLogic.ProcessStagedItems();
+            //categoryLogic.ProcessStagedItems();
+            categoryLogic.ProcessStagedBranches();
             return true;
         }
     }

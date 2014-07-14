@@ -73,12 +73,10 @@ namespace KeithLink.Svc.Impl.ETL
 
 
         }
-
-
+        
         public void ProcessStagedItems()
         {
             var dataTable = new DataTable();
-            var childTable = new DataTable();
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
                 using (var cmd = new SqlCommand(" SELECT DISTINCT top 100 " +
@@ -144,6 +142,66 @@ namespace KeithLink.Svc.Impl.ETL
                 catch { } //TODO: Log/handle exception
             }
 
+        }
+
+        public void ProcessStagedBranches()
+        {
+            var dataTable = new DataTable();
+            var exclusionTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            {
+                conn.Open();
+                    
+                using (var cmd = new SqlCommand("SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3", conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+
+                using (var cmd = new SqlCommand(" SELECT  DISTINCT TOP 100 " +
+                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
+                                            "       i.[ItemId] " +
+                                            " FROM " +
+                                            " 	ETL.Staging_ItemData i cross join " +
+                                            " 	ETL.Staging_Branch b  " +
+                                            " WHERE " +
+                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
+                                            " order by " +
+                                            " 	i.ItemId; ", conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(exclusionTable);
+                }
+            }
+
+            //Refactor once the initial Core project is checked in
+            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent();
+            catalogSiteAgent.SiteName = Configuration.CSSiteName;
+            catalogSiteAgent.IgnoreInventorySystem = false;
+
+            CatalogContext context = CatalogContext.Create(catalogSiteAgent);
+            var currentCategories = GetFullCategoryList(context);
+            var baseCatalog = context.GetCatalog(Configuration.BaseCatalog);
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var vc = context.CreateVirtualCatalog(row.GetString("BranchId"), "en-US", null);
+                
+                vc.AddVirtualCatalogRule(Configuration.BaseCatalog, null, null, null, false);
+
+                var rules = exclusionTable.AsEnumerable().Where(e => e.Field<string>("BranchId") == row.GetString("BranchId"));
+
+                foreach (var exRow in rules)
+                    try
+                    {
+                        vc.AddVirtualCatalogRule(Configuration.BaseCatalog, null, exRow.GetString("ItemId"), null, true);
+                    }
+                    catch { }
+                vc.Save();
+                vc.Rebuild(true);
+            }
         }
 
         #region Helper Methods
