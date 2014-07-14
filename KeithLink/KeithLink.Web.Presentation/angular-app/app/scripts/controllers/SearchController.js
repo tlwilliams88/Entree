@@ -8,22 +8,14 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', function ($scope) {
+  .controller('SearchController', ['$scope', 'ProductService', function ($scope, ProductService) {
     
-    $scope.orders = [
-      {
-        orderNum: 212342342,
-        deliveryDate: '12/13/2014',
-        totalCost: '1234.32',
-        status: 'Open',
-        paymentStatus: 'N/A'
-      }
-    ];
-
-    $scope.locations = [
-      'Jimmy\'s Chicken Shack',
-      'Torchy\'s Tacos'
-    ];
+    ProductService.getProducts().then(function(data){
+      $scope.products = data.data.products;
+      $scope.predicate = 'id';
+      
+    });
 
 
-  });
+
+  }]);
