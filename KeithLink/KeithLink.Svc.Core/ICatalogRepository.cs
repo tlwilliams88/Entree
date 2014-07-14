@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core
 {
-    public class Class1
+    public interface ICatalogRepository
     {
+        IEnumerable<Product> GetProductsForCategory(string category);
     }
 }

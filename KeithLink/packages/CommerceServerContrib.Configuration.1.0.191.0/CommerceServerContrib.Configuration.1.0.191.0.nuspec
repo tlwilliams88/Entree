@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>CommerceServerContrib.Configuration</id>
+    <version>1.0.191.0</version>
+    <title>Commerce Server 10 Contrib Configuration</title>
+    <authors>commerceserver.net</authors>
+    <owners>commerceserver.net</owners>
+    <licenseUrl>http://cstemplates.codeplex.com/license</licenseUrl>
+    <projectUrl>http://cstemplates.codeplex.com/</projectUrl>
+    <iconUrl>http://www.commerceserver.net/favicon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CommerceServerContrib.Configuration installs the configuration required to to use Commerce Server 10 Request Templates.</description>
+    <releaseNotes>First version of the Commerce Server contrib package.</releaseNotes>
+    <copyright>Copyright 2012</copyright>
+    <tags>CS10 commerceserver.net commerce server ecommerce CS CSContrib</tags>
+    <dependencies>
+      <dependency id="CommerceServerContrib.Library" version="1.0.0.0" />
+      <dependency id="Unity" version="2.1.505.2" />
+    </dependencies>
+  </metadata>
+</package>
