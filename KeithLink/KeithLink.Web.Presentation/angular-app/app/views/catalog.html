@@ -1,0 +1,67 @@
+<div class="row page-header-bar">
+  <div class="col-md-9 page-header-bar__message">
+    Product Catalog
+  </div>
+  <div class="col-md-3">
+    <button>Create An Order</button>
+  </div>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="input-group">
+			<input type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacture number">
+			<span class="input-group-btn">
+			<button class="btn" type="button"><span class="glyphicon glyphicon-search"></span> SEARCH</button>
+			</span>
+		</div><!-- /input-group -->
+	</div><!-- /.col-sm-12 -->
+</div><!-- /.row -->
+<div class="row sub-content">
+	<div class="col-sm-12">
+		<h4>Ben E. Keith Recommended Items</h4>
+		<ul class="horizontal-slide">
+			<li ng-repeat="product in featuredProducts | orderBy: ['description']" class="item-holder">
+				<div class="featured-item text-center">
+					<img src="images/Walnuts.jpg" alt="image">
+					<div class="featured-item__detail">
+						{{product.description}}
+						<a ui-sref="menu.catalog.products.details({ productId : product.id })" class="text-uppercase">view details</a>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row sub-content">
+	<div class="col-sm-12">
+		<h4>Select A Category</h4>
+		<ul class="horizontal-slide">
+			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
+				<div class="featured-item text-center">
+					<img src="images/green-apple.jpg" alt="image">
+					<div class="featured-item__detail">
+						{{category.name}}
+						<a ui-sref="menu.catalog.category({ categoryId: category.id })" class="text-uppercase">view category</a>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+<div class="row sub-content">
+	<div class="col-sm-12">
+		<h4>Select A Brand</h4>
+		<ul class="horizontal-slide">
+			<li ng-repeat="brand in brands | orderBy: ['name']" class="item-holder">
+				<div class="featured-item text-center">
+					<img src="images/admiral.jpg" alt="image">
+					<div class="featured-item__detail">
+						{{brand.name}}
+						<a ui-sref="menu.catalog.brand({ brandId: brand.id })" class="text-uppercase">view brand</a>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
