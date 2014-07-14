@@ -20,6 +20,7 @@ module.exports = function(config) {
       'app/lib/angular-touch/angular-touch.js',
       'app/lib/angular-sanitize/angular-sanitize.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
+      'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'

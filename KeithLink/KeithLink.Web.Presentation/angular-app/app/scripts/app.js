@@ -52,7 +52,8 @@ angular
     // /catalog/products
     .state('menu.catalog.products.home', {
       url: '',
-      templateUrl: 'views/searchresults.html'
+      templateUrl: 'views/searchresults.html',
+      controller: 'SearchController'
     })
     // /catalog/products/:itemId (item details page)
     .state('menu.catalog.products.details', {
