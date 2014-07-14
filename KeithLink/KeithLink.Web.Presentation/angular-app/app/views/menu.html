@@ -11,19 +11,19 @@
       <a ui-sref="menu.orders" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>Orders</li>
       </a>
-      <a ui-sref="menu.catalog" ui-sref-active="is-selected">
+      <a ui-sref="menu.catalog.home" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
       </a>
       <a ui-sref="menu.reports" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
       </a>
-      <a ui-sref="menu.invoices" ui-sref-active="is-selected">
+      <a ng-show="isPayer" ui-sref="menu.invoices" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
       </a>
       <a ui-sref="menu.emenu" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
       </a>
-      <a ui-sref="menu.admin" ui-sref-active="is-selected">
+      <a ng-show="isAdmin" ui-sref="menu.admin" ui-sref-active="is-selected">
         <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
       </a>
     </ul>
@@ -48,7 +48,7 @@
 <div class="row page-content">
   <div class="col-sm-12">
 
-    <div class="row user-bar--upper">
+    <div class="row user-bar">
       <div class="col-lg-4">
         <select name="" id="">
           <option value="">Jimmy's Chicken Shack</option>
@@ -56,7 +56,7 @@
         </select>
       </div>
       <div class="col-lg-3">
-        <input type="text" placeholder="Search by keyword" />
+        <input type="text" class="form-control" placeholder="Search by keyword" />
       </div>
       <div class="col-lg-5 text-right">
         <img src="" alt="not" style="height:55px;width:55px;">
@@ -72,21 +72,12 @@
         <img src="" alt="" style="height:55px;width:55px;">
       </div>
     </div>
-
-    <div class="row user-bar--lower">
-      <div class="col-md-9 user-bar-welcome">
-        Welcome Back Stephen!
-      </div>
-      <div class="col-md-3">
-        <button>Create An Order</button>
-      </div>
-    </div>
     
     <div class="view">
-      <div ui-view=""></div>
+      <div ui-view="">
+        <p>TODO: Loading content</p>
+      </div>
     </div>
-    
-  
 
   </div>
 </div> <!-- end content -->

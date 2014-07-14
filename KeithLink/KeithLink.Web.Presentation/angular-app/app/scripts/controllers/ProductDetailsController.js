@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name bekApp.controller:SearchController
+ * @name bekApp.controller:ProductDetailsController
  * @description
- * # SearchController
+ * # ProductDetailsController
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', function ($scope) {
+  .controller('ProductDetailsController', function ($scope) {
     
     $scope.orders = [
       {
