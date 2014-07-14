@@ -83,6 +83,8 @@ HttpServer.prototype.handleRequest_ = function(req, res) {
     writeResponse(res, getProducts());
   } else if(url.indexOf('/categories') > 0){
     writeResponse(res, getCategories());
+  } else if(url.indexOf('/profile') > 0){
+    writeResponse(res, getProfile());
   } else {
     writeResponse(res);
   }
@@ -289,6 +291,32 @@ var getProducts = function(){
 
 var getCategories = function() {
   return JSON.stringify({"categories":[{"name":"Shrimp","description":"Shrimp, Headless, Raw","id":"FS940","subcategories":[{"id":"FS942","name":"Jumbo Shrimp","description":"Shrimp, Headless, Raw 12 Ct"},{"id":"FS941","name":"Popcorn Shrimp","description":"Shrimp, Headless, Raw 65 Ct"}]},{"name":"Cakes","description":"Cakes Silly","id":"CS940","subcategories":[{"id":"CS942","name":"Cakes, Decorated","description":"Decorated Cakes"},{"id":"CS941","name":"Cakes, Bulk","description":"Un-decorated cakes"}]},{"name":"Pork","description":"Soo weee!!!","id":"PS940","subcategories":[{"id":"PS942","name":"Pork Shoulder","description":"Bulk Pork Shoulder"},{"id":"PS941","name":"Pork, Chops","description":"Pork Chops"}]}]});
+}
+
+var getProfile = function() {
+  return JSON.stringify({"profile": {
+    "name": "Steven Broussard",
+    "customerNumber": 12345,
+    "imageUrl": null,
+    "role": null,
+    "phone": 9348234934,
+    "location": "Dallas",
+    "stores": [{
+      "name": "Chick-fil-A",
+      "customerNumber": 453234
+    }, {
+      "name": "Saltgrass",
+      "customerNumber": 534939
+    }],
+    "accountNumber": 9783459,
+    "salesRep": {
+      "id": 34234,
+      "name": "Heather Hill",
+      "phone": 8889122342,
+      "email": "heather.hill@ben.e.keith.com",
+      "imageUrl": null
+    }
+  }});
 }
 
 var syncActivities = function(){

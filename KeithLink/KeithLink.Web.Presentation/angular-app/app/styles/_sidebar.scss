@@ -69,7 +69,6 @@ $sidebar-nav__text--selected: white;
 
   .sidebar-dsr {
     height: 260px;
-    text-align: center;
     padding: 32px;
     font-size: 18px;
     background-color: $sidebar__background--dark;
@@ -79,6 +78,7 @@ $sidebar-nav__text--selected: white;
     .contact-info {
       margin-top: 15px;
       margin-bottom: 5px;
+      font-weight: 100;
       
       // contact info items
       span {

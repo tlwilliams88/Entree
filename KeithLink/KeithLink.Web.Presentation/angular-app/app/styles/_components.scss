@@ -1,21 +1,22 @@
-button {
-  background-color: #489ecf;
-  border-radius: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  color: white;
-  font-size: 20px;
-  border: none;
+// default button
+button.btn {
   height: 55px;
   letter-spacing: 1px;
+  background-color: white;
+  border: 1px solid #c3bc9c;
+  font-weight: 300;
+  
+  // call to action button
+  &.cta-btn {
+    color: white;
+    background-color: #489ecf;
+    border: none;
+  }
 }
 
 select {
   border: 1px solid #c3bc9c;
-  background-color: white;
   font-size: 20px;
-  // color: #c3bc9c;
-  padding: 15px;
   height: 55px;
   letter-spacing: 1px;
 }
@@ -23,9 +24,39 @@ select {
 input[type='text'] {
   border: 1px solid #c3bc9c;
   height: 55px;
-  border-radius: 5px;
   font-size: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
   letter-spacing: 1px;
+}
+
+// tabs
+.nav-tabs {
+  border-bottom: 1px solid #c3bc9c;
+
+  li {
+    a {
+      margin-right: 5px;
+      line-height: 35px;
+      font-size: 16px;
+      border-radius: 0;
+      border: 1px solid #c3bc9c;
+      padding: 10px 40px;
+
+      &:hover {
+        @extend a;
+      }
+    }
+  }
+
+  li.active a {
+    border: 1px solid #c3bc9c;
+    border-bottom-color: transparent;
+    border-top: 3px solid #489ecf;
+    padding-top: 8px;
+    font-weight: normal;
+
+    &:hover {
+      @extend a;
+    }
+  }
+
 }

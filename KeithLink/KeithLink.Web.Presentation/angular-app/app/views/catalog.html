@@ -3,7 +3,7 @@
     Product Catalog
   </div>
   <div class="col-md-3">
-    <button>Create An Order</button>
+    <button class="btn cta-btn btn-lg">Create An Order</button>
   </div>
 </div>
 
@@ -12,7 +12,7 @@
 		<div class="input-group">
 			<input type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacture number">
 			<span class="input-group-btn">
-			<button class="btn" type="button"><span class="glyphicon glyphicon-search"></span> SEARCH</button>
+			<button class="btn cta-btn btn-lg" type="button"><span class="glyphicon glyphicon-search"></span> SEARCH</button>
 			</span>
 		</div><!-- /input-group -->
 	</div><!-- /.col-sm-12 -->
@@ -26,7 +26,7 @@
 					<img src="images/Walnuts.jpg" alt="image">
 					<div class="featured-item__detail">
 						{{product.description}}
-						<a ui-sref="menu.catalog.products.details({ productId : product.id })" class="text-uppercase">view details</a>
+						<a ui-sref="menu.catalog.products.details({ itemId : product.id })" class="text-uppercase">view details</a>
 					</div>
 				</div>
 			</li>

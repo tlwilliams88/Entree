@@ -15,7 +15,8 @@ angular
     // 'ngResource',
     // 'ngSanitize',
     // 'ngTouch',
-    'ui.router'
+    'ui.router',
+    'ui.bootstrap'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
 
@@ -53,13 +54,11 @@ angular
       url: '',
       templateUrl: 'views/searchresults.html'
     })
-    // /catalog/products/:productId (product details page)
+    // /catalog/products/:itemId (item details page)
     .state('menu.catalog.products.details', {
-      url: '/:productId',
-      templateUrl: 'views/productdetails.html',
-      controller: function($scope, $stateParams) {
-        $scope.productId = $stateParams.productId;
-      }
+      url: '/:itemId',
+      templateUrl: 'views/itemdetails.html',
+      controller: 'ItemDetailsController'
     })
     // /catalog/category/:categoryId
     .state('menu.catalog.category', {

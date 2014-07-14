@@ -10,8 +10,12 @@
 angular.module('bekApp')
   .controller('MenuController', ['$scope', 'UserProfileService', function ($scope, UserProfileService) {
     
-    $scope.isAdmin = UserProfileService.hasAdminRole();
-    $scope.isBuyer = UserProfileService.hasBuyerRole();
-    $scope.isPayer = UserProfileService.hasPayerRole();
+    $scope.isAdmin = false;
+    $scope.isBuyer = false;
+    $scope.isPayer = false;
+
+    // UserProfileService.getProfile();
+
+    // $scope.currentUser = UserProfileService.profile;
 
   }]);

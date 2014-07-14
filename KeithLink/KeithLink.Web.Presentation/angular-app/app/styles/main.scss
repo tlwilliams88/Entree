@@ -1,5 +1,4 @@
 @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
-// @import "compass/reset";
 
 @import "compass";
 
@@ -15,7 +14,6 @@ body {
   background-image: url('../images/Textured-BG.jpg');
   background-color: $background;
   color: $font-color;
-  font-weight: 100;
   font-size: 14px;
   letter-spacing: 1px;
 }
@@ -36,6 +34,9 @@ h3 {
   width: calc(100% - 250px);
   margin-left: 250px;
 }
+// Angular ui bootstrap fix for pointers
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
 
 $color--late: #dc6a6a;
 $color--paid: #04a773;
@@ -46,10 +47,6 @@ $color--paid: #04a773;
   color: $color--paid;
 }
 
-
-.featured-items {
-  padding-left: 15px;
-}
 .featured-item {
   margin-bottom: 15px;
   background-color: white;
@@ -91,3 +88,4 @@ $color--paid: #04a773;
 @import 'catalog';
 @import 'recent-activity';
 @import 'search-results';
+@import 'item-details';
