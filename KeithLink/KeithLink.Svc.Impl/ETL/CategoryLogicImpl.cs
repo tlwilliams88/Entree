@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CommerceServer.Core.Catalog;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -80,7 +81,7 @@ namespace KeithLink.Svc.Impl.ETL
             var childTable = new DataTable();
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
-                using (var cmd = new SqlCommand(" SELECT DISTINCT " +
+                using (var cmd = new SqlCommand(" SELECT DISTINCT top 100 " +
                                                     "       i.[ItemId] " +
                                                     "       ,ETL.initcap([Name]) as Name " +
                                                     "       ,ETL.initcap([Description]) as Description " +
@@ -121,21 +122,23 @@ namespace KeithLink.Svc.Impl.ETL
                     
                     if (cat == null)
                     {
-                        var existingProduct = baseCatalog.GetProduct(row.GetString("ItemId"));
+                        var existingProduct = baseCatalog.GetRootCategory().ChildProducts.Where(e => e.ProductId.Equals(row.GetString("ItemId"))).FirstOrDefault() ;
+                        
 
                         if (existingProduct == null)
-                        {
-                            UpdateProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, null, row.GetString("Name")), row);
-                        }
+                            SetProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, null, row.GetString("Name")), row);
+                        else
+                            UpdateProduct(existingProduct, row);
+                        
                     }
                     else
                     {
-                        var existingProduct = cat.ProductCatalog.GetProduct(row.GetString("ItemId"));
-
+                        var existingProduct = cat.ChildProducts.Where(p => p.ProductId.Equals(row.GetString("ItemId"))).FirstOrDefault();
+                        
                         if (existingProduct == null)
-                        {
-                            UpdateProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, row.GetString("CategoryId"), row.GetString("Name")), row);
-                        }
+                            SetProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, row.GetString("CategoryId"), row.GetString("Name")), row);
+                        else
+                            UpdateProduct(existingProduct, row);
                     }
                 }
                 catch { } //TODO: Log/handle exception
@@ -143,7 +146,40 @@ namespace KeithLink.Svc.Impl.ETL
 
         }
 
-        private void UpdateProductCustomProperties(Product prod, DataRow row)
+        #region Helper Methods
+        private void UpdateProduct(Product existingProduct, DataRow row)
+        {
+            var existing = new KeithLink.Svc.Core.Product(){
+            
+                ProductId = existingProduct.ProductId,
+                Name = existingProduct.DisplayName,
+                Description = existingProduct["Description"] == null ? null : existingProduct["Description"].ToString(),
+                Brand = existingProduct["Brand"].ToString() == null ? null : existingProduct["Brand"].ToString(),
+                UPC = existingProduct["UPC"].ToString() == null ? null : existingProduct["UPC"].ToString(),
+                Pack = existingProduct["Pack"].ToString() == null ? null : existingProduct["Pack"].ToString(),
+                Size = existingProduct["Size"].ToString() == null ? null : existingProduct["Size"].ToString(),
+                MfrName = existingProduct["MfrName"].ToString() == null ? null : existingProduct["MfrName"].ToString(),
+                MfrNumber = existingProduct["MfrNumber"].ToString() == null ? null : existingProduct["MfrNumber"].ToString()
+        };
+
+            var current = new KeithLink.Svc.Core.Product()
+            {
+                ProductId = row.GetString("ItemId"),
+                Name = row.GetString("Name"),
+                Description = row.GetString("Description"),
+                Brand = row.GetString("Brand"),
+                UPC = row.GetString("UPC"),
+                Pack = row.GetString("Pack"),
+                Size = row.GetString("Size"),
+                MfrName = row.GetString("MfrName"),
+                MfrNumber = row.GetString("MfrNumber")
+            };
+
+            if (Crypto.CalculateMD5Hash(existing) != Crypto.CalculateMD5Hash(current))
+                SetProductCustomProperties(existingProduct, row);
+        }
+
+        private void SetProductCustomProperties(Product prod, DataRow row)
         {
             prod["UPC"] = row.GetString("UPC");
             prod["Description"] = row.GetString("Description");
@@ -154,10 +190,7 @@ namespace KeithLink.Svc.Impl.ETL
             prod["MfrName"] = row.GetString("MfrName");
             prod.Save();     
         }
-
-       
-
-
+        
         private List<Category> GetFullCategoryList(CatalogContext context)
         {
             var currentCatagories = context.GetCategory(Configuration.BaseCatalog, null).ChildCategories.ToList(); //Get Current Categories
@@ -175,8 +208,8 @@ namespace KeithLink.Svc.Impl.ETL
 
             return currentCatagories;
         }
+        #endregion
 
-        
     }
 
     

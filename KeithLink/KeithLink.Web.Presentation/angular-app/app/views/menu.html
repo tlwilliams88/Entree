@@ -1,0 +1,83 @@
+<div class="sidebar hidden-sm hidden-xs">
+  <div class="sidebar-logo text-center">
+    <img src="images/bek-logo.png" alt="logo" />
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="list-unstyled">
+      <a ui-sref="menu.home" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+      </a>
+      <a ui-sref="menu.orders" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>Orders</li>
+      </a>
+      <a ui-sref="menu.catalog.home" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+      </a>
+      <a ui-sref="menu.reports" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+      </a>
+      <a ng-show="isPayer" ui-sref="menu.invoices" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+      </a>
+      <a ui-sref="menu.emenu" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+      </a>
+      <a ng-show="isAdmin" ui-sref="menu.admin" ui-sref-active="is-selected">
+        <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
+      </a>
+    </ul>
+  </nav>
+
+  <div class="sidebar-dsr">
+    <p>Your Sales Rep</p>
+    <img src="" alt="dsr image" style="width:75px;height:75px;" />
+    <p class="contact-info">
+      <span>Heather Hill</span>
+      <span>(888) 912-2342</span>
+    </p>
+    <a class="text-uppercase" href="#">Email Me</a>
+  </div>
+
+  <div class="text-center sidebar-meta">
+    <span>Copyright 2014 Ben E. Keith</span>
+    <a href="#">benekeith.com</a>
+  </div>
+</div> 
+
+<div class="row page-content">
+  <div class="col-sm-12">
+
+    <div class="row user-bar">
+      <div class="col-lg-4">
+        <select name="" id="">
+          <option value="">Jimmy's Chicken Shack</option>
+          <option value="">El Fenix</option>
+        </select>
+      </div>
+      <div class="col-lg-3">
+        <input type="text" class="form-control" placeholder="Search by keyword" />
+      </div>
+      <div class="col-lg-5 text-right">
+        <img src="" alt="not" style="height:55px;width:55px;">
+        <div class="user-info">
+          <div>
+            <span class="user-info__name">Stephen Broussard</span> 
+            <span class="icon-arrow-down5"></span>
+          </div>
+          <div>
+            <span class="user-info__job-title">Kitchen Manager</span>
+          </div>
+        </div>
+        <img src="" alt="" style="height:55px;width:55px;">
+      </div>
+    </div>
+    
+    <div class="view">
+      <div ui-view="">
+        <p>TODO: Loading content</p>
+      </div>
+    </div>
+
+  </div>
+</div> <!-- end content -->
