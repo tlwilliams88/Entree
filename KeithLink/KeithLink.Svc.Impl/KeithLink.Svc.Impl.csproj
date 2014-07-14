@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,7 +48,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Configuration.cs" />
+    <Compile Include="ETL\CategoryLogicImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
+      <Project>{a5061d47-ad81-4c9d-b171-8d92f38db60d}</Project>
+      <Name>KeithLink.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
+      <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
+      <Name>KeithLink.Svc.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
