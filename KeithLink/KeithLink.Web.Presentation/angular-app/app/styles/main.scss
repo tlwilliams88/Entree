@@ -122,6 +122,16 @@ background-color:white;
   }
 }
 
+.input-group{
+  .btn{
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 18px;
+    letter-spacing: 0;
+    font-weight: 400;
+  }
+}
+
 @import 'sidebar';
 @import 'user-bar';
 @import 'components';
