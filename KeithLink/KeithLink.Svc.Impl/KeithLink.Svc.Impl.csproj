@@ -32,14 +32,17 @@
   <ItemGroup>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
-    <Reference Include="CommerceServerContrib.CodeGeneration">
+    <Reference Include="CommerceServerContrib.CodeGeneration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommerceServerContrib.CodeGeneration.1.0.48.0\lib\Net35\CommerceServerContrib.CodeGeneration.dll</HintPath>
     </Reference>
-    <Reference Include="CommerceServerContrib.CrossTier">
-      <HintPath>..\packages\CommerceServerContrib.Library.1.0.191.0\lib\Net35\CommerceServerContrib.CrossTier.dll</HintPath>
+    <Reference Include="CommerceServerContrib.CrossTier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.CrossTier.dll</HintPath>
     </Reference>
-    <Reference Include="CommerceServerContrib.Web">
-      <HintPath>..\packages\CommerceServerContrib.Library.1.0.191.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
+    <Reference Include="CommerceServerContrib.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -62,10 +65,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
-    <Compile Include="StubCatalogRepositoryImpl.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
+    <Compile Include="Models\CommerceEntities.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommerceEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
@@ -73,8 +79,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RequestTemplates.tt</DependentUpon>
     </Compile>
+    <Compile Include="StubCatalogRepositoryImpl.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Caching.config" />
     <None Include="Models\CommerceEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
@@ -90,6 +99,7 @@
     <None Include="RequestTemplates\RequestTemplateTemplate.tt" />
     <None Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Unity.config" />
+    <None Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
