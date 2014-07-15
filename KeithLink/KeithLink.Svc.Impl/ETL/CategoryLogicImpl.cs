@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.ETL
             var childTable = new DataTable();
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
-                using (var cmd = new SqlCommand("SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'", conn))
+                using (var cmd = new SqlCommand(ReadParentCategories, conn))
                 {
                     cmd.CommandTimeout = 0;
                     conn.Open();
@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.ETL
                     da.Fill(dataTable);
                 }
 
-                using (var cmd = new SqlCommand("SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000' AND CategoryId <> 'AA001 '", conn))
+                using (var cmd = new SqlCommand(ReadSubCategories, conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -79,21 +79,7 @@ namespace KeithLink.Svc.Impl.ETL
             var dataTable = new DataTable();
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
-                using (var cmd = new SqlCommand(" SELECT DISTINCT top 100 " +
-                                                    "       i.[ItemId] " +
-                                                    "       ,ETL.initcap([Name]) as Name " +
-                                                    "       ,ETL.initcap([Description]) as Description " +
-                                                    "       ,ETL.initcap([Brand]) as Brand " +
-                                                    "       ,[Pack] " +
-                                                    "       ,[Size] " +
-                                                    "       ,[UPC] " +
-                                                    "       ,[MfrNumber] " +
-                                                    "       ,ETL.initcap([MfrName]) as MfrName " +
-                                                    "       ,i.CategoryId " +
-                                                    "   FROM [ETL].[Staging_ItemData] i inner join " +
-                                                    "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
-                                                    " Order by i.[ItemId] "
-                                                    , conn))
+                using (var cmd = new SqlCommand(ReadItems, conn))
                 {
                     cmd.CommandTimeout = 0;
                     conn.Open();
@@ -151,24 +137,15 @@ namespace KeithLink.Svc.Impl.ETL
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
                 conn.Open();
-                    
-                using (var cmd = new SqlCommand("SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3", conn))
+
+                using (var cmd = new SqlCommand(ReadBranches, conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
                     da.Fill(dataTable);
                 }
 
-                using (var cmd = new SqlCommand(" SELECT  DISTINCT TOP 100 " +
-                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
-                                            "       i.[ItemId] " +
-                                            " FROM " +
-                                            " 	ETL.Staging_ItemData i cross join " +
-                                            " 	ETL.Staging_Branch b  " +
-                                            " WHERE " +
-                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
-                                            " order by " +
-                                            " 	i.ItemId; ", conn))
+                using (var cmd = new SqlCommand(ReadBranchesItems, conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -180,10 +157,18 @@ namespace KeithLink.Svc.Impl.ETL
             CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent();
             catalogSiteAgent.SiteName = Configuration.CSSiteName;
             catalogSiteAgent.IgnoreInventorySystem = false;
-
+            
             CatalogContext context = CatalogContext.Create(catalogSiteAgent);
-            var currentCategories = GetFullCategoryList(context);
-            var baseCatalog = context.GetCatalog(Configuration.BaseCatalog);
+            var currentCatalogs = context.GetCatalogs();
+            
+            
+
+            for (int i = 0; i < currentCatalogs.Catalogs.Count-1; i++)
+            {
+                if (currentCatalogs.Catalogs[i].IsVirtualCatalog == 1)
+                    context.DeleteCatalog(currentCatalogs.Catalogs[i].CatalogName);
+            }
+               
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -266,6 +251,39 @@ namespace KeithLink.Svc.Impl.ETL
 
             return currentCatagories;
         }
+        #endregion
+
+        #region SQL
+        private const string ReadBranchesItems = " SELECT  DISTINCT TOP 100 " +
+                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
+                                            "       i.[ItemId] " +
+                                            " FROM " +
+                                            " 	ETL.Staging_ItemData i cross join " +
+                                            " 	ETL.Staging_Branch b  " +
+                                            " WHERE " +
+                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
+                                            " order by " +
+                                            " 	i.ItemId; ";
+
+        private const string ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
+
+        private const string ReadItems = " SELECT DISTINCT top 100 " +
+                                                    "       i.[ItemId] " +
+                                                    "       ,ETL.initcap([Name]) as Name " +
+                                                    "       ,ETL.initcap([Description]) as Description " +
+                                                    "       ,ETL.initcap([Brand]) as Brand " +
+                                                    "       ,[Pack] " +
+                                                    "       ,[Size] " +
+                                                    "       ,[UPC] " +
+                                                    "       ,[MfrNumber] " +
+                                                    "       ,ETL.initcap([MfrName]) as MfrName " +
+                                                    "       ,i.CategoryId " +
+                                                    "   FROM [ETL].[Staging_ItemData] i inner join " +
+                                                    "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
+                                                    " Order by i.[ItemId] ";
+
+        private const string ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
+        private const string ReadSubCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000' AND CategoryId <> 'AA001 '";
         #endregion
 
     }
