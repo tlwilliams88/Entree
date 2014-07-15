@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
 using Autofac;
 using Autofac.Integration.WebApi;
@@ -18,16 +16,13 @@ namespace KeithLink.Svc.WebApi
     {
         protected void Application_Start()
         {
-            AreaRegistration.RegisterAllAreas();
-
-            WebApiConfig.Register(GlobalConfiguration.Configuration);
-            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BundleConfig.RegisterBundles(BundleTable.Bundles);
+            GlobalConfiguration.Configure(WebApiConfig.Register);
 
             // Configure Web API with the dependency resolver.
             var resolver = DependencyMap.Build();
             GlobalConfiguration.Configuration.DependencyResolver = resolver;
+
+            GlobalConfiguration.Configuration.EnsureInitialized(); 
         }
     }
 }
