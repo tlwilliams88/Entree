@@ -12,6 +12,12 @@ $user-bar__border: #c3bc9c;
 .user-bar {
   @include header-bar($user-bar__background, 18px);
 
+  .user-bar__notification {
+    font-size: 30px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
   .user-info {
     display: inline-block;
     padding-right: 15px;
@@ -44,7 +50,7 @@ $user-bar__border: #c3bc9c;
 
   .page-header-bar__message {
     font-size: 35px;
-    line-height: 65px;
+    font-weight: 300;
     padding-left: 20px;
   }
 }

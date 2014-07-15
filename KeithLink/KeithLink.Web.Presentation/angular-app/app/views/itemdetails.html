@@ -1,0 +1,64 @@
+<div class="row page-header-bar">
+  <div class="col-md-9 page-header-bar__message">
+    Item Details
+  </div>
+  <div class="col-md-3">
+    <button>Create An Order</button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-3">
+    <img src="" alt="" style="width:200px;height:200px;">
+  </div>
+  <div class="col-sm-9">
+    <h2>{{item.description}}</h2>
+    <div class="item-details">
+      <span>
+        <strong>Item #</strong> {{item.id}} | 
+        <strong>Price:</strong> |
+        <strong>Size:</strong> {{item.size}}
+      </span>
+      <span>
+        <strong>Brand:</strong> {{item.brand}} |
+        <strong>UPC Vendor:</strong> {{item.upc}}
+        
+      </span>
+    </div>    
+  </div>
+</div>
+
+<div class="row sub-content">
+  <div class="col-lg-12">
+    <tabset>
+      <tab heading="Item Specifications">
+        <table class="details-table">
+          <colgroup>
+            <col style="width: 20%">
+            <col style="width: 25%">
+            <col style="width: 55%">
+          </colgroup>
+          <tr>
+            <th>Specification</th>
+            <th>Details</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td>Code</td>
+            <td>401520-0616</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>GTIN</td>
+            <td>00079621015663</td>
+            <td></td>
+          </tr>
+        </table>
+      </tab>
+      <tab heading="Ingredients"></tab>
+      <tab heading="Classifications"></tab>
+      <tab heading="Shipping Info"></tab>
+      <tab heading="Additional Info"></tab>
+    </tabset>
+  </div>
+</div>

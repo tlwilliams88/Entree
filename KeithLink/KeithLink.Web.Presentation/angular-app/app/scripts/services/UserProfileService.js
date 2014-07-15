@@ -11,16 +11,12 @@ angular.module('bekApp')
   .factory('UserProfileService', function ($http) {
     
     var Service = {
-      profile: {
-        name: 'Maria Knabe',
-        currentLocation: '',
-        locations: [
+      profile: {},
 
-        ],
-        role: {
-          id: 1,
-          name: 'VIEW'
-        }
+      getProfile: function() {
+        return $http.get('http://localhost:9002/ws/profile').then(function(data) {
+          this.profile = data.data.profile;
+        });
       },
 
       // user can view system admin and configuration screens
@@ -37,7 +33,6 @@ angular.module('bekApp')
       hasPayerRole: function() {
         return this.profile.role.id === 3;
       }
-
     };
 
     return Service;

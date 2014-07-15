@@ -9,14 +9,15 @@
  * Main module of the application.
  */
 angular
-  .module('bekApp', [
-    // 'ngAnimate',
-    // 'ngCookies',
-    // 'ngResource',
-    // 'ngSanitize',
-    // 'ngTouch',
-    'ui.router'
-  ])
+  .module('bekApp', [
+    // 'ngAnimate',
+    // 'ngCookies',
+    // 'ngResource',
+    // 'ngSanitize',
+    // 'ngTouch',
+    'ui.router',
+    'ui.bootstrap'
+  ])
 .config(function($stateProvider, $urlRouterProvider) {
 
   // the $stateProvider determines path urls and their related controllers
@@ -51,15 +52,14 @@ angular
     // /catalog/products
     .state('menu.catalog.products.home', {
       url: '',
-      templateUrl: 'views/searchresults.html'
+      templateUrl: 'views/searchresults.html',
+      controller: 'SearchController'
     })
-    // /catalog/products/:productId (product details page)
+    // /catalog/products/:itemId (item details page)
     .state('menu.catalog.products.details', {
-      url: '/:productId',
-      templateUrl: 'views/productdetails.html',
-      controller: function($scope, $stateParams) {
-        $scope.productId = $stateParams.productId;
-      }
+      url: '/:itemId',
+      templateUrl: 'views/itemdetails.html',
+      controller: 'ItemDetailsController'
     })
     // /catalog/category/:categoryId
     .state('menu.catalog.category', {
