@@ -8,11 +8,11 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', function ($http) {
+  .factory('ProductService', ['$http', 'ApiService', function ($http, ApiService) {
     
     var Service = {
       getProducts: function() {
-        return $http.get('http://localhost:9002/ws/products');
+        return $http.get(ApiService.endpointUrl + '/ws/products');
       },
       getProductsByCategory: function(categoryId, page, etc) {
         console.log('catalog/search/category/' + categoryId + '/products?parentCategoryId=' + categoryId);
@@ -21,4 +21,4 @@ angular.module('bekApp')
 
     return Service;
 
-  });
+  }]);

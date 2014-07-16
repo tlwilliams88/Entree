@@ -85,6 +85,8 @@ HttpServer.prototype.handleRequest_ = function(req, res) {
     writeResponse(res, getCategories());
   } else if(url.indexOf('/profile') > 0){
     writeResponse(res, getProfile());
+  } else if(url.indexOf('/servicelocator') > 0){
+    writeResponse(res, getEndpointUrl());
   } else {
     writeResponse(res);
   }
@@ -333,6 +335,10 @@ var authenticateFFlinstone = function(path){
   // var sites = [{ siteId: 1, siteName: "Jacksonville" }, { siteId: 2, siteName: "Cherry Point" }];
   var sites = [{ siteId: 1001, siteName: "New York" },{siteId: 1002, siteName:"San Francisco"}];
   return JSON.stringify({"token":"612dcf04-24a7-45bb-94ae-7242fc24cd84","userSites":sites,"expiration":1397588993536,"username":"fflinstone"});
+}
+
+var  getEndpointUrl = function() {
+  return JSON.stringify({"ClientApiEndpoint":"localhost:49420"});
 }
 
 var writeResponse = function(res, content){

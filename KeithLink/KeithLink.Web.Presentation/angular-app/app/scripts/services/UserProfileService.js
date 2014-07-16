@@ -8,10 +8,10 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', function ($http) {
+  .factory('UserProfileService', ['$http', 'ApiService', function ($http, ApiService) {
     
     function profile() {
-      return $http.get('http://localhost:9002/ws/profile').then(function(data) {
+      return $http.get(ApiService.endpointUrl + '/ws/profile').then(function(data) {
         Service.profile = data.data.profile;
       });
     }
@@ -27,4 +27,4 @@ angular.module('bekApp')
 
     return Service;
 
-  });
+  }]);

@@ -11,7 +11,7 @@ angular.module('bekApp')
 	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService',
 		function($scope, ProductService, CategoryService) {
 
-			$scope.selectedCategory = "";
+			$scope.selectedCategory = '';
 			$scope.selectedBrands = [];
 			$scope.selectedAllergens = [];
 			$scope.isBrandShowing = false;
@@ -22,12 +22,12 @@ angular.module('bekApp')
 			$scope.showBrand = function(){
 				$scope.isBrandShowing = true;
 				$scope.brandHiddenNumber = 100;
-			}
+			};
 
 			$scope.showAllergen = function(){
 				$scope.isAllergenShowing = true;
 				$scope.allergenHiddenNumber = 100;
-			}
+			};
 
 			ProductService.getProducts().then(function(data) {
 				$scope.products = data.data.products;
@@ -39,8 +39,9 @@ angular.module('bekApp')
 			});
 
 			$scope.toggleSelection = function toggleSelection(id, filter) {
-				if (filter === "brand") {
-					var idx = $scope.selectedBrands.indexOf(id);
+				var idx;
+				if (filter === 'brand') {
+					idx = $scope.selectedBrands.indexOf(id);
 
 					// is currently selected
 					if (idx > -1) {
@@ -50,8 +51,8 @@ angular.module('bekApp')
 					else {
 						$scope.selectedBrands.push(id);
 					}
-				} else if(filter==="allergen") {
-					var idx = $scope.selectedAllergens.indexOf(id);
+				} else if(filter==='allergen') {
+					idx = $scope.selectedAllergens.indexOf(id);
 
 					// is currently selected
 					if (idx > -1) {
