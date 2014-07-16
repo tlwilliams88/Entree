@@ -65,9 +65,10 @@ angular
     .state('menu.catalog.category', {
       url: '/category/:categoryId',
       templateUrl: 'views/searchresults.html',
-      controller: function($scope, $stateParams) {
-        $scope.categoryId = $stateParams.categoryId;
-      }
+      controller: 'SearchController'
+      //function($scope, $stateParams) {
+        //$scope.categoryId = $stateParams.categoryId;
+      //}
     })
     // /catalog/brand/:brandId
     .state('menu.catalog.brand', {

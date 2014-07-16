@@ -12,9 +12,7 @@
     a{
       color: $font-color;
     }
-  }
-  .active{
-    a{
+    .active{
       color: $blue-color;
       font-weight: 600;
     }
@@ -35,4 +33,12 @@ input[type=checkbox]:checked + label {
 
 .checkbox + .checkbox{
   margin-top:0;
+}
+
+.hidebrand{
+  display: none;
+}
+
+.hideallergen{
+  display: none;
 }
