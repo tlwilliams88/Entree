@@ -47,10 +47,29 @@ $user-bar__border: #c3bc9c;
 .page-header-bar {
   @include header-bar($page-header-bar__background, 14px);
   margin-bottom: 30px;
+  -webkit-box-shadow: 0px 1px 10px $user-bar__border;
+  -moz-box-shadow: 0px 1px 10px $user-bar__border;
+  box-shadow: 0px 1px 10px $user-bar__border;
+  position: relative;
 
   .page-header-bar__message {
     font-size: 35px;
     font-weight: 300;
     padding-left: 20px;
+  }
+}
+
+.page-subheader-bar {
+  @include header-bar($page-header-bar__background, 14px);
+  margin-bottom: 30px;
+  margin-top: -30px;
+    .page-subheader-bar__message {
+    padding-left: 10px;
+    color: #A1A1A1;
+    a{
+      font-weight: 600;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 }
