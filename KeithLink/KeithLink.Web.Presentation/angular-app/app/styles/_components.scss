@@ -1,36 +1,63 @@
+/* BUTTONS */
+
 // default button
 button.btn {
-  height: 55px;
+  height: 50px;
   letter-spacing: 1px;
   background-color: white;
-  border: 1px solid #c3bc9c;
+  border: 1px solid $color-border;
   font-weight: 300;
   
   // call to action button
   &.cta-btn {
     color: white;
-    background-color: #489ecf;
+    background-color: $color-blue;
     border: none;
   }
 }
 
+/* SELECT DROPDOWNS */
+
 select {
-  border: 1px solid #c3bc9c;
+  border: 1px solid $color-border;
   font-size: 20px;
-  height: 55px;
+  height: 50px;
   letter-spacing: 1px;
 }
 
-input[type='text'] {
-  border: 1px solid #c3bc9c;
-  height: 55px;
+/* TEXT INPUTS */
+
+@mixin text-placeholder($color, $style) {
+  ::-webkit-input-placeholder {
+    color: $color !important;
+    font-style: $style;
+  }  
+  :-moz-placeholder { /* Firefox 18- */
+    color: $color !important;  
+    font-style: $style;
+  }
+  ::-moz-placeholder {  /* Firefox 19+ */
+    color: $color !important;  
+    font-style: $style;
+  }
+  :-ms-input-placeholder {  
+    color: $color !important;  
+    font-style: $style;
+  }
+}
+@include text-placeholder ($color-border, italic);
+
+input[type='text'], input[type='email'], input[type='password'] {
+  border: 1px solid $color-border;
+  height: 50px;
   font-size: 20px;
   letter-spacing: 1px;
 }
 
-// tabs
+/* TABS */
+
 .nav-tabs {
-  border-bottom: 1px solid #c3bc9c;
+  border-bottom: 1px solid $color-border;
 
   li {
     a {
@@ -38,7 +65,7 @@ input[type='text'] {
       line-height: 35px;
       font-size: 16px;
       border-radius: 0;
-      border: 1px solid #c3bc9c;
+      border: 1px solid $color-border;
       padding: 10px 40px;
 
       &:hover {
@@ -48,9 +75,9 @@ input[type='text'] {
   }
 
   li.active a {
-    border: 1px solid #c3bc9c;
+    border: 1px solid $color-border;
     border-bottom-color: transparent;
-    border-top: 3px solid #489ecf;
+    border-top: 3px solid $color-blue;
     padding-top: 8px;
     font-weight: normal;
 
@@ -58,5 +85,4 @@ input[type='text'] {
       @extend a;
     }
   }
-
 }

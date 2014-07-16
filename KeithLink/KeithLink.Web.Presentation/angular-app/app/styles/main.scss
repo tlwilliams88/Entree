@@ -1,50 +1,21 @@
-@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
-
 @import "compass";
 
-$gold: #e8aa30;
-
 $background: #f3f1eb;
-$font-color: #504938;
-$blue-color: #489ecf;
 
-body {
-  font-family: 'Source Sans Pro', sans-serif;
-  // font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
-  background-image: url('../images/Textured-BG.jpg');
-  background-color: $background;
-  color: $font-color;
-  font-size: 14px;
-  letter-spacing: 1px;
-}
+$color-orange: #e8aa30;
+$color-blue: #489ecf;
+$color-red: #dc6a6a;
+$color-green: #04a773;
+$color-white: #fff;
 
-h1,h2,h3,h4 {
-  margin-top: 0;
-}
-h3 {
-  font-size: 20px;
-}
+$color-font: #504938;
+$color-border: #c3bc9c;
 
-// BOOTSTRAP FIX FOR SIDEBAR
-.container-fluid {
-  padding: 0;
-  position: relative;
+.text-late {
+  color: $color-red;
 }
-.page-content {
-  width: calc(100% - 250px);
-  margin-left: 250px;
-}
-// Angular ui bootstrap fix for pointers
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-
-$color--late: #dc6a6a;
-$color--paid: #04a773;
-.text--late {
-  color: $color--late;
-}
-.text--paid {
-  color: $color--paid;
+.text-paid {
+  color: $color-green;
 }
 
 .featured-item {
@@ -64,20 +35,12 @@ $color--paid: #04a773;
 
   .featured-item__detail {
     padding: 15px;
-    border-top: 1px solid #e1ddcd;
+    border-top: 1px solid $color-border;
   }
 }
 
 .sub-content{
   padding-top: 20px;
-}
-
-::-webkit-input-placeholder {
-  font-style: italic;
-}
- 
-::-moz-placeholder {
-  font-style: italic;
 }
 
 .table{
@@ -89,7 +52,7 @@ $color--paid: #04a773;
   }
   th{
     a{
-      color: $font-color;
+      color: $color-font;
     }
     span{
       color: #B2AA99;
@@ -97,7 +60,7 @@ $color--paid: #04a773;
     }
   }
   .icon-plus2{
-    color: $blue-color;
+    color: $color-blue;
     font-size: 18px;
   }
   .icon-star2{
@@ -119,22 +82,18 @@ background-color:white;
   }
 }
 
-.input-group{
-  .btn{
-    padding-left: 20px;
-    padding-right: 20px;
-    font-size: 18px;
-    letter-spacing: 0;
-    font-weight: 400;
-  }
-}
+@import 'setup';
+@import 'components';
 
+// menus
 @import 'sidebar';
 @import 'user-bar';
-@import 'components';
+
+// homepage
 @import 'order-summary';
 @import 'account-summary';
 @import 'catalog';
 @import 'recent-activity';
+
 @import 'search-results';
 @import 'item-details';

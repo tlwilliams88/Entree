@@ -14,8 +14,17 @@ angular.module('bekApp')
     $scope.isBuyer = false;
     $scope.isPayer = false;
 
-    // UserProfileService.getProfile();
 
-    // $scope.currentUser = UserProfileService.profile;
+    $scope.login = function() {
+      UserProfileService.getProfile().then(function() {
+        $scope.currentUser = UserProfileService.profile;
+      });
+    };
+
+    $scope.logout = function() {
+      UserProfileService.profile = undefined;
+      debugger;
+    };
+
 
   }]);
