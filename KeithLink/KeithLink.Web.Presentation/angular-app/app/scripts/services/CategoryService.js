@@ -10,14 +10,23 @@
 angular.module('bekApp')
   .factory('CategoryService', ['$http', 'ApiService', function ($http, ApiService) {
     
+    function all() {
+      return $http.get(
+          ApiService.endpointUrl +'/catalog/categories',
+          {
+            responseType: 'json' 
+          }
+        )
+        .then(function(response) {
+          Service.categories = response.data.categories;
+        });
+    }
+
     var Service = {
+      categories: [],
       getCategories: function() {
-        return $http.get(ApiService.endpointUrl + '/ws/categories');
+        return all();
       }
-      //,
-      //getSubcategories = function(categoryId) {
-      //	return $http.get('http://localhost:9002/ws/category/FS940/categories')
-      //}
     };
 
     return Service;

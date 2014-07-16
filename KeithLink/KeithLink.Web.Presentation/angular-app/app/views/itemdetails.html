@@ -10,13 +10,13 @@
     <h2>{{item.description}}</h2>
     <div class="item-details">
       <div>
-        <span ng-show="{{item.id !== undefined}}"><strong>Item #</strong> {{item.id}} | </span>
-        <span ng-show="{{item.price !== undefined}}"><strong>Price:</strong> {{item.price}} |</span>
-        <span ng-show="{{item.size !== undefined}}"><strong>Size:</strong> {{item.size}}</span>
+        <span ng-show="{{item.id !== null}}"><strong>Item #</strong> {{item.id}} | </span>
+        <span ng-show="{{item.price !== null}}"><strong>Price:</strong> {{item.price}} |</span>
+        <span ng-show="{{item.size !== null}}"><strong>Size:</strong> {{item.size}}</span>
       </div>
       <div>
-        <span ng-show="{{item.brand !== undefined}}"><strong>Brand:</strong> {{item.brand}} |</span>
-        <span ng-show="{{item.upc !== undefined}}"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+        <span ng-show="{{item.brand !== null}}"><strong>Brand:</strong> {{item.brand}} |</span>
+        <span ng-show="{{item.upc !== null}}"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
     </div>    
   </div>
@@ -49,10 +49,9 @@
           </tr>
         </table>
       </tab>
-      <tab heading="Ingredients"></tab>
-      <tab heading="Classifications"></tab>
-      <tab heading="Shipping Info"></tab>
-      <tab heading="Additional Info"></tab>
+      <tab heading="Nutrition"></tab>
+      <tab heading="Images"></tab>
+      <tab heading="Resources"></tab>
     </tabset>
   </div>
 </div>

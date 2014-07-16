@@ -97,7 +97,7 @@
 				<tbody>
 					<tr ng-repeat="product in products | orderBy:predicate:reverse">
 						<td><span class="icon-star2"></span></td>
-						<td><a>{{product.id}}</a></td>
+						<td><a ui-sref="menu.catalog.products.details({ itemId : product.id })">{{product.id}}</a></td>
 						<td>{{product.cases}} / {{product.size}}</td>
 						<td>{{product.brand}}</td>
 						<td>{{product.description}}</td>

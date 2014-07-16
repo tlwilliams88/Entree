@@ -15,15 +15,28 @@ angular.module('bekApp')
     $scope.isPayer = false;
 
 
-    $scope.login = function() {
-      UserProfileService.getProfile().then(function() {
-        $scope.currentUser = UserProfileService.profile;
-      });
-    };
-
-    $scope.logout = function() {
-      UserProfileService.profile = undefined;
-      debugger;
+    $scope.currentUser = {
+      'name': 'Steven Broussard',
+      'customerNumber': 12345,
+      'imageUrl': null,
+      'role': null,
+      'phone': 9348234934,
+      'location': 'Dallas',
+      'stores': [{
+        'name': 'Chick-fil-A',
+        'customerNumber': 453234
+      }, {
+        'name': 'Saltgrass',
+        'customerNumber': 534939
+      }],
+      'accountNumber': 9783459,
+      'salesRep': {
+        'id': 34234,
+        'name': 'Heather Hill',
+        'phone': 8889122342,
+        'email': 'heather.hill@ben.e.keith.com',
+        'imageUrl': null
+      }
     };
 
 
