@@ -1,34 +1,18 @@
 <div page-header-bar message="'Product Catalog'">
   <button class="btn page-header__export-button"><span class="icon-printer"></span></button>
   <button class="btn page-header__export-button"><span class="icon-disk"></span></button>
-</div>
 
+</div>
 <div class="row">
 	<div class="col-sm-3">
 		<div class="row">
 			<div class="col-sm-11">
 				<h3>Frozen Meat</h3>
+				selectedCategory = {{selectedCategory}}</br>
+				selectedBrands = {{selectedBrands}}</br>
+				selectedAllergens = {{selectedAllergens}}
 				<ul class="nav category">
-					<li class="active"><a href="#">Bacon</a></li>
-					<li><a href="#">Barbecue</a></li>
-					<li><a href="#">Beef, Corned</a></li>
-					<li><a href="#">Beef, Cubed or Diced</a></li>
-					<li><a href="#">Beef, Flanked, Formed</a></li>
-					<li><a href="#">Beef, Fritter, Cubed</a></li>
-					<li><a href="#">Beef, Ground Bulk</a></li>
-					<li><a href="#">Beef, Ground Patties IQF</a></li>
-					<li><a href="#">Beef, Ground Patties Fresh</a></li>
-					<li><a href="#">Beef, Liver</a></li>
-					<li><a href="#">Food Item A</a></li>
-					<li><a href="#">Food Item B</a></li>
-					<li><a href="#">Food Item C</a></li>
-					<li><a href="#">Food Item D</a></li>
-					<li><a href="#">Food Item E</a></li>
-					<li><a href="#">Food Item F</a></li>
-					<li><a href="#">Food Item G</a></li>
-					<li><a href="#">Food Item H</a></li>
-					<li><a href="#">Food Item I</a></li>
-					<li><a href="#">Food Item J</a></li>
+					<li ng-repeat="category in categories"><a ng-click="toggleSelection(category.id, 'category')" ng-class="{active: category.id == selectedCategory}">{{category.name}}</a></li>
 				</ul>
 			</div>
 		</div>
@@ -37,30 +21,15 @@
 				<h3>Brand</h3>
 				<div class="control-group">
 					<div class="controls">
-						<div class="checkbox">
-							<input type="checkbox" value="option1" id="inlineCheckbox1"><label>Markon Cooperative</label>
+						<div class="checkbox" ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
+							<input type="checkbox"
+							value="brandValue_{{brand.id}}"
+							id="brandId_{{brand.id}}"
+							ng-checked="selectedBrands.indexOf(brand.id) > -1"
+							ng-click="toggleSelection(brand.id,'brand')">
+							<label for="brandId_{{brand.id}}">{{brand.name}}</label>
 						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option2" id="inlineCheckbox2"><label>Admiral of the Fleet</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option3" id="inlineCheckbox3"><label>Ceylon Tea Gardens</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option4" id="inlineCheckbox4"><label>ComSource</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option5" id="inlineCheckbox5"><label>Cortona</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option6" id="inlineCheckbox6"><label>Ellington Farms</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option7" id="inlineCheckbox7"><label>Fresh from Keith</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option8" id="inlineCheckbox8"><label>Golden Harvest</label>
-						</div>
+						<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
 					</div>
 				</div>
 			</div>
@@ -70,30 +39,15 @@
 				<h3>Allergens</h3>
 				<div class="control-group">
 					<div class="controls">
-						<div class="checkbox">
-							<input type="checkbox" value="option1" id="inlineCheckbox1"><label>No Eggs</label>
+						<div class="checkbox" ng-repeat="allergen in allergens" ng-class="{hideallergen: $index > allergenHiddenNumber}">
+							<input type="checkbox"
+							value="allergenValue_{{allergen.id}}"
+							id="allergenId_{{allergen.id}}"
+							ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
+							ng-click="toggleSelection(allergen.id,'allergen')">
+							<label for="allergenId_{{allergen.id}}">{{allergen.name}}</label>
 						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option2" id="inlineCheckbox2"><label>No Soy</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option3" id="inlineCheckbox3"><label>No Fish</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option4" id="inlineCheckbox4"><label>No Milk</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option5" id="inlineCheckbox5"><label>No Wheat</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option6" id="inlineCheckbox6"><label>No Shellfish</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option7" id="inlineCheckbox7"><label>No Peanuts</label>
-						</div>
-						<div class="checkbox">
-							<input type="checkbox" value="option8" id="inlineCheckbox8"><label>No TreeNuts</label>
-						</div>
+						<a ng-class="{'hideallergen': isAllergenShowing}" ng-click="showAllergen()">+ Show More</a>
 					</div>
 				</div>
 			</div>
@@ -106,40 +60,46 @@
 				<thead>
 					<tr>
 						<th></th>
-						<th><a href="" ng-click="predicate = 'id'; reverse=!reverse">Item #</a><span ng-class="{
-						'icon-menu':predicate !== 'id',
-						'icon-arrow-down4':predicate == 'id' && !reverse,
-						'icon-arrow-up3': predicate == 'id' && reverse
-					}"></span></th>
-					<th><a href="" ng-click="predicate = 'cases'; reverse=!reverse">Pack/Size</a><span ng-class="{
-					'icon-menu':predicate !== 'cases',
-					'icon-arrow-down4':predicate == 'cases' && !reverse,
-					'icon-arrow-up3': predicate == 'cases' && reverse
-				}"></span></th>
-				<th><a href="" ng-click="predicate = 'brand'; reverse=!reverse">Brand</a><span ng-class="{
-				'icon-menu':predicate !== 'brand',
-				'icon-arrow-down4':predicate == 'brand' && !reverse,
-				'icon-arrow-up3': predicate == 'brand' && reverse
-			}"></span></th>
-			<th><a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a><span ng-class="{
-			'icon-menu':predicate !== 'description',
-			'icon-arrow-down4':predicate == 'description' && !reverse,
-			'icon-arrow-up3': predicate == 'description' && reverse
-		}"></span></th>
-		<th>Add To</th>
-	</tr>
-</thead>
-<tbody>
-	<tr ng-repeat="product in products | orderBy:predicate:reverse">
-		<td><span class="icon-star2"></span></td>
-		<td><a>{{product.id}}</a></td>
-		<td>{{product.cases}} / {{product.size}}</td>
-		<td>{{product.brand}}</td>
-		<td>{{product.description}}</td>
-		<td><span class="icon-plus2"></span></td>
-	</tr>
-</tbody>
-</table>
-</div>
-</div>
+						<th>
+							<a href="" ng-click="predicate = 'id'; reverse=!reverse">Item #</a><span ng-class="{
+							'icon-menu':predicate !== 'id',
+							'icon-arrow-down4':predicate == 'id' && !reverse,
+							'icon-arrow-up3': predicate == 'id' && reverse
+							}"></span>
+						</th>
+						<th>
+							<a href="" ng-click="predicate = 'cases'; reverse=!reverse">Pack/Size</a><span ng-class="{
+							'icon-menu':predicate !== 'cases',
+							'icon-arrow-down4':predicate == 'cases' && !reverse,
+							'icon-arrow-up3': predicate == 'cases' && reverse
+							}"></span>
+						</th>
+						<th>
+							<a href="" ng-click="predicate = 'brand'; reverse=!reverse">Brand</a><span ng-class="{
+							'icon-menu':predicate !== 'brand',
+							'icon-arrow-down4':predicate == 'brand' && !reverse,
+							'icon-arrow-up3': predicate == 'brand' && reverse
+						}"></span></th>
+						<th>
+							<a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a><span ng-class="{
+							'icon-menu':predicate !== 'description',
+							'icon-arrow-down4':predicate == 'description' && !reverse,
+							'icon-arrow-up3': predicate == 'description' && reverse
+						}"></span></th>
+						<th>Add To</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="product in products | orderBy:predicate:reverse">
+						<td><span class="icon-star2"></span></td>
+						<td><a>{{product.id}}</a></td>
+						<td>{{product.cases}} / {{product.size}}</td>
+						<td>{{product.brand}}</td>
+						<td>{{product.description}}</td>
+						<td><span class="icon-plus2"></span></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 </div>

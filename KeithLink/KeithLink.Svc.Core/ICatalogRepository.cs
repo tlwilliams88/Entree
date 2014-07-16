@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core
     public interface ICatalogRepository
     {
         IEnumerable<Product> GetProductsForCategory(string category);
+        CategoriesReturn GetCategories();
     }
 }
