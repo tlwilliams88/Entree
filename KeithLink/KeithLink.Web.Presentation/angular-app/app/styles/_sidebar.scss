@@ -4,7 +4,7 @@ $sidebar__text: #9f8e7c;
 
 $sidebar-nav__border: #706457; 
 $sidebar-nav__background--selected: #2a2621;
-$sidebar-nav__text--selected: white;
+$sidebar-nav__text--selected: $color-white;
 
 .sidebar {
   color: $sidebar__text;
@@ -22,7 +22,7 @@ $sidebar-nav__text--selected: white;
   bottom: 0;
   
   a {
-    color: $gold;
+    color: $color-orange;
     text-decoration: none;
     font-weight: 100;
   }
@@ -62,13 +62,12 @@ $sidebar-nav__text--selected: white;
     .is-selected li {
       color: $sidebar-nav__text--selected;
       background-color: $sidebar-nav__background--selected;
-      border-left: $border__size solid $gold;
+      border-left: $border__size solid $color-orange;
       padding-left: $padding__size - $border__size;
     }
   }
 
   .sidebar-dsr {
-    height: 260px;
     padding: 32px;
     font-size: 18px;
     background-color: $sidebar__background--dark;

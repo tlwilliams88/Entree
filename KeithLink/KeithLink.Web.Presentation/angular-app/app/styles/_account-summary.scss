@@ -1,9 +1,6 @@
-$account-summary__border: #ddd8c5;
-$account-summary__background: white;
-
 .account-summary__balance {
-  background-color: $account-summary__background;
-  border: 1px solid $account-summary__border;
+  background-color: $color-white;
+  border: 1px solid $color-border;
   padding: 20px;
   
   .balance__amount {
@@ -12,7 +9,7 @@ $account-summary__background: white;
     padding-top: 5px;
   }
   .balance__term:not(:last-child) {
-    border-right: 1px solid $account-summary__border;
+    border-right: 1px solid $color-border;
   }
 }
 .account-summary__graph {

@@ -10,10 +10,12 @@
       background-color: white;
     }
     a{
-      color: $font-color;
+      color: $color-font;
     }
-    .active{
-      color: $blue-color;
+  }
+  .active{
+    a{
+      color: $color-blue;
       font-weight: 600;
     }
   }
@@ -28,7 +30,7 @@
 }
 
 input[type=checkbox]:checked + label {
-  color: $blue-color;
+  color: $color-blue;
 }
 
 .checkbox + .checkbox{
