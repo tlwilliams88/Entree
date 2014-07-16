@@ -8,8 +8,6 @@ namespace KeithLink.Svc.Core.ETL
 {
     public interface ICategoryLogic
     {
-        void ProcessStagedCategories();
-        void ProcessStagedItems();
-        void ProcessStagedBranches();
+        void ImportCatalog();
     }
 }

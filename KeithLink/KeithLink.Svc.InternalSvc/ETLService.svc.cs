@@ -16,10 +16,8 @@ namespace KeithLink.Svc.InternalSvc
     {
         public bool ProcessedStagedData()
         {
-            ICategoryLogic categoryLogic = new CategoryLogicImpl();
-            //categoryLogic.ProcessStagedCategories();
-            //categoryLogic.ProcessStagedItems();
-            categoryLogic.ProcessStagedBranches();
+            ICategoryLogic categoryLogic = new CategoryLogicImpl(); //TODO: Wire up AutoFac
+            categoryLogic.ImportCatalog();
             return true;
         }
     }

@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="StubCatalogRepositoryImpl.cs" />
     <Compile Include="Configuration.cs" />

@@ -9,131 +9,68 @@ using CommerceServer.Core.Catalog;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core;
+using System.Xml.Serialization;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
+using KeithLink.Svc.Impl.Models.ETL;
 
 namespace KeithLink.Svc.Impl.ETL
 {
     public class CategoryLogicImpl: ICategoryLogic
     {
-        public void ProcessStagedCategories()
+        private const string Language = "en-US";
+
+        public void ImportCatalog()
         {
-            var dataTable = new DataTable();
-            var childTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                using (var cmd = new SqlCommand(ReadParentCategories, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    conn.Open();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }
+            //Create root level catalog object
+            MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
+            catalog.version = "3.0";
 
-                using (var cmd = new SqlCommand(ReadSubCategories, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(childTable);
-                } 
-            }
 
-            //Refactor once the initial Core project is checked in
-            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent();
+            //Create the BaseCatalog
+            var baseCatalog = new MSCommerceCatalogCollection2Catalog() { name = Configuration.BaseCatalog, productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+            baseCatalog.DisplayName = CreateDisplayName(Configuration.BaseCatalog);
+
+            baseCatalog.Category = GenerateCategories();
+            baseCatalog.Product = GenerateProducts();
+            catalog.Catalog = new List<MSCommerceCatalogCollection2Catalog>() { baseCatalog }.ToArray();
+            catalog.VirtualCatalog = GenerateVirtualCatalogs();
+
+            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent(); //TODO: Switch to solution wide method for connecting to CS
             catalogSiteAgent.SiteName = Configuration.CSSiteName;
             catalogSiteAgent.IgnoreInventorySystem = false;
-            
+
             CatalogContext context = CatalogContext.Create(catalogSiteAgent);
+            
+            var memoryStream = new MemoryStream();
+            var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
+            var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
-            
-            var baseCatalog = context.GetCatalog(Configuration.BaseCatalog);
-            var currentCatagories = GetFullCategoryList(context); //Get Current Categories
-            
-            
-            foreach (DataRow row in dataTable.Rows)
+            TextWriter tw = new StreamWriter(@"C:\Dev\FullExport.xml", false, Encoding.Unicode);
+            serializer.Serialize(tw, catalog);
+            tw.Close();
+
+            serializer.Serialize(streamWriter, catalog);
+            memoryStream.Position = 0;
+            var virutalCatalogName = string.Join(",",  catalog.VirtualCatalog.Select(v => v.name).ToList().ToArray());
+            ImportProgress importProgress = context.ImportXml(new CatalogImportOptions() { Mode = ImportMode.Incremental, CatalogsToImport = string.Join(",", Configuration.BaseCatalog, virutalCatalogName) }, memoryStream);
+            while (importProgress.Status == CatalogOperationsStatus.InProgress)
             {
-                if (!currentCatagories.Where(c => c.Name.Equals(row.GetString("CategoryId", true))).Any())
-                {
-                    var newCat = baseCatalog.CreateCategory("Category", row.GetString("CategoryId", trim: true), true, null, row.GetString("CategoryName", true));
-                    newCat["PPICode"] = row.GetString("PPICode", true);
-                    newCat.Save();
-                }
+                System.Threading.Thread.Sleep(3000);
+                // Call the refresh method to refresh the current status
+                importProgress.Refresh();
             }
-
-            foreach (DataRow row in childTable.Rows)
-            {
-
-                if (!currentCatagories.Where(c => c.Name.Equals(row.GetString("CategoryId", true))).Any())
-                    try
-                    {
-                        var newCat = baseCatalog.CreateCategory("Category", row.GetString("CategoryId", trim: true), true, string.Format("{0}000", row.GetString("CategoryId", true).Substring(0, 2)), row.GetString("CategoryName", true));
-                        newCat["PPICode"] = row.GetString("PPICode", true);
-                        newCat.Save();
-                    }
-                    catch{} //TODO: Log/handle error
-            }
-
-
+            //TODO: Log an errors that occured during the import
         }
         
-        public void ProcessStagedItems()
-        {
-            var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                using (var cmd = new SqlCommand(ReadItems, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    conn.Open();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }                
-            }
-
-
-            //Refactor once the initial Core project is checked in
-            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent();
-            catalogSiteAgent.SiteName = Configuration.CSSiteName;
-            catalogSiteAgent.IgnoreInventorySystem = false;
-
-            CatalogContext context = CatalogContext.Create(catalogSiteAgent);
-            var currentCategories = GetFullCategoryList(context);
-            var baseCatalog = context.GetCatalog(Configuration.BaseCatalog);
-            
-            foreach (DataRow row in dataTable.Rows)
-            {
-                try
-                {
-                    var cat = currentCategories.Where(c => c.Name.Equals(row.GetString("CategoryId"))).FirstOrDefault();
-                    
-                    if (cat == null)
-                    {
-                        var existingProduct = baseCatalog.GetRootCategory().ChildProducts.Where(e => e.ProductId.Equals(row.GetString("ItemId"))).FirstOrDefault() ;
-                        
-
-                        if (existingProduct == null)
-                            SetProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, null, row.GetString("Name")), row);
-                        else
-                            UpdateProduct(existingProduct, row);
-                        
-                    }
-                    else
-                    {
-                        var existingProduct = cat.ChildProducts.Where(p => p.ProductId.Equals(row.GetString("ItemId"))).FirstOrDefault();
-                        
-                        if (existingProduct == null)
-                            SetProductCustomProperties(((BaseCatalog)baseCatalog).CreateProduct("Item", row.GetString("ItemId"), 1, row.GetString("CategoryId"), row.GetString("Name")), row);
-                        else
-                            UpdateProduct(existingProduct, row);
-                    }
-                }
-                catch { } //TODO: Log/handle exception
-            }
-
-        }
-
-        public void ProcessStagedBranches()
+        #region Helper Methods
+        private MSCommerceCatalogCollection2VirtualCatalog[] GenerateVirtualCatalogs()
         {
             var dataTable = new DataTable();
             var exclusionTable = new DataTable();
+            var virtualCatalogs = new List<MSCommerceCatalogCollection2VirtualCatalog>();
+
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
                 conn.Open();
@@ -153,108 +90,110 @@ namespace KeithLink.Svc.Impl.ETL
                 }
             }
 
-            //Refactor once the initial Core project is checked in
-            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent();
-            catalogSiteAgent.SiteName = Configuration.CSSiteName;
-            catalogSiteAgent.IgnoreInventorySystem = false;
-            
-            CatalogContext context = CatalogContext.Create(catalogSiteAgent);
-            var currentCatalogs = context.GetCatalogs();
-            
-            
-
-            for (int i = 0; i < currentCatalogs.Catalogs.Count-1; i++)
-            {
-                if (currentCatalogs.Catalogs[i].IsVirtualCatalog == 1)
-                    context.DeleteCatalog(currentCatalogs.Catalogs[i].CatalogName);
-            }
-               
 
             foreach (DataRow row in dataTable.Rows)
             {
-                var vc = context.CreateVirtualCatalog(row.GetString("BranchId"), "en-US", null);
-                
-                vc.AddVirtualCatalogRule(Configuration.BaseCatalog, null, null, null, false);
+                var vc = new MSCommerceCatalogCollection2VirtualCatalog() { name = row.GetString("BranchId"), startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+                vc.DisplayName = CreateDisplayName(row.GetString("Description"));
+
+                //Include the base catalog
+                vc.IncludeRule = new List<MSCommerceCatalogCollection2VirtualCatalogIncludeRule> { new MSCommerceCatalogCollection2VirtualCatalogIncludeRule() { baseCatalog = Configuration.BaseCatalog } }.ToArray();
+
 
                 var rules = exclusionTable.AsEnumerable().Where(e => e.Field<string>("BranchId") == row.GetString("BranchId"));
-
+                var excludeRules = new List<MSCommerceCatalogCollection2VirtualCatalogExcludeRule>();
                 foreach (var exRow in rules)
                     try
                     {
-                        vc.AddVirtualCatalogRule(Configuration.BaseCatalog, null, exRow.GetString("ItemId"), null, true);
+                        //Exlude the specific products that don't belong to this virtual catalog
+                        excludeRules.Add(new MSCommerceCatalogCollection2VirtualCatalogExcludeRule() { baseCatalog = Configuration.BaseCatalog, ProductId = exRow.GetString("ItemId") });
                     }
                     catch { }
-                vc.Save();
-                vc.Rebuild(true);
+
+                vc.ExcludeRule = excludeRules.ToArray();
+                virtualCatalogs.Add(vc);
             }
-        }
 
-        #region Helper Methods
-        private void UpdateProduct(Product existingProduct, DataRow row)
-        {
-            var existing = new KeithLink.Svc.Core.Product(){
-            
-                ProductId = existingProduct.ProductId,
-                Name = existingProduct.DisplayName,
-                Description = existingProduct["Description"] == null ? null : existingProduct["Description"].ToString(),
-                Brand = existingProduct["Brand"].ToString() == null ? null : existingProduct["Brand"].ToString(),
-                UPC = existingProduct["UPC"].ToString() == null ? null : existingProduct["UPC"].ToString(),
-                Pack = existingProduct["Pack"].ToString() == null ? null : existingProduct["Pack"].ToString(),
-                Size = existingProduct["Size"].ToString() == null ? null : existingProduct["Size"].ToString(),
-                MfrName = existingProduct["MfrName"].ToString() == null ? null : existingProduct["MfrName"].ToString(),
-                MfrNumber = existingProduct["MfrNumber"].ToString() == null ? null : existingProduct["MfrNumber"].ToString()
-        };
+            return virtualCatalogs.ToArray();
 
-            var current = new KeithLink.Svc.Core.Product()
-            {
-                ProductId = row.GetString("ItemId"),
-                Name = row.GetString("Name"),
-                Description = row.GetString("Description"),
-                Brand = row.GetString("Brand"),
-                UPC = row.GetString("UPC"),
-                Pack = row.GetString("Pack"),
-                Size = row.GetString("Size"),
-                MfrName = row.GetString("MfrName"),
-                MfrNumber = row.GetString("MfrNumber")
-            };
-
-            if (Crypto.CalculateMD5Hash(existing) != Crypto.CalculateMD5Hash(current))
-                SetProductCustomProperties(existingProduct, row);
-        }
-
-        private void SetProductCustomProperties(Product prod, DataRow row)
-        {
-            prod["UPC"] = row.GetString("UPC");
-            prod["Description"] = row.GetString("Description");
-            prod["Brand"] = row.GetString("Brand");
-            prod["Pack"] = row.GetString("Pack");
-            prod["Size"] = row.GetString("Size");
-            prod["MfrNumber"] = row.GetString("MfrNumber");
-            prod["MfrName"] = row.GetString("MfrName");
-            prod.Save();     
         }
         
-        private List<Category> GetFullCategoryList(CatalogContext context)
+        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts()
         {
-            var currentCatagories = context.GetCategory(Configuration.BaseCatalog, null).ChildCategories.ToList(); //Get Current Categories
+            var itemTable = new DataTable();
+            var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
 
-
-
-            List<Category> subCategories = new List<Category>();
-            foreach (var cat in currentCatagories)
+            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
-                foreach (var sub in cat.ChildCategories)
-                    subCategories.Add(sub);
+                using (var cmd = new SqlCommand(ReadItems, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(itemTable);
+                }
             }
 
-            currentCatagories.AddRange(subCategories);
+            foreach (DataRow row in itemTable.Rows)
+            {
+                var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
+                newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
+                newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
+                products.Add(newProd);
+            }
 
-            return currentCatagories;
+            return products.ToArray();
+        }
+
+        private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
+        {
+            var dataTable = new DataTable();
+            var childTable = new DataTable();
+            List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
+
+            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            {
+                using (var cmd = new SqlCommand(ReadParentCategories, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+
+                using (var cmd = new SqlCommand(ReadSubCategories, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(childTable);
+                }
+            }
+
+            foreach (DataRow cat in dataTable.Rows)
+            {
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("CategoryId"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(cat.GetString("CategoryName"));
+                categories.Add(newSubCat);
+            }
+
+            foreach (DataRow subCat in childTable.Rows)
+            {
+                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
+                newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
+                newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
+                categories.Add(newSubCat);
+            }
+
+            return categories.ToArray();
+        }
+
+        private static DisplayName[] CreateDisplayName(string value)
+        {
+            return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
         #endregion
 
         #region SQL
-        private const string ReadBranchesItems = " SELECT  DISTINCT TOP 100 " +
+        private const string ReadBranchesItems = " SELECT  DISTINCT " +
                                             " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
                                             "       i.[ItemId] " +
                                             " FROM " +
@@ -267,7 +206,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         private const string ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
 
-        private const string ReadItems = " SELECT DISTINCT top 100 " +
+        private const string ReadItems = " SELECT DISTINCT " +
                                                     "       i.[ItemId] " +
                                                     "       ,ETL.initcap([Name]) as Name " +
                                                     "       ,ETL.initcap([Description]) as Description " +
@@ -284,10 +223,6 @@ namespace KeithLink.Svc.Impl.ETL
 
         private const string ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
         private const string ReadSubCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000' AND CategoryId <> 'AA001 '";
-        #endregion
-
+        #endregion        
     }
-
-    
-
 }
