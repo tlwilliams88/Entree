@@ -12,7 +12,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     {
         KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
 
-        CatalogController(ICatalogRepository catalogRepository)
+        public CatalogController(ICatalogRepository catalogRepository)
         {
             _catalogRepository = catalogRepository;
         }
@@ -25,6 +25,27 @@ namespace KeithLink.Svc.WebApi.Controllers
         public IEnumerable<Product> GetProductsForCategory(string id)
         {
             return _catalogRepository.GetProductsForCategory(id);
+        }
+
+        [Route("catalog/categories")]
+        public CategoriesReturn GetCategories()
+        {
+            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            return _catalogRepository.GetCategories();
+        }
+
+        [Route("catalog/category/{id}/categories")]
+        public CategoriesReturn GetSubCategoriesByParentId(string id)
+        {
+            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            return _catalogRepository.GetCategories();
+        }
+
+        [Route("catalog/category/{id}")]
+        public CategoriesReturn GetCategoriesById(string id)
+        {
+            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            return _catalogRepository.GetCategories();
         }
     }
 }
