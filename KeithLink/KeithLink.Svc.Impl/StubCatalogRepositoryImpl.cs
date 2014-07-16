@@ -11,11 +11,11 @@ namespace KeithLink.Svc.Impl
     {
         Product[] products = new Product[] 
         { 
-            new Product { Id = 1, Name = "Tomato Soup", Category = "Groceries", Price = 1, Weight = "1lb" }, 
-            new Product { Id = 2, Name = "Yo-yo", Category = "Toys", Price = 3.75M, Weight = "2lb"  }, 
-            new Product { Id = 3, Name = "Hammer", Category = "Hardware", Price = 16.99M, Weight = "3lb"  },
-            new Product { Id = 4, Name = "Hammer Four", Category = "Hardware", Price = 16.94M, Weight = "4lb"  },
-            new Product { Id = 5, Name = "Hammer Five", Category = "Hardware", Price = 16.95M, Weight = "5lb"  } 
+            new Product { Id = "1", Description = "Tomato Soup", CategoryId = "Groceries", Price = "1.00", Size = "1lb" }, 
+            new Product { Id = "2", Description = "Yo-yo", CategoryId = "Toys", Price = "3.75", Size = "2lb"  }, 
+            new Product { Id = "3", Description = "Hammer", CategoryId = "Hardware", Price = "16.99", Size = "3lb"  },
+            new Product { Id = "4", Description = "Hammer Four", CategoryId = "Hardware", Price = "16.94", Size = "4lb"  },
+            new Product { Id = "5", Description = "Hammer Five", CategoryId = "Hardware", Price = "16.95", Size = "5lb"  } 
         };
 
         Category[] categories = new Category[]
@@ -42,11 +42,10 @@ namespace KeithLink.Svc.Impl
             }
             else
             {
-                IEnumerable<Product> prods = products.Where(x => x.Category == category);
+                IEnumerable<Product> prods = products.Where(x => x.CategoryId == category);
                 return prods;
             }
         }
-
 
         public CategoriesReturn GetCategories()
         {

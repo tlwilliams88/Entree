@@ -26,6 +26,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Common.Tests", "KeithLink.Common.Tests\KeithLink.Common.Tests.csproj", "{42B2A7A5-6D71-4414-84EB-01C26D061183}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Presentation", "KeithLink.Web.Presentation\KeithLink.Web.Presentation.csproj", "{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041} = {9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}
+		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD} = {B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.InternalSvc", "KeithLink.Svc.InternalSvc\KeithLink.Svc.InternalSvc.csproj", "{6E0FA18C-21B0-4862-ACBC-4B6D55516341}"
 EndProject

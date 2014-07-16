@@ -150,10 +150,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceLocatorController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="angular-app\app\404.html" />
@@ -230,7 +232,6 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
-    <Folder Include="App_Start\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
     <Folder Include="Scripts\" />
@@ -326,6 +327,16 @@
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeithLink.Web.Core\KeithLink.Web.Core.csproj">
+      <Project>{9dd1315d-9dc1-45ab-b4d1-08ec32e0a041}</Project>
+      <Name>KeithLink.Web.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Web.Impl\KeithLink.Web.Impl.csproj">
+      <Project>{b5c73ff8-b46c-48aa-a5fe-ac74ee23c0fd}</Project>
+      <Name>KeithLink.Web.Impl</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
