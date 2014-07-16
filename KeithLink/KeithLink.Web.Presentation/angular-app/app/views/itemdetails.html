@@ -1,29 +1,23 @@
-<div class="row page-header-bar">
-  <div class="col-md-9 page-header-bar__message">
-    Item Details
-  </div>
-  <div class="col-md-3">
-    <button>Create An Order</button>
-  </div>
+<div page-header-bar message="'Item Details'">
+  <button class="btn page-header__export-button"><span class="icon-printer"></span></button>
 </div>
 
 <div class="row">
-  <div class="col-sm-3">
+  <div class="col-sm-3" ng-show="{{item.imageUrl}}">
     <img src="" alt="" style="width:200px;height:200px;">
   </div>
   <div class="col-sm-9">
     <h2>{{item.description}}</h2>
     <div class="item-details">
-      <span>
-        <strong>Item #</strong> {{item.id}} | 
-        <strong>Price:</strong> |
-        <strong>Size:</strong> {{item.size}}
-      </span>
-      <span>
-        <strong>Brand:</strong> {{item.brand}} |
-        <strong>UPC Vendor:</strong> {{item.upc}}
-        
-      </span>
+      <div>
+        <span ng-show="{{item.id !== undefined}}"><strong>Item #</strong> {{item.id}} | </span>
+        <span ng-show="{{item.price !== undefined}}"><strong>Price:</strong> {{item.price}} |</span>
+        <span ng-show="{{item.size !== undefined}}"><strong>Size:</strong> {{item.size}}</span>
+      </div>
+      <div>
+        <span ng-show="{{item.brand !== undefined}}"><strong>Brand:</strong> {{item.brand}} |</span>
+        <span ng-show="{{item.upc !== undefined}}"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+      </div>
     </div>    
   </div>
 </div>

@@ -1,16 +1,12 @@
-$user-bar__background: #f1efe5;
-$page-header-bar__background: white;
-$user-bar__border: #c3bc9c;
-
 @mixin header-bar($background-color, $padding) {
   background-color: $background-color;
-  border-bottom: 1px solid $user-bar__border;
+  border-bottom: 1px solid $color-border;
   padding-top: $padding;
   padding-bottom: $padding;
 }
 
 .user-bar {
-  @include header-bar($user-bar__background, 18px);
+  @include header-bar($background, 18px);
 
   .user-bar__notification {
     font-size: 30px;
@@ -39,18 +35,34 @@ $user-bar__border: #c3bc9c;
     }
   }
 
+  // user profile image
   img {
     display: inline-block;
   }
 }
 
 .page-header-bar {
-  @include header-bar($page-header-bar__background, 14px);
+  @include header-bar($color-white, 15px);
   margin-bottom: 30px;
 
   .page-header-bar__message {
     font-size: 35px;
     font-weight: 300;
     padding-left: 20px;
+  }
+
+  .page-header__export-button {
+    font-size: 25px;
+    color: $color-border;
+    margin-right: 5px;
+  }
+
+  .page-header__orders {
+    color: #489ecf;
+    font-size: 22px;
+    margin-left: 10px;
+    line-height: 50px;
+    vertical-align: middle;
+    display: inline-block;
   }
 }

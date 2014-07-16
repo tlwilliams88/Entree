@@ -10,7 +10,7 @@
       background-color: white;
     }
     a{
-      color: $font-color;
+      color: $color-font;
     }
   }
   .active{
@@ -30,9 +30,17 @@
 }
 
 input[type=checkbox]:checked + label {
-  color: $blue-color;
+  color: $color-blue;
 }
 
 .checkbox + .checkbox{
   margin-top:0;
+}
+
+.hidebrand{
+  display: none;
+}
+
+.hideallergen{
+  display: none;
 }

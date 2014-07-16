@@ -14,6 +14,10 @@ angular.module('bekApp')
       getCategories: function() {
         return $http.get('http://localhost:9002/ws/categories');
       }
+      //,
+      //getSubcategories = function(categoryId) {
+      //	return $http.get('http://localhost:9002/ws/category/FS940/categories')
+      //}
     };
 
     return Service;
