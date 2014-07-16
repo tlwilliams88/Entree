@@ -173,8 +173,6 @@
     <Content Include="angular-app\app\lib\angular-mocks\angular-mocks.js" />
     <Content Include="angular-app\app\lib\angular-resource\angular-resource.js" />
     <Content Include="angular-app\app\lib\angular-resource\angular-resource.min.js" />
-    <Content Include="angular-app\app\lib\angular-route\angular-route.js" />
-    <Content Include="angular-app\app\lib\angular-route\angular-route.min.js" />
     <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.js" />
     <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js" />
     <Content Include="angular-app\app\lib\angular-scenario\angular-scenario.js" />
@@ -209,87 +207,10 @@
     <Content Include="angular-app\app\scripts\controllers\SearchController.js" />
     <Content Include="angular-app\app\scripts\services\CategoryService.js" />
     <Content Include="angular-app\app\scripts\services\ProductService.js" />
-    <Content Include="angular-app\app\scripts\services\ProfileService.js" />
     <Content Include="angular-app\app\views\catalog.html" />
     <Content Include="angular-app\app\views\home.html" />
     <Content Include="angular-app\app\views\menu.html" />
     <Content Include="angular-app\app\views\searchresults.html" />
-    <Content Include="angular-app\dist-dev\404.html" />
-    <Content Include="angular-app\dist-dev\favicon.ico" />
-    <Content Include="angular-app\dist-dev\images\admiral.jpg" />
-    <Content Include="angular-app\dist-dev\images\bek-logo.png" />
-    <Content Include="angular-app\dist-dev\images\green-apple.jpg" />
-    <Content Include="angular-app\dist-dev\images\Nav-Image.jpg" />
-    <Content Include="angular-app\dist-dev\images\Textured-BG-1.jpg" />
-    <Content Include="angular-app\dist-dev\images\Textured-BG.jpg" />
-    <Content Include="angular-app\dist-dev\images\Walnuts.jpg" />
-    <Content Include="angular-app\dist-dev\index.html" />
-    <Content Include="angular-app\dist-dev\lib\angular-animate\angular-animate.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-animate\angular-animate.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-cookies\angular-cookies.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-cookies\angular-cookies.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-mocks\angular-mocks.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-resource\angular-resource.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-resource\angular-resource.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-route\angular-route.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-route\angular-route.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-sanitize\angular-sanitize.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-sanitize\angular-sanitize.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-scenario\angular-scenario.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-scenario\jstd-scenario-adapter-config.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-scenario\jstd-scenario-adapter.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-touch\angular-touch.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-touch\angular-touch.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-ui-router\angular-ui-router.js" />
-    <Content Include="angular-app\dist-dev\lib\angular-ui-router\angular-ui-router.min.js" />
-    <Content Include="angular-app\dist-dev\lib\angular\angular-csp.css" />
-    <Content Include="angular-app\dist-dev\lib\angular\angular.js" />
-    <Content Include="angular-app\dist-dev\lib\angular\angular.min.js" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap-theme.css" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap-theme.min.css" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap.css" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\css\bootstrap.min.css" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-sham.js" />
-    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-sham.min.js" />
-    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-shim.js" />
-    <Content Include="angular-app\dist-dev\lib\es5-shim\es5-shim.min.js" />
-    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.svg" />
-    <Content Include="angular-app\dist-dev\lib\icomoon\style.css" />
-    <Content Include="angular-app\dist-dev\lib\json3\lib\json3.js" />
-    <Content Include="angular-app\dist-dev\lib\json3\lib\json3.min.js" />
-    <Content Include="angular-app\dist-dev\lib\normalize.css\normalize.css" />
-    <Content Include="angular-app\dist-dev\robots.txt" />
-    <Content Include="angular-app\dist-dev\scripts\app.js" />
-    <Content Include="angular-app\dist-dev\scripts\controllers\CatalogController.js" />
-    <Content Include="angular-app\dist-dev\scripts\controllers\HomeController.js" />
-    <Content Include="angular-app\dist-dev\scripts\controllers\MenuController.js" />
-    <Content Include="angular-app\dist-dev\styles\main.css" />
-    <Content Include="angular-app\dist-dev\views\catalog.html" />
-    <Content Include="angular-app\dist-dev\views\home.html" />
-    <Content Include="angular-app\dist-dev\views\menu.html" />
-    <Content Include="angular-app\dist-dev\views\searchresults.html" />
-    <Content Include="angular-app\dist\404.html" />
-    <Content Include="angular-app\dist\favicon.ico" />
-    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.svg" />
-    <Content Include="angular-app\dist\fonts\icomoon.svg" />
-    <Content Include="angular-app\dist\images\admiral.fc409a37.jpg" />
-    <Content Include="angular-app\dist\images\bek-logo.b1f59622.png" />
-    <Content Include="angular-app\dist\images\green-apple.30e17ed2.jpg" />
-    <Content Include="angular-app\dist\images\Nav-Image.2a735098.jpg" />
-    <Content Include="angular-app\dist\images\Textured-BG-1.432f3a14.jpg" />
-    <Content Include="angular-app\dist\images\Textured-BG.432f3a14.jpg" />
-    <Content Include="angular-app\dist\images\Walnuts.ac7b8638.jpg" />
-    <Content Include="angular-app\dist\index.html" />
-    <Content Include="angular-app\dist\robots.txt" />
-    <Content Include="angular-app\dist\scripts\scripts.5d0b626e.js" />
-    <Content Include="angular-app\dist\scripts\vendor.b12b1956.js" />
-    <Content Include="angular-app\dist\styles\main.efea490f.css" />
-    <Content Include="angular-app\dist\styles\vendor.bb97aa06.css" />
-    <Content Include="angular-app\dist\views\catalog.html" />
-    <Content Include="angular-app\dist\views\home.html" />
-    <Content Include="angular-app\dist\views\menu.html" />
-    <Content Include="angular-app\dist\views\searchresults.html" />
     <Content Include="angular-app\Gruntfile.js" />
     <Content Include="angular-app\mockApi\apiserver.js" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
@@ -307,6 +228,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
     <Folder Include="Content\themes\base\images\" />
@@ -334,10 +256,6 @@
     <Content Include="angular-app\app\lib\angular-resource\angular-resource.min.js.map" />
     <Content Include="angular-app\app\lib\angular-resource\bower.json" />
     <Content Include="angular-app\app\lib\angular-resource\README.md" />
-    <Content Include="angular-app\app\lib\angular-route\.bower.json" />
-    <Content Include="angular-app\app\lib\angular-route\angular-route.min.js.map" />
-    <Content Include="angular-app\app\lib\angular-route\bower.json" />
-    <Content Include="angular-app\app\lib\angular-route\README.md" />
     <Content Include="angular-app\app\lib\angular-sanitize\.bower.json" />
     <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js.map" />
     <Content Include="angular-app\app\lib\angular-sanitize\bower.json" />
@@ -397,22 +315,11 @@
     <Content Include="angular-app\app\styles\_sidebar.scss" />
     <Content Include="angular-app\app\styles\_user-bar.scss" />
     <Content Include="angular-app\build.bat" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="angular-app\dist-dev\lib\bootstrap-css-only\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.eot" />
-    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.ttf" />
-    <Content Include="angular-app\dist-dev\lib\icomoon\fonts\icomoon.woff" />
-    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="angular-app\dist\fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="angular-app\dist\fonts\icomoon.eot" />
-    <Content Include="angular-app\dist\fonts\icomoon.ttf" />
-    <Content Include="angular-app\dist\fonts\icomoon.woff" />
     <Content Include="angular-app\package.json" />
     <Content Include="angular-app\test\.jshintrc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -469,10 +376,18 @@
   <PropertyGroup>
     <PostBuildEvent>cd $(ProjectDir)angular-app
 
-npm install
-npm install -grunt
 
-grunt dev</PostBuildEvent>
+call npm install
+
+call npm install -g grunt
+
+call grunt build
+
+call grunt dev
+
+robocopy dist-dev ..\app /MIR
+set rce=%25errorlevel%25
+if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
