@@ -2,7 +2,8 @@
 <html class="no-js">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KeithLink</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -40,6 +41,10 @@
     <script src="lib/json3/lib/json3.min.js"></script>
     <![endif]-->
 
+    <!--[if lt IE 9]>
+    <script src="lib/css3-mediaqueries-js/css3-mediaqueries.js"></script>
+    <![endif]-->
+
     <!-- build:js(app) scripts/vendor.js -->
     <script src="lib/angular/angular.js"></script>
     <script src="lib/json3/lib/json3.js"></script>
@@ -54,6 +59,7 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
+    <script src="scripts/services/ApiService.js"></script>
     <script src="scripts/services/UserProfileService.js"></script>
     <script src="scripts/services/ProductService.js"></script>
     <script src="scripts/services/CategoryService.js"></script>

@@ -17,29 +17,23 @@ namespace KeithLink.Svc.Impl
 
         public CategoriesReturn GetCategories()
         {
-            var categories = RT.Catalog.GetCategoryWithChildProducts(
-                    "Backpacks",
-                    "Adventure Works Catalog",
-                    string.IsNullOrWhiteSpace("") ? "0" : "0",
-                    "10",
-                    "true",
-                    null,
-                    null,
-                    null,
-                    null,
-                    null);
-
             CategoriesReturn ret = new CategoriesReturn();
             ret.Categories = new List<Category>(); 
+
+            var categories = RT.Catalog.GetTopLevelCategories("FAM", "500", "true", null);
             foreach (var cat in categories)
             {
                 KeithLink.Svc.Impl.Models.Generated.Category currCat = (KeithLink.Svc.Impl.Models.Generated.Category)cat;
-                Category c = new Category() { Description = currCat.Description, Id = currCat.Id, Name = currCat.Name };
+
                 if (currCat.ChildCategories != null && currCat.ChildCategories.Count > 0)
                 {
+                    foreach (var childCat in currCat.ChildCategories)
+                    {
+                        KeithLink.Svc.Impl.Models.Generated.Category currChildCat = (KeithLink.Svc.Impl.Models.Generated.Category)childCat;
+                        Category c = new Category() { Description = currChildCat.DisplayName, Id = currChildCat.Id, Name = currChildCat.DisplayName};
+                        ret.Categories.Add(c);
+                    }
                 }
-
-                ret.Categories.Add(c);
             }
 
             return ret;

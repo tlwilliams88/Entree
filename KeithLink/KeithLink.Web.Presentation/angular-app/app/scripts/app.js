@@ -19,7 +19,6 @@ angular
     'ui.bootstrap'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
-
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('menu', {
@@ -78,7 +77,36 @@ angular
         $scope.brandId = $stateParams.brandId;
       }
     });
+  $stateProvider
+    .state('404', { 
+      url: '/404',
+      templateUrl: 'views/404.html'
+    });
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/home');
   $urlRouterProvider.when('/', '/home');
-});
+  $urlRouterProvider.otherwise('/404');
+})
+.run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
+
+  ApiService.getEndpointUrl().then(function(response) {
+    ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+  });
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    // debugger;
+    // if (!Auth.authorize(toState.data.access)) {
+    //   $rootScope.error = 'Access denied';
+    //   event.preventDefault();
+
+    //   if(fromState.url === '^') {
+    //     if(Auth.isLoggedIn())
+    //       $state.go('user.home');
+    //     else {
+    //       $rootScope.error = null;
+    //       $state.go('anon.login');
+    //     }
+    //   }
+    // }
+  });
+}]);
