@@ -25,18 +25,11 @@ namespace KeithLink.Svc.Impl.ETL
         {
             //Create root level catalog object
             MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
-            catalog.version = "3.0";
-
+            catalog.version = "3.0"; //Required for the import to work
 
             //Create the BaseCatalog
-            var baseCatalog = new MSCommerceCatalogCollection2Catalog() { name = Configuration.BaseCatalog, productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
-            baseCatalog.DisplayName = CreateDisplayName(Configuration.BaseCatalog);
-
-            baseCatalog.Category = GenerateCategories();
-            baseCatalog.Product = GenerateProducts();
-            catalog.Catalog = new List<MSCommerceCatalogCollection2Catalog>() { baseCatalog }.ToArray();
-            catalog.VirtualCatalog = GenerateVirtualCatalogs();
-
+            catalog.Catalog = BuildCatalogs(); 
+            
             CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent(); //TODO: Switch to solution wide method for connecting to CS
             catalogSiteAgent.SiteName = Configuration.CSSiteName;
             catalogSiteAgent.IgnoreInventorySystem = false;
@@ -47,14 +40,14 @@ namespace KeithLink.Svc.Impl.ETL
             var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
             var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
-            TextWriter tw = new StreamWriter(@"C:\Dev\FullExport.xml", false, Encoding.Unicode);
+            TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
             serializer.Serialize(tw, catalog);
             tw.Close();
 
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
-            var virutalCatalogName = string.Join(",",  catalog.VirtualCatalog.Select(v => v.name).ToList().ToArray());
-            ImportProgress importProgress = context.ImportXml(new CatalogImportOptions() { Mode = ImportMode.Incremental, CatalogsToImport = string.Join(",", Configuration.BaseCatalog, virutalCatalogName) }, memoryStream);
+            var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
+            ImportProgress importProgress = context.ImportXml(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
             while (importProgress.Status == CatalogOperationsStatus.InProgress)
             {
                 System.Threading.Thread.Sleep(3000);
@@ -62,6 +55,35 @@ namespace KeithLink.Svc.Impl.ETL
                 importProgress.Refresh();
             }
             //TODO: Log an errors that occured during the import
+        }
+
+        private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
+        {
+            var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
+            var dataTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand(ReadBranches, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }                
+            }
+
+            foreach (DataRow row in dataTable.Rows)
+            {
+                var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = row.GetString("BranchId"), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+                newCatalog.DisplayName = CreateDisplayName(row.GetString("Description"));
+
+                newCatalog.Category = GenerateCategories();
+                newCatalog.Product = GenerateProducts(row.GetString("BranchId"));
+                catalogs.Add(newCatalog);
+            }
+
+            return catalogs.ToArray();
         }
         
         #region Helper Methods
@@ -118,14 +140,14 @@ namespace KeithLink.Svc.Impl.ETL
 
         }
         
-        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts()
+        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId)
         {
             var itemTable = new DataTable();
             var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
 
             using (var conn = new SqlConnection(Configuration.StagingConnectionString))
             {
-                using (var cmd = new SqlCommand(ReadItems, conn))
+                using (var cmd = new SqlCommand(string.Format(ReadItems_IncludeBranch, branchId), conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -206,7 +228,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         private const string ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
 
-        private const string ReadItems = " SELECT DISTINCT " +
+        private const string ReadItems_IncludeBranch = " SELECT DISTINCT " +
                                                     "       i.[ItemId] " +
                                                     "       ,ETL.initcap([Name]) as Name " +
                                                     "       ,ETL.initcap([Description]) as Description " +
@@ -219,6 +241,8 @@ namespace KeithLink.Svc.Impl.ETL
                                                     "       ,i.CategoryId " +
                                                     "   FROM [ETL].[Staging_ItemData] i inner join " +
                                                     "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
+                                                    " WHERE " +
+                                                    "   i.BranchId = '{0}' " +
                                                     " Order by i.[ItemId] ";
 
         private const string ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
