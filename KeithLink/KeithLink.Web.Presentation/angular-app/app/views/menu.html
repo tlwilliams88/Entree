@@ -29,55 +29,83 @@
     </ul>
   </nav>
 
-  <div class="sidebar-dsr">
+  <div class="sidebar-dsr text-center">
     <p>Your Sales Rep</p>
-    <img src="" alt="dsr image" style="width:75px;height:75px;" />
+    <img ng-show="currentUser.salesRep.imageUrl" src="{{currentUser.salesRep.imageUrl}}" alt="dsr image" style="width:75px;height:75px;" />
     <p class="contact-info">
-      <span>Heather Hill</span>
-      <span>(888) 912-2342</span>
+      <span>{{currentUser.salesRep.name}}</span>
+      <span>{{currentUser.salesRep.phone}}</span>
     </p>
-    <a class="text-uppercase" href="#">Email Me</a>
+    <a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a>
   </div>
 
   <div class="text-center sidebar-meta">
     <span>Copyright 2014 Ben E. Keith</span>
     <a href="#">benekeith.com</a>
   </div>
-</div> 
+</div>
 
 <div class="row page-content">
   <div class="col-sm-12">
-
     <div class="row user-bar">
       <div class="col-lg-4">
         <select name="" id="">
-          <option value="">Jimmy's Chicken Shack</option>
-          <option value="">El Fenix</option>
+          <option value="" ng-repeat="store in currentUser.stores">{{store.name}}</option>
         </select>
       </div>
       <div class="col-lg-3">
-        <input type="text" class="form-control" placeholder="Search by keyword" />
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search by keyword">
+          <span class="input-group-btn">
+            <button class="btn btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
+          </span>
+        </div>
       </div>
       <div class="col-lg-5 text-right">
-        <img src="" alt="not" style="height:55px;width:55px;">
-        <div class="user-info">
-          <div>
-            <span class="user-info__name">Stephen Broussard</span> 
-            <span class="icon-arrow-down5"></span>
-          </div>
-          <div>
-            <span class="user-info__job-title">Kitchen Manager</span>
+        <span class="icon-bell user-bar__notification"></span>
+        <div ng-show="showMenu" style="
+            position: absolute;
+            top: 50px;
+            right: 100px;
+            background-color: white;
+            padding: 15px;
+            z-index: 1;
+            border: 1px solid brown;
+            margin: 10px;
+            border-radius: 5px;
+        " class="text-left">
+        <span class="icon-cross pull-right" ng-click="showMenu = false;"></span>
+          <form role="form" ng-show="currentUser === undefined">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <button type="submit" class="btn cta-btn" ng-click="login();">Login</button>
+          </form>
+          <div ng-show="currentUser !== undefined">
+            <a href="logout">View Profile</a>
+            <a ng-click="logout();">Logout</a>
           </div>
         </div>
-        <img src="" alt="" style="height:55px;width:55px;">
-      </div>
-    </div>
-    
-    <div class="view">
-      <div ui-view="">
-        <p>TODO: Loading content</p>
+        <div class="user-info">
+          <div>
+            <span class="user-info__name">{{currentUser.name}}</span> 
+            <span ng-click="showMenu = !showMenu;" class="icon-arrow-down5"></span>
+          </div>
+          <div>
+            <span class="user-info__job-title">{{currentUser.role}}</span>
+          </div>
+        </div>
+        <img src="" alt="" style="height:50px;width:50px;">
       </div>
     </div>
 
+    <div class="view" ui-view="">
+        <p>TODO: Loading content</p>
+    </div>
   </div>
-</div> <!-- end content -->
+</div>

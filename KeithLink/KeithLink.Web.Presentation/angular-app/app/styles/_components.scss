@@ -1,31 +1,88 @@
-button {
-  background-color: #489ecf;
-  border-radius: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  color: white;
-  font-size: 20px;
-  border: none;
-  height: 55px;
+/* BUTTONS */
+
+// default button
+button.btn {
+  height: 50px;
   letter-spacing: 1px;
+  background-color: white;
+  border: 1px solid $color-border;
+  font-weight: 300;
+  
+  // call to action button
+  &.cta-btn {
+    color: white;
+    background-color: $color-blue;
+    border: none;
+  }
 }
+
+/* SELECT DROPDOWNS */
 
 select {
-  border: 1px solid #c3bc9c;
-  background-color: white;
+  border: 1px solid $color-border;
   font-size: 20px;
-  // color: #c3bc9c;
-  padding: 15px;
-  height: 55px;
+  height: 50px;
   letter-spacing: 1px;
 }
 
-input[type='text'] {
-  border: 1px solid #c3bc9c;
-  height: 55px;
-  border-radius: 5px;
+/* TEXT INPUTS */
+
+@mixin text-placeholder($color, $style) {
+  ::-webkit-input-placeholder {
+    color: $color !important;
+    font-style: $style;
+  }  
+  :-moz-placeholder { /* Firefox 18- */
+    color: $color !important;  
+    font-style: $style;
+  }
+  ::-moz-placeholder {  /* Firefox 19+ */
+    color: $color !important;  
+    font-style: $style;
+  }
+  :-ms-input-placeholder {  
+    color: $color !important;  
+    font-style: $style;
+  }
+}
+@include text-placeholder ($color-border, italic);
+
+input[type='text'], input[type='email'], input[type='password'] {
+  border: 1px solid $color-border;
+  height: 50px;
   font-size: 20px;
-  padding-left: 20px;
-  padding-right: 20px;
   letter-spacing: 1px;
+}
+
+/* TABS */
+
+.nav-tabs {
+  border-bottom: 1px solid $color-border;
+
+  li {
+    a {
+      margin-right: 5px;
+      line-height: 35px;
+      font-size: 16px;
+      border-radius: 0;
+      border: 1px solid $color-border;
+      padding: 10px 40px;
+
+      &:hover {
+        @extend a;
+      }
+    }
+  }
+
+  li.active a {
+    border: 1px solid $color-border;
+    border-bottom-color: transparent;
+    border-top: 3px solid $color-blue;
+    padding-top: 8px;
+    font-weight: normal;
+
+    &:hover {
+      @extend a;
+    }
+  }
 }

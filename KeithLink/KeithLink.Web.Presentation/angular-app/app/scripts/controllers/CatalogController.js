@@ -10,12 +10,12 @@
 angular.module('bekApp')
   .controller('CatalogController', ['$scope', 'CategoryService', 'ProductService', function ($scope, CategoryService, ProductService) {
     
-    CategoryService.getCategories().then(function(data) {
-      $scope.categories = data.data.categories;
+    CategoryService.getCategories().then(function() {
+      $scope.categories = CategoryService.categories;
     });
-
-    ProductService.getProducts().then(function(data) {
-      $scope.featuredProducts = data.data.products;
+    
+    ProductService.getProducts().then(function() {
+      $scope.featuredProducts = ProductService.products;
     });
 
     $scope.brands = [

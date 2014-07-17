@@ -83,6 +83,10 @@ HttpServer.prototype.handleRequest_ = function(req, res) {
     writeResponse(res, getProducts());
   } else if(url.indexOf('/categories') > 0){
     writeResponse(res, getCategories());
+  } else if(url.indexOf('/profile') > 0){
+    writeResponse(res, getProfile());
+  } else if(url.indexOf('/servicelocator') > 0){
+    writeResponse(res, getEndpointUrl());
   } else {
     writeResponse(res);
   }
@@ -284,11 +288,37 @@ StaticServlet.prototype.writeDirectoryIndex_ = function(req, res, path, files) {
 
 var getProducts = function(){
 
-  return JSON.stringify({"products":[{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101285","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"}]});
+  return JSON.stringify({"products":[{"id":"101285","description":"Shrimp Raw Hdls 25/30","ext_description":"Premium Wild Texas White","brand":"Cortona","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Ellington Farms Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101286","description":"Crawfish Raw Hdls 25/30","ext_description":"Premium Wild Texas White","brand":"Markon Cooperative","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"1","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101186","description":"Shrimp Cooked Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"4","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101386","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"3","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101385","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"2","categoryId":"FS490","kosher":"true","price":"325.00"},{"id":"101384","description":"Shrimp Raw Hdls 26/30","ext_description":"Premium Wild Texas White","brand":"Philly","size":"5 LB","upc":"00000000000000","manufacturer_number":"B-W-26/30","manufacturer_name":"Philly Seafood","cases":"0","categoryId":"FS490","kosher":"true","price":"325.00"}]});
 };
 
 var getCategories = function() {
   return JSON.stringify({"categories":[{"name":"Shrimp","description":"Shrimp, Headless, Raw","id":"FS940","subcategories":[{"id":"FS942","name":"Jumbo Shrimp","description":"Shrimp, Headless, Raw 12 Ct"},{"id":"FS941","name":"Popcorn Shrimp","description":"Shrimp, Headless, Raw 65 Ct"}]},{"name":"Cakes","description":"Cakes Silly","id":"CS940","subcategories":[{"id":"CS942","name":"Cakes, Decorated","description":"Decorated Cakes"},{"id":"CS941","name":"Cakes, Bulk","description":"Un-decorated cakes"}]},{"name":"Pork","description":"Soo weee!!!","id":"PS940","subcategories":[{"id":"PS942","name":"Pork Shoulder","description":"Bulk Pork Shoulder"},{"id":"PS941","name":"Pork, Chops","description":"Pork Chops"}]}]});
+}
+
+var getProfile = function() {
+  return JSON.stringify({"profile": {
+    "name": "Steven Broussard",
+    "customerNumber": 12345,
+    "imageUrl": null,
+    "role": null,
+    "phone": 9348234934,
+    "location": "Dallas",
+    "stores": [{
+      "name": "Chick-fil-A",
+      "customerNumber": 453234
+    }, {
+      "name": "Saltgrass",
+      "customerNumber": 534939
+    }],
+    "accountNumber": 9783459,
+    "salesRep": {
+      "id": 34234,
+      "name": "Heather Hill",
+      "phone": 8889122342,
+      "email": "heather.hill@ben.e.keith.com",
+      "imageUrl": null
+    }
+  }});
 }
 
 var syncActivities = function(){
@@ -305,6 +335,10 @@ var authenticateFFlinstone = function(path){
   // var sites = [{ siteId: 1, siteName: "Jacksonville" }, { siteId: 2, siteName: "Cherry Point" }];
   var sites = [{ siteId: 1001, siteName: "New York" },{siteId: 1002, siteName:"San Francisco"}];
   return JSON.stringify({"token":"612dcf04-24a7-45bb-94ae-7242fc24cd84","userSites":sites,"expiration":1397588993536,"username":"fflinstone"});
+}
+
+var  getEndpointUrl = function() {
+  return JSON.stringify({"ClientApiEndpoint":"localhost:49420"});
 }
 
 var writeResponse = function(res, content){

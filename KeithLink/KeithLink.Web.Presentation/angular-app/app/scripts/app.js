@@ -15,10 +15,10 @@ angular
     // 'ngResource',
     // 'ngSanitize',
     // 'ngTouch',
-    'ui.router'
+    'ui.router',
+    'ui.bootstrap'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
-
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('menu', {
@@ -51,23 +51,23 @@ angular
     // /catalog/products
     .state('menu.catalog.products.home', {
       url: '',
-      templateUrl: 'views/searchresults.html'
+      templateUrl: 'views/searchresults.html',
+      controller: 'SearchController'
     })
-    // /catalog/products/:productId (product details page)
+    // /catalog/products/:itemId (item details page)
     .state('menu.catalog.products.details', {
-      url: '/:productId',
-      templateUrl: 'views/productdetails.html',
-      controller: function($scope, $stateParams) {
-        $scope.productId = $stateParams.productId;
-      }
+      url: '/:itemId',
+      templateUrl: 'views/itemdetails.html',
+      controller: 'ItemDetailsController'
     })
     // /catalog/category/:categoryId
     .state('menu.catalog.category', {
       url: '/category/:categoryId',
       templateUrl: 'views/searchresults.html',
-      controller: function($scope, $stateParams) {
-        $scope.categoryId = $stateParams.categoryId;
-      }
+      controller: 'SearchController'
+      //function($scope, $stateParams) {
+        //$scope.categoryId = $stateParams.categoryId;
+      //}
     })
     // /catalog/brand/:brandId
     .state('menu.catalog.brand', {
@@ -77,7 +77,36 @@ angular
         $scope.brandId = $stateParams.brandId;
       }
     });
+  $stateProvider
+    .state('404', { 
+      url: '/404',
+      templateUrl: 'views/404.html'
+    });
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/home');
   $urlRouterProvider.when('/', '/home');
-});
+  $urlRouterProvider.otherwise('/404');
+})
+.run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
+
+  ApiService.getEndpointUrl().then(function(response) {
+    ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+  });
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    // debugger;
+    // if (!Auth.authorize(toState.data.access)) {
+    //   $rootScope.error = 'Access denied';
+    //   event.preventDefault();
+
+    //   if(fromState.url === '^') {
+    //     if(Auth.isLoggedIn())
+    //       $state.go('user.home');
+    //     else {
+    //       $rootScope.error = null;
+    //       $state.go('anon.login');
+    //     }
+    //   }
+    // }
+  });
+}]);

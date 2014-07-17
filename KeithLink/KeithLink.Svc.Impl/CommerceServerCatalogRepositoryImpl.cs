@@ -4,31 +4,45 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core;
+using RT = KeithLink.Svc.Impl.RequestTemplates;
 
 namespace KeithLink.Svc.Impl
 {
     public class CommerceServerCatalogRepositoryImpl : ICatalogRepository
     {
-        Product[] products = new Product[] 
-        { 
-            new Product { Id = 1, Name = "Tomato Soup", Category = "Groceries", Price = 1, Weight = "1lb" }, 
-            new Product { Id = 2, Name = "Yo-yo", Category = "Toys", Price = 3.75M, Weight = "2lb"  }, 
-            new Product { Id = 3, Name = "Hammer", Category = "Hardware", Price = 16.99M, Weight = "3lb"  },
-            new Product { Id = 4, Name = "Hammer Four", Category = "Hardware", Price = 16.94M, Weight = "4lb"  },
-            new Product { Id = 5, Name = "Hammer Five", Category = "Hardware", Price = 16.95M, Weight = "5lb"  } 
-        };
-
         public IEnumerable<Product> GetProductsForCategory(string category)
         {
-            if (String.IsNullOrEmpty(category))
+            throw new NotImplementedException();
+        }
+
+        public CategoriesReturn GetCategories()
+        {
+            var categories = RT.Catalog.GetCategoryWithChildProducts(
+                    "Backpacks",
+                    "Adventure Works Catalog",
+                    string.IsNullOrWhiteSpace("") ? "0" : "0",
+                    "10",
+                    "true",
+                    null,
+                    null,
+                    null,
+                    null,
+                    null);
+
+            CategoriesReturn ret = new CategoriesReturn();
+            ret.Categories = new List<Category>(); 
+            foreach (var cat in categories)
             {
-                return products;
+                KeithLink.Svc.Impl.Models.Generated.Category currCat = (KeithLink.Svc.Impl.Models.Generated.Category)cat;
+                Category c = new Category() { Description = currCat.Description, Id = currCat.Id, Name = currCat.Name };
+                if (currCat.ChildCategories != null && currCat.ChildCategories.Count > 0)
+                {
+                }
+
+                ret.Categories.Add(c);
             }
-            else
-            {
-                IEnumerable<Product> prods = products.Where(x => x.Category == category);
-                return prods;
-            }
+
+            return ret;
         }
     }
 }

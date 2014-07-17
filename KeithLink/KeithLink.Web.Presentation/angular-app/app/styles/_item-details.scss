@@ -1,0 +1,27 @@
+.item-details {
+  font-size: 18px;
+}
+
+.tab-content {
+  .tab-pane {
+    background-color: $color-white;
+  }
+}
+
+.details-table {
+  width: 100%;
+  border-left: 1px solid $color-border;
+  border-right: 1px solid  $color-border;
+
+  th, td {
+    padding: 20px 10px;
+  }
+
+  tr {
+    border-bottom: 1px solid  $color-border;
+  }
+
+  tr:nth-child(even) {
+    background-color: $background;
+  }
+}
