@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core
 {
     [DataContract(Name = "product")]
+    [Serializable]
     public class Product
     {
         [DataMember(Name = "id")]

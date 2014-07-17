@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ETL\ICategoryLogic.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ICatalogRepository.cs" />
