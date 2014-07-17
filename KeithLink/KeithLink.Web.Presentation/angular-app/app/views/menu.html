@@ -48,12 +48,12 @@
 <div class="row page-content">
   <div class="col-sm-12">
     <div class="row user-bar">
-      <div class="col-lg-4">
+      <div class="hidden-sm hidden-xs col-md-4">
         <select name="" id="">
           <option value="" ng-repeat="store in currentUser.stores">{{store.name}}</option>
         </select>
       </div>
-      <div class="col-lg-3">
+      <div class="col-md-4">
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Search by keyword">
           <span class="input-group-btn">
@@ -61,7 +61,7 @@
           </span>
         </div>
       </div>
-      <div class="col-lg-5 text-right">
+      <div class="hidden-sm hidden-xs col-md-4 text-right">
         <span class="icon-bell user-bar__notification"></span>
         <div ng-show="showMenu" style="
             position: absolute;

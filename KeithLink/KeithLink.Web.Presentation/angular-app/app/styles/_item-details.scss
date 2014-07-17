@@ -2,16 +2,21 @@
   font-size: 18px;
 }
 
+.item-details__actions {
+  padding-top: 15px
+}
+
 .tab-content {
   .tab-pane {
     background-color: $color-white;
+    border-left: 1px solid $color-border;
+    border-right: 1px solid  $color-border;
+    border-bottom: 1px solid  $color-border;
   }
 }
 
 .details-table {
   width: 100%;
-  border-left: 1px solid $color-border;
-  border-right: 1px solid  $color-border;
 
   th, td {
     padding: 20px 10px;
@@ -19,6 +24,10 @@
 
   tr {
     border-bottom: 1px solid  $color-border;
+
+    &:last-child {
+      border-bottom: none;
+    }
   }
 
   tr:nth-child(even) {
