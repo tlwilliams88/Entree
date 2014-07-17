@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using KeithLink.Svc.Core;
+using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
