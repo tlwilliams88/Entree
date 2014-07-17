@@ -5,12 +5,27 @@ $order-col__background: #f1efe5;
 
   .order-col, .payment-status-col {
     width: 20%;
+    @media (max-width:$mobile-max){
+      width: 100%;
+    }
   }
+ @media (max-width: $mobile-max)
+ {
+  .order-col, .payment-status-col {
+    width: 100%;
+  }
+ }
   .delivery-date-col, .total-cost-col {
     width: 17%;
+    @media (max-width:$mobile-max){
+      width: 100%;
+    }
   }
   .status-col {
     width: 26%;
+    @media (max-width:$mobile-max){
+      width: 100%;
+    }
   }
 }
 .order-summary__header {
@@ -23,17 +38,46 @@ $order-col__background: #f1efe5;
   margin-left: 0;
   margin-right: 5px;
 
+  .last-div{
+    @media(max-width:$mobile-max)
+    {
+      padding-bottom:30px;
+    }
+  }
+
   &.order-summary__order--paid {
     border-left: 3px solid $color-red;
   }
   &.order-summary__order--late {
+    @media (min-width: $desktop-min){
     border-left: 3px solid $color-green;
+  }
+  @media (max-width: $mobile-max)
+  {
+    border-top: 3px solid $color-green;
+  }
   }
   
   // order table columns
   div {
     min-height: 95px;
     padding-top: 37px;
+    @media (max-width: $mobile-max)
+    {
+      min-height: 0px;
+    }
+  }
+
+  .inside-div{
+    min-height: 0;
+    padding: 0;
+  }
+
+  .right{
+    @media(max-width: $mobile-max)
+    {
+      text-align: right;
+    }
   }
 
   .order-col {
@@ -47,11 +91,28 @@ $order-col__background: #f1efe5;
       display: block;
       margin-top: 12px;
       font-size: 15px;
+      @media(max-width: $mobile-max)
+      {
+        float:right;
+      }
     }
     .order-col__number {
       font-size: 22px;
       font-weight: 400;
       display: block;
+      @media(max-width: $mobile-max)
+      {
+        float:left;
+      }
+    }
+    .order-col__text{
+      text-transform: uppercase;
+      @media(max-width: $mobile-max)
+      {
+        width:100%;
+        float:left;
+        text-align: left;
+      }
     }
   }
 }

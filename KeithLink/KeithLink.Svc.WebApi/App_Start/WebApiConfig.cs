@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Configuration;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -10,6 +12,11 @@ namespace KeithLink.Svc.WebApi
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
+            System.Web.Http.Cors.EnableCorsAttribute enableCors = new System.Web.Http.Cors.EnableCorsAttribute(
+                ConfigurationManager.AppSettings[Constants.CorsEnabledDomainsConfigurationEntry],
+                ConfigurationManager.AppSettings[Constants.CorsEnabledHeadersConfigurationEntry],
+                ConfigurationManager.AppSettings[Constants.CorsEnabledMethodsConfigurationEntry]);
+            config.EnableCors(enableCors);
 
             // Web API routes
             config.MapHttpAttributeRoutes();
