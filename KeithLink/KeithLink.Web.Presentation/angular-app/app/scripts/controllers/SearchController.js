@@ -29,13 +29,13 @@ angular.module('bekApp')
 				$scope.allergenHiddenNumber = 100;
 			};
 
-			ProductService.getProducts().then(function(data) {
-				$scope.products = data.data.products;
+			ProductService.getProducts().then(function() {
+				$scope.products = ProductService.products;
 				$scope.predicate = 'id';
 			});
 
-			CategoryService.getCategories().then(function(data) {
-				$scope.categories = data.data.categories;
+			CategoryService.getCategories().then(function() {
+				$scope.categories = CategoryService.categories;
 			});
 
 			$scope.toggleSelection = function toggleSelection(id, filter) {

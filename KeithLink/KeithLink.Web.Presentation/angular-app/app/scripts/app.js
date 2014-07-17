@@ -77,9 +77,15 @@ angular
         $scope.brandId = $stateParams.brandId;
       }
     });
+  $stateProvider
+    .state('404', { 
+      url: '/404',
+      templateUrl: 'views/404.html'
+    });
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/home');
   $urlRouterProvider.when('/', '/home');
+  $urlRouterProvider.otherwise('/404');
 })
 .run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
 
