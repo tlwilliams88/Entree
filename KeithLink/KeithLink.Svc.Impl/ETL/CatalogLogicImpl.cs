@@ -37,19 +37,14 @@ namespace KeithLink.Svc.Impl.ETL
             //Create the BaseCatalog
             catalog.Catalog = BuildCatalogs(); 
             
-            CatalogSiteAgent catalogSiteAgent = new CatalogSiteAgent(); //TODO: Switch to solution wide method for connecting to CS
-            catalogSiteAgent.SiteName = Configuration.CSSiteName;
-            catalogSiteAgent.IgnoreInventorySystem = false;
-
-            CatalogContext context = CatalogContext.Create(catalogSiteAgent);
-            
             var memoryStream = new MemoryStream();
             var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
             var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
-            TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
-            serializer.Serialize(tw, catalog);
-            tw.Close();
+            //For testing, can safely be deleted
+            //TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
+            //serializer.Serialize(tw, catalog);
+            //tw.Close();
 
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
@@ -247,7 +242,7 @@ namespace KeithLink.Svc.Impl.ETL
                                                     " Order by i.[ItemId] ";
 
         private const string ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
-        private const string ReadSubCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000' AND CategoryId <> 'AA001 '";
+        private const string ReadSubCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000'";
         #endregion        
     }
 }
