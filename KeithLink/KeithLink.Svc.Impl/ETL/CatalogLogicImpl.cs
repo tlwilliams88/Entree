@@ -17,7 +17,7 @@ using KeithLink.Svc.Impl.Models.ETL;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CategoryLogicImpl: ICategoryLogic
+    public class CatalogLogicImpl: ICatalogLogic
     {
         private const string Language = "en-US";
 

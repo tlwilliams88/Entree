@@ -96,7 +96,7 @@
     <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="ETL\CategoryLogicImpl.cs" />
+    <Compile Include="ETL\CatalogLogicImpl.cs" />
     <Compile Include="Models\CommerceEntities.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
