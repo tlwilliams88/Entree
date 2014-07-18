@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl
 {
-    public class CatalogInternalRepository: ICatalogInternalRepository
+    public class CatalogInternalRepositoryImpl: ICatalogInternalRepository
     {
         public void ImportXML(CommerceServer.Core.Catalog.CatalogImportOptions options, System.IO.Stream xmlStream)
         {
