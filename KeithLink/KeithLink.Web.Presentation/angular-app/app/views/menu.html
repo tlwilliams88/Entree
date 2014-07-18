@@ -1,4 +1,4 @@
-<div class="sidebar hidden-sm hidden-xs">
+<div class="sidebar hidden-print hidden-sm hidden-xs">
   <div class="sidebar-logo text-center">
     <img src="images/bek-logo.png" alt="logo" />
   </div>
@@ -47,8 +47,18 @@
 
 <div class="row page-content">
   <div class="col-sm-12">
-    <div class="row user-bar">
-      <div class="hidden-sm hidden-xs col-md-4">
+    
+    <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
+      <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
+      <ul>
+        <li><a href=""><span class="icon-search"></span></a></li>
+        <li><a href=""><span class="icon-truck"></span></a></li>
+        <li><a href=""><span class="icon-list2"></span></a></li>
+      </ul>
+    </div>
+
+    <div class="row user-bar hidden-print hidden-sm hidden-xs">
+      <div class="col-md-4">
         <select name="" id="">
           <option value="" ng-repeat="store in currentUser.stores">{{store.name}}</option>
         </select>
@@ -57,11 +67,11 @@
         <div class="input-group">
           <input type="text" class="form-control" placeholder="Search by keyword">
           <span class="input-group-btn">
-            <button class="btn btn-lg" type="button"><span class="glyphicon glyphicon-search"></span></button>
+            <button class="btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
           </span>
         </div>
       </div>
-      <div class="hidden-sm hidden-xs col-md-4 text-right">
+      <div class="col-md-4 text-right">
         <span class="icon-bell user-bar__notification"></span>
         <div ng-show="showMenu" style="
             position: absolute;

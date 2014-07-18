@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="col-sm-3" ng-show="{{item.imageUrl}}">
-    <img src="" alt="" style="width:200px;height:200px;">
+    <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
   </div>
   <div class="col-sm-9">
     <h2>{{item.description}}</h2>
@@ -19,9 +19,9 @@
         <span ng-show="{{item.upc !== null}}"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
     </div>    
-    <div class="item-details__actions">
-      <button class="cta-btn btn btn-lg">Add To... <span class="icon-arrow-down6"></span></button>
-      <button class="btn btn-lg"><span class="icon-star2"></span> Save Item</button>
+    <div class="item-details__actions hidden-print">
+      <button class="cta-btn btn">Add To... <span class="icon-arrow-down6"></span></button>
+      <button class="btn"><span class="icon-star2"></span> Save Item</button>
     </div>
   </div>
 </div>
@@ -31,7 +31,8 @@
     <tabset class="tabset">
       <tab heading="Item Specifications">
         <div class="table-responsive">
-        <table class="details-table table">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
+        <table class="item-details__table table table-striped">
           <colgroup>
             <col style="width: 20%">
             <col style="width: 25%">
@@ -86,11 +87,12 @@
         </div>
       </tab>
       <tab heading="Nutrition">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
         Standard
         Dietary Info
       </tab>
       <tab heading="Images">
-        <div style="padding:15px;">
+        <div class="hidden-print item-details__images">
           <img src="" alt="" style="width:200px;height:200px;">
           <img src="" alt="" style="width:200px;height:200px;">
           <img src="" alt="" style="width:200px;height:200px;">
