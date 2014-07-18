@@ -14,12 +14,19 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using KeithLink.Svc.Impl.Models.ETL;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.ETL
 {
     public class CatalogLogicImpl: ICatalogLogic
     {
         private const string Language = "en-US";
+        private readonly ICatalogInternalRepository catalogRepository;
+
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository)
+        {
+            this.catalogRepository = catalogRepository;
+        }
 
         public void ImportCatalog()
         {
@@ -47,14 +54,8 @@ namespace KeithLink.Svc.Impl.ETL
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
             var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
-            ImportProgress importProgress = context.ImportXml(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
-            while (importProgress.Status == CatalogOperationsStatus.InProgress)
-            {
-                System.Threading.Thread.Sleep(3000);
-                // Call the refresh method to refresh the current status
-                importProgress.Refresh();
-            }
-            //TODO: Log an errors that occured during the import
+            
+            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
         }
 
         private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()

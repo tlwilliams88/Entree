@@ -1,5 +1,7 @@
 ﻿using Autofac;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
 using System;
 using System.Collections.Generic;
@@ -15,6 +17,7 @@ namespace KeithLink.Svc.InternalSvc
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ETLService>();
+            builder.RegisterType<CatalogInternalRepository>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<ICatalogLogic>();
 
             return builder.Build();
