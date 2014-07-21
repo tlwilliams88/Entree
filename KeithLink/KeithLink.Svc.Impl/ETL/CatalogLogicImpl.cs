@@ -15,6 +15,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using KeithLink.Svc.Impl.Models.ETL;
 using KeithLink.Svc.Core;
+using CommerceServer.Core.Profiles;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -22,10 +23,12 @@ namespace KeithLink.Svc.Impl.ETL
     {
         private const string Language = "en-US";
         private readonly ICatalogInternalRepository catalogRepository;
+        private readonly IStagingRepository stagingRepository;
 
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository)
         {
             this.catalogRepository = catalogRepository;
+            this.stagingRepository = stagingRepository;
         }
 
         public void ImportCatalog()
@@ -53,21 +56,20 @@ namespace KeithLink.Svc.Impl.ETL
             catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
         }
 
+        public void ImportProfiles()
+        {
+            ProfilesServiceAgent profileAgent = new ProfilesServiceAgent("https://localhost:1001/bek_ProfilesWebService/ProfilesWebService.asmx");
+            ProfileManagementContext context = ProfileManagementContext.Create(profileAgent);
+            //var test = context.CreateProfile(
+        }
+
+        
+        #region Helper Methods
+
         private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
         {
             var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
-            var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                conn.Open();
-
-                using (var cmd = new SqlCommand(ReadBranches, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }                
-            }
+            var dataTable = stagingRepository.ReadAllBranches();
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -81,75 +83,11 @@ namespace KeithLink.Svc.Impl.ETL
 
             return catalogs.ToArray();
         }
-        
-        #region Helper Methods
-        private MSCommerceCatalogCollection2VirtualCatalog[] GenerateVirtualCatalogs()
-        {
-            var dataTable = new DataTable();
-            var exclusionTable = new DataTable();
-            var virtualCatalogs = new List<MSCommerceCatalogCollection2VirtualCatalog>();
-
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                conn.Open();
-
-                using (var cmd = new SqlCommand(ReadBranches, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }
-
-                using (var cmd = new SqlCommand(ReadBranchesItems, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(exclusionTable);
-                }
-            }
-
-
-            foreach (DataRow row in dataTable.Rows)
-            {
-                var vc = new MSCommerceCatalogCollection2VirtualCatalog() { name = row.GetString("BranchId"), startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
-                vc.DisplayName = CreateDisplayName(row.GetString("Description"));
-
-                //Include the base catalog
-                vc.IncludeRule = new List<MSCommerceCatalogCollection2VirtualCatalogIncludeRule> { new MSCommerceCatalogCollection2VirtualCatalogIncludeRule() { baseCatalog = Configuration.BaseCatalog } }.ToArray();
-
-
-                var rules = exclusionTable.AsEnumerable().Where(e => e.Field<string>("BranchId") == row.GetString("BranchId"));
-                var excludeRules = new List<MSCommerceCatalogCollection2VirtualCatalogExcludeRule>();
-                foreach (var exRow in rules)
-                    try
-                    {
-                        //Exlude the specific products that don't belong to this virtual catalog
-                        excludeRules.Add(new MSCommerceCatalogCollection2VirtualCatalogExcludeRule() { baseCatalog = Configuration.BaseCatalog, ProductId = exRow.GetString("ItemId") });
-                    }
-                    catch { }
-
-                vc.ExcludeRule = excludeRules.ToArray();
-                virtualCatalogs.Add(vc);
-            }
-
-            return virtualCatalogs.ToArray();
-
-        }
-        
+                
         private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId)
         {
-            var itemTable = new DataTable();
             var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
-
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                using (var cmd = new SqlCommand(string.Format(ReadItems_IncludeBranch, branchId), conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(itemTable);
-                }
-            }
+            var itemTable = stagingRepository.ReadItems(branchId);
 
             foreach (DataRow row in itemTable.Rows)
             {
@@ -162,29 +100,13 @@ namespace KeithLink.Svc.Impl.ETL
             return products.ToArray();
         }
 
+        
+
         private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
         {
-            var dataTable = new DataTable();
-            var childTable = new DataTable();
             List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
-
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
-            {
-                using (var cmd = new SqlCommand(ReadParentCategories, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    conn.Open();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }
-
-                using (var cmd = new SqlCommand(ReadSubCategories, conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(childTable);
-                }
-            }
+            var dataTable = stagingRepository.ReadParentCategories();
+            var childTable = stagingRepository.ReadSubCategories();
 
             foreach (DataRow cat in dataTable.Rows)
             {
@@ -204,45 +126,18 @@ namespace KeithLink.Svc.Impl.ETL
             return categories.ToArray();
         }
 
+        
+
         private static DisplayName[] CreateDisplayName(string value)
         {
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
+
         #endregion
 
-        #region SQL
-        private const string ReadBranchesItems = " SELECT  DISTINCT " +
-                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
-                                            "       i.[ItemId] " +
-                                            " FROM " +
-                                            " 	ETL.Staging_ItemData i cross join " +
-                                            " 	ETL.Staging_Branch b  " +
-                                            " WHERE " +
-                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
-                                            " order by " +
-                                            " 	i.ItemId; ";
+       
+    
 
-        private const string ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
-
-        private const string ReadItems_IncludeBranch = " SELECT DISTINCT " +
-                                                    "       i.[ItemId] " +
-                                                    "       ,ETL.initcap([Name]) as Name " +
-                                                    "       ,ETL.initcap([Description]) as Description " +
-                                                    "       ,ETL.initcap([Brand]) as Brand " +
-                                                    "       ,[Pack] " +
-                                                    "       ,[Size] " +
-                                                    "       ,[UPC] " +
-                                                    "       ,[MfrNumber] " +
-                                                    "       ,ETL.initcap([MfrName]) as MfrName " +
-                                                    "       ,i.CategoryId " +
-                                                    "   FROM [ETL].[Staging_ItemData] i inner join " +
-                                                    "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
-                                                    " WHERE " +
-                                                    "   i.BranchId = '{0}' " +
-                                                    " Order by i.[ItemId] ";
-
-        private const string ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
-        private const string ReadSubCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000'";
-        #endregion        
+        
     }
 }

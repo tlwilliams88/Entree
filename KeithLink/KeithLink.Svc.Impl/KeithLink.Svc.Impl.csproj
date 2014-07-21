@@ -56,6 +56,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Core.Profiles.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Profiles.CrossTier.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServerContrib.CodeGeneration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
@@ -97,6 +101,7 @@
     <Compile Include="CatalogInternalRepositoryImpl.cs" />
     <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />

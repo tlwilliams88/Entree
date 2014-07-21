@@ -69,6 +69,7 @@
     <Compile Include="ETL\ICatalogLogic.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="ETL\IStagingRepository.cs" />
     <Compile Include="ICatalogInternalRepository.cs" />
     <Compile Include="ICatalogRepository.cs" />
     <Compile Include="Product.cs" />
