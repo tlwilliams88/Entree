@@ -65,32 +65,32 @@
 				<thead>
 					<tr>
 						<th></th>
-						<th>
-							<a href="" ng-click="predicate = 'id'; reverse=!reverse">Item #</a><span ng-class="{
+						<th ng-click="predicate = 'id'; reverse=!reverse">
+							Item #<span ng-class="{
 							'icon-menu':predicate !== 'id',
 							'icon-arrow-down4':predicate == 'id' && !reverse,
 							'icon-arrow-up3': predicate == 'id' && reverse
 							}"></span>
 						</th>
-						<th>
-							<a href="" ng-click="predicate = 'cases'; reverse=!reverse">Pack/Size</a><span ng-class="{
+						<th ng-click="predicate = 'cases'; reverse=!reverse">
+							Pack/Size<span ng-class="{
 							'icon-menu':predicate !== 'cases',
 							'icon-arrow-down4':predicate == 'cases' && !reverse,
 							'icon-arrow-up3': predicate == 'cases' && reverse
 							}"></span>
 						</th>
-						<th>
-							<a href="" ng-click="predicate = 'brand'; reverse=!reverse">Brand</a><span ng-class="{
+						<th ng-click="predicate = 'brand'; reverse=!reverse">
+							Brand<span ng-class="{
 							'icon-menu':predicate !== 'brand',
 							'icon-arrow-down4':predicate == 'brand' && !reverse,
 							'icon-arrow-up3': predicate == 'brand' && reverse
 						}"></span></th>
-						<th>
-							<a href="" ng-click="predicate = 'description'; reverse=!reverse">Description</a><span ng-class="{
+						<th ng-click="predicate = 'description'; reverse=!reverse">Description<span ng-class="{
 							'icon-menu':predicate !== 'description',
 							'icon-arrow-down4':predicate == 'description' && !reverse,
 							'icon-arrow-up3': predicate == 'description' && reverse
 						}"></span></th>
+						<th></th>	
 						<th>Add To</th>
 					</tr>
 				</thead>
@@ -101,6 +101,10 @@
 						<td>{{product.cases}} / {{product.size}}</td>
 						<td>{{product.brand}}</td>
 						<td>{{product.description}}</td>
+						<td class="icons">
+							<span class="icon-cell-sheet"></span>
+							<span class="icon-apple"></span>
+						</td>
 						<td><span class="icon-plus2"></span></td>
 					</tr>
 				</tbody>

@@ -20,7 +20,6 @@ button.btn {
 
 select {
   border: 1px solid $color-border;
-  font-size: 16px;
   font-weight: 300;
   height: 40px;
   letter-spacing: 1px;
@@ -52,7 +51,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   border: 1px solid $color-border;
   height: 40px;
   font-weight: 300;
-  font-size: 16px;
+  font-size: 12px;
   letter-spacing: 1px;
 }
 
@@ -64,11 +63,10 @@ input[type='text'], input[type='email'], input[type='password'] {
   li {
     a {
       margin-right: 5px;
-      line-height: 35px;
-      font-size: 16px;
+      // line-height: 35px;
       border-radius: 0;
       border: 1px solid $color-border;
-      padding: 10px 40px;
+      padding: 12px 40px;
 
       &:hover {
         @extend a;
@@ -80,7 +78,7 @@ input[type='text'], input[type='email'], input[type='password'] {
     border: 1px solid $color-border;
     border-bottom-color: transparent;
     border-top: 3px solid $color-blue;
-    padding-top: 8px;
+    padding-top: 10px;
     font-weight: normal;
 
     &:hover {
@@ -88,6 +86,15 @@ input[type='text'], input[type='email'], input[type='password'] {
     }
   }
 }
+.tab-content {
+  .tab-pane {
+    background-color: $color-white;
+    border-left: 1px solid $color-border;
+    border-right: 1px solid  $color-border;
+    border-bottom: 1px solid  $color-border;
+  }
+}
+
 
 @media (max-width: 768px) {
   .nav-tabs {
@@ -103,6 +110,56 @@ input[type='text'], input[type='email'], input[type='password'] {
 
     li.active a {
       border-bottom-color: $color-border;
+    }
+  }
+}
+
+/* TABLES */
+
+.table-responsive {
+  border: none;
+  margin-bottom: 0;
+}
+
+.table {
+  margin-bottom: 0; 
+  border: 1px solid $color-border;
+
+  thead {
+    background-color: $background;
+  }
+
+  thead > tr > th, 
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  thead > tr > td, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    padding: 15px 10px;
+  }
+  
+  tr {
+    border-bottom: 1px solid  $color-border;
+  }
+}
+
+.table-striped {
+
+  tbody {
+
+    tr:nth-child(even) {
+      background-color: $background;
+    }
+    tr:nth-child(odd) {
+      background-color: $color-white;
     }
   }
 }

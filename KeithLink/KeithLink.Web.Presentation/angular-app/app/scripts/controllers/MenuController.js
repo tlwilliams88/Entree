@@ -16,7 +16,7 @@ angular.module('bekApp')
 
 
     $scope.currentUser = {
-      'name': 'Steven Broussard',
+      'name': 'Steven',
       'customerNumber': 12345,
       'imageUrl': null,
       'role': 'Kitchen Manager',
