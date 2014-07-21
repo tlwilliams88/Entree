@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl
             while (importProgress.Status == CatalogOperationsStatus.InProgress)
             {
                 System.Threading.Thread.Sleep(3000);
+                
                 importProgress.Refresh();
             }
         }

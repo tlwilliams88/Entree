@@ -11,6 +11,12 @@ namespace KeithLink.Svc.Impl
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_STAGING_CONNECTIONSTRING = "StagingConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
+        private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+
+        public static string ElasticSearchURL
+        {
+            get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
+        }
 
         public static string CSSiteName
         {
@@ -19,7 +25,7 @@ namespace KeithLink.Svc.Impl
 
         public static string BaseCatalog
         {
-            get { return GetValue(KEY_BASE_CATALOG, string.Empty);  }
+            get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
         }
 
         public static string StagingConnectionString

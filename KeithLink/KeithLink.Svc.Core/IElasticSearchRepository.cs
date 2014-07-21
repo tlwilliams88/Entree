@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.ETL
+namespace KeithLink.Svc.Core
 {
-    public interface ICatalogLogic
+    public interface IElasticSearchRepository
     {
-        void ImportCatalog();
-        void ImportProfiles();
+        void Create(string json);
     }
 }
