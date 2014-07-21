@@ -1,7 +1,7 @@
 .account-summary__balance {
   background-color: $color-white;
   border: 1px solid $color-border;
-  padding: 15px;
+  padding: $gutter-size;
   
   .balance__amount {
     font-size: 24px;
@@ -13,8 +13,8 @@
   }
 
   .balance__term {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    margin-top: $gutter-size;
+    margin-bottom: $gutter-size;
   }
 
   .balance__term--amount {

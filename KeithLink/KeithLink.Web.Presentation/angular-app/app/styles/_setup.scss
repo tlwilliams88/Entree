@@ -14,6 +14,15 @@ h2 { font-size: 20px; }
 h3 { font-size: 16px; }
 h4 { font-size: 13px; }
 
+a {
+  color: $color-blue;
+
+  &:hover {
+    color: $color-blue;
+    text-decoration: none;
+  }
+}
+
 // Bootstrap adjustment for fixed width sidebar
 .container-fluid {
   padding-left: 0;
@@ -23,12 +32,6 @@ h4 { font-size: 13px; }
   width: calc(100% - $sidebar-width);
   margin-left: $sidebar-width;
 }
-.view {
-  padding-bottom: 15px ;
-}
-
-// Angular ui bootstrap fix for cursor pointers
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
 @media (max-width: $desktop-min) {
   .container-fluid {
@@ -38,4 +41,33 @@ h4 { font-size: 13px; }
     width: inherit;
     margin-left: 0;
   }
+}
+.view {
+  padding-bottom: $gutter-size;
+}
+
+// Angular ui bootstrap fix for cursor pointers
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.no-padding{
+  padding:0;
+}
+
+.text-late {
+  color: $color-red;
+}
+.text-paid {
+  color: $color-green;
+}
+
+// slightly lighter text color, mostly for icons
+.text-light {
+  color: $color-font-light;
+}
+
+.sub-content{
+  padding-top: 20px;
+}
+.sub-content-mobile{
+  padding-top: 50px;
 }

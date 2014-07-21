@@ -11,32 +11,15 @@ $order-col__background: #f1efe5;
   margin-left: 0;
 
   &.order-summary__order--paid {
-    border-left: 3px solid $color-red;
-  }
-  &.order-summary__order--late {
-    @media (min-width: $desktop-min){
     border-left: 3px solid $color-green;
   }
-  @media (max-width: $mobile-max)
-  {
-    border-top: 3px solid $color-green;
-  }
+  &.order-summary__order--late {
+    border-left: 3px solid $color-red;
   }
   
   // order table columns
-  div {
+  > div {
     padding-top: 30px;
-  }
-
-  .inside-div{
-    padding: 0;
-  }
-
-  .right{
-    @media(max-width: $mobile-max)
-    {
-      text-align: right;
-    }
   }
 
   .order-col {
@@ -61,29 +44,39 @@ $order-col__background: #f1efe5;
 
 @media(max-width: $mobile-max) {
   .order-summary__order {
-    padding-bottom: 15px;
+    padding-bottom: $gutter-size;
     margin-right: 0;
+    border-left: 1px solid $color-border;
     
+    &.order-summary__order--late {
+      border-left: 1px solid $color-border;  
+      border-top: 3px solid $color-red;
+    }
+    &.order-summary__order--paid {
+      border-left: 1px solid $color-border;
+      border-top: 3px solid $color-green;
+    }
+
     // order table rows
-    div {
-      padding-top: 15px;
+    > div {
+      padding-top: $gutter-size;
+    }
+
+    .right{
+      text-align: right;
     }
 
     .order-col {
       border-right: none;
       border-bottom: 1px solid $color-border;
-      padding: 10px 15px;
+      padding: 10px $gutter-size;
+      text-align: left;
 
       .order-col__date {
-        float: right;
-      }
-      .order-col__number {
-        float: left;
+        text-align: right;
       }
       .order-col__text {
         width: 100%;
-        float: left;
-        text-align: left;
       }
     }
   }
