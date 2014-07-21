@@ -28,6 +28,7 @@ angular.module('bekApp')
     $scope.addItem = function() {
       var newWidth = 300 + items.length;
       items.push({
+        id: 1,
         image: 'http://placebear.com/' + newWidth + '/300',
         description: '50% off of apples!'
       });

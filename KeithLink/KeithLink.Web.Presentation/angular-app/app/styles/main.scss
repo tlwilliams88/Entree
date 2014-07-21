@@ -27,13 +27,14 @@ $mobile-max: 991px;
 }
 
 .featured-item {
-  margin-bottom: 15px;
   background-color: white;
+  float: left;
+  width: 170px;
+  margin: 8px 4px;
 
   img {
     height: 175px;
     width: 100%;
-    padding: 10px;
   }
 
   a {
@@ -50,22 +51,24 @@ $mobile-max: 991px;
 .featured-item-mobile{
   margin-bottom: 70px;
   background-color: $color-white;
+  margin-left: -15px;
+  margin-right: -15px;
 
   img{
-    height:175px;
+    height:125px;
     width:100%;
   }
 
   .featured-item-mobile__detail{
-    padding-top: 60px;
+    padding-top: 30px;
     border-left: 1px solid $color-border;
-    height:175px;
+    height:125px;
     text-align: left;
-    padding-left: 30px;
-    font-size: 20px;
-    font-weight: 400;
-    a{
-      font-size: 14px;
+    padding-left: 20px;
+    font-size: 15px;
+
+    a {
+      font-size: 12px;
     }
   }
 }
@@ -99,52 +102,13 @@ $mobile-max: 991px;
   padding-top: 50px;
 }
 
-
-.table{
-  border: 1px solid #ddd;
-
-  td{
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-  }
-  th{
-    a{
-      color: $color-font;
-    }
-    span{
-      color: #B2AA99;
-      font-size: 12px;
-    }
-  }
-  .icon-plus2{
-    color: $color-blue;
-    font-size: 18px;
-  }
-  .icon-star2{
-    font-size: 16px;
-  }
-
-}
-
-.table-striped{
-  tbody{
-    tr:nth-child(odd){
-      td{
-background-color:white;
-      }
-      th{
-background-color:white;
-      }
-    }
-  }
-}
-
 @import 'setup';
 @import 'components';
 
 // menus
 @import 'sidebar';
 @import 'user-bar';
+@import 'page-header-bar';
 
 // homepage
 @import 'order-summary';

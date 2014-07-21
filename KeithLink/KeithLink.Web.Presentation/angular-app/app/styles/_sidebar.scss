@@ -8,7 +8,7 @@ $sidebar-nav__text--selected: $color-white;
 
 .sidebar {
   color: $sidebar__text;
-  font-size: 14px;
+  font-size: 13px;
   padding: 0;
   width: $sidebar-width;
   background-color: $sidebar__background--light;
@@ -32,7 +32,7 @@ $sidebar-nav__text--selected: $color-white;
     background-color: $sidebar__background--dark;
 
     img {
-      height: 100px;
+      height: 75px;
     }
   }
 
@@ -88,7 +88,7 @@ $sidebar-nav__text--selected: $color-white;
   }
 
   .sidebar-meta {
-    font-size: 10px;
+    font-size: 11px;
     font-weight: 300;
     position: absolute;
     bottom: 15px;
