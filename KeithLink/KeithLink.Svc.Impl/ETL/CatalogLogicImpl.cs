@@ -16,6 +16,7 @@ using System.Runtime.Serialization;
 using KeithLink.Svc.Impl.Models.ETL;
 using KeithLink.Svc.Core;
 using CommerceServer.Core.Profiles;
+using System.Text.RegularExpressions;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -45,9 +46,9 @@ namespace KeithLink.Svc.Impl.ETL
             var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
             //For testing, can safely be deleted
-            //TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
-            //serializer.Serialize(tw, catalog);
-            //tw.Close();
+            TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
+            serializer.Serialize(tw, catalog);
+            tw.Close();
 
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
@@ -94,6 +95,13 @@ namespace KeithLink.Svc.Impl.ETL
                 var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
                 newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
                 newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
+                newProd.MfrName = row.GetString("MfrName");
+                newProd.MfrNumber = row.GetString("MfrNumber");
+                newProd.Pack = row.GetString("Pack");
+                newProd.Size = row.GetString("Size");
+                newProd.UPC = row.GetString("UPC");
+                newProd.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
+                newProd.Brand = row.GetString("Brand");
                 products.Add(newProd);
             }
 
