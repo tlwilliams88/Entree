@@ -29,6 +29,10 @@ namespace KeithLink.Svc.Core
     [DataContract(Name="PriceReturn")]
     public class PriceReturn
     {
+        public PriceReturn() { 
+            Prices = new List<Price>();
+        }
+
         [DataMember(Name="Prices")]
         public List<Price> Prices { get; set; }
     }
