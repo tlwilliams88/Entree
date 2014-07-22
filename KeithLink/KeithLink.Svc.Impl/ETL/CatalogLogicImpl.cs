@@ -49,8 +49,8 @@ namespace KeithLink.Svc.Impl.ETL
                 
                 var catTask = Task.Factory.StartNew(() => ImportCatalog());
                 var profileTask = Task.Factory.StartNew(() => ImportProfiles());
-                var esItemTask = Task.Factory.StartNew(() => SendItemsToElasticSearch());
-                var esCatTask = Task.Factory.StartNew(() => SendCategoriesToElasticSearch());
+                var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
+                var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
 
@@ -64,8 +64,7 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
-
-        private void ImportCatalog()
+        public void ImportCatalog()
         {
             //Create root level catalog object
             MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
@@ -82,14 +81,14 @@ namespace KeithLink.Svc.Impl.ETL
             memoryStream.Position = 0;
             var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
             
-            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
+            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Incremental, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
         }
 
-        private void ImportProfiles()
+        public void ImportProfiles()
         {   
         }
 
-        private void SendItemsToElasticSearch()
+        public void ImportItemsToElasticSearch()
         {
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
             var products = new BlockingCollection<ElasticSearchItemUpdate>();
@@ -116,8 +115,8 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
         }
-        
-        private void SendCategoriesToElasticSearch()
+
+        public void ImportCategoriesToElasticSearch()
         {
             var parentCategories = stagingRepository.ReadParentCategories();
             var childCategories = stagingRepository.ReadSubCategories();
