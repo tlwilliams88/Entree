@@ -23,9 +23,17 @@ namespace KeithLink.Svc.InternalSvc
             this.categoryLogic = categoryLogic;
         }
 
-        public bool ProcessedStagedData()
+        public bool ProcessStagedData()
         {
             categoryLogic.ProcessStagedData();
+            return true;
+        }
+
+
+        public bool UpdateElasticSearch()
+        {
+            categoryLogic.ImportItemsToElasticSearch();
+            categoryLogic.ImportCategoriesToElasticSearch();
             return true;
         }
     }
