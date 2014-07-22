@@ -44,8 +44,11 @@ namespace KeithLink.Svc.Core
         [DataMember(Name = "kosher")]
         public string Kosher { get; set; }
 
-        [DataMember(Name = "price")]
-        public string Price { get; set; }
+        [DataMember(Name = "caseprice")]
+        public string CasePrice { get; set; }
+
+        [DataMember(Name = "packageprice")]
+        public string PackagePrice { get; set; }
     }
 
     [DataContract(Name = "ProductsReturn")]
