@@ -59,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Product GetProductById(string id)
         {
 
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            //IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
 
             Product currentItem = new Product()
             {
@@ -90,7 +90,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("catalog/search/products")]
         public ProductsReturn GetProductsSearch()
         {
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            //IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
             ProductsReturn ret = new ProductsReturn();
             ret.Products = new List<Product>();
 
