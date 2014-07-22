@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core
 {
     public interface IPriceRepository
     {
-        PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<string> itemNumber);
+        PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products);
     }
 }
