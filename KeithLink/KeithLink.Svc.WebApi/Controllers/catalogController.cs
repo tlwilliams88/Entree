@@ -12,10 +12,12 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class CatalogController : ApiController
     {
         KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
+        KeithLink.Svc.Core.IPriceRepository _priceRepository;
 
-        public CatalogController(ICatalogRepository catalogRepository)
+        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository)
         {
             _catalogRepository = catalogRepository;
+            _priceRepository = priceRepository;
         }
 
         public IEnumerable<Product> GetAllProducts()
@@ -58,9 +60,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
 
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return new Product()
+
+            Product currentItem = new Product()
             {
-                Id = "101285",
+                ItemNumber = "285141",
                 Description = "Shrimp Raw Hdls 25/30",
                 ExtendedDescription = "Premium Wild Texas White",
                 Brand = "Cortona",
@@ -71,9 +74,16 @@ namespace KeithLink.Svc.WebApi.Controllers
                 Cases = "0",
                 CategoryId = "FS490",
                 Kosher = "true",
-                Price = "325.00"
             };
 
+            List<Product> products = new List<Product>();
+            products.Add(currentItem);
+
+            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), products);
+            currentItem.CasePrice = pricingInfo.Prices[0].CasePrice.ToString();
+            currentItem.PackagePrice = pricingInfo.Prices[0].PackagePrice.ToString();
+
+            return currentItem;
         }
 
         [HttpGet]
@@ -86,7 +96,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             ret.Products.Add(new Product()
             {
-                Id = "101285",
+                ItemNumber = "285141",
                 Description = "Shrimp Raw Hdls 25/30",
                 ExtendedDescription = "Premium Wild Texas White",
                 Brand = "Cortona",
@@ -96,12 +106,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 ManufacturerName = "Ellington Farms Seafood",
                 Cases = "0",
                 CategoryId = "FS490",
-                Kosher = "true",
-                Price = "325.00"
+                Kosher = "true"
             });
             ret.Products.Add(new Product()
             {
-                Id = "101286",
+                ItemNumber = "285149",
                 Description = "Shrimp Cooked Hdls 25/30",
                 ExtendedDescription = "Premium Wild Texas White",
                 Brand = "Cortona",
@@ -111,9 +120,22 @@ namespace KeithLink.Svc.WebApi.Controllers
                 ManufacturerName = "Ellington Farms Seafood 2",
                 Cases = "1",
                 CategoryId = "FS490",
-                Kosher = "true",
-                Price = "325.00"
+                Kosher = "true"
             });
+
+            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), ret.Products);
+
+            foreach (Price currentPrice in pricingInfo.Prices)
+            {
+                for (int i = 0; i < ret.Products.Count; i++)
+                {
+                    if (ret.Products[i].ItemNumber.Equals(currentPrice.ItemNumber))
+                    {
+                        ret.Products[i].CasePrice = currentPrice.CasePrice.ToString();
+                        ret.Products[i].PackagePrice = currentPrice.PackagePrice.ToString();
+                    }
+                }
+            }
 
             return ret;
         }
