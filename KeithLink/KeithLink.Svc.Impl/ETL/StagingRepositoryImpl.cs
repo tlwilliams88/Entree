@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.ETL
         public DataTable ReadAllBranches()
         {
             var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 conn.Open();
 
@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var itemTable = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 using (var cmd = new SqlCommand(string.Format(SQL_ReadItems_IncludeBranch, branchId), conn))
                 {
@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var childTable = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 using (var cmd = new SqlCommand(SQL_ReadSubCategories, conn))
                 {
@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var dataTable = new DataTable();
 
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 using (var cmd = new SqlCommand(SQL_ReadParentCategories, conn))
                 {
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.ETL
         public DataTable ReadFullItemForElasticSearch()
         {
             var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.StagingConnectionString))
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 conn.Open();
 

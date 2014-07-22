@@ -45,12 +45,16 @@ namespace KeithLink.Svc.Impl.ETL
         {
             try
             {
+                log.Debug("Start Processing Staged Catalog Data");
+
                 var catTask = Task.Factory.StartNew(() => ImportCatalog());
                 var profileTask = Task.Factory.StartNew(() => ImportProfiles());
                 var esItemTask = Task.Factory.StartNew(() => SendItemsToElasticSearch());
                 var esCatTask = Task.Factory.StartNew(() => SendCategoriesToElasticSearch());
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
+                log.Debug("Staged Data Processed");
+
             }
             catch (Exception ex) 
             {
@@ -74,9 +78,9 @@ namespace KeithLink.Svc.Impl.ETL
             var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
             //For testing, can safely be deleted
-            TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
-            serializer.Serialize(tw, catalog);
-            tw.Close();
+            //TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
+            //serializer.Serialize(tw, catalog);
+            //tw.Close();
 
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
