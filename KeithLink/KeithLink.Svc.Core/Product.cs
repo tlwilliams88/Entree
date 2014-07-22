@@ -11,8 +11,8 @@ namespace KeithLink.Svc.Core
     [Serializable]
     public class Product
     {
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+        [DataMember(Name = "itemnumber")]
+        public string ItemNumber { get; set; }
 
         [DataMember(Name = "description")]
         public string Description { get; set; }
