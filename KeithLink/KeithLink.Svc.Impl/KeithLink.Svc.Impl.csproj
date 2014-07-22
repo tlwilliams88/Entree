@@ -88,6 +88,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -108,12 +110,28 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="PriceRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>RequestTemplates.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Schemas\PricingRequest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PricingRequest.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Schemas\PricingResponse.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\com.benekeith.PricingService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="StubCatalogRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -133,6 +151,35 @@
       <LastGenOutput>RequestTemplates.cs</LastGenOutput>
     </None>
     <None Include="RequestTemplates\RequestTemplateTemplate.tt" />
+    <None Include="Schemas\PricingRequest.xsc">
+      <DependentUpon>PricingRequest.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\PricingRequest.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PricingRequest.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\PricingRequest.xss">
+      <DependentUpon>PricingRequest.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\PricingResponse.xsc">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\PricingResponse.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PricingResponse.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schemas\PricingResponse.xss">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\PricingResponse.xsx">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\com.benekeith.PricingService\pricing.wsdl" />
     <None Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Unity.config" />
     <None Include="Web.config" />
@@ -155,6 +202,27 @@
       <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
       <Name>KeithLink.Svc.Core</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.PricingService\pricing.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.PricingService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.PricingService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.PricingService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

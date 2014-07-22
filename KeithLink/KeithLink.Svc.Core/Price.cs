@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core
 {
     [DataContract(Name="Price")]
-    class Price
+    public class Price
     {
         [DataMember(Name="BranchId")]
         public string BranchId { get; set; }
@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Core
     }
 
     [DataContract(Name="PriceReturn")]
-    class PriceReturn
+    public class PriceReturn
     {
         [DataMember(Name="Prices")]
         public List<Price> Prices { get; set; }
