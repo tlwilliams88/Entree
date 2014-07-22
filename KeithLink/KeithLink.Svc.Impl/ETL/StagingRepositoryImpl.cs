@@ -161,6 +161,9 @@ namespace KeithLink.Svc.Impl.ETL
                                                 "	Buyer, " +
                                                 "	Kosher, " +
                                                 "	c.CategoryId, " +
+                                                "   ReplacementItem, " +
+                                                "   ReplacedItem, " +
+                                                "   CNDoc, " +
                                                 "	ETL.initcap(c.CategoryName) as CategoryName, " +
                                                 "	(SELECT CategoryId from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryId, " +
                                                 "	(SELECT ETL.initcap(CategoryName) from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryName " +

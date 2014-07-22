@@ -46,13 +46,14 @@ namespace KeithLink.Svc.Impl.ETL
             try
             {
                 log.Debug("Start Processing Staged Catalog Data");
-
+                
                 var catTask = Task.Factory.StartNew(() => ImportCatalog());
                 var profileTask = Task.Factory.StartNew(() => ImportProfiles());
                 var esItemTask = Task.Factory.StartNew(() => SendItemsToElasticSearch());
                 var esCatTask = Task.Factory.StartNew(() => SendCategoriesToElasticSearch());
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
+
                 log.Debug("Staged Data Processed");
 
             }
@@ -76,12 +77,7 @@ namespace KeithLink.Svc.Impl.ETL
             var memoryStream = new MemoryStream();
             var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
             var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
-
-            //For testing, can safely be deleted
-            //TextWriter tw = new StreamWriter(@"C:\Dev\TestExportFinal.xml", false, Encoding.Unicode);
-            //serializer.Serialize(tw, catalog);
-            //tw.Close();
-
+            
             serializer.Serialize(streamWriter, catalog);
             memoryStream.Position = 0;
             var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
@@ -276,13 +272,15 @@ namespace KeithLink.Svc.Impl.ETL
                         upc = row.GetString("UPC"),
                         vendor1 = row.GetString("Vendor1"),
                         vendor2 = row.GetString("Vendor2"),
-                        branchid = row.GetString("BranchId")
+                        branchid = row.GetString("BranchId"),
+                        replaceditem = row.GetString("ReplacedItem"),
+                        replacementitem = row.GetString("ReplacementItem"),
+                        cndoc = row.GetString("CNDoc")
                     }
 
                 }
             };
         }
-
 
         private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories)
         {

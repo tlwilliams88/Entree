@@ -56,6 +56,9 @@ namespace KeithLink.Svc.Impl.Models
         public string buyer { get; set; }
         public string kosher { get; set; }
         public string branchid { get; set; }
+        public string replacementitem { get; set; }
+        public string replaceditem { get; set; }
+        public string cndoc { get; set; }
     }
 
     
