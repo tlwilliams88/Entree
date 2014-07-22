@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.ETL
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { } //TODO: Log
         }
 
 
