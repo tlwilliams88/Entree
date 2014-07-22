@@ -16,14 +16,14 @@ angular.module('bekApp')
 
 
     $scope.currentUser = {
-      'name': 'Steven Broussard',
+      'name': 'Steven',
       'customerNumber': 12345,
       'imageUrl': null,
-      'role': null,
+      'role': 'Kitchen Manager',
       'phone': 9348234934,
       'location': 'Dallas',
       'stores': [{
-        'name': 'Chick-fil-A',
+        'name': 'Jimmy\'s Chicken Shack',
         'customerNumber': 453234
       }, {
         'name': 'Saltgrass',

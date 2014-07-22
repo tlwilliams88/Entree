@@ -21,17 +21,36 @@ angular.module('bekApp')
     $scope.brands = [
       {
         id: 1,
+        imageUrl: 'images/admiral.jpg',
         name: 'Admiral Of The Fleet'
       },{
         id: 2,
+        imageUrl: 'images/admiral.jpg',
         name: 'Cortona'
       },{
         id: 3,
+        imageUrl: 'images/admiral.jpg',
         name: 'Ellington Farms'
       },{
         id: 4,
+        imageUrl: 'images/admiral.jpg',
         name: 'Golden Harvest'
       }
     ];
+
+    $scope.categories = [
+      { 
+        id: 'BP000',
+        name: 'Fresh Meat',
+        description: 'Fresh Meat',
+        subcategories: null,
+        active: false
+    }, { 
+        id: 'BP000',
+        name: 'Fresh Meat',
+        description: 'Fresh Meat',
+        subcategories: null,
+        active: false
+    } ];
 
   }]);

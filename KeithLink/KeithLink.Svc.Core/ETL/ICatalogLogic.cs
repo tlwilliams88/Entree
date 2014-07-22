@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.ETL
 {
-    public interface ICategoryLogic
+    public interface ICatalogLogic
     {
         void ImportCatalog();
+        void ImportProfiles();
     }
 }

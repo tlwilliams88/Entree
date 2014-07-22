@@ -9,11 +9,24 @@ ul.horizontal-slide {
     display: inline-block;
     float: none;
     padding: 0;
-    width: 210px;
+    // width: 210px;
     margin-left: 10px;
   }
 
   .item-holder:first-child {
     margin-left: 0;
+  }
+}
+
+.catalog-search {
+  input {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-right: none;
+    font-size: 14px;
+  }
+
+  button {
+    height: 62px;
   }
 }

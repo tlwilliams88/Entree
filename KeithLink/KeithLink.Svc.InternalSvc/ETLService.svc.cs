@@ -14,9 +14,15 @@ namespace KeithLink.Svc.InternalSvc
     // NOTE: In order to launch WCF Test Client for testing this service, please select ETLService.svc or ETLService.svc.cs at the Solution Explorer and start debugging.
     public class ETLService : IETLService
     {
+        private readonly ICatalogLogic categoryLogic;
+
+        public ETLService(ICatalogLogic categoryLogic)
+        {
+            this.categoryLogic = categoryLogic;
+        }
+
         public bool ProcessedStagedData()
         {
-            ICategoryLogic categoryLogic = new CategoryLogicImpl(); //TODO: Wire up AutoFac
             categoryLogic.ImportCatalog();
             return true;
         }

@@ -8,9 +8,9 @@ $sidebar-nav__text--selected: $color-white;
 
 .sidebar {
   color: $sidebar__text;
-  font-size: 20px;
+  font-size: 13px;
   padding: 0;
-  width: 250px;
+  width: $sidebar-width;
   background-color: $sidebar__background--light;
   background-image: url('../images/Nav-Image.jpg');
   background-position:center bottom;
@@ -32,19 +32,19 @@ $sidebar-nav__text--selected: $color-white;
     background-color: $sidebar__background--dark;
 
     img {
-      height: 100px;
+      height: 75px;
     }
   }
 
   $border__size: 3px;
-  $padding__size: 25px;
+  $padding__size: 14px;
 
   .sidebar-nav ul { 
     margin-bottom: 0; 
     
     // nav menu items
     li {
-      padding: 19px $padding__size;
+      padding: 14px $padding__size;
       color: $sidebar--text;
       cursor: pointer;
       border-top: 1px solid $sidebar-nav__border;
@@ -53,9 +53,10 @@ $sidebar-nav__text--selected: $color-white;
       
       // menu icons
       .sidebar-nav__icon {
-        width: 30px;
+        width: 25px;
         display: inline-block;
         text-align: center;
+        font-size: 16px;
       }
     }
     
@@ -68,14 +69,13 @@ $sidebar-nav__text--selected: $color-white;
   }
 
   .sidebar-dsr {
-    padding: 32px;
-    font-size: 18px;
+    padding: 20px;
     background-color: $sidebar__background--dark;
     border-bottom: 1px solid $sidebar-nav__border;
     border-top: 1px solid $sidebar-nav__border;
 
     .contact-info {
-      margin-top: 15px;
+      margin-top: $gutter-size;
       margin-bottom: 5px;
       font-weight: 100;
       
@@ -88,10 +88,10 @@ $sidebar-nav__text--selected: $color-white;
   }
 
   .sidebar-meta {
-    font-size: 16px;
-    font-weight: 100;
+    font-size: 11px;
+    font-weight: 300;
     position: absolute;
-    bottom: 0;
+    bottom: $gutter-size;
     left: 0;
   }
 }

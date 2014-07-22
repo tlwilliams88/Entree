@@ -9,141 +9,25 @@ $color-green: #04a773;
 $color-white: #fff;
 
 $color-font: #504938;
+$color-font-light: rgb(160, 148, 127);
 $color-border: #c3bc9c;
 
+$sidebar-width: 175px;
 $desktop-min: 992px;
 $mobile-max: 991px;
 
-.no-padding{
-  padding:0;
-}
-
-.text-late {
-  color: $color-red;
-}
-.text-paid {
-  color: $color-green;
-}
-
-.featured-item {
-  margin-bottom: 15px;
-  background-color: white;
-
-  img {
-    height: 175px;
-    width: 100%;
-    padding: 10px;
-  }
-
-  a {
-    display: block;
-    letter-spacing: 1px;
-  }
-
-  .featured-item__detail {
-    padding: 15px;
-    border-top: 1px solid $color-border;
-  }
-}
-
-.featured-item-mobile{
-  margin-bottom: 70px;
-  background-color: $color-white;
-
-  img{
-    height:175px;
-    width:100%;
-  }
-
-  .featured-item-mobile__detail{
-    padding-top: 60px;
-    border-left: 1px solid $color-border;
-    height:175px;
-    text-align: left;
-    padding-left: 30px;
-    font-size: 20px;
-    font-weight: 400;
-    a{
-      font-size: 14px;
-    }
-  }
-}
-
-.carousel-control.right, .carousel-control.left{
-  background-image: none;
-  color: $color-border;
-}
-
-.carousel-indicators{
-  margin-bottom: -60px;
-  li{
-    border: 1px solid $color-border;
-    width: 15px;
-    height: 15px;
-    margin: 0 8px 0 8px;
-  }
-  .active{
-    background-color: $color-border;
-    width: 15px;
-    height: 15px;
-    margin: 0 8px 0 8px;
-  }
-}
-
-.sub-content{
-  padding-top: 20px;
-}
-
-.sub-content-mobile{
-  padding-top: 50px;
-}
+$gutter-size: 15px;
 
 
-.table{
-  border: 1px solid #ddd;
-
-  td{
-    padding-top: 20px !important;
-    padding-bottom: 20px !important;
-  }
-  th{
-    a{
-      color: $color-font;
-    }
-    span{
-      color: #B2AA99;
-      font-size: 12px;
-    }
-  }
-  .icon-plus2{
-    color: $color-blue;
-    font-size: 18px;
-  }
-  .icon-star2{
-    font-size: 16px;
-  }
-
-}
-
-.table-striped{
-  tbody{
-    tr:nth-child(odd){
-      td{
-background-color:white;
-      }
-      th{
-background-color:white;
-      }
-    }
-  }
-}
 
 @import 'setup';
 @import 'components';
+@import 'featured-items';
 
 // menus
 @import 'sidebar';
 @import 'user-bar';
+@import 'page-header-bar';
 
 // homepage
 @import 'order-summary';

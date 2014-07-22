@@ -1,0 +1,55 @@
+.page-header-bar {
+  @include header-bar($color-white, 5px);
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0px 1px 10px $color-border;
+  -moz-box-shadow: 0px 1px 10px $color-border;
+  box-shadow: 0px 1px 10px $color-border;
+
+  .page-header-bar__message {
+    font-size: 25px;
+    font-weight: 300;
+    line-height: 50px;
+  }
+
+  .page-header__export-button {
+    font-size: 20px;
+    color: $color-font-light;
+    margin-right: 5px;
+    padding: 6px 9px;
+  }
+
+  .page-header__buttons {
+     display: inline-block;
+  }
+
+  .page-header__orders {
+    color: #489ecf;
+    font-size: 16px;
+    margin-left: 10px;
+    line-height: 50px;
+    vertical-align: middle;
+    display: inline-block;
+
+    // truck icon
+    span {
+      font-size: 20px;
+    }
+  }
+}
+
+.page-subheader-bar {
+  @include header-bar($color-white, 14px);
+  margin-bottom: 30px;
+  margin-top: -30px;
+
+  .page-subheader-bar__message {
+    padding-left: 10px;
+    color: #A1A1A1;
+    
+    a{
+      font-weight: 600;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+  }
+}
