@@ -19,16 +19,21 @@ using CommerceServer.Core.Profiles;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
     public class CatalogLogicImpl: ICatalogLogic
     {
         private const string Language = "en-US";
+
+        ILogger log = LogManager.GetLogger(typeof(CatalogLogicImpl));
+
+
         private readonly ICatalogInternalRepository catalogRepository;
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
-
+        
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository)
         {
             this.catalogRepository = catalogRepository;
@@ -47,7 +52,11 @@ namespace KeithLink.Svc.Impl.ETL
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
             }
-            catch (Exception ex) { } //TODO: Log
+            catch (Exception ex) 
+            {
+                log.Error(ex);
+                throw ex;
+            }
         }
 
 
@@ -126,6 +135,7 @@ namespace KeithLink.Svc.Impl.ETL
                         {
                             parentcategoryid = null,
                             name = row.GetString("CategoryName"),
+                            ppicode = row.GetString("PPICode"),
                             subcategories = PopulateSubCategories(row.GetString("CategoryId"), childCategories)
                         }
                     }
@@ -143,7 +153,8 @@ namespace KeithLink.Svc.Impl.ETL
                         data = new ESCategoryData()
                         {
                             parentcategoryid = row.GetString("ParentCategoryId"),
-                            name = row.GetString("CategoryName")
+                            name = row.GetString("CategoryName"),
+                            ppicode = row.GetString("PPICode")
                         }
                     }
                 });

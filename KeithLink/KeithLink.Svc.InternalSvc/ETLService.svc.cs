@@ -7,6 +7,7 @@ using System.Text;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.InternalSvc.Interfaces;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -15,6 +16,7 @@ namespace KeithLink.Svc.InternalSvc
     public class ETLService : IETLService
     {
         private readonly ICatalogLogic categoryLogic;
+        
 
         public ETLService(ICatalogLogic categoryLogic)
         {
@@ -23,6 +25,7 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessedStagedData()
         {
+            log.Debug("Service Called");
             categoryLogic.ProcessStagedData();
             return true;
         }
