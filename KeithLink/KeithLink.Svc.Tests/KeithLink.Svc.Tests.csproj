@@ -56,8 +56,8 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Impl_PriceRepositoryImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
@@ -76,6 +76,9 @@
       <Project>{43f5b3cd-d277-4fac-97ff-170ddfa48549}</Project>
       <Name>KeithLink.Svc.WebApi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
