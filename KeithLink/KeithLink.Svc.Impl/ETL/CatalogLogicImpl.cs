@@ -17,6 +17,8 @@ using KeithLink.Svc.Impl.Models.ETL;
 using KeithLink.Svc.Core;
 using CommerceServer.Core.Profiles;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Impl.Models;
+using System.Collections.Concurrent;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -25,14 +27,31 @@ namespace KeithLink.Svc.Impl.ETL
         private const string Language = "en-US";
         private readonly ICatalogInternalRepository catalogRepository;
         private readonly IStagingRepository stagingRepository;
+        private readonly IElasticSearchRepository elasticSearchRepository;
 
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
+            this.elasticSearchRepository = elasticSearchRepository;
         }
 
-        public void ImportCatalog()
+        public void ProcessStagedData()
+        {
+            try
+            {
+                var catTask = Task.Factory.StartNew(() => ImportCatalog());
+                var profileTask = Task.Factory.StartNew(() => ImportProfiles());
+                var esItemTask = Task.Factory.StartNew(() => SendItemsToElasticSearch());
+                var esCatTask = Task.Factory.StartNew(() => SendCategoriesToElasticSearch());
+
+                Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
+            }
+            catch (Exception ex) { }
+        }
+
+
+        private void ImportCatalog()
         {
             //Create root level catalog object
             MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
@@ -57,13 +76,82 @@ namespace KeithLink.Svc.Impl.ETL
             catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
         }
 
-        public void ImportProfiles()
-        {
-            ProfilesServiceAgent profileAgent = new ProfilesServiceAgent("https://localhost:1001/bek_ProfilesWebService/ProfilesWebService.asmx");
-            ProfileManagementContext context = ProfileManagementContext.Create(profileAgent);
-            //var test = context.CreateProfile(
+        private void ImportProfiles()
+        {   
         }
 
+        private void SendItemsToElasticSearch()
+        {
+            var dataTable = stagingRepository.ReadFullItemForElasticSearch();
+            var products = new BlockingCollection<ElasticSearchItemUpdate>();
+            Parallel.ForEach(dataTable.AsEnumerable(), row =>
+            {
+                products.Add(PopulateElasticSearchItem(row)
+                );
+            });
+
+            int totalProcessed = 0;
+			
+            while (totalProcessed < products.Count)
+            {
+                var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+
+                //var sb = new StringBuilder();
+
+                //foreach (var prod in batch)
+                //    sb.Append(prod.ToJson());
+
+                elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+
+                totalProcessed += Configuration.ElasticSearchBatchSize;
+            }
+
+        }
+        
+        private void SendCategoriesToElasticSearch()
+        {
+            var parentCategories = stagingRepository.ReadParentCategories();
+            var childCategories = stagingRepository.ReadSubCategories();
+            var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
+
+            //Parent Categories
+            Parallel.ForEach(parentCategories.AsEnumerable(), row =>
+            {
+                categories.Add(new ElasticSearchCategoryUpdate()
+                {
+                    index = new ESCategoryRootData()
+                    {
+                        _id = row.GetString("CategoryId"),
+                        data = new ESCategoryData()
+                        {
+                            parentcategoryid = null,
+                            name = row.GetString("CategoryName"),
+                            subcategories = PopulateSubCategories(row.GetString("CategoryId"), childCategories)
+                        }
+                    }
+                });
+            });
+
+            //Sub Categories
+            Parallel.ForEach(childCategories.AsEnumerable(), row =>
+            {
+                categories.Add(new ElasticSearchCategoryUpdate()
+                {
+                    index = new ESCategoryRootData()
+                    {
+                        _id = row.GetString("CategoryId"),
+                        data = new ESCategoryData()
+                        {
+                            parentcategoryid = row.GetString("ParentCategoryId"),
+                            name = row.GetString("CategoryName")
+                        }
+                    }
+                });
+            });
+
+            elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
+        }
+               
         
         #region Helper Methods
 
@@ -108,8 +196,6 @@ namespace KeithLink.Svc.Impl.ETL
             return products.ToArray();
         }
 
-        
-
         private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
         {
             List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
@@ -134,17 +220,79 @@ namespace KeithLink.Svc.Impl.ETL
             return categories.ToArray();
         }
 
-        
-
         private static DisplayName[] CreateDisplayName(string value)
         {
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
+        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row)
+        {
+            return new ElasticSearchItemUpdate()
+            {
+                index = new RootData()
+                {
+                    _id = row.GetString("ItemId"),
+                    _index = row.GetString("BranchId").ToLower(),
+                    data = new AdditionalData()
+                    {
+                        brand = row.GetString("Brand"),
+                        buyer = row.GetString("Buyer"),
+                        cases = row.GetString("Cases"),
+                        categoryid = row.GetString("CategoryId"),
+                        categoryname = row.GetString("CategoryName"),
+                        catmgr = row.GetString("CatMgr"),
+                        description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
+                        icseonly = row.GetString("ICSEOnly"),
+                        itemclass = row.GetString("Class"),
+                        itemtype = row.GetString("ItemType"),
+                        kosher = row.GetString("Kosher"),
+                        mfrname = row.GetString("MfrName"),
+                        mfrnumber = row.GetString("MfrNumber"),
+                        name = row.GetString("Name"),
+                        pack = row.GetString("Pack"),
+                        package = row.GetString("Package"),
+                        parentcategoryid = row.GetString("ParentCategoryId"),
+                        parentcategoryname = row.GetString("ParentCategoryName"),
+                        perferreditemcode = row.GetString("PreferredItemCode"),
+                        size = row.GetString("Size"),
+                        specialorderitem = row.GetString("SpecialOrderItem"),
+                        status1 = row.GetString("Status1"),
+                        status2 = row.GetString("Status2"),
+                        upc = row.GetString("UPC"),
+                        vendor1 = row.GetString("Vendor1"),
+                        vendor2 = row.GetString("Vendor2"),
+                        branchid = row.GetString("BranchId")
+                    }
+
+                }
+            };
+        }
+
+
+        private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories)
+        {
+            var subCategories = new List<ESSubCategories>();
+
+            var sub = childCategories.AsEnumerable().Where(c => c.Field<string>("ParentCategoryId") == parentCategoryId);
+
+            foreach (var category in sub)
+                subCategories.Add(new ESSubCategories()
+                {
+                    categoryid = category.Field<string>("CategoryId"),
+                    name = category.Field<string>("CategoryName"),
+                    ppicode = category.Field<string>("PPICode")
+                });
+
+
+            return subCategories;
+        }
+
         #endregion
 
-       
-    
+
+
+
+
 
         
     }

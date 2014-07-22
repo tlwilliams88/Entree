@@ -12,6 +12,17 @@ namespace KeithLink.Svc.Impl
         private const string KEY_STAGING_CONNECTIONSTRING = "StagingConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+        private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
+        private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
+
+        public static int ElasticSearchBatchSize
+        {
+            get
+            {
+                string value = GetValue(KEY_ELASTIC_SEARCH_BATCH_SIZE, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
+                return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
+            }
+        }
 
         public static string ElasticSearchURL
         {

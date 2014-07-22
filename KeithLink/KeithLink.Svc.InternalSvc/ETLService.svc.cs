@@ -23,7 +23,7 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessedStagedData()
         {
-            categoryLogic.ImportCatalog();
+            categoryLogic.ProcessStagedData();
             return true;
         }
     }
