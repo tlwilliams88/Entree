@@ -9,11 +9,11 @@ namespace KeithLink.Svc.Impl
 {
     public class PriceRepositoryImpl : IPriceRepository
     {
-        public KeithLink.Svc.Core.PriceReturn GetPrices(string branchId, string customerNumber, DateTime shipDate, List<string> itemNumbers)
+        public KeithLink.Svc.Core.PriceReturn GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
             // build the request XML
             System.IO.StringWriter requestBody = new System.IO.StringWriter();
-            GetRequestBody(branchId, customerNumber, shipDate, itemNumbers).WriteXml(requestBody);
+            GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
 
             // load the pricing service
             com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl
             return retVal;
         }
 
-        private KeithLink.Svc.Impl.Schemas.PricingRequestMain GetRequestBody(string branchId, string customerNumber, DateTime shipDate, List<string> itemNumbers)
+        private KeithLink.Svc.Impl.Schemas.PricingRequestMain GetRequestBody(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
             Schemas.PricingRequestMain request = new Schemas.PricingRequestMain();
 
@@ -60,10 +60,10 @@ namespace KeithLink.Svc.Impl
 
             request.Items.AddItemsRow(request.Items.NewItemsRow());
 
-            foreach (string item in itemNumbers)
+            foreach (Product item in products)
             {
                 Schemas.PricingRequestMain._ItemRow itemRow = request._Item.New_ItemRow();
-                itemRow.number = item;
+                itemRow.number = item.ItemNumber;
                 request._Item.Add_ItemRow(itemRow);
             }
 
