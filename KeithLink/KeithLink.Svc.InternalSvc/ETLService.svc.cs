@@ -25,7 +25,6 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessedStagedData()
         {
-            log.Debug("Service Called");
             categoryLogic.ProcessStagedData();
             return true;
         }
