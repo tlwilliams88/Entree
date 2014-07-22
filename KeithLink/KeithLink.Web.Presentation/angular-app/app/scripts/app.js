@@ -21,6 +21,11 @@ angular
 .config(function($stateProvider, $urlRouterProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
+    .state('login', {
+      url: '/login',
+      templateUrl: 'views/login.html'
+      // controller: 'MenuController'
+    })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
@@ -65,17 +70,12 @@ angular
       url: '/category/:categoryId',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController'
-      //function($scope, $stateParams) {
-        //$scope.categoryId = $stateParams.categoryId;
-      //}
     })
     // /catalog/brand/:brandId
     .state('menu.catalog.brand', {
       url: '/brand/:brandId',
       templateUrl: 'views/searchresults.html',
-      controller: function($scope, $stateParams) {
-        $scope.brandId = $stateParams.brandId;
-      }
+      controller: 'SearchController'
     });
   $stateProvider
     .state('404', { 
@@ -89,9 +89,12 @@ angular
 })
 .run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
 
+  // ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
   });
+
+//ApiService.endpointUrl = 'http://devapi.bekco.com';
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // debugger;

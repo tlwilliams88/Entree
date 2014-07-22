@@ -17,3 +17,16 @@ ul.horizontal-slide {
     margin-left: 0;
   }
 }
+
+.catalog-search {
+  input {
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-right: none;
+    font-size: 14px;
+  }
+
+  button {
+    height: 62px;
+  }
+}

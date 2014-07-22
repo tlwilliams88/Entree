@@ -49,7 +49,7 @@ select {
 
 input[type='text'], input[type='email'], input[type='password'] {
   border: 1px solid $color-border;
-  height: 40px;
+  height: 40px;   
   font-weight: 300;
   font-size: 12px;
   letter-spacing: 1px;
@@ -63,7 +63,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   li {
     a {
       margin-right: 5px;
-      // line-height: 35px;
+      color: $color-font;
       border-radius: 0;
       border: 1px solid $color-border;
       padding: 12px 40px;
@@ -143,23 +143,52 @@ input[type='text'], input[type='email'], input[type='password'] {
   tfoot > tr > th, 
   tbody > tr > td, 
   tfoot > tr > td {
-    padding: 15px 10px;
+    padding: $gutter-size 10px;
+    
+    &.table-icon {
+      font-size: 16px;
+      padding: 12px 5px;
+    }
   }
   
   tr {
     border-bottom: 1px solid  $color-border;
   }
+
 }
 
 .table-striped {
-
   tbody {
-
     tr:nth-child(even) {
-      background-color: $background;
+      th, td {
+        background-color: $background;
+      }
     }
     tr:nth-child(odd) {
-      background-color: $color-white;
+      th, td {
+        background-color: $color-white;
+      }
     }
   }
+}
+
+/* Checkboxes */
+
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label span {
+  display: inline-block;
+  width: 17px;
+  height: 17px;
+  margin-right: 5px;
+  margin-bottom: 2px;
+  vertical-align: middle;
+  background: url("../images/checkbox-clear.png") top left no-repeat;
+  cursor: pointer;
+  background-size: 20px;
+}
+input[type="checkbox"]:checked + label span {
+  background:url('../images/checkbox-checked.png') top left no-repeat;
+  background-size: 20px;  
 }
