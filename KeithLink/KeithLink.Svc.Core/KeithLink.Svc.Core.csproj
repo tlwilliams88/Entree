@@ -72,6 +72,7 @@
     <Compile Include="ETL\IStagingRepository.cs" />
     <Compile Include="ICatalogInternalRepository.cs" />
     <Compile Include="ICatalogRepository.cs" />
+    <Compile Include="IPriceCache.cs" />
     <Compile Include="IPriceRepository.cs" />
     <Compile Include="Price.cs" />
     <Compile Include="Product.cs" />
