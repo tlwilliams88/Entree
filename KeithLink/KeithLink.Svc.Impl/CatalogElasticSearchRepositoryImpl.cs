@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl
         {
             Product p = new Product();
             p.ManufacturerName = oProd._source.mfrname;
-            //p.Id = oProd._id;
+            p.ItemNumber = oProd._id;            
             p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
             p.ManufacturerNumber = oProd._source.mfrnumber;
             p.Size = oProd._source.size;

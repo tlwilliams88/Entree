@@ -77,14 +77,12 @@ namespace KeithLink.Common.Core.Logging.Log4Net
                 string configurationDoc = LoggingResources.log4netConfig_XML;
 
                 // inject connection string
-                //ConnectionStringSettings dbConnectionConfig = ConfigurationManager.ConnectionStrings[Constants.CONNECTION_STRING_NAME_OPERATIONAL_CONTEXT];
-                //if (dbConnectionConfig != null)
-                //{
-                //    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(dbConnectionConfig.ConnectionString);
-                //    builder.InitialCatalog = string.Format("{0}.log", builder.InitialCatalog);
-                //    builder.Remove("AttachDbFilename");
-                //    configurationDoc = configurationDoc.Replace("${connectionstring}", builder.ConnectionString);
-                //}
+                if (Configuration.LoggingConnectionString != null)
+                {
+                    SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder(Configuration.LoggingConnectionString);
+                    builder.Remove("AttachDbFilename");
+                    configurationDoc = configurationDoc.Replace("${connectionstring}", builder.ConnectionString);
+                }
 
                 // configure logging
                 log4net.Config.XmlConfigurator.Configure(new MemoryStream(ASCIIEncoding.ASCII.GetBytes(configurationDoc)));

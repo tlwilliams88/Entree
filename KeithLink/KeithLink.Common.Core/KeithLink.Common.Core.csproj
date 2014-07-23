@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationFacade.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
