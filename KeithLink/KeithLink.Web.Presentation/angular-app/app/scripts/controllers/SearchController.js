@@ -35,7 +35,9 @@ angular.module('bekApp')
 				$scope.categories = response.data.categories;
 				$scope.loadingCategories = false;
 			});
-
+			
+			$scope.oneAtATime = true;
+			$scope.items = ['Item 1', 'Item 2', 'Item 3'];
 			$scope.selectedCategory = '';
 			$scope.selectedBrands = [];
 			$scope.selectedAllergens = [];
@@ -43,6 +45,7 @@ angular.module('bekApp')
 			$scope.brandHiddenNumber = 3;
 			$scope.isAllergenShowing = false;
 			$scope.allergenHiddenNumber = 3;
+			$scope.hidden= true;
 
 			$scope.showContextMenu = function(e, idx) {
 	    	$scope.moveMenuStyle = {'top': (idx * 53) + 'px'}; 

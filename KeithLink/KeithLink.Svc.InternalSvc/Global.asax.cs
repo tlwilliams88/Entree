@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
+using KeithLink.Common.Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,7 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_Start(object sender, EventArgs e)
         {
+            LogManager.SetApplicationName("KeithLink.Svc.InternalSvc");
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
         }

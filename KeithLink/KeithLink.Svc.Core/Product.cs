@@ -11,8 +11,11 @@ namespace KeithLink.Svc.Core
     [Serializable]
     public class Product
     {
-        [DataMember(Name = "id")]
-        public string Id { get; set; }
+        [DataMember(Name = "name")]
+        public string Name { get; set; }
+
+        [DataMember(Name = "itemnumber")]
+        public string ItemNumber { get; set; }
 
         [DataMember(Name = "description")]
         public string Description { get; set; }
@@ -39,13 +42,28 @@ namespace KeithLink.Svc.Core
         public string Cases { get; set; }
 
         [DataMember(Name = "categoryId")]
-        public string CategoryId;
+        public string CategoryId { get; set; }
+
+        [DataMember(Name = "categoryname")]
+        public string CategoryName { get; set; }
 
         [DataMember(Name = "kosher")]
         public string Kosher { get; set; }
 
-        [DataMember(Name = "price")]
-        public string Price { get; set; }
+        [DataMember(Name = "caseprice")]
+        public string CasePrice { get; set; }
+
+        [DataMember(Name = "packageprice")]
+        public string PackagePrice { get; set; }
+
+        [DataMember(Name = "replacementitem")]
+        public string ReplacementItem { get; set; }
+
+        [DataMember(Name = "replaceditem")]
+        public string ReplacedItem {get;set;}
+
+        [DataMember(Name = "cndoc")]
+        public string CNDoc { get; set; }
     }
 
     [DataContract(Name = "ProductsReturn")]

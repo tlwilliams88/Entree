@@ -65,6 +65,77 @@
   }
 }
 
+.mobile-filter{
+  position: absolute;
+  z-index: 1;
+  background-color: $color-white;
+  margin-top: -25px;
+}
+
+.panel-group{
+  margin-bottom: 0;
+  .panel + .panel{
+    margin-top:0;
+  }
+  .panel{
+    border-radius: 0;
+    border-bottom: 0px;
+    .panel-heading{
+      position: relative;
+      height: 40px;
+      padding: 0;
+      background-color: $color-brown;
+      color: $color-white;
+      border-radius: 0;
+      a{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        padding: 12px;
+        font-size: 13px;
+      }
+      a:hover{
+        color: inherit;
+      }
+    }
+  }
+  .panel-body{
+    padding:0;
+    .panel{
+      border-bottom: 0;
+      border-left: 0;
+      border-right: 0;
+      .panel-body{
+        padding: 0;
+        position: relative;
+        height: 40px;
+        label{
+          margin-bottom: 0;
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          padding: 11px 15px;
+          font-size: 11px;
+        }
+        input[type="checkbox"] + label{
+          background-position: right;
+          background:url('../images/graycheckbox-clear.png') no-repeat 97% center;
+          background-size: 24px;
+        }
+        input[type="checkbox"]:checked + label {
+          background-position: right;
+          background:url('../images/graycheckbox-checked.png') no-repeat 97% center;
+          background-size: 24px;
+        }
+      }
+    }
+    .panel:first-child{
+      border-top: 0;
+    }
+  }
+}
+
+
 @media(max-width: $mobile-max) {
 
   .search-results__table {
