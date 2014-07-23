@@ -11,11 +11,11 @@ namespace KeithLink.Svc.Impl
     {
         Product[] products = new Product[] 
         { 
-            new Product { Id = "1", Description = "Tomato Soup", CategoryId = "Groceries", Price = "1.00", Size = "1lb" }, 
-            new Product { Id = "2", Description = "Yo-yo", CategoryId = "Toys", Price = "3.75", Size = "2lb"  }, 
-            new Product { Id = "3", Description = "Hammer", CategoryId = "Hardware", Price = "16.99", Size = "3lb"  },
-            new Product { Id = "4", Description = "Hammer Four", CategoryId = "Hardware", Price = "16.94", Size = "4lb"  },
-            new Product { Id = "5", Description = "Hammer Five", CategoryId = "Hardware", Price = "16.95", Size = "5lb"  } 
+            new Product { ItemNumber = "1", Description = "Tomato Soup", CategoryId = "Groceries", CasePrice = "1.00", Size = "1lb" }, 
+            new Product { ItemNumber = "2", Description = "Yo-yo", CategoryId = "Toys", CasePrice = "3.75", Size = "2lb"  }, 
+            new Product { ItemNumber = "3", Description = "Hammer", CategoryId = "Hardware", CasePrice = "16.99", Size = "3lb"  },
+            new Product { ItemNumber = "4", Description = "Hammer Four", CategoryId = "Hardware", CasePrice = "16.94", Size = "4lb"  },
+            new Product { ItemNumber = "5", Description = "Hammer Five", CategoryId = "Hardware", CasePrice = "16.95", Size = "5lb"  } 
         };
 
         Category[] categories = new Category[]
@@ -34,22 +34,39 @@ namespace KeithLink.Svc.Impl
                     new Category() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-        public IEnumerable<Product> GetProductsForCategory(string category)
+        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint)
         {
             if (String.IsNullOrEmpty(category))
             {
-                return products;
+                return new ProductsReturn() { Products = products.ToList() };
             }
             else
             {
                 IEnumerable<Product> prods = products.Where(x => x.CategoryId == category);
-                return prods;
+                return new ProductsReturn() { Products = prods.ToList() };
             }
         }
 
         public CategoriesReturn GetCategories()
         {
             return new CategoriesReturn() { Categories = categories.ToList() };
+        }
+
+
+        public CategoriesReturn GetCategories(string endpoint)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public ProductsReturn GetProductsBySearch(string branch, string search, string endpoint)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product GetProductById(string branch, string id, string endpoint)
+        {
+            throw new NotImplementedException();
         }
     }
 }
