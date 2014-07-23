@@ -1,0 +1,133 @@
+<div page-header-bar message="'Product Catalog'">
+  <button class="btn page-header__export-button"><span class="icon-printer"></span></button>
+  <button class="btn page-header__export-button"><span class="icon-disk"></span></button>
+</div>
+
+<div class="row page-subheader-bar">
+	<div class="col-md-12 page-subheader-bar__message">
+		<a>Categories</a>>><a>Frozen Meat</a>>><a>Bacon</a>
+	</div>
+</div>
+
+<div class="row">
+
+	<!-- Filters -->
+	<div class="col-sm-3 hidden-xs hidden-sm filters">
+		<div class="row">
+			<div class="col-sm-12">
+				<h3>Frozen Meat</h3>
+				<ul class="nav category">
+					<li ng-repeat="category in categories"><a ng-click="toggleSelection(category.id, 'category')" ng-class="{active: category.id == selectedCategory}">{{category.name}}</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="row sub-content">
+			<div class="col-sm-12">
+				<h3>Brand</h3>
+				<div ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
+					<input type="checkbox"
+					value="brandValue_{{brand.id}}"
+					id="brandId_{{brand.id}}"
+					ng-checked="selectedBrands.indexOf(brand.id) > -1"
+					ng-click="toggleSelection(brand.id,'brand')">
+					<label for="brandId_{{brand.id}}"><span></span>{{brand.name}}</label>
+				</div>
+				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
+			</div>
+		</div>
+
+		<div class="row sub-content">
+			<div class="col-sm-12">
+				<h3>Allergens</h3>
+				<div ng-repeat="allergen in allergens" ng-class="{hideallergen: $index > allergenHiddenNumber}">
+					<input type="checkbox"
+					value="allergenValue_{{allergen.id}}"
+					id="allergenId_{{allergen.id}}"
+					ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
+					ng-click="toggleSelection(allergen.id,'allergen')">
+					<label for="allergenId_{{allergen.id}}"><span></span>{{allergen.name}}</label>
+				</div>
+				<a ng-class="{'hideallergen': isAllergenShowing}" ng-click="showAllergen()">+ Show More</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Search Results -->
+	<div class="col-md-9 col-xs-12">
+		<h2>Search Results</h2>
+		<div>
+			<table class="table table-striped search-results__table">
+				<thead>
+					<tr>
+						<th style="width:10px;"></th>
+						<th ng-click="predicate = 'id'; reverse=!reverse">
+							Item <span ng-class="{
+							'icon-menu':predicate !== 'id',
+							'icon-arrow-down4':predicate == 'id' && !reverse,
+							'icon-arrow-up3': predicate == 'id' && reverse
+							}"></span>
+						</th>
+						<th class="hidden-sm hidden-xs" ng-click="predicate = 'cases'; reverse=!reverse">
+							Pack/Size <span ng-class="{
+							'icon-menu':predicate !== 'cases',
+							'icon-arrow-down4':predicate == 'cases' && !reverse,
+							'icon-arrow-up3': predicate == 'cases' && reverse
+							}"></span>
+						</th>
+						<th class="hidden-sm hidden-xs" ng-click="predicate = 'brand'; reverse=!reverse">
+							Brand <span ng-class="{
+							'icon-menu':predicate !== 'brand',
+							'icon-arrow-down4':predicate == 'brand' && !reverse,
+							'icon-arrow-up3': predicate == 'brand' && reverse
+						}"></span></th>
+						<th ng-click="predicate = 'description'; reverse=!reverse">Description <span ng-class="{
+							'icon-menu':predicate !== 'description',
+							'icon-arrow-down4':predicate == 'description' && !reverse,
+							'icon-arrow-up3': predicate == 'description' && reverse
+						}"></span></th>
+						<th class="hidden-sm hidden-xs"></th>	
+						<th></th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat-start="product in products | orderBy:predicate:reverse">
+						<td class="text-light table-icon" style="width:10px;">
+							<span class="icon-star2"></span>
+						</td>
+						<td>
+							<a ui-sref="menu.catalog.products.details({ itemId : product.id })">{{product.id}}</a>
+						</td>
+						<td class="hidden-sm hidden-xs">
+							{{product.cases}} / {{product.size}}
+						</td>
+						<td class="hidden-sm hidden-xs">
+							{{product.brand}}
+						</td>
+						<td>
+							{{product.description}}
+						</td>
+						<td class="hidden-sm hidden-xs icons">
+							<span class="icon-cell-sheet"></span>
+							<span class="icon-apple"></span>
+						</td>
+						<td class="table-icon">
+							<a href=""><span class="icon-plus2"></span></a>
+							<span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
+						</td>
+					</tr>
+					<tr ng-repeat-end ng-show="showDetails" class="search-results__details">
+					  <td colspan=4>
+					    <div id="my_box">
+					      <p>Pack / Size: {{product.cases}} / {{product.size}}</p>
+					      <p>Brand: {{product.brand}}</p>
+					    </div>
+					  </td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+	</div>
+</div>
