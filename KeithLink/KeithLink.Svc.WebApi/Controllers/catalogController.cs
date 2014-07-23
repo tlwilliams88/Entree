@@ -12,20 +12,21 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class CatalogController : ApiController
     {
         KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
+        string elasticSearchEndpoint = System.Configuration.ConfigurationManager.AppSettings[Constants.ElasticSearchEndpointConfigurationEntry];
 
         public CatalogController(ICatalogRepository catalogRepository)
         {
             _catalogRepository = catalogRepository;
         }
 
-        public IEnumerable<Product> GetAllProducts()
+        public ProductsReturn GetAllProducts()
         {
-            return _catalogRepository.GetProductsForCategory("");
+            return _catalogRepository.GetProductsByCategory("", "", "");
         }
 
-        public IEnumerable<Product> GetProductsForCategory(string id)
+        public ProductsReturn GetProductsForCategory(string id)
         {
-            return _catalogRepository.GetProductsForCategory(id);
+            return _catalogRepository.GetProductsByCategory("", id, "");
         }
 
         [HttpGet]
@@ -33,7 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CategoriesReturn GetCategories()
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            return _catalogRepository.GetCategories(elasticSearchEndpoint);
         }
 
         [HttpGet]
@@ -45,6 +46,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("catalog/search/category/{branchId}/{categoryId}/products")]
+        public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
+        {
+            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            return _catalogRepository.GetProductsByCategory(branchId, categoryId, elasticSearchEndpoint);
+        }
+
+        [HttpGet]
         [Route("catalog/category/{id}")]
         public CategoriesReturn GetCategoriesById(string id)
         {
@@ -53,69 +62,19 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("catalog/product/{id}")]
-        public Product GetProductById(string id)
+        [Route("catalog/product/{branchId}/{id}")]
+        public Product GetProductById(string branchId, string id)
         {
-
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return new Product()
-            {
-                Id = "101285",
-                Description = "Shrimp Raw Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "5 LB",
-                UPC = "00000000000000",
-                ManufacturerNumber = "B-W-26/30",
-                ManufacturerName = "Ellington Farms Seafood",
-                Cases = "0",
-                CategoryId = "FS490",
-                Kosher = "true",
-                Price = "325.00"
-            };
-
+            return _catalogRepository.GetProductById(branchId, id, elasticSearchEndpoint);
         }
 
         [HttpGet]
-        [Route("catalog/search/products")]
-        public ProductsReturn GetProductsSearch()
+        [Route("catalog/search/{branchId}/{searchTerms}/products")]
+        public ProductsReturn GetProductsSearch(string branchId, string searchTerms)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            ProductsReturn ret = new ProductsReturn();
-            ret.Products = new List<Product>();
-
-            ret.Products.Add(new Product()
-            {
-                Id = "101285",
-                Description = "Shrimp Raw Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "5 LB",
-                UPC = "00000000000000",
-                ManufacturerNumber = "B-W-26/30",
-                ManufacturerName = "Ellington Farms Seafood",
-                Cases = "0",
-                CategoryId = "FS490",
-                Kosher = "true",
-                Price = "325.00"
-            });
-            ret.Products.Add(new Product()
-            {
-                Id = "101286",
-                Description = "Shrimp Cooked Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "6 LB",
-                UPC = "00000000000001",
-                ManufacturerNumber = "B-W-26/31",
-                ManufacturerName = "Ellington Farms Seafood 2",
-                Cases = "1",
-                CategoryId = "FS490",
-                Kosher = "true",
-                Price = "325.00"
-            });
-
-            return ret;
+            return _catalogRepository.GetProductsBySearch(branchId, searchTerms, elasticSearchEndpoint);
         }
     }
 }

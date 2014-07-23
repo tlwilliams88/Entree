@@ -108,6 +108,7 @@
     <Compile Include="CatalogInternalRepositoryImpl.cs" />
     <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="CatalogElasticSearchRepositoryImpl.cs" />
     <Compile Include="ElasticSearchRepositoryImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
