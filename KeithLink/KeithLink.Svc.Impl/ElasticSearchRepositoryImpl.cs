@@ -19,8 +19,6 @@ namespace KeithLink.Svc.Impl
         {
             var request = new RestRequest("_bulk", Method.POST);
             request.AddParameter("application/json", json, ParameterType.RequestBody);
-            //request.AddBody(json);
-
             var response = client.Execute(request);
         }
     }

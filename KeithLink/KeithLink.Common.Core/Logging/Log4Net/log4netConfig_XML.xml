@@ -1,0 +1,119 @@
+<log4net>
+  <!-- CONSOLE APPDENDER -->
+  <appender name="ConsoleAppender" type="log4net.Appender.ConsoleAppender">
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%-15.15thread] %-5level [%-45.45logger] [%-45.45host] [%-45.45application] - %message%newline" />
+    </layout>
+  </appender>
+
+  <!-- ROLLING FILE APPENDER -->
+  <appender name="RollingFileAppender" type="log4net.Appender.RollingFileAppender">
+    <file value="logs/app.log" />
+    <appendToFile value="true" />
+    <maximumFileSize value="1024KB" />
+    <maxSizeRollBackups value="50" />
+
+    <layout type="log4net.Layout.PatternLayout">
+      <conversionPattern value="%date [%-15.15thread] %-5level [%-45.45logger] [%-45.45host] [%-45.45application] - %message%newline" />
+    </layout>
+  </appender>
+
+  <!-- DATABASE APPENDER -->
+  <appender name="DatabaseAppender" type="log4net.Appender.ADONetAppender">
+    <errorHandler type="KeithLink.Common.Core.Logging.Log4Net.Log4NetErrorHandler" />
+    <bufferSize value="1" />
+    <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <connectionString value="${connectionstring}" />
+    <commandText value="INSERT INTO Log ([Date],[Thread],[Host],[User],[Application],[Level],[Logger],[Message],[Exception]) VALUES (@log_date, @thread, @host, @user, @application, @log_level, @logger, @message, @exception)" />
+    <reconnectOnError value="true" />
+    <parameter>
+      <parameterName value="@log_date"/>
+      <dbType value="DateTime"/>
+      <layout type="log4net.Layout.RawTimeStampLayout"/>
+    </parameter>
+    <parameter>
+      <parameterName value="@host"/>
+      <dbType value="String"/>
+      <size value="255"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%property{host}"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@user"/>
+      <dbType value="String"/>
+      <size value="255"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%property{user}"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@application"/>
+      <dbType value="String"/>
+      <size value="255"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%property{application}"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@thread"/>
+      <dbType value="String"/>
+      <size value="255"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%thread"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@log_level"/>
+      <dbType value="String"/>
+      <size value="50"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%level"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@logger"/>
+      <dbType value="String"/>
+      <size value="255"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%logger"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@message"/>
+      <dbType value="String"/>
+      <size value="-1"/>
+      <layout type="log4net.Layout.PatternLayout">
+        <conversionPattern value="%message"/>
+      </layout>
+    </parameter>
+    <parameter>
+      <parameterName value="@exception"/>
+      <dbType value="String"/>
+      <size value="-1"/>
+      <layout type="log4net.Layout.ExceptionLayout"/>
+    </parameter>
+  </appender>
+
+  <!-- BUFFERING/FORWARDING APPENDER (BATCH WRITES) -->
+  <appender name="BufferingForwardingAppender" type="log4net.Appender.BufferingForwardingAppender">
+    <bufferSize value="100" />
+    <lossy value="false" />
+    <evaluator type="log4net.Core.LevelEvaluator">
+      <threshold value="WARN"/>
+    </evaluator>
+    <appender-ref ref="RollingFileAppender" />
+    <appender-ref ref="DatabaseAppender" />
+  </appender>
+
+
+  <!-- ROOT LOGGER -->
+  <root>
+    <level value="DEBUG" />
+    <appender-ref ref="BufferingForwardingAppender" />
+  </root>
+
+  <!-- RENDERERS -->
+  <renderer renderingClass="KeithLink.Common.Core.Logging.Log4Net.Log4NetExceptionRenderer, KeithLink.Common.Core" renderedClass="System.Exception" />
+
+</log4net>
