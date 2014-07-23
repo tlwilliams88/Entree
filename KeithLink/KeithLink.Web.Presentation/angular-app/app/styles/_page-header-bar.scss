@@ -13,7 +13,7 @@
 
   .page-header__export-button {
     font-size: 20px;
-    color: $color-border;
+    color: $color-font-light;
     margin-right: 5px;
     padding: 6px 9px;
   }
@@ -42,8 +42,9 @@
   margin-bottom: 30px;
   margin-top: -30px;
 
-  .page-subheader-bar__message {
+  .page-subheader-bar__container {
     padding-left: 10px;
+    padding-right: 0px;
     color: #A1A1A1;
     
     a{
@@ -51,5 +52,25 @@
       padding-left: 10px;
       padding-right: 10px;
     }
+  }
+}
+
+@media(max-width: $mobile-max) {
+  .page-subheader-bar {
+    @include header-bar($color-white, 0px);
+
+    .page-subheader-bar__message {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      display: inline-block;
+
+    }
+    .page-subheader-bar__filter {
+      padding: 8px 16px 8px 16px;
+      border-left: 1px solid #c3bc9c;
+      float: right;
+      font-weight: 400;
+      cursor: pointer;
+      }
   }
 }

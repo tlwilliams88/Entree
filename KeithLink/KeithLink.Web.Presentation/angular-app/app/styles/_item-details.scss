@@ -1,9 +1,9 @@
 .item-details__actions {
-  padding-top: 15px
+  padding-top: $gutter-size;
 }
 
 .item-details__images {
-  padding: 15px;
+  padding: $gutter-size;
 
   img {
     margin: 3px;
@@ -29,7 +29,7 @@
 
   .tab-pane {
     display: block !important;
-    margin-top: 15px;
+    margin-top: $gutter-size;
     border-top: 1px solid $color-border;
 
     // tab headings

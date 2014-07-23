@@ -1,41 +1,37 @@
 .category{
   max-height: 400px;
-    overflow-y:scroll; 
-    background-color: white;
-}
+  overflow-y: scroll; 
+  -webkit-overflow-scrolling: touch;
+  background-color: white;
+  border: 1px solid $color-border;
+  border-radius: 3px;
 
-.nav{
-  li{
-    a:hover{
-      background-color: white;
-    }
-    a{
+  li {
+    a {
       color: $color-font;
+      &:hover{
+        background-color: transparent;
+      }
+      &.active {
+        color: $color-blue;
+        font-weight: 600;
+      }
     }
   }
-  .active{
-    a{
-      color: $color-blue;
-      font-weight: 600;
-    }
+}
+
+.filters {
+
+  label {
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  input[type="checkbox"]:checked + label {
+    color: $color-blue;
+    font-weight: 600;
   }
 }
 
-.view{
-  font-weight: 400;
-}
-
-.checkbox input[type=checkbox]{
-  margin-left: 0;
-}
-
-input[type=checkbox]:checked + label {
-  color: $color-blue;
-}
-
-.checkbox + .checkbox{
-  margin-top:0;
-}
 
 .hidebrand{
   display: none;
@@ -43,4 +39,76 @@ input[type=checkbox]:checked + label {
 
 .hideallergen{
   display: none;
+}
+
+// coloring for item details rows
+.search-results__table {
+  tbody {
+    tr {
+      th, td {
+        background-color: $color-white !important;
+      }
+    }
+    tr:nth-child(4n), tr:nth-child(4n-1) {
+      th, td {
+        background-color: $background !important;
+      }
+    }
+
+    tr:nth-child(even) {
+      border-top: none;
+    }
+    tr:nth-child(odd) {
+      border-bottom: none;
+      border-top: 1px solid $color-border;
+    }
+  }
+}
+
+.mobile-filter{
+  position: absolute;
+  z-index: 1;
+  background-color: $color-white;
+  margin-top: -10px;
+}
+
+.panel-group{
+  margin-bottom: 0;
+  .panel + .panel{
+    margin-top:0;
+  }
+  .panel{
+    border-radius: 0;
+    border-bottom: 0px;
+  }
+  .panel-body{
+    padding:0;
+    .panel{
+      border-bottom: 0;
+      border-left: 0;
+      border-right: 0;
+      .panel-body{
+        padding: 15px;
+        label{
+          margin-bottom: 0;
+        }
+      }
+    }
+    .panel:first-child{
+      border-top: 0;
+    }
+  }
+}
+
+
+@media(max-width: $mobile-max) {
+
+  .search-results__table {
+    font-size: 10px;
+  
+    th, td:not(:first-child) {
+      padding-left: 0 !important;
+      padding-right: 5px !important;
+    }
+  }
 }
