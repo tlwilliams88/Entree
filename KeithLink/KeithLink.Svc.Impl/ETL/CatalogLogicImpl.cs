@@ -193,13 +193,14 @@ namespace KeithLink.Svc.Impl.ETL
                 var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
                 newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
                 newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
-                newProd.MfrName = row.GetString("MfrName");
-                newProd.MfrNumber = row.GetString("MfrNumber");
-                newProd.Pack = row.GetString("Pack");
-                newProd.Size = row.GetString("Size");
-                newProd.UPC = row.GetString("UPC");
-                newProd.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
-                newProd.Brand = row.GetString("Brand");
+                //These properties are commented out for now while we decide if having them in elastic search is enough
+                //newProd.MfrName = row.GetString("MfrName");
+                //newProd.MfrNumber = row.GetString("MfrNumber");
+                //newProd.Pack = row.GetString("Pack");
+                //newProd.Size = row.GetString("Size");
+                //newProd.UPC = row.GetString("UPC");
+                //newProd.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
+                //newProd.Brand = row.GetString("Brand");
                 products.Add(newProd);
             }
 

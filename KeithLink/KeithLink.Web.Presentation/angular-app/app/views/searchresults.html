@@ -16,19 +16,27 @@
 	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
 		<div class="row">
 			<accordion close-others="oneAtATime">
-				<accordion-group heading="Frozen Meat">
+				<accordion-group is-open="status.open">
+					<accordion-heading>
+						Frozen Meat<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open, 'icon-arrow-down7': !status.open}"></i>
+					</accordion-heading>
 					<div ng-repeat="category in categories" class="panel panel-default">
 						<div class="panel-body">
-							<input type="checkbox"
-							value="categoryValue_{{category.id}}"
-							id="categoryId_{{category.id}}"
-							ng-checked="selectedCategories.indexOf(category.id) > -1"
-							ng-click="toggleSelection(category.id,'category')">
-							<label for="categoryId_{{category.id}}"><span></span>{{category.name}}</label>
+							<div class="checkbox-big">
+								<input type="checkbox"
+								value="categoryValue_{{category.id}}"
+								id="categoryId_{{category.id}}"
+								ng-checked="selectedCategories.indexOf(category.id) > -1"
+								ng-click="toggleSelection(category.id,'category')">
+								<label for="categoryId_{{category.id}}">{{category.name}}</label>
+							</div>
 						</div>
 					</div>
 				</accordion-group>
-				<accordion-group heading="Brand">
+				<accordion-group is-open="status.open2">
+					<accordion-heading>
+						Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open2, 'icon-arrow-down7': !status.open2}"></i>
+					</accordion-heading>
 					<div ng-repeat="brand in brands" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
@@ -36,11 +44,14 @@
 							id="brandId_{{brand.id}}"
 							ng-checked="selectedBrands.indexOf(brand.id) > -1"
 							ng-click="toggleSelection(brand.id,'brand')">
-							<label for="brandId_{{brand.id}}"><span></span>{{brand.name}}</label>
+							<label for="brandId_{{brand.id}}">{{brand.name}}</label>
 						</div>
 					</div>
 				</accordion-group>
-				<accordion-group heading="Allergens">
+				<accordion-group is-open="status.open3">
+					<accordion-heading>
+						Allergens<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open3, 'icon-arrow-down7': !status.open3}"></i>
+					</accordion-heading>
 					<div ng-repeat="allergen in allergens" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
@@ -48,7 +59,7 @@
 							id="allergenId_{{allergen.id}}"
 							ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
 							ng-click="toggleSelection(allergen.id,'allergen')">
-							<label for="allergenId_{{allergen.id}}"><span></span>{{allergen.name}}</label>
+							<label for="allergenId_{{allergen.id}}">{{allergen.name}}</label>
 						</div>
 					</div>
 				</accordion-group>

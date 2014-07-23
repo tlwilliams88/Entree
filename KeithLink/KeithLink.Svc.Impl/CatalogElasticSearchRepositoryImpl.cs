@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl
         {
             Product p = new Product();
             p.ManufacturerName = oProd._source.mfrname;
-            p.Id = oProd._id;
+            p.ItemNumber = oProd._id;            
             p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
             p.ManufacturerNumber = oProd._source.mfrnumber;
             p.Size = oProd._source.size;
@@ -59,6 +59,9 @@ namespace KeithLink.Svc.Impl
             p.Cases = oProd._source.cases;
             p.ExtendedDescription = string.Empty;
             p.CategoryId = oProd._source.categoryid;
+            p.ReplacedItem = oProd._source.replaceditem;
+            p.ReplacementItem = oProd._source.replacementitem;
+            p.CNDoc = oProd._source.cndoc;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
 
             return p;

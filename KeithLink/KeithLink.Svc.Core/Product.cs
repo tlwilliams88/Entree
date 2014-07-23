@@ -49,6 +49,15 @@ namespace KeithLink.Svc.Core
 
         [DataMember(Name = "packageprice")]
         public string PackagePrice { get; set; }
+
+        [DataMember(Name = "replacementitem")]
+        public string ReplacementItem { get; set; }
+
+        [DataMember(Name = "replaceditem")]
+        public string ReplacedItem {get;set;}
+
+        [DataMember(Name = "cndoc")]
+        public string CNDoc { get; set; }
     }
 
     [DataContract(Name = "ProductsReturn")]
