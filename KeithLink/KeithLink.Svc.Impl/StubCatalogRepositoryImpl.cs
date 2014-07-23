@@ -11,11 +11,11 @@ namespace KeithLink.Svc.Impl
     {
         Product[] products = new Product[] 
         { 
-            new Product { Id = "1", Description = "Tomato Soup", CategoryId = "Groceries", Price = "1.00", Size = "1lb" }, 
-            new Product { Id = "2", Description = "Yo-yo", CategoryId = "Toys", Price = "3.75", Size = "2lb"  }, 
-            new Product { Id = "3", Description = "Hammer", CategoryId = "Hardware", Price = "16.99", Size = "3lb"  },
-            new Product { Id = "4", Description = "Hammer Four", CategoryId = "Hardware", Price = "16.94", Size = "4lb"  },
-            new Product { Id = "5", Description = "Hammer Five", CategoryId = "Hardware", Price = "16.95", Size = "5lb"  } 
+            new Product { ItemNumber = "1", Description = "Tomato Soup", CategoryId = "Groceries", CasePrice = "1.00", Size = "1lb" }, 
+            new Product { ItemNumber = "2", Description = "Yo-yo", CategoryId = "Toys", CasePrice = "3.75", Size = "2lb"  }, 
+            new Product { ItemNumber = "3", Description = "Hammer", CategoryId = "Hardware", CasePrice = "16.99", Size = "3lb"  },
+            new Product { ItemNumber = "4", Description = "Hammer Four", CategoryId = "Hardware", CasePrice = "16.94", Size = "4lb"  },
+            new Product { ItemNumber = "5", Description = "Hammer Five", CategoryId = "Hardware", CasePrice = "16.95", Size = "5lb"  } 
         };
 
         Category[] categories = new Category[]

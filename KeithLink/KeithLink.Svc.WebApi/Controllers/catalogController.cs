@@ -12,11 +12,13 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class CatalogController : ApiController
     {
         KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
+        KeithLink.Svc.Core.IPriceRepository _priceRepository;
         string elasticSearchEndpoint = System.Configuration.ConfigurationManager.AppSettings[Constants.ElasticSearchEndpointConfigurationEntry];
 
-        public CatalogController(ICatalogRepository catalogRepository)
+        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository)
         {
             _catalogRepository = catalogRepository;
+            _priceRepository = priceRepository;
         }
 
         public ProductsReturn GetAllProducts()
