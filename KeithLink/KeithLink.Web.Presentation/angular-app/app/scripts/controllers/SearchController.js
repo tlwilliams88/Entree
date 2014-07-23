@@ -8,8 +8,33 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService',
-		function($scope, ProductService, CategoryService) {
+	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
+		function($scope, ProductService, CategoryService, $stateParams) {
+
+			var branchId = $scope.currentUser.currentLocation.branchId;
+			var type = $stateParams.type;
+
+			$scope.loadingCategories = true;
+			$scope.loadingResults = true;
+
+			if (type === 'category') {
+				ProductService.getProductsByCategory(branchId, $stateParams.id).then(function(response) {
+					$scope.products = response.data.products;
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+			} else if (type === 'search') {
+				ProductService.getProducts(branchId, $stateParams.id).then(function(response) {
+					$scope.products = response.data.products;
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+			}
+
+			CategoryService.getCategories().then(function(response) {
+				$scope.categories = response.data.categories;
+				$scope.loadingCategories = false;
+			});
 
 			$scope.selectedCategory = '';
 			$scope.selectedBrands = [];
@@ -19,10 +44,12 @@ angular.module('bekApp')
 			$scope.isAllergenShowing = false;
 			$scope.allergenHiddenNumber = 3;
 
-			$scope.products = [{'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101286','description':'Shrimp Cooked Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'6 LB','upc':'00000000000001','manufacturer_number':'B-W-26/31','manufacturer_name':'Ellington Farms Seafood 2','cases':'1','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101286','description':'Shrimp Cooked Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'6 LB','upc':'00000000000001','manufacturer_number':'B-W-26/31','manufacturer_name':'Ellington Farms Seafood 2','cases':'1','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101286','description':'Shrimp Cooked Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'6 LB','upc':'00000000000001','manufacturer_number':'B-W-26/31','manufacturer_name':'Ellington Farms Seafood 2','cases':'1','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101286','description':'Shrimp Cooked Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'6 LB','upc':'00000000000001','manufacturer_number':'B-W-26/31','manufacturer_name':'Ellington Farms Seafood 2','cases':'1','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'},{'categoryId':'FS490','id':'101286','description':'Shrimp Cooked Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'6 LB','upc':'00000000000001','manufacturer_number':'B-W-26/31','manufacturer_name':'Ellington Farms Seafood 2','cases':'1','kosher':'true','price':'325.00'}];
-	    $scope.categories = [{'id':'85000','name':'Restaurant Supply','description':'Restaurant Supply','subcategories':null},{'id':'AB000','name':'Fresh Bread','description':'Fresh Bread','subcategories':null},{'id':'AD000','name':'Dairy','description':'Dairy','subcategories':null},{'id':'AP000','name':'All Produce','description':'All Produce','subcategories':null},{'id':'BE000','name':'Beverage Equipment','description':'Beverage Equipment','subcategories':null},{'id':'BF000','name':'Beverage & Fountain','description':'Beverage & Fountain','subcategories':null},{'id':'BP000','name':'Fresh Meat','description':'Fresh Meat','subcategories':null},{'id':'CC000','name':'Cookies, Crackers, Candies','description':'Cookies, Crackers, Candies','subcategories':null},{'id':'AB000','name':'Fresh Bread','description':'Fresh Bread','subcategories':null},{'id':'AD000','name':'Dairy','description':'Dairy','subcategories':null},{'id':'AP000','name':'All Produce','description':'All Produce','subcategories':null},{'id':'BE000','name':'Beverage Equipment','description':'Beverage Equipment','subcategories':null},{'id':'BF000','name':'Beverage & Fountain','description':'Beverage & Fountain','subcategories':null},{'id':'BP000','name':'Fresh Meat','description':'Fresh Meat','subcategories':null},{'id':'CC000','name':'Cookies, Crackers, Candies','description':'Cookies, Crackers, Candies','subcategories':null}];
+			$scope.showContextMenu = function(e, idx) {
+	    	$scope.moveMenuStyle = {'top': (idx * 53) + 'px'}; 
+	    	$scope.isContextMenuDisplayed = true;
+	    };
 
-			$scope.showBrand = function(){
+	    $scope.showBrand = function(){
 				$scope.isBrandShowing = true;
 				$scope.brandHiddenNumber = 100;
 			};
@@ -31,15 +58,6 @@ angular.module('bekApp')
 				$scope.isAllergenShowing = true;
 				$scope.allergenHiddenNumber = 100;
 			};
-
-			ProductService.getProducts().then(function() {
-				$scope.products = ProductService.products;
-				$scope.predicate = 'id';
-			});
-
-			CategoryService.getCategories().then(function() {
-				$scope.categories = CategoryService.categories;
-			});
 
 			$scope.toggleSelection = function toggleSelection(id, filter) {
 				var idx;

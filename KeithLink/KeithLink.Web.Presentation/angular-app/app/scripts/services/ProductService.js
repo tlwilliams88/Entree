@@ -10,27 +10,18 @@
 angular.module('bekApp')
   .factory('ProductService', ['$http', 'ApiService', function ($http, ApiService) {
     
-    function all() {
-      return $http.get(
-          ApiService.endpointUrl +'/catalog/search/products',
-          {
-            responseType: 'json' 
-          }
-        )
-        .then(function(response) {
-          Service.products = response.data.products;
-        });
-    }
-
     var Service = {
-      getProducts: function() {
-        return all();
+      getProducts: function(branchId, searchTerm) {
+        console.log(ApiService.endpointUrl +'/catalog/search/' + branchId + '/' + searchTerm + '/products');
+        return $http.get(ApiService.endpointUrl +'/catalog/search/' + branchId + '/' + searchTerm + '/products');
       },
-      getProductsByCategory: function(categoryId, page, etc) {
-        console.log('catalog/search/category/' + categoryId + '/products?parentCategoryId=' + categoryId);
+      getProductsByCategory: function(branchId, categoryId) {
+        console.log(ApiService.endpointUrl +'/catalog/search/category/' + branchId + '/' + categoryId + '/products');
+        return $http.get(ApiService.endpointUrl +'/catalog/search/category/' + branchId + '/' + categoryId + '/products');
       },
-      getProduct: function(id) {
-        return $http.get(ApiService.endpointUrl +'/catalog/product/' + id);
+      getProductDetails: function(branchId, id) {
+        console.log(ApiService.endpointUrl +'/catalog/product/' + branchId + '/' + id);
+        return $http.get(ApiService.endpointUrl +'/catalog/product/' + branchId + '/' + id);
       }
     };
 

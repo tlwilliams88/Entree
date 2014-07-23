@@ -30,14 +30,34 @@
     }
 
     .user-info__job-title {
-      color: #a89f88;
+      color: $color-font-light;
       margin-right: 18px;
+    }
+
+    .user-info__menu {
+      position: absolute;
+      right: 60px;
+      z-index: 1;
+      background-color: $color-white;
+      min-width: 200px;
+      box-shadow: 4px 4px 10px $color-border;
+      border-radius: 4px;
+
+      button {
+        text-align: left;
+        font-size: 12px;
+      }
     }
   }
 
   // user profile image
   img {
     display: inline-block;
+    height: 40px;
+    width: 40px;
+    border-radius: 50px;
+    border: 1px solid $color-border;
+    background-color: white;
   }
 }
 

@@ -31,7 +31,7 @@
 
   <div class="sidebar-dsr text-center">
     <p>Your Sales Rep</p>
-    <img ng-show="currentUser.salesRep.imageUrl" src="{{currentUser.salesRep.imageUrl}}" alt="dsr image" style="width:75px;height:75px;" />
+    <img ng-show="currentUser.salesRep.imageUrl" src="{{currentUser.salesRep.imageUrl}}" alt="dsr image" />
     <p class="contact-info">
       <span>{{currentUser.salesRep.name}}</span>
       <span>{{currentUser.salesRep.phone}}</span>
@@ -59,63 +59,40 @@
 
     <div class="row user-bar hidden-print hidden-sm hidden-xs">
       <div class="col-md-4">
-        <select name="" id="">
-          <option value="" ng-repeat="store in currentUser.stores">{{store.name}}</option>
-        </select>
+        <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
       </div>
       <div class="col-md-4">
-        <div class="input-group">
-          <input type="text" class="form-control" placeholder="Search by keyword">
-          <span class="input-group-btn">
-            <button class="btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
-          </span>
-        </div>
+        <form name="universalSearchForm" novalidate>
+          <div class="input-group">
+            <input required ng-minlength="3" ng-model="universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
+            <span class="input-group-btn">
+              <button ui-sref="menu.catalog.products.list({ type: 'search', id: universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn" type="button"><span class="glyphicon glyphicon-search"></span></button>
+            </span>
+          </div>
+        </form>
       </div>
       <div class="col-md-4 text-right">
         <span class="icon-bell user-bar__notification"></span>
-        <div ng-show="showMenu" style="
-            position: absolute;
-            top: 50px;
-            right: 100px;
-            background-color: white;
-            padding: 15px;
-            z-index: 1;
-            border: 1px solid brown;
-            margin: 10px;
-            border-radius: 5px;
-        " class="text-left">
-        <span class="icon-cross pull-right" ng-click="showMenu = false;"></span>
-          <form role="form" ng-show="currentUser === undefined">
-            <div class="form-group">
-              <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">Password</label>
-              <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <button type="submit" class="btn cta-btn" ng-click="login();">Login</button>
-          </form>
-          <div ng-show="currentUser !== undefined">
-            <a href="logout">View Profile</a>
-            <a ng-click="logout();">Logout</a>
-          </div>
-        </div>
-        <div class="user-info">
+        <div class="user-info" ng-mouseenter="showUserMenu = true" ng-mouseleave="showUserMenu = false">
           <div>
             <span class="user-info__name">{{currentUser.name}}</span> 
-            <span ng-click="showMenu = !showMenu;" class="icon-arrow-down5"></span>
+            <span class="icon-arrow-down5"></span>
           </div>
           <div>
             <span class="user-info__job-title">{{currentUser.role}}</span>
           </div>
+
+          <div class="user-info__menu btn-group-vertical" ng-show="showUserMenu">
+            <button class="btn">Account Settings</button>
+            <button class="btn">Sign Out</button>
+          </div>
         </div>
-        <img src="" alt="" style="height:50px;width:50px;">
+        <img src="{{currentUser.imageUrl}}" alt="">
       </div>
     </div>
 
     <div class="view" ui-view="">
-        <p>TODO: Loading content</p>
+        <p loading-spinner="true"></p>
     </div>
   </div>
 </div>

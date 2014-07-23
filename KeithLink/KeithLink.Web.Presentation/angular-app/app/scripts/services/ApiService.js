@@ -2,10 +2,10 @@
 
 /**
  * @ngdoc function
- * @name bekApp.service:CategoryService
+ * @name bekApp.service:ApiService
  * @description
- * # CategoryService
- * Service of the bekApp
+ * # ApiService
+ * calls service to get endpoint url
  */
 angular.module('bekApp')
   .factory('ApiService', function ($http) {

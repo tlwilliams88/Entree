@@ -15,8 +15,8 @@ $sidebar-nav__text--selected: $color-white;
   background-image: url('../images/Nav-Image.jpg');
   background-position:center bottom;
   background-repeat: no-repeat; 
-  min-height: 900px;
-
+  min-height: 650px;
+  
   position: absolute;
   top: 0;
   bottom: 0;
@@ -74,9 +74,15 @@ $sidebar-nav__text--selected: $color-white;
     border-bottom: 1px solid $sidebar-nav__border;
     border-top: 1px solid $sidebar-nav__border;
 
+    img {
+      height: 60px;
+      width: 60px;
+      border-radius: 50px;
+    }
+
     .contact-info {
-      margin-top: $gutter-size;
-      margin-bottom: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
       font-weight: 100;
       
       // contact info items

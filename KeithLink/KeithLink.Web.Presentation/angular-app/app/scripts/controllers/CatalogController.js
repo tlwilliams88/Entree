@@ -8,14 +8,13 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', 'CategoryService', 'ProductService', function ($scope, CategoryService, ProductService) {
+  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', function ($scope, $state, CategoryService, ProductService) {
     
-    CategoryService.getCategories().then(function() {
-      $scope.categories = CategoryService.categories;
-    });
-    
-    ProductService.getProducts().then(function() {
-      $scope.featuredProducts = ProductService.products;
+    $scope.loadingCategories = true;
+
+    CategoryService.getCategories().then(function(response) {
+      $scope.loadingCategories = false;
+      $scope.categories = response.data.categories;
     });
 
     $scope.brands = [
@@ -37,20 +36,5 @@ angular.module('bekApp')
         name: 'Golden Harvest'
       }
     ];
-
-    $scope.categories = [
-      { 
-        id: 'BP000',
-        name: 'Fresh Meat',
-        description: 'Fresh Meat',
-        subcategories: null,
-        active: false
-    }, { 
-        id: 'BP000',
-        name: 'Fresh Meat',
-        description: 'Fresh Meat',
-        subcategories: null,
-        active: false
-    } ];
 
   }]);

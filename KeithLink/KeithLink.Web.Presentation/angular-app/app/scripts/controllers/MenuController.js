@@ -18,26 +18,30 @@ angular.module('bekApp')
     $scope.currentUser = {
       'name': 'Steven',
       'customerNumber': 12345,
-      'imageUrl': null,
+      'imageUrl': '../images/placeholder-user.png',
       'role': 'Kitchen Manager',
       'phone': 9348234934,
       'location': 'Dallas',
       'stores': [{
         'name': 'Jimmy\'s Chicken Shack',
-        'customerNumber': 453234
+        'customerNumber': 453234,
+        'branchId': 'fam'
       }, {
         'name': 'Saltgrass',
-        'customerNumber': 534939
+        'customerNumber': 534939,
+        'branchId': 'fsa'
       }],
       'accountNumber': 9783459,
       'salesRep': {
         'id': 34234,
         'name': 'Heather Hill',
-        'phone': 8889122342,
+        'phone': '(888) 912-2342',
         'email': 'heather.hill@ben.e.keith.com',
-        'imageUrl': null
+        'imageUrl': '../images/placeholder-dsr.jpg'
       }
     };
+
+    $scope.currentUser.currentLocation = $scope.currentUser.stores[0];
 
 
   }]);
