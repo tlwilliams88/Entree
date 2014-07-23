@@ -1,16 +1,62 @@
 <div page-header-bar message="'Product Catalog'">
-  <button class="btn page-header__export-button"><span class="icon-printer"></span></button>
-  <button class="btn page-header__export-button"><span class="icon-disk"></span></button>
+	<button class="btn page-header__export-button"><span class="icon-printer"></span></button>
+	<button class="btn page-header__export-button"><span class="icon-disk"></span></button>
 </div>
-
 <div class="row page-subheader-bar">
-	<div class="col-md-12 page-subheader-bar__message">
-		<a>Categories</a>>><a>Frozen Meat</a>>><a>Bacon</a>
+	<div class="col-md-12 page-subheader-bar__container">
+		<div class="page-subheader-bar__message hidden-xs hidden-sm">
+			<a>Categories</a>>><a>Frozen Meat</a>>><a>Bacon</a>
+		</div>
+		<div ng-click="hidden = ! hidden" class="visible-xs visible-sm page-subheader-bar__filter">
+			Filter <span class="icon-arrow-down5"></span>
+		</div>
 	</div>
 </div>
-
+<div class="row" ng-hide="hidden">
+	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
+		<div class="row">
+			<accordion close-others="oneAtATime">
+				<accordion-group heading="Frozen Meat">
+					<div ng-repeat="category in categories" class="panel panel-default">
+						<div class="panel-body">
+							<input type="checkbox"
+							value="categoryValue_{{category.id}}"
+							id="categoryId_{{category.id}}"
+							ng-checked="selectedCategories.indexOf(category.id) > -1"
+							ng-click="toggleSelection(category.id,'category')">
+							<label for="categoryId_{{category.id}}"><span></span>{{category.name}}</label>
+						</div>
+					</div>
+				</accordion-group>
+				<accordion-group heading="Brand">
+					<div ng-repeat="brand in brands" class="panel panel-default">
+						<div class="panel-body">
+							<input type="checkbox"
+							value="brandValue_{{brand.id}}"
+							id="brandId_{{brand.id}}"
+							ng-checked="selectedBrands.indexOf(brand.id) > -1"
+							ng-click="toggleSelection(brand.id,'brand')">
+							<label for="brandId_{{brand.id}}"><span></span>{{brand.name}}</label>
+						</div>
+					</div>
+				</accordion-group>
+				<accordion-group heading="Allergens">
+					<div ng-repeat="allergen in allergens" class="panel panel-default">
+						<div class="panel-body">
+							<input type="checkbox"
+							value="allergenValue_{{allergen.id}}"
+							id="allergenId_{{allergen.id}}"
+							ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
+							ng-click="toggleSelection(allergen.id,'allergen')">
+							<label for="allergenId_{{allergen.id}}"><span></span>{{allergen.name}}</label>
+						</div>
+					</div>
+				</accordion-group>
+			</accordion>
+		</div>
+	</div>
+</div>
 <div class="row">
-
 	<!-- Filters -->
 	<div class="col-sm-3 hidden-xs hidden-sm filters">
 		<div class="row">
@@ -21,7 +67,6 @@
 				</ul>
 			</div>
 		</div>
-
 		<div class="row sub-content">
 			<div class="col-sm-12">
 				<h3>Brand</h3>
@@ -36,7 +81,6 @@
 				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
 			</div>
 		</div>
-
 		<div class="row sub-content">
 			<div class="col-sm-12">
 				<h3>Allergens</h3>
@@ -52,10 +96,9 @@
 			</div>
 		</div>
 	</div>
-
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
-		<h2>Search Results</h2>
+		<h2 class="hidden-xs hidden-sm">Search Results</h2>
 		<div>
 			<table class="table table-striped search-results__table">
 				<thead>
@@ -86,11 +129,10 @@
 							'icon-arrow-down4':predicate == 'description' && !reverse,
 							'icon-arrow-up3': predicate == 'description' && reverse
 						}"></span></th>
-						<th class="hidden-sm hidden-xs"></th>	
+						<th class="hidden-sm hidden-xs"></th>
 						<th></th>
 					</tr>
 				</thead>
-
 				<tbody>
 					<tr ng-repeat-start="product in products | orderBy:predicate:reverse">
 						<td class="text-light table-icon" style="width:10px;">
@@ -118,15 +160,14 @@
 						</td>
 					</tr>
 					<tr ng-repeat-end ng-show="showDetails" class="search-results__details">
-					  <td colspan=4>
-					    <div id="my_box">
-					      <p>Pack / Size: {{product.cases}} / {{product.size}}</p>
-					      <p>Brand: {{product.brand}}</p>
-					    </div>
-					  </td>
+						<td colspan=4>
+							<div id="my_box">
+								<p>Pack / Size: {{product.cases}} / {{product.size}}</p>
+								<p>Brand: {{product.brand}}</p>
+							</div>
+						</td>
 					</tr>
 				</tbody>
-
 			</table>
 		</div>
 	</div>
