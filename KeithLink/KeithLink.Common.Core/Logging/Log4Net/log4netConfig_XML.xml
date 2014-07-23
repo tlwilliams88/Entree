@@ -100,7 +100,7 @@
     <bufferSize value="100" />
     <lossy value="false" />
     <evaluator type="log4net.Core.LevelEvaluator">
-      <threshold value="WARN"/>
+      <threshold value="DEBUG"/>
     </evaluator>
     <appender-ref ref="RollingFileAppender" />
     <appender-ref ref="DatabaseAppender" />
