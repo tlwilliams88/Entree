@@ -62,6 +62,8 @@ namespace KeithLink.Svc.Impl
             p.ReplacedItem = oProd._source.replaceditem;
             p.ReplacementItem = oProd._source.replacementitem;
             p.CNDoc = oProd._source.cndoc;
+            p.Name = oProd._source.name;
+            p.CategoryName = oProd._source.categoryname;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
 
             return p;
