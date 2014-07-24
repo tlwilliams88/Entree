@@ -20,6 +20,7 @@
     display: inline-block;
     padding-left: $gutter-size;
     vertical-align: middle;
+    letter-spacing: 1px;
 
     div {
       display: block;
@@ -45,7 +46,7 @@
 
       button {
         text-align: left;
-        font-size: 12px;
+        font-size: $font-size;
       }
     }
   }

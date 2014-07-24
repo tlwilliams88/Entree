@@ -5,7 +5,7 @@
 <div class="row page-subheader-bar">
 	<div class="col-md-12 page-subheader-bar__container">
 		<div class="page-subheader-bar__message hidden-xs hidden-sm">
-			<a>Categories</a>>><a>Frozen Meat</a>>><a>Bacon</a>
+			<div ng-repeat="link in breadcrumbs"><a href="">{{link}} </a> <span>>></span></div>
 		</div>
 		<div ng-click="hidden = ! hidden" class="visible-xs visible-sm page-subheader-bar__filter">
 			Filter <span class="icon-arrow-down5"></span>
@@ -69,11 +69,11 @@
 </div>
 <div class="row">
 	<!-- Filters -->
-	<div class="col-sm-3 hidden-xs hidden-sm filters">
+	<div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
 		<div class="row">
 			<div class="col-sm-12">
 				<h3>Frozen Meat</h3>
-				<ul class="nav category">
+				<ul class="nav search-results__category">
 					<li class="text-center" loading-spinner="loadingCategories"></li>
 					<li ng-repeat="category in categories | orderBy : ['name']"><a ng-click="toggleSelection(category.id, 'category')" ng-class="{active: category.id == selectedCategory}">{{category.name}}</a></li>
 				</ul>
@@ -176,15 +176,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-show="loadingResults">
-						<td colspan="7" class="text-center" loading-spinner="loadingResults"></td>
-					</tr>
 					<tr ng-repeat-start="product in products | orderBy:predicate:reverse">
 						<td class="text-light table-icon" style="width:10px;">
 							<span class="icon-star2"></span>
 						</td>
 						<td>
-							<a ui-sref="menu.catalog.products.details({ itemId : product.itemnumber, item: product })">{{product.itemnumber}}</a>
+							<a ui-sref="menu.catalog.products.details({ itemNumber : product.itemnumber, item: product })">{{product.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
 							{{product.cases}} / {{product.size}}
@@ -195,10 +192,7 @@
 						<td>
 							{{product.name}}
 						</td>
-						<td class="hidden-sm hidden-xs icons">
-							<span ng-show="product.cndoc === 'Y'" class="icon-apple"></span>
-							<a ui-sref="menu.catalog.products.details({ itemId: product.replacementitem })" ng-show="product.replacementitem > 0"><span tooltip="Item is replacing item # {{product.replacementitem}}" class="text-paid icon-cycle"></span></a>
-							<a ui-sref="menu.catalog.products.details({ itemId: product.replaceditem })" ng-show="product.replaceditem > 0"><span tooltip="Item is being replaced by item # {{product.replaceditem}}" class="text-late icon-cycle"></span></a>
+						<td class="hidden-sm hidden-xs icons" item-icons="product">
 						</td>
 						<td class="table-icon">
 							<button style="background-color:transparent; border:none;" ng-mousedown="showContextMenu($event, $index)"><span class="icon-plus2"></span></button>
@@ -210,10 +204,7 @@
 					    <div>
 					      <p>Pack / Size: {{product.cases}} / {{product.size}}</p>
 					      <p>Brand: {{product.brand}}</p>
-					      <p>
-					      	<span ng-show="product.cndoc === 'Y'" class="icon-apple"></span>
-							<a ui-sref="menu.catalog.products.details({ itemId: product.replacementitem })" ng-show="product.replacementitem > 0"><span tooltip="Item is replacing item # {{product.replacementitem}}" class="text-paid icon-cycle"></span></a>
-							<a ui-sref="menu.catalog.products.details({ itemId: product.replaceditem })" ng-show="product.replaceditem > 0"><span tooltip="Item is being replaced by item # {{product.replaceditem}}" class="text-late icon-cycle"></span></a>
+					      <p item-icons="product">
 					      </p>
 					    </div>
 					  </td>
@@ -222,6 +213,11 @@
 						<td colspan="7">No products found.</td>
 					</tr>
 				</tbody>
+				<tfoot>
+					<tr ng-show="loadingResults">
+						<td colspan="7" class="text-center" loading-spinner="loadingResults"></td>
+					</tr>
+				</tfoot>
 			</table>
 		</div>
 	</div>

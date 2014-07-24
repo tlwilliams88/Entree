@@ -52,7 +52,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetProductsByCategory(branchId, categoryId, elasticSearchEndpoint);
+            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, elasticSearchEndpoint);
+            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), prods.Products);
+
+            foreach (Product p in prods.Products)
+            {
+                double casePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).CasePrice;
+                double packagePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).PackagePrice;
+                p.CasePrice = String.Format("{0:C}", Convert.ToInt32(casePrice));;
+                p.PackagePrice = String.Format("{0:C}", Convert.ToInt32(packagePrice));
+            }
+
+            return prods;
         }
 
         [HttpGet]
@@ -68,7 +79,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Product GetProductById(string branchId, string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetProductById(branchId, id, elasticSearchEndpoint);
+            Product prod = _catalogRepository.GetProductById(branchId, id, elasticSearchEndpoint);
+
+            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), new List<Product>() { prod });
+
+            double casePrice = pricingInfo.Prices.Find(x => x.ItemNumber == prod.ItemNumber).CasePrice;
+            double packagePrice = pricingInfo.Prices.Find(x => x.ItemNumber == prod.ItemNumber).PackagePrice;
+            prod.CasePrice = String.Format("{0:C}", Convert.ToInt32(casePrice)); ;
+            prod.PackagePrice = String.Format("{0:C}", Convert.ToInt32(packagePrice));
+
+            return prod;
         }
 
         [HttpGet]

@@ -7,7 +7,7 @@ body {
   background-image: url('../images/Textured-BG.jpg');
   background-color: $background;
   color: $color-font;
-  font-size: 12px;
+  font-size: $font-size;
   height: 100%;
   min-height: 100%;
 }
@@ -60,10 +60,10 @@ a {
   padding:0;
 }
 
-.text-late {
+.text-red {
   color: $color-red;
 }
-.text-paid {
+.text-green {
   color: $color-green;
 }
 
