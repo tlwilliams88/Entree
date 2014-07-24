@@ -31,6 +31,9 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController'
     })
+    .state('menu.test', {
+      url: '/test'
+    })
     // /home
     .state('menu.home', {
       url: '/home',
@@ -53,9 +56,9 @@ angular
       url: '/products',
       template: '<div ui-view=""></div>'
     })
-    // /catalog/products
-    .state('menu.catalog.products.home', {
-      url: '',
+    // /catalog/:type/:id
+    .state('menu.catalog.products.list', {
+      url: '/:type/:id',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController'
     })
@@ -64,19 +67,8 @@ angular
       url: '/:itemId',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController'
-    })
-    // /catalog/category/:categoryId
-    .state('menu.catalog.category', {
-      url: '/category/:categoryId',
-      templateUrl: 'views/searchresults.html',
-      controller: 'SearchController'
-    })
-    // /catalog/brand/:brandId
-    .state('menu.catalog.brand', {
-      url: '/brand/:brandId',
-      templateUrl: 'views/searchresults.html',
-      controller: 'SearchController'
     });
+
   $stateProvider
     .state('404', { 
       url: '/404',
@@ -93,8 +85,6 @@ angular
   ApiService.getEndpointUrl().then(function(response) {
     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
   });
-
-//ApiService.endpointUrl = 'http://devapi.bekco.com';
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // debugger;

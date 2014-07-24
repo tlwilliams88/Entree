@@ -4,12 +4,14 @@
 <!-- Search -->
 <div class="row hidden-sm hidden-xs">
 	<div class="col-sm-12">
-		<div class="input-group catalog-search">
-			<input type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacture number">
-			<span class="input-group-btn">
-			<button class="btn cta-btn btn-lg" type="button"><span class="icon-search"></span> SEARCH</button>
-			</span>
-		</div>
+		<form name="catalogSearchForm" novalidate>
+			<div class="input-group catalog-search">
+				<input required ng-minlength="3" ng-model="searchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacture number">
+				<span class="input-group-btn">
+				<button ui-sref="menu.catalog.products.list({ type: 'search', id: searchTerm })" ng-disabled="catalogSearchForm.$invalid" class="btn cta-btn btn-lg" type="button"><span class="icon-search"></span> SEARCH</button>
+				</span>
+			</div>
+		</form>
 	</div>
 </div>
 
@@ -56,12 +58,13 @@
 	<div class="col-sm-12">
 		<h3>Select A Category</h3>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
-			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
+			<li loading-spinner="loadingCategories"></li>
+			<li ng-repeat="category in categories" class="item-holder">
 				<div class="featured-item text-center">
 					<img src="images/green-apple.jpg" alt="image">
 					<div class="featured-item__detail">
 						{{category.name}}
-						<a ui-sref="menu.catalog.category({ categoryId: category.id })" class="text-uppercase">view category</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" class="text-uppercase">view category</a>
 					</div>
 				</div>
 			</li>
@@ -80,7 +83,7 @@
 					<img src="{{brand.imageUrl}}" alt="image">
 					<div class="featured-item__detail">
 						{{brand.name}}
-						<a ui-sref="menu.catalog.brand({ brandId: brand.id })" class="text-uppercase">view brand</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.id })" class="text-uppercase">view brand</a>
 					</div>
 				</div>
 			</li>

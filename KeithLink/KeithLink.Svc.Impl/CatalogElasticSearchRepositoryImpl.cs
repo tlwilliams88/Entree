@@ -17,18 +17,33 @@ namespace KeithLink.Svc.Impl
             
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint)
+        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint, int from = 0, int size = 20)
         {
             var client = GetElasticsearchClient(elasticSearchEndpoint);
+            category = category.ToLower();
+            List<string> childCategories = new List<string>();
+
+            CategoriesReturn ret = GetCategories(elasticSearchEndpoint);
+            foreach (var c in ret.Categories)
+            {
+                if (category == c.Id.ToLower())
+                {
+                    foreach (var subC in c.SubCategories)
+                    {
+                        childCategories.Add(subC.Id);
+                    }
+                }
+            }
 
             List<Product> products = new List<Product>();
-            category = category.ToLower();
+            string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
             var categoryFilter = @"{
+                ""from"" : " + from + @", ""size"" : " + size + @",
                 ""query"":{
                      ""query_string"" : {
                          ""fields"" : [""categoryid""],
-                          ""query"" : """ + category + @""",
+                          ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
                         }
                       }
@@ -69,25 +84,32 @@ namespace KeithLink.Svc.Impl
             return p;
         }
 
-        public CategoriesReturn GetCategories(string elasticSearchEndpoint)
+        public CategoriesReturn GetCategories(string elasticSearchEndpoint, int from = 0, int size = 2000)
         {
             var client = GetElasticsearchClient(elasticSearchEndpoint);
 
-            ElasticsearchResponse<DynamicDictionary> res = client.Search("categories", "category", "");
+            var categoryFilter = @"{
+                ""from"" : " + from + @", ""size"" : " + size + @"
+                }";
+
+            ElasticsearchResponse<DynamicDictionary> res = client.Search("categories", "category", categoryFilter);
             List<Category> cats = new List<Category>();
 
             foreach (var oCat in res.Response["hits"]["hits"])
             {
-                Category cat = new Category() { Id = oCat._id, Name = oCat._source.name, Description = oCat._source.name };
-                List<Category> subCats = new List<Category>();
-                foreach (var oSubCat in oCat._source.subcategories)
+                if (oCat._source.subcategories != null)
                 {
-                    Category subCat = new Category() { Id = oSubCat.categoryid, Name = oSubCat.name, Description = oSubCat.name };
-                    subCats.Add(subCat);
-                }
+                    Category cat = new Category() { Id = oCat._id, Name = oCat._source.name, Description = oCat._source.name };
+                    List<Category> subCats = new List<Category>();
+                    foreach (var oSubCat in oCat._source.subcategories)
+                    {
+                        Category subCat = new Category() { Id = oSubCat.categoryid, Name = oSubCat.name, Description = oSubCat.name };
+                        subCats.Add(subCat);
+                    }
 
-                cat.SubCategories = subCats.ToArray();
-                cats.Add(cat);
+                    cat.SubCategories = subCats.ToArray();
+                    cats.Add(cat);
+                }
             }
 
             return new CategoriesReturn() { Categories = cats };
@@ -107,12 +129,13 @@ namespace KeithLink.Svc.Impl
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, string elasticSearchEndpoint)
+        public ProductsReturn GetProductsBySearch(string branch, string search, string elasticSearchEndpoint, int from = 0, int size = 500)
         {
             var client = GetElasticsearchClient(elasticSearchEndpoint);
             branch = branch.ToLower();
 
             var searchBody = @"{
+                ""from"" : " + from + @", ""size"" : " + size + @",
                 ""query"":{
                      ""query_string"" : {
                           ""query"" : """ + search + @""",
