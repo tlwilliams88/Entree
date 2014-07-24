@@ -10,12 +10,14 @@
 angular.module('bekApp')
   .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', function ($scope, $stateParams, ProductService) {
     
-    var id = $stateParams.itemId;
+    var itemNumber = $stateParams.itemNumber;
     if ($stateParams.item) {
       $scope.item = $stateParams.item;
     } else {
-      ProductService.getProductDetails($scope.currentUser.currentLocation.branchId, id).then(function(response) {
+      $scope.loadingDetails = true;
+      ProductService.getProductDetails($scope.currentUser.currentLocation.branchId, itemNumber).then(function(response) {
         $scope.item = response.data;
+        $scope.loadingDetails = false;
       });
     }
 

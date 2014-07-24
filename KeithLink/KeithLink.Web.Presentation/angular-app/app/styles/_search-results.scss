@@ -1,4 +1,16 @@
-.category{
+.search-results__filters {
+
+  label {
+    margin-bottom: 10px;
+    font-weight: 400;
+  }
+  input[type="checkbox"]:checked + label {
+    color: $color-blue;
+    font-weight: 600;
+  }
+}
+
+.search-results__category{
   max-height: 400px;
   overflow-y: scroll; 
   -webkit-overflow-scrolling: touch;
@@ -19,19 +31,6 @@
     }
   }
 }
-
-.filters {
-
-  label {
-    margin-bottom: 10px;
-    font-weight: 400;
-  }
-  input[type="checkbox"]:checked + label {
-    color: $color-blue;
-    font-weight: 600;
-  }
-}
-
 
 .hidebrand{
   display: none;
@@ -139,8 +138,6 @@
 @media(max-width: $mobile-max) {
 
   .search-results__table {
-    font-size: 10px;
-  
     th, td:not(:first-child) {
       padding-left: 0 !important;
       padding-right: 5px !important;
