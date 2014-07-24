@@ -6,7 +6,7 @@
 	<div class="col-sm-12">
 		<form name="catalogSearchForm" novalidate>
 			<div class="input-group catalog-search">
-				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacture number">
+				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacturer number">
 				<span class="input-group-btn">
 				<button ui-sref="menu.catalog.products.list({ type: 'search', id: catalogSearchTerm })" ng-disabled="catalogSearchForm.$invalid" class="btn cta-btn btn-lg" type="submit"><span class="icon-search"></span> SEARCH</button>
 				</span>
