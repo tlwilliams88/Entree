@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Test
             KeithLink.Svc.WebApi.Controllers.CatalogController controller = new WebApi.Controllers.CatalogController(new KeithLink.Svc.Impl.CommerceServerCatalogRepositoryImpl(),
                                                                                                                      new KeithLink.Svc.Impl.PriceRepositoryImpl());
 
-            KeithLink.Svc.Core.ProductsReturn products = controller.GetProductsSearch();
+            KeithLink.Svc.Core.ProductsReturn products = controller.GetProductsSearch("", "");
 
             Assert.IsTrue(products.Products.Count == 2);
         }
@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Test
             KeithLink.Svc.WebApi.Controllers.CatalogController controller = new WebApi.Controllers.CatalogController(new KeithLink.Svc.Impl.CommerceServerCatalogRepositoryImpl(), 
                                                                                                                      new KeithLink.Svc.Impl.PriceRepositoryImpl());
 
-            KeithLink.Svc.Core.Product products = controller.GetProductById("");
+            KeithLink.Svc.Core.Product products = controller.GetProductById("", "");
 
             Assert.IsTrue(products.ItemNumber == "285141");
         }

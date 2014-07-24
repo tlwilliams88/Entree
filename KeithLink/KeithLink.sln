@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D6B19051-C6BA-465B-9D93-B6E48E44667A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C44D1197-BF78-46D8-975D-CD5B10D9A4AA}"
@@ -71,7 +73,6 @@ Global
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Test|Any CPU.ActiveCfg = Release|Any CPU
@@ -95,7 +96,6 @@ Global
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Dev|Any CPU.Build.0 = Debug|Any CPU
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Test|Any CPU.ActiveCfg = Release|Any CPU
@@ -119,7 +119,6 @@ Global
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.Build.0 = Release|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.ActiveCfg = Test|Any CPU
@@ -171,7 +170,7 @@ Global
 		{29CE80BD-38A9-4EB5-8913-D58CD389C479} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal
