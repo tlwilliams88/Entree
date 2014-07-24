@@ -26,10 +26,10 @@ angular.module('bekApp')
     $scope.myInterval = -1;
     var items = $scope.items = [];
     $scope.addItem = function() {
-      var newWidth = 300 + items.length;
+      var newWidth = 1 + items.length;
       items.push({
         id: 1,
-        imageUrl: 'http://lorempixel.com/' + newWidth + '/300/food/',
+        imageUrl: 'images/demoimage' + newWidth + '.jpg',
         description: '50% off of apples!'
       });
     };
