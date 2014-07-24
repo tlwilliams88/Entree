@@ -19,17 +19,20 @@ button.btn {
 /* SELECT DROPDOWNS */
 
 select {
-  border: 1px solid #c3bc9c;
+  -moz-appearance: none;
   -webkit-appearance: none;
+  text-indent: 0.01px;
+  text-overflow: '';
+
+  border: 1px solid #c3bc9c;
   font-weight: 300;
-  height: 40px;
+  // height: 40px;
   letter-spacing: 1px;
   
   background: url("../images/down-arrow.png") center right 10px no-repeat;
   cursor: pointer;
   background-size: 10px;
-  padding-right: 30px;
-  padding-left: 12px;
+  padding: 12px 30px 12px 12px;
   background-color: $color-white;
 }
 
@@ -59,7 +62,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   border: 1px solid $color-border;
   height: 40px;   
   font-weight: 300;
-  font-size: 12px;
+  font-size: $font-size;
   letter-spacing: 1px;
 }
 
@@ -132,6 +135,7 @@ input[type='text'], input[type='email'], input[type='password'] {
 .table {
   margin-bottom: 0; 
   border: 1px solid $color-border;
+  background-color: $color-white;
 
   thead {
     background-color: $background;
@@ -178,6 +182,8 @@ input[type='text'], input[type='email'], input[type='password'] {
         background-color: $background;
       }
     }
+  }
+  tbody {
     tr:nth-child(odd) {
       th, td {
         background-color: $color-white;
@@ -217,7 +223,7 @@ input[type="checkbox"]:checked + label {
   .dropdown-menu {
     left: -100%;
     top: 0;
-    font-size: 12px;
+    font-size: $font-size;
     border: none;
     padding: 0;
     min-width: 0;
@@ -228,7 +234,7 @@ input[type="checkbox"]:checked + label {
   }
   .btn, .btn-group .btn, {
     color: $color-font-light;
-    font-size: 12px;
+    font-size: $font-size;
     text-align: left;
     letter-spacing: 0;
     min-width: 125px;

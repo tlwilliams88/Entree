@@ -1,11 +1,12 @@
 <div class="featured-item-mobile">
     <carousel interval="myInterval">
         <slide ng-repeat="item in itemList track by $index | limitTo:5" active="item.active">
-            <div class="col-xs-4 no-padding text-left">
+            
+            <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
                 <img ng-src="{{item.imageUrl}}">
             </div>
             <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                {{item.description}}<br />
+                {{item.name}}<br />
                 <a ui-sref="{{linkSref}}" class="text-uppercase">view details</a>
             </div>
         </slide>
