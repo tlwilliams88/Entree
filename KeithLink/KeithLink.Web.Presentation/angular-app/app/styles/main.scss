@@ -1,5 +1,7 @@
 @import "compass";
 
+// @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+
 $background: #f3f1eb;
 
 $color-orange: #e8aa30;
@@ -21,12 +23,14 @@ $gutter-size: 15px;
 $font-size: 12px;
 
 
-@import 'setup';
-@import 'components';
-@import 'featured-items';
+@import 'global-setup';
+@import 'component';
+@import 'component-featured-items';
+@import 'component-person-info';
 
 // menus
 @import 'sidebar';
+@import 'sidebar-mobile';
 @import 'user-bar';
 @import 'page-header-bar';
 

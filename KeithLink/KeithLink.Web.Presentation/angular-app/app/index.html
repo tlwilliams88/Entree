@@ -8,8 +8,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
-    <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
+    <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
     <link rel="stylesheet" href="lib/icomoon/css/style.css" />
     <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
     <!-- endbuild -->
@@ -59,7 +60,20 @@
     <script src="lib/angular-touch/angular-touch.js"></script>
     <script src="lib/angular-ui-router/angular-ui-router.js"></script>
     <script src="lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="lib/ng-mobile-menu/ng-mobile-menu.js"></script>
     <!-- endbuild -->
+
+     <script id="template/carousel/carousel.html" type="text/ng-template">
+      <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
+        <ol class="carousel-paging" ng-show="slides.length > 1">
+            <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
+        </ol>
+        <div class="carousel-inner" ng-transclude></div>
+        <a class="left carousel-control" ng-click="prev()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a class="right carousel-control" ng-click="next()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+    </script>
+
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>

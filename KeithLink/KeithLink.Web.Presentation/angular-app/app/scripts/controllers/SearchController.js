@@ -11,8 +11,10 @@ angular.module('bekApp')
 	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
 		function($scope, ProductService, CategoryService, $stateParams) {
 			// clear keyword search term at top of the page
-			$scope.$parent.$parent.$parent.universalSearchTerm = '';
-
+			if ($scope.userBar) {
+				$scope.userBar.universalSearchTerm = '';
+			}
+			
 			var branchId = $scope.currentUser.currentLocation.branchId;
 			var type = $stateParams.type;
 

@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EAEDF704-BD36-4012-AF9F-DFD59F9E323F}</ProjectGuid>
+    <ProjectGuid>{42B2A7A5-6D71-4414-84EB-01C26D061183}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeithLink.Common.Tests</RootNamespace>

@@ -1,12 +1,16 @@
+@mixin component {
+  font-weight: 300;
+  letter-spacing: 1px;
+  border: 1px solid $color-border;
+}
+
 /* BUTTONS */
 
 // default button
 button.btn {
+  @include component;
   height: 40px;
-  letter-spacing: 1px;
   background-color: white;
-  border: 1px solid $color-border;
-  font-weight: 300;
   
   // call to action button
   &.cta-btn {
@@ -18,22 +22,37 @@ button.btn {
 
 /* SELECT DROPDOWNS */
 
-select {
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  text-indent: 0.01px;
-  text-overflow: '';
-
-  border: 1px solid #c3bc9c;
-  font-weight: 300;
-  // height: 40px;
-  letter-spacing: 1px;
+// select {
+//   border: 1px solid #c3bc9c;
+//   -webkit-appearance: none;
+//   font-weight: 300;
+//   height: 40px;
+//   letter-spacing: 1px;
   
-  background: url("../images/down-arrow.png") center right 10px no-repeat;
-  cursor: pointer;
-  background-size: 10px;
-  padding: 12px 30px 12px 12px;
-  background-color: $color-white;
+//   background: url("../images/down-arrow.png") center right 10px no-repeat;
+//   cursor: pointer;
+//   background-size: 10px;
+//   padding-right: 30px;
+//   padding-left: 12px;
+//   background-color: $color-white;
+// }
+
+.select-div select {
+  background: transparent;
+   width: 300px;
+   padding: 10px 0px 10px 12px;
+   height: 40px;
+    -webkit-appearance: none;
+    font-weight: 300;
+    border: 0;
+} 
+
+.select-div{
+   width: 260px;
+   height: 40px;
+   overflow: hidden;
+   background: url("../images/down-arrow.png") no-repeat 96% $color-white;
+   border: 1px solid #c3bc9c;
 }
 
 /* TEXT INPUTS */
@@ -59,11 +78,9 @@ select {
 @include text-placeholder ($color-border, italic);
 
 input[type='text'], input[type='email'], input[type='password'] {
-  border: 1px solid $color-border;
-  height: 40px;   
-  font-weight: 300;
+  @include component;
+  height: 40px;
   font-size: $font-size;
-  letter-spacing: 1px;
 }
 
 /* TABS */
@@ -83,20 +100,20 @@ input[type='text'], input[type='email'], input[type='password'] {
         @extend a;
       }
     }
-  }
+    &.active a {
+      border: 1px solid $color-border;
+      border-bottom-color: transparent;
+      border-top: 3px solid $color-blue;
+      padding-top: 10px;
+      font-weight: normal;
 
-  li.active a {
-    border: 1px solid $color-border;
-    border-bottom-color: transparent;
-    border-top: 3px solid $color-blue;
-    padding-top: 10px;
-    font-weight: normal;
-
-    &:hover {
-      @extend a;
+      &:hover {
+        @extend a;
+      }
     }
   }
 }
+
 .tab-content {
   .tab-pane {
     background-color: $color-white;
