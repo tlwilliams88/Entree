@@ -21,6 +21,7 @@ module.exports = function(config) {
       'app/lib/angular-sanitize/angular-sanitize.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
+      'app/lib/ng-mobile-menu/ng-mobile-menu.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'

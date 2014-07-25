@@ -21,12 +21,14 @@ $gutter-size: 15px;
 $font-size: 12px;
 
 
-@import 'setup';
-@import 'components';
-@import 'featured-items';
+@import 'global-setup';
+@import 'component';
+@import 'component-featured-items';
+@import 'component-person-info';
 
 // menus
 @import 'sidebar';
+@import 'sidebar-mobile';
 @import 'user-bar';
 @import 'page-header-bar';
 
