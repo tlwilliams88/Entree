@@ -16,7 +16,8 @@ angular
     // 'ngSanitize',
     'ngTouch',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'shoppinpal.mobile-menu'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
   // the $stateProvider determines path urls and their related controllers
