@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Common.Core
+namespace KeithLink.Common.Impl
 {
-    public class Configuration : ConfigurationFacade
+    public class Configuration : KeithLink.Common.Core.ConfigurationFacade
     {
         #region attributes
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";
-        private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         #endregion
 
         #region properties
