@@ -1,0 +1,276 @@
+@mixin component {
+  font-weight: 300;
+  letter-spacing: 1px;
+  border: 1px solid $color-border;
+}
+
+/* BUTTONS */
+
+// default button
+button.btn {
+  @include component;
+  height: 40px;
+  background-color: white;
+  
+  // call to action button
+  &.cta-btn {
+    color: white;
+    background-color: $color-blue;
+    border: none;
+  }
+}
+
+/* SELECT DROPDOWNS */
+
+// select {
+//   border: 1px solid #c3bc9c;
+//   -webkit-appearance: none;
+//   font-weight: 300;
+//   height: 40px;
+//   letter-spacing: 1px;
+  
+//   background: url("../images/down-arrow.png") center right 10px no-repeat;
+//   cursor: pointer;
+//   background-size: 10px;
+//   padding-right: 30px;
+//   padding-left: 12px;
+//   background-color: $color-white;
+// }
+
+.select-div select {
+  background: transparent;
+   width: 300px;
+   padding: 10px 0px 10px 12px;
+   height: 40px;
+    -webkit-appearance: none;
+    font-weight: 300;
+    border: 0;
+} 
+
+.select-div{
+   width: 260px;
+   height: 40px;
+   overflow: hidden;
+   background: url("../images/down-arrow.png") no-repeat 96% $color-white;
+   border: 1px solid #c3bc9c;
+}
+
+/* TEXT INPUTS */
+
+@mixin text-placeholder($color, $style) {
+  ::-webkit-input-placeholder {
+    color: $color !important;
+    font-style: $style;
+  }  
+  :-moz-placeholder { /* Firefox 18- */
+    color: $color !important;  
+    font-style: $style;
+  }
+  ::-moz-placeholder {  /* Firefox 19+ */
+    color: $color !important;  
+    font-style: $style;
+  }
+  :-ms-input-placeholder {  
+    color: $color !important;  
+    font-style: $style;
+  }
+}
+@include text-placeholder ($color-border, italic);
+
+input[type='text'], input[type='email'], input[type='password'] {
+  @include component;
+  height: 40px;
+  font-size: $font-size;
+}
+
+/* TABS */
+
+.nav-tabs {
+  border-bottom: 1px solid $color-border;
+
+  li {
+    a {
+      margin-right: 5px;
+      color: $color-font;
+      border-radius: 0;
+      border: 1px solid $color-border;
+      padding: 12px 40px;
+
+      &:hover {
+        @extend a;
+      }
+    }
+    &.active a {
+      border: 1px solid $color-border;
+      border-bottom-color: transparent;
+      border-top: 3px solid $color-blue;
+      padding-top: 10px;
+      font-weight: normal;
+
+      &:hover {
+        @extend a;
+      }
+    }
+  }
+}
+
+.tab-content {
+  .tab-pane {
+    background-color: $color-white;
+    border-left: 1px solid $color-border;
+    border-right: 1px solid  $color-border;
+    border-bottom: 1px solid  $color-border;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .nav-tabs {
+    li {
+      width: 100%;
+
+      a {
+        margin-right: 0px;
+        border-radius: 8px;
+        margin-bottom: 5px;
+      }
+    }
+
+    li.active a {
+      border-bottom-color: $color-border;
+    }
+  }
+}
+
+/* TABLES */
+
+.table-responsive {
+  border: none;
+  margin-bottom: 0;
+}
+
+.table {
+  margin-bottom: 0; 
+  border: 1px solid $color-border;
+  background-color: $color-white;
+
+  thead {
+    background-color: $background;
+
+    th:last-child,td:last-child {
+      border-right: 1px solid $color-border;
+    }
+  }
+
+  thead > tr > th, 
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  thead > tr > td, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    padding: $gutter-size 10px;
+    
+    &.table-icon {
+      font-size: 16px;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      @media (max-width: $desktop-min) { padding: 12px 5px; }
+    }
+  }
+  
+  tr {
+    border-bottom: 1px solid  $color-border;
+  }
+
+}
+
+.table-striped {
+  tbody {
+    tr:nth-child(even) {
+      th, td {
+        background-color: $background;
+      }
+    }
+  }
+  tbody {
+    tr:nth-child(odd) {
+      th, td {
+        background-color: $color-white;
+      }
+    }
+  }
+}
+
+/* Checkboxes */
+
+input[type="checkbox"] {
+    display:none;
+}
+input[type="checkbox"] + label {
+  display: inline-block;
+  vertical-align: middle;
+  background: url("../images/checkbox-clear.png") top left no-repeat;
+  cursor: pointer;
+  background-size: 20px;
+  padding-left: 25px;
+}
+input[type="checkbox"]:checked + label {
+  background:url('../images/checkbox-checked.png') top left no-repeat;
+  background-size: 20px;  
+}
+
+/* CONTEXT MENU */
+
+.context-menu {
+  border-radius: 5px;
+  position: absolute;
+  top: 45px;
+  right: 10%;
+  box-shadow: 0px 0px 15px $color-border;
+  z-index: 2;
+
+  .dropdown-menu {
+    left: -100%;
+    top: 0;
+    font-size: $font-size;
+    border: none;
+    padding: 0;
+    min-width: 0;
+
+    a {
+      color: $color-font-light;
+    }
+  }
+  .btn, .btn-group .btn, {
+    color: $color-font-light;
+    font-size: $font-size;
+    text-align: left;
+    letter-spacing: 0;
+    min-width: 125px;
+
+    &:hover {
+      color: $color-white !important;
+      background-color: $color-blue !important;
+      border: none !important;
+    }
+
+    &:focus {
+      background-color: $color-white;
+      color: $color-font-light;
+      border: 1px solid $color-border;
+    }
+  }
+
+  .btn-group.open > button {
+    box-shadow: none;
+    color: $color-white;
+  }
+}
