@@ -59,6 +59,7 @@ namespace KeithLink.Svc.Impl.Models
         public string replacementitem { get; set; }
         public string replaceditem { get; set; }
         public string cndoc { get; set; }
+        public string itemnumber { get; set; }
     }
 
     
