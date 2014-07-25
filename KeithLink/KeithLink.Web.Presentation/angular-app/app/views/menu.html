@@ -108,7 +108,6 @@
       </p>
       <a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a>
     </div>
-
     <div class="text-center sidebar-meta">
       <span>Copyright 2014 Ben E. Keith</span>
       <a href="#">benekeith.com</a>
@@ -129,7 +128,9 @@
 
       <div class="row user-bar hidden-print" ng-init="isSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
+        <div class="select-div">
           <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
+          </div>
         </div>
         <div class="col-md-4">
           <form name="universalSearchForm" novalidate>

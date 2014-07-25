@@ -29,7 +29,7 @@
   box-shadow: 0px 0px 10px $color-border;
 
   img{
-    max-height: 100px;
+    max-height: 84px;
     max-width: 100px;
   }
 
@@ -40,6 +40,10 @@
     a {
       font-size: 12px;
     }
+  }
+
+  .carousel-counter{
+    display: none;
   }
 }
 
@@ -54,18 +58,15 @@
   }
 }
 
-.carousel-indicators{
-  margin-bottom: -60px;
-  display: none;
+.carousel-paging {
+  position: absolute;
+  z-index: 15;
+  list-style: none;
+  margin-top: -47px;
+  right: 0;
+  cursor: auto;
 
-  li{
-    border: 1px solid $color-border;
-    width: 15px;
-    height: 15px;
-    margin: 0 8px 0 8px;
-
-    &.active {
-      @extend li;
-    }
+  .showIndex {
+    display: none;
   }
-}
+}   
