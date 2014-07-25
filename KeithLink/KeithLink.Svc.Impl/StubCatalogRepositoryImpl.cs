@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Impl
                     new Category() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint)
+        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint, int from = 0, int size = 500)
         {
             if (String.IsNullOrEmpty(category))
             {
@@ -53,13 +53,13 @@ namespace KeithLink.Svc.Impl
         }
 
 
-        public CategoriesReturn GetCategories(string endpoint)
+        public CategoriesReturn GetCategories(string endpoint, int from = 0, int size = 2000)
         {
             throw new NotImplementedException();
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, string endpoint)
+        public ProductsReturn GetProductsBySearch(string branch, string search, string endpoint, int from = 0, int size = 500)
         {
             throw new NotImplementedException();
         }
