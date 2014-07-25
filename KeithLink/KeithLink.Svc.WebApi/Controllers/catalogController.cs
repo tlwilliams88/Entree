@@ -20,124 +20,97 @@ namespace KeithLink.Svc.WebApi.Controllers
             _priceRepository = priceRepository;
         }
 
-        public IEnumerable<Product> GetAllProducts()
-        {
-            return _catalogRepository.GetProductsForCategory("");
-        }
-
-        public IEnumerable<Product> GetProductsForCategory(string id)
-        {
-            return _catalogRepository.GetProductsForCategory(id);
-        }
-
         [HttpGet]
         [Route("catalog/categories")]
         public CategoriesReturn GetCategories()
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            return _catalogRepository.GetCategories(0, 2000);
         }
 
         [HttpGet]
         [Route("catalog/category/{id}/categories")]
         public CategoriesReturn GetSubCategoriesByParentId(string id)
         {
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            int from, size;
+            ReadPagingParams(out from, out size);
+            return _catalogRepository.GetCategories(from, size);
+        }
+
+        [HttpGet]
+        [Route("catalog/search/category/{branchId}/{categoryId}/products")]
+        public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
+        {
+            int from, size;
+            ReadPagingParams(out from, out size);
+
+            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size);
+            GetPricingInfo(prods);
+            return prods;
         }
 
         [HttpGet]
         [Route("catalog/category/{id}")]
         public CategoriesReturn GetCategoriesById(string id)
         {
+            int from, size;
+            ReadPagingParams(out from, out size);
+
+            return _catalogRepository.GetCategories(from, size);
+        }
+
+        [HttpGet]
+        [Route("catalog/product/{branchId}/{id}")]
+        public Product GetProductById(string branchId, string id)
+        {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            Product prod = _catalogRepository.GetProductById(branchId, id);
+            ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
+            GetPricingInfo(prods);
+            return prod;
         }
 
         [HttpGet]
-        [Route("catalog/product/{id}")]
-        public Product GetProductById(string id)
+        [Route("catalog/search/{branchId}/{searchTerms}/products")]
+        public ProductsReturn GetProductsSearch(string branchId, string searchTerms)
         {
+            int from, size;
+            ReadPagingParams(out from, out size);
 
-            //IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
+            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size);
+            GetPricingInfo(prods);
 
-            Product currentItem = new Product()
-            {
-                ItemNumber = "285141",
-                Description = "Shrimp Raw Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "5 LB",
-                UPC = "00000000000000",
-                ManufacturerNumber = "B-W-26/30",
-                ManufacturerName = "Ellington Farms Seafood",
-                Cases = "0",
-                CategoryId = "FS490",
-                Kosher = "true",
-            };
-
-            List<Product> products = new List<Product>();
-            products.Add(currentItem);
-
-            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), products);
-            currentItem.CasePrice = pricingInfo.Prices[0].CasePrice.ToString();
-            currentItem.PackagePrice = pricingInfo.Prices[0].PackagePrice.ToString();
-
-            return currentItem;
+            return prods;
         }
 
-        [HttpGet]
-        [Route("catalog/search/products")]
-        public ProductsReturn GetProductsSearch()
+        private void ReadPagingParams(out int from, out int size)
         {
-            //IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            ProductsReturn ret = new ProductsReturn();
-            ret.Products = new List<Product>();
+            Dictionary<string, string> pairs = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+            from = 0;
+            size = -1;
 
-            ret.Products.Add(new Product()
+            if (pairs.ContainsKey(Constants.ReturnSizeQueryStringParam))
             {
-                ItemNumber = "285141",
-                Description = "Shrimp Raw Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "5 LB",
-                UPC = "00000000000000",
-                ManufacturerNumber = "B-W-26/30",
-                ManufacturerName = "Ellington Farms Seafood",
-                Cases = "0",
-                CategoryId = "FS490",
-                Kosher = "true"
-            });
-            ret.Products.Add(new Product()
-            {
-                ItemNumber = "285149",
-                Description = "Shrimp Cooked Hdls 25/30",
-                ExtendedDescription = "Premium Wild Texas White",
-                Brand = "Cortona",
-                Size = "6 LB",
-                UPC = "00000000000001",
-                ManufacturerNumber = "B-W-26/31",
-                ManufacturerName = "Ellington Farms Seafood 2",
-                Cases = "1",
-                CategoryId = "FS490",
-                Kosher = "true"
-            });
-
-            PriceReturn pricingInfo = _priceRepository.GetPrices("FDF", "010189", DateTime.Now.AddDays(1), ret.Products);
-
-            foreach (Price currentPrice in pricingInfo.Prices)
-            {
-                for (int i = 0; i < ret.Products.Count; i++)
-                {
-                    if (ret.Products[i].ItemNumber.Equals(currentPrice.ItemNumber))
-                    {
-                        ret.Products[i].CasePrice = currentPrice.CasePrice.ToString();
-                        ret.Products[i].PackagePrice = currentPrice.PackagePrice.ToString();
-                    }
-                }
+                size = Convert.ToInt32(pairs[Constants.ReturnSizeQueryStringParam]);
             }
+            if (pairs.ContainsKey(Constants.ReturnFromQueryStringParam))
+            {
+                from = Convert.ToInt32(pairs[Constants.ReturnFromQueryStringParam]);
+            }
+        }
 
-            return ret;
+        private void GetPricingInfo(ProductsReturn prods)
+        {
+            // TODO: Get branch and customer info from UI and/or profile
+            PriceReturn pricingInfo = _priceRepository.GetPrices("FAM", "011807", DateTime.Now.AddDays(1), prods.Products);
+
+            foreach (Product p in prods.Products)
+            {
+                double casePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).CasePrice;
+                double packagePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).PackagePrice;
+                p.CasePrice = String.Format("{0:C}", Convert.ToInt32(casePrice)); ;
+                p.PackagePrice = String.Format("{0:C}", Convert.ToInt32(packagePrice));
+            }
         }
     }
 }

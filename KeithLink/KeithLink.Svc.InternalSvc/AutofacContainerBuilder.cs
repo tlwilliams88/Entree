@@ -20,6 +20,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
+            builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 
             return builder.Build();
         }

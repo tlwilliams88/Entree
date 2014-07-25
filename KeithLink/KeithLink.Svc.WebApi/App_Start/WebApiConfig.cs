@@ -13,9 +13,9 @@ namespace KeithLink.Svc.WebApi
         {
             // Web API configuration and services
             System.Web.Http.Cors.EnableCorsAttribute enableCors = new System.Web.Http.Cors.EnableCorsAttribute(
-                ConfigurationManager.AppSettings[Constants.CorsEnabledDomainsConfigurationEntry],
-                ConfigurationManager.AppSettings[Constants.CorsEnabledHeadersConfigurationEntry],
-                ConfigurationManager.AppSettings[Constants.CorsEnabledMethodsConfigurationEntry]);
+                KeithLink.Svc.Impl.Configuration.CorsEnabledDomains,
+                KeithLink.Svc.Impl.Configuration.CorsEnabledHeaders,
+                KeithLink.Svc.Impl.Configuration.CorsEnabledMethods);
             config.EnableCors(enableCors);
 
             // Web API routes

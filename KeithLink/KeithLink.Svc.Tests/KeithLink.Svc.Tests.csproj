@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{32520957-24F2-4C81-B5B6-D4F934B01DF5}</ProjectGuid>
+    <ProjectGuid>{A9FEAA4D-D248-4807-85FB-B74569BAD847}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeithLink.Svc.Test</RootNamespace>

@@ -7,13 +7,20 @@ ul.horizontal-slide {
 
   .item-holder {
     display: inline-block;
-    float: none;
-    padding: 0;
-    // width: 210px;
-    margin-left: 10px;
   }
 
   .item-holder:first-child {
     margin-left: 0;
+  }
+}
+
+.catalog-search {
+  input {
+    border-right: none;
+    font-size: 14px;
+  }
+
+  input, button {
+    height: 60px;
   }
 }

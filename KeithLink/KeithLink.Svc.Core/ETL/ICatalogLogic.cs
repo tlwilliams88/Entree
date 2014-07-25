@@ -8,7 +8,10 @@ namespace KeithLink.Svc.Core.ETL
 {
     public interface ICatalogLogic
     {
+        void ProcessStagedData();
         void ImportCatalog();
         void ImportProfiles();
+        void ImportItemsToElasticSearch();
+        void ImportCategoriesToElasticSearch();
     }
 }

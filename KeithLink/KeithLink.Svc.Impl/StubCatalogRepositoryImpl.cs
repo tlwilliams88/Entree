@@ -34,22 +34,39 @@ namespace KeithLink.Svc.Impl
                     new Category() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-        public IEnumerable<Product> GetProductsForCategory(string category)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from = 0, int size = 500)
         {
             if (String.IsNullOrEmpty(category))
             {
-                return products;
+                return new ProductsReturn() { Products = products.ToList() };
             }
             else
             {
                 IEnumerable<Product> prods = products.Where(x => x.CategoryId == category);
-                return prods;
+                return new ProductsReturn() { Products = prods.ToList() };
             }
         }
 
         public CategoriesReturn GetCategories()
         {
             return new CategoriesReturn() { Categories = categories.ToList() };
+        }
+
+
+        public CategoriesReturn GetCategories(int from = 0, int size = 2000)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from = 0, int size = 500)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Product GetProductById(string branch, string id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

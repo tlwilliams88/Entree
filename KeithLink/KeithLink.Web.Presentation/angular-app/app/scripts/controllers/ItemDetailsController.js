@@ -10,10 +10,19 @@
 angular.module('bekApp')
   .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', function ($scope, $stateParams, ProductService) {
     
-    // ProductService.getProduct($stateParams.itemId).then(function(response) {
-    //   $scope.item = response.data;
-    // });
+    var itemNumber = $stateParams.itemNumber;
+    if ($stateParams.item) {
+      $scope.item = $stateParams.item;
+    } else {
+      $scope.loadingDetails = true;
+      ProductService.getProductDetails($scope.currentUser.currentLocation.branchId, itemNumber).then(function(response) {
+        $scope.item = response.data;
+        $scope.loadingDetails = false;
+      });
+    }
 
-  $scope.item = {'categoryId':'FS490','id':'101285','description':'Shrimp Raw Hdls 25/30','ext_description':'Premium Wild Texas White','brand':'Cortona','size':'5 LB','upc':'00000000000000','manufacturer_number':'B-W-26/30','manufacturer_name':'Ellington Farms Seafood','cases':'0','kosher':'true','price':'325.00'};
+    $scope.print = function () {
+      window.print(); 
+    };
 
   }]);

@@ -21,8 +21,9 @@ namespace KeithLink.Svc.WebApi
 
             // Register other dependencies.
             //builder.Register(c => new StubCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
-            builder.Register(c => new CommerceServerCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+            //builder.Register(c => new CommerceServerCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
+            builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
 
             // Build the container.
             var container = builder.Build();

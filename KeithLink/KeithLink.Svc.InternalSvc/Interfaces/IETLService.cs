@@ -12,6 +12,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
     public interface IETLService
     {
         [OperationContract]
-        bool ProcessedStagedData();
+        bool ProcessStagedData();
+        [OperationContract]
+        bool UpdateElasticSearch();
     }
 }

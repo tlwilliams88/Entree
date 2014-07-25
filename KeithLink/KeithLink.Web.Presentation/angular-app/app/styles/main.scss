@@ -1,5 +1,7 @@
 @import "compass";
 
+// @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+
 $background: #f3f1eb;
 
 $color-orange: #e8aa30;
@@ -7,106 +9,28 @@ $color-blue: #489ecf;
 $color-red: #dc6a6a;
 $color-green: #04a773;
 $color-white: #fff;
+$color-brown: #9E987E;
 
 $color-font: #504938;
+$color-font-light: rgb(160, 148, 127);
 $color-border: #c3bc9c;
 
 $sidebar-width: 175px;
 $desktop-min: 992px;
 $mobile-max: 991px;
 
-.no-padding{
-  padding:0;
-}
+$gutter-size: 15px;
+$font-size: 12px;
 
-.text-late {
-  color: $color-red;
-}
-.text-paid {
-  color: $color-green;
-}
 
-.featured-item {
-  background-color: white;
-  float: left;
-  width: 170px;
-  margin: 8px 4px;
-
-  img {
-    height: 175px;
-    width: 100%;
-  }
-
-  a {
-    display: block;
-    letter-spacing: 1px;
-  }
-
-  .featured-item__detail {
-    padding: 15px;
-    border-top: 1px solid $color-border;
-  }
-}
-
-.featured-item-mobile{
-  margin-bottom: 70px;
-  background-color: $color-white;
-  margin-left: -15px;
-  margin-right: -15px;
-
-  img{
-    height:125px;
-    width:100%;
-  }
-
-  .featured-item-mobile__detail{
-    padding-top: 30px;
-    border-left: 1px solid $color-border;
-    height:125px;
-    text-align: left;
-    padding-left: 20px;
-    font-size: 15px;
-
-    a {
-      font-size: 12px;
-    }
-  }
-}
-
-.carousel-control.right, .carousel-control.left{
-  background-image: none;
-  color: $color-border;
-}
-
-.carousel-indicators{
-  margin-bottom: -60px;
-  li{
-    border: 1px solid $color-border;
-    width: 15px;
-    height: 15px;
-    margin: 0 8px 0 8px;
-  }
-  .active{
-    background-color: $color-border;
-    width: 15px;
-    height: 15px;
-    margin: 0 8px 0 8px;
-  }
-}
-
-.sub-content{
-  padding-top: 20px;
-}
-
-.sub-content-mobile{
-  padding-top: 50px;
-}
-
-@import 'setup';
-@import 'components';
+@import 'global-setup';
+@import 'component';
+@import 'component-featured-items';
+@import 'component-person-info';
 
 // menus
 @import 'sidebar';
+@import 'sidebar-mobile';
 @import 'user-bar';
 @import 'page-header-bar';
 

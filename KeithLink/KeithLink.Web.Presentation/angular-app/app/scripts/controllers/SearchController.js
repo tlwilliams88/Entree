@@ -8,9 +8,53 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService',
-		function($scope, ProductService, CategoryService) {
+	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
+		function($scope, ProductService, CategoryService, $stateParams) {
+			// clear keyword search term at top of the page
+			if ($scope.userBar) {
+				$scope.userBar.universalSearchTerm = '';
+			}
+			
+			var branchId = $scope.currentUser.currentLocation.branchId;
+			var type = $stateParams.type;
 
+			$scope.breadcrumbs = [];
+			$scope.loadingCategories = true;
+			$scope.loadingResults = true;
+
+			if (type === 'category') {
+				$scope.breadcrumbs[0] = 'Category';
+
+				ProductService.getProductsByCategory(branchId, $stateParams.id).then(function(response) {
+					$scope.products = response.data.products;
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+
+			} else if (type === 'search') {
+				var searchTerm =  $stateParams.id;
+
+				$scope.breadcrumbs[0] = 'Search';
+				$scope.breadcrumbs[1] = searchTerm;
+
+				ProductService.getProducts(branchId,searchTerm).then(function(response) {
+					$scope.products = response.data.products;
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+
+			} else if (type === 'brand') {
+				$scope.breadcrumbs[0] = 'Brand';
+
+			}
+
+			CategoryService.getCategories().then(function(response) {
+				$scope.categories = response.data.categories;
+				$scope.loadingCategories = false;
+			});
+			
+			$scope.oneAtATime = true;
+			$scope.items = ['Item 1', 'Item 2', 'Item 3'];
 			$scope.selectedCategory = '';
 			$scope.selectedBrands = [];
 			$scope.selectedAllergens = [];
@@ -18,8 +62,14 @@ angular.module('bekApp')
 			$scope.brandHiddenNumber = 3;
 			$scope.isAllergenShowing = false;
 			$scope.allergenHiddenNumber = 3;
+			$scope.hidden= true;
 
-			$scope.showBrand = function(){
+			$scope.showContextMenu = function(e, idx) {
+	    	$scope.moveMenuStyle = {'top': (idx * 53) + 'px'}; 
+	    	$scope.isContextMenuDisplayed = true;
+	    };
+
+	    $scope.showBrand = function(){
 				$scope.isBrandShowing = true;
 				$scope.brandHiddenNumber = 100;
 			};
@@ -28,15 +78,6 @@ angular.module('bekApp')
 				$scope.isAllergenShowing = true;
 				$scope.allergenHiddenNumber = 100;
 			};
-
-			ProductService.getProducts().then(function() {
-				$scope.products = ProductService.products;
-				$scope.predicate = 'id';
-			});
-
-			CategoryService.getCategories().then(function() {
-				$scope.categories = CategoryService.categories;
-			});
 
 			$scope.toggleSelection = function toggleSelection(id, filter) {
 				var idx;
