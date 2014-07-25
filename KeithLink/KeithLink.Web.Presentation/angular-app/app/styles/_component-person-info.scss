@@ -1,0 +1,45 @@
+.person-info {
+  display: inline-block;
+  vertical-align: middle;
+  letter-spacing: 1px;
+  font-weight: 300;
+
+  div.person-info__section {
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+
+  .person-info__details {
+    vertical-align: middle;
+    
+    span {
+      display: block;
+    }
+  }
+  // person image
+  img {
+    height: 43px;
+    width: 43px;
+    border-radius: 50px;
+    background-color: white;
+  }
+}
+
+@media (max-width: $desktop-min) {
+  .person-info {
+    padding: $gutter-size;
+    width: 100%;
+    
+    .person-info__details {
+      width: calc(100% - 100px);
+    }
+
+    img {
+      height: 55px;
+      width: 55px;
+    }
+  }
+}

@@ -10,25 +10,42 @@
 angular.module('bekApp')
 	.controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
 		function($scope, ProductService, CategoryService, $stateParams) {
-
+			// clear keyword search term at top of the page
+			if ($scope.userBar) {
+				$scope.userBar.universalSearchTerm = '';
+			}
+			
 			var branchId = $scope.currentUser.currentLocation.branchId;
 			var type = $stateParams.type;
 
+			$scope.breadcrumbs = [];
 			$scope.loadingCategories = true;
 			$scope.loadingResults = true;
 
 			if (type === 'category') {
+				$scope.breadcrumbs[0] = 'Category';
+
 				ProductService.getProductsByCategory(branchId, $stateParams.id).then(function(response) {
 					$scope.products = response.data.products;
 					$scope.predicate = 'id';
 					$scope.loadingResults = false;
 				});
+
 			} else if (type === 'search') {
-				ProductService.getProducts(branchId, $stateParams.id).then(function(response) {
+				var searchTerm =  $stateParams.id;
+
+				$scope.breadcrumbs[0] = 'Search';
+				$scope.breadcrumbs[1] = searchTerm;
+
+				ProductService.getProducts(branchId,searchTerm).then(function(response) {
 					$scope.products = response.data.products;
 					$scope.predicate = 'id';
 					$scope.loadingResults = false;
 				});
+
+			} else if (type === 'brand') {
+				$scope.breadcrumbs[0] = 'Brand';
+
 			}
 
 			CategoryService.getCategories().then(function(response) {

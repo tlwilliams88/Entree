@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Impl
 {
     public class CommerceServerCatalogRepositoryImpl : ICatalogRepository
     {
-        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoing)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from = 0, int size = 500)
         {
             throw new NotImplementedException();
         }
@@ -40,18 +40,18 @@ namespace KeithLink.Svc.Impl
         }
 
 
-        public CategoriesReturn GetCategories(string endpoint)
+        public CategoriesReturn GetCategories(int from = 0, int size = 2000)
         {
             throw new NotImplementedException();
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, string endpoint)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from = 0, int size = 500)
         {
             throw new NotImplementedException();
         }
 
-        public Product GetProductById(string branch, string id, string endpoint)
+        public Product GetProductById(string branch, string id)
         {
             throw new NotImplementedException();
         }

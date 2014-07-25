@@ -104,11 +104,6 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
 
-                //var sb = new StringBuilder();
-
-                //foreach (var prod in batch)
-                //    sb.Append(prod.ToJson());
-
                 elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
 
                 totalProcessed += Configuration.ElasticSearchBatchSize;
@@ -275,7 +270,8 @@ namespace KeithLink.Svc.Impl.ETL
                         branchid = row.GetString("BranchId"),
                         replaceditem = row.GetString("ReplacedItem"),
                         replacementitem = row.GetString("ReplacementItem"),
-                        cndoc = row.GetString("CNDoc")
+                        cndoc = row.GetString("CNDoc"),
+                        itemnumber = row.GetString("ItemId")
                     }
 
                 }

@@ -14,24 +14,16 @@
     font-size: 25px;
     display: inline-block;
     vertical-align: middle;
+    margin-right: 10px;
   }
 
   .user-info {
-    display: inline-block;
-    padding-left: $gutter-size;
-    vertical-align: middle;
-
-    div {
-      display: block;
-    }
-
     .user-info__name {
       font-size: 14px;
     }
 
     .user-info__job-title {
       color: $color-font-light;
-      margin-right: 18px;
     }
 
     .user-info__menu {
@@ -45,29 +37,21 @@
 
       button {
         text-align: left;
-        font-size: 12px;
+        font-size: $font-size;
       }
     }
   }
-
-  // user profile image
-  img {
-    display: inline-block;
-    height: 40px;
-    width: 40px;
-    border-radius: 50px;
-    border: 1px solid $color-border;
-    background-color: white;
-  }
 }
+
+.user-info img {
+  border: 1px solid $color-border;
+}
+
 
 .user-bar-mobile {
   background-color: $background;
   height: 65px;
   border-bottom: 1px solid $color-border;
-  // position: fixed;
-  // width: 100%;
-  // z-index: 2;
 
   .logo-mobile {
     height: 65px;
@@ -80,16 +64,21 @@
     float: right;
     margin: 0;
 
-    li {
-      display: inline-block;
-      border-left: 1px solid $color-border;
-      padding: 12px 16px;
-
-      a {
-        font-size: 28px;
-        color: #9E987E;
-        text-decoration: none;
-      }     
+    a {
+      font-size: 28px;
+      color: #9E987E;
+      text-decoration: none;
+      li {
+        display: inline-block;
+        border-left: 1px solid $color-border;
+        padding: 12px 16px;
+      }
     }
+  }  
+}
+
+@media (max-width: $desktop-min) {
+  .hide-searchbar {
+    display: none;
   }
 }

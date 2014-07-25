@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand(SQL_ReadBranches, conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadBranches]", conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -36,8 +36,13 @@ namespace KeithLink.Svc.Impl.ETL
 
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var cmd = new SqlCommand(string.Format(SQL_ReadItems_IncludeBranch, branchId), conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadItemsByBranch]", conn))
                 {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    var paramBranchID = cmd.Parameters.Add("branchId", SqlDbType.VarChar);
+                    paramBranchID.Direction = ParameterDirection.Input;
+                    paramBranchID.Value = branchId;
+
                     cmd.CommandTimeout = 0;
                     conn.Open();
                     var da = new SqlDataAdapter(cmd);
@@ -53,7 +58,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var cmd = new SqlCommand(SQL_ReadSubCategories, conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadSubCategories]", conn))
                 {
                     conn.Open();
 
@@ -71,7 +76,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var cmd = new SqlCommand(SQL_ReadParentCategories, conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadParentCategories]", conn))
                 {
                     cmd.CommandTimeout = 0;
                     conn.Open();
@@ -89,7 +94,7 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand(SQL_ReadFullItem, conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadFullItemData]", conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -98,79 +103,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
             return dataTable;
         }
-
-        #region SQL
-        //TODO: Move to SProcs ?
-        private const string SQL_ReadBranchesItems = " SELECT  DISTINCT " +
-                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
-                                            "       i.[ItemId] " +
-                                            " FROM " +
-                                            " 	ETL.Staging_ItemData i cross join " +
-                                            " 	ETL.Staging_Branch b  " +
-                                            " WHERE " +
-                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
-                                            " order by " +
-                                            " 	i.ItemId; ";
-
-        private const string SQL_ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
-
-        private const string SQL_ReadItems_IncludeBranch = " SELECT DISTINCT " +
-                                                    "       i.[ItemId] " +
-                                                    "       ,ETL.initcap([Name]) as Name " +
-                                                    "       ,ETL.initcap([Description]) as Description " +
-                                                    "       ,ETL.initcap([Brand]) as Brand " +
-                                                    "       ,[Pack] " +
-                                                    "       ,[Size] " +
-                                                    "       ,[UPC] " +
-                                                    "       ,[MfrNumber] " +
-                                                    "       ,ETL.initcap([MfrName]) as MfrName " +
-                                                    "       ,i.CategoryId " +
-                                                    "   FROM [ETL].[Staging_ItemData] i inner join " +
-                                                    "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
-                                                    " WHERE " +
-                                                    "   i.BranchId = '{0}' " +
-                                                    " Order by i.[ItemId] ";
-
-        private const string SQL_ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
-        private const string SQL_ReadSubCategories = "SELECT SUBSTRING(CategoryId, 1, 2) + '000' AS ParentCategoryId, CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId not like '%000'";
-
-        private const string SQL_ReadFullItem = "SELECT " +
-                                                "	BranchId, " +
-                                                "	ItemId, " +
-                                                "	ETL.initcap(Name) as Name, " +
-                                                "	ETL.initcap(Description) as Description, " +
-                                                "	Brand, " +
-                                                "	Pack, " +
-                                                "	Size, " +
-                                                "	UPC, " +
-                                                "	MfrNumber, " +
-                                                "	MfrName, " +
-                                                "	Cases, " +
-                                                "	Package, " +
-                                                "	PreferredItemCode, " +
-                                                "	ItemType, " +
-                                                "	Status1, " +
-                                                "	Status2, " +
-                                                "	ICSEOnly, " +
-                                                "	SpecialOrderItem, " +
-                                                "	Vendor1, " +
-                                                "	Vendor2, " +
-                                                "	Class, " +
-                                                "	CatMgr, " +
-                                                "	HowPrice, " +
-                                                "	Buyer, " +
-                                                "	Kosher, " +
-                                                "	c.CategoryId, " +
-                                                "   ReplacementItem, " +
-                                                "   ReplacedItem, " +
-                                                "   CNDoc, " +
-                                                "	ETL.initcap(c.CategoryName) as CategoryName, " +
-                                                "	(SELECT CategoryId from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryId, " +
-                                                "	(SELECT ETL.initcap(CategoryName) from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryName " +
-                                                "FROM  " +
-                                                "	ETL.Staging_ItemData i inner join " +
-                                                "	ETL.Staging_Category c on i.CategoryId = c.CategoryId ";
-
-        #endregion        
+               
     }
 }

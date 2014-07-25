@@ -16,13 +16,14 @@ angular
     // 'ngSanitize',
     'ngTouch',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'shoppinpal.mobile-menu'
   ])
 .config(function($stateProvider, $urlRouterProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('login', {
-      url: '/login',
+      url: '/login/',
       templateUrl: 'views/login.html'
       // controller: 'MenuController'
     })
@@ -31,18 +32,15 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController'
     })
-    .state('menu.test', {
-      url: '/test'
-    })
     // /home
     .state('menu.home', {
-      url: '/home',
+      url: '/home/',
       templateUrl: 'views/home.html',
       controller: 'HomeController'
     })
     .state('menu.catalog', {
       abstract: true,
-      url: '/catalog',
+      url: '/catalog/',
       template: '<div ui-view=""></div>'
     })
     // /catalog
@@ -53,38 +51,53 @@ angular
     })
     .state('menu.catalog.products', {
       abstract: true,
-      url: '/products',
+      url: 'products/',
       template: '<div ui-view=""></div>'
     })
     // /catalog/:type/:id
     .state('menu.catalog.products.list', {
-      url: '/:type/:id',
+      url: ':type/:id/',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController'
     })
-    // /catalog/products/:itemId (item details page)
+    // /catalog/products/:itemNumber (item details page)
     .state('menu.catalog.products.details', {
-      url: '/:itemId',
+      url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController'
     });
 
   $stateProvider
     .state('404', { 
-      url: '/404',
+      url: '/404/',
       templateUrl: 'views/404.html'
     });
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/home');
   $urlRouterProvider.when('/', '/home');
   $urlRouterProvider.otherwise('/404');
+
+
+  $urlRouterProvider.rule(function ($injector, $location) {
+    var path = $location.url();
+
+    // check to see if the path already has a slash where it should be
+    if ('/' === path[path.length - 1] || path.indexOf('/?') > -1) {
+        return;
+    }
+    if (path.indexOf('?') > -1) {
+        return path.replace('?', '/?');
+    }
+
+    return path + '/';
+  });
 })
 .run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
 
-  // ApiService.endpointUrl = 'http://devapi.bekco.com';
-  ApiService.getEndpointUrl().then(function(response) {
-    ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
-  });
+  ApiService.endpointUrl = 'http://devapi.bekco.com';
+  // ApiService.getEndpointUrl().then(function(response) {
+  //   ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+  // });
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // debugger;
