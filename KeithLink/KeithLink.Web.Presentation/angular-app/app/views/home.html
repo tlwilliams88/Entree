@@ -10,9 +10,9 @@
             
             <h4><strong>Account Balance</strong></h4>
             
-            <div class="text-red balance__amount text--late">
+            <p class="text-red balance__amount text--late">
                 $3,253.31
-            </div>
+            </p>
             
             <p class="balance__term">Your Terms: Net 14</p>
             
@@ -166,7 +166,7 @@
                     <div class="featured-item text-center">
                         <img ng-src="{{item.imageUrl}}" alt="image">
                         <div class="featured-item__detail">
-                            {{item.description}}
+                            {{item.name}}
                             <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">view details</a>
                         </div>
                     </div>

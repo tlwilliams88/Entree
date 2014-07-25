@@ -30,7 +30,7 @@ angular.module('bekApp')
       items.push({
         id: 1,
         imageUrl: 'images/demoimage' + newWidth + '.jpg',
-        description: '50% off of apples!'
+        name: '50% off of apples!'
       });
     };
     for (var i = 0; i < 4; i++) {

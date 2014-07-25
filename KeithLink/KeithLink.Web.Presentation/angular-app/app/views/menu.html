@@ -1,6 +1,6 @@
 <!-- Mobile Sidebar -->
 <div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
- <div class="person-info user-info">
+ <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
     <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
@@ -16,6 +16,16 @@
   </div>
   <nav class="sidebar-nav">
     <ul class="list-unstyled">
+        
+        <div ng-show="displayUserMenu">
+          <a ng-click="$spMenu.hide()" ui-sref="menu.account" ui-sref-active="is-selected">
+            <li>Account Settings</li>
+          </a>
+          <a ng-click="$spMenu.hide()" ui-sref="menu.signout" ui-sref-active="is-selected">
+            <li>Sign Out</li>
+          </a>
+        </div>
+
         <a ng-click="$spMenu.hide()" ui-sref="menu.home" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
@@ -117,7 +127,7 @@
         </ul>
       </div>
 
-      <div class="row user-bar hidden-print" ng-init="isSearchBarDisplayed = false" ng-show="isSearchBarDisplayed">
+      <div class="row user-bar hidden-print" ng-init="isSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
           <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
         </div>
