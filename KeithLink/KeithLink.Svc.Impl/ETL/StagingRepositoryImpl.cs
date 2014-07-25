@@ -101,17 +101,6 @@ namespace KeithLink.Svc.Impl.ETL
 
         #region SQL
         //TODO: Move to SProcs ?
-        private const string SQL_ReadBranchesItems = " SELECT  DISTINCT " +
-                                            " 	LTRIM(RTRIM(b.BranchId)) as BranchId, " +
-                                            "       i.[ItemId] " +
-                                            " FROM " +
-                                            " 	ETL.Staging_ItemData i cross join " +
-                                            " 	ETL.Staging_Branch b  " +
-                                            " WHERE " +
-                                            " 	NOT EXISTS (SELECT TOP 1 ItemId FROM ETL.Staging_ItemData WHERE ItemId = i.ItemId AND BranchId = b.BranchID) " +
-                                            " order by " +
-                                            " 	i.ItemId; ";
-
         private const string SQL_ReadBranches = "SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3";
 
         private const string SQL_ReadItems_IncludeBranch = " SELECT DISTINCT " +
@@ -128,7 +117,7 @@ namespace KeithLink.Svc.Impl.ETL
                                                     "   FROM [ETL].[Staging_ItemData] i inner join " +
                                                     "   ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
                                                     " WHERE " +
-                                                    "   i.BranchId = '{0}' " +
+                                                    "   i.BranchId = '{0}' AND ItemId NOT LIKE '999%' " +
                                                     " Order by i.[ItemId] ";
 
         private const string SQL_ReadParentCategories = "SELECT CategoryId, [ETL].initcap(CategoryName) as CategoryName, PPICode FROM [ETL].Staging_Category WHERE CategoryId like '%000'";
@@ -169,7 +158,9 @@ namespace KeithLink.Svc.Impl.ETL
                                                 "	(SELECT ETL.initcap(CategoryName) from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryName " +
                                                 "FROM  " +
                                                 "	ETL.Staging_ItemData i inner join " +
-                                                "	ETL.Staging_Category c on i.CategoryId = c.CategoryId ";
+                                                "	ETL.Staging_Category c on i.CategoryId = c.CategoryId " +
+                                                "WHERE " +
+                                                "   i.ItemId NOT LIKE '999%' ";
 
         #endregion        
     }
