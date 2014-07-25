@@ -59,7 +59,9 @@
 
     <div class="row user-bar hidden-print hidden-sm hidden-xs">
       <div class="col-md-4">
-        <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
+        <div class="select-div">
+          <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
+        </div>
       </div>
       <div class="col-md-4">
         <form name="universalSearchForm" novalidate>

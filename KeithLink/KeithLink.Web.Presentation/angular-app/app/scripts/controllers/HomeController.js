@@ -9,7 +9,7 @@
  */
 angular.module('bekApp')
   .controller('HomeController', function($scope) {
-
+    
     $scope.orders = [{
       orderNum: 212342342,
       deliveryDate: '12/13/2014',
@@ -36,5 +36,7 @@ angular.module('bekApp')
     for (var i = 0; i < 4; i++) {
       $scope.addItem();
     }
+
+
 
   });

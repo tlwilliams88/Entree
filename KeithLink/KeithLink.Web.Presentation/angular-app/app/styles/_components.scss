@@ -18,19 +18,37 @@ button.btn {
 
 /* SELECT DROPDOWNS */
 
-select {
-  border: 1px solid #c3bc9c;
-  -webkit-appearance: none;
-  font-weight: 300;
-  height: 40px;
-  letter-spacing: 1px;
+// select {
+//   border: 1px solid #c3bc9c;
+//   -webkit-appearance: none;
+//   font-weight: 300;
+//   height: 40px;
+//   letter-spacing: 1px;
   
-  background: url("../images/down-arrow.png") center right 10px no-repeat;
-  cursor: pointer;
-  background-size: 10px;
-  padding-right: 30px;
-  padding-left: 12px;
-  background-color: $color-white;
+//   background: url("../images/down-arrow.png") center right 10px no-repeat;
+//   cursor: pointer;
+//   background-size: 10px;
+//   padding-right: 30px;
+//   padding-left: 12px;
+//   background-color: $color-white;
+// }
+
+.select-div select {
+  background: transparent;
+   width: 300px;
+   padding: 10px 0px 10px 12px;
+   height: 40px;
+    -webkit-appearance: none;
+    font-weight: 300;
+    border: 0;
+} 
+
+.select-div{
+   width: 260px;
+   height: 40px;
+   overflow: hidden;
+   background: url("../images/down-arrow.png") no-repeat 96% $color-white;
+   border: 1px solid #c3bc9c;
 }
 
 /* TEXT INPUTS */
