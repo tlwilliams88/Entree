@@ -76,3 +76,9 @@
     }
   }  
 }
+
+@media (max-width: $desktop-min) {
+  .hide-searchbar {
+    display: none;
+  }
+}

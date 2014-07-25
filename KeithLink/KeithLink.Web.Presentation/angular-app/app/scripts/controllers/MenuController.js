@@ -42,9 +42,4 @@ angular.module('bekApp')
     };
 
     $scope.currentUser.currentLocation = $scope.currentUser.stores[0];
-
-    $scope.showMobileSidebar = function() {
-      $scope.animateSidebarClass = 'sidebar-mobile__animate';
-    }
-
   }]);

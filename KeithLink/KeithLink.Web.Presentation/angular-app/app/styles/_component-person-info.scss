@@ -14,8 +14,7 @@
 
   .person-info__details {
     vertical-align: middle;
-    width: calc(100% - 100px);
-
+    
     span {
       display: block;
     }
@@ -33,6 +32,10 @@
   .person-info {
     padding: $gutter-size;
     width: 100%;
+    
+    .person-info__details {
+      width: calc(100% - 100px);
+    }
 
     img {
       height: 55px;

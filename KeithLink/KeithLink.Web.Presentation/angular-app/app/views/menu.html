@@ -1,5 +1,5 @@
 <!-- Mobile Sidebar -->
-<div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" ng-class="animateSidebarClass" style="display:none;">
+<div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
  <div class="person-info user-info">
     <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
@@ -55,7 +55,7 @@
   </div>
 </div>
 
-<div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="wrapper" ng-class="animateSidebarClass">
+<div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="wrapper">
   
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
@@ -111,15 +111,14 @@
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
-          <a href=""><li><span class="icon-search"></span></li></a>
+          <a ng-click="isSearchBarDisplayed = !isSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a href=""><li><span class="icon-truck"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
-          <a ng-click="showMobileSidebar()"><li><span class="icon-list2"></span></li></a>
         </ul>
       </div>
 
-      <div class="row user-bar hidden-print hidden-sm hidden-xs">
-        <div class="col-md-4">
+      <div class="row user-bar hidden-print" ng-init="isSearchBarDisplayed = false" ng-show="isSearchBarDisplayed">
+        <div class="col-md-4 hidden-sm hidden-xs">
           <select name="" id="" ng-options="store.name for store in currentUser.stores" ng-model="currentUser.currentLocation"></select>
         </div>
         <div class="col-md-4">
@@ -132,7 +131,7 @@
             </div>
           </form>
         </div>
-        <div class="col-md-4 text-right">
+        <div class="col-md-4 hidden-sm hidden-xs text-right">
           <span class="icon-bell user-bar__notification"></span>
           <div class="person-info user-info" ng-mouseenter="showUserMenu = true" ng-mouseleave="showUserMenu = false">
             <div class="person-info__section person-info__details">
