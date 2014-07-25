@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <PresentationFiles Include=".\KeithLink.Web.Presentation\angular-app\app\**" />
+    <ProjectsToBuild Include=".\KeithLink.*.*\*.csproj" />
+  </ItemGroup>
+  <Target Name="Build">
+    <Message Text="[Info] Building Projects: @(ProjectsToBuild)" />
+    <MSBuild Projects="@(ProjectsToBuild)" Properties="Configuration=$(Configuration)" Targets="Build" />
+  </Target>
+
+  <Target Name="TestBuild">
+    <ItemGroup>
+      <TestAssemblies Include="KeithLink.*.Tests\bin\$(Configuration)\*.Test*.dll"/>
+    </ItemGroup>
+
+    <PropertyGroup>
+      <MsTestCommand>"MSTest.exe" @(TestAssemblies->'/testcontainer:"%(FullPath)"', ' ') /resultsfile:"TestResults\Results.trx""</MsTestCommand>
+    </PropertyGroup>
+
+    <Message Text="MsTestCommand: @(TestAssemblies->'/testcontainer:$(DoubleQuotes)%(FullPath)$(DoubleQuotes)', ' ')"
+             Importance="high"/>
+
+    <RemoveDir Directories="UnitTests"
+               Condition="Exists('UnitTests')" />
+    <MakeDir Directories="UnitTests" />
+
+    <Exec Command="$(MsTestCommand)"
+          ContinueOnError="true" />
+  </Target>
+
+  <Target Name="DeployAngular">
+    <Copy SourceFiles="@(PresentationFiles)" DestinationFolder="C:\tmp\%(RecursiveDir)" />
+  </Target>
+  
+</Project>
