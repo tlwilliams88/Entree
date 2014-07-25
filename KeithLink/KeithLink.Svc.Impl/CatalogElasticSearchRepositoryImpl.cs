@@ -12,18 +12,21 @@ namespace KeithLink.Svc.Impl
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {
+        private ElasticsearchClient client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+
         public CatalogElasticSearchRepositoryImpl()
         {
             
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, string elasticSearchEndpoint, int from = 0, int size = 20)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size)
         {
-            var client = GetElasticsearchClient(elasticSearchEndpoint);
+            size = GetProductPagingSize(size);
+
             category = category.ToLower();
             List<string> childCategories = new List<string>();
 
-            CategoriesReturn ret = GetCategories(elasticSearchEndpoint);
+            CategoriesReturn ret = GetCategories(from, size);
             foreach (var c in ret.Categories)
             {
                 if (category == c.Id.ToLower())
@@ -60,33 +63,9 @@ namespace KeithLink.Svc.Impl
             return new ProductsReturn() { Products = products };
         }
 
-        private static Product LoadProductFromElasticSearchProduct(dynamic oProd)
+        public CategoriesReturn GetCategories(int from, int size)
         {
-            Product p = new Product();
-            p.ManufacturerName = oProd._source.mfrname;
-            p.ItemNumber = oProd._id;            
-            p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
-            p.ManufacturerNumber = oProd._source.mfrnumber;
-            p.Size = oProd._source.size;
-            p.Brand = oProd._source.brand;
-            p.UPC = oProd._source.upc;
-            p.Description = oProd._source.description;
-            p.Cases = oProd._source.cases;
-            p.ExtendedDescription = string.Empty;
-            p.CategoryId = oProd._source.categoryid;
-            p.ReplacedItem = oProd._source.replaceditem;
-            p.ReplacementItem = oProd._source.replacementitem;
-            p.CNDoc = oProd._source.cndoc;
-            p.Name = oProd._source.name;
-            p.CategoryName = oProd._source.categoryname;
-            // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
-
-            return p;
-        }
-
-        public CategoriesReturn GetCategories(string elasticSearchEndpoint, int from = 0, int size = 2000)
-        {
-            var client = GetElasticsearchClient(elasticSearchEndpoint);
+            size = GetCategoryPagingSize(size);
 
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @"
@@ -115,23 +94,9 @@ namespace KeithLink.Svc.Impl
             return new CategoriesReturn() { Categories = cats };
         }
 
-        private static ElasticsearchClient GetElasticsearchClient(string elasticSearchEndpoint)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size)
         {
-            var node = new Uri(elasticSearchEndpoint);
-            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
-            var client = new ElasticsearchClient(config);
-            return client;
-        }
-
-        public CategoriesReturn GetCategories()
-        {
-            throw new NotImplementedException();
-        }
-
-
-        public ProductsReturn GetProductsBySearch(string branch, string search, string elasticSearchEndpoint, int from = 0, int size = 500)
-        {
-            var client = GetElasticsearchClient(elasticSearchEndpoint);
+            size = GetProductPagingSize(size);
             branch = branch.ToLower();
 
             var searchBody = @"{
@@ -157,14 +122,59 @@ namespace KeithLink.Svc.Impl
             return new ProductsReturn() { Products = products };
         }
 
-        public Product GetProductById(string branch, string id, string elasticSearchEndpoint)
+        public Product GetProductById(string branch, string id)
         {
-            var client = GetElasticsearchClient(elasticSearchEndpoint);
             branch = branch.ToLower();
 
             ElasticsearchResponse<DynamicDictionary> res = client.Get(branch, "product", id);
 
             return LoadProductFromElasticSearchProduct(res.Response);
+        }
+
+        private static Product LoadProductFromElasticSearchProduct(dynamic oProd)
+        {
+            Product p = new Product();
+            p.ManufacturerName = oProd._source.mfrname;
+            p.ItemNumber = oProd._id;
+            p.Kosher = string.IsNullOrEmpty(oProd._source.kosher) ? "Unknown" : oProd._source.kosher;
+            p.ManufacturerNumber = oProd._source.mfrnumber;
+            p.Size = oProd._source.size;
+            p.Brand = oProd._source.brand;
+            p.UPC = oProd._source.upc;
+            p.Description = oProd._source.description;
+            p.Cases = oProd._source.cases;
+            p.ExtendedDescription = string.Empty;
+            p.CategoryId = oProd._source.categoryid;
+            p.ReplacedItem = oProd._source.replaceditem;
+            p.ReplacementItem = oProd._source.replacementitem;
+            p.CNDoc = oProd._source.cndoc;
+            p.Name = oProd._source.name;
+            p.CategoryName = oProd._source.categoryname;
+            // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
+
+            return p;
+        }
+
+        private static ElasticsearchClient GetElasticsearchClient(string elasticSearchUrl)
+        {
+            var node = new Uri(elasticSearchUrl);
+            var config = new Elasticsearch.Net.Connection.ConnectionConfiguration(node);
+            var client = new ElasticsearchClient(config);
+            return client;
+        }
+
+        private int GetCategoryPagingSize(int size)
+        {
+            if (size < 0)
+                return Configuration.DefaultCategoryReturnSize;
+            return size;
+        }
+
+        private int GetProductPagingSize(int size)
+        {
+            if (size < 0)
+                return Configuration.DefaultProductReturnSize;
+            return size;
         }
     }
 }

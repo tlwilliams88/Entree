@@ -13,7 +13,6 @@ namespace KeithLink.Svc.WebApi.Controllers
     {
         KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
         KeithLink.Svc.Core.IPriceRepository _priceRepository;
-        string elasticSearchEndpoint = System.Configuration.ConfigurationManager.AppSettings[Constants.ElasticSearchEndpointConfigurationEntry];
 
         public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository)
         {
@@ -26,23 +25,26 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CategoriesReturn GetCategories()
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories(elasticSearchEndpoint);
+            return _catalogRepository.GetCategories(0, 2000);
         }
 
         [HttpGet]
         [Route("catalog/category/{id}/categories")]
         public CategoriesReturn GetSubCategoriesByParentId(string id)
         {
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            int from, size;
+            ReadPagingParams(out from, out size);
+            return _catalogRepository.GetCategories(from, size);
         }
 
         [HttpGet]
         [Route("catalog/search/category/{branchId}/{categoryId}/products")]
         public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
         {
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, elasticSearchEndpoint, 0, 500);
+            int from, size;
+            ReadPagingParams(out from, out size);
+
+            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size);
             GetPricingInfo(prods);
             return prods;
         }
@@ -51,8 +53,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("catalog/category/{id}")]
         public CategoriesReturn GetCategoriesById(string id)
         {
-            IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogRepository.GetCategories();
+            int from, size;
+            ReadPagingParams(out from, out size);
+
+            return _catalogRepository.GetCategories(from, size);
         }
 
         [HttpGet]
@@ -60,7 +64,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Product GetProductById(string branchId, string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogRepository.GetProductById(branchId, id, elasticSearchEndpoint);
+            Product prod = _catalogRepository.GetProductById(branchId, id);
             ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
             GetPricingInfo(prods);
             return prod;
@@ -70,25 +74,34 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("catalog/search/{branchId}/{searchTerms}/products")]
         public ProductsReturn GetProductsSearch(string branchId, string searchTerms)
         {
+            int from, size;
+            ReadPagingParams(out from, out size);
+
+            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size);
+            GetPricingInfo(prods);
+
+            return prods;
+        }
+
+        private void ReadPagingParams(out int from, out int size)
+        {
             Dictionary<string, string> pairs = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
-            int from = 0, size = Convert.ToInt32(System.Configuration.ConfigurationManager.AppSettings[Constants.DefaultProductReturnSizeConfigurationEntry]);
+            from = 0;
+            size = -1;
+
             if (pairs.ContainsKey(Constants.ReturnSizeQueryStringParam))
             {
                 size = Convert.ToInt32(pairs[Constants.ReturnSizeQueryStringParam]);
             }
             if (pairs.ContainsKey(Constants.ReturnFromQueryStringParam))
             {
-                from = Convert.ToInt32(pairs[Constants.ReturnSizeQueryStringParam]);
+                from = Convert.ToInt32(pairs[Constants.ReturnFromQueryStringParam]);
             }
-
-            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, elasticSearchEndpoint, from, size);
-            GetPricingInfo(prods);
-
-            return prods;
         }
 
         private void GetPricingInfo(ProductsReturn prods)
         {
+            // TODO: Get branch and customer info from UI and/or profile
             PriceReturn pricingInfo = _priceRepository.GetPrices("FAM", "011807", DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Product p in prods.Products)
