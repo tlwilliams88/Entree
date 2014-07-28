@@ -1,5 +1,6 @@
 <div class="featured-item-mobile">
     <carousel interval="myInterval">
+
         <slide ng-repeat="item in itemList track by $index | limitTo:5" active="item.active">
             
             <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
