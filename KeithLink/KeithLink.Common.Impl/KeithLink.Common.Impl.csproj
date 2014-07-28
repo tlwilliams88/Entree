@@ -67,7 +67,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\BEKlibrary.dll" />
+    <Content Include="Lib\BEKlibrary.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">

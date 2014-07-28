@@ -15,39 +15,39 @@
     </div>
   </div>
   <nav class="sidebar-nav">
-    <ul class="list-unstyled">
+    <ul class="list-unstyled" ng-click="$spMenu.hide()">
         
         <div ng-show="displayUserMenu">
-          <a ng-click="$spMenu.hide()" ui-sref="menu.account" ui-sref-active="is-selected">
+          <a ui-sref="menu.account" ui-sref-active="is-selected">
             <li>Account Settings</li>
           </a>
-          <a ng-click="$spMenu.hide()" ui-sref="menu.signout" ui-sref-active="is-selected">
+          <a ui-sref="menu.signout" ui-sref-active="is-selected">
             <li>Sign Out</li>
           </a>
         </div>
 
-        <a ng-click="$spMenu.hide()" ui-sref="menu.home" ui-sref-active="is-selected">
+        <a ui-sref="menu.home" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.orders" ui-sref-active="is-selected">
+        <a ui-sref="menu.orders" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>Orders</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.catalog.home" ui-sref-active="is-selected">
+        <a ui-sref="menu.catalog.home" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.reports" ui-sref-active="is-selected">
+        <a ui-sref="menu.reports" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.invoices" ui-sref-active="is-selected">
+        <a ui-sref="menu.invoices" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.emenu" ui-sref-active="is-selected">
+        <a ui-sref="menu.emenu" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.notifications" ui-sref-active="is-selected">
+        <a ui-sref="menu.notifications" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
         </a>
-        <a ng-click="$spMenu.hide()" ui-sref="menu.admin" ui-sref-active="is-selected">
+        <a ng-show="currentUser.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
     </ul>
@@ -93,7 +93,7 @@
         <a ui-sref="menu.emenu" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
-        <a ui-sref="menu.admin" ui-sref-active="is-selected">
+        <a ng-show="currentUser.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
       </ul>
