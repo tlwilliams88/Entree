@@ -51,6 +51,7 @@
     <Reference Include="BEKlibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd9c094739479d18, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\BEKlibrary.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,7 +67,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Lib\BEKlibrary.dll" />
+    <Content Include="Lib\BEKlibrary.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
