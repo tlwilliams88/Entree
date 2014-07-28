@@ -25,6 +25,17 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region methods
+        /// <summary>
+        /// add a price to the cache
+        /// </summary>
+        /// <param name="branchId">the branch's unique identifier</param>
+        /// <param name="customerNumber">the customer's unique identifier</param>
+        /// <param name="itemNumber">the item's unique identifier</param>
+        /// <param name="casePrice">the customer's case price for the item</param>
+        /// <param name="packagePrice">the customer's package price for the item</param>
+        /// <remarks>
+        /// jwames - 7/22/2014 - original code
+        /// </remarks>
         public void AddItem(string branchId, string customerNumber, string itemNumber, double casePrice, double packagePrice)
         {
             cache.AddData<KeithLink.Svc.Core.Price>(CACHE_PREFIX,
@@ -42,6 +53,23 @@ namespace KeithLink.Svc.Impl
                                                     );
         }
 
+        /// <summary>
+        /// add a price to the cache
+        /// </summary>
+        /// <param name="price">the pricing object for the item to cache</param>
+        /// <remarks>
+        /// jwames - 7/28/2014 - original code
+        /// </remarks>
+        public void AddItem(Core.Price price)
+        {
+            cache.AddData<KeithLink.Svc.Core.Price>(CACHE_PREFIX,
+                                                    CACHE_NAME,
+                                                    GetCacheKey(price.BranchId, price.CustomerNumber, price.ItemNumber),
+                                                    price,
+                                                    GetCacheExpiration()
+                                                    );
+        }
+
         //private CommerceServer.Foundation.ICacheProvider GetCacheProvider()
         //{
         //    var cacheContext = CommerceServer.Foundation.PresentationCacheSettings.GetCacheContext(CACHE_GROUPNAME);
@@ -50,6 +78,13 @@ namespace KeithLink.Svc.Impl
         //    return cacheProvider;
         //}
 
+        /// <summary>
+        /// get the time that the cache will expire (06:00 the next day)
+        /// </summary>
+        /// <returns>
+        /// jwames - 7/22/2014 - original code
+        /// jwames - 7/28/2014 - correct the expiration logic
+        /// </returns>
         private TimeSpan GetCacheExpiration()
         {
             DateTime tomorrow = DateTime.Now.AddDays(1);
@@ -57,14 +92,34 @@ namespace KeithLink.Svc.Impl
             // expire tomorrow at 6:00 AM
             DateTime expire = new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, 6, 0, 0);
 
-            return DateTime.Now.Subtract(expire);
+            return expire.Subtract(DateTime.Now);
         }
 
+        /// <summary>
+        /// build a delimited string for the cache key
+        /// </summary>
+        /// <param name="branchId">the branch's unique identifier</param>
+        /// <param name="customerNumber">the customer's unique identifier</param>
+        /// <param name="itemNumber">the item's unique identifier</param>
+        /// <returns>a dash delimited string</returns>
+        /// <remarks>
+        /// jwames - 7/22/2014 - original code
+        /// </remarks>
         private string GetCacheKey(string branchId, string customerNumber, string itemNumber)
         {
             return string.Format("{0}-{1}-{2}", branchId, customerNumber, itemNumber);
         }
 
+        /// <summary>
+        /// read the cache dictionary and try to find the specified price
+        /// </summary>
+        /// <param name="branchId">the branch's unique identifier</param>
+        /// <param name="customerNumber">the customer's unique identifier</param>
+        /// <param name="itemNumber">the item's unique identifier</param>
+        /// <returns>a price object if found, otherwise returns null</returns>
+        /// <remarks>
+        /// jwames - 7/22/2014 - original code
+        /// </remarks>
         public Core.Price GetPrice(string branchId, string customerNumber, string itemNumber)
         {
             Core.Price output = null;
@@ -82,16 +137,39 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        /// <summary>
+        /// remove all of the items from cache
+        /// </summary>
+        /// <remarks>
+        /// jwames - 7/22/2014 - original code
+        /// </remarks>
         public void ResetAllItems()
         {
             cache.ClearDataCache(CACHE_PREFIX, CACHE_NAME);
         }
 
+        /// <summary>
+        /// remove all of the cache for a specific customer (NOT IMPLEMENTED YET)
+        /// </summary>
+        /// <param name="branchId">the branch's unique identifier</param>
+        /// <param name="customerNumber">the customer's unique identifier</param>
+        /// <remarks>
+        /// jwames - 7/28/2014 - original code
+        /// </remarks>
         public void ResetItemsByCustomer(string branchId, string customerNumber)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// remove a price from the cache
+        /// </summary>
+        /// <param name="branchId">the branch's unique identifier</param>
+        /// <param name="customerNumber">the customer's unique identifier</param>
+        /// <param name="itemNumber">the item's unique identifier</param>
+        /// <remarks>
+        /// jwames - 7/22/2014 - original code
+        /// </remarks>
         public void RemoveItem(string branchId, string customerNumber, string itemNumber)
         {
             cache.RemoveData(CACHE_PREFIX,
