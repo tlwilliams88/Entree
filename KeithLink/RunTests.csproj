@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-      <MsTestCommand>MSTest @(TestAssemblies->'/testcontainer:"%(FullPath)"', ' ') /resultsfile:"UnitTests\Results.trx"</MsTestCommand>
+      <MsTestCommand>"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\MSTest.exe" @(TestAssemblies->'/testcontainer:"%(FullPath)"', ' ') /resultsfile:"UnitTests\Results.trx"</MsTestCommand>
     </PropertyGroup>
 
     <Message Text="MsTestCommand: @(TestAssemblies->'/testcontainer:$(DoubleQuotes)%(FullPath)$(DoubleQuotes)', ' ')"
