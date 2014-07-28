@@ -124,6 +124,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="PriceCacheRepositoryImpl.cs" />
     <Compile Include="PriceRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />

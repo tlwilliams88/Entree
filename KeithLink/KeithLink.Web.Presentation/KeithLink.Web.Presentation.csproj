@@ -162,8 +162,20 @@
     <Content Include="angular-app\app\favicon.ico" />
     <Content Include="angular-app\app\images\admiral.jpg" />
     <Content Include="angular-app\app\images\bek-logo.png" />
+    <Content Include="angular-app\app\images\checkbox-checked.png" />
+    <Content Include="angular-app\app\images\checkbox-clear.png" />
+    <Content Include="angular-app\app\images\demoimage1.jpg" />
+    <Content Include="angular-app\app\images\demoimage2.jpg" />
+    <Content Include="angular-app\app\images\demoimage3.jpg" />
+    <Content Include="angular-app\app\images\demoimage4.jpg" />
+    <Content Include="angular-app\app\images\down-arrow.png" />
+    <Content Include="angular-app\app\images\graycheckbox-checked.png" />
+    <Content Include="angular-app\app\images\graycheckbox-clear.png" />
     <Content Include="angular-app\app\images\green-apple.jpg" />
     <Content Include="angular-app\app\images\Nav-Image.jpg" />
+    <Content Include="angular-app\app\images\placeholder-dsr.jpg" />
+    <Content Include="angular-app\app\images\placeholder-user.png" />
+    <Content Include="angular-app\app\images\spinner.gif" />
     <Content Include="angular-app\app\images\Textured-BG-1.jpg" />
     <Content Include="angular-app\app\images\Textured-BG.jpg" />
     <Content Include="angular-app\app\images\Walnuts.jpg" />
@@ -182,6 +194,8 @@
     <Content Include="angular-app\app\lib\angular-scenario\jstd-scenario-adapter.js" />
     <Content Include="angular-app\app\lib\angular-touch\angular-touch.js" />
     <Content Include="angular-app\app\lib\angular-touch\angular-touch.min.js" />
+    <Content Include="angular-app\app\lib\angular-ui-bootstrap\ui-bootstrap-0.11.0.min.js" />
+    <Content Include="angular-app\app\lib\angular-ui-bootstrap\ui-bootstrap-tpls-0.11.0.min.js" />
     <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.js" />
     <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.min.js" />
     <Content Include="angular-app\app\lib\angular\angular-csp.css" />
@@ -196,24 +210,53 @@
     <Content Include="angular-app\app\lib\es5-shim\es5-sham.min.js" />
     <Content Include="angular-app\app\lib\es5-shim\es5-shim.js" />
     <Content Include="angular-app\app\lib\es5-shim\es5-shim.min.js" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\css\google-fonts.css" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\LICENSE.txt" />
+    <Content Include="angular-app\app\lib\html5shiv\html5shiv-printshiv.js" />
+    <Content Include="angular-app\app\lib\html5shiv\html5shiv-printshiv.min.js" />
+    <Content Include="angular-app\app\lib\html5shiv\html5shiv.js" />
+    <Content Include="angular-app\app\lib\html5shiv\html5shiv.min.js" />
     <Content Include="angular-app\app\lib\icomoon\css\style.css" />
     <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.svg" />
     <Content Include="angular-app\app\lib\json3\lib\json3.js" />
     <Content Include="angular-app\app\lib\json3\lib\json3.min.js" />
+    <Content Include="angular-app\app\lib\ng-mobile-menu\ng-mobile-menu.css" />
+    <Content Include="angular-app\app\lib\ng-mobile-menu\ng-mobile-menu.js" />
     <Content Include="angular-app\app\lib\normalize.css\normalize.css" />
+    <Content Include="angular-app\app\lib\respondjs\respond.matchmedia.addListener.min.js" />
+    <Content Include="angular-app\app\lib\respondjs\respond.matchmedia.addListener.src.js" />
+    <Content Include="angular-app\app\lib\respondjs\respond.min.js" />
+    <Content Include="angular-app\app\lib\respondjs\respond.src.js" />
     <Content Include="angular-app\app\robots.txt" />
     <Content Include="angular-app\app\scripts\app.js" />
     <Content Include="angular-app\app\scripts\controllers\CatalogController.js" />
     <Content Include="angular-app\app\scripts\controllers\HomeController.js" />
+    <Content Include="angular-app\app\scripts\controllers\ItemDetailsController.js" />
     <Content Include="angular-app\app\scripts\controllers\MenuController.js" />
     <Content Include="angular-app\app\scripts\controllers\SearchController.js" />
+    <Content Include="angular-app\app\scripts\directives\FeaturedItemCarousel.js" />
+    <Content Include="angular-app\app\scripts\directives\ItemIcons.js" />
+    <Content Include="angular-app\app\scripts\directives\LoadingSpinner.js" />
+    <Content Include="angular-app\app\scripts\directives\PageHeaderBar.js" />
+    <Content Include="angular-app\app\scripts\services\ApiService.js" />
+    <Content Include="angular-app\app\scripts\services\AuthenticationService.js" />
     <Content Include="angular-app\app\scripts\services\CategoryService.js" />
     <Content Include="angular-app\app\scripts\services\ProductService.js" />
+    <Content Include="angular-app\app\scripts\services\UserProfileService.js" />
+    <Content Include="angular-app\app\views\404.html" />
     <Content Include="angular-app\app\views\catalog.html" />
+    <Content Include="angular-app\app\views\directives\featureditemcarousel.html" />
+    <Content Include="angular-app\app\views\directives\itemicons.html" />
+    <Content Include="angular-app\app\views\directives\loadingspinner.html" />
+    <Content Include="angular-app\app\views\directives\pageheaderbar.html" />
     <Content Include="angular-app\app\views\home.html" />
+    <Content Include="angular-app\app\views\itemdetails.html" />
+    <Content Include="angular-app\app\views\login.html" />
+    <Content Include="angular-app\app\views\menu-anon.html" />
     <Content Include="angular-app\app\views\menu.html" />
     <Content Include="angular-app\app\views\searchresults.html" />
     <Content Include="angular-app\Gruntfile.js" />
+    <Content Include="angular-app\main.css" />
     <Content Include="angular-app\mockApi\apiserver.js" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
@@ -320,6 +363,25 @@
     <Content Include="angular-app\test\.jshintrc" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angular-app\app\lib\angular-ui-bootstrap\README.md" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Black.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-BlackItalic.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Bold.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-BoldItalic.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-ExtraLight.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-ExtraLightItalic.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Italic.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Light.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-LightItalic.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Regular.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-Semibold.ttf" />
+    <Content Include="angular-app\app\lib\google-fonts-Open_Sans\fonts\SourceSansPro-SemiboldItalic.ttf" />
+    <Content Include="angular-app\app\lib\html5shiv\MIT and GPL2 licenses.md" />
+    <Content Include="angular-app\app\lib\html5shiv\readme.md" />
+    <Content Include="angular-app\app\lib\ng-mobile-menu\LICENSE" />
+    <Content Include="angular-app\app\lib\ng-mobile-menu\README.md" />
+    <Content Include="angular-app\app\lib\respondjs\LICENSE-MIT" />
+    <Content Include="angular-app\app\lib\respondjs\README.md" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -403,11 +465,7 @@ if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
     <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <Target Name="CleanNodeModules" AfterTargets="AfterClean">
-    <Exec Command="cd $(ProjectDir)angular-app
-          mkdir junk
-          robocopy /MIR junk node_modules
-          rmdir /q /s junk"
-          ContinueOnError="true" />
+    <Exec Command="cd $(ProjectDir)angular-app&#xD;&#xA;          mkdir junk&#xD;&#xA;          robocopy /MIR junk node_modules&#xD;&#xA;          rmdir /q /s junk" ContinueOnError="true" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
