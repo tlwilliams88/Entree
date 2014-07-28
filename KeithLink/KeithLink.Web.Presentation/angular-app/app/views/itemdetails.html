@@ -11,7 +11,7 @@
   <div class="col-sm-9">
     <h2>{{item.name}}</h2>
     <div class="item-details">
-      <div>
+      <div ng-show="item.description">
         <strong>Description:</strong> {{item.description}}
       </div>
       <div>
@@ -48,31 +48,63 @@
               <th>Details</th>
             </tr>
             <tr>
+              <td>Item #</td>
+              <td>{{item.itemnumber}}</td>
+            </tr>
+            <tr>
               <td>GTIN</td>
               <td>{{item.upc}}</td>
             </tr>
             <tr>
+              <td>Servings / Case</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Portion Cost</td>
+              <td></td>
+            </tr>
+            <tr>
               <td>Portion Size</td>
-              <td>{{item.size}}</td>
-            </tr>
-            <tr>
-              <td>Portion Wt</td>
               <td></td>
             </tr>
             <tr>
-              <td>Portion Price</td>
+              <td>Previous Orders</td>
               <td></td>
             </tr>
             <tr>
-              <td>Package Size</td>
+              <td>Manufacturer</td>
+              <td>{{item.manufacturer}}</td>
+            </tr>
+            <tr>
+              <td>Brand</td>
               <td></td>
             </tr>
             <tr>
-              <td>Package Wt</td>
+              <td>Vendor</td>
               <td></td>
             </tr>
             <tr>
-              <td>Package Price</td>
+              <td>Vendor Item #</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Category</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Class</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Storage Instructions</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Gross Wt</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>Case Cube</td>
               <td></td>
             </tr>
           </table>
