@@ -15,19 +15,7 @@ namespace KeithLink.Svc.Impl.ETL
     {
         public DataTable ReadAllBranches()
         {
-            var dataTable = new DataTable();
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-            {
-                conn.Open();
-
-                using (var cmd = new SqlCommand("[ETL].[ReadBranches]", conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }
-            }
-            return dataTable;
+            return PopulateDataTable("[ETL].[ReadBranches]");
         }
 
         public DataTable ReadItems(string branchId)
@@ -54,47 +42,27 @@ namespace KeithLink.Svc.Impl.ETL
 
         public DataTable ReadSubCategories()
         {
-            var childTable = new DataTable();
-
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-            {
-                using (var cmd = new SqlCommand("[ETL].[ReadSubCategories]", conn))
-                {
-                    conn.Open();
-
-                    cmd.CommandTimeout = 0;
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(childTable);
-                }
-            }
-            return childTable;
+            return PopulateDataTable("[ETL].[ReadSubCategories]");
         }
 
         public DataTable ReadParentCategories()
         {
-            var dataTable = new DataTable();
-
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-            {
-                using (var cmd = new SqlCommand("[ETL].[ReadParentCategories]", conn))
-                {
-                    cmd.CommandTimeout = 0;
-                    conn.Open();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(dataTable);
-                }
-            }
-            return dataTable;
+            return PopulateDataTable("[ETL].[ReadParentCategories]");
         }
 
         public DataTable ReadFullItemForElasticSearch()
+        {
+            return PopulateDataTable("[ETL].[ReadFullItemData]");
+        }
+
+        private DataTable PopulateDataTable(string sql)
         {
             var dataTable = new DataTable();
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
                 conn.Open();
 
-                using (var cmd = new SqlCommand("[ETL].[ReadFullItemData]", conn))
+                using (var cmd = new SqlCommand(sql, conn))
                 {
                     cmd.CommandTimeout = 0;
                     var da = new SqlDataAdapter(cmd);
@@ -103,6 +71,23 @@ namespace KeithLink.Svc.Impl.ETL
             }
             return dataTable;
         }
-               
+
+        public DataSet ReadGSDataForItems()
+        {
+            var gsData = new DataSet();
+
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[ReadItemGS1Data]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(gsData);
+                }
+            }
+            return gsData;
+        }
     }
 }

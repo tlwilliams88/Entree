@@ -92,10 +92,16 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
             var products = new BlockingCollection<ElasticSearchItemUpdate>();
+
+            var gsData = stagingRepository.ReadGSDataForItems();
+
+            var itemNutritions = BuildNutritionDictionary(gsData);
+            var itemDiet = BuildDietDictionary(gsData);
+            var itemAllergens = BuildAllergenDictionary(gsData);
+
             Parallel.ForEach(dataTable.AsEnumerable(), row =>
             {
-                products.Add(PopulateElasticSearchItem(row)
-                );
+                products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens));
             });
 
             int totalProcessed = 0;
@@ -110,6 +116,8 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
         }
+
+       
 
         public void ImportCategoriesToElasticSearch()
         {
@@ -231,9 +239,9 @@ namespace KeithLink.Svc.Impl.ETL
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row)
+        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, List<Allergen>> allergens)
         {
-            return new ElasticSearchItemUpdate()
+            var item =  new ElasticSearchItemUpdate()
             {
                 index = new RootData()
                 {
@@ -271,13 +279,53 @@ namespace KeithLink.Svc.Impl.ETL
                         replaceditem = row.GetString("ReplacedItem"),
                         replacementitem = row.GetString("ReplacementItem"),
                         cndoc = row.GetString("CNDoc"),
-                        itemnumber = row.GetString("ItemId")
+                        itemnumber = row.GetString("ItemId"),
+                        gs1 = new GS1Data()
+                        {
+                            brandowner = row.GetString("BrandOwner"),
+                            countryoforiginname = row.GetString("ContryOfOriginName"),
+                            countryoforigin = row.GetString("CountryOfOrigin"),
+                            grossweight = row.GetString("GrossWeight"),
+                            handlinginstruction = row.GetString("HandlingInstruction"),
+                            height = row.GetString("Height"),
+                            ingredients = row.GetString("Ingredients"),
+                            length = row.GetString("Length"),
+                            manufactureritemnumber = row.GetString("ManufacturerItemNumber"),
+                            marketingmessage = row.GetString("MarketingMessage"),
+                            moreinformation = row.GetString("MoreInformation"),
+                            servingsize = row.GetString("ServingSize"),
+                            servingsizeuom = row.GetString("ServingSizeUOM"),
+                            servingsperpack = row.GetString("ServingsPerPack"),
+                            servingsuggestion = row.GetString("ServingSuggestion"),
+                            shelf = row.GetString("Shelf"),
+                            storagetemp = row.GetString("StorageTemp"),
+                            unitmeasure = row.GetString("UnitMeasure"),
+                            unitmeasureuom = row.GetString("UnitMeasureUOM"),
+                            unitspercase = row.GetString("UnitsPerCase"),
+                            volume = row.GetString("Volume"),
+                            width = row.GetString("Width"),
+                            nutrition = nutrition.ContainsKey(row.GetString("UPC")) ? nutrition[row.GetString("UPC")] : null,
+                            diet = diets.ContainsKey(row.GetString("UPC")) ? diets[row.GetString("UPC")] : null,
+                            allergen = allergens.ContainsKey(row.GetString("UPC")) ? allergens[row.GetString("UPC")] : null,
+                        }
                     }
 
                 }
             };
-        }
 
+            ////Populate nutritional info
+            //if (gsData.Tables[0].Rows.Count > 0)
+            //{
+            //    item.index.data.gs1.nutrition = new List<ItemNutrition>();
+
+            //    foreach (DataRow subRow in gsData.Tables[0].Rows)
+            //        item.index.data.gs1.nutrition.Add(MapItemNutrition(subRow));
+            //}
+            
+
+            return item;
+        }
+                
         private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories)
         {
             var subCategories = new List<ESSubCategories>();
@@ -294,6 +342,74 @@ namespace KeithLink.Svc.Impl.ETL
 
 
             return subCategories;
+        }
+
+        private Dictionary<string, List<ItemNutrition>> BuildNutritionDictionary(DataSet gsData)
+        {
+            var itemNutritions = new Dictionary<string, List<ItemNutrition>>();
+
+            foreach (DataRow row in gsData.Tables[0].Rows)
+            {
+                if (itemNutritions.ContainsKey(row.GetString("gtin")))
+                    itemNutritions[row.GetString("gtin")].Add(MapItemNutrition(row));
+                else
+                    itemNutritions.Add(row.GetString("gtin"), new List<ItemNutrition>() { MapItemNutrition(row) });
+            }
+
+            return itemNutritions;
+        }
+
+        private Dictionary<string, List<Diet>> BuildDietDictionary(DataSet gsData)
+        {
+            var itemDiets = new Dictionary<string, List<Diet>>();
+
+            foreach (DataRow row in gsData.Tables[1].Rows)
+            {
+                if (itemDiets.ContainsKey(row.GetString("gtin")))
+                    itemDiets[row.GetString("gtin")].Add(MapDiet(row));
+                else
+                    itemDiets.Add(row.GetString("gtin"), new List<Diet>() { MapDiet(row) });
+            }
+
+            return itemDiets;
+        }
+
+        private Dictionary<string, List<Allergen>> BuildAllergenDictionary(DataSet gsData)
+        {
+            var itemAllergen = new Dictionary<string, List<Allergen>>();
+
+            foreach (DataRow row in gsData.Tables[2].Rows)
+            {
+                if (itemAllergen.ContainsKey(row.GetString("gtin")))
+                    itemAllergen[row.GetString("gtin")].Add(MappAllergen(row));
+                else
+                    itemAllergen.Add(row.GetString("gtin"), new List<Allergen>() { MappAllergen(row) });
+            }
+
+            return itemAllergen;
+        }
+
+        private static Allergen MappAllergen(DataRow row)
+        {
+            return new Allergen() { allergentype = row.GetString("AllergenTypeDesc"), level = row.GetString("LevelOfContainment") };
+        }
+
+
+        private static Diet MapDiet(DataRow row)
+        {
+            return new Diet() { diettype = row.GetString("DietType"), value = row.GetString("Value") };
+        }
+
+        private ItemNutrition MapItemNutrition(DataRow subRow)
+        {
+            return new ItemNutrition()
+            {
+                dailyvalue = subRow.GetString("DailyValue"),
+                measurementtypeid = subRow.GetString("MeasurmentTypeId"),
+                measurementvalue = subRow.GetString("MeasurementValue"),
+                nutrienttype = subRow.GetString("NutrientTypeDesc"),
+                nutrienttypecode = subRow.GetString("NutrientTypeCode")
+            };
         }
 
         #endregion
