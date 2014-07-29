@@ -16,7 +16,8 @@
       </div>
       <div>
         <span ng-show="item.itemnumber !== null"><strong>Item #</strong> {{item.itemnumber}} | </span>
-        <span ng-show="item.caseprice !== null"><strong>Price:</strong> {{item.caseprice}} |</span>
+        <span ng-show="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
+        <span ng-show="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
         <span ng-show="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
       </div>
       <div>
