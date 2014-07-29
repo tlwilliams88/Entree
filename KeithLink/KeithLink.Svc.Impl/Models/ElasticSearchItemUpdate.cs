@@ -66,12 +66,11 @@ namespace KeithLink.Svc.Impl.Models
     public class GS1Data
     {
         public string brandowner { get; set; }
-        public string countryoforiginname { get; set; }
         public string countryoforigin { get; set; }
         public string grossweight { get; set; }
         public string handlinginstruction { get; set; }
         public string ingredients { get; set; }
-        public string manufactureritemnumber { get; set; }
+        public string itemidentificationcode { get; set; }
         public string marketingmessage { get; set; }
         public string moreinformation { get; set; }
         public string servingsize { get; set; }
@@ -81,7 +80,6 @@ namespace KeithLink.Svc.Impl.Models
         public string shelf { get; set; }
         public string storagetemp { get; set; }
         public string unitmeasure { get; set; }
-        public string unitmeasureuom { get; set; }
         public string unitspercase { get; set; }
         public string volume { get; set; }
         public string height { get; set; }

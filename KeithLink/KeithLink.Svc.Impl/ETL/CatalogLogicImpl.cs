@@ -283,14 +283,13 @@ namespace KeithLink.Svc.Impl.ETL
                         gs1 = new GS1Data()
                         {
                             brandowner = row.GetString("BrandOwner"),
-                            countryoforiginname = row.GetString("ContryOfOriginName"),
                             countryoforigin = row.GetString("CountryOfOrigin"),
                             grossweight = row.GetString("GrossWeight"),
                             handlinginstruction = row.GetString("HandlingInstruction"),
                             height = row.GetString("Height"),
                             ingredients = row.GetString("Ingredients"),
                             length = row.GetString("Length"),
-                            manufactureritemnumber = row.GetString("ManufacturerItemNumber"),
+                            itemidentificationcode = row.GetString("ItemIdentificationCode"),
                             marketingmessage = row.GetString("MarketingMessage"),
                             moreinformation = row.GetString("MoreInformation"),
                             servingsize = row.GetString("ServingSize"),
@@ -300,7 +299,6 @@ namespace KeithLink.Svc.Impl.ETL
                             shelf = row.GetString("Shelf"),
                             storagetemp = row.GetString("StorageTemp"),
                             unitmeasure = row.GetString("UnitMeasure"),
-                            unitmeasureuom = row.GetString("UnitMeasureUOM"),
                             unitspercase = row.GetString("UnitsPerCase"),
                             volume = row.GetString("Volume"),
                             width = row.GetString("Width"),
