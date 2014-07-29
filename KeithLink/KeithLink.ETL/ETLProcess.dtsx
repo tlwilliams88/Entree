@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="44"
-  DTS:VersionGUID="{383F9B6B-BB60-4409-8A04-A10A79B2A998}">
+  DTS:VersionBuild="45"
+  DTS:VersionGUID="{7FDCE19E-714B-4F4C-80DA-18FBC8E0BDFE}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACb6abLTjzf/Xo0fHSWiJgAAAAAAASAAACgAAAAEAAAAC+FEZMljG6ltivAZnugH5wIAAAA7SlBMKIs5fUUAAAApZElUSQoS6kHbqNJeCOomSKFHpU</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACW7xDRAw7wLB4myICePh9TAAAAAASAAACgAAAAEAAAAFU7vxnig/VadqO5mFJqe0MIAAAAhtLK1NgbV6wUAAAA5DQ6tkv3PoPljJxYgh/vQ4HtkN8</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADCEXfQby1g4BO0yli1mKokAAAAAASAAACgAAAAEAAAANAqzFu0auq6k4KhxhTPmIkIAAAANPjC47eHRakUAAAA17vQfdLutimIJNZBP85/upufVeI</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAaqniWexhWvfAIrXkElFXJAAAAAASAAACgAAAAEAAAAC8i708PhZsEpwbquK1KMoMIAAAASUhN21ZE7KAUAAAA315zSQnyE0SvVbLymPv50qlIA9k</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -10271,7 +10271,6 @@
       DTS:refId="Package\Process Staged Data"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Web Service Task"
-      DTS:Disabled="True"
       DTS:DTSID="{F45F32CB-0A4A-4788-AA66-ED31983318AB}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
