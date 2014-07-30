@@ -113,6 +113,7 @@
 		<h2 class="hidden-xs hidden-sm">Search Results</h2>
 		<div>
 			
+			<!-- Context Menu -->
 			<div ng-mouseleave="isContextMenuDisplayed = false" ng-show="isContextMenuDisplayed" class="context-menu btn-group-vertical" ng-style="moveMenuStyle">
 				<button class="btn text-uppercase">In saved items</button>
 		    <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
@@ -172,6 +173,8 @@
 							'icon-arrow-up3': predicate == 'name' && reverse
 						}"></span></th>
 						<th class="hidden-sm hidden-xs"></th>
+						<th class="hidden-sm hidden-xs">Case Price</th>
+						<th class="hidden-sm hidden-xs">Package Price</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -194,30 +197,36 @@
 						</td>
 						<td class="hidden-sm hidden-xs icons" item-icons="product">
 						</td>
+						<td class="hidden-sm hidden-xs">
+							<span ng-show="product.caseprice !== '$0.00'">{{product.caseprice}}</span>
+						</td>
+						<td class="hidden-sm hidden-xs">
+							<span ng-show="product.packageprice !== '$0.00'">{{product.packageprice}}</span>
+						</td>
 						<td class="table-icon">
 							<button style="background-color:transparent; border:none;" ng-mousedown="showContextMenu($event, $index)"><span class="icon-plus2"></span></button>
 							<span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
 						</td>
 					</tr>
 					<tr ng-repeat-end ng-show="showDetails" class="search-results__details">
-					  <td colspan=4>
+					  <td colspan="4">
 					    <div>
 					      <p>Pack / Size: {{product.cases}} / {{product.size}}</p>
 					      <p>Brand: {{product.brand}}</p>
+					      <p ng-show="product.caseprice !== '$0.00'">Case Price: {{product.caseprice}}</p>
+					      <p ng-show="product.packageprice !== '$0.00'">Package Price: {{product.packageprice}}</p>
 					      <p item-icons="product">
 					      </p>
 					    </div>
 					  </td>
 					</tr>
 					<tr ng-show="products.length === 0">
-						<td colspan="7">No products found.</td>
+						<td colspan="9">No products found.</td>
+					</tr>
+					<tr ng-show="loadingResults">
+						<td colspan="9" class="text-center" loading-spinner="loadingResults"></td>
 					</tr>
 				</tbody>
-				<tfoot>
-					<tr ng-show="loadingResults">
-						<td colspan="7" class="text-center" loading-spinner="loadingResults"></td>
-					</tr>
-				</tfoot>
 			</table>
 		</div>
 	</div>
