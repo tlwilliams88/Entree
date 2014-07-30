@@ -101,7 +101,7 @@ angular
     return {
      'request': function(config) {
         $injector.invoke(function($http, ApiService) {
-          if (config.url.substr(config.url.length - 5) !== '.html') {
+          if (config.url[0] === '/') {
             config.url = ApiService.endpointUrl + config.url;
 
             console.log('url: ' + config.url);
