@@ -12,14 +12,14 @@ angular
   .module('bekApp', [
     // 'ngAnimate',
     // 'ngCookies',
-    // 'ngResource',
+    'ngResource',
     // 'ngSanitize',
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
     'shoppinpal.mobile-menu'
   ])
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('login', {
@@ -65,6 +65,11 @@ angular
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController'
+    })
+    .state('menu.lists', {
+      url: '/lists/',
+      templateUrl: 'views/lists.html',
+      controller: 'ListController'
     });
 
   $stateProvider
@@ -91,10 +96,27 @@ angular
 
     return path + '/';
   });
-})
-.run(['$rootScope', 'UserProfileService', 'ApiService', function($rootScope, UserProfileService, ApiService) {
 
-  //ApiService.endpointUrl = 'http://devapi.bekco.com';
+  $httpProvider.interceptors.push(function($q, $injector) {
+    return {
+     'request': function(config) {
+        $injector.invoke(function($http, ApiService) {
+          if (config.url.substr(config.url.length - 5) !== '.html') {
+            config.url = ApiService.endpointUrl + config.url;
+
+            console.log('url: ' + config.url);
+            console.log(config.params);
+            
+          }
+       });
+       return config || $q.when(config);
+      }
+    };
+  });
+})
+.run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
+
+  // ApiService.endpointUrl = 'http://devapi.bekco.com';
    ApiService.getEndpointUrl().then(function(response) {
      ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
    });

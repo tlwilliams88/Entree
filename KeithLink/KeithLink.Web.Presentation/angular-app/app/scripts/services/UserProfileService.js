@@ -8,23 +8,23 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', ['$http', 'ApiService', function ($http, ApiService) {
+  .factory('UserProfileService', function ($http) {
     
-    function profile() {
-      return $http.get(ApiService.endpointUrl + '/ws/profile').then(function(data) {
-        Service.profile = data.data.profile;
-      });
-    }
+    // function profile() {
+    //   return $http.get('/ws/profile').then(function(data) {
+    //     Service.profile = data.data.profile;
+    //   });
+    // }
 
 
-    var Service = {
-      profile: null,
+    // var Service = {
+    //   profile: null,
 
-      getProfile: function() {
-        return profile();
-      }
-    };
+    //   getProfile: function() {
+    //     return profile();
+    //   }
+    // };
 
-    return Service;
+    // return Service;
 
-  }]);
+  });

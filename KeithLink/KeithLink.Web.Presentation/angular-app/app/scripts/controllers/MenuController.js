@@ -45,13 +45,5 @@ angular.module('bekApp')
       }
     };
 
-    $scope.test = function(e) {
-      $scope.testMessage = new Date();
-    };
-
-    $scope.mouseupEvent = function(e) {
-      $scope.testMessage = 'move';
-    };
-
     $scope.currentUser.currentLocation = $scope.currentUser.stores[0];
   }]);
