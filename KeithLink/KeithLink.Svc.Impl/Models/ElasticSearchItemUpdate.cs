@@ -60,7 +60,57 @@ namespace KeithLink.Svc.Impl.Models
         public string replaceditem { get; set; }
         public string cndoc { get; set; }
         public string itemnumber { get; set; }
+        public GS1Data gs1 { get; set; }
     }
 
-    
+    public class GS1Data
+    {
+        public string brandowner { get; set; }
+        public string countryoforigin { get; set; }
+        public string grossweight { get; set; }
+        public string handlinginstruction { get; set; }
+        public string ingredients { get; set; }
+        public string itemidentificationcode { get; set; }
+        public string marketingmessage { get; set; }
+        public string moreinformation { get; set; }
+        public string servingsize { get; set; }
+        public string servingsizeuom { get; set; }
+        public string servingsperpack { get; set; }
+        public string servingsuggestion { get; set; }
+        public string shelf { get; set; }
+        public string storagetemp { get; set; }
+        public string unitmeasure { get; set; }
+        public string unitspercase { get; set; }
+        public string volume { get; set; }
+        public string height { get; set; }
+        public string length { get; set; }
+        public string width { get; set; }
+        
+        
+        public List<ItemNutrition> nutrition { get; set; }
+        public List<Diet> diet { get; set; }
+        public List<Allergen> allergen { get; set; }
+    }
+
+    public class ItemNutrition
+    {
+        public string dailyvalue { get; set; }
+        public string measurementvalue { get; set; }
+        public string measurementtypeid { get; set; }
+        public string nutrienttypecode { get; set; }
+        public string nutrienttype { get; set; }
+    }
+
+    public class Diet
+    {
+        public string diettype { get; set; }
+        public string value { get; set; }
+    }
+
+    public class Allergen
+    {
+        public string allergentype { get; set; }
+        public string level { get; set; }
+    }
+
 }

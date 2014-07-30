@@ -66,6 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FacetValue.cs" />
+    <Compile Include="Facet.cs" />
+    <Compile Include="ProductsReturn.cs" />
     <Compile Include="ETL\ICatalogLogic.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Constants.cs" />

@@ -14,5 +14,6 @@ namespace KeithLink.Svc.Core.ETL
         DataTable ReadSubCategories();
         DataTable ReadParentCategories();
         DataTable ReadFullItemForElasticSearch();
+        DataSet ReadGSDataForItems();
     }
 }

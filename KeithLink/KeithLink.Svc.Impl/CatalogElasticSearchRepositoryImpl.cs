@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl
             category = category.ToLower();
             List<string> childCategories = new List<string>();
 
-            CategoriesReturn ret = GetCategories(from, size);
+            CategoriesReturn ret = GetCategories(0, Configuration.DefaultCategoryReturnSize);
             foreach (var c in ret.Categories)
             {
                 if (category == c.Id.ToLower())
@@ -38,7 +38,6 @@ namespace KeithLink.Svc.Impl
                 }
             }
 
-            List<Product> products = new List<Product>();
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
             var categoryFilter = @"{
@@ -49,18 +48,42 @@ namespace KeithLink.Svc.Impl
                           ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
                         }
-                      }
-                    }";
+                      },
+                ""aggregations"" : {
+                    ""categoriids"" : {
+                    ""terms"" : {
+                        ""field"" : ""categoryid""
+                    }
+                    }
+                }
+            }";
 
             ElasticsearchResponse<DynamicDictionary> res = client.Search(branch, "product", categoryFilter);
 
+            List<Product> products = new List<Product>();
+            List<Facet> facets = new List<Facet>();
             foreach (var oProd in res.Response["hits"]["hits"])
             {
                 Product p = LoadProductFromElasticSearchProduct(oProd);
                 products.Add(p);
             }
+            foreach (var oFacet in res.Response["aggregations"])
+            {
+                Facet f = new Facet();
+                f.Name = f.Name = oFacet.Key;
+                f.FacetValues = new List<FacetValue>();
+                foreach (var oFacetValue in oFacet.Value["buckets"])
+                {
+                    FacetValue fv = new FacetValue();
+                    fv.Name = oFacetValue["key"].ToString();
+                    fv.Count = Convert.ToInt32(oFacetValue["doc_count"]);
+                    f.FacetValues.Add(fv);
+                }
+                facets.Add(f);
+            }
+            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
 
-            return new ProductsReturn() { Products = products };
+            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
 
         public CategoriesReturn GetCategories(int from, int size)
