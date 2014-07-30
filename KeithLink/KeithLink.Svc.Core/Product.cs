@@ -65,11 +65,4 @@ namespace KeithLink.Svc.Core
         [DataMember(Name = "cndoc")]
         public string CNDoc { get; set; }
     }
-
-    [DataContract(Name = "ProductsReturn")]
-    public class ProductsReturn
-    {
-        [DataMember(Name = "products")]
-        public List<Product> Products { get; set; }
-    }
 }
