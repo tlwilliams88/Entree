@@ -8,6 +8,7 @@ using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.InternalSvc.Interfaces;
 using KeithLink.Common.Core.Logging;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -25,7 +26,7 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessStagedData()
         {
-            categoryLogic.ProcessStagedData();
+            Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
             return true;
         }
 
