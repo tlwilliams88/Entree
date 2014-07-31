@@ -40,30 +40,6 @@
   display: none;
 }
 
-// coloring for item details rows
-.search-results__table {
-  tbody {
-    tr {
-      th, td {
-        background-color: $color-white !important;
-      }
-    }
-    tr:nth-child(4n), tr:nth-child(4n-1) {
-      th, td {
-        background-color: $background !important;
-      }
-    }
-
-    tr:nth-child(even) {
-      border-top: none;
-    }
-    tr:nth-child(odd) {
-      border-bottom: none;
-      border-top: 1px solid $color-border;
-    }
-  }
-}
-
 .mobile-filter{
   position: absolute;
   z-index: 1;

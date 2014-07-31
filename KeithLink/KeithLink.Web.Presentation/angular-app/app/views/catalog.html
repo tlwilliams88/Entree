@@ -4,8 +4,8 @@
 <!-- Search -->
 <div class="row hidden-sm hidden-xs">
 	<div class="col-sm-12">
-		<form name="catalogSearchForm" novalidate>
-			<div class="input-group catalog-search">
+		<form name="catalogSearchForm" novalidate class="search-form catalog-search">
+			<div class="input-group">
 				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacturer number">
 				<span class="input-group-btn">
 				<button ui-sref="menu.catalog.products.list({ type: 'search', id: catalogSearchTerm })" ng-disabled="catalogSearchForm.$invalid" class="btn cta-btn btn-lg" type="submit"><span class="icon-search"></span> SEARCH</button>
@@ -16,7 +16,7 @@
 </div>
 
 <!-- Recently Viewed Items -->
-<div class="row sub-content">
+<div class="row">
 	<div class="col-sm-12">
 		<h3>Recently Viewed Items</h3>
 		<h4>Coming soon</h4>

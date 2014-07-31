@@ -1,17 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Catalog;
 using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
     public class CatalogController : ApiController
     {
-        KeithLink.Svc.Core.ICatalogRepository _catalogRepository;
+        KeithLink.Svc.Core.Catalog.ICatalogRepository _catalogRepository;
         KeithLink.Svc.Core.IPriceRepository _priceRepository;
 
         public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository)

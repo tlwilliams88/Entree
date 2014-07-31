@@ -13,11 +13,12 @@ namespace KeithLink.Svc.Impl
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
-        public static string KEY_CORS_ENABLED_DOMAINS { get { return "CorsEnabledDomains"; } }
-        public static string KEY_CORS_ENABLED_HEADERS { get { return "CorsEnabledHeaders"; } }
-        public static string KEY_CORS_ENABLED_METHODS { get { return "CorsEnabledMethods"; } }
-        public static string KEY_DEFAULT_CATEGORY_RETURN_SIZE { get { return "DefaultCategoryReturnSize"; } }
-        public static string KEY_DEFAULT_PRODUCT_RETURN_SIZE { get { return "DefaultProductReturnSize"; } }
+        private const string KEY_ELASTIC_SEARCH_AGGREGATIONS = "ElasticSearchAggregations";
+        private const string KEY_CORS_ENABLED_DOMAINS = "CorsEnabledDomains";
+        private const string KEY_CORS_ENABLED_HEADERS = "CorsEnabledHeaders";
+        private const string KEY_CORS_ENABLED_METHODS = "CorsEnabledMethods";
+        private const string KEY_DEFAULT_CATEGORY_RETURN_SIZE = "DefaultCategoryReturnSize";
+        private const string KEY_DEFAULT_PRODUCT_RETURN_SIZE = "DefaultProductReturnSize";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
@@ -64,6 +65,11 @@ namespace KeithLink.Svc.Impl
         public static string CorsEnabledMethods
         {
             get { return GetValue(KEY_CORS_ENABLED_METHODS, string.Empty); }
+        }
+
+        public static string ElasticSearchAggregations
+        {
+            get { return GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
         }
 
         public static int DefaultCategoryReturnSize

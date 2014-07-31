@@ -65,7 +65,7 @@ angular.module('bekApp')
 			$scope.hidden= true;
 
 			$scope.showContextMenu = function(e, idx) {
-	    	$scope.moveMenuStyle = {'top': (idx * 53) + 'px'}; 
+				$scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
 	    	$scope.isContextMenuDisplayed = true;
 	    };
 

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
+using KeithLink.Svc.Core.Catalog;
 
 namespace KeithLink.Svc.Impl
 {

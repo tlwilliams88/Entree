@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core
+namespace KeithLink.Svc.Core.Catalog
 {
     public interface ICatalogRepository
     {

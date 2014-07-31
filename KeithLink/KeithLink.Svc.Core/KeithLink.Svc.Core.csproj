@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Gs1.cs" />
     <Compile Include="FacetValue.cs" />
     <Compile Include="Facet.cs" />
     <Compile Include="ProductsReturn.cs" />

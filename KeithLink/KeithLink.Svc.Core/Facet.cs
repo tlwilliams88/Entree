@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace KeithLink.Svc.Core
+namespace KeithLink.Svc.Core.Catalog
 {
     [DataContract(Name = "facet")]
     [Serializable]
