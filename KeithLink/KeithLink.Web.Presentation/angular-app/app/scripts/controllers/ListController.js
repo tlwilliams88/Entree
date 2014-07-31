@@ -45,4 +45,12 @@ angular.module('bekApp')
       }
     ];
 
+    $scope.onDragComplete = function ($data,$event) {
+      debugger;
+    };
+
+    $scope.onDropComplete = function ($data,$event, listName) {
+      debugger;
+    };
+
   });
