@@ -45,7 +45,7 @@ a {
   margin-left: $sidebar-width;
 }
 
-@media (max-width: $desktop-min) {
+@media (max-width: $mobile-max) {
   .page-content {
     width: inherit;
     margin-left: 0;
@@ -59,23 +59,12 @@ a {
   padding:0;
 }
 
-.text-red {
-  color: $color-red;
-}
-.text-green {
-  color: $color-green;
-}
-.text-white {
-  color: $color-white;
-}
-.text-regular {
-  color: $color-font;
-}
-
-// slightly lighter text color, mostly for icons
-.text-light {
-  color: $color-font-light;
-}
+.text-red { color: $color-red; }
+.text-green { color: $color-green; }
+.text-white { color: $color-white; }
+.text-regular { color: $color-font; }
+.text-blue { color: $color-blue; }
+.text-light { color: $color-font-light; }
 
 .view {
   padding-bottom: $gutter-size;

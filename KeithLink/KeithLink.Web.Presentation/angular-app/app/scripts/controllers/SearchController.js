@@ -56,6 +56,7 @@ angular.module('bekApp')
 			$scope.oneAtATime = true;
 			$scope.items = ['Item 1', 'Item 2', 'Item 3'];
 			$scope.selectedCategory = '';
+			$scope.selectedSubcategory = '';
 			$scope.selectedBrands = [];
 			$scope.selectedAllergens = [];
 			$scope.isBrandShowing = false;
@@ -65,7 +66,7 @@ angular.module('bekApp')
 			$scope.hidden= true;
 
 			$scope.showContextMenu = function(e, idx) {
-	    	$scope.moveMenuStyle = {'top': (idx * 53) + 'px'}; 
+				$scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
 	    	$scope.isContextMenuDisplayed = true;
 	    };
 
@@ -79,10 +80,12 @@ angular.module('bekApp')
 				$scope.allergenHiddenNumber = 100;
 			};
 
-			$scope.toggleSelection = function toggleSelection(id, filter) {
+			$scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
+				debugger;
+				selectedFacet.show = !selectedFacet.show;
 				var idx;
 				if (filter === 'brand') {
-					idx = $scope.selectedBrands.indexOf(id);
+					idx = $scope.selectedBrands.indexOf(selectedFacet);
 
 					// is currently selected
 					if (idx > -1) {
@@ -90,10 +93,10 @@ angular.module('bekApp')
 					}
 					// is newly selected
 					else {
-						$scope.selectedBrands.push(id);
+						$scope.selectedBrands.push(selectedFacet);
 					}
 				} else if(filter==='allergen') {
-					idx = $scope.selectedAllergens.indexOf(id);
+					idx = $scope.selectedAllergens.indexOf(selectedFacet);
 
 					// is currently selected
 					if (idx > -1) {
@@ -101,11 +104,14 @@ angular.module('bekApp')
 					}
 					// is newly selected
 					else {
-						$scope.selectedAllergens.push(id);
+						$scope.selectedAllergens.push(selectedFacet);
 					}
+				} else if(filter==='subcategory'){
+					$scope.selectedSubcategory = selectedFacet.id;
 				}
 				else{
-					$scope.selectedCategory = id;
+					$scope.selectedCategory = selectedFacet.id;
+					$scope.selectedSubcategory = '';
 				}
 
 			};

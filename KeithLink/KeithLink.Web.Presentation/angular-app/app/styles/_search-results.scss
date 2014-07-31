@@ -29,6 +29,15 @@
         font-weight: 600;
       }
     }
+    ul{
+      list-style-type: none;
+      li{
+        .active{
+          color: $color-blue;
+          font-weight: 600;
+        }
+      }
+    }
   }
 }
 
@@ -38,30 +47,6 @@
 
 .hideallergen{
   display: none;
-}
-
-// coloring for item details rows
-.search-results__table {
-  tbody {
-    tr {
-      th, td {
-        background-color: $color-white !important;
-      }
-    }
-    tr:nth-child(4n), tr:nth-child(4n-1) {
-      th, td {
-        background-color: $background !important;
-      }
-    }
-
-    tr:nth-child(even) {
-      border-top: none;
-    }
-    tr:nth-child(odd) {
-      border-bottom: none;
-      border-top: 1px solid $color-border;
-    }
-  }
 }
 
 .mobile-filter{
@@ -131,6 +116,27 @@
     .panel:first-child{
       border-top: 0;
     }
+  }
+}
+
+.sub-accordion{
+  > .panel-collapse{
+   > .panel-body{
+    height:auto !important;
+    label{
+      padding: 11px 30px !important;
+    }
+    }
+  }
+  .panel-heading a{
+    padding:0 !important;
+    color: $color-font;
+    .panel-body{
+      background-color: $background;
+    }
+  }
+  .panel-heading a:hover{
+    color: $color-font !important;
   }
 }
 

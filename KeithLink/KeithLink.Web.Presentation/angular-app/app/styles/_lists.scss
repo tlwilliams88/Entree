@@ -1,0 +1,27 @@
+.custom-lists .btn {
+  min-width: 135px;
+  font-size: $font-size;
+
+  &:hover {
+    color: $color-blue;
+  }
+}
+
+.btn-group-vertical .btn {
+  &:focus, &:active {
+    background-color: $color-blue;
+    color: $color-white !important;
+    border: none;
+  }
+
+  &:hover {
+    color: $color-blue;
+    border: 2px solid $color-blue;
+  }
+}
+
+.custom-lists
+
+.custom-lists__more {
+  margin-top: 10px;
+}

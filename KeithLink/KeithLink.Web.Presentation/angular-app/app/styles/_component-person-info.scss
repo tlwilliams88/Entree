@@ -28,7 +28,7 @@
   }
 }
 
-@media (max-width: $desktop-min) {
+@media (max-width: $mobile-max) {
   .person-info {
     padding: $gutter-size;
     width: 100%;
