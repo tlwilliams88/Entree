@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Impl
                       }" + ElasticSearchAggregations + @"
             }";
 
-            return GetProductsFromElasticSearch(branch, categorySearch);
+            return GetProductsFromElasticSearch(branch, categoryFilter);
         }
 
         private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, List<Facet> facets)
