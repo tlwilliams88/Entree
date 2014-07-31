@@ -17,7 +17,8 @@ angular
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
-    'shoppinpal.mobile-menu'
+    'shoppinpal.mobile-menu',
+    'ngDraggable'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers
@@ -47,7 +48,18 @@ angular
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
-      controller: 'CatalogController'
+      controller: 'CatalogController',
+      resolve: {
+        categories: function(CategoryService) {
+          return CategoryService.getCategories().then(function(data) {
+            return data.categories;
+          }, function(error) {
+            return { message: 'There was an error' };
+          }, function(progress) {
+            return { message: 'Progress' };
+          });
+        }
+      }
     })
     .state('menu.catalog.products', {
       abstract: true,

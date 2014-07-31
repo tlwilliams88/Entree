@@ -11,7 +11,7 @@
         <h3>Your Lists</h3>
         <div class="btn-group-vertical text-blue">
           <button class="btn">All Items</button>
-          <button ng-repeat="list in lists" class="btn target-container">{{list.name}}</button>
+          <button ng-repeat="list in lists" class="btn target-container" ng-drop="true" ng-drop-success="onDropComplete($data,$event, list.name)">{{list.name}}</button>
         </div>
         <p class="custom-lists__more"><a href="">Show More...</a></p>
         <button class="btn text-light">Create A List</button>
@@ -52,6 +52,9 @@
         </thead>
         <tbody>
           <tr ng-repeat-start="product in products">
+            <td ng-drag="true" ng-drag-data="product" ng-drag-success="onDragComplete($data,$event)" style="background-color:blue;">
+              DRAG ME
+            </td>
             <td class="text-light table-icon">
               <span class="icon-star2"></span>
             </td>
