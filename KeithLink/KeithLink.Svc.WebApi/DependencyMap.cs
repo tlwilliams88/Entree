@@ -6,6 +6,7 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Catalog;
 
 namespace KeithLink.Svc.WebApi
 {

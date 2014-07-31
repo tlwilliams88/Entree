@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using System.Dynamic;
+using KeithLink.Svc.Core.Catalog;
 
 namespace KeithLink.Svc.Impl
 {
@@ -48,14 +49,7 @@ namespace KeithLink.Svc.Impl
                           ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
                         }
-                      },
-                ""aggregations"" : {
-                    ""categoriids"" : {
-                    ""terms"" : {
-                        ""field"" : ""categoryid""
-                    }
-                    }
-                }
+                      }" + ElasticSearchAggregations + @"
             }";
 
             ElasticsearchResponse<DynamicDictionary> res = client.Search(branch, "product", categoryFilter);
@@ -67,6 +61,14 @@ namespace KeithLink.Svc.Impl
                 Product p = LoadProductFromElasticSearchProduct(oProd);
                 products.Add(p);
             }
+            LoadFacetsFromElasticSearchResponse(res, facets);
+            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
+
+            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+        }
+
+        private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, List<Facet> facets)
+        {
             foreach (var oFacet in res.Response["aggregations"])
             {
                 Facet f = new Facet();
@@ -81,9 +83,6 @@ namespace KeithLink.Svc.Impl
                 }
                 facets.Add(f);
             }
-            int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
-
-            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -174,7 +173,57 @@ namespace KeithLink.Svc.Impl
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
+            Gs1 gs1 = new Gs1();
+            gs1.BrandOwner = oProd._source.gs1.brandowner;
+            gs1.CountryOfOrigin = oProd._source.gs1.countryoforigin;
+            gs1.GrossWeight = oProd._source.gs1.grossweight;
+            gs1.HandlingInstructions = oProd._source.gs1.handlinginstructions;
+            gs1.Ingredients = oProd._source.gs1.ingredients;
+            gs1.ItemIdentificationCode = oProd._source.gs1.itemidentificationcode;
+            gs1.MarketingMessage = oProd._source.gs1.marketingmessage;
+            gs1.MoreInformation = oProd._source.gs1.moreinformation;
+            gs1.ServingSize = oProd._source.gs1.servingsize;
+            gs1.ServingSizeUOM = oProd._source.gs1.servingsizeuom;
+            gs1.ServingsPerPack = oProd._source.gs1.servingsperpack;
+            gs1.ServingSugestion = oProd._source.gs1.servingsuggestions;
+            gs1.Shelf = oProd._source.gs1.shelf;
+            gs1.StorageTemp = oProd._source.gs1.storagetemp;
+            gs1.UnitMeasure = oProd._source.gs1.unitmeasure;
+            gs1.UnitsPerCase = oProd._source.gs1.unitspercase;
+            gs1.Volume = oProd._source.gs1.volume;
+            gs1.Height = oProd._source.gs1.height;
+            gs1.Length = oProd._source.gs1.length;
+            gs1.Width = oProd._source.gs1.width;
+            gs1.Allergens = new List<Allergen>();
+            gs1.NutritionInfo = new List<Nutrition>();
+            gs1.DietInfo = new List<Diet>();
+            if (oProd._source.gs1.allergen != null)
+            {
+                foreach (var allergen in oProd._source.gs1.allergen)
+                {
+                    Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
+                    gs1.Allergens.Add(a);
+                }
+            }
+            if (oProd._source.gs1.nutrition != null)
+            {
+                foreach (var nutrition in oProd._source.gs1.nutrition)
+                {
+                    Nutrition n = new Nutrition() { DailyValue = nutrition.dailyvalue, MeasurementTypeId = nutrition.measurementtypeid, MeasurementValue = nutrition.measurementvalue,
+                        NutrientType = nutrition.nutrienttype, NutrientTypeCode = nutrition.nutrienttypecode };
+                    gs1.NutritionInfo.Add(n);
+                }
+            }
+            if (oProd._source.gs1.diet != null)
+            {
+                foreach (var diet in oProd._source.gs1.diet)
+                {
+                    Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
+                    gs1.DietInfo.Add(d);
+                }
+            }
 
+            p.Gs1 = gs1;
             return p;
         }
 
@@ -198,6 +247,48 @@ namespace KeithLink.Svc.Impl
             if (size < 0)
                 return Configuration.DefaultProductReturnSize;
             return size;
+        }
+
+        private string _elasticSearchAggreagations = @",
+                ""aggregations"" : {
+                    ""Categories"" : {
+                    ""terms"" : {
+                        ""field"" : ""categoryid""
+                    }
+                    }, ""Brands"" : {
+                    ""terms"" : {
+                        ""field"" : ""brand""
+                    }
+                    }
+                }";
+
+        public string ElasticSearchAggregations {
+            get
+            {
+                if (!String.IsNullOrEmpty(Configuration.ElasticSearchAggregations))
+                {
+                    List<string> aggregationsFromConfig = new List<string>();
+                    StringBuilder s = new StringBuilder();
+                    s.Append(",\"aggregations\" : {{\r\n {0} \r\n}}");
+                    foreach (string aggregation in Configuration.ElasticSearchAggregations.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        string[] aggregationParams = aggregation.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                        if (aggregationParams.Length != 2)
+                            throw new ApplicationException("Incorrect aggreation configuration");
+
+                        aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                    }
+
+                    string formatString = s.ToString();
+                    string aggregationsString = String.Join(",", aggregationsFromConfig.ToArray());
+                    return string.Format(formatString, aggregationsString);
+                }
+                return _elasticSearchAggreagations;
+            }
+            set
+            {
+                _elasticSearchAggreagations = value;
+            }
         }
     }
 }
