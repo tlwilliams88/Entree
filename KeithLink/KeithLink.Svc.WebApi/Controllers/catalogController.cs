@@ -34,7 +34,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CategoriesReturn GetSubCategoriesByParentId(string id)
         {
             int from, size;
-            ReadPagingParams(out from, out size);
+            string facets;
+            ReadQueryStringParams(out from, out size, out facets);
             return _catalogRepository.GetCategories(from, size);
         }
 
@@ -43,9 +44,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
         {
             int from, size;
-            ReadPagingParams(out from, out size);
+            string facets;
+            ReadQueryStringParams(out from, out size, out facets);
 
-            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size);
+            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size, facets);
             GetPricingInfo(prods);
             return prods;
         }
@@ -55,7 +57,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CategoriesReturn GetCategoriesById(string id)
         {
             int from, size;
-            ReadPagingParams(out from, out size);
+            string facets;
+            ReadQueryStringParams(out from, out size, out facets);
 
             return _catalogRepository.GetCategories(from, size);
         }
@@ -76,19 +79,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         public ProductsReturn GetProductsSearch(string branchId, string searchTerms)
         {
             int from, size;
-            ReadPagingParams(out from, out size);
+            string facets;
+            ReadQueryStringParams(out from, out size, out facets);
 
-            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size);
+            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size, facets);
             GetPricingInfo(prods);
 
             return prods;
         }
 
-        private void ReadPagingParams(out int from, out int size)
+        private void ReadQueryStringParams(out int from, out int size, out string facets)
         {
             Dictionary<string, string> pairs = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
             from = 0;
             size = -1;
+            facets = string.Empty;
 
             if (pairs.ContainsKey(Constants.ReturnSizeQueryStringParam))
             {
@@ -97,6 +102,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             if (pairs.ContainsKey(Constants.ReturnFromQueryStringParam))
             {
                 from = Convert.ToInt32(pairs[Constants.ReturnFromQueryStringParam]);
+            }
+            if (pairs.ContainsKey("facets"))
+            {
+                facets = pairs["facets"];
             }
         }
 

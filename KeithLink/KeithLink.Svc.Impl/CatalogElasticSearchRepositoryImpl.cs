@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl
             
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
             size = GetProductPagingSize(size);
 
@@ -104,10 +104,17 @@ namespace KeithLink.Svc.Impl
             return new CategoriesReturn() { Categories = cats };
         }
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
         {
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
+            string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in facets)
+            {
+                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = s.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+
+            }
 
             var searchBody = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
