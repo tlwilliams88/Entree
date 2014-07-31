@@ -19,14 +19,43 @@ angular.module('bekApp')
 			var type = $stateParams.type;
 
 			$scope.breadcrumbs = [];
-			$scope.loadingCategories = true;
 			$scope.loadingResults = true;
+
+		  	$scope.totalItems = 175;
+		  	$scope.currentPage = 1;
+		  	$scope.itemsPerPage = 30;
+		  	$scope.itemIndex = 0;
+
+
+			$scope.loadMore = function() {
+
+
+		    	$scope.itemIndex += $scope.itemsPerPage;
+		    	$scope.currentPage++;
+		        
+		    	if ($scope.products.length >= $scope.totalItems) {
+		    		return;
+		    	}
+
+		        ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex).then(function(data) {
+		        	$scope.products.push.apply($scope.products, data.products);
+		        	console.log('reload: ' + $scope.currentPage);
+
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+		    };
+
 
 			if (type === 'category') {
 				$scope.breadcrumbs[0] = 'Category';
 
-				ProductService.getProductsByCategory(branchId, $stateParams.id).then(function(response) {
-					$scope.products = response.data.products;
+				ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage).then(function(data) {
+					$scope.products = data.products;
+					$scope.categories = data.facets[0].facetvalues;
+					$scope.brands = data.facets[1].facetvalues;
+					$scope.totalItems = data.totalcount;
+
 					$scope.predicate = 'id';
 					$scope.loadingResults = false;
 				});
@@ -34,11 +63,14 @@ angular.module('bekApp')
 			} else if (type === 'search') {
 				var searchTerm =  $stateParams.id;
 
-				$scope.breadcrumbs[0] = 'Search';
-				$scope.breadcrumbs[1] = searchTerm;
+				$scope.breadcrumbs.search = searchTerm;
 
-				ProductService.getProducts(branchId,searchTerm).then(function(response) {
-					$scope.products = response.data.products;
+				ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage).then(function(data) {
+					$scope.products = data.products;
+					$scope.categories = data.facets[0].facetvalues;
+					$scope.brands = data.facets[1].facetvalues;
+					$scope.totalItems = data.totalcount;
+
 					$scope.predicate = 'id';
 					$scope.loadingResults = false;
 				});
@@ -48,10 +80,21 @@ angular.module('bekApp')
 
 			}
 
-			CategoryService.getCategories().then(function(response) {
-				$scope.categories = response.data.categories;
-				$scope.loadingCategories = false;
-			});
+			$scope.pageChanged = function(pageNum, itemsPerPage) {
+				var itemIndex = $scope.itemIndex = (pageNum - 1) * itemsPerPage;
+
+				$scope.loadingResults = true;
+		   		ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, itemIndex).then(function(response) {
+					$scope.products = response.data.products;
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+		  };
+
+		  
+
+
+
 			
 			$scope.oneAtATime = true;
 			$scope.items = ['Item 1', 'Item 2', 'Item 3'];
@@ -81,7 +124,6 @@ angular.module('bekApp')
 			};
 
 			$scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
-				debugger;
 				selectedFacet.show = !selectedFacet.show;
 				var idx;
 				if (filter === 'brand') {
@@ -110,38 +152,21 @@ angular.module('bekApp')
 					$scope.selectedSubcategory = selectedFacet.id;
 				}
 				else{
-					$scope.selectedCategory = selectedFacet.id;
+					$scope.selectedCategory = selectedFacet.name;
 					$scope.selectedSubcategory = '';
 				}
 
-			};
 
-			$scope.brands = [{
-				id: 1,
-				name: 'Admiral Of The Fleet'
-			}, {
-				id: 2,
-				name: 'Cortona'
-			}, {
-				id: 3,
-				name: 'Ellington Farms'
-			}, {
-				id: 4,
-				name: 'Golden Harvest'
-			}, {
-				id: 5,
-				name: 'Philly'
-			}, {
-				id: 6,
-				name: 'Markon Cooperative'
-			}, {
-				id: 7,
-				name: 'Ceylon Tea Gardens'
-			}, {
-				id: 8,
-				name: 'ComSource'
-			}
-			];
+				ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
+					$scope.products = data.products;
+					$scope.categories = data.facets[0].facetvalues;
+					$scope.brands = data.facets[1].facetvalues;
+					$scope.totalItems = data.totalcount;
+
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+			};
 
 			$scope.allergens = [{
 				id: 1,
