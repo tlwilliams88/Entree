@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
   	<Configuration Condition="$(Configuration) == '' ">Debug</Configuration>
-  	<Platform Condition="$(Platform) == '' ">x86</Platform>
+  	<Platform Condition="$(Platform) == '' ">Any CPU</Platform>
   </PropertyGroup>
   <ItemGroup>
     <PresentationFiles Include=".\KeithLink.Web.Presentation\angular-app\app\**" />
@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <PropertyGroup>
-      <MsTestCommand>"MSTest.exe" @(TestAssemblies->'/testcontainer:"%(FullPath)"', ' ') /resultsfile:"TestResults\Results.trx""</MsTestCommand>
+      <MsTestCommand>"C:\Program Files (x86)\Microsoft Visual Studio 11.0\Common7\IDE\MSTest.exe" @(TestAssemblies->'/testcontainer:"%(FullPath)"', ' ') /resultsfile:"UnitTests\Results.trx"</MsTestCommand>
     </PropertyGroup>
 
     <Message Text="MsTestCommand: @(TestAssemblies->'/testcontainer:$(DoubleQuotes)%(FullPath)$(DoubleQuotes)', ' ')"

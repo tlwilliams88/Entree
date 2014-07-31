@@ -43,8 +43,48 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.WebApi", "Kei
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\Users\Administrator\Desktop\AppDataSchema.sql = ..\..\..\Users\Administrator\Desktop\AppDataSchema.sql
+	EndProjectSection
 EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL\KeithLink.ETL.dtproj", "{B28BF711-4861-4B30-B779-1CD8D3288909}"
+Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL\KeithLink.ETL.dtproj", "{DA2CC32A-4740-4031-8D5D-5905463ED93B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeithLink.ETL.Setup", "KeithLink.ETL.Setup", "{5FF02D94-A213-444C-90FF-E851196846E2}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\README.txt = KeithLink.ETL.Setup\README.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{BA613763-1505-4E83-969D-18E6D28B95CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8E-4CAD-8036-C21BA08B6E72}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql = KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql
+		KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql = KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql
+		KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql = KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql
+		KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql = KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql
+		KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql
+		KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev = KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{9E8ECE67-A483-40C2-B612-A1A3B357F1FE}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev = KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev
+		KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local = KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{85599C7B-357D-4C78-8551-9AD8EC771379}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod = KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -137,15 +177,16 @@ Global
 		{562E7A83-563D-4848-AF64-7DCB432935E8}.Test|Any CPU.Build.0 = Test|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.Build.0 = Dev|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.Build.0 = Debug|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.ActiveCfg = Debug|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.Build.0 = Debug|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.Build.0 = Test|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.ActiveCfg = Release|Any CPU
+		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.Build.0 = Release|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Dev|Any CPU.Build.0 = Dev|Any CPU
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Development|Any CPU.ActiveCfg = Dev|Any CPU
@@ -174,16 +215,15 @@ Global
 		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Test|Any CPU.ActiveCfg = Test|Any CPU
 		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Test|Any CPU.Build.0 = Test|Any CPU
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Debug|Any CPU.ActiveCfg = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Debug|Any CPU.Build.0 = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Dev|Any CPU.ActiveCfg = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Dev|Any CPU.Build.0 = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Development|Any CPU.ActiveCfg = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Development|Any CPU.Build.0 = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Release|Any CPU.ActiveCfg = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Release|Any CPU.Build.0 = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Test|Any CPU.ActiveCfg = Development
-		{B28BF711-4861-4B30-B779-1CD8D3288909}.Test|Any CPU.Build.0 = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Debug|Any CPU.ActiveCfg = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Dev|Any CPU.ActiveCfg = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Dev|Any CPU.Build.0 = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Development|Any CPU.ActiveCfg = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Development|Any CPU.Build.0 = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Release|Any CPU.ActiveCfg = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Release|Any CPU.Build.0 = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Test|Any CPU.ActiveCfg = Development
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Test|Any CPU.Build.0 = Development
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -201,7 +241,13 @@ Global
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{6E0FA18C-21B0-4862-ACBC-4B6D55516341} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{43F5B3CD-D277-4FAC-97FF-170DDFA48549} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{B28BF711-4861-4B30-B779-1CD8D3288909} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
+		{DA2CC32A-4740-4031-8D5D-5905463ED93B} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
+		{5FF02D94-A213-444C-90FF-E851196846E2} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
+		{BA613763-1505-4E83-969D-18E6D28B95CA} = {5FF02D94-A213-444C-90FF-E851196846E2}
+		{1FFC01AE-BA8E-4CAD-8036-C21BA08B6E72} = {5FF02D94-A213-444C-90FF-E851196846E2}
+		{93D900A9-B444-4628-81C9-FA8E171F1966} = {BA613763-1505-4E83-969D-18E6D28B95CA}
+		{9E8ECE67-A483-40C2-B612-A1A3B357F1FE} = {BA613763-1505-4E83-969D-18E6D28B95CA}
+		{85599C7B-357D-4C78-8551-9AD8EC771379} = {BA613763-1505-4E83-969D-18E6D28B95CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45

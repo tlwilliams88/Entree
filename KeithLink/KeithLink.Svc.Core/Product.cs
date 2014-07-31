@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace KeithLink.Svc.Core
+namespace KeithLink.Svc.Core.Catalog
 {
     [DataContract(Name = "product")]
     [Serializable]
@@ -64,12 +64,8 @@ namespace KeithLink.Svc.Core
 
         [DataMember(Name = "cndoc")]
         public string CNDoc { get; set; }
-    }
 
-    [DataContract(Name = "ProductsReturn")]
-    public class ProductsReturn
-    {
-        [DataMember(Name = "products")]
-        public List<Product> Products { get; set; }
+        [DataMember(Name = "gs1")]
+        public Gs1 Gs1 { get; set; }
     }
 }

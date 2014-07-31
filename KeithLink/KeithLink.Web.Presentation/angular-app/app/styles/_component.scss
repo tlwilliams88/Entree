@@ -9,8 +9,9 @@
 // default button
 button.btn {
   @include component;
-  height: 40px;
+  min-height: 40px;
   background-color: white;
+  white-space: inherit;
   
   // call to action button
   &.cta-btn {
@@ -20,36 +21,27 @@ button.btn {
   }
 }
 
-/* SELECT DROPDOWNS */
+.btn-group-vertical {
+  .btn {
+    text-align: left;
+  }
+}
 
-// select {
-//   border: 1px solid #c3bc9c;
-//   -webkit-appearance: none;
-//   font-weight: 300;
-//   height: 40px;
-//   letter-spacing: 1px;
-  
-//   background: url("../images/down-arrow.png") center right 10px no-repeat;
-//   cursor: pointer;
-//   background-size: 10px;
-//   padding-right: 30px;
-//   padding-left: 12px;
-//   background-color: $color-white;
-// }
+/* SELECT DROPDOWNS */
 
 .select-div select {
   background: transparent;
-   width: 300px;
-   padding: 10px 0px 10px 12px;
-   height: 40px;
-    -webkit-appearance: none;
-    font-weight: 300;
-    border: 0;
+  width: 300px;
+  padding: 10px 0px 10px 12px;
+  min-height: 40px;
+  -webkit-appearance: none;
+  font-weight: 300;
+  border: 0;
 } 
 
 .select-div{
    width: 260px;
-   height: 40px;
+   min-height: 40px;
    overflow: hidden;
    background: url("../images/down-arrow.png") no-repeat 96% $color-white;
    border: 1px solid #c3bc9c;
@@ -79,7 +71,7 @@ button.btn {
 
 input[type='text'], input[type='email'], input[type='password'] {
   @include component;
-  height: 40px;
+  min-height: 40px;
   font-size: $font-size;
 }
 
@@ -142,73 +134,6 @@ input[type='text'], input[type='email'], input[type='password'] {
   }
 }
 
-/* TABLES */
-
-.table-responsive {
-  border: none;
-  margin-bottom: 0;
-}
-
-.table {
-  margin-bottom: 0; 
-  border: 1px solid $color-border;
-  background-color: $color-white;
-
-  thead {
-    background-color: $background;
-
-    th:last-child,td:last-child {
-      border-right: 1px solid $color-border;
-    }
-  }
-
-  thead > tr > th, 
-  tbody > tr > th, 
-  tfoot > tr > th, 
-  thead > tr > td, 
-  tbody > tr > td, 
-  tfoot > tr > td {
-    border-top: none;
-    border-bottom: none;
-  }
-
-  tbody > tr > th, 
-  tfoot > tr > th, 
-  tbody > tr > td, 
-  tfoot > tr > td {
-    padding: $gutter-size 10px;
-    
-    &.table-icon {
-      font-size: 16px;
-      padding-top: 12px;
-      padding-bottom: 12px;
-      @media (max-width: $desktop-min) { padding: 12px 5px; }
-    }
-  }
-  
-  tr {
-    border-bottom: 1px solid  $color-border;
-  }
-
-}
-
-.table-striped {
-  tbody {
-    tr:nth-child(even) {
-      th, td {
-        background-color: $background;
-      }
-    }
-  }
-  tbody {
-    tr:nth-child(odd) {
-      th, td {
-        background-color: $color-white;
-      }
-    }
-  }
-}
-
 /* Checkboxes */
 
 input[type="checkbox"] {
@@ -232,8 +157,8 @@ input[type="checkbox"]:checked + label {
 .context-menu {
   border-radius: 5px;
   position: absolute;
-  top: 45px;
-  right: 10%;
+  // top: 45px;
+  // right: 10%;
   box-shadow: 0px 0px 15px $color-border;
   z-index: 2;
 
@@ -252,7 +177,7 @@ input[type="checkbox"]:checked + label {
   .btn, .btn-group .btn, {
     color: $color-font-light;
     font-size: $font-size;
-    text-align: left;
+    // text-align: left;
     letter-spacing: 0;
     min-width: 125px;
 
@@ -272,5 +197,16 @@ input[type="checkbox"]:checked + label {
   .btn-group.open > button {
     box-shadow: none;
     color: $color-white;
+  }
+}
+
+
+/* Search Form */
+
+.search-form {
+  padding-bottom: $gutter-size;
+
+  input {
+    border-right: none;
   }
 }

@@ -19,17 +19,21 @@ angular.module('bekApp')
       'name': 'Steven',
       'customerNumber': 12345,
       'imageUrl': '../images/placeholder-user.png',
-      'role': 'Kitchen Manager',
+      'role': 'Owner',
       'phone': 9348234934,
       'location': 'Dallas',
       'stores': [{
-        'name': 'Jimmy\'s Chicken Shack',
+        'name': 'Dallas Ft Worth',
         'customerNumber': 453234,
-        'branchId': 'fam'
+        'branchId': 'fdf'
       }, {
-        'name': 'Saltgrass',
+        'name': 'San Antonio',
         'customerNumber': 534939,
         'branchId': 'fsa'
+      }, {
+        'name': 'Amarillo',
+        'customerNumber': 534939,
+        'branchId': 'fam'
       }],
       'accountNumber': 9783459,
       'salesRep': {

@@ -22,6 +22,7 @@ angular.module('bekApp')
     return {
       restrict: 'A',
       transclude: true,
+      replace: true,
       scope: {
         pageTitle: '=message'
       },
