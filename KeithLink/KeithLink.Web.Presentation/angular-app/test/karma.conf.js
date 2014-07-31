@@ -23,6 +23,7 @@ module.exports = function(config) {
       'app/lib/angular-gestures/gestures.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
       'app/lib/ng-mobile-menu/ng-mobile-menu.js',
+      'app/lib/ngdraggable/ngDraggable.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'
