@@ -15,86 +15,64 @@ angular.module('bekApp')
 				$scope.userBar.universalSearchTerm = '';
 			}
 			
-			var branchId = $scope.currentUser.currentLocation.branchId;
-			var type = $stateParams.type;
-
 			$scope.breadcrumbs = [];
 			$scope.loadingResults = true;
 
-		  	$scope.totalItems = 175;
 		  	$scope.currentPage = 1;
 		  	$scope.itemsPerPage = 30;
 		  	$scope.itemIndex = 0;
 
+			function getData() {
+				var type = $stateParams.type;
+				var branchId = $scope.currentUser.currentLocation.branchId;
 
-			$scope.loadMore = function() {
+				if (type === 'category') {
 
+					var categoryId = $stateParams.id;
+					return ProductService.getProductsByCategory(branchId, categoryId, $scope.itemsPerPage, $scope.itemIndex);
 
-		    	$scope.itemIndex += $scope.itemsPerPage;
-		    	$scope.currentPage++;
-		        
-		    	if ($scope.products.length >= $scope.totalItems) {
+				} else if (type === 'search') {
+
+					var searchTerm = $stateParams.id;
+					return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex);
+				}
+			};
+
+			function loadProducts(appendResults) {
+				$scope.loadingResults = true;
+
+				getData().then(function(data) {
+
+					if (appendResults) {
+						$scope.products.push.apply($scope.products, data.products);
+					} else {
+						$scope.products = data.products;
+					}
+
+					$scope.categories = data.facets[0].facetvalues;
+					$scope.brands = data.facets[1].facetvalues;
+					$scope.totalItems = data.totalcount;
+
+					$scope.predicate = 'id';
+					$scope.loadingResults = false;
+				});
+			}
+
+			loadProducts();
+
+			$scope.infiniteScrollLoadMore = function() {
+
+				$scope.itemIndex += $scope.itemsPerPage;
+				$scope.currentPage++;
+
+				if ($scope.products.length >= $scope.totalItems) {
 		    		return;
 		    	}
 
-		        ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex).then(function(data) {
-		        	$scope.products.push.apply($scope.products, data.products);
-		        	console.log('reload: ' + $scope.currentPage);
-
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
+		    	console.log('more: ' + $scope.itemIndex);
+		    	loadProducts(true);
 		    };
-
-
-			if (type === 'category') {
-				$scope.breadcrumbs[0] = 'Category';
-
-				ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage).then(function(data) {
-					$scope.products = data.products;
-					$scope.categories = data.facets[0].facetvalues;
-					$scope.brands = data.facets[1].facetvalues;
-					$scope.totalItems = data.totalcount;
-
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
-
-			} else if (type === 'search') {
-				var searchTerm =  $stateParams.id;
-
-				$scope.breadcrumbs.search = searchTerm;
-
-				ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage).then(function(data) {
-					$scope.products = data.products;
-					$scope.categories = data.facets[0].facetvalues;
-					$scope.brands = data.facets[1].facetvalues;
-					$scope.totalItems = data.totalcount;
-
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
-
-			} else if (type === 'brand') {
-				$scope.breadcrumbs[0] = 'Brand';
-
-			}
-
-			$scope.pageChanged = function(pageNum, itemsPerPage) {
-				var itemIndex = $scope.itemIndex = (pageNum - 1) * itemsPerPage;
-
-				$scope.loadingResults = true;
-		   		ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, itemIndex).then(function(response) {
-					$scope.products = response.data.products;
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
-		  };
-
-		  
-
-
-
+ 
 			
 			$scope.oneAtATime = true;
 			$scope.items = ['Item 1', 'Item 2', 'Item 3'];
@@ -110,10 +88,10 @@ angular.module('bekApp')
 
 			$scope.showContextMenu = function(e, idx) {
 				$scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
-	    	$scope.isContextMenuDisplayed = true;
-	    };
+		    	$scope.isContextMenuDisplayed = true;
+		    };
 
-	    $scope.showBrand = function(){
+	   		$scope.showBrand = function(){
 				$scope.isBrandShowing = true;
 				$scope.brandHiddenNumber = 100;
 			};
