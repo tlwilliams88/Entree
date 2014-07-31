@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -109,8 +109,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             {
                 double casePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).CasePrice;
                 double packagePrice = pricingInfo.Prices.Find(x => x.ItemNumber == p.ItemNumber).PackagePrice;
-                p.CasePrice = String.Format("{0:C}", Convert.ToInt32(casePrice)); ;
-                p.PackagePrice = String.Format("{0:C}", Convert.ToInt32(packagePrice));
+                p.CasePrice = String.Format("{0:C}", casePrice); ;
+                p.PackagePrice = String.Format("{0:C}", packagePrice);
             }
         }
     }
