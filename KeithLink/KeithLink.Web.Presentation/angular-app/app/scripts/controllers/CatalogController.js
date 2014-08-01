@@ -12,9 +12,9 @@ angular.module('bekApp')
     
     $scope.loadingCategories = true;
 
-    CategoryService.getCategories().then(function(response) {
+    CategoryService.getCategories().then(function(data) {
       $scope.loadingCategories = false;
-      $scope.categories = response.data.categories;
+      $scope.categories = data.categories;
     });
 
     $scope.brands = [
