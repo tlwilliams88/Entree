@@ -109,13 +109,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CatalogInternalRepositoryImpl.cs" />
-    <Compile Include="CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
-    <Compile Include="CatalogElasticSearchRepositoryImpl.cs" />
-    <Compile Include="ElasticSearchRepositoryImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
-    <Compile Include="MockListRepositoryImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearchItemUpdate.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
@@ -127,8 +122,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
-    <Compile Include="PriceCacheRepositoryImpl.cs" />
-    <Compile Include="PriceRepositoryImpl.cs" />
+    <Compile Include="Repository\CatalogElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\CatalogInternalRepositoryImpl.cs" />
+    <Compile Include="Repository\CommerceServerCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\MockListRepositoryImpl.cs" />
+    <Compile Include="Repository\PriceCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\PriceRepositoryImpl.cs" />
+    <Compile Include="Repository\StubCatalogRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
@@ -151,7 +152,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="StubCatalogRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -242,6 +242,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

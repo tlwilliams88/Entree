@@ -18,7 +18,6 @@ angular.module('bekApp')
        $scope.breadcrumbs = [];
        $scope.loadingResults = true;
 
-         $scope.currentPage = 1;
          $scope.itemsPerPage = 30;
          $scope.itemIndex = 0;
 
@@ -49,9 +48,11 @@ angular.module('bekApp')
                    $scope.products = data.products;
                }
 
-               $scope.categories = data.facets[0].facetvalues;
-               $scope.brands = data.facets[1].facetvalues;
+               $scope.categories = data.facets[0].categories.facetvalues;
+               $scope.brands = data.facets[0].brands.facetvalues;
                $scope.totalItems = data.totalcount;
+               console.log('totalitems: ' + data.totalcount);
+               console.log('products: ' + $scope.products.length);
 
                $scope.predicate = 'id';
                $scope.loadingResults = false;
@@ -62,12 +63,11 @@ angular.module('bekApp')
 
        $scope.infiniteScrollLoadMore = function() {
 
-           $scope.itemIndex += $scope.itemsPerPage;
-           $scope.currentPage++;
-
-           if ($scope.products.length >= $scope.totalItems) {
+           if ($scope.products.length >= $scope.totalItems || $scope.loadingResults) {
                return;
            }
+
+           $scope.itemIndex += $scope.itemsPerPage;
 
            console.log('more: ' + $scope.itemIndex);
            loadProducts(true);
