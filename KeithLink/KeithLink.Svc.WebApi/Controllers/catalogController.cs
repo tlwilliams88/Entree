@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,6 +7,7 @@ using System.Web.Http;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Catalog;
 using System.Web.Http.Cors;
+using System.Dynamic;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -121,6 +122,25 @@ namespace KeithLink.Svc.WebApi.Controllers
                 p.CasePrice = String.Format("{0:C}", casePrice); ;
                 p.PackagePrice = String.Format("{0:C}", packagePrice);
             }
+        }
+
+        [HttpGet]
+        [Route("catalog/gstest")]
+        public ExpandoObject gstest()
+        {
+            var facetList = new ExpandoObject() as IDictionary<string, object>;
+            var categories = new ExpandoObject();
+            (categories as IDictionary<string, object>).Add("cat1", 10);
+            (categories as IDictionary<string, object>).Add("cat2", 20);
+            facetList.Add("categories", new List<ExpandoObject>() { categories });
+            var brands = new ExpandoObject();
+            (brands as IDictionary<string, object>).Add("b1", 5);
+            (brands as IDictionary<string, object>).Add("b2", 15);
+            facetList.Add("brands", new List<ExpandoObject>() { brands });
+
+            var facetWrapper = new ExpandoObject() as IDictionary<string, object>;
+            facetWrapper.Add("facets", new List<ExpandoObject>() { facetList as ExpandoObject });
+            return facetWrapper as ExpandoObject;
         }
     }
 }
