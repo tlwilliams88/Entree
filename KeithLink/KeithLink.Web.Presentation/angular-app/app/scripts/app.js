@@ -13,7 +13,6 @@ angular
     // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
-    // 'ngSanitize',
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
@@ -48,18 +47,7 @@ angular
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
-      controller: 'CatalogController',
-      resolve: {
-        categories: function(CategoryService) {
-          return CategoryService.getCategories().then(function(data) {
-            return data.categories;
-          }, function(error) {
-            return { message: 'There was an error' };
-          }, function(progress) {
-            return { message: 'Progress' };
-          });
-        }
-      }
+      controller: 'CatalogController'
     })
     .state('menu.catalog.products', {
       abstract: true,

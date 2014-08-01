@@ -167,5 +167,4 @@ angular.module('bekApp')
     $scope.onDropComplete = function ($data,$event, listName) {
       $scope.display = $data.itemnumber;
     };
-
   });

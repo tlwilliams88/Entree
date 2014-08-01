@@ -8,16 +8,14 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', '$state', 'categories', 'ProductService', function ($scope, $state, categories, ProductService) {
+  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', function ($scope, $state, CategoryService, ProductService) {
     
-    $scope.categories = categories;
+    $scope.loadingCategories = true;
 
-    // $scope.loadingCategories = true;
-
-    // CategoryService.getCategories().then(function(data) {
-    //   $scope.loadingCategories = false;
-    //   $scope.categories = data.categories;
-    // });
+    CategoryService.getCategories().then(function(response) {
+      $scope.loadingCategories = false;
+      $scope.categories = response.data.categories;
+    });
 
     $scope.brands = [
       {

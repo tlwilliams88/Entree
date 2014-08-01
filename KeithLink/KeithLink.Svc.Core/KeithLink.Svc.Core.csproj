@@ -67,8 +67,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gs1.cs" />
-    <Compile Include="FacetValue.cs" />
-    <Compile Include="Facet.cs" />
     <Compile Include="IListRepository.cs" />
     <Compile Include="ListItem.cs" />
     <Compile Include="ProductsReturn.cs" />

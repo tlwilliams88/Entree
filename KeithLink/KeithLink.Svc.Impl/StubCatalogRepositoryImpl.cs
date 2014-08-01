@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl
                     new Category() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from = 0, int size = 500)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
             if (String.IsNullOrEmpty(category))
             {
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from = 0, int size = 500)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
         {
             throw new NotImplementedException();
         }

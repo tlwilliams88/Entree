@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.Dynamic;
 
 namespace KeithLink.Svc.Core.Catalog
 {
@@ -20,6 +21,6 @@ namespace KeithLink.Svc.Core.Catalog
         public List<Product> Products { get; set; }
 
         [DataMember(Name = "facets")]
-        public List<Facet> Facets { get; set; }
+        public List<ExpandoObject> Facets { get; set; }
     }
 }

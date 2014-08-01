@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Impl
             
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
             size = GetProductPagingSize(size);
 
@@ -55,21 +55,18 @@ namespace KeithLink.Svc.Impl
             return GetProductsFromElasticSearch(branch, categoryFilter);
         }
 
-        private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, List<Facet> facets)
+        private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
         {
+
             foreach (var oFacet in res.Response["aggregations"])
             {
-                Facet f = new Facet();
-                f.Name = f.Name = oFacet.Key;
-                f.FacetValues = new List<FacetValue>();
+                var facet = new ExpandoObject() as IDictionary<string, object>;
                 foreach (var oFacetValue in oFacet.Value["buckets"])
                 {
-                    FacetValue fv = new FacetValue();
-                    fv.Name = oFacetValue["key"].ToString();
-                    fv.Count = Convert.ToInt32(oFacetValue["doc_count"]);
-                    f.FacetValues.Add(fv);
+                    facet.Add(oFacetValue["key"].ToString(), oFacetValue["doc_count"]);
                 }
-                facets.Add(f);
+
+                (facets as IDictionary<string, object>).Add(oFacet.Key, new List<ExpandoObject>() { facet as ExpandoObject });
             }
         }
 
@@ -104,10 +101,17 @@ namespace KeithLink.Svc.Impl
             return new CategoriesReturn() { Categories = cats };
         }
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
         {
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
+            string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in facets)
+            {
+                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = s.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+
+            }
 
             var searchBody = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
@@ -128,7 +132,7 @@ namespace KeithLink.Svc.Impl
             ElasticsearchResponse<DynamicDictionary> res = client.Search(branch, "product", searchBody);
 
             List<Product> products = new List<Product>();
-            List<Facet> facets = new List<Facet>();
+            ExpandoObject facets = new ExpandoObject();
             foreach (var oProd in res.Response["hits"]["hits"])
             {
                 Product p = LoadProductFromElasticSearchProduct(oProd);
@@ -137,7 +141,7 @@ namespace KeithLink.Svc.Impl
             LoadFacetsFromElasticSearchResponse(res, facets);
             int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
 
-            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
+            return new ProductsReturn() { Products = products, Facets = (new List<ExpandoObject>() { facets }), TotalCount = totalCount, Count = products.Count };
         }
 
         public Product GetProductById(string branch, string id)
@@ -255,11 +259,11 @@ namespace KeithLink.Svc.Impl
 
         private string _elasticSearchAggreagations = @",
                 ""aggregations"" : {
-                    ""Categories"" : {
+                    ""categories"" : {
                     ""terms"" : {
                         ""field"" : ""categoryid""
                     }
-                    }, ""Brands"" : {
+                    }, ""brands"" : {
                     ""terms"" : {
                         ""field"" : ""brand""
                     }
@@ -292,6 +296,22 @@ namespace KeithLink.Svc.Impl
             set
             {
                 _elasticSearchAggreagations = value;
+            }
+        }
+
+        public Dictionary<string, string> ElasticSearchAggregationsMap
+        {
+            get
+            {
+                Dictionary<string, string> val = new Dictionary<string, string>();
+                foreach (string aggregation in Configuration.ElasticSearchAggregations.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    string[] aggregationParams = aggregation.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                    if (aggregationParams.Length != 2)
+                        throw new ApplicationException("Incorrect aggreation configuration");
+                    val.Add(aggregationParams[0], aggregationParams[1]);
+                }
+                return val;
             }
         }
     }

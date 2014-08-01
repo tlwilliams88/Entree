@@ -10,7 +10,7 @@
       <div class="col-sm-12 custom-lists">
         <h3>Your Lists</h3>
         <div class="btn-group-vertical text-blue">
-          <button class="btn" data-drop="true" data-jqyoui-options="{hoverClass:'ng-hover',tolerance:'pointer'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">All Items</button>
+          <button class="btn">All Items</button>
           <button ng-repeat="list in lists" class="btn target-container" data-drop="true" data-jqyoui-options="{hoverClass:'ng-hover',tolerance:'pointer'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
         </div>
         <p class="custom-lists__more"><a href="">Show More...</a></p>
