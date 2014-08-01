@@ -49,8 +49,8 @@ angular.module('bekApp')
                    $scope.products = data.products;
                }
 
-               $scope.categories = data.facets[0].facetvalues;
-               $scope.brands = data.facets[1].facetvalues;
+               $scope.categories = data.facets[0].categories.facetvalues;
+               $scope.brands = data.facets[0].brands.facetvalues;
                $scope.totalItems = data.totalcount;
 
                $scope.predicate = 'id';
