@@ -11,18 +11,17 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
+      'app/lib/jquery/jquery-1.11.1.min.js',
       'app/lib/angular/angular.js',
       'app/lib/angular-mocks/angular-mocks.js',
       'app/lib/angular-animate/angular-animate.js',
       'app/lib/angular-cookies/angular-cookies.js',
       'app/lib/angular-resource/angular-resource.js',
-      // 'app/lib/angular-route/angular-route.js',
       'app/lib/angular-touch/angular-touch.js',
-      'app/lib/angular-sanitize/angular-sanitize.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
-      'app/lib/angular-gestures/gestures.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
       'app/lib/ng-mobile-menu/ng-mobile-menu.js',
+      'app/lib/angular-dragdrop/angular-dragdrop.js',
       'app/scripts/*.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js'

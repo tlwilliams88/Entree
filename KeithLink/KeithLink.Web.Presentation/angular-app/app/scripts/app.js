@@ -13,11 +13,11 @@ angular
     // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
-    // 'ngSanitize',
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
-    'shoppinpal.mobile-menu'
+    'shoppinpal.mobile-menu',
+    'ngDragDrop'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers
@@ -47,18 +47,7 @@ angular
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
-      controller: 'CatalogController',
-      resolve: {
-        categories: function(CategoryService) {
-          return CategoryService.getCategories().then(function(data) {
-            return data.categories;
-          }, function(error) {
-            return { message: 'There was an error' };
-          }, function(progress) {
-            return { message: 'Progress' };
-          });
-        }
-      }
+      controller: 'CatalogController'
     })
     .state('menu.catalog.products', {
       abstract: true,
@@ -127,10 +116,10 @@ angular
 })
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
-  ApiService.endpointUrl = 'http://devapi.bekco.com';
-   // ApiService.getEndpointUrl().then(function(response) {
-   //   ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
-   // });
+  // ApiService.endpointUrl = 'http://devapi.bekco.com';
+   ApiService.getEndpointUrl().then(function(response) {
+     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+   });
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // debugger;

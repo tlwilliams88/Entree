@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Impl
 {
     public class CommerceServerCatalogRepositoryImpl : ICatalogRepository
     {
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from = 0, int size = 500)
+        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
             throw new NotImplementedException();
         }
@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from = 0, int size = 500)
+        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
         {
             throw new NotImplementedException();
         }

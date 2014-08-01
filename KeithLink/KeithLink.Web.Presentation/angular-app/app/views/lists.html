@@ -11,7 +11,7 @@
         <h3>Your Lists</h3>
         <div class="btn-group-vertical text-blue">
           <button class="btn">All Items</button>
-          <button ng-repeat="list in lists" class="btn target-container">{{list.name}}</button>
+          <button ng-repeat="list in lists" class="btn target-container" data-drop="true" data-jqyoui-options="{hoverClass:'ng-hover',tolerance:'pointer'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
         </div>
         <p class="custom-lists__more"><a href="">Show More...</a></p>
         <button class="btn text-light">Create A List</button>
@@ -22,6 +22,7 @@
   <!-- Items in List -->
   <div class="col-md-10 col-xs-12">
     <div>
+      {{display}}
       <form name="listSearchForm" class="search-form" novalidate>
         <div class="input-group">
           <input required ng-minlength="3" ng-model="listSearchForm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
@@ -51,8 +52,8 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="product in products">
-            <td class="text-light table-icon">
+          <tr ng-repeat-start="product in products" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'selectItem(product)'}">
+            <td class="text-light table-icon hidden-drag">
               <span class="icon-star2"></span>
             </td>
             <td>
@@ -64,7 +65,7 @@
             <td>
               {{product.name}}
             </td>
-            <td class="table-dropdown">
+            <td class="table-dropdown hidden-drag">
               <div class="select-div">
                 <select name="" id="">
                   <option value="">Storage</option>
@@ -72,7 +73,7 @@
                 </select>
               </div>
             </td>
-            <td class="table-icon">
+            <td class="table-icon hidden-drag">
               <a style="background-color:transparent; border:none;" ng-mousedown="showContextMenu($event, $index)"><span class="icon-plus2"></span></a>
               <span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
             </td>
@@ -89,12 +90,9 @@
             <td colspan="7">No products found.</td>
           </tr>
         </tbody>
-        <tfoot>
-          <tr ng-show="loadingResults">
-            <td colspan="7" class="text-center" loading-spinner="loadingResults"></td>
-          </tr>
-        </tfoot>
       </table>
+
+      <div class="text-center sub-content" loading-spinner="loadingResults"></div>
     </div>
   </div>
 </div>

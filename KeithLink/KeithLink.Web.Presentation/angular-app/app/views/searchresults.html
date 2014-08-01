@@ -5,14 +5,13 @@
 <div class="row page-subheader-bar">
 	<div class="col-md-12 page-subheader-bar__container">
 		<div class="page-subheader-bar__message hidden-xs hidden-sm">
-			<div ng-repeat="link in breadcrumbs"><a href="">{{link}} </a> <span>>></span> {{totalItems}}</div>
+			<div ng-repeat="link in breadcrumbs"><a href="">{{link}} </a> <span>>></span></div>
 		</div>
 		<div ng-click="hidden = ! hidden" class="visible-xs visible-sm page-subheader-bar__filter">
 			Filter <span class="icon-arrow-down5"></span>
 		</div>
 	</div>
 </div>
-<!-- Mobile Filters -->
 <div class="row" ng-hide="hidden">
 	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
 		<div class="row">
@@ -64,11 +63,11 @@
 					<div ng-repeat="brand in brands" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
-							value="brandValue_{{brand.name}}"
-							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1"
-							ng-click="toggleSelection(brand.name,'brand')">
-							<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
+							value="brandValue_{{brand.id}}"
+							id="brandId_{{brand.id}}"
+							ng-checked="selectedBrands.indexOf(brand.id) > -1"
+							ng-click="toggleSelection(brand.id,'brand')">
+							<label for="brandId_{{brand.id}}">{{brand.name}}</label>
 						</div>
 					</div>
 				</accordion-group>
@@ -91,20 +90,19 @@
 		</div>
 	</div>
 </div>
-
 <div class="row">
-	<!-- Desktop Filters -->
+	<!-- Filters -->
 	<div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
 		<div class="row">
 			<div class="col-sm-12">
 				<h3>Categories</h3>
 				<ul class="nav search-results__category">
-					<li class="text-center" loading-spinner="loadingResults"></li>
-					<li ng-repeat="category in categories">
-						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}} ({{category.count}})</a>
+					<li class="text-center" loading-spinner="loadingCategories"></li>
+					<li ng-repeat="category in categories | orderBy : ['name']">
+						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.id == selectedCategory}">{{category.name}}</a>
 						<ul ng-show="category.show" class="">
 							<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
-								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+								<span ng-class="{active: subcategory.id == selectedSubcategory}">{{subcategory.name}}</span>
 							</li>
 						</ul>
 					</li>
@@ -113,14 +111,14 @@
 		</div>
 		<div class="row sub-content">
 			<div class="col-sm-12">
-				<h3>Brand {{selectedBrands}}</h3>
+				<h3>Brand</h3>
 				<div ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
 					<input type="checkbox"
-					value="brandValue_{{brand.name}}"
-					id="brandId_{{brand.name}}"
-					ng-checked="selectedBrands.indexOf(brand.name) > -1"
+					value="brandValue_{{brand.id}}"
+					id="brandId_{{brand.id}}"
+					ng-checked="selectedBrands.indexOf(brand.id) > -1"
 					ng-click="toggleSelection(brand,'brand')">
-					<label for="brandId_{{brand.name}}" class="text-capitalize">{{brand.name}} ({{brand.count}})</label>
+					<label for="brandId_{{brand.id}}">{{brand.name}}</label>
 				</div>
 				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
 			</div>
@@ -143,9 +141,37 @@
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
 		<h2 class="hidden-xs hidden-sm">Search Results</h2>
-		<div when-scrolled="infiniteScrollLoadMore()">
+		<div>
 			
-			<table class="table table-striped table-details">
+			<div ng-mouseleave="isContextMenuDisplayed = false" ng-show="isContextMenuDisplayed" class="context-menu btn-group-vertical" ng-style="moveMenuStyle">
+				<button class="btn text-uppercase">In saved items</button>
+				<div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+					<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+					Add to Order<span class="icon-arrow-right6"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<div class="btn-group-vertical">
+							<button type="button" class="btn">Order 1</button>
+							<button type="button" class="btn">Order 2</button>
+							<button type="button" class="btn">New Order...</button>
+						</div>
+					</ul>
+				</div>
+				<div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
+					<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+					Add to List <span class="icon-arrow-right6"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<div class="btn-group-vertical">
+							<button type="button" class="btn">Christmas List</button>
+							<button type="button" class="btn">List 7</button>
+							<button type="button" class="btn">Labor Day List</button>
+							<button type="button" class="btn">New List...</button>
+						</div>
+					</ul>
+				</div>
+			</div>
+			<table class="table table-striped search-results__table-details">
 				<thead>
 					<tr>
 						<th style="width:10px;"></th>
@@ -216,12 +242,8 @@
 						<td colspan="7">No products found.</td>
 					</tr>
 				</tbody>
-				<tfoot>
-				<tr ng-show="loadingResults">
-					<td colspan="7" class="text-center" loading-spinner="loadingResults"></td>
-				</tr>
-				</tfoot>
 			</table>
+			<div class="text-center sub-content" loading-spinner="loadingResults"></div>
 		</div>
 	</div>
 </div>
