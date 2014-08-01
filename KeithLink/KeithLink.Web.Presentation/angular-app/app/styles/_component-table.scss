@@ -79,28 +79,28 @@
       }
     }
   }
-}
 
-// coloring for item details rows
-.table-details {
-  tbody {
-    tr {
-      th, td {
-        background-color: $color-white !important;
+  // coloring for item details rows
+  &.table-details {
+    tbody {
+      tr {
+        th, td {
+          background-color: $color-white;
+        }
       }
-    }
-    tr:nth-child(4n), tr:nth-child(4n-1) {
-      th, td {
-        background-color: $background !important;
+      tr:nth-child(4n), tr:nth-child(4n-1) {
+        th, td {
+          background-color: $background;
+        }
       }
-    }
 
-    tr:nth-child(even) {
-      border-top: none;
-    }
-    tr:nth-child(odd) {
-      border-bottom: none;
-      border-top: 1px solid $color-border;
+      tr:nth-child(even) {
+        border-top: none;
+      }
+      tr:nth-child(odd) {
+        border-bottom: none;
+        border-top: 1px solid $color-border;
+      }
     }
   }
 }

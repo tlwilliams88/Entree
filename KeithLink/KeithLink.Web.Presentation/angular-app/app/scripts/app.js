@@ -18,7 +18,7 @@ angular
     'ui.router',
     'ui.bootstrap',
     'shoppinpal.mobile-menu',
-    'ngDraggable'
+    'ngDragDrop'
   ])
 .config(function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers

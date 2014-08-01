@@ -36,7 +36,7 @@ angular.module('bekApp')
 					var searchTerm = $stateParams.id;
 					return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex);
 				}
-			};
+			}
 
 			function loadProducts(appendResults) {
 				$scope.loadingResults = true;
@@ -135,15 +135,15 @@ angular.module('bekApp')
 				}
 
 
-				ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
-					$scope.products = data.products;
-					$scope.categories = data.facets[0].facetvalues;
-					$scope.brands = data.facets[1].facetvalues;
-					$scope.totalItems = data.totalcount;
+				// ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
+				// 	$scope.products = data.products;
+				// 	$scope.categories = data.facets[0].facetvalues;
+				// 	$scope.brands = data.facets[1].facetvalues;
+				// 	$scope.totalItems = data.totalcount;
 
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
+				// 	$scope.predicate = 'id';
+				// 	$scope.loadingResults = false;
+				// });
 			};
 
 			$scope.allergens = [{
