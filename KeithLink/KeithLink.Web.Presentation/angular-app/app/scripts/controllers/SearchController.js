@@ -29,12 +29,12 @@ angular.module('bekApp')
 				if (type === 'category') {
 
 					var categoryId = $stateParams.id;
-					return ProductService.getProductsByCategory(branchId, categoryId, $scope.itemsPerPage, $scope.itemIndex);
+					return ProductService.getProductsByCategory(branchId, categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
 
 				} else if (type === 'search') {
 
 					var searchTerm = $stateParams.id;
-					return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex);
+					return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
 				}
 			};
 
@@ -135,7 +135,7 @@ angular.module('bekApp')
 				}
 
 
-				ProductService.getProductsByCategory(branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
+				ProductService.getProductsByCategory($scope.currentUser.currentLocation.branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
 					$scope.products = data.products;
 					$scope.categories = data.facets[0].facetvalues;
 					$scope.brands = data.facets[1].facetvalues;
