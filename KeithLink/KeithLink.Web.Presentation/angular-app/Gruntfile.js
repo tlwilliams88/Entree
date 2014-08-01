@@ -420,6 +420,11 @@ module.exports = function (grunt) {
         files: {
           '<%= yeoman.dist %>/index.html': '<%= yeoman.app %>/index.html'
         }
+      },
+      dev: {
+        files: {
+          '<%= yeoman.dev %>/index.html': '<%= yeoman.app %>/index.html'
+        }
       }
     }
   });
@@ -447,7 +452,9 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('dev', [
+    // 'npm-install',
     'clean:dev',
+    'includeSource:dev',
     'compass:server',
     'copy:dev',
     'karma'

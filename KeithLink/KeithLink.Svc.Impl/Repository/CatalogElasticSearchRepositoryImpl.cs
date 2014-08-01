@@ -172,6 +172,9 @@ namespace KeithLink.Svc.Impl.Repository
             p.CNDoc = oProd._source.cndoc;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
+            p.VendorItemNumber = oProd._source.vendor1;
+            p.ItemClass = oProd._source.itemclass;
+            p.CaseCube = oProd._source.icube;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
