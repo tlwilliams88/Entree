@@ -58,15 +58,23 @@
             </tr>
             <tr>
               <td>Servings / Case</td>
-              <td></td>
+              <td>{{item.gs1.servingsperpack}}</td>
             </tr>
             <tr>
               <td>Portion Cost</td>
-              <td></td>
+              <td>{{item.packageprice}}</td>
             </tr>
             <tr>
               <td>Portion Size</td>
-              <td></td>
+              <td>{{item.gs1.servingsizeuom}}</td>
+            </tr>
+            <tr>
+              <td>Portion Size</td>
+              <td>{{item.gs1.servingsize}}</td>
+            </tr>
+            <tr>
+              <td>Portion Size</td>
+              <td>{{item.gs1.servingsuggestion}}</td>
             </tr>
             <tr>
               <td>Previous Orders</td>
@@ -74,39 +82,77 @@
             </tr>
             <tr>
               <td>Manufacturer</td>
-              <td>{{item.manufacturer}}</td>
+              <td>{{item.manufacturer_name}}</td>
             </tr>
             <tr>
               <td>Brand</td>
-              <td></td>
+              <td>{{item.manufacturer_brand}}</td>
             </tr>
             <tr>
               <td>Vendor</td>
-              <td></td>
+              <td>{{item.vendor_num}}</td>
             </tr>
             <tr>
               <td>Vendor Item #</td>
-              <td></td>
+              <td>{{item.manufacturer_number}}</td>
             </tr>
             <tr>
               <td>Category</td>
-              <td></td>
+              <td>{{item.categoryname}}</td>
             </tr>
             <tr>
               <td>Class</td>
-              <td></td>
+              <td>{{item.iclass}}</td>
             </tr>
             <tr>
               <td>Storage Instructions</td>
-              <td></td>
+              <td>{{item.gs1.storagetemp}}</td>
             </tr>
             <tr>
               <td>Gross Wt</td>
-              <td></td>
+              <td>{{item.gs1.grossweight}}</td>
             </tr>
             <tr>
               <td>Case Cube</td>
-              <td></td>
+              <td>{{item.icube}}</td>
+            </tr>
+          </table>
+        </div>
+      </tab>
+      <tab heading="Dietary Specifications">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+        <div class="table-responsive">
+          <table class="item-details__table table table-striped">
+            <colgroup>
+              <col style="width: 25%">
+              <col style="width: 75%">
+            </colgroup>
+            <tr>
+              <th>Diet Type</th>
+              <th>Value</th>
+            </tr>
+            <tr ng-repeat="diet in item.gs1.diet">
+              <td>{{diet.diettype}}</td>
+              <td>{{diet.value}}</td>
+            </tr>
+          </table>
+        </div>
+      </tab>
+      <tab heading="Allergens">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+        <div class="table-responsive">
+          <table class="item-details__table table table-striped">
+            <colgroup>
+              <col style="width: 25%">
+              <col style="width: 75%">
+            </colgroup>
+            <tr>
+              <th>Allergen Type</th>
+              <th>Level</th>
+            </tr>
+            <tr ng-repeat="allergen in item.gs1.allergens">
+              <td>{{allergen.allergentype}}</td>
+              <td>{{allergen.level}}</td>
             </tr>
           </table>
         </div>
@@ -117,12 +163,24 @@
           <table class="item-details__table table table-striped">
             <colgroup>
               <col style="width: 20%">
-              <col style="width: 25%">
-              <col style="width: 55%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
             </colgroup>
             <tr>
-              <td>Kosher</td>
-              <td>{{item.kosher}}</td>
+              <th>Nutrient Type</th>
+              <th>Nutrient Type Code</th>
+              <th>Daily Value</th>
+              <th>Measurement Type ID</th>
+              <th>Measurement Value</th>
+            </tr>
+            <tr ng-repeat="nutrition in item.gs1.nutrition">
+              <td>{{nutrition.nutrienttype}}</td>
+              <td>{{nutrition.nutrienttypecode}}</td>
+              <td>{{nutrition.dailyvalue}}</td>
+              <td>{{nutrition.measurementtypeid}}</td>
+              <td>{{nutrition.measurementvalue}}</td>
             </tr>
           </table>
         </div>
