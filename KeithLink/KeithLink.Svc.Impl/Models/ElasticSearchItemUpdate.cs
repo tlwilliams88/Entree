@@ -60,6 +60,7 @@ namespace KeithLink.Svc.Impl.Models
         public string replaceditem { get; set; }
         public string cndoc { get; set; }
         public string itemnumber { get; set; }
+        public string icube { get; set; }
         public GS1Data gs1 { get; set; }
     }
 

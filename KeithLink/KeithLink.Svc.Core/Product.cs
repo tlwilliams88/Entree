@@ -65,6 +65,15 @@ namespace KeithLink.Svc.Core.Catalog
         [DataMember(Name = "cndoc")]
         public string CNDoc { get; set; }
 
+        [DataMember(Name= "vendor_num")]
+        public string VendorItemNumber {get;set;}
+
+        [DataMember(Name= "iclass")]
+        public string ItemClass { get; set; }
+                
+        [DataMember(Name = "icube")]
+        public string CaseCube { get; set; }
+
         [DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
     }

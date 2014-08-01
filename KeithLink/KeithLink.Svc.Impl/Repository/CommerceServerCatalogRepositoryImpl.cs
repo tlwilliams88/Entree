@@ -7,7 +7,7 @@ using KeithLink.Svc.Core;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
 using KeithLink.Svc.Core.Catalog;
 
-namespace KeithLink.Svc.Impl
+namespace KeithLink.Svc.Impl.Repository
 {
     public class CommerceServerCatalogRepositoryImpl : ICatalogRepository
     {

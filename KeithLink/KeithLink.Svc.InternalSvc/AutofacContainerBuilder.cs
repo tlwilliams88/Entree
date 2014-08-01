@@ -3,6 +3,7 @@ using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
+using KeithLink.Svc.Impl.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

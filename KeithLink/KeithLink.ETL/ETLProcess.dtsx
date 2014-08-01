@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="45"
-  DTS:VersionGUID="{7FDCE19E-714B-4F4C-80DA-18FBC8E0BDFE}">
+  DTS:VersionBuild="47"
+  DTS:VersionGUID="{D0EC9BE3-852B-4FB6-A496-E7B7EBC306E7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\SSIS_DATA\ecom\customer\20140610-134503.JDCSTBP">
+          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\20140610-134503.JDCSTBP">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -468,17 +468,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:3715/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:3715/ETLService.svc?wsdl">
+            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACW7xDRAw7wLB4myICePh9TAAAAAASAAACgAAAAEAAAAFU7vxnig/VadqO5mFJqe0MIAAAAhtLK1NgbV6wUAAAA5DQ6tkv3PoPljJxYgh/vQ4HtkN8</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACQ2zkEFbPjW9wCUoEvWtRF5ZjCTDNouE+w5IPYnUN6XwAAAAAOgAAAAAIAACAAAADKVkeN6jPl11f7ywU9yivZgrzPNRWUA3YaKUNIDBNL8RAAAADclweUrOXCrvYwHpFewIzHQAAAABIon/TXNjILGGoECbLi4Vn6wfAf0lczXQL+TnkXSIbzQVuVU+UxRo1KTOLjthtPnw9r5upY0ueTPiygzN7nBv8</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAANyqY+CFNPEWhVwOTXQTD4gAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAaqniWexhWvfAIrXkElFXJAAAAAASAAACgAAAAEAAAAC8i708PhZsEpwbquK1KMoMIAAAASUhN21ZE7KAUAAAA315zSQnyE0SvVbLymPv50qlIA9k</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABS0TenA3aiyI8pKQbzjdw2CZz2IGeoPwm1p68ddMh2dgAAAAAOgAAAAAIAACAAAAA+FoU7xAJUOeoMQQC/lq4eXpsRRjNlGts8cYA+j4gx4hAAAAA3VHXrLAvp3uZ6/PpYujFcQAAAAE8Wm3fsUvbckiCfCgjpxZysS2mR03n1NvjnJy6wsVHlRtuyx8xc+X56uxc+1/gYSAsIBnzKo0lL5qLc4tLBW6A</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -490,7 +490,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -500,7 +500,12 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAEKBmdtYlVNiEA+z15h3GELefx8gxZxR8VVZImc2CSEAAAAAAOgAAAAAIAACAAAAB9HV/0M+wndYOIHo6/M+ABLmqBXRBHNK4YOoigsitFyRAAAADg7hBIss0Ka0OUu5xQQyhXQAAAAIhG8vwasnTvC55e3uoYPjEy/oFen70/XsKa1uqc5VS4sc/ArIf1uNAg9QY3XwM1JtowJ+FwHB7p720city2nKQ</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -510,7 +515,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -520,7 +525,12 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Auto Translate=False;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAApCP45HzhV8zmrjvWHDei9R4AE2wB0hMrfI+OhTZKl9wAAAAAOgAAAAAIAACAAAAB7Wp92BOYDXJx/vgXPtjRsfsAFcCbWaspXuks7foCduRAAAADut4wUmScGaK7mhHe/i7RFQAAAAO0G4D97yXVS3mqPz69E7K2mXFTIFuIUBIlNUmm43oqulmO8juuG0/+nj6wu3FrwdtWgScIJW96jzWplP72XPcY</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -9942,21 +9952,6 @@
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[BrandOwner]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[BrandOwner]" />
                         <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[Country of Origin]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="Country of Origin"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CountryOfOrigin]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Country of Origin]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[HandlingInstructions]"
-                          cachedCodepage="1252"
-                          cachedDataType="text"
-                          cachedName="HandlingInstructions"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HandlingInstruction]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[HandlingInstructions]" />
-                        <inputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ProductType]"
                           cachedCodepage="1252"
                           cachedDataType="str"
@@ -9964,44 +9959,6 @@
                           cachedName="ProductType"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductType]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ProductType]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[PackageGtin]"
-                          cachedDataType="i4"
-                          cachedName="PackageGtin"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PackageGtin]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[PackageGtin]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ProductShortDesc]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="70"
-                          cachedName="ProductShortDesc"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductShortDesc]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ProductShortDesc]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ManufacturerItemNumber]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="30"
-                          cachedName="ManufacturerItemNumber"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ManufacturerItemNumber]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ManufacturerItemNumber]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[UnitMeasureUOM]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="3"
-                          cachedName="UnitMeasureUOM"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasureUOM]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasureUOM]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[CountryOfOriginName]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="CountryOfOriginName"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[CountryOfOriginName]" />
                         <inputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[GrossWeight]"
                           cachedDataType="numeric"
@@ -10033,13 +9990,6 @@
                           cachedName="PreparationInstructions"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PreparationInstructions]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[PreparationInstructions]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ProductAdditionalDesc]"
-                          cachedCodepage="1252"
-                          cachedDataType="text"
-                          cachedName="ProductAdditionalDesc"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductAdditionalDesc]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ProductAdditionalDesc]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -10192,40 +10142,17 @@
                           dataType="text"
                           name="HandlingInstruction" />
                         <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PackageGtin]"
-                          codePage="1252"
-                          dataType="str"
-                          length="14"
-                          name="PackageGtin" />
-                        <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductShortDesc]"
-                          codePage="1252"
-                          dataType="str"
-                          length="70"
-                          name="ProductShortDesc" />
-                        <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductAdditionalDesc]"
-                          codePage="1252"
-                          dataType="text"
-                          name="ProductAdditionalDesc" />
-                        <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ManufacturerItemNumber]"
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemIdentificationCode]"
                           codePage="1252"
                           dataType="str"
                           length="30"
-                          name="ManufacturerItemNumber" />
+                          name="ItemIdentificationCode" />
                         <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasureUOM]"
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ChildNutritionLable]"
                           codePage="1252"
                           dataType="str"
-                          length="3"
-                          name="UnitMeasureUOM" />
-                        <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
-                          codePage="1252"
-                          dataType="str"
-                          length="100"
-                          name="ContryOfOriginName" />
+                          length="1"
+                          name="ChildNutritionLable" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -10271,6 +10198,7 @@
       DTS:refId="Package\Process Staged Data"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Web Service Task"
+      DTS:Disabled="True"
       DTS:DTSID="{F45F32CB-0A4A-4788-AA66-ED31983318AB}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
@@ -11070,7 +10998,7 @@
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -11110,9 +11038,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

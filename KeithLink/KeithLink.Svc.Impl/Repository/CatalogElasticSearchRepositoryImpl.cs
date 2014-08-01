@@ -9,7 +9,7 @@ using Elasticsearch.Net;
 using System.Dynamic;
 using KeithLink.Svc.Core.Catalog;
 
-namespace KeithLink.Svc.Impl
+namespace KeithLink.Svc.Impl.Repository
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {
@@ -172,6 +172,9 @@ namespace KeithLink.Svc.Impl
             p.CNDoc = oProd._source.cndoc;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
+            p.VendorItemNumber = oProd._source.vendor1;
+            p.ItemClass = oProd._source.itemclass;
+            p.CaseCube = oProd._source.icube;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
@@ -181,7 +184,6 @@ namespace KeithLink.Svc.Impl
                 gs1.GrossWeight = oProd._source.gs1.grossweight;
                 gs1.HandlingInstructions = oProd._source.gs1.handlinginstructions;
                 gs1.Ingredients = oProd._source.gs1.ingredients;
-                gs1.ItemIdentificationCode = oProd._source.gs1.itemidentificationcode;
                 gs1.MarketingMessage = oProd._source.gs1.marketingmessage;
                 gs1.MoreInformation = oProd._source.gs1.moreinformation;
                 gs1.ServingSize = oProd._source.gs1.servingsize;
