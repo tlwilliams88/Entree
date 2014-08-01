@@ -257,6 +257,7 @@ namespace KeithLink.Svc.Impl.ETL
                         catmgr = row.GetString("CatMgr"),
                         description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
                         icseonly = row.GetString("ICSEOnly"),
+                        icube = row.GetString("Cube"),
                         itemclass = row.GetString("Class"),
                         itemtype = row.GetString("ItemType"),
                         kosher = row.GetString("Kosher"),
