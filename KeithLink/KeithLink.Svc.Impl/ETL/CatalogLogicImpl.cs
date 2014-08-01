@@ -289,7 +289,6 @@ namespace KeithLink.Svc.Impl.ETL
                             height = row.GetString("Height"),
                             ingredients = row.GetString("Ingredients"),
                             length = row.GetString("Length"),
-                            itemidentificationcode = row.GetString("ItemIdentificationCode"),
                             marketingmessage = row.GetString("MarketingMessage"),
                             moreinformation = row.GetString("MoreInformation"),
                             servingsize = row.GetString("ServingSize"),
