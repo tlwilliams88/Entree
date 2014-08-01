@@ -120,10 +120,5 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
         }
         #endregion
-
-
-
-
-
     }
 }
