@@ -9,12 +9,15 @@ namespace KeithLink.Svc.Impl
     public class Configuration : ConfigurationFacade
     {
         #region attributes
+        private const string DEFAULT_APPNAME = "KeithCom";
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
         private const string KEY_AD_PASSWORD = "ADPass";
+        private const string KEY_AD_ROOTNODE = "ADRoot";
         private const string KEY_AD_SERVERNAME = "ADServer";
         private const string KEY_AD_USER = "ADUser";
+        private const string KEY_APP_NAME = "AppName";
         private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
         private const string KEY_CORS_ENABLED_DOMAINS = "CorsEnabledDomains";
@@ -37,6 +40,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string ActiveDirectoryRootNode
+        {
+            get
+            {
+                return GetValue(KEY_AD_ROOTNODE, string.Empty);
+            }
+        }
+
         public static string ActiveDirectoryServerName
         {
             get
@@ -56,6 +67,14 @@ namespace KeithLink.Svc.Impl
         public static string AppDataConnectionString
         {
             get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
+        }
+
+        public static string ApplicationName
+        {
+            get
+            {
+                return GetValue(KEY_APP_NAME, DEFAULT_APPNAME);
+            }
         }
         
         public static string BaseCatalog
