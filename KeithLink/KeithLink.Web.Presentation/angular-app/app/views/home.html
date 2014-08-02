@@ -1,6 +1,13 @@
-<div page-header-bar message="'Welcome Back ' + currentUser.name + '!'">
-    <button class="btn cta-btn">Create An Order</button>
+<div page-header-bar>
+  <div header-message>
+    Welcome Back {{currentUser.name}}!
+  </div>
+  <div header-buttons>
+      <button class="btn cta-btn">Create An Order</button>
+  </div>
 </div>
+
+
 <div class="row">
     <!-- Account Summary -->
     <div class="col-md-4 col-md-push-8">

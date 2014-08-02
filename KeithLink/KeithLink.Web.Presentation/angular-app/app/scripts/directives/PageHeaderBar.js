@@ -17,16 +17,28 @@
    </div>
  */
 angular.module('bekApp')
-  .directive('pageHeaderBar', function () {
-    
+  .directive('pageHeaderBar', function() {
+    return {
+      restrict: 'A',
+      replace : true,
+      transclude: 'element',
+      templateUrl: 'views/directives/headerBar.html',
+      priority : 1
+    };
+  })
+  .directive('headerMessage', function() {
     return {
       restrict: 'A',
       transclude: true,
       replace: true,
-      scope: {
-        pageTitle: '=message'
-      },
-      templateUrl: 'views/directives/pageheaderbar.html'
+      templateUrl: 'views/directives/headerMessage.html'
     };
-
+  })
+  .directive('headerButtons', function() {
+    return  {
+      restrict: 'A',
+      transclude: true,
+      replace: true,
+      templateUrl: 'views/directives/headerButtons.html'
+    };
   });
