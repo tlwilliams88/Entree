@@ -43,9 +43,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.WebApi", "Kei
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\Users\Administrator\Desktop\AppDataSchema.sql = ..\..\..\Users\Administrator\Desktop\AppDataSchema.sql
-	EndProjectSection
 EndProject
 Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL\KeithLink.ETL.dtproj", "{DA2CC32A-4740-4031-8D5D-5905463ED93B}"
 EndProject
@@ -65,9 +62,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql
-		KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql = KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql
-		KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql
-		KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
