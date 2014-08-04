@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="52"
-  DTS:VersionGUID="{C6239BCB-C607-4E4B-9B84-D3787222D05D}">
+  DTS:VersionBuild="53"
+  DTS:VersionGUID="{1699B86A-CB00-41D1-BED0-136A72E1E47E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAdpX60TTPqTgrWI4y/eCGfAAAAAASAAACgAAAAEAAAACqXu3c2Q7hvS6+HE5h2ow8IAAAA0FnFiSbMPFQUAAAAzJPj+99uR2RrPEDMmAN0OcnQYws</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACAvyh5yX/5ZchOGU149cJ0AAAAAASAAACgAAAAEAAAAEj9IxQrWIEH9OSehAP6o80IAAAAIjVN6pRJIgAUAAAA8jY1mZe2O5l+bhp8dLJbquOGFgk</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADctcsVEc1LQ0wtIJrc6XL4AAAAAASAAACgAAAAEAAAAEbwcaXzEj/KPZEY1wOWOT4IAAAAgrBpNvQCia0UAAAAQXuVXp/CSH3udVEg6UEVaWsea9c</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACIYSzEn34i8f/LYDsDPgWeAAAAAASAAACgAAAAEAAAAJf74bLHQWNSGr+c2TwIC3YIAAAAKD5pVyGc6xgUAAAA1RIIQ4LlGWpnNpWjYypCeNibRpM</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
