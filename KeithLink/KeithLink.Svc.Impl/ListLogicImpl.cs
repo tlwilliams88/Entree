@@ -75,9 +75,9 @@ namespace KeithLink.Svc.Impl
             listRepository.DeleteItem(list, itemId);
         }
 
-        public List<UserList> ReadAllLists()
+        public List<UserList> ReadAllLists(bool headerInfoOnly)
         {
-            return listRepository.ReadAllLists();
+            return listRepository.ReadAllLists().Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
         }
 
         public UserList ReadList(Guid listId)
@@ -87,12 +87,18 @@ namespace KeithLink.Svc.Impl
 
         public List<string> ReadListLabels(Guid listId)
         {
-            return ReadListLabels(listId);
+            var lists = listRepository.ReadList(listId);
+            
+            if (lists == null)
+                return null;
+
+            return lists.Items.Where(l => l.Label != null).Select(i => i.Label).ToList();
         }
 
         public List<string> ReadListLabels()
         {
-            return ReadListLabels();
+            var lists = listRepository.ReadAllLists();
+            return lists.SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).ToList();
         }
     }
 }

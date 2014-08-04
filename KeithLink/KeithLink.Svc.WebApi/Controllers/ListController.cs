@@ -23,7 +23,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("list")]
         public List<UserList> List()
         {
-            var model = listLogic.ReadAllLists();
+            var model = listLogic.ReadAllLists(true);
             return model;
         }
 

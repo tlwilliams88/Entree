@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Repository
 
         public List<UserList> ReadAllLists()
         {
-            return sampleList.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
+            return sampleList;
         }
 
 

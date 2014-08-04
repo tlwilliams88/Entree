@@ -17,9 +17,7 @@ namespace KeithLink.Svc.Core
 
         List<UserList> ReadAllLists();
         UserList ReadList(Guid listId);
-        List<string> ReadListLabels(Guid listId);
-        List<string> ReadListLabels();
-        
+               
         
     }
 }

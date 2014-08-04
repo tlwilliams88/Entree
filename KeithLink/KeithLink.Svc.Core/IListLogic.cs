@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core
         void DeleteList(Guid listId);
         void DeleteItem(Guid listId, Guid itemId);
 
-        List<UserList> ReadAllLists();
+        List<UserList> ReadAllLists(bool headerInfoOnly);
         UserList ReadList(Guid listId);
         List<string> ReadListLabels(Guid listId);
         List<string> ReadListLabels();
