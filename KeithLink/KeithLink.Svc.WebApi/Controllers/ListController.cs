@@ -28,11 +28,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpPut]
-        [Route("list/{listId}")]
-        public void Put(Guid listId, string newName)
+        [Route("list")]
+        public void Put(UserList updatedList)
         {
-            //TODO: This endpoint is currently not working
-            listRepository.UpdateListName(listId, newName);
+            listRepository.UpdateListName(updatedList.ListId, updatedList.Name);
         }
 
 
