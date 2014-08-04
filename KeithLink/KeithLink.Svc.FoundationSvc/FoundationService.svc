@@ -1,0 +1,1 @@
+<%@ ServiceHost Language="C#" Service="CommerceServer.Foundation.OperationService, CommerceServer.Foundation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a" %>
