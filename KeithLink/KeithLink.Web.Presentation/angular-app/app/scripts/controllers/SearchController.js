@@ -34,6 +34,10 @@ angular.module('bekApp')
 
                var searchTerm = $stateParams.id;
                return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+           } else if (type === 'brand') {
+
+               var searchTerm = $stateParams.id;
+               return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            }
        }
 
