@@ -62,9 +62,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql
-		KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql = KeithLink.ETL.Setup\SQL\Query_FseObjectCounts.sql
-		KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_LogDatabaseCount.sql
-		KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql = KeithLink.ETL.Setup\SQL\Query_StageDatabaseCount.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
