@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void ReadList()
         {
-            var list = listLogic.ReadAllLists();
+            var list = listLogic.ReadAllLists(true);
 
             Assert.IsNotNull(list);
         }
