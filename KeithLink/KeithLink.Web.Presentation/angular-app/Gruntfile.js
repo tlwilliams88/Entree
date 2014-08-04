@@ -48,10 +48,6 @@ module.exports = function (grunt) {
       gruntfile: {
         files: ['Gruntfile.js']
       },
-      includeSource: {
-        files: ['<%= yeoman.app %>/index.html'],
-        tasks: ['includeSource:server']
-      },
       livereload: {
         options: {
           livereload: '<%= connect.options.livereload %>'
@@ -404,12 +400,12 @@ module.exports = function (grunt) {
           'mockApi/apiserver.js'
         ]
       }
-    }, 
+    },
 
     includeSource: {
       options: {
         basePath: 'app',
-        baseUrl: '/'
+        baseUrl: ''
       },
       server: {
         files: {
@@ -437,7 +433,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'includeSource:server',
+      // 'includeSource:server',
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
@@ -454,7 +450,7 @@ module.exports = function (grunt) {
   grunt.registerTask('dev', [
     // 'npm-install',
     'clean:dev',
-    'includeSource:dev',
+    // 'includeSource:dev',
     'compass:server',
     'copy:dev',
     'karma'
@@ -469,7 +465,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'includeSource:dist',
+    // 'includeSource:dist',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
