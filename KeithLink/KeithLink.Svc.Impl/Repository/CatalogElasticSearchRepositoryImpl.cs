@@ -39,17 +39,43 @@ namespace KeithLink.Svc.Impl.Repository
                 }
             }
 
+            string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> facetTerms = new List<string>();
+            foreach (string s in facets)
+            {
+                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] values = s.Substring(s.IndexOf(":") + 1).Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
+                string selectedValues = String.Join("\",\"", values);
+                facetTerms.Add(@"{ ""terms"": { """ + keyValue + @""": [""" + selectedValues + @"""] } }");
+            }
+            string filterTerms = string.Empty;
+            if (facetTerms.Count > 0)
+            {
+                filterTerms = @"""bool"" : { ""should"" : [ 
+                        " + String.Join(",", facetTerms.ToArray())
+                        + @"] }";
+            }
+
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
                 ""query"":{
-                     ""query_string"" : {
+                  ""filtered"":{
+                   ""query"": {
+                      ""query_string"" : {
                          ""fields"" : [""categoryid""],
                           ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
-                        }
-                      }" + ElasticSearchAggregations + @"
+                      }
+                    }
+                   ,""filter"":
+                    {
+                        " + filterTerms + @"
+                    }
+                  }
+                }" + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, categoryFilter);
@@ -106,22 +132,40 @@ namespace KeithLink.Svc.Impl.Repository
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> facetTerms = new List<string>();
             foreach (string s in facets)
             {
                 string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                string[] values = s.Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-
+                string[] values = s.Substring(s.IndexOf(":") + 1).Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
+                string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
+                string selectedValues = String.Join("\",\"", values);
+                facetTerms.Add(@"{ ""terms"": { """ + keyValue + @""": [""" + selectedValues + @"""] } }");
+            }
+            string filterTerms = string.Empty;
+            if (facetTerms.Count > 0)
+            {
+                filterTerms = @"""bool"" : { ""should"" : [ 
+                        " + String.Join(",", facetTerms.ToArray())
+                        + @"] }";
             }
 
             var searchBody = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
                 ""query"":{
-                     ""query_string"" : {
+                  ""filtered"":{
+                   ""query"": {
+                    ""query_string"" : {
                           ""fields"" : [""name"", ""description"", ""categoryname""],
                           ""query"" : """ + search + @""",
                                                ""use_dis_max"" : true
                         }
-                      }" + ElasticSearchAggregations + @"
+                    }
+                   ,""filter"":
+                    {
+                        " + filterTerms + @"
+                    }
+                  }
+                }" + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, searchBody);
