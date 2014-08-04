@@ -86,13 +86,16 @@ namespace KeithLink.Svc.Impl.Repository
 
             foreach (var oFacet in res.Response["aggregations"])
             {
-                var facet = new ExpandoObject() as IDictionary<string, object>;
+                var facet = new List<ExpandoObject>();
                 foreach (var oFacetValue in oFacet.Value["buckets"])
                 {
-                    facet.Add(oFacetValue["key"].ToString(), oFacetValue["doc_count"]);
+                    var facetValue = new ExpandoObject() as IDictionary<string, object>;
+                    facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
+                    facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
+                    facet.Add(facetValue as ExpandoObject);
                 }
 
-                (facets as IDictionary<string, object>).Add(oFacet.Key, new List<ExpandoObject>() { facet as ExpandoObject });
+                (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
             }
         }
 
@@ -185,7 +188,7 @@ namespace KeithLink.Svc.Impl.Repository
             LoadFacetsFromElasticSearchResponse(res, facets);
             int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
 
-            return new ProductsReturn() { Products = products, Facets = (new List<ExpandoObject>() { facets }), TotalCount = totalCount, Count = products.Count };
+            return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
 
         public Product GetProductById(string branch, string id)
