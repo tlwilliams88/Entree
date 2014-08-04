@@ -1,30 +1,57 @@
-.custom-lists .btn {
-  min-width: 135px;
+.custom-lists .btn-list {
+  min-width: 130px;
   font-size: $font-size;
+  display: block;
 
   &:hover {
     color: $color-blue;
   }
+
+  &.bek-drag-active {
+    border: 1px dashed $color-border;
+  }
+
+  &.bek-drag-hover {
+    color: $color-blue;
+    border: 2px solid $color-blue;
+    cursor: copy;
+  }
 }
 
-.btn-group-vertical .btn {
+.custom-lists__names .btn-list {
   &:focus, &:active {
     background-color: $color-blue;
     color: $color-white !important;
     border: none;
   }
-
-  &:hover {
-    color: $color-blue;
-    border: 2px solid $color-blue;
-  }
 }
-
-.custom-lists
 
 .custom-lists__more {
   margin-top: 10px;
 }
+
+div.trash-wrapper {
+  margin-top: 10px;
+  display: inline-block;
+
+  .btn-trash {
+    display: none;
+    margin: 0;
+    font-size: 15px;
+  }
+
+  &.bek-drag-active .btn-trash {
+    border: 1px solid $color-red;
+    display: inline-block;
+  }
+
+  &.bek-drag-hover .btn-trash {
+    border: 2px solid $color-red;
+    cursor: copy;
+  }
+}
+
+
 
 .ui-draggable-dragging {
   border: 1px solid $color-border !important;
@@ -36,8 +63,4 @@
   .hidden-drag {
     display: none;
   } 
-}
-
-.ng-hover {
-  color: red !important;
 }

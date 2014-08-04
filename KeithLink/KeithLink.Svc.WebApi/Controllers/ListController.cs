@@ -11,11 +11,11 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ListController : ApiController
     {
 
-        private readonly IListRepository listRepository;
+        private readonly IListLogic listLogic;
 
-        public ListController(IListRepository listRepository)
+        public ListController(IListLogic listLogic)
         {
-            this.listRepository = listRepository;
+            this.listLogic = listLogic;
         }
 
 
@@ -23,16 +23,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("list")]
         public List<UserList> List()
         {
-            var model = listRepository.ReadAllLists();
+            var model = listLogic.ReadAllLists(true);
             return model;
         }
 
         [HttpPut]
-        [Route("list/{listId}")]
-        public void Put(Guid listId, string newName)
+        [Route("list")]
+        public void Put(UserList updatedList)
         {
-            //TODO: This endpoint is currently not working
-            listRepository.UpdateListName(listId, newName);
+            listLogic.UpdateList(updatedList);
         }
 
 
@@ -40,56 +39,56 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("list/{listId}")]
         public UserList List(Guid listId)
         {
-            return listRepository.ReadList(listId);
+            return listLogic.ReadList(listId);
         }
 
         [HttpGet]
         [Route("list/labels")]
         public List<string> ListLabels()
         {
-            return listRepository.ReadListLabels();
+            return listLogic.ReadListLabels();
         }
 
         [HttpGet]
         [Route("list/{listId}/labels")]
         public List<string> ListLabels(Guid listId)
         {
-            return listRepository.ReadListLabels(listId);
+            return listLogic.ReadListLabels(listId);
         }
 
         [HttpPost]
         [Route("list")]
         public Guid List(UserList list)
         {
-            return listRepository.CreateList(list);
+            return listLogic.CreateList(list);
         }
 
         [HttpDelete]
         [Route("list/{listId}")]
         public void DeleteList(Guid listId)
         {
-            listRepository.DeleteList(listId);
+            listLogic.DeleteList(listId);
         }
 
         [HttpPost]
         [Route("list/{listId}/item")]
         public Guid? AddItem(Guid listId, ListItem newItem)
         {
-            return listRepository.AddItem(listId, newItem);
+            return listLogic.AddItem(listId, newItem);
         }
 
         [HttpPut]
         [Route("list/{listId}/item")]
         public void UpdateItem(Guid listId, ListItem updatedItem)
         {
-            listRepository.UpdateItem(listId, updatedItem);
+            listLogic.UpdateItem(listId, updatedItem);
         }
 
         [HttpDelete]
         [Route("list/{listId}/item/{itemId}")]
         public void DeleteItem(Guid listId, Guid itemId)
         {
-            listRepository.DeleteItem(listId, itemId);
+            listLogic.DeleteItem(listId, itemId);
         }
     }
 }

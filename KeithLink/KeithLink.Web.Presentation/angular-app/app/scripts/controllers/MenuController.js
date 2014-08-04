@@ -46,4 +46,12 @@ angular.module('bekApp')
     };
 
     $scope.currentUser.currentLocation = $scope.currentUser.stores[0];
+
+
+
+
+    $scope.print = function () {
+      window.print(); 
+    };
+    
   }]);

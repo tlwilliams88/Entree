@@ -21,6 +21,6 @@ namespace KeithLink.Svc.Core.Catalog
         public List<Product> Products { get; set; }
 
         [DataMember(Name = "facets")]
-        public List<ExpandoObject> Facets { get; set; }
+        public ExpandoObject Facets { get; set; }
     }
 }

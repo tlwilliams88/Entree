@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Gs1.cs" />
+    <Compile Include="IListLogic.cs" />
     <Compile Include="IListRepository.cs" />
     <Compile Include="ListItem.cs" />
     <Compile Include="ProductsReturn.cs" />

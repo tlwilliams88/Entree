@@ -68,10 +68,10 @@ namespace KeithLink.Svc.Core.Catalog
         [DataMember(Name= "vendor_num")]
         public string VendorItemNumber {get;set;}
 
-        [DataMember(Name= "iclass")]
+        [DataMember(Name= "class")]
         public string ItemClass { get; set; }
                 
-        [DataMember(Name = "icube")]
+        [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 
         [DataMember(Name = "gs1")]

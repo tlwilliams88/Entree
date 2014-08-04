@@ -1,139 +1,50 @@
 <?xml version="1.0"?>
 <DTSConfiguration>
-	<DTSConfigurationHeading>
-		<DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="7/28/2014 8:32:07 AM"/>
-	</DTSConfigurationHeading>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[AlwaysCheckForRowDelimiters]" ValueType="Boolean">
-		<ConfiguredValue>-1</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[CodePage]" ValueType="Int32">
-		<ConfiguredValue>1252</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ColumnNamesInFirstDataRow]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue><!--LOCATION OF CUSTOMER FLAT FILE ON YOUR MACHINE--></ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[DataRowsToSkip]" ValueType="Int32">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Description]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[FileUsageType]" ValueType="Int32">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Format]" ValueType="String">
-		<ConfiguredValue>FixedWidth</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowDelimiter]" ValueType="String">
-		<ConfiguredValue>
-		</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowsToSkip]" ValueType="Int32">
-		<ConfiguredValue>1</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[LocaleID]" ValueType="Int32">
-		<ConfiguredValue>1033</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Name]" ValueType="String">
-		<ConfiguredValue>FF_Customer</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ProtectionLevel]" ValueType="Int32">
-		<ConfiguredValue>1</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[RowDelimiter]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Scope]" ValueType="Int32">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[TextQualifier]" ValueType="String">
-		<ConfiguredValue>&lt;none&gt;</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Unicode]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[BypassProxyOnLocal]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[CertificateIdentifier]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ChunkSize]" ValueType="Int32">
-		<ConfiguredValue>1</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue><!--ETL WEB SERVICE ENDPOING ON YOUR MACHINE--></ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Description]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Name]" ValueType="String">
-		<ConfiguredValue>HTTP_ETLWebService</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ProtectionLevel]" ValueType="Int32">
-		<ConfiguredValue>1</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ProxyDomain]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ProxyPassword]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ProxyURL]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ProxyUserName]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Scope]" ValueType="Int32">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ServerDomain]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ServerPassword]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ServerURL]" ValueType="String">
-		<ConfiguredValue><!--ETL WEB SERVICE ENDPOING ON YOUR MACHINE--></ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ServerUserName]" ValueType="String">
-		<ConfiguredValue/>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Timeout]" ValueType="Int32">
-		<ConfiguredValue>30</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[UseProxy]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[UseProxyCredentials]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[UseSecureConnection]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[UseServerCredentials]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_FSE].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>Data Source=<!--YOUR LOCAL SQL INSTANCE-->;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_Log].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>Data Source=<!--YOUR LOCAL SQL INSTANCE-->;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_PRODCAT].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_ProcessStagedData_Result].Properties[Name]" ValueType="String">
-		<ConfiguredValue>ETLProcess_ProcessStagedData_Result</ConfiguredValue>
-	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_ProcessStagedData_Result].Properties[Value]" ValueType="Boolean">
-		<ConfiguredValue>0</ConfiguredValue>
-	</Configuration>
+  <DTSConfigurationHeading>
+    <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 8:25:09 AM"/>
+  </DTSConfigurationHeading>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ColumnNamesInFirstDataRow]" ValueType="Boolean">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\ECOM\dev\20140610-134503.JDCSTBP</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[DataRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Format]" ValueType="String">
+    <ConfiguredValue>FixedWidth</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowDelimiter]" ValueType="String">
+    <ConfiguredValue>
+    </ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>1</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[RowDelimiter]" ValueType="String">
+    <ConfiguredValue/>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue><!--LOCAL WEB SERVICE URI--></ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Timeout]" ValueType="Int32">
+    <ConfiguredValue>30</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=<!--LOCAL SQL INSTANCE-->;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_FSE].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_Log].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=<!--LOCAL SQL INSTANCE-->;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_PRODCAT].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[SMTP].Properties[ConnectionString]" ValueType="String">
+    <!--IF YOU DON'T HAVE AN SMTP SERVER CONFIGURED LOCALLY, MAIL TASKS WILL NOT WORK IF YOU RUN THE PACKAGE LOCALLY-->
+    <ConfiguredValue>SmtpServer=<!--LOCAL MACHINE NAME-->;UseWindowsAuthentication=True;EnableSsl=False;</ConfiguredValue>
+  </Configuration>
 </DTSConfiguration>

@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="47"
-  DTS:VersionGUID="{D0EC9BE3-852B-4FB6-A496-E7B7EBC306E7}">
+  DTS:VersionBuild="53"
+  DTS:VersionGUID="{1699B86A-CB00-41D1-BED0-136A72E1E47E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\20140610-134503.JDCSTBP">
+          DTS:ConnectionString="\\bekbackup\ftproot\ECOM\dev\20140610-134503.JDCSTBP">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -468,17 +468,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://devkeithlink.bekco.com:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://devkeithlink.bekco.com:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACQ2zkEFbPjW9wCUoEvWtRF5ZjCTDNouE+w5IPYnUN6XwAAAAAOgAAAAAIAACAAAADKVkeN6jPl11f7ywU9yivZgrzPNRWUA3YaKUNIDBNL8RAAAADclweUrOXCrvYwHpFewIzHQAAAABIon/TXNjILGGoECbLi4Vn6wfAf0lczXQL+TnkXSIbzQVuVU+UxRo1KTOLjthtPnw9r5upY0ueTPiygzN7nBv8</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACAvyh5yX/5ZchOGU149cJ0AAAAAASAAACgAAAAEAAAAEj9IxQrWIEH9OSehAP6o80IAAAAIjVN6pRJIgAUAAAA8jY1mZe2O5l+bhp8dLJbquOGFgk</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABS0TenA3aiyI8pKQbzjdw2CZz2IGeoPwm1p68ddMh2dgAAAAAOgAAAAAIAACAAAAA+FoU7xAJUOeoMQQC/lq4eXpsRRjNlGts8cYA+j4gx4hAAAAA3VHXrLAvp3uZ6/PpYujFcQAAAAE8Wm3fsUvbckiCfCgjpxZysS2mR03n1NvjnJy6wsVHlRtuyx8xc+X56uxc+1/gYSAsIBnzKo0lL5qLc4tLBW6A</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACIYSzEn34i8f/LYDsDPgWeAAAAAASAAACgAAAAEAAAAJf74bLHQWNSGr+c2TwIC3YIAAAAKD5pVyGc6xgUAAAA1RIIQ4LlGWpnNpWjYypCeNibRpM</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -490,7 +490,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -500,12 +500,7 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAEKBmdtYlVNiEA+z15h3GELefx8gxZxR8VVZImc2CSEAAAAAAOgAAAAAIAACAAAAB9HV/0M+wndYOIHo6/M+ABLmqBXRBHNK4YOoigsitFyRAAAADg7hBIss0Ka0OUu5xQQyhXQAAAAIhG8vwasnTvC55e3uoYPjEy/oFen70/XsKa1uqc5VS4sc/ArIf1uNAg9QY3XwM1JtowJ+FwHB7p720city2nKQ</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -515,7 +510,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -525,12 +520,17 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAaz87NG2qhk+tNkFFwqb8mAAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAApCP45HzhV8zmrjvWHDei9R4AE2wB0hMrfI+OhTZKl9wAAAAAOgAAAAAIAACAAAAB7Wp92BOYDXJx/vgXPtjRsfsAFcCbWaspXuks7foCduRAAAADut4wUmScGaK7mhHe/i7RFQAAAAO0G4D97yXVS3mqPz69E7K2mXFTIFuIUBIlNUmm43oqulmO8juuG0/+nj6wu3FrwdtWgScIJW96jzWplP72XPcY</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[SMTP]"
+      DTS:CreationName="SMTP"
+      DTS:DTSID="{C0016070-02E4-41E0-9C0E-DB9BEA215EE3}"
+      DTS:ObjectName="SMTP">
+      <DTS:ObjectData>
+        <SmtpConnectionManager
+          ConnectionString="SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -562,7 +562,16 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_ProcessStagedData_Result">
       <DTS:VariableValue
-        DTS:DataType="11">0</DTS:VariableValue>
+        DTS:DataSubType="ManagedSerializable"
+        DTS:DataType="13">
+        <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+          <SOAP-ENV:Body>
+            <xsd:anyType
+              id="ref-1"></xsd:anyType>
+          </SOAP-ENV:Body>
+        </SOAP-ENV:Envelope>
+      </DTS:VariableValue>
     </DTS:Variable>
   </DTS:Variables>
   <DTS:LoggingOptions
@@ -6998,6 +7007,17 @@
                           lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpcube]"
                           name="ifpcube"
                           truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].ExternalColumns[inon_stock]"
+                          length="1"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]"
+                          name="inon_stock"
+                          truncationRowDisposition="FailComponent" />
                       </outputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -7313,6 +7333,12 @@
                           refId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].ExternalColumns[ifpcube]"
                           dataType="i4"
                           name="ifpcube" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].ExternalColumns[inon_stock]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="inon_stock" />
                       </externalMetadataColumns>
                     </output>
                     <output
@@ -7692,6 +7718,13 @@
                           dataType="i4"
                           lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Error Output].Columns[ifpcube]"
                           name="ifpcube" />
+                        <outputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Error Output].Columns[inon_stock]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Error Output].Columns[inon_stock]"
+                          name="inon_stock" />
                         <outputColumn
                           refId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
                           dataType="i4"
@@ -9990,6 +10023,66 @@
                           cachedName="PreparationInstructions"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PreparationInstructions]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[PreparationInstructions]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[HandlingInstructions]"
+                          cachedCodepage="1252"
+                          cachedDataType="text"
+                          cachedName="HandlingInstructions"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HandlingInstruction]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[HandlingInstructions]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[PackageGtin]"
+                          cachedDataType="i4"
+                          cachedName="PackageGtin"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PackageGtin]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[PackageGtin]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ProductShortDesc]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="70"
+                          cachedName="ProductShortDesc"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductShortDesc]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ProductShortDesc]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ProductAdditionalDesc]"
+                          cachedCodepage="1252"
+                          cachedDataType="text"
+                          cachedName="ProductAdditionalDesc"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductAdditionalDesc]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ProductAdditionalDesc]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ManufacturerItemNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="ManufacturerItemNumber"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ManufacturerItemNumber]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ManufacturerItemNumber]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[UnitMeasureUOM]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="UnitMeasureUOM"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasureUOM]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasureUOM]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[CountryOfOriginName]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="CountryOfOriginName"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[CountryOfOriginName]" />
+                        <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[Country of Origin]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="Country of Origin"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CountryOfOrigin]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Country of Origin]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -10142,17 +10235,40 @@
                           dataType="text"
                           name="HandlingInstruction" />
                         <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemIdentificationCode]"
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PackageGtin]"
+                          codePage="1252"
+                          dataType="str"
+                          length="14"
+                          name="PackageGtin" />
+                        <externalMetadataColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductShortDesc]"
+                          codePage="1252"
+                          dataType="str"
+                          length="70"
+                          name="ProductShortDesc" />
+                        <externalMetadataColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductAdditionalDesc]"
+                          codePage="1252"
+                          dataType="text"
+                          name="ProductAdditionalDesc" />
+                        <externalMetadataColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ManufacturerItemNumber]"
                           codePage="1252"
                           dataType="str"
                           length="30"
-                          name="ItemIdentificationCode" />
+                          name="ManufacturerItemNumber" />
                         <externalMetadataColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ChildNutritionLable]"
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasureUOM]"
                           codePage="1252"
                           dataType="str"
-                          length="1"
-                          name="ChildNutritionLable" />
+                          length="3"
+                          name="UnitMeasureUOM" />
+                        <externalMetadataColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
+                          codePage="1252"
+                          dataType="str"
+                          length="100"
+                          name="ContryOfOriginName" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -10198,7 +10314,6 @@
       DTS:refId="Package\Process Staged Data"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Web Service Task"
-      DTS:Disabled="True"
       DTS:DTSID="{F45F32CB-0A4A-4788-AA66-ED31983318AB}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
@@ -10236,6 +10351,32 @@
             </WSTask:ParamInfo>
           </WSTask:MethodInfo>
         </WSTask:WebServiceTaskData>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Send Fail Message"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:Description="Send Mail Task"
+      DTS:DTSID="{2CC7FEC8-012D-4976-8A68-D6CB3840AD38}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Send Fail Message"
+      DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="1">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="MessageSource">"SSIS Package " + @[System::PackageName] + " has failed on " +  @[System::MachineName] + ".  Check the SQL logs for more detail."</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="Subject">"SSIS Package " + @[System::PackageName] + " has failed on " +  @[System::MachineName]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SendMailTask:SendMailTaskData
+          SendMailTask:SMTPServer="{C0016070-02E4-41E0-9C0E-DB9BEA215EE3}"
+          SendMailTask:From="CORPMIS7708@noreply.com"
+          SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
+          SendMailTask:Subject="SSIS Package ETLProcess has failed on CORPMIS7708"
+          SendMailTask:MessageSource="SSIS Package ETLProcess has failed on CORPMIS7708.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -10316,6 +10457,42 @@
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
       DTS:To="Package\Process Staged Data" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
+      DTS:CreationName=""
+      DTS:DTSID="{6F64460E-AA03-4B86-A771-D59B61414B3A}"
+      DTS:From="Package\Truncate Stage Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 3"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
+      DTS:CreationName=""
+      DTS:DTSID="{C9D97D44-B96C-472B-8231-9E0F6AF79021}"
+      DTS:From="Package\Catalog Import Tasks"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 4"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
+      DTS:CreationName=""
+      DTS:DTSID="{B211AE27-0CDF-47C8-80D3-C6BD3DFCDA28}"
+      DTS:From="Package\GS1 Import Tasks"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 5"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
+      DTS:CreationName=""
+      DTS:DTSID="{C91DFEEE-8ABB-4C76-A9E0-3D110A031D2A}"
+      DTS:From="Package\Process Staged Data"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 6"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
   </DTS:PrecedenceConstraints>
   <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
 <!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
@@ -10328,7 +10505,7 @@
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="32" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="151,42"
           Id="Package\Catalog Import Tasks\Stage Branches"
@@ -10393,33 +10570,33 @@
           PanelSize="518,67"
           Size="518,110"
           Id="Package\Truncate Stage Tables"
-          TopLeft="77,8" />
+          TopLeft="77,7" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="336,118">
+          TopLeft="336,117">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="86.5,36"
+              EndConnector="86.5,37"
               Start="0,0"
-              End="86.5,28.5">
+              End="86.5,29.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,14" />
+                    End="0,14.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,14"
-                    Point2="0,18"
-                    Point3="4,18" />
+                    Point1="0,14.5"
+                    Point2="0,18.5"
+                    Point3="4,18.5" />
                   <mssgle:LineSegment
-                    End="82.5,18" />
+                    End="82.5,18.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="82.5,18"
-                    Point2="86.5,18"
-                    Point3="86.5,22" />
+                    Point1="82.5,18.5"
+                    Point2="86.5,18.5"
+                    Point3="86.5,22.5" />
                   <mssgle:LineSegment
-                    End="86.5,28.5" />
+                    End="86.5,29.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10470,6 +10647,154 @@
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="168,42"
+          Id="Package\Send Fail Message"
+          TopLeft="923,214" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 3]"
+          TopLeft="421,117">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="586,97"
+              Start="0,0"
+              End="586,89.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.9792147806005" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.9792147806005"
+                    Point2="0,38.9792147806005"
+                    Point3="4,38.9792147806005" />
+                  <mssgle:LineSegment
+                    End="582,38.9792147806005" />
+                  <mssgle:CubicBezierSegment
+                    Point1="582,38.9792147806005"
+                    Point2="586,38.9792147806005"
+                    Point3="586,42.9792147806005" />
+                  <mssgle:LineSegment
+                    End="586,89.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="277.75865234375,43.9792147806005,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 4]"
+          TopLeft="767,219.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="156,15.5"
+              Start="0,0"
+              End="148.5,15.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="74,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="74,0"
+                    Point2="78,0"
+                    Point3="78,4" />
+                  <mssgle:LineSegment
+                    End="78,11.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="78,11.5"
+                    Point2="78,15.5"
+                    Point3="82,15.5" />
+                  <mssgle:LineSegment
+                    End="148.5,15.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="62.75865234375,-15.7490234375,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 5]"
+          TopLeft="538.333333333333,316.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="468.666666666667,-60.5"
+              Start="0,0"
+              End="468.666666666667,-53">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-20.2834962622197" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-20.2834962622197"
+                    Point2="0,-24.2834962622197"
+                    Point3="4,-24.2834962622197" />
+                  <mssgle:LineSegment
+                    End="464.666666666667,-24.2834962622197" />
+                  <mssgle:CubicBezierSegment
+                    Point1="464.666666666667,-24.2834962622197"
+                    Point2="468.666666666667,-24.2834962622197"
+                    Point3="468.666666666667,-28.2834962622197" />
+                  <mssgle:LineSegment
+                    End="468.666666666667,-53" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="219.091985677083,-19.2834962622197,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 6]"
+          TopLeft="453.333333333333,460">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="580.333333333333,-204"
+              Start="0,0"
+              End="580.333333333333,-196.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-97.9333246175972" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-97.9333246175972"
+                    Point2="0,-101.933324617597"
+                    Point3="4,-101.933324617597" />
+                  <mssgle:LineSegment
+                    End="576.333333333333,-101.933324617597" />
+                  <mssgle:CubicBezierSegment
+                    Point1="576.333333333333,-101.933324617597"
+                    Point2="580.333333333333,-101.933324617597"
+                    Point3="580.333333333333,-105.933324617597" />
+                  <mssgle:LineSegment
+                    End="580.333333333333,-196.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="274.925319010417,-96.9333246175972,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -10701,7 +11026,7 @@
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="127,42"
           Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
@@ -10741,9 +11066,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
