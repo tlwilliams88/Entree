@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository
 {
-    public class MockListRepositoryImpl: IListRepository
+    public class MockListRepositoryImpl : IListRepository
     {
         public static List<UserList> sampleList = new List<UserList>()
                 {
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Repository
 
         public List<UserList> ReadAllLists()
         {
-            return sampleList.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
+            return sampleList;
         }
 
 
@@ -78,44 +78,13 @@ namespace KeithLink.Svc.Impl.Repository
 
         public Guid CreateList(UserList list)
         {
-            list.ListId = Guid.NewGuid();
             sampleList.Add(list);
             return list.ListId;
         }
 
-
-        public Guid? AddItem(Guid listId, ListItem newItem)
+        public void UpdateItem(ListItem updatedItem)
         {
-            //TODO: Move logic out of repo and into logic class
-            var list = sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
-
-            if (list == null)
-                return null;
-
-            var itemId = Guid.NewGuid();
-            newItem.ListItemId = itemId;
-            list.Items.Add(newItem);
-
-            return itemId;
-
-        }
-
-
-        public void UpdateItem(Guid listId, ListItem updatedItem)
-        {
-            //TODO: Move logic out of repo and into logic class
-            var list = sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
-
-            if (list == null)
-                return;
-
-            var item = list.Items.Where(i => i.ListItemId.Equals(updatedItem.ListItemId)).FirstOrDefault();
-
-            item.Label = updatedItem.Label;
-            item.ParLevel = updatedItem.ParLevel;
-            item.Position = updatedItem.Position;
-            item.ProductId = updatedItem.ProductId;
-
+            //Nothing really needs to be done in the mock
         }
 
         public void DeleteList(Guid listId)
@@ -124,14 +93,8 @@ namespace KeithLink.Svc.Impl.Repository
         }
 
 
-        public void DeleteItem(Guid listId, Guid itemId)
+        public void DeleteItem(UserList list, Guid itemId)
         {
-            //TODO: Move logic out of repo and into logic class
-            var list = sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
-
-            if (list == null)
-                return;
-
             list.Items.RemoveAll(i => i.ListItemId.Equals(itemId));
         }
 
@@ -140,5 +103,13 @@ namespace KeithLink.Svc.Impl.Repository
         {
             sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault().Name = name;
         }
+
+
+        public void UpdateList(UserList list)
+        {
+            var currentlist = sampleList.Where(l => l.ListId.Equals(list.ListId)).FirstOrDefault();
+            currentlist = list;
+        }
+
     }
 }
