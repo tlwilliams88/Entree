@@ -19,7 +19,7 @@ module.exports = function (grunt) {
   var appConfig = {
     app: 'app',
     dist: 'dist',
-    dev: 'dist-dev'
+    dev: '../app/'
   };
 
   // Define the configuration for all the tasks
@@ -132,8 +132,14 @@ module.exports = function (grunt) {
         }]
       },
       server: '.tmp',
-      dev: '<%= yeoman.dev %>/{,*/}*'
-    },
+      dev: {
+      	files: [{
+      		src: [ '<%= yeoman.dev %>/{,*/}*' ]
+      	}],
+		dot: true,
+		options: { force: true }
+    	}
+	},
 
     // Add vendor prefixed styles
     autoprefixer: {
