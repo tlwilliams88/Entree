@@ -79,6 +79,43 @@
     </Operation>
   </RequestTemplate>
 
+  <RequestTemplate id="GetTopLevelCategories" group="Catalog" cached="true" cacheExpiration="01:00:00" containsSensitiveData="true">
+    <Descriptions>
+      <Description value="Get Top Level Categories" />
+    </Descriptions>
+    <Operation id="1" builder="QueryOperationBuilder" entity="Category">
+      <Search builder="ModelSearchCriteriaBuilder">
+        <Argument name="CatalogId" />
+      </Search>
+      <PropertiesToReturn>
+        <Property name="Id" />
+        <Property name="CatalogId" />
+        <Property name="DisplayName" />
+        <Property name="Description"/>
+        <Property name="Image_filename"/>
+        <Property name="ParentCategoryId"/>
+      </PropertiesToReturn>
+      <Operation id="1-1" builder="QueryRelatedOperationBuilder" entity="Category" relationshipName="ChildCategories">
+        <Search builder="ModelSearchCriteriaBuilder">
+          <Argument name="NumberOfItemsToReturn" value="500" />
+          <Argument name="ReturnTotalItemCount" />
+        </Search>
+        <Sort>
+          <Argument name="DisplayName" />
+        </Sort>
+        <PropertiesToReturn>
+          <Property name="Id" />
+          <Property name="CatalogId" />
+          <Property name="DisplayName" />
+          <Property name="Description"/>
+          <Property name="Image_filename"/>
+          <Property name="ParentCategoryId"/>
+        </PropertiesToReturn>
+      </Operation>
+    </Operation>
+  </RequestTemplate>
+
+
   <RequestTemplate id="GetRegions" group="Profile" cached="false">
     <Descriptions>
       <Description culture="" value="Get States And Provinces" />
@@ -154,7 +191,116 @@
         <Property name="BasketWarnings"/>
       </PropertiesToReturn>
       <Operation id="1-1" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+        <Search builder="ModelSearchCriteriaBuilder">
+          <Argument name="ReturnTotalItemCount" />
+        </Search>
+        <PropertiesToReturn>
+          <Property name="Id" />
+          <Property name="CatalogName" />
+          <Property name="ProductId" />
+          <Property name="VariantId" />
+          <Property name="Quantity" />
+          <Property name="DisplayName" />
+          <Property name="ShippingMethodId"/>
+          <Property name="Total" />
+          <Property name="ListPrice" />
+          <Property name="_product_ProductLandingPage" />
+          <Property name="_product_Image_filename" />
+          <Property name="_product_ProductShortDescription" />
+          <Property name="CatPath" />
+          <Property name="CurrencyCulture" />
+          <Property name="InStockQuantity" />
+        </PropertiesToReturn>
+      </Operation>
+      <Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="Payment" relationshipName="Payments" commerceArea="Orders">
         <Search builder="ModelSearchCriteriaBuilder" />
+        <Operation id="1-2-1" builder="QueryRelatedOperationBuilder" entity="PaymentAccount" relationshipName="PaymentAccount" commerceArea="Orders">
+          <Search builder="ModelSearchCriteriaBuilder" />
+          <Operation id="1-2-1-1" builder="QueryRelatedOperationBuilder" entity="PaymentMethod" relationshipName="PaymentMethod">
+            <Search builder="ModelSearchCriteriaBuilder" />
+          </Operation>
+        </Operation>
+      </Operation>
+      <Operation id="1-3" builder="QueryRelatedOperationBuilder" entity="Address" relationshipName="Addresses" commerceArea="Orders">
+        <Search builder="ModelSearchCriteriaBuilder" />
+      </Operation>
+
+      <Operation id="1-4" builder="QueryRelatedOperationBuilder" entity="Shipment" relationshipName="Shipments" commerceArea="Orders">
+        <Search builder="ModelSearchCriteriaBuilder" />
+        <!--<PropertiesToReturn>
+          <Property name="DiscountAmount" />
+        </PropertiesToReturn>-->
+        <Operation id="1-4-1" builder="QueryRelatedOperationBuilder" entity="ShippingMethod" relationshipName="ShippingMethod">
+          <Search builder="ModelSearchCriteriaBuilder" />
+          <PropertiesToReturn>
+            <Property name="Id" />
+          </PropertiesToReturn>
+        </Operation>
+      </Operation>
+    </Operation>
+  </RequestTemplate>
+  
+  <RequestTemplate id="GetBasketWithoutAdditionalData" group="Orders" cached="false" containsSensitiveData="true">
+    <Descriptions>
+      <Description value="Get User Basket without additional data." />
+    </Descriptions>
+    <Operation id="1" builder="QueryOperationBuilder" entity="Basket" commerceArea="Orders">
+      <Search builder="ModelSearchCriteriaBuilder">
+        <Argument name="Name" value="Default" />
+        <Argument name="UserId" />
+        <Argument name="BasketType" value="0" />
+      </Search>
+      <Options builder="BasketQueryOptionsBuilder">
+        <Argument name="RefreshBasket" value="true" />
+      </Options>
+      <PropertiesToReturn>
+        <Property name="Name"/>
+        <Property name="UserId"/>
+        <Property name="BasketType"/>
+        <Property name="OrderGroupId"/>
+        <Property name="SoldToId"/>
+        <Property name="Total"/>
+        <Property name="SubTotal"/>
+        <Property name="TaxTotal"/>
+        <Property name="LineItemCount"/>
+        <Property name="BasketErrors"/>
+        <Property name="BasketWarnings"/>
+      </PropertiesToReturn>
+    </Operation>
+  </RequestTemplate>
+  
+  <RequestTemplate id="GetBasketPagedLineItems" group="Orders" cached="false" containsSensitiveData="true">
+    <Descriptions>
+      <Description value="Get User Basket with line item paging" />
+    </Descriptions>
+    <Operation id="1" builder="QueryOperationBuilder" entity="Basket" commerceArea="Orders">
+      <Search builder="ModelSearchCriteriaBuilder">
+        <Argument name="Name" value="Default" />
+        <Argument name="UserId" />
+        <Argument name="BasketType" value="0" />
+      </Search>
+      <Options builder="BasketQueryOptionsBuilder">
+        <Argument name="RefreshBasket" value="true" />
+      </Options>
+      <PropertiesToReturn>
+        <Property name="Name"/>
+        <Property name="UserId"/>
+        <Property name="BasketType"/>
+        <Property name="OrderGroupId"/>
+        <Property name="SoldToId"/>
+        <Property name="Total"/>
+        <Property name="SubTotal"/>
+        <Property name="TaxTotal"/>
+        <Property name="LineItemCount"/>
+        <Property name="BasketErrors"/>
+        <Property name="BasketWarnings"/>
+      </PropertiesToReturn>
+      <Operation id="1-1" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+        <Search builder="ModelSearchCriteriaBuilder">
+          <Argument name="FirstItemIndex" />
+          <Argument name="NumberOfItemsToReturn" value="10" />
+          <Argument name="ReturnTotalItemCount" />
+        </Search>
         <PropertiesToReturn>
           <Property name="Id" />
           <Property name="CatalogName" />
@@ -661,6 +807,90 @@
       <Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
         <!-- Return All Properties -->
         <Search builder="ModelSearchCriteriaBuilder"/>
+      </Operation>
+    </Operation>
+  </RequestTemplate>
+  
+  <RequestTemplate id="CreateLineItemWithPagedLineItems" group="Orders" cached="false">
+    <Descriptions>
+      <Description value="Create Basket Line Item with Paged Line Items." />
+    </Descriptions>
+    <Operation id="1" builder="UpdateOperationBuilder" entity="Basket" commerceArea="Orders">
+      <Search builder="ModelSearchCriteriaBuilder">
+        <Argument name="Name" value="Default" />
+        <Argument name="UserId" />
+        <Argument name="BasketType" value="0" />
+      </Search>
+      <Options builder="BasketUpdateOptionsBuilder">
+        <Argument name="RefreshBasket" value="true" />
+      </Options>
+      <PropertiesToReturn>
+        <Property name="Name"/>
+        <Property name="IsUserAuthenticated"/>
+        <Property name="UserId"/>
+        <Property name="BasketType"/>
+        <Property name="OrderGroupId"/>
+        <Property name="SoldToId"/>
+        <Property name="Total"/>
+        <Property name="SubTotal"/>
+        <Property name="TaxTotal"/>
+        <Property name="LineItemCount"/>
+        <Property name="BasketErrors"/>
+        <Property name="BasketWarnings"/>
+      </PropertiesToReturn>
+      <Operation id="1-1" builder="CreateRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+        <PropertiesToSet>
+          <Argument name="CatalogName" />
+          <Argument name="ProductId" />
+          <Argument name="VariantId" />
+          <Argument name="Quantity" />
+        </PropertiesToSet>
+      </Operation>
+      <Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+        <!-- Return All Properties -->
+        <Search builder="ModelSearchCriteriaBuilder">
+          <Argument name="FirstItemIndex" />
+          <Argument name="NumberOfItemsToReturn" value="10" />
+          <Argument name="ReturnTotalItemCount" />
+        </Search>
+      </Operation>
+    </Operation>
+  </RequestTemplate>
+    
+  <RequestTemplate id="CreateLineItemButDoNotReturnLineItems" group="Orders" cached="false">
+    <Descriptions>
+      <Description value="Create Basket Line Item but do not return line items." />
+    </Descriptions>
+    <Operation id="1" builder="UpdateOperationBuilder" entity="Basket" commerceArea="Orders">
+      <Search builder="ModelSearchCriteriaBuilder">
+        <Argument name="Name" value="Default" />
+        <Argument name="UserId" />
+        <Argument name="BasketType" value="0" />
+      </Search>
+      <Options builder="BasketUpdateOptionsBuilder">
+        <Argument name="RefreshBasket" value="true" />
+      </Options>
+      <PropertiesToReturn>
+        <Property name="Name"/>
+        <Property name="IsUserAuthenticated"/>
+        <Property name="UserId"/>
+        <Property name="BasketType"/>
+        <Property name="OrderGroupId"/>
+        <Property name="SoldToId"/>
+        <Property name="Total"/>
+        <Property name="SubTotal"/>
+        <Property name="TaxTotal"/>
+        <Property name="LineItemCount"/>
+        <Property name="BasketErrors"/>
+        <Property name="BasketWarnings"/>
+      </PropertiesToReturn>
+      <Operation id="1-1" builder="CreateRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+        <PropertiesToSet>
+          <Argument name="CatalogName" />
+          <Argument name="ProductId" />
+          <Argument name="VariantId" />
+          <Argument name="Quantity" />
+        </PropertiesToSet>
       </Operation>
     </Operation>
   </RequestTemplate>

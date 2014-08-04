@@ -627,16 +627,16 @@ This file contains the Metadata Repository
 						-->
             <DefinitionMappings>
               <!-- To override a definition name -->
-              <DefinitionMapping definitionName="Rock-Shoes"
-											   csDefinitionName="Rockshoes" />
+              <!--<DefinitionMapping definitionName="Rock-Shoes"
+											   csDefinitionName="Rockshoes" />-->
 
-              <DefinitionMapping csDefinitionName="Boots">
-                <PropertyMappings>
+              <!--<DefinitionMapping csDefinitionName="Boots">
+                <PropertyMappings>-->
                   <!-- To override a property name for a given definition -->
-                  <PropertyMapping property="Sole"
+                  <!--<PropertyMapping property="Sole"
 													 csProperty="SoleMaterial" />
                 </PropertyMappings>
-              </DefinitionMapping>
+              </DefinitionMapping>-->
 
             </DefinitionMappings>
           </EntityMapping>
@@ -912,7 +912,7 @@ This file contains the Metadata Repository
             </PropertyMappings>
 
             <DefinitionMappings>
-              <DefinitionMapping csDefinitionName="Pants">
+              <!--<DefinitionMapping csDefinitionName="Pants">
                 <PropertyMappings>
                   <PropertyMapping property="Size"
 													 csProperty="ProductSize" />
@@ -923,7 +923,7 @@ This file contains the Metadata Repository
                   <PropertyMapping property="Size"
 													 csProperty="ProductSize" />
                 </PropertyMappings>
-              </DefinitionMapping>
+              </DefinitionMapping>-->
             </DefinitionMappings>
           </EntityMapping>
         </EntityMappings>
@@ -1282,8 +1282,8 @@ This file contains the Metadata Repository
 
             <DefinitionMappings>
               <!-- To override a definition name -->
-              <DefinitionMapping definitionName="AdvWorkCatDef"
-											   csDefinitionName="AdvWorkCatDef" />
+              <!--<DefinitionMapping definitionName="AdvWorkCatDef"
+											   csDefinitionName="AdvWorkCatDef" />-->
             </DefinitionMappings>
 
           </EntityMapping>
@@ -1492,9 +1492,6 @@ This file contains the Metadata Repository
               <PropertyMapping property="FirstName"				csProperty="GeneralInfo.first_name" />
               <PropertyMapping property="LastName"				csProperty="GeneralInfo.last_name" />
               <PropertyMapping property="PreferredCreditCard"				csProperty="GeneralInfo.preferred_credit_card" />
-              <PropertyMapping property="PreferredShippingMethod"		csProperty="GeneralInfo.preferred_shipping_method" />
-              <PropertyMapping property="DefaultShopperList"        csProperty="GeneralInfo.default_shopper_list" />
-              <PropertyMapping property="LiveID" csProperty="GeneralInfo.user_live_id" />
               <PropertyMapping property="DirectMailOptOut"          csProperty="GeneralInfo.direct_mail_opt_out" />
             </PropertyMappings>
 
@@ -1598,7 +1595,7 @@ This file contains the Metadata Repository
             </Description>
           </Relationship>
          
-          <Relationship name="PreferredShippingMethod" type="Relationship" modelName="ShippingMethod" isMultipleItems="false" />
+          <!--<Relationship name="PreferredShippingMethod" type="Relationship" modelName="ShippingMethod" isMultipleItems="false" />-->
           <Relationship name="PreferredCreditCard" type="Relationship" modelName="CreditCard" isMultipleItems="false" csArea="Profiles" />
           <Relationship name="PreferredAddress" type="Relationship" modelName="Address" isMultipleItems="false" csArea="Profiles" />
 
@@ -2005,6 +2002,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="BasketErrors"            csProperty="_Basket_Errors"/>
               <PropertyMapping property="PurchaseErrors"          csProperty="_Purchase_Errors"/>
               <PropertyMapping property="IsMultiShipping"          csProperty="IsMultiShipping"/>
+             
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
