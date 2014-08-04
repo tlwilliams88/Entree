@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="53"
-  DTS:VersionGUID="{1699B86A-CB00-41D1-BED0-136A72E1E47E}">
+  DTS:VersionBuild="59"
+  DTS:VersionGUID="{8ED1ED33-EB32-4135-8E4D-4E6408449639}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           DTS:Format="FixedWidth"
           DTS:LocaleID="1033"
           DTS:HeaderRowsToSkip="1"
-          DTS:HeaderRowDelimiter="_x000A__x0009__x0009_"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
@@ -39,7 +39,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{44077620-6FAD-442B-AEC7-24C776D0C2FB}"
+              DTS:DTSID="{81DBE47E-A4C9-457A-9EA9-D0DAA540AE0B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -47,7 +47,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{6027289C-14D8-45C3-B5BD-7A3168B5C25C}"
+              DTS:DTSID="{326B6BAD-581E-4F8A-A760-97139DA056A2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -55,7 +55,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{7DD7A1F0-B5F0-4BCB-9237-1CA82E10A413}"
+              DTS:DTSID="{842327E0-A013-4765-8899-3C7776854CD4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -63,7 +63,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{848CBC3C-719F-417D-88EF-066155986812}"
+              DTS:DTSID="{58F1A22E-0C3D-462F-95FC-341564A3B7E9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -71,7 +71,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{7BE6B900-A82C-4AC0-AD0C-E64A89BB8253}"
+              DTS:DTSID="{A55F4EAC-5950-44C9-9C86-F61D937D2DB2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -79,7 +79,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{090B6DFF-8E06-470F-A5B4-8B7D210338D6}"
+              DTS:DTSID="{603F1B46-5059-4928-828D-86E09927C9A0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -87,7 +87,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{78CC1163-B0DB-468B-9959-5629B0ED5A84}"
+              DTS:DTSID="{274E20CC-4546-4C50-B794-43E19C053D8D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -95,7 +95,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{5ACB330A-E202-44B2-A7E5-4FF001DA5E1C}"
+              DTS:DTSID="{FE4E4174-7D7E-4221-891B-050A0449FCEB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -103,7 +103,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{4ADDF70E-E518-4E8E-AE3C-4BA26922381A}"
+              DTS:DTSID="{392C2A97-57A9-49AE-8AE4-EF909A0C5099}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -111,7 +111,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{65EE35C2-B35F-4CF0-B671-2D1935D38CED}"
+              DTS:DTSID="{B55E05EC-CA3F-480D-98DF-5A11B4738E81}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -119,7 +119,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{497D4DCC-73C7-486B-829F-CB8666385A4D}"
+              DTS:DTSID="{2CF57007-8D92-45FA-8D73-D0E502214A9E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -127,7 +127,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{A16D7166-96A3-4DC4-8DED-E3B18A93160E}"
+              DTS:DTSID="{60209816-E063-4313-9420-DA1B1B9E892D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -135,7 +135,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{25E5D16B-3725-4332-9A8C-8091CA3CD2FD}"
+              DTS:DTSID="{06482C6B-961F-4D1F-8565-A035F74C58A1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -143,7 +143,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{EB85E59E-180B-48BE-8B91-921758220EEC}"
+              DTS:DTSID="{BDFC2947-4BA7-4B4F-915B-7DA61D44E181}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -151,7 +151,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{E5004DA6-E27B-438D-9057-533299C1037B}"
+              DTS:DTSID="{52E9B8BB-E0C4-42C6-9D9D-ED893A4BC09C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -159,7 +159,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{9FF8F0B6-4E2E-4E98-94A2-29A06AB2B9C4}"
+              DTS:DTSID="{DB5EA14E-906E-483F-9AE8-9DCA5D0020F0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -167,7 +167,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{55812EFB-82CD-4FB7-8943-4341C4EA314F}"
+              DTS:DTSID="{E4B16D98-BB3F-49B9-B4D7-30A2059B9FA8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -175,7 +175,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{D54CE791-B46D-4B93-B5ED-FA55345B80C1}"
+              DTS:DTSID="{2C8213E9-DDED-4742-BD4B-864462B01E85}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -183,7 +183,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{9505BF2C-7B9B-4EC8-89C2-B2D2964F04D6}"
+              DTS:DTSID="{6C62ACF5-1D2A-4D38-963B-8BBF0365B456}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -191,7 +191,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{00BE209A-15C2-4060-973C-6647FD65015F}"
+              DTS:DTSID="{105A900C-D39D-47BD-845F-C81892A61E6D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -199,7 +199,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{4F78ADCF-11F3-435E-8C72-C34AD049153C}"
+              DTS:DTSID="{44090769-91AC-4C15-A873-A47EF2AEFA7E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -207,7 +207,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{8EEE794B-6C6E-48C6-A875-6EBED23CE481}"
+              DTS:DTSID="{E2EAEA63-748C-43E1-9457-F937C97AA4FA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{A4C0AA8F-CF4D-4421-89C8-44294D4228C3}"
+              DTS:DTSID="{98C8CCF7-78FC-4AFC-9280-93A6EB32AAF7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{94B2D672-A489-4D9E-9D0C-6EA3D46E0396}"
+              DTS:DTSID="{E64376B3-1495-4479-8220-32DEFB8FC673}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{C00C303D-AE7D-40DB-A41D-1F7154C8A6FF}"
+              DTS:DTSID="{4B270969-EEB1-466E-9BBA-17B9257B434C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{724F075A-9C7C-496D-9036-83AC37E9B199}"
+              DTS:DTSID="{5CC44261-99BF-427F-82D4-AA9C88BC76AC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{FC32B3E7-3346-4E42-8ECC-70385C4745A8}"
+              DTS:DTSID="{0CB5BA02-7106-4DA7-B1D5-305FFCA0717D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{B3BA8D9B-AA14-4D95-9CE6-FDAC15021701}"
+              DTS:DTSID="{54D233D7-B93A-4569-985A-8B203F880F41}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{681AD632-A9C2-4C53-8EDD-7097A57BE63F}"
+              DTS:DTSID="{7FFB101A-E301-4154-8713-1865F1DDCEE6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{329928B8-81B6-4927-9E94-8940EDFB3191}"
+              DTS:DTSID="{74F7EA67-522A-4F0D-B5DA-6AB17B668AAE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{5ADD4B37-DF27-4DC4-B109-EC9B74FC7C5E}"
+              DTS:DTSID="{451618ED-F3AF-4557-8075-539225F7C46C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{FC7E1476-8CC4-4B49-B58C-C6B65232BA20}"
+              DTS:DTSID="{AB0706FB-DDBF-482E-9D4F-736A4CFD2F18}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{CE74545A-95BE-4D9A-9156-FEB7B3254F7E}"
+              DTS:DTSID="{DE0A8D5A-076B-484C-AAEE-CDED39CC0564}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{B5B58073-4EAA-4B24-BCC7-583CE17E5CBE}"
+              DTS:DTSID="{12114AF4-6D98-4689-B469-625A2A5D6787}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{9D8FCF58-20ED-4D7E-AA81-70E102BC0E03}"
+              DTS:DTSID="{3073A4F3-A6C0-41E0-9225-476C31706C58}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{C72AC75A-AF0A-475E-8FAA-270556D90526}"
+              DTS:DTSID="{2F7A6403-EFF8-4278-B3C7-BF7D4CE8BB73}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{3C3A9647-435A-4F7B-BD2D-E8512771F898}"
+              DTS:DTSID="{E596135E-A5DB-4BBE-9921-52A4E540CCAB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{DA1012C0-01F8-4962-B49D-793838F23C68}"
+              DTS:DTSID="{38788865-EEE6-41DD-97EB-52E6EF8F4675}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{E63E57AF-B2D2-442E-92A4-58643A345ECF}"
+              DTS:DTSID="{FDBC32A3-EA16-4FE5-BB81-0410BE2E9C5E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{5E0BF843-2517-4461-BBC8-4BB08F4BD1AF}"
+              DTS:DTSID="{0429FAD6-52BA-4875-8F68-342419E929F5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{F4E90E6F-7745-4EDD-905F-E92BD2F1FDBD}"
+              DTS:DTSID="{02840657-1FFE-4C8B-96DB-F3945EF2A375}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{2B5FC400-01CF-4723-A6D8-D6AE7FAC19D4}"
+              DTS:DTSID="{A6BD3031-CF1A-4E9C-A456-14A991263E26}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{9E3C8519-83B9-4B26-862A-A80737622725}"
+              DTS:DTSID="{0D62D33B-CC3C-4D30-810F-417AC50EA9C4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{1F66EA71-D98A-4CD3-8E0D-A736A94E2E81}"
+              DTS:DTSID="{0EB765F9-9228-4DF3-92F6-72182ED97C3B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,7 +391,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{12273289-4081-4BCB-8009-2AD31CA08BE0}"
+              DTS:DTSID="{2B26B08D-120C-4860-8EBF-68BF076F7336}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -399,7 +399,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{7A3E4B8C-D1BB-4243-91BE-C897C6A55CAB}"
+              DTS:DTSID="{B57D1B3B-71BC-449B-8B2C-3286FC1C9778}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{26AF084B-B873-43C1-A7EF-442A196108FA}"
+              DTS:DTSID="{6D7F1123-B33A-4F98-A9B7-804F1A958241}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{B1EC2BB8-FB64-4B42-B40C-0A5502258A37}"
+              DTS:DTSID="{16C64909-3FC4-41C6-911C-C3D2F2DC8224}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{499A66B4-5BA8-4A22-9EDC-C4CF88AB5215}"
+              DTS:DTSID="{0D6B1C63-0000-4569-A7EE-75D5B64EF9F9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{10780493-FECB-4E8D-8DBF-28FF184A3529}"
+              DTS:DTSID="{91D84441-11DB-4FA6-BAA9-E18FAC8F97FD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{603C58D9-5471-4C27-B9D8-BD23E561374E}"
+              DTS:DTSID="{6A5BE5A5-E6FB-48A7-8446-1219F8723414}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{B11ABE37-75AE-42C3-9E13-8987380971DE}"
+              DTS:DTSID="{4BA7BEC3-1839-4941-A7DF-5B5C7BA390E0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="Column 0"
-              DTS:DTSID="{E70279C6-7A65-4EAC-AE67-58F6465B2DC2}"
+              DTS:DTSID="{34A68F70-D7B8-405D-9ABA-9546298795B5}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACAvyh5yX/5ZchOGU149cJ0AAAAAASAAACgAAAAEAAAAEj9IxQrWIEH9OSehAP6o80IAAAAIjVN6pRJIgAUAAAA8jY1mZe2O5l+bhp8dLJbquOGFgk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB+B/7AT1QtyevMvwhXgXwtAAAAAASAAACgAAAAEAAAAIbbHvz6kV8UkfrZsYffaSoIAAAAP94cn2EMD8gUAAAAuGKlw7dqF/X1Ruo9CePvRHKaZ+0</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACIYSzEn34i8f/LYDsDPgWeAAAAAASAAACgAAAAEAAAAJf74bLHQWNSGr+c2TwIC3YIAAAAKD5pVyGc6xgUAAAA1RIIQ4LlGWpnNpWjYypCeNibRpM</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABX2uv+GWar5rh5cLbUmIieAAAAAASAAACgAAAAEAAAAMJdWZ5YdeLI/NTkU+Z6G3kIAAAAESf/ay/PbKgUAAAAie9kAP4AEpKtlIZjHBQTuHLswvk</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -10515,9 +10515,9 @@
           Id="Package\Catalog Import Tasks\Stage Categories"
           TopLeft="46,35" />
         <NodeLayout
-          Size="158,42"
+          Size="161,42"
           Id="Package\Catalog Import Tasks\Stage Customers"
-          TopLeft="509,35" />
+          TopLeft="509,34" />
         <NodeLayout
           Size="135,42"
           Id="Package\Catalog Import Tasks\Stage Items"
@@ -10525,8 +10525,8 @@
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="689,88"
-          Size="689,131"
+          PanelSize="689,132"
+          Size="689,175"
           Id="Package\Catalog Import Tasks"
           TopLeft="78,154" />
         <NodeLayout
@@ -10557,6 +10557,10 @@
           Id="Package\Process Staged Data"
           TopLeft="336,460" />
         <NodeLayout
+          Size="168,42"
+          Id="Package\Send Fail Message"
+          TopLeft="923,214" />
+        <NodeLayout
           Size="225,42"
           Id="Package\Truncate Stage Tables\Truncate Catalog Stage Tables"
           TopLeft="16,3" />
@@ -10573,30 +10577,30 @@
           TopLeft="77,7" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="336,117">
+          TopLeft="251,117">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="86.5,37"
+              EndConnector="171.5,37"
               Start="0,0"
-              End="86.5,29.5">
+              End="171.5,29.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,14.5" />
+                    End="0,10.8683602771363" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,14.5"
-                    Point2="0,18.5"
-                    Point3="4,18.5" />
+                    Point1="0,10.8683602771363"
+                    Point2="0,14.8683602771363"
+                    Point3="4,14.8683602771363" />
                   <mssgle:LineSegment
-                    End="82.5,18.5" />
+                    End="167.5,14.8683602771363" />
                   <mssgle:CubicBezierSegment
-                    Point1="82.5,18.5"
-                    Point2="86.5,18.5"
-                    Point3="86.5,22.5" />
+                    Point1="167.5,14.8683602771363"
+                    Point2="171.5,14.8683602771363"
+                    Point3="171.5,18.8683602771363" />
                   <mssgle:LineSegment
-                    End="86.5,29.5" />
+                    End="171.5,29.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10607,18 +10611,30 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="423.25,285">
+          TopLeft="78,241.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="0,31.5"
+              EndConnector="-1,129.5"
               Start="0,0"
-              End="0,24">
+              End="-8.5,129.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,24" />
+                    End="-19.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-19.5,0"
+                    Point2="-23.5,0"
+                    Point3="-23.5,4" />
+                  <mssgle:LineSegment
+                    End="-23.5,125.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-23.5,125.5"
+                    Point2="-23.5,129.5"
+                    Point3="-19.5,129.5" />
+                  <mssgle:LineSegment
+                    End="-8.5,129.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -10649,10 +10665,6 @@
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="168,42"
-          Id="Package\Send Fail Message"
-          TopLeft="923,214" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
           TopLeft="421,117">
@@ -10691,37 +10703,25 @@
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="767,219.5">
+          TopLeft="767,238.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="156,15.5"
+              EndConnector="156,0"
               Start="0,0"
-              End="148.5,15.5">
+              End="148.5,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="74,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="74,0"
-                    Point2="78,0"
-                    Point3="78,4" />
-                  <mssgle:LineSegment
-                    End="78,11.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="78,11.5"
-                    Point2="78,15.5"
-                    Point3="82,15.5" />
-                  <mssgle:LineSegment
-                    End="148.5,15.5" />
+                    End="148.5,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="62.75865234375,-15.7490234375,30.4826953125,9.7490234375"
+              BoundingBox="59.00865234375,5,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -10934,7 +10934,7 @@
     design-time-name="Package\Catalog Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData"
@@ -10978,9 +10978,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -11014,9 +11012,7 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -11026,7 +11022,7 @@
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="127,42"
           Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
@@ -11066,7 +11062,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -11321,7 +11319,7 @@
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -11361,7 +11359,9 @@
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
