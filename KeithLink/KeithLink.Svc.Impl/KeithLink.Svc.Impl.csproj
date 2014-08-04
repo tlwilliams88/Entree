@@ -111,6 +111,7 @@
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="ListLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearchItemUpdate.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
