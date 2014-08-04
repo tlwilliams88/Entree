@@ -16,41 +16,51 @@ angular.module('bekApp')
     function concatenateNestedParameters(name, list) {
       var filters = name + ':';
       angular.forEach(list, function (item, index) {
-        filters += item + '|';
+        filters += item.name + '|';
       });
       return filters.substr(0, filters.length-1);
     }
  
     var Service = {
-      getProducts: function(branchId, searchTerm, pageSize, index, brands) {
+      getProducts: function(branchId, searchTerm, pageSize, index, brands, facetCategoryId) {
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
  
-        concatenateNestedParameters(brands);
+        var facets = '';
+        if (brands && brands.length > 0) {
+          facets += concatenateNestedParameters('brands', brands);
+        }
+        if (brands && brands.length > 0 && facetCategoryId) {
+          facets += '&';
+        }
+        if (facetCategoryId) {
+          facets += 'categories:' + facetCategoryId;
+        }
  
         return $http.get('/catalog/search/' + branchId + '/' + searchTerm + '/products', {
           params: {
             size: pageSize,
-            from: index
+            from: index,
+            facets: facets
           }
         }).then(function(response) {
           return response.data;
         });
       },
  
-      getProductsByCategory: function(branchId, categoryId, pageSize, index, brands, filterCategoryId) {
+      getProductsByCategory: function(branchId, categoryId, pageSize, index, brands, facetCategoryId) {
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
- 
+
         var facets = '';
-        if (!brands || brands.length > 0) {
+        if (brands && brands.length > 0) {
           facets += concatenateNestedParameters('brands', brands);
         }
-        if (brands && brands.length > 0 && filterCategoryId) {
+        if (brands && brands.length > 0 && facetCategoryId) {
           facets += '&';
         }
-        if (filterCategoryId) {
-          facets += 'category:' + categoryId;
+        if (facetCategoryId) {
+          facets += 'categories:' + categoryId;
         }
         
         return $http.get('/catalog/search/category/' + branchId + '/' + categoryId + '/products', {
