@@ -58,9 +58,25 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Core.Orders.Agent, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.Agent.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Orders.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Orders.DataManagement, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.DataManagement.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Core.Profiles.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Profiles.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
@@ -127,6 +143,7 @@
     <Compile Include="Repository\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\ListRepositoryImpl.cs" />
     <Compile Include="Repository\MockListRepositoryImpl.cs" />
     <Compile Include="Repository\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\PriceRepositoryImpl.cs" />

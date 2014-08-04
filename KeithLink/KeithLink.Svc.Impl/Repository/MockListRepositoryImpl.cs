@@ -1,9 +1,12 @@
-﻿using KeithLink.Svc.Core;
+﻿using CommerceServer.Core.Catalog;
+using CommerceServer.Core.Runtime.Orders;
+using KeithLink.Svc.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RT = KeithLink.Svc.Impl.RequestTemplates;
 
 namespace KeithLink.Svc.Impl.Repository
 {
@@ -63,17 +66,6 @@ namespace KeithLink.Svc.Impl.Repository
         public UserList ReadList(Guid listId)
         {
             return sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
-        }
-
-
-        public List<string> ReadListLabels(Guid listId)
-        {
-            return sampleList.Where(s => s.ListId.Equals(listId)).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).ToList();
-        }
-
-        public List<string> ReadListLabels()
-        {
-            return sampleList.SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).ToList();
         }
 
         public Guid CreateList(UserList list)
