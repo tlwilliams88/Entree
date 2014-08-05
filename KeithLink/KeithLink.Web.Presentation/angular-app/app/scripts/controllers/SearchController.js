@@ -21,6 +21,18 @@ angular.module('bekApp')
          $scope.itemsPerPage = 30;
          $scope.itemIndex = 0;
 
+                $scope.oneAtATime = true;
+       $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+       $scope.selectedCategory = '';
+       $scope.selectedSubcategory = '';
+       $scope.selectedBrands = [];
+       $scope.selectedAllergens = [];
+       $scope.isBrandShowing = false;
+       $scope.brandHiddenNumber = 3;
+       $scope.isAllergenShowing = false;
+       $scope.allergenHiddenNumber = 3;
+       $scope.hidden= true;
+
        function getData() {
            var type = $stateParams.type;
            var branchId = $scope.currentUser.currentLocation.branchId;
@@ -36,34 +48,38 @@ angular.module('bekApp')
                return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            } else if (type === 'brand') {
 
-               var searchTerm = $stateParams.id;
-               return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+               var brandName = $stateParams.id;
+               return ProductService.getProducts(branchId, brandName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            }
        }
 
        function loadProducts(appendResults) {
            $scope.loadingResults = true;
 
-           getData().then(function(data) {
+           return getData().then(function(data) {
 
-               if (appendResults) {
+               // append results to existing data
+               if (appendResults) { 
                    $scope.products.push.apply($scope.products, data.products);
-               } else {
+               // replace existing data
+               } else { 
                    $scope.products = data.products;
                }
 
-               $scope.categories = data.facets[0].categories.facetvalues;
-               $scope.brands = data.facets[0].brands.facetvalues;
+               // $scope.categories = data.facets.categories;
+               // $scope.brands = data.facets.brands;
                $scope.totalItems = data.totalcount;
-               console.log('totalitems: ' + data.totalcount);
-               console.log('products: ' + $scope.products.length);
-
-               $scope.predicate = 'id';
+               
                $scope.loadingResults = false;
+
+               return data.facets;
            });
        }
 
-       loadProducts();
+       loadProducts().then(function(facets) {
+        $scope.categories = facets.categories;
+        $scope.brands = facets.brands;
+       });
 
        $scope.infiniteScrollLoadMore = function() {
 
@@ -78,17 +94,7 @@ angular.module('bekApp')
        };
 
        
-       $scope.oneAtATime = true;
-       $scope.items = ['Item 1', 'Item 2', 'Item 3'];
-       $scope.selectedCategory = '';
-       $scope.selectedSubcategory = '';
-       $scope.selectedBrands = [];
-       $scope.selectedAllergens = [];
-       $scope.isBrandShowing = false;
-       $scope.brandHiddenNumber = 3;
-       $scope.isAllergenShowing = false;
-       $scope.allergenHiddenNumber = 3;
-       $scope.hidden= true;
+
 
        $scope.showContextMenu = function(e, idx) {
            $scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
@@ -119,6 +125,10 @@ angular.module('bekApp')
                else {
                    $scope.selectedBrands.push(selectedFacet);
                }
+
+               loadProducts().then(function(facets) {
+                $scope.categories = facets.categories;
+               });
            } else if(filter==='allergen') {
                idx = $scope.selectedAllergens.indexOf(selectedFacet);
 
@@ -136,18 +146,11 @@ angular.module('bekApp')
            else{
                $scope.selectedCategory = selectedFacet.name;
                $scope.selectedSubcategory = '';
+
+               loadProducts().then(function(facets) {
+                $scope.brands = facets.brands;
+               });
            }
-
-
-				ProductService.getProductsByCategory($scope.currentUser.currentLocation.branchId, $stateParams.id, $scope.itemsPerPage, 0, $scope.selectedBrands, $scope.selectedCategory).then(function(data) {
-					$scope.products = data.products;
-					$scope.categories = data.facets[0].facetvalues;
-					$scope.brands = data.facets[1].facetvalues;
-					$scope.totalItems = data.totalcount;
-
-					$scope.predicate = 'id';
-					$scope.loadingResults = false;
-				});
        };
 
        $scope.allergens = [{

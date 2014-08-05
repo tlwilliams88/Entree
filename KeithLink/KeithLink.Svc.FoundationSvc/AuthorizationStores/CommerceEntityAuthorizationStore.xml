@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AzAdminManager MajorVersion="1" MinorVersion="0" Guid="7534bb4b-4d52-466f-8e6b-c40ec140a1e1">
+	<AzApplication Guid="8bc98372-e580-47fc-9931-8210606b7a5f" Name="CommerceFoundation" Description="Authorization policy used by the foundation OperationService." ApplicationVersion="">
+		<AzScope Guid="15b31b87-24f5-44e5-9fc7-09c5b8bbf0fe" Name="CommerceClaim" Description="Allows access to CommerceClaim entities.">
+			<AzTask Guid="1fa86c21-ee73-45f8-b6b2-f217c5affced" Name="CommerceQueryOperation" Description="Members can query CommerceClaim entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="d661f241-9298-4fd9-b139-81869ef55797" Name="CommerceQueryOperation">
+				<TaskLink>1fa86c21-ee73-45f8-b6b2-f217c5affced</TaskLink>
+				<AppMemberLink>f783c007-6b6a-4e4f-b724-950b512e24fe</AppMemberLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="333fb019-aac3-4ad1-96b3-1cbf4f0d32ee" Name="Solution" Description="Allows access to Solution entities.">
+			<AzTask Guid="10059cc9-1620-4ad0-91bd-953200d83595" Name="CommerceQueryOperation" Description="Members can query Solution entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="89791ac0-0dc5-49cb-8fb2-9c4165831587" Name="CommerceQueryOperation">
+				<TaskLink>10059cc9-1620-4ad0-91bd-953200d83595</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="e543d9de-d780-48e7-bf5f-26851f9f4060" Name="Channel" Description="Allows access to Channel entities.">
+			<AzTask Guid="50715d58-d3c8-464c-838f-e95d32fb3c24" Name="CommerceQueryOperation" Description="Members can query Channel entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="12c5fdf5-127d-48a2-8f1e-20fcf9863731" Name="CommerceQueryOperation">
+				<TaskLink>50715d58-d3c8-464c-838f-e95d32fb3c24</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="829fbce9-f697-40f0-b851-868541ad4336" Name="Site" Description="Allows access to Site entities.">
+			<AzTask Guid="da750243-b250-4dba-8590-979c13f261a1" Name="CommerceQueryOperation" Description="Members can query Site entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="69c41ecf-775b-471e-be93-0f3018c2ff8c" Name="CommerceQueryOperation">
+				<TaskLink>da750243-b250-4dba-8590-979c13f261a1</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="fd8ade63-105e-47cf-b14e-5dc6e4e67be2" Name="CommerceEntityDefinition" Description="Allows access to CommerceEntityDefinition entities.">
+			<AzTask Guid="4f938b9c-8f45-43f1-aa1a-0e37a7af6ee7" Name="CommerceQueryOperation" Description="Members can query CommerceEntityDefinition entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="5ee91ce4-7012-4713-bea9-f6c02a70cc47" Name="CommerceQueryOperation">
+				<TaskLink>4f938b9c-8f45-43f1-aa1a-0e37a7af6ee7</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="07a58bd8-9ff6-4168-9025-bc389261bb5e" Name="ContentSelector" Description="Allows access to ContentSelector entities.">
+			<AzTask Guid="c25d2a2f-6dae-4017-88c8-c2c6604cac9b" Name="CommerceQueryOperation" Description="Members can query ContentSelector entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="c5e7a836-9011-41b3-891b-fc2c2305543d" Name="CommerceQueryOperation">
+				<TaskLink>c25d2a2f-6dae-4017-88c8-c2c6604cac9b</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="cc0865d2-61eb-46ea-ad6a-ad5b8095de89" Name="ContentSelectorCollection" Description="Allows access to ContentSelectorCollection entities.">
+			<AzTask Guid="0a509d0a-e5c5-478d-baa3-c92421f2f903" Name="CommerceQueryOperation" Description="Members can query ContentSelectorCollection entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="0d834e13-dab3-4cb8-81c0-c33142a01cbe" Name="CommerceQueryOperation">
+				<TaskLink>0a509d0a-e5c5-478d-baa3-c92421f2f903</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="8da6dff4-9be7-4ce4-bd10-d228a78d48fc" Name="EventRecord" Description="Allows access to EventRecord entities.">
+			<AzTask Guid="4a986891-5680-4d92-94cc-9e238a0837e9" Name="CommerceCreateOperation" Description="Members can create EventRecord entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="52606c40-7461-4375-9585-c5e7a59c6b86" Name="CommerceCreateOperation">
+				<TaskLink>4a986891-5680-4d92-94cc-9e238a0837e9</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="23f0d9a3-4dcd-4349-b461-45e524aafa17" Name="ImageGallery" Description="Allows access to ImageGallery entities.">
+			<AzTask Guid="65ebcb73-8215-4185-be9d-3487d155a23c" Name="CommerceQueryOperation" Description="Members can query ImageGallery entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="4b58457d-b79f-430b-a5e3-5ece8874d5bd" Name="CommerceQueryOperation">
+				<TaskLink>65ebcb73-8215-4185-be9d-3487d155a23c</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="f7c810b8-fb64-4698-94f2-c2ffba0a5354" Name="CommerceCache" Description="Allows access to CommerceCache entities.">
+			<AzTask Guid="28c4afa7-cecd-4014-9822-68171af83e88" Name="CommerceUpdateOperation" Description="Members can update CommerceCache entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="f813bbc8-cd3c-4942-bc25-eab1652005a2" Name="CommerceUpdateOperation">
+				<TaskLink>28c4afa7-cecd-4014-9822-68171af83e88</TaskLink>
+				<Member>S-1-5-21-3964450463-762970332-1424257245-1024</Member><Member>S-1-5-21-3964450463-762970332-1424257245-1025</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1021</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1022</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1009</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1010</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1012</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1013</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1016</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1017</Member></AzRole>
+			<AzTask Guid="06afe431-f194-4548-a431-93b1ef7bd504" Name="CommerceQueryOperation" Description="Members can query CommerceCache entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="e57e7e5b-6e5a-489b-ba9f-224cac375b89" Name="CommerceQueryOperation">
+				<TaskLink>06afe431-f194-4548-a431-93b1ef7bd504</TaskLink>
+				<Member>S-1-5-21-3964450463-762970332-1424257245-1024</Member><Member>S-1-5-21-3964450463-762970332-1424257245-1025</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1021</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1022</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1009</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1010</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1012</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1013</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1016</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1017</Member></AzRole>
+			<AzTask Guid="cdd5fb2e-5b6f-44b0-8f71-448008dba498" Name="CommerceDeleteOperation" Description="Members can delete CommerceCache entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="49e6d999-f51b-476c-898a-2b67ba548fd6" Name="CommerceDeleteOperation">
+				<TaskLink>cdd5fb2e-5b6f-44b0-8f71-448008dba498</TaskLink>
+				<Member>S-1-5-21-3964450463-762970332-1424257245-1024</Member><Member>S-1-5-21-3964450463-762970332-1424257245-1025</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1021</Member><Member>S-1-5-21-2495440843-1932733352-881217792-1022</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1009</Member><Member>S-1-5-21-315510688-2137413566-2949242183-1010</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1012</Member><Member>S-1-5-21-2518556788-2397645952-3958271956-1013</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1016</Member><Member>S-1-5-21-2787100973-3702684686-1844161906-1017</Member></AzRole>
+		</AzScope>
+		<AzScope Guid="6cad8cc4-ab04-41e6-a0dd-a9f4e3b52e81" Name="CommerceNearbyStore" Description="Allows access to CommerceNearbyStore entities.">
+			<AzTask Guid="c82a5ad2-c522-401f-b2fd-0f6f0e6ed68d" Name="CommerceQueryOperation" Description="Members can query CommerceNearbyStore entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="4b4e0f7b-40fd-4099-996f-8b145b4ec5c3" Name="CommerceQueryOperation">
+				<TaskLink>c82a5ad2-c522-401f-b2fd-0f6f0e6ed68d</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzScope Guid="fb6b6076-6f49-49ee-a2be-377e4e4bdd16" Name="SharepointListItem" Description="Allows access to SharepointListItem entities.">
+			<AzTask Guid="5be5873e-df5f-47b2-977c-387a4643654a" Name="CommerceQueryOperation" Description="Members can query SharePointListItem entities." BizRuleImportedPath="" RoleDefinition="True"/>
+			<AzRole Guid="9f77191e-67ec-414b-8012-15497e377f51" Name="CommerceQueryOperation">
+				<TaskLink>5be5873e-df5f-47b2-977c-387a4643654a</TaskLink>
+			</AzRole>
+		</AzScope>
+		<AzApplicationGroup Guid="f783c007-6b6a-4e4f-b724-950b512e24fe" Name="Security Token Service" Description="Members of this group can perform actions required by Security Token Services." GroupType="Basic">
+			<BizRuleLanguage></BizRuleLanguage>
+		</AzApplicationGroup>
+	</AzApplication>
+</AzAdminManager>

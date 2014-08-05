@@ -27,7 +27,8 @@ namespace KeithLink.Svc.WebApi
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
 
-            builder.RegisterType<MockListRepositoryImpl>().As<IListRepository>().InstancePerRequest() ;
+            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
             // Build the container.
             var container = builder.Build();

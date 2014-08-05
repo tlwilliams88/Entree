@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<AzAdminManager MajorVersion="1" MinorVersion="0" Description="Authorization policy for the profiles web service." Guid="933f2453-fa83-4401-8450-dbf8a7b17400">
+   <AzApplication Guid="ce1d1652-8aea-45b3-b76e-046b67598251" Name="ProfileSystem" Description="Authorization policy used by the profiles web service" ApplicationVersion="">
+    <AzOperation Guid="c9735378-94ee-4d75-ab50-751fc3031ec0" Name="Create Profile" Description="Create a new profile or SiteTerm instance.">
+      <OperationID>1</OperationID>
+    </AzOperation>
+    <AzOperation Guid="be8290ab-6825-44ef-940c-3b994b144476" Name="Retrieve Profile" Description="Retrieve a profile or Site Term instance">
+      <OperationID>2</OperationID>
+    </AzOperation>
+    <AzOperation Guid="643f2301-47e5-4fb5-853f-5c15ce7ae270" Name="Update Profile" Description="Update an existing profile or SiteTerm instance">
+      <OperationID>3</OperationID>
+    </AzOperation>
+    <AzOperation Guid="5529eafb-a668-4334-a974-7a1a43c8a151" Name="Delete Profile" Description="Delete a profile or SiteTerm instance.">
+      <OperationID>4</OperationID>
+    </AzOperation>
+    <AzOperation Guid="8978e8e1-6b37-4b93-a1f6-2cf15cdd93be" Name="Search Profile" Description="Execute a search across profile instances.">
+      <OperationID>5</OperationID>
+    </AzOperation>
+    <AzOperation Guid="5a915a8a-853d-4b6d-8705-7155f4cc9774" Name="Bypass Restrictions" Description="Bypass restriction checks based on presentation info and profile definition attributes.">
+      <OperationID>6</OperationID>
+    </AzOperation>
+    <AzOperation Guid="3872aa91-9e30-4e38-b81d-b1aee8dc6a31" Name="Refresh Profile" Description="Refresh a single profile instance in the cache of all runtime sites.">
+      <OperationID>7</OperationID>
+    </AzOperation>
+    <AzOperation Guid="e08c0834-ffc7-43cc-a1b3-f083aa6a523c" Name="Refresh All Profiles" Description="Recreate the entire profile cache on all runtime sites.">
+      <OperationID>8</OperationID>
+    </AzOperation>
+    <AzOperation Guid="5e6360d7-8d90-4f00-90b2-12ba966a3d46" Name="Retrieve Profile Schema" Description="Retrieve profile definition XML.">
+      <OperationID>9</OperationID>
+    </AzOperation>
+    <AzTask Guid="ce93fa11-2c7c-4412-87fe-5d459e001807" Name="Profile Retrieval" Description="This task encompases retrieval of profile instances and their schema." BizRuleImportedPath="">
+      <OperationLink>5e6360d7-8d90-4f00-90b2-12ba966a3d46</OperationLink>
+      <OperationLink>be8290ab-6825-44ef-940c-3b994b144476</OperationLink>
+    </AzTask>
+    <AzTask Guid="daa2fabc-f298-4000-af48-d7556d97f89a" Name="Profile Update" Description="This task encompases updating profile instances and reading their schema." BizRuleImportedPath="">
+      <OperationLink>5e6360d7-8d90-4f00-90b2-12ba966a3d46</OperationLink>
+      <OperationLink>643f2301-47e5-4fb5-853f-5c15ce7ae270</OperationLink>
+    </AzTask>
+    <AzTask Guid="660673c3-289b-40be-b707-b0c34f8fc3e0" Name="Profile Creation" Description="This task encompases creating new profile instances and retrieving profile schemas." BizRuleImportedPath="">
+      <OperationLink>5e6360d7-8d90-4f00-90b2-12ba966a3d46</OperationLink>
+      <OperationLink>c9735378-94ee-4d75-ab50-751fc3031ec0</OperationLink>
+    </AzTask>
+    <AzTask Guid="11e0415c-de61-4054-8089-e2a134550050" Name="Profile Deletion" Description="This task encompases deleting profile instances." BizRuleImportedPath="">
+      <OperationLink>5529eafb-a668-4334-a974-7a1a43c8a151</OperationLink>
+    </AzTask>
+    <AzTask Guid="bfbb26c6-0fa6-45a9-a231-1787efb88a5b" Name="Profile Search" Description="This task encompases searching profile instances." BizRuleImportedPath="">
+      <OperationLink>8978e8e1-6b37-4b93-a1f6-2cf15cdd93be</OperationLink>
+      <OperationLink>5e6360d7-8d90-4f00-90b2-12ba966a3d46</OperationLink>
+    </AzTask>
+    <AzTask Guid="eb68d290-1f74-4864-9eea-7b76f6b682ae" Name="Profile Privileged Property Access" Description="This task encompases accessing restricted profile properties." BizRuleImportedPath="">
+      <OperationLink>5a915a8a-853d-4b6d-8705-7155f4cc9774</OperationLink>
+    </AzTask>
+    <AzTask Guid="da1704c9-5065-4abd-91a9-086b966586a7" Name="Profile Refresh" Description="This task encompases refreshing single profile instances in the runtime cache." BizRuleImportedPath="">
+      <OperationLink>3872aa91-9e30-4e38-b81d-b1aee8dc6a31</OperationLink>
+    </AzTask>
+    <AzTask Guid="583f830c-48b5-4ec7-8181-1cf49d5f11a3" Name="All Profiles Refresh" Description="This task encompases refreshing all profile instances in the runtime cache." BizRuleImportedPath="">
+      <OperationLink>e08c0834-ffc7-43cc-a1b3-f083aa6a523c</OperationLink>
+    </AzTask>
+    <AzTask Guid="7c26c129-8ea5-4c7d-983a-1706fb16f41d" Name="Profile Editing" Description="This task encompases retrieval and updating of profile instances" BizRuleImportedPath="">
+      <TaskLink>ce93fa11-2c7c-4412-87fe-5d459e001807</TaskLink>
+      <TaskLink>daa2fabc-f298-4000-af48-d7556d97f89a</TaskLink>
+    </AzTask>
+    <AzTask Guid="253ae584-c2ff-4edd-bdd5-e02ac305cdab" Name="Profile Authoring" Description="This task encompases creation, retrieval, update, and deletion of profile instances." BizRuleImportedPath="">
+      <TaskLink>11e0415c-de61-4054-8089-e2a134550050</TaskLink>
+      <TaskLink>660673c3-289b-40be-b707-b0c34f8fc3e0</TaskLink>
+      <TaskLink>ce93fa11-2c7c-4412-87fe-5d459e001807</TaskLink>
+      <TaskLink>daa2fabc-f298-4000-af48-d7556d97f89a</TaskLink>
+      <TaskLink>bfbb26c6-0fa6-45a9-a231-1787efb88a5b</TaskLink>
+    </AzTask>
+    <AzTask Guid="d6a20758-77e7-41d2-bd73-9bb3dadca49b" Name="ProfileAdministrator" Description="System administrators that are granted complete access to profiles." BizRuleImportedPath="" RoleDefinition="True">
+      <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+    </AzTask>
+    <AzScope Guid="626df0b7-a63f-4c05-a1e8-1948b48a02ae" Name="UserObject" Description="Allows access to the UserObject profile definition.">
+      <AzTask Guid="cee4ab14-2251-4432-a889-058ca4ea37fa" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="088eece3-7623-40e0-84a3-ac31e90b0eb7" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzTask Guid="9e41371e-8b6b-4ca3-bbc3-1ead3d5167b1" Name="ProfileWriter_CSR" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="989519d7-824f-4268-8191-0e39340f3d0d" Name="ProfileWriter_BusinessManager">
+        <TaskLink>088eece3-7623-40e0-84a3-ac31e90b0eb7</TaskLink>
+      </AzRole>
+      <AzRole Guid="a8476071-4196-47a0-bec3-b4ad0b5117b0" Name="ProfileWriter_CSR">
+        <TaskLink>9e41371e-8b6b-4ca3-bbc3-1ead3d5167b1</TaskLink>
+      </AzRole>
+      <AzRole Guid="beb1d230-c725-4ae7-a5fc-e1fca415f085" Name="ProfileWriter_Adapter">
+        <TaskLink>cee4ab14-2251-4432-a889-058ca4ea37fa</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzScope Guid="20623845-66b5-4f31-87e0-d4e27337f6eb" Name="Address" Description="">
+      <AzTask Guid="89239820-1eb5-4130-a937-fcb5407c377c" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="08d80866-a4f5-4ae9-97f4-078331e16aeb" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzTask Guid="4ece92c5-a553-49e1-81f7-f744ddba5d6d" Name="ProfileWriter_CSR" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="0ea6b266-be6a-473f-ac3f-d9e055cfab0f" Name="ProfileWriter_BusinessManager">
+        <TaskLink>08d80866-a4f5-4ae9-97f4-078331e16aeb</TaskLink>
+      </AzRole>
+      <AzRole Guid="eafd43c1-b9d3-453f-87c2-c31f4bc9ff76" Name="ProfileWriter_CSR">
+        <TaskLink>4ece92c5-a553-49e1-81f7-f744ddba5d6d</TaskLink>
+      </AzRole>
+      <AzRole Guid="ddbec2de-69fb-48b7-88e4-656fa31a2ef5" Name="ProfileWriter_Adapter">
+        <TaskLink>89239820-1eb5-4130-a937-fcb5407c377c</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzScope Guid="76ae0ebe-df63-40fb-88b4-7e5e6adab052" Name="Organization" Description="">
+      <AzTask Guid="68904b07-901f-4846-b9a8-b9dfbb375e9e" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="a151e9c1-ea0a-46e7-b5a4-ba79cdcfe4bc" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzTask Guid="63a815fe-de78-4b55-a4dc-19c393233f50" Name="ProfileWriter_CSR" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="d6434a30-6f55-4f13-9590-73939dbb1c92" Name="ProfileWriter_BusinessManager">
+        <TaskLink>a151e9c1-ea0a-46e7-b5a4-ba79cdcfe4bc</TaskLink>
+      </AzRole>
+      <AzRole Guid="03541eb2-20fa-484a-9b46-9cd112bd6170" Name="ProfileWriter_CSR">
+        <TaskLink>63a815fe-de78-4b55-a4dc-19c393233f50</TaskLink>
+      </AzRole>
+      <AzRole Guid="23e50bec-9680-4f4a-a531-d55dd5adcad1" Name="ProfileWriter_Adapter">
+        <TaskLink>68904b07-901f-4846-b9a8-b9dfbb375e9e</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzScope Guid="fbb83cdf-1e33-4386-8b47-2952d005db8f" Name="BlanketPOs" Description="">
+      <AzTask Guid="5710fb95-d294-4424-b8ce-f45a512357a7" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="c6278601-45b6-47ff-81c1-f989c131f973" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="502ea77e-260d-41e7-a4f5-87dd2c2a6031" Name="ProfileWriter_BusinessManager">
+        <TaskLink>c6278601-45b6-47ff-81c1-f989c131f973</TaskLink>
+      </AzRole>
+      <AzRole Guid="38b9e501-2f7c-4a2d-a8b7-ef6c6917121d" Name="ProfileWriter_Adapter">
+        <TaskLink>5710fb95-d294-4424-b8ce-f45a512357a7</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzScope Guid="74a9315d-0440-4fc0-903a-dad30216fa20" Name="SiteTerms" Description="">
+      <AzTask Guid="89e7ecf7-0438-4554-b736-536c3ef95304" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="0cfe0897-a144-4cfe-8379-9704d476c988" Name="ProfileWriter_CSR" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzTask Guid="d2f3d681-b160-47bd-8069-f65d248983c2" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="82d0b370-675c-4ffe-b131-e5f42189572f" Name="ProfileWriter_BusinessManager">
+        <TaskLink>d2f3d681-b160-47bd-8069-f65d248983c2</TaskLink>
+      </AzRole>
+      <AzRole Guid="32b7a2ed-0021-4475-82b7-bf0323f023f6" Name="ProfileWriter_CSR">
+        <TaskLink>0cfe0897-a144-4cfe-8379-9704d476c988</TaskLink>
+      </AzRole>
+      <AzRole Guid="6ce1ee96-d21f-461a-8575-26006a96645a" Name="ProfileWriter_Adapter">
+        <TaskLink>89e7ecf7-0438-4554-b736-536c3ef95304</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzRole Guid="5b342e88-2572-449d-b0ff-0c94ebde9c7f" Name="ProfileAdministrator">
+      <TaskLink>d6a20758-77e7-41d2-bd73-9bb3dadca49b</TaskLink>
+      <AppMemberLink>fad82264-2d8d-40f5-b8a2-4dbf65be980a</AppMemberLink>
+    </AzRole>
+    <AzScope Guid="c4ec5139-e1b6-438d-917f-89cf4469ebf7" Name="CreditCard" Description="">
+      <AzTask Guid="49da8afe-aba8-4e7f-89cb-90e37f6c3bd6" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="3ae8abb8-e6ff-49ae-8599-88a86ecd6e3a" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="6f1bb4cc-3aa0-41bd-9504-20264819edd4" Name="ProfileWriter_Adapter">
+        <TaskLink>49da8afe-aba8-4e7f-89cb-90e37f6c3bd6</TaskLink>
+      </AzRole>
+      <AzRole Guid="dd737ff2-fb1f-4dfd-bc22-6aca90ac6857" Name="ProfileWriter_BusinessManager">
+        <TaskLink>3ae8abb8-e6ff-49ae-8599-88a86ecd6e3a</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzTask Guid="558ef6a2-cd80-4b0a-9016-f141454ba2c7" Name="Profile Viewing" Description="This task encompases retrieval and search of profile instances." BizRuleImportedPath="">
+      <TaskLink>bfbb26c6-0fa6-45a9-a231-1787efb88a5b</TaskLink>
+      <TaskLink>ce93fa11-2c7c-4412-87fe-5d459e001807</TaskLink>
+    </AzTask>
+    <AzTask Guid="c1789253-67be-4b03-a208-6259e65e0096" Name="Profile Advanced Authoring" Description="This task encompases creating, retrieval, update, deletion, search, resticted property access, and cache refresh of profile instances." BizRuleImportedPath="">
+      <TaskLink>11e0415c-de61-4054-8089-e2a134550050</TaskLink>
+      <TaskLink>583f830c-48b5-4ec7-8181-1cf49d5f11a3</TaskLink>
+      <TaskLink>660673c3-289b-40be-b707-b0c34f8fc3e0</TaskLink>
+      <TaskLink>7c26c129-8ea5-4c7d-983a-1706fb16f41d</TaskLink>
+      <TaskLink>bfbb26c6-0fa6-45a9-a231-1787efb88a5b</TaskLink>
+      <TaskLink>ce93fa11-2c7c-4412-87fe-5d459e001807</TaskLink>
+      <TaskLink>da1704c9-5065-4abd-91a9-086b966586a7</TaskLink>
+      <TaskLink>daa2fabc-f298-4000-af48-d7556d97f89a</TaskLink>
+      <TaskLink>eb68d290-1f74-4864-9eea-7b76f6b682ae</TaskLink>
+    </AzTask>
+    <AzScope Guid="eeb4f233-c1fb-45de-8b0f-07ab5c8c226f" Name="Currency" Description="">
+      <AzTask Guid="05dd460a-c12b-44f1-a318-95606cda8c44" Name="ProfileWriter_Adapter" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>c1789253-67be-4b03-a208-6259e65e0096</TaskLink>
+      </AzTask>
+      <AzTask Guid="703df180-72e6-4312-87c7-65ff0903c4d5" Name="ProfileWriter_BusinessManager" Description="" BizRuleImportedPath="" RoleDefinition="True">
+        <TaskLink>253ae584-c2ff-4edd-bdd5-e02ac305cdab</TaskLink>
+      </AzTask>
+      <AzRole Guid="42fff6cc-5ba5-4e55-ad7d-ea6eec5ccf1d" Name="ProfileWriter_Adapter">
+        <TaskLink>05dd460a-c12b-44f1-a318-95606cda8c44</TaskLink>
+      </AzRole>
+      <AzRole Guid="1c86485e-f161-40f8-b815-34b10c64b17c" Name="ProfileWriter_BusinessManager">
+        <TaskLink>703df180-72e6-4312-87c7-65ff0903c4d5</TaskLink>
+      </AzRole>
+    </AzScope>
+    <AzApplicationGroup Guid="fad82264-2d8d-40f5-b8a2-4dbf65be980a" Name="Security Token Service" Description="Members of this group can perform actions required by Security Token Services." GroupType="Basic">
+      <BizRuleLanguage></BizRuleLanguage>
+      <Member>S-1-5-18</Member>
+      <Member>S-1-5-19</Member>
+    </AzApplicationGroup>
+  </AzApplication>
+</AzAdminManager>

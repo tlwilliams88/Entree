@@ -52,29 +52,36 @@
   <ItemGroup>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
     </Reference>
     <Reference Include="CommerceServer.Core.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
     </Reference>
-    <Reference Include="CommerceServer.Core.Profiles.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+    <Reference Include="CommerceServer.Core.Profiles.DataManagement, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Profiles.CrossTier.dll</HintPath>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Profiles.DataManagement.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServerContrib.CodeGeneration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommerceServerContrib.CodeGeneration.1.0.48.0\lib\Net35\CommerceServerContrib.CodeGeneration.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CommerceServerContrib.CrossTier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.CrossTier.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="CommerceServerContrib.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Elasticsearch.Net">
       <HintPath>..\packages\Elasticsearch.Net.1.0.0\lib\Elasticsearch.Net.dll</HintPath>
@@ -112,6 +119,7 @@
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="ListLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearchItemUpdate.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
@@ -128,6 +136,7 @@
     <Compile Include="Repository\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\ListRepositoryImpl.cs" />
     <Compile Include="Repository\MockListRepositoryImpl.cs" />
     <Compile Include="Repository\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\PriceRepositoryImpl.cs" />
