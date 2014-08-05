@@ -47,7 +47,19 @@ angular.module('bekApp')
 
     $scope.currentUser.currentLocation = $scope.currentUser.stores[0];
 
+    var isLoggedIn = false;
+    $scope.isLoggedIn = function() {
+      return isLoggedIn;
+    };
 
+    $scope.login = function() {
+      isLoggedIn = true;
+    };
+
+    $scope.logout = function() {
+      $scope.displayUserMenu = false;
+      isLoggedIn = false;
+    };
 
 
     $scope.print = function () {

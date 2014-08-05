@@ -8,21 +8,65 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$sce', 'ListService', function($scope, $sce, ListService) {
-    
-    $scope.selectedList = {
-      name: 'My list'
-    };
+  .controller('ListController', ['$scope', 'ListService', function($scope, ListService) {
+
+    $scope.loadingResults = true;
+
+    $scope.lists = [
+    {
+        'listid': '710ab77a-a97b-4898-a140-dbc27f853abc',
+        'name': 'Sample List A',
+        'items': [
+            {
+                'listitemid': 'ed699437-57ad-4f51-b15f-d04042cc589c',
+                'itemnumber': '284569',
+                'label': 'This is a label',
+                'parlevel': 0,
+                'position': 0
+            },
+            {
+                'listitemid': 'ed859f7f-5e40-4c3b-9d6e-7b05d81cbd14',
+                'itemnumber': '287100',
+                'label': null,
+                'parlevel': 0,
+                'position': 1
+            }
+        ]
+    },
+    {
+        'listid': '58d88c28-87c1-4476-a166-53df19367e05',
+        'name': 'Sample List B',
+        'items': [
+            {
+                'listitemid': 'a9e1546f-674d-46a9-b527-fa47f5498f53',
+                'itemnumber': '287302',
+                'label': null,
+                'parlevel': 0,
+                'position': 0
+            },
+            {
+                'listitemid': '11240cb1-b83e-4b65-af9c-700d49f6710d',
+                'itemnumber': '287770',
+                'label': 'Test Label',
+                'parlevel': 0,
+                'position': 1
+            },
+            {
+                'listitemid': '9f9629e0-22b6-48db-b3be-85a5e72c0454',
+                'itemnumber': '287402',
+                'label': null,
+                'parlevel': 0,
+                'position': 2
+            }
+        ]
+    }
+];
+$scope.selectedList = $scope.lists[0];
 
     ListService.getAllLists().then(function(data) {
       $scope.lists = data;
       $scope.selectedList = $scope.lists[0];
-      return $scope.selectedList;
-    }).then(function(data) {
-      
-      ListService.getList(data.listid).then(function(data) {
-        $scope.selectedList = data;
-      });
+      $scope.loadingResults = false;
     });
 
     ListService.getAllLabels().then(function(data) {
@@ -30,9 +74,7 @@ angular.module('bekApp')
     });
 
     $scope.goToList = function(list) {
-      ListService.getList(list.listid).then(function(data) {
-        $scope.selectedList = data;
-      });
+      $scope.selectedList = list;
     };
 
     $scope.createList = function() {
@@ -44,15 +86,15 @@ angular.module('bekApp')
     };
 
     $scope.updateItemLabel = function(product) {
-      console.log('update label to ' + product.label + ' for listItemId ' + product.productid);
+      console.log('update label to ' + product.label + ' for listItemId ' + product.itemnumber);
     };
 
     $scope.addSavedItem = function(item) {
-      console.log('add item # ' + item.productid + ' to saved items');
+      console.log('add item # ' + item.itemnumber + ' to saved items');
     };
 
     $scope.removeSavedItem = function(item) {
-      console.log('remove item # ' + item.productid + ' from saved items');
+      console.log('remove item # ' + item.itemnumber + ' from saved items');
     };
 
     // edit list name
@@ -78,11 +120,11 @@ angular.module('bekApp')
     };
 
     $scope.addItemToList = function (event, helper, list) {
-      console.log('add item ' + selectedProduct.productid + ' to list ' + list.name);
+      console.log('add item ' + selectedProduct.itemnumber + ' to list ' + list.name);
     };
 
     $scope.deleteItem = function(event, helper, list) {
-      console.log('delete item ' + selectedProduct.productid + ' from list ' + list.name);
+      console.log('delete item ' + selectedProduct.itemnumber + ' from list ' + list.name);
     };
 
     // CONTEXT MENU
@@ -99,16 +141,16 @@ angular.module('bekApp')
 
     // SHOW MORE
     // limit number of list names displayed in the sidebar
-    var limit = 1;
+    var showMoreLimit = 5;
     $scope.itemsLimit = function() {
-      return limit;
+      return showMoreLimit;
     };
     $scope.showMore = function() {
-      limit = $scope.lists.length;
+      showMoreLimit = $scope.lists.length;
     };
     $scope.hasMoreItemsToShow = function() {
       if ($scope.lists) {
-        return limit < $scope.lists.length;
+        return showMoreLimit < $scope.lists.length;
       }
     };
 

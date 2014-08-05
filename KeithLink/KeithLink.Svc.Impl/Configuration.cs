@@ -13,11 +13,16 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
-        private const string KEY_AD_DOMAIN = "ADDomain";
-        private const string KEY_AD_PASSWORD = "ADPass";
-        private const string KEY_AD_ROOTNODE = "ADRoot";
-        private const string KEY_AD_SERVERNAME = "ADServer";
-        private const string KEY_AD_USER = "ADUser";
+        private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
+        private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
+        private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
+        private const string KEY_AD_EXTERNAL_SERVERNAME = "ADExtServer";
+        private const string KEY_AD_EXTERNAL_USER = "ADExtUser";
+        private const string KEY_AD_INTERNAL_DOMAIN = "ADIntDomain";
+        private const string KEY_AD_INTERNAL_PASSWORD = "ADIntPass";
+        private const string KEY_AD_INTERNAL_ROOTNODE = "ADIntRoot";
+        private const string KEY_AD_INTERNAL_SERVERNAME = "ADIntServer";
+        private const string KEY_AD_INTERNAL_USER = "ADIntUser";
         private const string KEY_APP_NAME = "AppName";
         private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
@@ -33,41 +38,81 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
-        public static string ActiveDirectoryDomain { 
+        public static string ActiveDirectoryExternalDomain { 
             get { 
-                return GetValue(KEY_AD_DOMAIN, string.Empty); 
+                return GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty); 
             } 
         }
 
-        public static string ActiveDirectoryPassword
+        public static string ActiveDirectoryExternalPassword
         {
             get
             {
-                return GetValue(KEY_AD_PASSWORD, string.Empty);
+                return GetValue(KEY_AD_EXTERNAL_PASSWORD, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryRootNode
+        public static string ActiveDirectoryExternalRootNode
         {
             get
             {
-                return GetValue(KEY_AD_ROOTNODE, string.Empty);
+                return GetValue(KEY_AD_EXTERNAL_ROOTNODE, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryServerName
+        public static string ActiveDirectoryExternalServerName
         {
             get
             {
-                return GetValue(KEY_AD_SERVERNAME, string.Empty);
+                return GetValue(KEY_AD_EXTERNAL_SERVERNAME, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryUserName
+        public static string ActiveDirectoryExternalUserName
         {
             get
             {
-                return GetValue(KEY_AD_USER, string.Empty);
+                return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalDomain
+        {
+            get
+            {
+                return GetValue(KEY_AD_INTERNAL_DOMAIN, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalPassword
+        {
+            get
+            {
+                return GetValue(KEY_AD_INTERNAL_PASSWORD, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalRootNode
+        {
+            get
+            {
+                return GetValue(KEY_AD_INTERNAL_ROOTNODE, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalServerName
+        {
+            get
+            {
+                return GetValue(KEY_AD_INTERNAL_SERVERNAME, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalUserName
+        {
+            get
+            {
+                return GetValue(KEY_AD_INTERNAL_USER, string.Empty);
             }
         }
 
