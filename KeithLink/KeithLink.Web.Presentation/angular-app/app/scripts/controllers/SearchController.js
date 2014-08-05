@@ -48,36 +48,38 @@ angular.module('bekApp')
                return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            } else if (type === 'brand') {
 
-               var searchTerm = $stateParams.id;
-               return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+               var brandName = $stateParams.id;
+               return ProductService.getProducts(branchId, brandName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            }
        }
 
        function loadProducts(appendResults) {
            $scope.loadingResults = true;
 
-           getData().then(function(data) {
+           return getData().then(function(data) {
 
-               if (appendResults) {
+               // append results to existing data
+               if (appendResults) { 
                    $scope.products.push.apply($scope.products, data.products);
-               } else {
+               // replace existing data
+               } else { 
                    $scope.products = data.products;
                }
 
-               $scope.categories = data.facets.categories;
-               if($scope.selectedBrands.length===0){
-                $scope.brands = data.facets.brands;
-              }
+               // $scope.categories = data.facets.categories;
+               // $scope.brands = data.facets.brands;
                $scope.totalItems = data.totalcount;
-               console.log('totalitems: ' + data.totalcount);
-               console.log('products: ' + $scope.products.length);
-
-               $scope.predicate = 'id';
+               
                $scope.loadingResults = false;
+
+               return data.facets;
            });
        }
 
-       loadProducts();
+       loadProducts().then(function(facets) {
+        $scope.categories = facets.categories;
+        $scope.brands = facets.brands;
+       });
 
        $scope.infiniteScrollLoadMore = function() {
 
@@ -123,6 +125,10 @@ angular.module('bekApp')
                else {
                    $scope.selectedBrands.push(selectedFacet);
                }
+
+               loadProducts().then(function(facets) {
+                $scope.categories = facets.categories;
+               });
            } else if(filter==='allergen') {
                idx = $scope.selectedAllergens.indexOf(selectedFacet);
 
@@ -140,9 +146,11 @@ angular.module('bekApp')
            else{
                $scope.selectedCategory = selectedFacet.name;
                $scope.selectedSubcategory = '';
-           }
 
-           loadProducts();
+               loadProducts().then(function(facets) {
+                $scope.brands = facets.brands;
+               });
+           }
        };
 
        $scope.allergens = [{
