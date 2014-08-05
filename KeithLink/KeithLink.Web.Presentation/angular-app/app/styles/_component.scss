@@ -166,11 +166,18 @@ input[type="checkbox"]:checked + label {
   position: absolute;
   box-shadow: 0px 0px 15px $color-border;
   z-index: 2;
-  right: 8%;
+  
+  &.context-menu__in-list {
+    right: 8%;
+
+    .dropdown-menu {
+      left: -100%;  
+    }
+  }
 
   .dropdown-menu {
-    left: -100%;
     top: 0;
+    left: 100%;
     font-size: $font-size;
     border: none;
     padding: 0;
