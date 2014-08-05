@@ -25,3 +25,19 @@
 .custom-lists__more {
   margin-top: 10px;
 }
+
+.ui-draggable-dragging {
+  border: 1px solid $color-border !important;
+  box-shadow: 0px 0px 10px $color-border;
+
+  td {
+    background-color: $color-white !important;
+  }
+  .hidden-drag {
+    display: none;
+  } 
+}
+
+.ng-hover {
+  color: red !important;
+}

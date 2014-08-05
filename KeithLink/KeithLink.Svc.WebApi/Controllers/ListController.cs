@@ -27,6 +27,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return model;
         }
 
+        [HttpPut]
+        [Route("list/{listId}")]
+        public void Put(Guid listId, string newName)
+        {
+            //TODO: This endpoint is currently not working
+            listRepository.UpdateListName(listId, newName);
+        }
+
 
         [HttpGet]
         [Route("list/{listId}")]
@@ -56,5 +64,32 @@ namespace KeithLink.Svc.WebApi.Controllers
             return listRepository.CreateList(list);
         }
 
+        [HttpDelete]
+        [Route("list/{listId}")]
+        public void DeleteList(Guid listId)
+        {
+            listRepository.DeleteList(listId);
+        }
+
+        [HttpPost]
+        [Route("list/{listId}/item")]
+        public Guid? AddItem(Guid listId, ListItem newItem)
+        {
+            return listRepository.AddItem(listId, newItem);
+        }
+
+        [HttpPut]
+        [Route("list/{listId}/item")]
+        public void UpdateItem(Guid listId, ListItem updatedItem)
+        {
+            listRepository.UpdateItem(listId, updatedItem);
+        }
+
+        [HttpDelete]
+        [Route("list/{listId}/item/{itemId}")]
+        public void DeleteItem(Guid listId, Guid itemId)
+        {
+            listRepository.DeleteItem(listId, itemId);
+        }
     }
 }

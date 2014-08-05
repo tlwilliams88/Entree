@@ -13,13 +13,13 @@ angular
     // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
-    // 'ngSanitize',
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
-    'shoppinpal.mobile-menu'
+    'shoppinpal.mobile-menu',
+    'ngDragDrop'
   ])
-.config(function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('login', {
@@ -82,7 +82,7 @@ angular
   $urlRouterProvider.when('/', '/home');
   $urlRouterProvider.otherwise('/404');
 
-
+  // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();
 
@@ -97,10 +97,11 @@ angular
     return path + '/';
   });
 
-  $httpProvider.interceptors.push(function($q, $injector) {
+  // append correct api url to all relevant http requests
+  $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
     return {
      'request': function(config) {
-        $injector.invoke(function($http, ApiService) {
+        $injector.invoke(['$http', 'ApiService', function($http, ApiService) {
           if (config.url[0] === '/') {
             config.url = ApiService.endpointUrl + config.url;
 
@@ -108,12 +109,12 @@ angular
             console.log(config.params);
             
           }
-       });
+       }]);
        return config || $q.when(config);
       }
     };
-  });
-})
+  }]);
+}])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
   // ApiService.endpointUrl = 'http://devapi.bekco.com';

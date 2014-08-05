@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
+        private const string KEY_AD_DOMAIN = "ADDomain";
         private const string KEY_AD_PASSWORD = "ADPass";
         private const string KEY_AD_ROOTNODE = "ADRoot";
         private const string KEY_AD_SERVERNAME = "ADServer";
@@ -32,6 +33,12 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static string ActiveDirectoryDomain { 
+            get { 
+                return GetValue(KEY_AD_DOMAIN, string.Empty); 
+            } 
+        }
+
         public static string ActiveDirectoryPassword
         {
             get

@@ -57,8 +57,6 @@ namespace KeithLink.Svc.Core.Catalog
         public string HandlingInstructions { get; set; }
         [DataMember(Name = "ingredients")]
         public string Ingredients { get; set; }
-        [DataMember(Name = "itemidentificationcode")]
-        public string ItemIdentificationCode { get; set; }
         [DataMember(Name = "marketingmessage")]
         public string MarketingMessage { get; set; }
         [DataMember(Name = "moreinformation")]
