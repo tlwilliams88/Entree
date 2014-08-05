@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Impl.Repository
     {
         private readonly OrderContext orderContext;
 
-        private readonly Guid EXAMPLEUSERID = Guid.Parse("95436e7d-d09f-426b-a0c3-d4d702ee7422"); //TODO: Used real UserId once Auth/Profiles are completed
+        private readonly Guid EXAMPLEUSERID = Guid.Parse("95436e7d-d09f-426b-a0c3-d4d702ee7422"); //TODO: Use real UserId once Auth/Profiles are completed
 
         public ListRepositoryImpl()
         {
@@ -23,9 +23,11 @@ namespace KeithLink.Svc.Impl.Repository
         {
             var newBasket = orderContext.GetBasket(EXAMPLEUSERID, list.Name);
             var orderForm = new OrderForm();
+
             foreach (var item in list.Items)
-                orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ProductId });
+                orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber });
             newBasket.OrderForms.Add(orderForm);
+
             newBasket.Save();
             return newBasket.OrderGroupId;
         }
@@ -37,7 +39,38 @@ namespace KeithLink.Svc.Impl.Repository
 
         public void UpdateList(UserList list)
         {
-            throw new NotImplementedException();
+			var basket = orderContext.GetBasket(EXAMPLEUSERID, list.ListId);
+
+			if (basket == null) //Throw error?
+				return;
+
+			basket.Name = list.Name;
+			
+			for (int x = 0; x < basket.LineItemCount; x++)
+			{
+				if (list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
+					basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems[x]);
+			}
+
+			foreach (var item in list.Items)
+			{
+				var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
+				if (existingItem != null)
+				{
+					existingItem["LinePosition"] = item.Position;
+					existingItem.ProductId = item.ItemNumber;
+					existingItem.Quantity = item.ParLevel;
+					existingItem.DisplayName = item.Label;
+					//existingItem.Index = item.Position;
+				}
+				else
+					basket.OrderForms[0].LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber, Quantity = item.ParLevel });
+			}
+
+				
+
+			basket.Save();
+			
         }
 
         public void DeleteList(Guid listId)
@@ -52,12 +85,28 @@ namespace KeithLink.Svc.Impl.Repository
 
         public List<UserList> ReadAllLists()
         {
-            throw new NotImplementedException();
+			var baskets = orderContext.GetBasketsForUser(EXAMPLEUSERID);
+
+			return baskets.Cast<OrderGroup>().Select(b => new UserList() { ListId = b.OrderGroupId, Name = b.Name, Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l.Index }).ToList() }).ToList();
+
         }
 
         public UserList ReadList(Guid listId)
         {
-            throw new NotImplementedException();
+			var basket = orderContext.GetBasket(EXAMPLEUSERID, listId);
+
+			if (basket == null)
+				return null;
+
+			return new UserList()
+			{
+				ListId = basket.OrderGroupId,
+				Name = basket.Name,
+				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList()
+			};
         }
-    }
+	}
+
 }
+
+

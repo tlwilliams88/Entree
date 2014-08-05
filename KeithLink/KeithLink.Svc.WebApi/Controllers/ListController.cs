@@ -21,9 +21,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
-        public List<UserList> List()
+        public List<UserList> List(bool header = false)
         {
-            var model = listLogic.ReadAllLists(true);
+			var model = listLogic.ReadAllLists(header);
             return model;
         }
 

@@ -47,12 +47,17 @@ namespace KeithLink.Svc.Impl
 
             var item = list.Items.Where(i => i.ListItemId.Equals(updatedItem.ListItemId)).FirstOrDefault();
 
-            item.Label = updatedItem.Label;
-            item.ParLevel = updatedItem.ParLevel;
-            item.Position = updatedItem.Position;
-            item.ProductId = updatedItem.ProductId;
+			if (item == null)
+				list.Items.Add(updatedItem);
+			else
+			{
+				item.Label = updatedItem.Label;
+				item.ParLevel = updatedItem.ParLevel;
+				item.Position = updatedItem.Position;
+				item.ItemNumber = updatedItem.ItemNumber;
+			}
 
-            listRepository.UpdateItem(item);
+			listRepository.UpdateList(list);
         }
 
         public void UpdateList(UserList list)
@@ -77,7 +82,12 @@ namespace KeithLink.Svc.Impl
 
         public List<UserList> ReadAllLists(bool headerInfoOnly)
         {
-            return listRepository.ReadAllLists().Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
+			var lists = listRepository.ReadAllLists();
+
+			if (headerInfoOnly)
+				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
+			else
+				return lists;
         }
 
         public UserList ReadList(Guid listId)

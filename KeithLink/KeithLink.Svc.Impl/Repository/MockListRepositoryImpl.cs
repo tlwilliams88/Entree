@@ -1,5 +1,4 @@
 ﻿using CommerceServer.Core.Catalog;
-using CommerceServer.Core.Runtime.Orders;
 using KeithLink.Svc.Core;
 using System;
 using System.Collections.Generic;
@@ -20,13 +19,13 @@ namespace KeithLink.Svc.Impl.Repository
                         Items = new List<ListItem>() {
                             new ListItem() {
                                 ListItemId = Guid.NewGuid(),
-                                ProductId = "284569",
+                                ItemNumber = "284569",
                                 Label = "This is a label",
                                 Position = 0
                             },
                             new ListItem() {
                                 ListItemId = Guid.NewGuid(),
-                                ProductId = "287100",
+                                ItemNumber = "287100",
                                 Position = 1
                             }
 
@@ -38,18 +37,18 @@ namespace KeithLink.Svc.Impl.Repository
                         Items = new List<ListItem>() {
                             new ListItem() {
                                 ListItemId = Guid.NewGuid(),
-                                ProductId = "287302",
+                                ItemNumber = "287302",
                                 Position = 0
                             },
                             new ListItem() {
                                 ListItemId = Guid.NewGuid(),
-                                ProductId = "287770",
+                                ItemNumber = "287770",
                                 Label = "Test Label",
                                 Position = 1
                             },
                             new ListItem() {
                                 ListItemId = Guid.NewGuid(),
-                                ProductId = "287402",
+                                ItemNumber = "287402",
                                 Position = 2
                             }
 

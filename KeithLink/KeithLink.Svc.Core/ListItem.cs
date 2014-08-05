@@ -12,8 +12,8 @@ namespace KeithLink.Svc.Core
     {
         [DataMember(Name = "listitemid")]
         public Guid ListItemId { get; set; }
-        [DataMember(Name = "productid")]
-        public string ProductId { get; set; }
+        [DataMember(Name = "itemnumber")]
+        public string ItemNumber { get; set; }
         [DataMember(Name = "label")]
         public string Label { get; set; }
         [DataMember(Name = "parlevel")]
