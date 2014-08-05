@@ -1,19 +1,38 @@
 <?xml version="1.0"?>
 <DTSConfiguration>
   <DTSConfigurationHeading>
-    <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 11:09:35 AM"/>
+    <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 8:25:09 AM"/>
   </DTSConfigurationHeading>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ColumnNamesInFirstDataRow]" ValueType="Boolean">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>\\bekbackup\ftproot\ECOM\prod\<!--NEED FILE NAME--></ConfiguredValue>
+    <ConfiguredValue>\\bekbackup\ftproot\ECOM\prod\<!--NEED FILENAME--></ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[DataRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Format]" ValueType="String">
+    <ConfiguredValue>FixedWidth</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowDelimiter]" ValueType="String">
+    <ConfiguredValue>
+    </ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>1</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[RowDelimiter]" ValueType="String">
+    <ConfiguredValue/>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue><!--NEED PROD ETL WEB SERVICE URI--></ConfiguredValue>
+    <ConfiguredValue><!--NEED PROD URI--></ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Timeout]" ValueType="Int32">
     <ConfiguredValue>30</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>Data Source=<!--NEED ECOM SQL INSTANCE-->;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+    <ConfiguredValue>Data Source=<!--NEED TO DETERMINE PROD SQL INSTANCE-->;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_FSE].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>Data Source=bekcpsql;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
@@ -22,7 +41,7 @@
     <ConfiguredValue>Data Source=beksqlisp12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_PRODCAT].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>Data Source=<!--NEED PRODCAT SQL SERVER-->;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
+    <ConfiguredValue>Data Source=<!--NEED PROD SQL INSTANCE FOR PRODCAT-->;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[SMTP].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>SmtpServer=beksqlisp12;UseWindowsAuthentication=True;EnableSsl=False;</ConfiguredValue>

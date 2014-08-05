@@ -18,18 +18,31 @@
     vertical-align: middle;
   }
 
+  
+  .header-icons {
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .inline-header-form {
+    line-height: normal;
+
+    input[type=text] {
+      padding: 8px;
+      vertical-align: middle;  
+    }
+
+    button.no-style {
+      background: transparent;
+      border: none;
+    }
+  }
+
   .page-header-bar__actions {
     float: none;
     display: inline-block;
     width: 41%;
     vertical-align: middle;
-  }
-
-  .page-header__export-button {
-    font-size: 20px;
-    color: $color-font-light;
-    margin-right: 5px;
-    padding: 5px 9px;
   }
 
   .page-header__buttons {

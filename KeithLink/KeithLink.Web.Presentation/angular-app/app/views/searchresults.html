@@ -3,8 +3,8 @@
     Product Catalog
   </div>
   <div header-buttons>
-  	<button class="btn page-header__export-button"><span class="icon-printer"></span></button>
-	<button class="btn page-header__export-button"><span class="icon-disk"></span></button>
+  	<button class="btn btn-icon"><span class="icon-printer"></span></button>
+	<button class="btn btn-icon"><span class="icon-disk"></span></button>
   </div>
 </div>
 
@@ -106,10 +106,10 @@
 				<ul class="nav search-results__category">
 					<li class="text-center" loading-spinner="loadingCategories"></li>
 					<li ng-repeat="category in categories | orderBy : ['name']">
-						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.id == selectedCategory}">{{category.name}}</a>
+						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}} ({{category.count}})</a>
 						<ul ng-show="category.show" class="">
 							<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
-								<span ng-class="{active: subcategory.id == selectedSubcategory}">{{subcategory.name}}</span>
+								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
 							</li>
 						</ul>
 					</li>
@@ -121,11 +121,11 @@
 				<h3>Brand</h3>
 				<div ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
 					<input type="checkbox"
-					value="brandValue_{{brand.id}}"
-					id="brandId_{{brand.id}}"
-					ng-checked="selectedBrands.indexOf(brand.id) > -1"
+					value="brandValue_{{brand.name}}"
+					id="brandId_{{brand.name}}"
+					ng-checked="selectedBrands.indexOf(brand.name) > -1"
 					ng-click="toggleSelection(brand,'brand')">
-					<label for="brandId_{{brand.id}}">{{brand.name}}</label>
+					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
 				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
 			</div>

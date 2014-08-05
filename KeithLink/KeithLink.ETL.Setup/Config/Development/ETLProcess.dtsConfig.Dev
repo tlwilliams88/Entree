@@ -1,10 +1,29 @@
 <?xml version="1.0"?>
 <DTSConfiguration>
   <DTSConfigurationHeading>
-    <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 11:09:35 AM"/>
+    <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 8:25:09 AM"/>
   </DTSConfigurationHeading>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ColumnNamesInFirstDataRow]" ValueType="Boolean">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\ECOM\dev\20140610-134503.JDCSTBP</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[DataRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>0</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[Format]" ValueType="String">
+    <ConfiguredValue>FixedWidth</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowDelimiter]" ValueType="String">
+    <ConfiguredValue>
+    </ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[HeaderRowsToSkip]" ValueType="Int32">
+    <ConfiguredValue>1</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[RowDelimiter]" ValueType="String">
+    <ConfiguredValue/>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://devkeithlink.bekco.com:9876/ETLService.svc?wsdl</ConfiguredValue>
