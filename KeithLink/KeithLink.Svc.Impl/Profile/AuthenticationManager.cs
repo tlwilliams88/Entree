@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// </remarks>
         private static string GetDomainUserName(string userName)
         {
-            return string.Format("{0}\\{1}", Configuration.ActiveDirectoryDomain, userName);
+            return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
         }
 
         /// <summary>
