@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [Route("list")]
-        public List<UserList> List()
+        public List<UserList> List(bool header = false)
         {
-            var model = listLogic.ReadAllLists(true);
+			var model = listLogic.ReadAllLists(header);
             return model;
         }
 

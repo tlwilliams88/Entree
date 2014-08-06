@@ -13,7 +13,7 @@ namespace KeithLink.Web.Presentation
     // visit http://go.microsoft.com/?LinkId=9394801
 
     public class WebApiApplication : System.Web.HttpApplication
-    {
+    { 
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);

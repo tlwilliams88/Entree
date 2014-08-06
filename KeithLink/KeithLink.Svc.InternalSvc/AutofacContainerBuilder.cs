@@ -3,11 +3,12 @@ using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
 
 namespace KeithLink.Svc.InternalSvc
 {

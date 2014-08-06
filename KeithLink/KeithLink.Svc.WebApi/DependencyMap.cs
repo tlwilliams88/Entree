@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Autofac.Integration.WebApi;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Catalog;
-using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.WebApi
 {

@@ -31,7 +31,7 @@ angular.module('bekApp')
           facets += concatenateNestedParameters('brands', brands);
         }
         if (brands && brands.length > 0 && facetCategoryId) {
-          facets += '&';
+          facets += ',';
         }
         if (facetCategoryId) {
           facets += 'categories:' + facetCategoryId;
