@@ -33,6 +33,10 @@ namespace KeithLink.Svc.Impl.Logic
                 return null;
 
             newItem.ListItemId = Guid.NewGuid();
+
+			if (list.Items == null)
+				list.Items = new List<ListItem>(); ;
+
             list.Items.Add(newItem);
             listRepository.UpdateList(list);
 

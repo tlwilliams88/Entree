@@ -25,9 +25,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             var newBasket = orderContext.GetBasket(EXAMPLEUSERID, list.Name);
             var orderForm = new OrderForm();
 
-            foreach (var item in list.Items)
-                orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber });
-            newBasket.OrderForms.Add(orderForm);
+			if(list.Items != null)
+				foreach (var item in list.Items)
+					orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber });
+            
+			newBasket.OrderForms.Add(orderForm);
 
             newBasket.Save();
             return newBasket.OrderGroupId;
