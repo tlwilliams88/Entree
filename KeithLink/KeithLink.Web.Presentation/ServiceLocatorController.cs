@@ -16,7 +16,7 @@ namespace KeithLink.Web.Presentation
         public ConfigurationInformation GetServiceConfiguration()
         {
             string clientApiEndpoint = ConfigurationManager.AppSettings[Constants.ClientApiEndpointConfigurationEntry];
-            if (System.Web.HttpContext.Current.Request.Browser.Browser.ToLower() == "ie8")
+            if (System.Web.HttpContext.Current.Request.Browser.Id.ToLower() == "ie8")
             {
                 clientApiEndpoint = ConfigurationManager.AppSettings[Constants.ClientApiEndpointConfigurationEntry];
             }
