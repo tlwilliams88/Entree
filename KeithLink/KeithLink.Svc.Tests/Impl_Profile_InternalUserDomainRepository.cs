@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Test
         public void CanAuthenticate()
         {
             KeithLink.Svc.Impl.Profile.InternalUserDomainRepository ad = new Impl.Profile.InternalUserDomainRepository();
-            bool success = ad.AuthenticateUser("jwames", "invalidpassword");
+            bool success = ad.AuthenticateUser("tcfox", "password");
 
             Assert.IsTrue(success);
         }
