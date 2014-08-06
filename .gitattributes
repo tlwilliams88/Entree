@@ -16,5 +16,9 @@
 *.sln       eol=crlf
 *.ico       -text
 
+<<<<<<< HEAD
 *.csproj text eol=crlf merge=union
+=======
+*.csproj text merge=union
+>>>>>>> c0185d91e8c7610a9dd87bb0e5fa99c9a3d0b6a7
 *.sln    text merge=union eol=crlf
