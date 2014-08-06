@@ -93,14 +93,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QA", "QA", "{0AA5ACC1-A2AB-
 		KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA = KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web (2)", "Web (2)", "{7D77B0EA-7649-4B2B-87DA-5608E2887D13}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common (2)", "Common (2)", "{DB3FE643-4784-4FD4-934A-CB3A936F2CAE}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service (2)", "Service (2)", "{7CAE917D-5445-4E80-9902-F894EE118469}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database (2)", "Database (2)", "{F1794B58-07B7-48C0-B3F1-52E87A78FF9C}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeithLink.ETL.Setup", "KeithLink.ETL.Setup", "{139D3E2D-36E5-4B68-A03C-2FB4B1C8A434}"
 	ProjectSection(SolutionItems) = preProject
 		KeithLink.ETL.Setup\README.txt = KeithLink.ETL.Setup\README.txt
@@ -132,13 +124,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{4CE79DC1-458F-4DD8-9EE9-9334E9972A22}"
 	ProjectSection(SolutionItems) = preProject
 		KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod = KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget (2)", ".nuget (2)", "{57993F89-2361-4530-B414-D4ADF92F17B2}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Global
