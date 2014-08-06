@@ -1,9 +1,10 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core.Interface.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Impl.Logic
 {

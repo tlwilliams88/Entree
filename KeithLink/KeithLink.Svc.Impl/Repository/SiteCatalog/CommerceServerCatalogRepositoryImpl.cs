@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
-using KeithLink.Svc.Core.Catalog;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {

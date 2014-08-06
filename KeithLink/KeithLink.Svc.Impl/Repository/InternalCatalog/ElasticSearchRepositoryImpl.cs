@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core.Interface.InternalCatalog;
 using RestSharp;
 using System;
 using System.Collections.Generic;

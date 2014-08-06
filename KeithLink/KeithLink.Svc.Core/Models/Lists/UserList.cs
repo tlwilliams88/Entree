@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core
+namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "UserList")]
     public class UserList

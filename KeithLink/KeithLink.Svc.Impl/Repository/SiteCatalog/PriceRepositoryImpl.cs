@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Catalog;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
@@ -55,14 +55,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 7/28/2014 - add pricing cache calls
         /// </remarks>
-        public KeithLink.Svc.Core.PriceReturn GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
+        public KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
             List<Price> cachedPriceList = null;
             List<Product> uncachedProductList = null;
 
             BuildCachedPriceList(branchId, customerNumber, products, out cachedPriceList, out uncachedProductList);
 
-            KeithLink.Svc.Core.PriceReturn retVal = new PriceReturn();
+            KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
 
             if (uncachedProductList.Count == 0)
             {

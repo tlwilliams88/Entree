@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using System.Dynamic;
 
-namespace KeithLink.Svc.Core.Catalog
+namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "ProductsReturn")]
     public class ProductsReturn

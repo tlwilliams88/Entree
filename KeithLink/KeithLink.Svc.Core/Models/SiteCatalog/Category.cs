@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace KeithLink.Svc.Core.Catalog
+namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name="category")]
     public class Category
