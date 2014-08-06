@@ -64,7 +64,6 @@
     <Compile Include="Impl_ListLogic.cs" />
     <Compile Include="Impl_PriceRepositoryImpl.cs" />
     <Compile Include="Impl_PriceCacheRepositoryImpl.cs" />
-    <Compile Include="Impl_Profile_AutenticationManager.cs" />
     <Compile Include="Impl_Profile_ExternalUserDomainRepository.cs" />
     <Compile Include="Impl_Profile_InternalUserDomainRepository.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
