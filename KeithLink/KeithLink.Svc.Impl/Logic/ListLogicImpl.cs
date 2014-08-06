@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl
+namespace KeithLink.Svc.Impl.Logic
 {
     public class ListLogicImpl: IListLogic
     {

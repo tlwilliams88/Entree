@@ -8,6 +8,7 @@ using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Catalog;
 using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.WebApi
 {
