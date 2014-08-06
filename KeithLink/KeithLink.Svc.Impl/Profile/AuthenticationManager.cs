@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Profile
             {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain, Configuration.ActiveDirectoryExternalServerName))
                 {
-                    return principal.ValidateCredentials(GetDomainUserName(userName), password, ContextOptions.SimpleBind);
+                    return principal.ValidateCredentials(userName, password, ContextOptions.SimpleBind);
                 }
             }
             catch (Exception ex){
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Profile
                                                                             GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
                                                                             Configuration.ActiveDirectoryExternalPassword))
                 {
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, GetDomainUserName(userName));
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
 
                     if (user == null)
                         return false;
