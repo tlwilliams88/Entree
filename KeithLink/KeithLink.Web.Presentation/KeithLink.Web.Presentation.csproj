@@ -367,6 +367,7 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
+    <Folder Include="BuildLogs\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
     <Folder Include="Scripts\" />
@@ -440,17 +441,8 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)angular-app
-
-
-dir /b /a "node_modules\*" | &gt;nul findstr "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt)
-call grunt build
-
-call grunt dev
-
-robocopy dist-dev ..\app /MIR
-set rce=%25errorlevel%25
-if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
@@ -467,6 +459,15 @@ if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir)angular-app
+
+dir /b /a "node_modules\*" | &gt;nul findstr "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt)
+
+call grunt --no-color dev &gt; $(ProjectDir)BuildLogs\grunt_log.txt
+
+call type $(ProjectDir)BuildLogs\grunt_log.txt</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
