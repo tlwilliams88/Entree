@@ -48,23 +48,30 @@ namespace KeithLink.Svc.Impl.Repository
 			
 			for (int x = 0; x < basket.LineItemCount; x++)
 			{
-				if (list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
+				if (list.Items != null && list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
 					basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems[x]);
 			}
 
-			foreach (var item in list.Items)
+			if (list.Items != null)
 			{
-				var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
-				if (existingItem != null)
+				foreach (var item in list.Items.OrderBy(s => s.Position))
 				{
-					existingItem["LinePosition"] = item.Position;
-					existingItem.ProductId = item.ItemNumber;
-					existingItem.Quantity = item.ParLevel;
-					existingItem.DisplayName = item.Label;
-					//existingItem.Index = item.Position;
+					var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
+					if (existingItem != null)
+					{
+						existingItem["LinePosition"] = item.Position;
+						existingItem.ProductId = item.ItemNumber;
+						existingItem.Quantity = item.ParLevel;
+						existingItem.DisplayName = item.Label;
+						//existingItem.Index = item.Position;
+					}
+					else
+					{
+						var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber, Quantity = item.ParLevel };
+						newItem["LinePosition"] = item.Position;
+						basket.OrderForms[0].LineItems.Add(newItem);
+					}
 				}
-				else
-					basket.OrderForms[0].LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber, Quantity = item.ParLevel });
 			}
 
 				
@@ -75,7 +82,10 @@ namespace KeithLink.Svc.Impl.Repository
 
         public void DeleteList(Guid listId)
         {
-            throw new NotImplementedException();
+			var basket = orderContext.GetBasket(EXAMPLEUSERID, listId);
+
+			if (basket != null)
+				basket.Delete();
         }
 
         public void DeleteItem(UserList list, Guid itemId)
@@ -87,7 +97,7 @@ namespace KeithLink.Svc.Impl.Repository
         {
 			var baskets = orderContext.GetBasketsForUser(EXAMPLEUSERID);
 
-			return baskets.Cast<OrderGroup>().Select(b => new UserList() { ListId = b.OrderGroupId, Name = b.Name, Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l.Index }).ToList() }).ToList();
+			return baskets.Cast<OrderGroup>().Select(b => new UserList() { ListId = b.OrderGroupId, Name = b.Name, Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
 
         }
 

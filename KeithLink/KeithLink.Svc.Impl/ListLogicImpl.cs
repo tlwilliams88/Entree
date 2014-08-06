@@ -76,8 +76,9 @@ namespace KeithLink.Svc.Impl
 
             if (list == null)
                 return;
+			list.Items.RemoveAll(i => i.ListItemId.Equals(itemId));
 
-            listRepository.DeleteItem(list, itemId);
+            listRepository.UpdateList(list);
         }
 
         public List<UserList> ReadAllLists(bool headerInfoOnly)
@@ -87,12 +88,18 @@ namespace KeithLink.Svc.Impl
 			if (headerInfoOnly)
 				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
 			else
+			{
+				lists.ForEach(i => i.Items.Sort());
 				return lists;
+			}
         }
 
         public UserList ReadList(Guid listId)
         {
-            return listRepository.ReadList(listId);
+			var list = listRepository.ReadList(listId);
+
+			list.Items.Sort();
+			return list;
         }
 
         public List<string> ReadListLabels(Guid listId)
