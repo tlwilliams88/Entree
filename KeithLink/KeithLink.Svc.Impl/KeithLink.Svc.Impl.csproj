@@ -132,6 +132,8 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Profile\AuthenticationManager.cs" />
+    <Compile Include="Profile\ExternalUserDomainRepository.cs" />
+    <Compile Include="Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CommerceServerCatalogRepositoryImpl.cs" />

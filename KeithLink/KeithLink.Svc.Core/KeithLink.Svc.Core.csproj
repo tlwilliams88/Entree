@@ -78,6 +78,13 @@
     <Compile Include="Models\SiteCatalog\Price.cs" />
     <Compile Include="Interface\InternalCatalog\IElasticSearchRepository.cs" />
     <Compile Include="Models\SiteCatalog\Product.cs" />
+    <Compile Include="Profile\CustomerContainer.cs" />
+    <Compile Include="Profile\CustomerContainerReturn.cs" />
+    <Compile Include="Profile\ICustomerContainerRepository.cs" />
+    <Compile Include="Profile\IUserDomainRepository.cs" />
+    <Compile Include="Profile\IUserProfileRepository.cs" />
+    <Compile Include="Profile\UserProfile.cs" />
+    <Compile Include="Profile\UserProfileReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Lists\UserList.cs" />
   </ItemGroup>

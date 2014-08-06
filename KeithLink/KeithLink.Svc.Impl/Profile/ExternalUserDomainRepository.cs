@@ -5,8 +5,10 @@ using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    public static class AuthenticationManager 
+    public class ExternalUserDomainRepository : Svc.Core.Profile.IUserDomainRepository
     {
+        #region methods
+
         /// <summary>
         /// test user credentials
         /// </summary>
@@ -17,7 +19,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
         /// </remarks>
-        public static bool AuthenticateUser(string userName, string password)
+        public bool AuthenticateUser(string userName, string password)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
@@ -31,7 +33,8 @@ namespace KeithLink.Svc.Impl.Profile
                     return principal.ValidateCredentials(userName, password, ContextOptions.SimpleBind);
                 }
             }
-            catch (Exception ex){
+            catch (Exception ex)
+            {
                 new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not authenticate user", ex);
 
                 return false;
@@ -46,7 +49,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/5/2014 - original code
         /// </remarks>
-        private static string GetDomainUserName(string userName)
+        private string GetDomainUserName(string userName)
         {
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
         }
@@ -61,7 +64,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/4/2014 - original code
         /// jwames - 8/5/2014 - add argument validation
         /// </remarks>
-        public static bool IsInGroup(string userName, string groupName)
+        public bool IsInGroup(string userName, string groupName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
@@ -71,29 +74,34 @@ namespace KeithLink.Svc.Impl.Profile
             try
             {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-                                                                            Configuration.ActiveDirectoryExternalServerName,
-                                                                            Configuration.ActiveDirectoryExternalRootNode,
-                                                                            ContextOptions.Negotiate,
-                                                                            GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
-                                                                            Configuration.ActiveDirectoryExternalPassword))
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword))
                 {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
 
                     if (user == null)
                         return false;
-                    else 
-                        try {
+                    else
+                        try
+                        {
                             return user.IsMemberOf(principal, IdentityType.SamAccountName, groupName);
-                        } catch {
+                        }
+                        catch
+                        {
                             return false;
                         }
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
             }
         }
+        #endregion
     }
 }
