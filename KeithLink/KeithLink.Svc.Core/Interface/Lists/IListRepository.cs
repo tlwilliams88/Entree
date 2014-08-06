@@ -10,7 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
     public interface IListRepository
     {
         Guid CreateList(UserList list);
-        void UpdateItem(ListItem updatedItem);
         void UpdateList(UserList list);
 
         void DeleteList(Guid listId);
