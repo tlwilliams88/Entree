@@ -1,3 +1,9 @@
+@mixin component {
+  font-weight: 300;
+  letter-spacing: 1px;
+  border: 1px solid $color-border;
+}
+
 /* BUTTONS */
 
 // default button
