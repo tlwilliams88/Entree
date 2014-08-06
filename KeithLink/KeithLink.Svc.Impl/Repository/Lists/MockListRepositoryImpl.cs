@@ -95,7 +95,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         public void UpdateList(UserList list)
         {
             var currentlist = sampleList.Where(l => l.ListId.Equals(list.ListId)).FirstOrDefault();
-            currentlist = list;
+            currentlist.Name = list.Name;
         }
 
     }
