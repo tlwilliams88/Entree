@@ -9,7 +9,7 @@ using Elasticsearch.Net;
 using System.Dynamic;
 using KeithLink.Svc.Core.Catalog;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {

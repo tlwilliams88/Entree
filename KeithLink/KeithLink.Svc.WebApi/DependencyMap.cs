@@ -7,7 +7,8 @@ using Autofac.Integration.WebApi;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Catalog;
-using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.WebApi

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class MockListRepositoryImpl : IListRepository
     {

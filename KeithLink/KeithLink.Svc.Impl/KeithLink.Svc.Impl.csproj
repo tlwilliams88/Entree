@@ -132,15 +132,15 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Profile\AuthenticationManager.cs" />
-    <Compile Include="Repository\CatalogElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\CatalogInternalRepositoryImpl.cs" />
-    <Compile Include="Repository\CommerceServerCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\ElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\ListRepositoryImpl.cs" />
-    <Compile Include="Repository\MockListRepositoryImpl.cs" />
-    <Compile Include="Repository\PriceCacheRepositoryImpl.cs" />
-    <Compile Include="Repository\PriceRepositoryImpl.cs" />
-    <Compile Include="Repository\StubCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\CommerceServerCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\MockListRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
@@ -257,7 +257,11 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Repository\InternalCatalog\" />
+    <Folder Include="Repository\Lists\" />
+    <Folder Include="Repository\SiteCatalog\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

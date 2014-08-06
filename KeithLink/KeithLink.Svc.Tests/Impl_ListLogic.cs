@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.Test

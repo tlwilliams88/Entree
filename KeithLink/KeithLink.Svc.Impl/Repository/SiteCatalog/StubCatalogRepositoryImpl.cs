@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Catalog;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class StubCatalogRepositoryImpl : ICatalogRepository
     {

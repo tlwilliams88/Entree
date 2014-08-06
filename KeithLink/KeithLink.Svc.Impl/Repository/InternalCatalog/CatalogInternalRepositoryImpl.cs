@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 {
     public class CatalogInternalRepositoryImpl: ICatalogInternalRepository
     {
