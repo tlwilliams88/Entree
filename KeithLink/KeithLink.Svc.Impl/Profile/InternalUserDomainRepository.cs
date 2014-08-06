@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    class InternalUserDomainRepository : Svc.Core.Profile.IUserDomainRepository
+    public class InternalUserDomainRepository : Svc.Core.Profile.IUserDomainRepository
     {
         #region methods
 
