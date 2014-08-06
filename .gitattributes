@@ -16,5 +16,5 @@
 *.sln       eol=crlf
 *.ico       -text
 
-*.csproj text eol=crlf merge=union
+*.csproj text merge=union
 *.sln    text merge=union eol=crlf
