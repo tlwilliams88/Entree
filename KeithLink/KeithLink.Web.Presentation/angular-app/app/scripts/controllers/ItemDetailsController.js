@@ -21,4 +21,8 @@ angular.module('bekApp')
       });
     }
 
+    $scope.highlightRow = function(index, totalItems) {
+      return Boolean((index + totalItems) % 2);
+    };
+
   }]);

@@ -10,58 +10,8 @@
 angular.module('bekApp')
   .controller('ListController', ['$scope', 'ListService', function($scope, ListService) {
 
+    $scope.alerts = [];
     $scope.loadingResults = true;
-
-    $scope.lists = [
-    {
-        'listid': '710ab77a-a97b-4898-a140-dbc27f853abc',
-        'name': 'Sample List A',
-        'items': [
-            {
-                'listitemid': 'ed699437-57ad-4f51-b15f-d04042cc589c',
-                'itemnumber': '284569',
-                'label': 'This is a label',
-                'parlevel': 0,
-                'position': 0
-            },
-            {
-                'listitemid': 'ed859f7f-5e40-4c3b-9d6e-7b05d81cbd14',
-                'itemnumber': '287100',
-                'label': null,
-                'parlevel': 0,
-                'position': 1
-            }
-        ]
-    },
-    {
-        'listid': '58d88c28-87c1-4476-a166-53df19367e05',
-        'name': 'Sample List B',
-        'items': [
-            {
-                'listitemid': 'a9e1546f-674d-46a9-b527-fa47f5498f53',
-                'itemnumber': '287302',
-                'label': null,
-                'parlevel': 0,
-                'position': 0
-            },
-            {
-                'listitemid': '11240cb1-b83e-4b65-af9c-700d49f6710d',
-                'itemnumber': '287770',
-                'label': 'Test Label',
-                'parlevel': 0,
-                'position': 1
-            },
-            {
-                'listitemid': '9f9629e0-22b6-48db-b3be-85a5e72c0454',
-                'itemnumber': '287402',
-                'label': null,
-                'parlevel': 0,
-                'position': 2
-            }
-        ]
-    }
-];
-$scope.selectedList = $scope.lists[0];
 
     ListService.getAllLists().then(function(data) {
       $scope.lists = data;
@@ -78,15 +28,37 @@ $scope.selectedList = $scope.lists[0];
     };
 
     $scope.createList = function() {
-      // TODO: determine new list default name
-      $scope.selectedList = {
-        name: 'New List'
-      };
-      // TODO: post list to server, append new list to list of lists
+
+      // generate new list name
+      var date = new Date(),
+        dateString = date.getMonth() + 1 + '-' + date.getDate(),
+        newList = {
+          name: 'New List ' + dateString
+        };
+
+      ListService.createList(newList).then(function(data) {
+        newList.listid = data;
+        $scope.lists.push(newList);
+        $scope.selectedList = newList; 
+        addSuccessAlert('Successfully created a new list.');
+      }, function(error) {
+        addErrorAlert('Error creating list.');
+      });
     };
 
-    $scope.updateItemLabel = function(product) {
-      console.log('update label to ' + product.label + ' for listItemId ' + product.itemnumber);
+    $scope.updateItem = function(listId, item) {
+      ListService.updateItem(listId, item).then(function(data) {
+        addSuccessAlert('Successfully added label ' + item.label + ' to item ' + item.itemnumber + '.');
+      });
+    };
+
+    $scope.addNewLabel = function(listId, newLabel, item) {
+      item.label = newLabel;
+      ListService.updateItem(listId, item).then(function(data) {
+        item.isEditing = false;
+        $scope.labels.push(newLabel);
+        addSuccessAlert('Successfully created new label ' + newLabel + ' and added it to item ' + item.itemnumber + '.');
+      });
     };
 
     $scope.addSavedItem = function(item) {
@@ -97,34 +69,52 @@ $scope.selectedList = $scope.lists[0];
       console.log('remove item # ' + item.itemnumber + ' from saved items');
     };
 
-    // edit list name
     $scope.renameList = function (listId, listName) {
-      console.log('rename list ' + listId + ' to ' + listName);
-      $scope.editingListName = false;
+      var list = angular.copy($scope.selectedList);
+      list.name = listName;
+
+      ListService.updateList(list).then(function(data) {
+        $scope.selectedList.name = listName;
+        $scope.displayEditingListName = false;
+        addSuccessAlert('Successfully renamed list.');
+      });
     };
 
     $scope.cancelEditListName = function() {
-      // $scope.editList = {};
-      $scope.editingListName = false;
+      $scope.displayEditingListName = false;
     };
 
     $scope.startEditListName = function(listName) {
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
-      $scope.editingListName = true;
+      $scope.displayEditingListName = true;
     };
 
-    var selectedProduct;
-    $scope.selectItem = function(event, helper, product) {
-      selectedProduct = product;
-    };
+    $scope.addItemToList = function (event, helper, listId) {
+      var selectedItem = helper.draggable.data('product');
 
-    $scope.addItemToList = function (event, helper, list) {
-      console.log('add item ' + selectedProduct.itemnumber + ' to list ' + list.name);
+      ListService.addItem(listId, selectedItem).then(function(data) {
+        debugger;
+      },function(error) {
+        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
+      });
     };
 
     $scope.deleteItem = function(event, helper, list) {
-      console.log('delete item ' + selectedProduct.itemnumber + ' from list ' + list.name);
+      var selectedItem = helper.draggable.data('product');
+
+      console.log('delete item ' + selectedItem.itemnumber + ' from list ' + list.name);
+    };
+
+    $scope.deleteList = function(listId) {
+      var idx = $scope.lists.indexOf($scope.selectedList);
+
+      // TODO: ask for confirmation, should we allow users to delete lists with items?
+      ListService.deleteList(listId).then(function(data) {
+        $scope.lists.splice(idx, 1);
+        $scope.selectedList = $scope.lists[0];
+        addSuccessAlert('Successfully deleted list.');
+      });
     };
 
     // CONTEXT MENU
@@ -154,14 +144,27 @@ $scope.selectedList = $scope.lists[0];
       }
     };
 
-    // ALERTS
-    $scope.alerts = [
-      // { type: 'danger', msg: 'Oh snap! Change a few things up and try submitting again.' },
-      // { type: 'success', msg: 'Well done! You successfully read this important alert message.' }
-    ];
+    $scope.setIsDragging = function(event, helper, isDragging) {
+      $scope.isDragging = isDragging;
+    };
 
+
+    // ALERTS
+    function addSuccessAlert(message) {
+      addAlert('success', message);
+    };
+    function addErrorAlert(message) {
+      addAlert('danger', message);
+    };
+    function addAlert(alertType, message) {
+      $scope.alerts[0] = { type: alertType, msg: message };
+    };
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
     };
+
+    // function errorHandler(message, error) {
+
+    // };
 
   }]);
