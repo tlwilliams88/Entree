@@ -141,15 +141,6 @@
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\CatalogElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\CatalogInternalRepositoryImpl.cs" />
-    <Compile Include="Repository\CommerceServerCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\ElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\ListRepositoryImpl.cs" />
-    <Compile Include="Repository\MockListRepositoryImpl.cs" />
-    <Compile Include="Repository\PriceCacheRepositoryImpl.cs" />
-    <Compile Include="Repository\PriceRepositoryImpl.cs" />
-    <Compile Include="Repository\StubCatalogRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
     <Compile Include="RequestTemplates\RequestTemplates.cs">
