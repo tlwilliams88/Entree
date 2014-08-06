@@ -93,6 +93,54 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QA", "QA", "{0AA5ACC1-A2AB-
 		KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA = KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web (2)", "Web (2)", "{7D77B0EA-7649-4B2B-87DA-5608E2887D13}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common (2)", "Common (2)", "{DB3FE643-4784-4FD4-934A-CB3A936F2CAE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service (2)", "Service (2)", "{7CAE917D-5445-4E80-9902-F894EE118469}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database (2)", "Database (2)", "{F1794B58-07B7-48C0-B3F1-52E87A78FF9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeithLink.ETL.Setup", "KeithLink.ETL.Setup", "{139D3E2D-36E5-4B68-A03C-2FB4B1C8A434}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\README.txt = KeithLink.ETL.Setup\README.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{DA967680-220D-40B4-88A3-80CA40337AD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{F5F25F12-D0A4-400F-8EF9-24803F034EE5}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql = KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql
+		KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql = KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql
+		KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql = KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{E04EB169-4D88-4BD1-802E-308EA643F453}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev = KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{518184A0-4FB5-4CC0-8CFE-7805DE2FCDA0}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local = KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{4CE79DC1-458F-4DD8-9EE9-9334E9972A22}"
+	ProjectSection(SolutionItems) = preProject
+		KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod = KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget (2)", ".nuget (2)", "{57993F89-2361-4530-B414-D4ADF92F17B2}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -271,274 +319,5 @@ Global
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
-	EndGlobalSection
-EndGlobal
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{D6B19051-C6BA-465B-9D93-B6E48E44667A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{C44D1197-BF78-46D8-975D-CD5B10D9A4AA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{14C0B446-B30D-4C46-93A4-025400F4DFDD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Impl", "KeithLink.Web.Impl\KeithLink.Web.Impl.csproj", "{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Core", "KeithLink.Web.Core\KeithLink.Web.Core.csproj", "{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Tests", "KeithLink.Web.Tests\KeithLink.Web.Tests.csproj", "{65A1D847-9676-4CA0-84A7-BC67FB54A50E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Impl", "KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj", "{878AA2E7-769B-409C-8285-3A7FACA750F9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Core", "KeithLink.Svc.Core\KeithLink.Svc.Core.csproj", "{E272DA17-C7F8-4F35-A4B0-E97D03D35754}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Tests", "KeithLink.Svc.Tests\KeithLink.Svc.Tests.csproj", "{A9FEAA4D-D248-4807-85FB-B74569BAD847}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Common.Core", "KeithLink.Common.Core\KeithLink.Common.Core.csproj", "{A5061D47-AD81-4C9D-B171-8D92F38DB60D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Common.Impl", "KeithLink.Common.Impl\KeithLink.Common.Impl.csproj", "{562E7A83-563D-4848-AF64-7DCB432935E8}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Common.Tests", "KeithLink.Common.Tests\KeithLink.Common.Tests.csproj", "{42B2A7A5-6D71-4414-84EB-01C26D061183}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Web.Presentation", "KeithLink.Web.Presentation\KeithLink.Web.Presentation.csproj", "{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041} = {9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549} = {43F5B3CD-D277-4FAC-97FF-170DDFA48549}
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD} = {B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.InternalSvc", "KeithLink.Svc.InternalSvc\KeithLink.Svc.InternalSvc.csproj", "{6E0FA18C-21B0-4862-ACBC-4B6D55516341}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.WebApi", "KeithLink.Svc.WebApi\KeithLink.Svc.WebApi.csproj", "{43F5B3CD-D277-4FAC-97FF-170DDFA48549}"
-	ProjectSection(ProjectDependencies) = postProject
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754} = {E272DA17-C7F8-4F35-A4B0-E97D03D35754}
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D} = {A5061D47-AD81-4C9D-B171-8D92F38DB60D}
-		{562E7A83-563D-4848-AF64-7DCB432935E8} = {562E7A83-563D-4848-AF64-7DCB432935E8}
-		{878AA2E7-769B-409C-8285-3A7FACA750F9} = {878AA2E7-769B-409C-8285-3A7FACA750F9}
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}"
-EndProject
-Project("{159641D6-6404-4A2A-AE62-294DE0FE8301}") = "KeithLink.ETL", "KeithLink.ETL\KeithLink.ETL.dtproj", "{DA2CC32A-4740-4031-8D5D-5905463ED93B}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "KeithLink.ETL.Setup", "KeithLink.ETL.Setup", "{5FF02D94-A213-444C-90FF-E851196846E2}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\README.txt = KeithLink.ETL.Setup\README.txt
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Config", "Config", "{BA613763-1505-4E83-969D-18E6D28B95CA}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8E-4CAD-8036-C21BA08B6E72}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql = KeithLink.ETL.Setup\SQL\Create_BEK_Commerce_AppData.sql
-		KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql = KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql
-		KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql = KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql
-		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql
-		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql
-		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductNutrition.sql
-		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductSpec.sql
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev = KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{9E8ECE67-A483-40C2-B612-A1A3B357F1FE}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local = KeithLink.ETL.Setup\Config\Local\ETLProcess.dtsConfig.Local
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{85599C7B-357D-4C78-8551-9AD8EC771379}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod = KeithLink.ETL.Setup\Config\Production\ETLProcess.dtsConfig.Prod
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C1090939-215D-4B9B-AABD-C16C6DC25D3B}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.FoundationSvc", "KeithLink.Svc.FoundationSvc\KeithLink.Svc.FoundationSvc.csproj", "{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Dev|Any CPU = Dev|Any CPU
-		Development|Any CPU = Development|Any CPU
-		Release|Any CPU = Release|Any CPU
-		Test|Any CPU = Test|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD}.Test|Any CPU.Build.0 = Test|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041}.Test|Any CPU.Build.0 = Test|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Dev|Any CPU.Build.0 = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E}.Test|Any CPU.Build.0 = Release|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{878AA2E7-769B-409C-8285-3A7FACA750F9}.Test|Any CPU.Build.0 = Release|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754}.Test|Any CPU.Build.0 = Release|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Dev|Any CPU.Build.0 = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847}.Test|Any CPU.Build.0 = Release|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D}.Test|Any CPU.Build.0 = Release|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{562E7A83-563D-4848-AF64-7DCB432935E8}.Test|Any CPU.Build.0 = Test|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Dev|Any CPU.Build.0 = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Release|Any CPU.Build.0 = Release|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{42B2A7A5-6D71-4414-84EB-01C26D061183}.Test|Any CPU.Build.0 = Release|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575}.Test|Any CPU.Build.0 = Test|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341}.Test|Any CPU.Build.0 = Release|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Dev|Any CPU.ActiveCfg = Dev|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Dev|Any CPU.Build.0 = Dev|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Development|Any CPU.ActiveCfg = Dev|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Development|Any CPU.Build.0 = Dev|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Release|Any CPU.Build.0 = Release|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Test|Any CPU.ActiveCfg = Test|Any CPU
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549}.Test|Any CPU.Build.0 = Test|Any CPU
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Debug|Any CPU.ActiveCfg = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Dev|Any CPU.ActiveCfg = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Dev|Any CPU.Build.0 = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Development|Any CPU.ActiveCfg = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Development|Any CPU.Build.0 = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Release|Any CPU.ActiveCfg = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Release|Any CPU.Build.0 = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Test|Any CPU.ActiveCfg = Development
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B}.Test|Any CPU.Build.0 = Development
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Dev|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Dev|Any CPU.Build.0 = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Development|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Development|Any CPU.Build.0 = Debug|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}.Test|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{B5C73FF8-B46C-48AA-A5FE-AC74EE23C0FD} = {D6B19051-C6BA-465B-9D93-B6E48E44667A}
-		{9DD1315D-9DC1-45AB-B4D1-08EC32E0A041} = {D6B19051-C6BA-465B-9D93-B6E48E44667A}
-		{65A1D847-9676-4CA0-84A7-BC67FB54A50E} = {D6B19051-C6BA-465B-9D93-B6E48E44667A}
-		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575} = {D6B19051-C6BA-465B-9D93-B6E48E44667A}
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
-		{562E7A83-563D-4848-AF64-7DCB432935E8} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
-		{42B2A7A5-6D71-4414-84EB-01C26D061183} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
-		{878AA2E7-769B-409C-8285-3A7FACA750F9} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{E272DA17-C7F8-4F35-A4B0-E97D03D35754} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{A9FEAA4D-D248-4807-85FB-B74569BAD847} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{43F5B3CD-D277-4FAC-97FF-170DDFA48549} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
-		{DA2CC32A-4740-4031-8D5D-5905463ED93B} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
-		{5FF02D94-A213-444C-90FF-E851196846E2} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
-		{BA613763-1505-4E83-969D-18E6D28B95CA} = {5FF02D94-A213-444C-90FF-E851196846E2}
-		{1FFC01AE-BA8E-4CAD-8036-C21BA08B6E72} = {5FF02D94-A213-444C-90FF-E851196846E2}
-		{93D900A9-B444-4628-81C9-FA8E171F1966} = {BA613763-1505-4E83-969D-18E6D28B95CA}
-		{9E8ECE67-A483-40C2-B612-A1A3B357F1FE} = {BA613763-1505-4E83-969D-18E6D28B95CA}
-		{85599C7B-357D-4C78-8551-9AD8EC771379} = {BA613763-1505-4E83-969D-18E6D28B95CA}
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal
