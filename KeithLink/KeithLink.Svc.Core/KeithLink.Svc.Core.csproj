@@ -80,6 +80,7 @@
     <Compile Include="Product.cs" />
     <Compile Include="Profile\CustomerContainer.cs" />
     <Compile Include="Profile\CustomerContainerReturn.cs" />
+    <Compile Include="Profile\ICustomerContainerRepository.cs" />
     <Compile Include="Profile\IUserProfileRepository.cs" />
     <Compile Include="Profile\UserProfile.cs" />
     <Compile Include="Profile\UserProfileReturn.cs" />
