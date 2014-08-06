@@ -1,12 +1,13 @@
 ﻿using CommerceServer.Core.Runtime.Orders;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class ListRepositoryImpl: IListRepository
     {
@@ -31,12 +32,7 @@ namespace KeithLink.Svc.Impl.Repository
             newBasket.Save();
             return newBasket.OrderGroupId;
         }
-
-        public void UpdateItem(ListItem updatedItem)
-        {
-            throw new NotImplementedException();
-        }
-
+		       
         public void UpdateList(UserList list)
         {
 			var basket = orderContext.GetBasket(EXAMPLEUSERID, list.ListId);

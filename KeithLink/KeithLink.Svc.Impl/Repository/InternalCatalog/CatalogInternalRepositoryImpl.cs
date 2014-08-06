@@ -1,12 +1,13 @@
 ﻿using CommerceServer.Core.Catalog;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository
+
+namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 {
     public class CatalogInternalRepositoryImpl: ICatalogInternalRepository
     {

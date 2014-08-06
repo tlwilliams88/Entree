@@ -1,5 +1,6 @@
 ﻿using CommerceServer.Core.Catalog;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class MockListRepositoryImpl : IListRepository
     {
@@ -73,11 +74,6 @@ namespace KeithLink.Svc.Impl.Repository
             return list.ListId;
         }
 
-        public void UpdateItem(ListItem updatedItem)
-        {
-            //Nothing really needs to be done in the mock
-        }
-
         public void DeleteList(Guid listId)
         {
             sampleList.RemoveAll(l => l.ListId.Equals(listId));
@@ -99,7 +95,7 @@ namespace KeithLink.Svc.Impl.Repository
         public void UpdateList(UserList list)
         {
             var currentlist = sampleList.Where(l => l.ListId.Equals(list.ListId)).FirstOrDefault();
-            currentlist = list;
+            currentlist.Name = list.Name;
         }
 
     }

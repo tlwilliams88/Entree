@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
-    public class PriceCacheRepositoryImpl : KeithLink.Svc.Core.IPriceCacheRepository
+    public class PriceCacheRepositoryImpl : IPriceCacheRepository
     {
         #region attributes
         private const string CACHE_GROUPNAME = "Pricing";
@@ -38,10 +40,10 @@ namespace KeithLink.Svc.Impl.Repository
         /// </remarks>
         public void AddItem(string branchId, string customerNumber, string itemNumber, double casePrice, double packagePrice)
         {
-            cache.AddData<KeithLink.Svc.Core.Price>(CACHE_PREFIX,
+            cache.AddData<KeithLink.Svc.Core.Models.SiteCatalog.Price>(CACHE_PREFIX,
                                                     CACHE_NAME,
                                                     GetCacheKey(branchId, customerNumber, itemNumber),
-                                                    new Core.Price()
+                                                    new Core.Models.SiteCatalog.Price()
                                                     {
                                                         BranchId = branchId,
                                                         CustomerNumber = customerNumber,
@@ -60,9 +62,9 @@ namespace KeithLink.Svc.Impl.Repository
         /// <remarks>
         /// jwames - 7/28/2014 - original code
         /// </remarks>
-        public void AddItem(Core.Price price)
+        public void AddItem(Core.Models.SiteCatalog.Price price)
         {
-            cache.AddData<KeithLink.Svc.Core.Price>(CACHE_PREFIX,
+            cache.AddData<KeithLink.Svc.Core.Models.SiteCatalog.Price>(CACHE_PREFIX,
                                                     CACHE_NAME,
                                                     GetCacheKey(price.BranchId, price.CustomerNumber, price.ItemNumber),
                                                     price,
@@ -120,11 +122,11 @@ namespace KeithLink.Svc.Impl.Repository
         /// <remarks>
         /// jwames - 7/22/2014 - original code
         /// </remarks>
-        public Core.Price GetPrice(string branchId, string customerNumber, string itemNumber)
+        public Core.Models.SiteCatalog.Price GetPrice(string branchId, string customerNumber, string itemNumber)
         {
-            Core.Price output = null;
+            Core.Models.SiteCatalog.Price output = null;
 
-            if (cache.TryGetData<Core.Price>(CACHE_PREFIX,
+            if (cache.TryGetData<Core.Models.SiteCatalog.Price>(CACHE_PREFIX,
                                              CACHE_NAME,
                                              GetCacheKey(branchId, customerNumber, itemNumber),
                                              out output))

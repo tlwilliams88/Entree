@@ -7,9 +7,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using System.Dynamic;
-using KeithLink.Svc.Core.Catalog;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
-namespace KeithLink.Svc.Impl.Repository
+namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {

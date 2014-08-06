@@ -4,10 +4,11 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Autofac.Integration.WebApi;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Catalog;
-using KeithLink.Svc.Impl.Repository;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -27,7 +28,7 @@ namespace KeithLink.Svc.WebApi
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
 
-            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+            builder.RegisterType<MockListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
             // Build the container.

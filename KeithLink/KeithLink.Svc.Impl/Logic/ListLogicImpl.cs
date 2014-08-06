@@ -1,11 +1,12 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Svc.Core.Interface.Lists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Lists;
 
-namespace KeithLink.Svc.Impl
+namespace KeithLink.Svc.Impl.Logic
 {
     public class ListLogicImpl: IListLogic
     {
@@ -89,7 +90,11 @@ namespace KeithLink.Svc.Impl
 				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
 			else
 			{
-				lists.ForEach(i => i.Items.Sort());
+				lists.ForEach(delegate(UserList list)
+				{
+					if (list.Items != null)
+						list.Items.Sort();
+				});
 				return lists;
 			}
         }
@@ -98,7 +103,9 @@ namespace KeithLink.Svc.Impl
         {
 			var list = listRepository.ReadList(listId);
 
-			list.Items.Sort();
+			if(list.Items != null)
+				list.Items.Sort();
+			
 			return list;
         }
 
@@ -106,16 +113,16 @@ namespace KeithLink.Svc.Impl
         {
             var lists = listRepository.ReadList(listId);
             
-            if (lists == null)
+            if (lists == null || lists.Items == null)
                 return null;
 
-            return lists.Items.Where(l => l.Label != null).Select(i => i.Label).ToList();
+            return lists.Items.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
         public List<string> ReadListLabels()
         {
             var lists = listRepository.ReadAllLists();
-            return lists.SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).ToList();
+			return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
     }
 }
