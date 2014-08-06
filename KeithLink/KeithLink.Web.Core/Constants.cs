@@ -12,5 +12,9 @@ namespace KeithLink.Web.Core
         {
             get { return "ClientApiEndpoint"; }
         }
+        public static string Ie8ClientApiEndpointConfigurationEntry
+        {
+            get { return "Ie8ClientApiEndpoint"; }
+        }
     }
 }
