@@ -115,13 +115,13 @@ namespace KeithLink.Svc.Impl.Logic
             if (lists == null || lists.Items == null)
                 return null;
 
-            return lists.Items.Where(l => l.Label != null).Select(i => i.Label).ToList();
+            return lists.Items.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
         public List<string> ReadListLabels()
         {
             var lists = listRepository.ReadAllLists();
-            return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).ToList();
+			return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
     }
 }
