@@ -8,9 +8,9 @@ namespace KeithLink.Svc.Core.Profile
 {
     public interface ICustomerContainerRepository
     {
-        public void CreateCustomerContainer(string customerName);
-        public void DeleteCustomerContainer(string customerName);
-        public CustomerContainerReturn GetCustomerContainer(string customerName);
-        public CustomerContainerReturn SearchCustomerContainers(string searchText);
+        void CreateCustomerContainer(string customerName);
+        void DeleteCustomerContainer(string customerName);
+        CustomerContainerReturn GetCustomerContainer(string customerName);
+        CustomerContainerReturn SearchCustomerContainers(string searchText);
     }
 }

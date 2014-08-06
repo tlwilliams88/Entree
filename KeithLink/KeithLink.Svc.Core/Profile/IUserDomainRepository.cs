@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Profile
 {
     public interface IUserDomainRepository
     {
-        public bool AuthenticateUser(string userName, string password);
-        public bool IsInGroup(string userName, string groupName);
+        bool AuthenticateUser(string userName, string password);
+        bool IsInGroup(string userName, string groupName);
     }
 }

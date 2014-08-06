@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
         /// </remarks>
-        public static bool AuthenticateUser(string userName, string password)
+        public bool AuthenticateUser(string userName, string password)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
@@ -49,7 +49,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/5/2014 - original code
         /// </remarks>
-        private static string GetDomainUserName(string userName)
+        private string GetDomainUserName(string userName)
         {
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
         }
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/4/2014 - original code
         /// jwames - 8/5/2014 - add argument validation
         /// </remarks>
-        public static bool IsInGroup(string userName, string groupName)
+        public bool IsInGroup(string userName, string groupName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
