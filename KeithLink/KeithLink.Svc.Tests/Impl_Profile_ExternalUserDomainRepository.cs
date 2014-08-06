@@ -9,7 +9,8 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void CanAuthenticate()
         {
-            bool success = KeithLink.Svc.Impl.Profile.AuthenticationManager.AuthenticateUser("sabroussard@benekeith.com", "L1ttleStev1e");
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            bool success = ad.AuthenticateUser("sabroussard@benekeith.com", "L1ttleStev1e");
 
             Assert.IsTrue(success);
         }
@@ -17,7 +18,8 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void BelongsToGroup()
         {
-            bool hasAccess = KeithLink.Svc.Impl.Profile.AuthenticationManager.IsInGroup("sabroussard@benekeith.com", "Owner");
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            bool hasAccess = ad.IsInGroup("sabroussard@benekeith.com", "Owner");
 
             Assert.IsTrue(hasAccess);
         }
