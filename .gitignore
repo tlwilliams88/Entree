@@ -195,3 +195,7 @@ node_modules/
 /KeithLink/KeithLink.Web.Presentation/angular-app/test/test-results/
 /KeithLink/packages/
 /KeithLink/KeithLink.Web.Presentation/app/
+
+
+#Ignore Log Files
+/KeithLink/KeithLink.Web.Presentation/BuildLogs/

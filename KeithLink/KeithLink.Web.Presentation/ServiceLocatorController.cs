@@ -15,7 +15,13 @@ namespace KeithLink.Web.Presentation
         [Route("angular-app/servicelocator")]
         public ConfigurationInformation GetServiceConfiguration()
         {
-            return new ConfigurationInformation() { ClientApiEndpoint = ConfigurationManager.AppSettings[Constants.ClientApiEndpointConfigurationEntry] };
+            string clientApiEndpoint = ConfigurationManager.AppSettings[Constants.ClientApiEndpointConfigurationEntry];
+            if (System.Web.HttpContext.Current.Request.Browser.Browser.ToLower() == "ie8")
+            {
+                clientApiEndpoint = ConfigurationManager.AppSettings[Constants.ClientApiEndpointConfigurationEntry];
+            }
+
+            return new ConfigurationInformation() { ClientApiEndpoint = clientApiEndpoint };
         }
     }
 }
