@@ -31,12 +31,7 @@ namespace KeithLink.Svc.Impl.Repository
             newBasket.Save();
             return newBasket.OrderGroupId;
         }
-
-        public void UpdateItem(ListItem updatedItem)
-        {
-            throw new NotImplementedException();
-        }
-
+		       
         public void UpdateList(UserList list)
         {
 			var basket = orderContext.GetBasket(EXAMPLEUSERID, list.ListId);

@@ -73,11 +73,6 @@ namespace KeithLink.Svc.Impl.Repository
             return list.ListId;
         }
 
-        public void UpdateItem(ListItem updatedItem)
-        {
-            //Nothing really needs to be done in the mock
-        }
-
         public void DeleteList(Guid listId)
         {
             sampleList.RemoveAll(l => l.ListId.Equals(listId));
