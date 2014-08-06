@@ -11,6 +11,8 @@ namespace KeithLink.Svc.Core
         public static string ReturnSizeQueryStringParam { get { return "size"; } }
         public static string ReturnFromQueryStringParam { get { return "from"; } }
 
+        public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
+
         public const string ROLE_EXTERNAL_ACCOUNTING = "Accounting";
         public const string ROLE_EXTERNAL_OWNER = "Owner";
         public const string ROLE_EXTERNAL_PURCHASING = "Purchasing";
