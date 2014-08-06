@@ -11,7 +11,7 @@ Cleaning dist-dev/views...OK
 
 Running "compass:server" (compass) task
 unchanged app/styles/main.scss
-Compilation took 0.163s
+Compilation took 0.142s
 
 Running "copy:dev" (copy) task
 Created 1 directories, copied 121 files
@@ -19,17 +19,17 @@ Created 1 directories, copied 121 files
 Running "karma:unit" (karma) task
 INFO [karma]: Karma v0.12.21 server started at http://localhost:9001/
 INFO [launcher]: Starting browser PhantomJS
-INFO [PhantomJS 1.9.7 (Windows 8)]: Connected on socket Jx5HUuLLF1RbEQ90vfyK with id 84084705
+INFO [PhantomJS 1.9.7 (Windows 8)]: Connected on socket SPKmBx_MFhzkxvXV2FdD with id 82595653
 .
-PhantomJS 1.9.7 (Windows 8): Executed 1 of 1[32m SUCCESS[39m (0.02 secs / 0.022 secs)
+PhantomJS 1.9.7 (Windows 8): Executed 1 of 1[32m SUCCESS[39m (0.021 secs / 0.023 secs)
 
 Done, without errors.
 
 
-Execution Time (2014-08-06 19:13:57 UTC)
-clean:dev        83ms  ■ 2%
-compass:server  496ms  ■■■■■■ 12%
-copy:dev        237ms  ■■■ 6%
+Execution Time (2014-08-06 19:42:44 UTC)
+clean:dev       100ms  ■■ 3%
+compass:server  477ms  ■■■■■■ 12%
+copy:dev        208ms  ■■■ 5%
 karma:unit       3.2s  ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 80%
 Total 4s
 
