@@ -349,7 +349,6 @@
     <Content Include="angular-app\Gruntfile.js" />
     <Content Include="angular-app\main.css" />
     <Content Include="angular-app\mockApi\apiserver.js" />
-    <Content Include="angular-app\package.json" />
     <Content Include="angular-app\test\.jshintrc" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
