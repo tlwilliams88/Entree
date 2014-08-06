@@ -13,6 +13,10 @@
   thead {
     background-color: $background;
     border-bottom: 1px solid $color-border;
+
+    > tr > th:last-child {
+      border-right: 1px solid $color-border;
+    }
   }
 
   thead > tr > th, 
@@ -39,8 +43,8 @@
       @media (max-width: $mobile-max) { padding: 9px 5px; }
     }
 
-    &.table-dropdown {
-      padding: 10px;
+    &.table-input {
+      padding: 8px;
 
       .select-div {
         width: 160px;
@@ -49,8 +53,13 @@
         select {
           width: 185px;
           min-height: 20px;
-          padding: 5px;
+          padding: 4px;
         }
+      }
+
+      input {
+        min-height: 29px;
+        padding: 5px;
       }
     }
   }

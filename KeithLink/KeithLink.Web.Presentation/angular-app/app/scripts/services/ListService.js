@@ -12,20 +12,20 @@ angular.module('bekApp')
    
     var Service = {
 
-      getAllLists: function() {
-        return $http.get('/list').then(function(response) {
+      getAllLists: function(onlyHeaders) {
+        onlyHeaders = typeof onlyHeaders !== 'undefined' ? onlyHeaders : false;
+
+        return $http.get('/list', {
+          params: {
+            header: onlyHeaders
+          }
+        }).then(function(response) {
           return response.data;
         });
       },
 
       getList: function(listId) {
         return $http.get('/list/' + listId).then(function(response) {
-          return response.data;
-        });
-      },
-
-      createList: function() {
-        return $http.post('/list').then(function(response) {
           return response.data;
         });
       },
@@ -39,6 +39,41 @@ angular.module('bekApp')
       getLabelsForList: function(listId) {
         return $http.get('/list/' + listId + '/labels').then(function(response) {
           return response.data;
+        });
+      },
+
+      createList: function(list) {
+        return $http.post('/list', list).then(function(response) {
+          return response.data; // return listId
+        });
+      },
+
+      deleteList: function(listId) {
+        return $http.delete('/list/' + listId);
+      },
+
+      addItem: function(listId, item) {
+        return $http.post('/list/' + listId + '/item', item).then(function(response) {
+          debugger;
+          return response.data;
+        });
+      },
+
+      updateItem: function(listId, item) {
+        return $http.put('/list/' + listId + '/item', item).then(function(response) {
+          debugger;
+        });
+      },
+
+      deleteItem: function(listId, itemId) {
+        return $http.delete('/list/' + listId + '/item/' + itemId).then(function(response) {
+          debugger;
+        });
+      },
+
+      updateList: function(list) {
+        return $http.put('/list', list).then(function(response) {
+          
         });
       }
 

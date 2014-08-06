@@ -29,7 +29,7 @@
         <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
         <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
-      <div class="item-details__icons" item-icons="item"></div>
+      <div class="large-icon" item-icons="item"></div>
     </div>
     <div class="item-details__actions hidden-print">
       <div style="display:inline-block;" ng-mouseenter="isContextMenuDisplayed = true" ng-mouseleave="isContextMenuDisplayed = false">
@@ -164,10 +164,10 @@
                 <th>Value</th>
               </tr>
               <tr ng-repeat="diet in item.gs1.diet" ng-class="{ odd : $even, even: $odd }">
-                <td>{{diet.diettype}}</td>
-                <td>{{diet.value}}</td>
+                <td class="text-capitalize">{{diet.diettype}}</td>
+                <td class="text-uppercase">{{diet.value}}</td>
               </tr>
-              <tr ng-repeat="allergen in item.gs1.allergens" ng-class="{ odd : $odd, even: $even }">
+              <tr ng-repeat="allergen in item.gs1.allergens" ng-class="{ odd : !highlightRow($index, item.gs1.diet.length), even: highlightRow($index, item.gs1.diet.length) }">
                 <td>{{allergen.allergentype}}</td>
                 <td>{{allergen.level}}</td>
               </tr>
