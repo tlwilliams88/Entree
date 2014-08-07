@@ -59,9 +59,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPost]
 		[Route("list/{branchId}")]
-		public Guid List(string branchId, UserList list)
+		public NewItem List(string branchId, UserList list)
         {
-            return listLogic.CreateList(branchId, list);
+			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(branchId, list) };
+			return newGuid;
         }
 
         [HttpDelete]

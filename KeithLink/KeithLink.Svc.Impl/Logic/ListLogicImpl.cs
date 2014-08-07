@@ -94,6 +94,13 @@ namespace KeithLink.Svc.Impl.Logic
         {
 			var lists = listRepository.ReadAllLists(EXAMPLEUSERID, branchId);
 
+			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
+			{
+				//favorites list doesn't exist yet, create an empty one
+				listRepository.CreateList(EXAMPLEUSERID, branchId, new UserList() { Name = FAVORITESLIST});
+				lists = listRepository.ReadAllLists(EXAMPLEUSERID, branchId);
+			}
+
 			if (headerInfoOnly)
 				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
 			else
