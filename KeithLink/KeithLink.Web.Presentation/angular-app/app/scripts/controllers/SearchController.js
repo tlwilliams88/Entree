@@ -65,11 +65,22 @@ angular.module('bekApp')
                } else { 
                    $scope.products = data.products;
                }
-
-               // $scope.categories = data.facets.categories;
-               // $scope.brands = data.facets.brands;
                $scope.totalItems = data.totalcount;
-               
+
+               $scope.breadcrumbs = [];
+               if($scope.selectedCategory){
+                $scope.breadcrumbs.push({type: "category", id:$scope.selectedCategory, name: $scope.selectedCategory});
+              }
+               var brandsBreadcrumb = "Brand: ";
+               angular.forEach($scope.selectedBrands, function (item, index) {
+                brandsBreadcrumb += item + " or ";
+              });
+               if(brandsBreadcrumb!="Brand: "){
+                $scope.breadcrumbs.push({type: "brand", id:$scope.selectedBrands , name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length-4)});
+             }
+             if($stateParams.type === 'search'){
+              $scope.breadcrumbs.push({type: "search", id:"search", name: "\"" + $stateParams.id + "\""});
+             }
                $scope.loadingResults = false;
 
                return data.facets;
@@ -93,8 +104,18 @@ angular.module('bekApp')
            loadProducts(true);
        };
 
-       
-
+       $scope.breadcrumbClickEvent = function(type,id){
+        if(type==="category"){
+          $scope.selectedBrands = [];
+          loadProducts().then(function(facets) {
+                $scope.categories = facets.categories;
+               });
+        }
+        if(type==="brand"){
+          $scope.selectedBrands = id;
+          loadProducts();
+        }
+       }
 
        $scope.showContextMenu = function(e, idx) {
            $scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
@@ -112,7 +133,7 @@ angular.module('bekApp')
        };
 
        $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
-           selectedFacet.show = !selectedFacet.show;
+           //selectedFacet.show = !selectedFacet.show;
            var idx;
            if (filter === 'brand') {
                idx = $scope.selectedBrands.indexOf(selectedFacet);
