@@ -18,23 +18,12 @@
     vertical-align: middle;
   }
 
-  
-  .header-icons {
-    font-size: 16px;
-    cursor: pointer;
-  }
-
   .inline-header-form {
     line-height: normal;
 
     input[type=text] {
       padding: 8px;
-      vertical-align: middle;  
-    }
-
-    button.no-style {
-      background: transparent;
-      border: none;
+      vertical-align: middle;
     }
   }
 
@@ -56,11 +45,6 @@
     line-height: 50px;
     vertical-align: middle;
     display: inline-block;
-
-    // truck icon
-    span {
-      font-size: 20px;
-    }
   }
 }
 

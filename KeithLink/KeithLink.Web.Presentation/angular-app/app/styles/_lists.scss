@@ -1,3 +1,4 @@
+// all buttons on the left side nav
 .custom-lists .btn-list {
   min-width: 130px;
   font-size: $font-size;
@@ -16,42 +17,39 @@
     border: 2px solid $color-blue;
     cursor: copy;
   }
-}
+  
+  // button list of custom list names
+  &.custom-lists__name {
 
-.custom-lists__names .btn-list {
-  &:focus, &:active {
-    background-color: $color-blue;
-    color: $color-white !important;
-    border: none;
+    // currently selected list link
+    &.current-list {
+      background-color: $color-blue;
+      color: $color-white !important;
+      border: none;
+    }
   }
 }
 
+
+// 'Show More' link
 .custom-lists__more {
   margin-top: 10px;
 }
 
-div.trash-wrapper {
+// trash can button
+.btn-trash {
   margin-top: 10px;
-  display: inline-block;
-
-  .btn-trash {
-    display: none;
-    margin: 0;
-    font-size: 15px;
-  }
-
-  &.bek-drag-active .btn-trash {
-    border: 1px solid $color-red;
+  
+  &.bek-drag-active {
+    border: 1px dashed $color-red;
     display: inline-block;
   }
 
-  &.bek-drag-hover .btn-trash {
+  &.bek-drag-hover {
     border: 2px solid $color-red;
     cursor: copy;
   }
 }
-
-
 
 .ui-draggable-dragging {
   border: 1px solid $color-border !important;

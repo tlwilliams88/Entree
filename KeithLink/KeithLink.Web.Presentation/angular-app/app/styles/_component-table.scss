@@ -12,8 +12,9 @@
 
   thead {
     background-color: $background;
+    border-bottom: 1px solid $color-border;
 
-    th:last-child,td:last-child {
+    > tr > th:last-child {
       border-right: 1px solid $color-border;
     }
   }
@@ -42,8 +43,8 @@
       @media (max-width: $mobile-max) { padding: 9px 5px; }
     }
 
-    &.table-dropdown {
-      padding: 10px;
+    &.table-input {
+      padding: 8px;
 
       .select-div {
         width: 160px;
@@ -52,8 +53,13 @@
         select {
           width: 185px;
           min-height: 20px;
-          padding: 5px;
+          padding: 4px;
         }
+      }
+
+      input {
+        min-height: 29px;
+        padding: 5px;
       }
     }
   }
@@ -61,45 +67,29 @@
   tr {
     border-bottom: 1px solid  $color-border;
   }
-
 }
 
+/*
+for IE8 support use add code to tr ng-repeat
+ng-class="{ odd : $odd, even: $even }"
+*/
 .table-striped {
-  tbody {
-    tr:nth-child(even) {
-      th, td {
-        background-color: $background;
-      }
+  tbody > tr {
+    &.odd > td, &.odd > th {
+      background-color: $background;
     }
-  }
-  tbody {
-    tr:nth-child(odd) {
-      th, td {
-        background-color: $color-white;
-      }
+    &.even > td, &.even > th {
+      background-color: $color-white;
     }
-  }
 
-  // coloring for item details rows
-  &.table-details {
-    tbody {
-      tr {
-        th, td {
-          background-color: $color-white;
-        }
-      }
-      tr:nth-child(4n), tr:nth-child(4n-1) {
-        th, td {
-          background-color: $background;
-        }
-      }
-
-      tr:nth-child(even) {
-        border-top: none;
-      }
-      tr:nth-child(odd) {
+    @media (max-width: $mobile-max) {
+      &.table-striped__desktop-details {
         border-bottom: none;
         border-top: 1px solid $color-border;
+      }
+      &.table-striped__mobile-details {
+        border-top: none;
+        border-bottom: 1px solid $color-border;
       }
     }
   }

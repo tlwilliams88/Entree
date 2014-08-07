@@ -10,29 +10,56 @@
 <div loading-spinner="loadingDetails"></div>
 
 <div class="row" ng-hide="loadingDetails">
-  <div class="col-sm-3" ng-show="{{item.imageUrl}}">
+  <div class="col-sm-3" ng-if="{{item.imageUrl}}">
     <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
   </div>
   <div class="col-sm-9">
     <h2>{{item.name}}</h2>
     <div class="item-details">
-      <div ng-show="item.description">
+      <div ng-if="item.description">
         <strong>Description:</strong> {{item.description}}
       </div>
       <div>
-        <span ng-show="item.itemnumber !== null"><strong>Item #</strong> {{item.itemnumber}} | </span>
-        <span ng-show="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
-        <span ng-show="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
-        <span ng-show="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
+        <span ng-if="item.itemnumber !== null"><strong>Item #</strong> {{item.itemnumber}} | </span>
+        <span ng-if="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
+        <span ng-if="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
+        <span ng-if="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
       </div>
       <div>
-        <span ng-show="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
-        <span ng-show="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+        <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
+        <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
-      <div class="item-details__icons" item-icons="item"></div>
+      <div class="large-icon" item-icons="item"></div>
     </div>
     <div class="item-details__actions hidden-print">
-      <button class="cta-btn btn">Add To... <span class="icon-arrow-down6"></span></button>
+      <div style="display:inline-block;" ng-mouseenter="isContextMenuDisplayed = true" ng-mouseleave="isContextMenuDisplayed = false">
+        <button class="cta-btn btn">Add To... <span class="icon-arrow-down6"></span></button>
+        <!-- Context Menu -->
+        <div class="context-menu btn-group-vertical" ng-if="isContextMenuDisplayed">
+          <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+            <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+              Add to Order<span class="icon-arrow-right6"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <div class="btn-group-vertical">
+                <button type="button" class="btn">Order 1</button>
+                <button type="button" class="btn">Order 2</button>
+                <button type="button" class="btn">New Order...</button>
+              </div>
+            </ul>
+          </div>
+          <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
+            <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+              Add to List <span class="icon-arrow-right6"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <div class="btn-group-vertical">
+                <button ng-repeat="list in lists" type="button" class="btn">{{list.name}}</button>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </div>
       <button class="btn"><span class="icon-star2"></span> Save Item</button>
     </div>
   </div>
@@ -49,82 +76,81 @@
               <col style="width: 25%">
               <col style="width: 75%">
             </colgroup>
-            <tr>
-              <th>Specification</th>
-              <th>Details</th>
-            </tr>
-            <tr>
-              <td>Item #</td>
-              <td>{{item.itemnumber}}</td>
-            </tr>
-            <tr>
-              <td>GTIN</td>
-              <td>{{item.upc}}</td>
-            </tr>
-            <tr>
-              <td>Servings / Case</td>
-              <td>{{item.gs1.servingsperpack}}</td>
-            </tr>
-            <tr>
-              <td>Portion Cost</td>
-              <td>{{item.packageprice}}</td>
-            </tr>
-            <tr>
-              <td>Portion Size</td>
-              <td>{{item.gs1.servingsizeuom}}</td>
-            </tr>
-            <tr>
-              <td>Portion Size</td>
-              <td>{{item.gs1.servingsize}}</td>
-            </tr>
-            <tr>
-              <td>Portion Size</td>
-              <td>{{item.gs1.servingsuggestion}}</td>
-            </tr>
-            <tr>
-              <td>Previous Orders</td>
-              <td></td>
-            </tr>
-            <tr>
-              <td>Manufacturer</td>
-              <td>{{item.manufacturer_name}}</td>
-            </tr>
-            <tr>
-              <td>Brand</td>
-              <td>{{item.manufacturer_brand}}</td>
-            </tr>
-            <tr>
-              <td>Vendor</td>
-              <td>{{item.vendor_num}}</td>
-            </tr>
-            <tr>
-              <td>Vendor Item #</td>
-              <td>{{item.manufacturer_number}}</td>
-            </tr>
-            <tr>
-              <td>Category</td>
-              <td>{{item.categoryname}}</td>
-            </tr>
-            <tr>
-              <td>Class</td>
-              <td>{{item.iclass}}</td>
-            </tr>
-            <tr>
-              <td>Storage Instructions</td>
-              <td>{{item.gs1.storagetemp}}</td>
-            </tr>
-            <tr>
-              <td>Gross Wt</td>
-              <td>{{item.gs1.grossweight}}</td>
-            </tr>
-            <tr>
-              <td>Case Cube</td>
-              <td>{{item.icube}}</td>
-            </tr>
+            <tbody>
+              <tr class="even">
+                <th>Specification</th>
+                <th>Details</th>
+              </tr>
+              <tr class="odd">
+                <td>Item #</td>
+                <td>{{item.itemnumber}}</td>
+              </tr>
+              <tr class="even">
+                <td>GTIN</td>
+                <td>{{item.upc}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Servings / Case</td>
+                <td>{{item.gs1.servingsperpack}}</td>
+              </tr>
+              <tr class="even">
+                <td>Portion Cost</td>
+                <td>{{item.packageprice}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Portion Size</td>
+                <td>{{item.gs1.servingsize}} {{item.gs1.servingsizeuom}}</td>
+              </tr>
+              <!-- Always null
+              <tr>
+                <td>Portion Size</td>
+                <td>{{item.gs1.servingsuggestion}}</td>
+              </tr> -->
+              <tr class="even">
+                <td>Previous Orders</td>
+                <td></td>
+              </tr>
+              <tr class="odd">
+                <td>Manufacturer</td>
+                <td>{{item.manufacturer_name}}</td>
+              </tr>
+              <tr class="even">
+                <td>Brand</td>
+                <td>{{item.manufacturer_brand}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Vendor</td>
+                <td>{{item.vendor_num}}</td>
+              </tr>
+              <tr class="even">
+                <td>Vendor Item #</td>
+                <td>{{item.manufacturer_number}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Category</td>
+                <td>{{item.categoryname}}</td>
+              </tr>
+              <tr class="even">
+                <td>Class</td>
+                <td>{{item.iclass}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Storage Instructions</td>
+                <td>{{item.gs1.storagetemp}}</td>
+              </tr>
+              <tr class="even">
+                <td>Gross Wt</td>
+                <td>{{item.gs1.grossweight}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Case Cube</td>
+                <td>{{item.icube}}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </tab>
-      <tab heading="Dietary Specifications">
+      <tab heading="Dietary Specifications" ng-if="item.gs1.diet.length > 0 || item.gs1.allergens.length > 0">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
@@ -132,37 +158,24 @@
               <col style="width: 25%">
               <col style="width: 75%">
             </colgroup>
-            <tr>
-              <th>Diet Type</th>
-              <th>Value</th>
-            </tr>
-            <tr ng-repeat="diet in item.gs1.diet">
-              <td>{{diet.diettype}}</td>
-              <td>{{diet.value}}</td>
-            </tr>
+            <tbody>
+              <tr class="even">
+                <th>Diet Type</th>
+                <th>Value</th>
+              </tr>
+              <tr ng-repeat="diet in item.gs1.diet" ng-class="{ odd : $even, even: $odd }">
+                <td class="text-capitalize">{{diet.diettype}}</td>
+                <td class="text-uppercase">{{diet.value}}</td>
+              </tr>
+              <tr ng-repeat="allergen in item.gs1.allergens" ng-class="{ odd : !highlightRow($index, item.gs1.diet.length), even: highlightRow($index, item.gs1.diet.length) }">
+                <td>{{allergen.allergentype}}</td>
+                <td>{{allergen.level}}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </tab>
-      <tab heading="Allergens">
-        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
-        <div class="table-responsive">
-          <table class="item-details__table table table-striped">
-            <colgroup>
-              <col style="width: 25%">
-              <col style="width: 75%">
-            </colgroup>
-            <tr>
-              <th>Allergen Type</th>
-              <th>Level</th>
-            </tr>
-            <tr ng-repeat="allergen in item.gs1.allergens">
-              <td>{{allergen.allergentype}}</td>
-              <td>{{allergen.level}}</td>
-            </tr>
-          </table>
-        </div>
-      </tab>
-      <tab heading="Nutrition">
+      <tab heading="Nutrition" ng-if="item.gs1.nutrition.length > 0">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
@@ -173,20 +186,22 @@
               <col style="width: 20%">
               <col style="width: 20%">
             </colgroup>
-            <tr>
-              <th>Nutrient Type</th>
-              <th>Nutrient Type Code</th>
-              <th>Daily Value</th>
-              <th>Measurement Type ID</th>
-              <th>Measurement Value</th>
-            </tr>
-            <tr ng-repeat="nutrition in item.gs1.nutrition">
-              <td>{{nutrition.nutrienttype}}</td>
-              <td>{{nutrition.nutrienttypecode}}</td>
-              <td>{{nutrition.dailyvalue}}</td>
-              <td>{{nutrition.measurementtypeid}}</td>
-              <td>{{nutrition.measurementvalue}}</td>
-            </tr>
+            <tbody>
+              <tr class="even">
+                <th>Nutrient Type</th>
+                <th>Nutrient Type Code</th>
+                <th>Daily Value</th>
+                <th>Measurement Type ID</th>
+                <th>Measurement Value</th>
+              </tr>
+              <tr ng-repeat="nutrition in item.gs1.nutrition" ng-class="{ odd : $even, even: $odd }">
+                <td>{{nutrition.nutrienttype}}</td>
+                <td>{{nutrition.nutrienttypecode}}</td>
+                <td>{{nutrition.dailyvalue}}</td>
+                <td>{{nutrition.measurementtypeid}}</td>
+                <td>{{nutrition.measurementvalue}}</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </tab>

@@ -17,9 +17,9 @@
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
@@ -206,12 +206,6 @@
     <Content Include="angular-app\app\lib\angular-resource\angular-resource.min.js.map" />
     <Content Include="angular-app\app\lib\angular-resource\bower.json" />
     <Content Include="angular-app\app\lib\angular-resource\README.md" />
-    <Content Include="angular-app\app\lib\angular-sanitize\.bower.json" />
-    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.js" />
-    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js" />
-    <Content Include="angular-app\app\lib\angular-sanitize\angular-sanitize.min.js.map" />
-    <Content Include="angular-app\app\lib\angular-sanitize\bower.json" />
-    <Content Include="angular-app\app\lib\angular-sanitize\README.md" />
     <Content Include="angular-app\app\lib\angular-scenario\.bower.json" />
     <Content Include="angular-app\app\lib\angular-scenario\angular-scenario.js" />
     <Content Include="angular-app\app\lib\angular-scenario\bower.json" />
@@ -229,7 +223,6 @@
     <Content Include="angular-app\app\lib\angular-ui-bootstrap\ui-bootstrap-tpls-0.11.0.min.js" />
     <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.js" />
     <Content Include="angular-app\app\lib\angular-ui-router\angular-ui-router.min.js" />
-    <Content Include="angular-app\app\lib\angular\.bower.json" />
     <Content Include="angular-app\app\lib\angular\angular-csp.css" />
     <Content Include="angular-app\app\lib\angular\angular.js" />
     <Content Include="angular-app\app\lib\angular\angular.min.js" />
@@ -336,9 +329,11 @@
     <Content Include="angular-app\app\views\404.html" />
     <Content Include="angular-app\app\views\catalog.html" />
     <Content Include="angular-app\app\views\directives\featureditemcarousel.html" />
+    <Content Include="angular-app\app\views\directives\headerBar.html" />
+    <Content Include="angular-app\app\views\directives\headerButtons.html" />
+    <Content Include="angular-app\app\views\directives\headerMessage.html" />
     <Content Include="angular-app\app\views\directives\itemicons.html" />
     <Content Include="angular-app\app\views\directives\loadingspinner.html" />
-    <Content Include="angular-app\app\views\directives\pageheaderbar.html" />
     <Content Include="angular-app\app\views\home.html" />
     <Content Include="angular-app\app\views\itemdetails.html" />
     <Content Include="angular-app\app\views\login.html" />
@@ -347,9 +342,7 @@
     <Content Include="angular-app\app\views\searchresults.html" />
     <Content Include="angular-app\build.bat" />
     <Content Include="angular-app\Gruntfile.js" />
-    <Content Include="angular-app\main.css" />
     <Content Include="angular-app\mockApi\apiserver.js" />
-    <Content Include="angular-app\package.json" />
     <Content Include="angular-app\test\.jshintrc" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
@@ -368,6 +361,7 @@
   <ItemGroup>
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
+    <Folder Include="BuildLogs\" />
     <Folder Include="Content\themes\base\images\" />
     <Folder Include="Content\themes\base\minified\images\" />
     <Folder Include="Scripts\" />
@@ -441,17 +435,8 @@
     </VisualStudio>
   </ProjectExtensions>
   <PropertyGroup>
-    <PostBuildEvent>cd $(ProjectDir)angular-app
-
-
-dir /b /a "node_modules\*" | &gt;nul findstr "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt)
-call grunt build
-
-call grunt dev
-
-robocopy dist-dev ..\app /MIR
-set rce=%25errorlevel%25
-if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
@@ -468,6 +453,15 @@ if not %25rce%25==1 exit %25rce%25 else exit 0</PostBuildEvent>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PreBuildEvent>cd $(ProjectDir)angular-app
+
+dir /b /a "node_modules\*" | &gt;nul findstr "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt)
+
+call grunt --no-color dev &gt; $(ProjectDir)grunt_log.txt
+
+call type $(ProjectDir)grunt_log.txt</PreBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

@@ -14,7 +14,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization;
 using KeithLink.Svc.Impl.Models.ETL;
-using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
 using CommerceServer.Core.Profiles;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Impl.Models;
