@@ -198,6 +198,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             ElasticsearchResponse<DynamicDictionary> res = client.Get(branch, "product", id);
 
+			if (res.Response == null)
+				return null;
+
             return LoadProductFromElasticSearchProduct(res.Response);
         }
 

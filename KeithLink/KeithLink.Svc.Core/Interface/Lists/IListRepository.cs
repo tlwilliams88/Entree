@@ -13,8 +13,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
         void UpdateList(UserList list);
 
         void DeleteList(Guid listId);
-        void DeleteItem(UserList list, Guid itemId);
-
+        
         List<UserList> ReadAllLists();
         UserList ReadList(Guid listId);
                

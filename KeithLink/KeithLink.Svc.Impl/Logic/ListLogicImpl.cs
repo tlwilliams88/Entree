@@ -5,28 +5,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic
 {
     public class ListLogicImpl: IListLogic
     {
         private readonly IListRepository listRepository;
-
+		private readonly ICatalogRepository catalogRepository;
         //TODO: Everything should only work with list for the current user. Waiting for Auth/login to be completed.
 
-        public ListLogicImpl(IListRepository listRepository)
+        public ListLogicImpl(IListRepository listRepository, ICatalogRepository catalogRepository)
         {
             this.listRepository = listRepository;
+			this.catalogRepository = catalogRepository;
         }
 
         public Guid CreateList(UserList list)
         {
-            list.ListId = Guid.NewGuid();
+			
             return listRepository.CreateList(list);
         }
 
         public Guid? AddItem(Guid listId, ListItem newItem)
         {
+			if (string.IsNullOrEmpty(newItem.Branch))
+				return null; //TODO: throw exception, branch is required
+
             var list = listRepository.ReadList(listId);
 
             if (list == null)
@@ -96,6 +101,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				lists.ForEach(delegate(UserList list)
 				{
+					LookupProductDetails(list);
 					if (list.Items != null)
 						list.Items.Sort();
 				});
@@ -109,7 +115,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			if(list.Items != null)
 				list.Items.Sort();
-			
+			LookupProductDetails(list);
 			return list;
         }
 
@@ -128,5 +134,25 @@ namespace KeithLink.Svc.Impl.Logic
             var lists = listRepository.ReadAllLists();
 			return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
+
+		private void LookupProductDetails(UserList list)
+		{
+			if (list.Items == null)
+				return;
+
+			list.Items.ForEach(delegate (ListItem listItem)
+			{
+				//Lookup the item
+				var product = catalogRepository.GetProductById(listItem.Branch, listItem.ItemNumber);
+
+				if (product != null)
+				{
+					listItem.Name = product.Name;
+					listItem.PackSize = string.Format("{0} / {1}", product.Cases, product.Size);
+				}
+			});
+			
+		}
+
     }
 }

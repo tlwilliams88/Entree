@@ -27,8 +27,12 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
 			if(list.Items != null)
 				foreach (var item in list.Items)
-					orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber });
-            
+				{
+					var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
+					newItem["LinePosition"] = item.Position;
+					newItem["Branch"] = item.Branch;
+					orderForm.LineItems.Add(newItem);
+				}
 			
 			newBasket.OrderForms.Add(orderForm);
 
@@ -62,18 +66,16 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 						existingItem.ProductId = item.ItemNumber;
 						existingItem.Quantity = item.ParLevel;
 						existingItem.DisplayName = item.Label;
-						//existingItem.Index = item.Position;
 					}
 					else
 					{
 						var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber, Quantity = item.ParLevel };
 						newItem["LinePosition"] = item.Position;
+						newItem["Branch"] = item.Branch;
 						basket.OrderForms[0].LineItems.Add(newItem);
 					}
 				}
 			}
-
-				
 
 			basket.Save();
 			
@@ -87,16 +89,19 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 				basket.Delete();
         }
 
-        public void DeleteItem(UserList list, Guid itemId)
-        {
-            throw new NotImplementedException();
-        }
-
         public List<UserList> ReadAllLists()
         {
 			var baskets = orderContext.GetBasketsForUser(EXAMPLEUSERID);
 
-			return baskets.Cast<OrderGroup>().Select(b => new UserList() { ListId = b.OrderGroupId, Name = b.Name, Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
+			return baskets.Cast<OrderGroup>().Select(b => new UserList() { 
+				ListId = b.OrderGroupId, 
+				Name = b.Name, 
+				Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { 
+					ItemNumber = l.ProductId, 
+					Label = l.DisplayName,
+					ListItemId = l.LineItemId,
+					Branch = l["Branch"] == null ? null : l["Branch"].ToString(),
+					ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
 
         }
 
@@ -111,7 +116,12 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			{
 				ListId = basket.OrderGroupId,
 				Name = basket.Name,
-				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList()
+				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { 
+					ItemNumber = l.ProductId, 
+					Label = l.DisplayName, 
+					ListItemId = l.LineItemId, 
+					Branch = l["Branch"] == null ? null : l["Branch"].ToString(), 
+					ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList()
 			};
         }
 	}
