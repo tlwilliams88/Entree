@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			
 			for (int x = 0; x < basket.LineItemCount; x++)
 			{
-				if (list.Items != null && list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
+				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
 					basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems[x]);
 			}
 

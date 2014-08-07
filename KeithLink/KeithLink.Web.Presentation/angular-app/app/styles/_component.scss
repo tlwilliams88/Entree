@@ -21,6 +21,15 @@ button.btn {
   }
 }
 
+button.btn-no-style {
+  background: transparent;
+  border: none;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .btn-icon {
   font-size: 20px;
   color: $color-font-light;
@@ -47,6 +56,7 @@ button.btn {
 } 
 
 .select-div{
+   display: inline-block;
    width: 260px;
    min-height: 40px;
    overflow: hidden;
