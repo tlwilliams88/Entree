@@ -370,6 +370,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>

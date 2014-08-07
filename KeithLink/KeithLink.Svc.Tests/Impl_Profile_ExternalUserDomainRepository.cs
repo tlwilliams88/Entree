@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Test
         public void BelongsToGroup()
         {
             KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
-            bool hasAccess = ad.IsInGroup("sabroussard@benekeith.com", "Owner");
+            bool hasAccess = ad.IsInGroup("sabroussard@benekeith.com", "Jimmys Chicken Shack Owner");
 
             Assert.IsTrue(hasAccess);
         }

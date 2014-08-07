@@ -20,6 +20,13 @@ namespace KeithLink.Svc.Core.Models.Lists
         public int ParLevel { get; set; }
         [DataMember(Name = "position")]
         public int Position { get; set; }
+		[DataMember(Name = "packsize")]
+		public string PackSize { get; set; }
+		[DataMember(Name = "name")]
+		public string Name { get; set; }
+		[DataMember (Name = "favorite")]
+		public bool Favorite { get; set; }
+
 
 		public int CompareTo(object obj)
 		{

@@ -9,15 +9,15 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListRepository
     {
-        Guid CreateList(UserList list);
-        void UpdateList(UserList list);
+		Guid CreateList(Guid userId, string branchId, UserList list);
+		void UpdateList(Guid userId, UserList list);
 
-        void DeleteList(Guid listId);
-        void DeleteItem(UserList list, Guid itemId);
+		void DeleteList(Guid userId, Guid listId);
+		UserList DeleteItem(Guid userId, Guid listId, Guid itemId);
 
-        List<UserList> ReadAllLists();
-        UserList ReadList(Guid listId);
-               
+		List<UserList> ReadAllLists(Guid userId, string branchId);
+		UserList ReadList(Guid userId, Guid listId);
+		UserList ReadList(Guid userId, string listName);
         
     }
 }
