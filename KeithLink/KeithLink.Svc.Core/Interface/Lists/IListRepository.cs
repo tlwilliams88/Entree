@@ -9,13 +9,13 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListRepository
     {
-        Guid CreateList(UserList list);
+        Guid CreateList(string branchId, UserList list);
         void UpdateList(UserList list);
 
         void DeleteList(Guid listId);
-        void DeleteItem(UserList list, Guid itemId);
-
-        List<UserList> ReadAllLists();
+		UserList DeleteItem(Guid listId, Guid itemId);
+        
+        List<UserList> ReadAllLists(string branchId);
         UserList ReadList(Guid listId);
                
         

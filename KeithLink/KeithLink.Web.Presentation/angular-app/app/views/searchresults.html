@@ -12,7 +12,7 @@
 <div class="row page-subheader-bar">
 	<div class="col-md-12 page-subheader-bar__container">
 		<div class="page-subheader-bar__message hidden-xs hidden-sm">
-			<div ng-repeat="link in breadcrumbs"><a href="">{{link}} </a> <span>>></span></div>
+			<div ng-repeat="bc in breadcrumbs"><a ng-click="breadcrumbClickEvent(bc.type,bc.id)">{{bc.name}} </a> <span>>></span></div>
 		</div>
 		<div ng-click="hidden = ! hidden" class="visible-xs visible-sm page-subheader-bar__filter">
 			Filter <span class="icon-arrow-down5"></span>
@@ -70,11 +70,11 @@
 					<div ng-repeat="brand in brands" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
-							value="brandValue_{{brand.id}}"
-							id="brandId_{{brand.id}}"
-							ng-checked="selectedBrands.indexOf(brand.id) > -1"
-							ng-click="toggleSelection(brand.id,'brand')">
-							<label for="brandId_{{brand.id}}">{{brand.name}}</label>
+							value="brandValue_{{brand.name}}"
+							id="brandId_{{brand.name}}"
+							ng-checked="selectedBrands.indexOf(brand.name) > -1"
+							ng-click="toggleSelection(brand.name,'brand')">
+							<label for="brandId_{{brand.name}}">{{brand.name}}</label>
 						</div>
 					</div>
 				</accordion-group>

@@ -107,6 +107,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
@@ -131,6 +132,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Profile\CustomerContainerRepository.cs" />
     <Compile Include="Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />

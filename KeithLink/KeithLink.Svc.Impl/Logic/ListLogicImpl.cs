@@ -5,29 +5,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic
 {
     public class ListLogicImpl: IListLogic
     {
         private readonly IListRepository listRepository;
-
+		private readonly ICatalogRepository catalogRepository;
         //TODO: Everything should only work with list for the current user. Waiting for Auth/login to be completed.
 
-        public ListLogicImpl(IListRepository listRepository)
+        public ListLogicImpl(IListRepository listRepository, ICatalogRepository catalogRepository)
         {
             this.listRepository = listRepository;
+			this.catalogRepository = catalogRepository;
         }
 
-        public Guid CreateList(UserList list)
+        public Guid CreateList(string branchId, UserList list)
         {
-            list.ListId = Guid.NewGuid();
-            return listRepository.CreateList(list);
+            return listRepository.CreateList(branchId, list);
         }
 
         public Guid? AddItem(Guid listId, ListItem newItem)
         {
-            var list = listRepository.ReadList(listId);
+			var list = listRepository.ReadList(listId);
 
             if (list == null)
                 return null;
@@ -75,20 +76,18 @@ namespace KeithLink.Svc.Impl.Logic
             listRepository.DeleteList(listId);
         }
 
-        public void DeleteItem(Guid listId, Guid itemId)
+        public UserList DeleteItem(Guid listId, Guid itemId)
         {
-            var list = listRepository.ReadList(listId);
-
-            if (list == null)
-                return;
-			list.Items.RemoveAll(i => i.ListItemId.Equals(itemId));
-
-            listRepository.UpdateList(list);
+			var list = listRepository.DeleteItem(listId, itemId);
+			if (list.Items != null)
+				list.Items.Sort();
+			LookupProductDetails(list);
+			return list;
         }
 
-        public List<UserList> ReadAllLists(bool headerInfoOnly)
+        public List<UserList> ReadAllLists(string branchId, bool headerInfoOnly)
         {
-			var lists = listRepository.ReadAllLists();
+			var lists = listRepository.ReadAllLists(branchId);
 
 			if (headerInfoOnly)
 				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
@@ -96,6 +95,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				lists.ForEach(delegate(UserList list)
 				{
+					LookupProductDetails(list);
 					if (list.Items != null)
 						list.Items.Sort();
 				});
@@ -106,10 +106,11 @@ namespace KeithLink.Svc.Impl.Logic
         public UserList ReadList(Guid listId)
         {
 			var list = listRepository.ReadList(listId);
-
+			if (list == null)
+				return null;
 			if(list.Items != null)
 				list.Items.Sort();
-			
+			LookupProductDetails(list);
 			return list;
         }
 
@@ -123,10 +124,33 @@ namespace KeithLink.Svc.Impl.Logic
             return lists.Items.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-        public List<string> ReadListLabels()
+        public List<string> ReadListLabels(string branchId)
         {
-            var lists = listRepository.ReadAllLists();
-			return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+            var lists = listRepository.ReadAllLists(branchId);
+			return lists.Where(i =>  i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
-    }
+
+		private void LookupProductDetails(UserList list)
+		{
+			if (list.Items == null)
+				return;
+
+			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+
+			list.Items.ForEach(delegate (ListItem listItem)
+			{
+
+				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
+
+				if (prod != null)
+				{
+					listItem.Name = prod.Name;
+					listItem.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
+				}
+			});
+			
+		}
+
+		
+	}
 }
