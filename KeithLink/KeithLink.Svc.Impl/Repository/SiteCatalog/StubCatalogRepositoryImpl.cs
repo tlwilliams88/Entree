@@ -69,5 +69,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             throw new NotImplementedException();
         }
-    }
+
+
+		public ProductsReturn GetProductsByIds(string branch, List<string> ids)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

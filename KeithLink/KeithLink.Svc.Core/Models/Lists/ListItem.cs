@@ -20,9 +20,6 @@ namespace KeithLink.Svc.Core.Models.Lists
         public int ParLevel { get; set; }
         [DataMember(Name = "position")]
         public int Position { get; set; }
-
-		[DataMember(Name= "branch")]
-		public string Branch { get; set; }
 		[DataMember(Name = "packsize")]
 		public string PackSize { get; set; }
 		[DataMember(Name = "name")]

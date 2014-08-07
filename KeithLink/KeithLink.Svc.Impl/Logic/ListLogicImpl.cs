@@ -21,18 +21,14 @@ namespace KeithLink.Svc.Impl.Logic
 			this.catalogRepository = catalogRepository;
         }
 
-        public Guid CreateList(UserList list)
+        public Guid CreateList(string branchId, UserList list)
         {
-			
-            return listRepository.CreateList(list);
+            return listRepository.CreateList(branchId, list);
         }
 
         public Guid? AddItem(Guid listId, ListItem newItem)
         {
-			if (string.IsNullOrEmpty(newItem.Branch))
-				return null; //TODO: throw exception, branch is required
-
-            var list = listRepository.ReadList(listId);
+			var list = listRepository.ReadList(listId);
 
             if (list == null)
                 return null;
@@ -80,20 +76,18 @@ namespace KeithLink.Svc.Impl.Logic
             listRepository.DeleteList(listId);
         }
 
-        public void DeleteItem(Guid listId, Guid itemId)
+        public UserList DeleteItem(Guid listId, Guid itemId)
         {
-            var list = listRepository.ReadList(listId);
-
-            if (list == null)
-                return;
-			list.Items.RemoveAll(i => i.ListItemId.Equals(itemId));
-
-            listRepository.UpdateList(list);
+			var list = listRepository.DeleteItem(listId, itemId);
+			if (list.Items != null)
+				list.Items.Sort();
+			LookupProductDetails(list);
+			return list;
         }
 
-        public List<UserList> ReadAllLists(bool headerInfoOnly)
+        public List<UserList> ReadAllLists(string branchId, bool headerInfoOnly)
         {
-			var lists = listRepository.ReadAllLists();
+			var lists = listRepository.ReadAllLists(branchId);
 
 			if (headerInfoOnly)
 				return lists.Select(l => new UserList() { ListId = l.ListId, Name = l.Name }).ToList();
@@ -112,7 +106,8 @@ namespace KeithLink.Svc.Impl.Logic
         public UserList ReadList(Guid listId)
         {
 			var list = listRepository.ReadList(listId);
-
+			if (list == null)
+				return null;
 			if(list.Items != null)
 				list.Items.Sort();
 			LookupProductDetails(list);
@@ -129,10 +124,10 @@ namespace KeithLink.Svc.Impl.Logic
             return lists.Items.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-        public List<string> ReadListLabels()
+        public List<string> ReadListLabels(string branchId)
         {
-            var lists = listRepository.ReadAllLists();
-			return lists.Where(i => i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+            var lists = listRepository.ReadAllLists(branchId);
+			return lists.Where(i =>  i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
 		private void LookupProductDetails(UserList list)
@@ -140,19 +135,22 @@ namespace KeithLink.Svc.Impl.Logic
 			if (list.Items == null)
 				return;
 
+			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
-				//Lookup the item
-				var product = catalogRepository.GetProductById(listItem.Branch, listItem.ItemNumber);
 
-				if (product != null)
+				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
+
+				if (prod != null)
 				{
-					listItem.Name = product.Name;
-					listItem.PackSize = string.Format("{0} / {1}", product.Cases, product.Size);
+					listItem.Name = prod.Name;
+					listItem.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 				}
 			});
 			
 		}
 
-    }
+		
+	}
 }

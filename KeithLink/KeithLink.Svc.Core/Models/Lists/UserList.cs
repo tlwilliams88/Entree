@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Lists
@@ -14,7 +15,16 @@ namespace KeithLink.Svc.Core.Models.Lists
         public Guid ListId { get; set; }
         [DataMember(Name = "name")]
         public string Name { get; set; }
+
         [DataMember(Name = "items")]
         public List<ListItem> Items { get; set; }
+
+		public string BranchId { get; set; }
+		
+		public string FormattedName(string branchId) 
+		{ 
+			return string.Format("{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
+		}
+
     }
 }

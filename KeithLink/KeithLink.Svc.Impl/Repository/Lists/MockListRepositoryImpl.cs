@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                     }
                 };
 
-        public List<UserList> ReadAllLists()
+        public List<UserList> ReadAllLists(string branchId)
         {
             return sampleList;
         }
@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
         }
 
-        public Guid CreateList(UserList list)
+        public Guid CreateList(string branchId, UserList list)
         {
             sampleList.Add(list);
             return list.ListId;
@@ -98,5 +98,17 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             currentlist.Name = list.Name;
         }
 
-    }
+
+
+		public void DeleteItem(Guid listId, Guid itemId)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		UserList IListRepository.DeleteItem(Guid listId, Guid itemId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

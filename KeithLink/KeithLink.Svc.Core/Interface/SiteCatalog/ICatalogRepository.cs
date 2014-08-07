@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters);
         CategoriesReturn GetCategories(int from, int size);
         Product GetProductById(string branch, string id);
+		ProductsReturn GetProductsByIds(string branch, List<string> ids);
     }
 }
