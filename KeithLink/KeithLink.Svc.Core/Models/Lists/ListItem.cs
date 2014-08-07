@@ -24,6 +24,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public string PackSize { get; set; }
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
+		[DataMember (Name = "favorite")]
+		public bool Favorite { get; set; }
 
 
 		public int CompareTo(object obj)

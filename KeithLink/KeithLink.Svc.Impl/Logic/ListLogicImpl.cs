@@ -148,6 +148,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+			var favorites = listRepository.ReadList(EXAMPLEUSERID, string.Format("{0}_{1}", list.BranchId, FAVORITESLIST));
 
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
@@ -159,10 +160,21 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 				}
+				if (favorites != null)
+				{
+					listItem.Favorite = favorites.Items.Where(i => i.ItemNumber.Equals(listItem.ItemNumber)).Any();
+				}
 			});
 			
 		}
 
+
+		/// <summary>
+		/// Checks if any of the products are in the user's Favorites list. 
+		/// If so, their Favorite property is set to "true"
+		/// </summary>
+		/// <param name="branchId">The branch/catalog to use</param>
+		/// <param name="products">List of products</param>
 		public void MarkFavoriteProducts(string branchId, ProductsReturn products)
 		{
 			var list = listRepository.ReadList(EXAMPLEUSERID, string.Format("{0}_{1}", branchId, FAVORITESLIST));
@@ -172,9 +184,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			products.Products.ForEach(delegate(Product product)
 			{
-				var item = list.Items.Where(i => i.ItemNumber.Equals(product.ItemNumber)).FirstOrDefault();
-				product.Favorite = item != null;
-
+				product.Favorite = list.Items.Where(i => i.ItemNumber.Equals(product.ItemNumber)).Any();
 			});
 		}
 	}
