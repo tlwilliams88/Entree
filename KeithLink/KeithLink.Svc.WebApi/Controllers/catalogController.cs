@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core;
 using System.Web.Http.Cors;
 using System.Dynamic;
+using KeithLink.Svc.Core.Interface.Lists;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -16,11 +17,13 @@ namespace KeithLink.Svc.WebApi.Controllers
     {
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogRepository _catalogRepository;
         KeithLink.Svc.Core.Interface.SiteCatalog.IPriceRepository _priceRepository;
+		private readonly IListLogic _listLogic;
 
-        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository, IListLogic listLogic)
         {
             _catalogRepository = catalogRepository;
             _priceRepository = priceRepository;
+			_listLogic = listLogic;
         }
 
         [HttpGet]
@@ -51,6 +54,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size, facets);
             GetPricingInfo(prods);
+			_listLogic.MarkFavoriteProducts(branchId, prods);
             return prods;
         }
 
@@ -73,6 +77,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Product prod = _catalogRepository.GetProductById(branchId, id);
             ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
             GetPricingInfo(prods);
+			_listLogic.MarkFavoriteProducts(branchId, prods);
             return prod;
         }
 
@@ -86,7 +91,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size, facets);
             GetPricingInfo(prods);
-
+			_listLogic.MarkFavoriteProducts(branchId, prods);
             return prods;
         }
 

@@ -73,9 +73,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPost]
 		[Route("list/{listId}/item")]
-		public Guid? AddItem(Guid listId, ListItem newItem)
+		public NewItem AddItem(Guid listId, ListItem newItem)
         {
-            return listLogic.AddItem(listId, newItem);
+			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(listId, newItem) };
+			return newGuid;
         }
 
         [HttpPut]
