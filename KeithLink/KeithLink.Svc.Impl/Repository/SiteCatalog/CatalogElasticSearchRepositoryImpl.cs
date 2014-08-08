@@ -9,17 +9,44 @@ using Elasticsearch.Net;
 using System.Dynamic;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Nest;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {
+        #region " attributes "
+
+        private Helpers.ElasticSearch _eshelper;
+
         private ElasticsearchClient client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+
+
+        private string _elasticSearchAggreagations = @",
+                ""aggregations"" : {
+                    ""categories"" : {
+                    ""terms"" : {
+                        ""field"" : ""categoryid""
+                    }
+                    }, ""brands"" : {
+                    ""terms"" : {
+                        ""field"" : ""brand""
+                    }
+                    }
+                }";
+
+        #endregion
+
+        #region " constructor "
 
         public CatalogElasticSearchRepositoryImpl()
         {
-            
+            _eshelper = new Helpers.ElasticSearch();
         }
+
+        #endregion
+
+        #region " methods / functions "
 
         public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
@@ -102,33 +129,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            size = GetCategoryPagingSize(size);
+            var response = _eshelper.Client.Search<Category>(s => s
+                .From(from)
+                .Size(GetCategoryPagingSize(size))
+                .Type(Constants.ES_TYPE_CATEGORY)
+                .Index(Constants.ES_INDEX_CATEGORIES)
+                );
 
-            var categoryFilter = @"{
-                ""from"" : " + from + @", ""size"" : " + size + @"
-                }";
-
-            ElasticsearchResponse<DynamicDictionary> res = client.Search("categories", "category", categoryFilter);
-            List<Category> cats = new List<Category>();
-
-            foreach (var oCat in res.Response["hits"]["hits"])
+            // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
+            foreach (var r in response.Hits)
             {
-                if (oCat._source.subcategories != null)
-                {
-                    Category cat = new Category() { Id = oCat._id, Name = oCat._source.name, Description = oCat._source.name };
-                    List<Category> subCats = new List<Category>();
-                    foreach (var oSubCat in oCat._source.subcategories)
-                    {
-                        Category subCat = new Category() { Id = oSubCat.categoryid, Name = oSubCat.name, Description = oSubCat.name };
-                        subCats.Add(subCat);
-                    }
-
-                    cat.SubCategories = subCats.ToArray();
-                    cats.Add(cat);
-                }
+                r.Source.Id = r.Id;
             }
 
-            return new CategoriesReturn() { Categories = cats };
+            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s=>s.SubCategories != null).ToList<Category>() };
+
+            return results;
         }
 
         public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
@@ -307,18 +323,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return size;
         }
 
-        private string _elasticSearchAggreagations = @",
-                ""aggregations"" : {
-                    ""categories"" : {
-                    ""terms"" : {
-                        ""field"" : ""categoryid""
-                    }
-                    }, ""brands"" : {
-                    ""terms"" : {
-                        ""field"" : ""brand""
-                    }
-                    }
-                }";
+        
+        #endregion
+
+        #region " properties "
 
         public string ElasticSearchAggregations {
             get
@@ -364,5 +372,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 return val;
             }
         }
-    }
-}
+        #endregion
+
+    } // end class
+} // end namespace

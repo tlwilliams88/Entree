@@ -33,5 +33,13 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSR_FSA = "fsan-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FOK = "fokc-ls-sys-ac-dsrs";
 
+
+
+        // Elastic Search : Indexes
+        public const string ES_INDEX_CATEGORIES = "categories";
+
+        // Elastic Search : Types
+        public const string ES_TYPE_CATEGORY = "category";
+
     }
 }
