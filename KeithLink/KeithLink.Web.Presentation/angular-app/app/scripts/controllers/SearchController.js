@@ -10,12 +10,12 @@
 angular.module('bekApp')
 .controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
    function($scope, ProductService, CategoryService, $stateParams) {
+    //debugger;
        // clear keyword search term at top of the page
        if ($scope.userBar) {
            $scope.userBar.universalSearchTerm = '';
        }
        
-       $scope.breadcrumbs = [];
        $scope.loadingResults = true;
 
          $scope.itemsPerPage = 30;
@@ -45,6 +45,7 @@ angular.module('bekApp')
            } else if (type === 'search') {
 
                var searchTerm = $stateParams.id;
+               $scope.searchTerm = "\""+searchTerm+"\"";
                return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
            } else if (type === 'brand') {
 
@@ -57,6 +58,7 @@ angular.module('bekApp')
            $scope.loadingResults = true;
 
            return getData().then(function(data) {
+            $scope.filterCount = 0;
 
                // append results to existing data
                if (appendResults) { 
@@ -68,12 +70,25 @@ angular.module('bekApp')
                $scope.totalItems = data.totalcount;
 
                $scope.breadcrumbs = [];
+               //check initial page view
+               if($stateParams.type === 'category'){
+                $scope.breadcrumbs.push({type: "category", id:$stateParams.id, name: $stateParams.id});
+                $scope.filterCount++;
+               }
+               if($stateParams.type === 'brand'){
+                $scope.selectedBrands.push($stateParams.id);
+                $scope.filterCount++;
+               }
+
+               //check for selected facets
                if($scope.selectedCategory){
                 $scope.breadcrumbs.push({type: "category", id:$scope.selectedCategory, name: $scope.selectedCategory});
+                $scope.filterCount++;
               }
                var brandsBreadcrumb = "Brand: ";
                angular.forEach($scope.selectedBrands, function (item, index) {
                 brandsBreadcrumb += item + " or ";
+                $scope.filterCount++;
               });
                if(brandsBreadcrumb!="Brand: "){
                 $scope.breadcrumbs.push({type: "brand", id:$scope.selectedBrands , name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length-4)});

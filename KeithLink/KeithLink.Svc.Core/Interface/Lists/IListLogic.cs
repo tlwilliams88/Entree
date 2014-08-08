@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
@@ -21,5 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
         UserList ReadList(Guid listId);
         List<string> ReadListLabels(Guid listId);
         List<string> ReadListLabels(string branchId);
+
+		void MarkFavoriteProducts(string branchId, ProductsReturn products);
     }
 }

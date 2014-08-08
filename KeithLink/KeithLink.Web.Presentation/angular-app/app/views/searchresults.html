@@ -1,21 +1,22 @@
 <div page-header-bar>
-  <div header-message>
-    Product Catalog
-  </div>
-  <div header-buttons>
-  	<button class="btn btn-icon"><span class="icon-printer"></span></button>
-	<button class="btn btn-icon"><span class="icon-disk"></span></button>
-  </div>
+	<div header-message>
+		Product Catalog
+	</div>
+	<div header-buttons>
+		<button class="btn btn-icon"><span class="icon-printer"></span></button>
+		<button class="btn btn-icon"><span class="icon-disk"></span></button>
+	</div>
 </div>
-
-
 <div class="row page-subheader-bar">
 	<div class="col-md-12 page-subheader-bar__container">
 		<div class="page-subheader-bar__message hidden-xs hidden-sm">
 			<div ng-repeat="bc in breadcrumbs"><a ng-click="breadcrumbClickEvent(bc.type,bc.id)">{{bc.name}} </a> <span>>></span></div>
 		</div>
-		<div ng-click="hidden = ! hidden" class="visible-xs visible-sm page-subheader-bar__filter">
-			Filter <span class="icon-arrow-down5"></span>
+		<div class="page-subheader-bar__message hidden-lg hidden-md">
+			{{searchTerm}}
+		</div>
+		<div ng-click="hidden = ! hidden" class="hidden-lg hidden-md page-subheader-bar__filter">
+			Filter <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
 		</div>
 	</div>
 </div>
@@ -32,32 +33,16 @@
 							<accordion-heading>
 								<div class="panel panel-default">
 									<div class="panel-body">
-										<div class="checkbox-big">
-											<!-- <input type="checkbox"
-											value="categoryValue_{{category.id}}"
-											id="categoryId_{{category.id}}"
-											ng-checked="toggleSelection(category.id,'category')"> -->
-											<input type="checkbox"
-											value="categoryValue_{{category.id}}"
-											id="categoryId_{{category.id}}"
-											ng-checked="selectedCategories.indexOf(category.id) > -1"
-											ng-click="toggleSelection(category.id,'category')">
-											<label for="categoryId_{{category.id}}">{{category.name}}</label>
-										</div>
+										<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
 									</div>
 								</div>
 								<!-- {{category.name}}<i class="pull-right glyphicon"></i> -->
 							</accordion-heading>
 							<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
 								<div class="panel-body">
-									<div class="checkbox-big">
-										<input type="checkbox"
-										value="subcategoryValue_{{subcategory.id}}"
-										id="subcategoryId_{{subcategory.id}}"
-										ng-checked="selectedSubcategories.indexOf(subcategory.id) > -1"
-										ng-click="toggleSelection(subcategory.id,'subcategory')">
-										<label for="subcategoryId_{{subcategory.id}}">{{subcategory.name}}</label>
-									</div>
+									<li ng-click="toggleSelection(subcategory, 'subcategory')">
+										<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+									</li>
 								</div>
 							</div>
 						</accordion-group>
@@ -254,34 +239,33 @@
 		</div>
 	</div>
 </div>
-
 <!-- Context Menu -->
 <div ng-mouseleave="isContextMenuDisplayed = false" ng-show="isContextMenuDisplayed" class="context-menu btn-group-vertical" ng-style="{'top': contextMenuLocation.x, 'left': contextMenuLocation.y }">
 	{{contextMenuLocation.x}} {{contextMenuLocation.y}}
 	<button class="btn text-uppercase">In saved items</button>
-  <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-    <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-      Add to Order<span class="icon-arrow-right6"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <div class="btn-group-vertical">
-      	<button type="button" class="btn">Order 1</button>
-      	<button type="button" class="btn">Order 2</button>
-      	<button type="button" class="btn">New Order...</button>
-      </div>
-    </ul>
-  </div>
-  <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-    <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-      Add to List <span class="icon-arrow-right6"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-    	<div class="btn-group-vertical">
-    		<button type="button" class="btn">Christmas List</button>
-    		<button type="button" class="btn">List 7</button>
-    		<button type="button" class="btn">Labor Day List</button>
-    		<button type="button" class="btn">New List...</button>
-    	</div>
-    </ul>
-  </div>
+	<div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+		<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+		Add to Order<span class="icon-arrow-right6"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<div class="btn-group-vertical">
+				<button type="button" class="btn">Order 1</button>
+				<button type="button" class="btn">Order 2</button>
+				<button type="button" class="btn">New Order...</button>
+			</div>
+		</ul>
+	</div>
+	<div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
+		<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+		Add to List <span class="icon-arrow-right6"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<div class="btn-group-vertical">
+				<button type="button" class="btn">Christmas List</button>
+				<button type="button" class="btn">List 7</button>
+				<button type="button" class="btn">Labor Day List</button>
+				<button type="button" class="btn">New List...</button>
+			</div>
+		</ul>
+	</div>
 </div>

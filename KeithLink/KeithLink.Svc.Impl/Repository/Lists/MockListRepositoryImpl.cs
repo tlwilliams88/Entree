@@ -57,42 +57,42 @@ namespace KeithLink.Svc.Impl.Repository.Lists
                     }
                 };
 
-        public List<UserList> ReadAllLists(string branchId)
+		public List<UserList> ReadAllLists(Guid userId, string branchId)
         {
             return sampleList;
         }
 
 
-        public UserList ReadList(Guid listId)
+		public UserList ReadList(Guid userId, Guid listId)
         {
             return sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
         }
 
-        public Guid CreateList(string branchId, UserList list)
+		public Guid CreateList(Guid userId, string branchId, UserList list)
         {
             sampleList.Add(list);
             return list.ListId;
         }
 
-        public void DeleteList(Guid listId)
+		public void DeleteList(Guid userId, Guid listId)
         {
             sampleList.RemoveAll(l => l.ListId.Equals(listId));
         }
 
 
-        public void DeleteItem(UserList list, Guid itemId)
+		public void DeleteItem(Guid userId, UserList list, Guid itemId)
         {
             list.Items.RemoveAll(i => i.ListItemId.Equals(itemId));
         }
 
 
-        public void UpdateListName(Guid listId, string name)
+		public void UpdateListName(Guid userId, Guid listId, string name)
         {
             sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault().Name = name;
         }
 
 
-        public void UpdateList(UserList list)
+		public void UpdateList(Guid userId, UserList list)
         {
             var currentlist = sampleList.Where(l => l.ListId.Equals(list.ListId)).FirstOrDefault();
             currentlist.Name = list.Name;
@@ -100,13 +100,23 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
 
 
-		public void DeleteItem(Guid listId, Guid itemId)
+		public void DeleteItem(Guid userId, Guid listId, Guid itemId)
+		{
+			throw new NotImplementedException();
+		}
+
+		UserList IListRepository.DeleteItem(Guid userId, Guid listId, Guid itemId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public UserList ReadList(Guid userId, string listName)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		UserList IListRepository.DeleteItem(Guid listId, Guid itemId)
+		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
 		{
 			throw new NotImplementedException();
 		}
