@@ -55,6 +55,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
 
             return new Core.Profile.UserProfile(){
+                UserId = csProfile.Id,
                 UserName = adProfile.UserPrincipalName,
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,

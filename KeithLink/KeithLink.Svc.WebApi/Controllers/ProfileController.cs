@@ -35,5 +35,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         public void Delete(int id)
         {
         }
+
+        public Core.Profile.UserProfileReturn GetUser(string emailAddress)
+        {
+            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
+
+            return userRepo.GetUserProfile(emailAddress);
+        }
     }
 }
