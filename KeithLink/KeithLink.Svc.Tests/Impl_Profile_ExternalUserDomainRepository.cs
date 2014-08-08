@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Test
             {
                 KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
 
-                ad.CreateUser("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", Core.Constants.ROLE_EXTERNAL_OWNER);
+                //ad.CreateUser("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", Core.Constants.ROLE_EXTERNAL_OWNER);
 
                 Assert.IsTrue(true);
             }
