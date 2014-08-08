@@ -76,10 +76,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					}
 				}
 			}
-
-			basket.Save();
 			
-
+			basket.Save();
         }
 
 		public void DeleteList(Guid userId, Guid listId)
@@ -153,6 +151,20 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			if (list == null || list["BranchId"] == null)
 				return null;
 			return ToUserList(list);
+		}
+
+
+		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
+		{
+			var basket = orderContext.GetBasket(userId, listId);
+
+			var newCSItem = new LineItem() { DisplayName = newItem.Label, ProductId = newItem.ItemNumber, Quantity = newItem.ParLevel };
+			newCSItem["LinePosition"] = newItem.Position;
+			basket.OrderForms[0].LineItems.Add(newCSItem);
+
+			basket.Save();
+
+			return newCSItem.LineItemId;
 		}
 	}
 

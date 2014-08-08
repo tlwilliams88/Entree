@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using CommerceServer.Core.Runtime.Orders;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -33,21 +34,8 @@ namespace KeithLink.Svc.Impl.Logic
 
         public Guid? AddItem(Guid listId, ListItem newItem)
         {
-			var list = listRepository.ReadList(EXAMPLEUSERID, listId);
-
-            if (list == null)
-                return null;
-
-            newItem.ListItemId = Guid.NewGuid();
-
-			if (list.Items == null)
-				list.Items = new List<ListItem>(); ;
-
-            list.Items.Add(newItem);
-			listRepository.UpdateList(EXAMPLEUSERID, list);
-
-            return newItem.ListItemId;
-        }
+			return listRepository.AddItem(EXAMPLEUSERID, listId, newItem);
+		}
 
         public void UpdateItem(Guid listId, ListItem updatedItem)
         {
