@@ -149,35 +149,6 @@
 	<div class="col-md-9 col-xs-12">
 		<h2 class="hidden-xs hidden-sm">Search Results</h2>
 		<div>
-			
-			<div ng-mouseleave="isContextMenuDisplayed = false" ng-show="isContextMenuDisplayed" class="context-menu btn-group-vertical" ng-style="moveMenuStyle">
-				<button class="btn text-uppercase">In saved items</button>
-				<div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-					<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-					Add to Order<span class="icon-arrow-right6"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<div class="btn-group-vertical">
-							<button type="button" class="btn">Order 1</button>
-							<button type="button" class="btn">Order 2</button>
-							<button type="button" class="btn">New Order...</button>
-						</div>
-					</ul>
-				</div>
-				<div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-					<button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-					Add to List <span class="icon-arrow-right6"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<div class="btn-group-vertical">
-							<button type="button" class="btn">Christmas List</button>
-							<button type="button" class="btn">List 7</button>
-							<button type="button" class="btn">Labor Day List</button>
-							<button type="button" class="btn">New List...</button>
-						</div>
-					</ul>
-				</div>
-			</div>
 			<table class="table table-striped" when-scrolled="infiniteScrollLoadMore()">
 				<thead>
 					<tr>
@@ -212,35 +183,35 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat-start="product in products | orderBy:predicate:reverse" ng-class="{ odd : $odd, even: $even }" class="table-striped__desktop-details">
+					<tr ng-repeat-start="item in products | orderBy:predicate:reverse" ng-class="{ odd : $odd, even: $even }" class="table-striped__desktop-details">
 						<td class="text-light table-icon" style="width:10px;">
-							<span class="icon-star2"></span>
+							<span favorite-item-click-handlers><span favorite-icons></span></span>
 						</td>
 						<td>
-							<a ui-sref="menu.catalog.products.details({ itemNumber : product.itemnumber, item: product })">{{product.itemnumber}}</a>
+							<a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{product.cases}} / {{product.size}}
+							{{item.cases}} / {{item.size}}
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{product.brand}}
+							{{item.brand}}
 						</td>
 						<td>
-							{{product.name}}
+							{{item.name}}
 						</td>
-						<td class="hidden-sm hidden-xs icons" item-icons="product">
+						<td class="hidden-sm hidden-xs icons" item-icons>
 						</td>
 						<td class="table-icon">
-							<button style="background-color:transparent; border:none;" ng-mousedown="showContextMenu($event, $index)"><span class="icon-plus2"></span></button>
+							<a class="icon-plus2" ng-mouseleave="isContextMenuDisplayed=false" ng-mouseenter="isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
 							<span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
 						</td>
 					</tr>
 					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details" ng-class="{ odd : $odd, even: $even }">
 						<td colspan=4>
 							<div>
-								<p>Pack / Size: {{product.cases}} / {{product.size}}</p>
-								<p>Brand: {{product.brand}}</p>
-								<p item-icons="product">
+								<p>Pack / Size: {{item.cases}} / {{item.size}}</p>
+								<p>Brand: {{item.brand}}</p>
+								<p item-icons>
 								</p>
 							</div>
 						</td>
@@ -253,35 +224,4 @@
 			<div class="text-center sub-content" loading-spinner="loadingResults"></div>
 		</div>
 	</div>
-</div>
-
-<!-- Context Menu -->
-<div ng-mouseleave="isContextMenuDisplayed = false" ng-show="isContextMenuDisplayed" class="context-menu btn-group-vertical" ng-style="{'top': contextMenuLocation.x, 'left': contextMenuLocation.y }">
-	{{contextMenuLocation.x}} {{contextMenuLocation.y}}
-	<button class="btn text-uppercase">In saved items</button>
-  <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-    <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-      Add to Order<span class="icon-arrow-right6"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <div class="btn-group-vertical">
-      	<button type="button" class="btn">Order 1</button>
-      	<button type="button" class="btn">Order 2</button>
-      	<button type="button" class="btn">New Order...</button>
-      </div>
-    </ul>
-  </div>
-  <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-    <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-      Add to List <span class="icon-arrow-right6"></span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-    	<div class="btn-group-vertical">
-    		<button type="button" class="btn">Christmas List</button>
-    		<button type="button" class="btn">List 7</button>
-    		<button type="button" class="btn">Labor Day List</button>
-    		<button type="button" class="btn">New List...</button>
-    	</div>
-    </ul>
-  </div>
 </div>

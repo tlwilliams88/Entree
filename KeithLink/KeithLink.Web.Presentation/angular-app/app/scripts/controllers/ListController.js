@@ -8,83 +8,89 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', 'ListService', function($scope, ListService) {
+  .controller('ListController', ['$scope', '$state', '$stateParams', 'ListService', function($scope, $state, $stateParams, ListService) {
 
     $scope.alerts = [];
     $scope.loadingResults = true;
 
+    $scope.lists = ListService.lists;
+    $scope.labels = ListService.labels;
+
     ListService.getAllLists().then(function(data) {
-      $scope.lists = data;
-      $scope.selectedList = $scope.lists[0];
+      
+      if ($stateParams.listId) {
+        $scope.selectedList = ListService.findListById($stateParams.listId, data);
+      }
+      if (!$scope.selectedList) {
+        $scope.selectedList = $scope.lists[0];
+        $state.transitionTo('menu.lists', {}, {notify: false});
+      }
+
       $scope.loadingResults = false;
     });
 
-    ListService.getAllLabels().then(function(data) {
-      $scope.labels = data;
-    });
+    ListService.getAllLabels();
 
     $scope.goToList = function(list) {
+      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
       $scope.selectedList = list;
     };
 
-    $scope.createList = function() {
-
-      // generate new list name
-      var date = new Date(),
-        dateString = date.getMonth() + 1 + '-' + date.getDate(),
-        newList = {
-          name: 'New List ' + dateString
-        };
-
-      ListService.createList(newList).then(function(data) {
-        newList.listid = data;
-        $scope.lists.push(newList);
-        $scope.selectedList = newList; 
+    $scope.createList = function(items) { //DONE
+      ListService.createList().then(function(data) {
         addSuccessAlert('Successfully created a new list.');
       }, function(error) {
         addErrorAlert('Error creating list.');
       });
     };
 
-    $scope.updateItem = function(listId, item) {
+    $scope.createListWithItem = function(event, helper) { //DONE
+      var selectedItem = helper.draggable.data('product');
+      ListService.createListWithItem(selectedItem).then(function(data) {
+        addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
+      }, function(error) {
+        addErrorAlert('Error creating list.');
+      });
+    };
+
+    $scope.deleteList = function(listId) { //DONE
+      ListService.deleteList(listId).then(function(data) {
+        $scope.selectedList = $scope.lists[0];
+        addSuccessAlert('Successfully deleted list.');
+      }),function(error) {
+        addErrorAlert('Error deleting list.');
+      };
+    };
+
+    $scope.updateLabel = function(listId, item) { //DONE
       ListService.updateItem(listId, item).then(function(data) {
         addSuccessAlert('Successfully added label ' + item.label + ' to item ' + item.itemnumber + '.');
-      });
+      }),function(error) {
+        addErrorAlert('Error deleting list.');
+      };
     };
 
-    $scope.addNewLabel = function(listId, newLabel, item) {
+    $scope.addNewLabel = function(listId, newLabel, item) { //DONE
       item.label = newLabel;
-      ListService.updateItem(listId, item).then(function(data) {
-        item.isEditing = false;
-        $scope.labels.push(newLabel);
-        addSuccessAlert('Successfully created new label ' + newLabel + ' and added it to item ' + item.itemnumber + '.');
-      });
+      $scope.updateLabel(listId, item);
     };
 
-    $scope.addSavedItem = function(item) {
-      console.log('add item # ' + item.itemnumber + ' to saved items');
-    };
-
-    $scope.removeSavedItem = function(item) {
-      console.log('remove item # ' + item.itemnumber + ' from saved items');
-    };
-
-    $scope.renameList = function (listId, listName) {
+    $scope.renameList = function (listId, listName) { //DONE
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
       ListService.updateList(list).then(function(data) {
-        $scope.selectedList.name = listName;
         $scope.displayEditingListName = false;
-        addSuccessAlert('Successfully renamed list.');
+        $scope.selectedList.name = listName;
+        addSuccessAlert('Successfully renamed list to ' + listName + '.');
       });
     };
 
-    $scope.cancelEditListName = function() {
+    $scope.cancelEditListName = function() { //DONE
       $scope.displayEditingListName = false;
     };
 
-    $scope.startEditListName = function(listName) {
+    $scope.startEditListName = function(listName) { //DONE
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
       $scope.displayEditingListName = true;
@@ -93,28 +99,26 @@ angular.module('bekApp')
     $scope.addItemToList = function (event, helper, listId) {
       var selectedItem = helper.draggable.data('product');
 
-      ListService.addItem(listId, selectedItem).then(function(data) {
-        debugger;
+      ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
+        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
       },function(error) {
         addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
       });
     };
 
-    $scope.deleteItem = function(event, helper, list) {
+    $scope.deleteItem = function(event, helper, list) { //DONE
       var selectedItem = helper.draggable.data('product');
-
-      console.log('delete item ' + selectedItem.itemnumber + ' from list ' + list.name);
+      
+      ListService.deleteItem(list.listid, selectedItem.listitemid).then(function(data) {
+        addSuccessAlert('Successfully removed item ' + selectedItem.itemnumber + '.');
+      },function(error) {
+        addErrorAlert('Error removing item ' + selectedItem.itemnumber + ' from list.');
+      });
     };
 
-    $scope.deleteList = function(listId) {
-      var idx = $scope.lists.indexOf($scope.selectedList);
-
-      // TODO: ask for confirmation, should we allow users to delete lists with items?
-      ListService.deleteList(listId).then(function(data) {
-        $scope.lists.splice(idx, 1);
-        $scope.selectedList = $scope.lists[0];
-        addSuccessAlert('Successfully deleted list.');
-      });
+    // Dragging, used to enable DOM elements
+    $scope.setIsDragging = function(event, helper, isDragging) {
+      $scope.isDragging = isDragging;
     };
 
     // CONTEXT MENU
@@ -144,27 +148,18 @@ angular.module('bekApp')
       }
     };
 
-    $scope.setIsDragging = function(event, helper, isDragging) {
-      $scope.isDragging = isDragging;
-    };
-
-
     // ALERTS
     function addSuccessAlert(message) {
       addAlert('success', message);
-    };
+    }
     function addErrorAlert(message) {
       addAlert('danger', message);
-    };
+    }
     function addAlert(alertType, message) {
       $scope.alerts[0] = { type: alertType, msg: message };
-    };
+    }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
     };
-
-    // function errorHandler(message, error) {
-
-    // };
 
   }]);

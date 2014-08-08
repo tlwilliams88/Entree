@@ -8,18 +8,19 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', function ($scope, $stateParams, ProductService) {
+  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', function ($scope, $stateParams, ProductService, ListService) {
     
     var itemNumber = $stateParams.itemNumber;
-    if ($stateParams.item) {
-      $scope.item = $stateParams.item;
-    } else {
-      $scope.loadingDetails = true;
-      ProductService.getProductDetails($scope.currentUser.currentLocation.branchId, itemNumber).then(function(response) {
-        $scope.item = response.data;
-        $scope.loadingDetails = false;
-      });
-    }
+    $scope.loadingDetails = true;
+    ProductService.getProductDetails(itemNumber).then(function(response) {
+      $scope.item = response.data;
+      $scope.loadingDetails = false;
+    });
+
+
+    ListService.getAllLists({'header': true}).then(function(data) {
+     $scope.lists = data;
+    }); 
 
     $scope.highlightRow = function(index, totalItems) {
       return Boolean((index + totalItems) % 2);

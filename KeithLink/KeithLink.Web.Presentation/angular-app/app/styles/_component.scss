@@ -169,61 +169,6 @@ input[type="checkbox"]:checked + label {
   background-size: 20px;  
 }
 
-/* CONTEXT MENU */
-
-.context-menu {
-  border-radius: 5px;
-  position: absolute;
-  box-shadow: 0px 0px 15px $color-border;
-  z-index: 2;
-  
-  &.context-menu__in-list {
-    right: 8%;
-
-    .dropdown-menu {
-      left: -100%;  
-    }
-  }
-
-  .dropdown-menu {
-    top: 0;
-    left: 100%;
-    font-size: $font-size;
-    border: none;
-    padding: 0;
-    min-width: 0;
-
-    a {
-      color: $color-font-light;
-    }
-  }
-  .btn, .btn-group .btn, {
-    color: $color-font-light;
-    font-size: $font-size;
-    // text-align: left;
-    letter-spacing: 0;
-    min-width: 125px;
-
-    &:hover {
-      color: $color-white !important;
-      background-color: $color-blue !important;
-      border: none !important;
-    }
-
-    &:focus {
-      background-color: $color-white;
-      color: $color-font-light;
-      border: 1px solid $color-border;
-    }
-  }
-
-  .btn-group.open > button {
-    box-shadow: none;
-    color: $color-white;
-  }
-}
-
-
 /* Search Form */
 
 .search-form {

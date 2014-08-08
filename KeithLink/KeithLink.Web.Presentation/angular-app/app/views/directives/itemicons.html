@@ -1,9 +1,15 @@
-<a ng-show="item.cndoc === 'Y'" ng-href="{{'http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber}}" target="_blank">
-  <span tooltip="Child nutrition information" class="text-regular icon-apple"></span>
-</a>
+<!-- Replacement Item -->
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-show="item.replacementitem > 0">
   <span tooltip="Item is replacing item # {{item.replacementitem}}" class="text-green icon-cycle"></span>
 </a>
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-show="item.replaceditem > 0">
   <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
 </a>
+<!-- Deviated Cost -->
+<!-- Sell Sheet -->
+<!-- Child Nutrition -->
+<a ng-show="item.cndoc === 'Y'" ng-href="{{'http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber}}" target="_blank">
+  <span tooltip="Child nutrition information" class="text-regular icon-apple"></span>
+</a>
+<!-- Non-Stock -->
+<!-- MSDS -->
