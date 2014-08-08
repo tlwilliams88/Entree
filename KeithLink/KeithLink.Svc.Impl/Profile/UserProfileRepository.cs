@@ -8,6 +8,60 @@ namespace KeithLink.Svc.Impl.Profile
     public class UserProfileRepository : Core.Profile.IUserProfileRepository
     {
         #region methods
+        public bool AuthenticateUser(string emailAddress, string password)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            {
+                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
+                return internalAD.AuthenticateUser(userName, password);
+            }
+            else
+            {
+                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
+                return externalAD.AuthenticateUser(emailAddress, password);
+            }
+        }
+
+        public bool AuthenticateUser(string emailAddress, string password, out Core.Profile.UserProfileReturn userProfile)
+        {
+            bool success = AuthenticateUser(emailAddress, password);
+
+            if (success) { 
+                userProfile = GetUserProfile(emailAddress); 
+            } else {
+                userProfile = new Core.Profile.UserProfileReturn();
+            }
+
+            return success;
+        }
+
+        private Core.Profile.UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
+        {
+            System.DirectoryServices.AccountManagement.UserPrincipal adProfile = null;
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            {
+                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
+                adProfile = internalAD.GetUser(userName);
+            }
+            else
+            {
+                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
+                adProfile = externalAD.GetUser(emailAddress);
+            }
+
+            return new Core.Profile.UserProfile(){
+                UserName = adProfile.UserPrincipalName,
+                FirstName = csProfile.FirstName,
+                LastName = csProfile.LastName,
+                EmailAddress = csProfile.Email,
+                PhoneNumber = adProfile.VoiceTelephoneNumber
+            };
+        }
 
         public void CreateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber)
         {
@@ -32,8 +86,6 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, createUser.ToRequest());
 
             CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
-
-            throw new NotImplementedException();
         }
 
         public void DeleteUserProfile(string userName)
@@ -62,7 +114,10 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
+
             Core.Profile.UserProfileReturn retVal = new Core.Profile.UserProfileReturn();
+            retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
+            
             return retVal;
         }
 

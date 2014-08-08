@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Profile
                 return false;
             }
         }
-
+        
         /// <summary>
         /// return the domain and username
         /// </summary>
@@ -52,6 +52,33 @@ namespace KeithLink.Svc.Impl.Profile
         private string GetDomainUserName(string userName)
         {
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
+        }
+        
+        public UserPrincipal GetUser(string userName)
+        {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -81,7 +108,7 @@ namespace KeithLink.Svc.Impl.Profile
                                                                          Configuration.ActiveDirectoryExternalPassword))
                 {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
-
+                    
                     if (user == null)
                         return false;
                     else

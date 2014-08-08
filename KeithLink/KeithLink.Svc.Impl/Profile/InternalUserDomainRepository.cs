@@ -54,6 +54,33 @@ namespace KeithLink.Svc.Impl.Profile
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryInternalDomain, userName);
         }
 
+        public UserPrincipal GetUser(string userName)
+        {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryInternalServerName,
+                                                                         Configuration.ActiveDirectoryInternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
+                                                                         Configuration.ActiveDirectoryInternalPassword))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
+
+                return null;
+            }
+        }
+
         /// <summary>
         /// test to see if the user has access to the specified group
         /// </summary>
