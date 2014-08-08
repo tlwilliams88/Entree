@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.WebApi.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -7,11 +8,7 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	public class LoginModel
-	{
-		public string Email { get; set; }
-		public string Password { get; set; }
-	}
+	
 
     public class ProfileController : ApiController
     {
