@@ -57,17 +57,17 @@ angular.module('bekApp')
       ListService.deleteList(listId).then(function(data) {
         $scope.selectedList = $scope.lists[0];
         addSuccessAlert('Successfully deleted list.');
-      }),function(error) {
+      },function(error) {
         addErrorAlert('Error deleting list.');
-      };
+      });
     };
 
     $scope.updateLabel = function(listId, item) { //DONE
       ListService.updateItem(listId, item).then(function(data) {
         addSuccessAlert('Successfully added label ' + item.label + ' to item ' + item.itemnumber + '.');
-      }),function(error) {
+      },function(error) {
         addErrorAlert('Error deleting list.');
-      };
+      });
     };
 
     $scope.addNewLabel = function(listId, newLabel, item) { //DONE
