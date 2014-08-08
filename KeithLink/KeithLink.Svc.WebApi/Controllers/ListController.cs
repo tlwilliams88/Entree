@@ -21,75 +21,77 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
         [HttpGet]
-        [Route("list")]
-        public List<UserList> List(bool header = false)
+		[Route("list/{branchId}")]
+        public List<UserList> List(string branchId, bool header = false)
         {
-			var model = listLogic.ReadAllLists(header);
+			var model = listLogic.ReadAllLists(branchId, header);
             return model;
         }
 
         [HttpPut]
-        [Route("list")]
-        public void Put(UserList updatedList)
+		[Route("list/")]
+		public void Put(UserList updatedList)
         {
             listLogic.UpdateList(updatedList);
         }
 
 
         [HttpGet]
-        [Route("list/{listId}")]
-        public UserList List(Guid listId)
+		[Route("list/{branchId}/{listId}")]
+		public UserList List(Guid listId)
         {
             return listLogic.ReadList(listId);
         }
 
         [HttpGet]
-        [Route("list/labels")]
-        public List<string> ListLabels()
+		[Route("list/{branchId}/labels")]
+        public List<string> ListLabels(string branchId)
         {
-            return listLogic.ReadListLabels();
+            return listLogic.ReadListLabels(branchId);
         }
 
         [HttpGet]
-        [Route("list/{listId}/labels")]
-        public List<string> ListLabels(Guid listId)
+		[Route("list/{branchId}/{listId}/labels")]
+		public List<string> ListLabels(string branchId, Guid listId)
         {
             return listLogic.ReadListLabels(listId);
         }
 
         [HttpPost]
-        [Route("list")]
-        public Guid List(UserList list)
+		[Route("list/{branchId}")]
+		public NewItem List(string branchId, UserList list)
         {
-            return listLogic.CreateList(list);
+			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(branchId, list) };
+			return newGuid;
         }
 
         [HttpDelete]
-        [Route("list/{listId}")]
-        public void DeleteList(Guid listId)
+		[Route("list/{listId}")]
+		public void DeleteList(Guid listId)
         {
             listLogic.DeleteList(listId);
         }
 
         [HttpPost]
-        [Route("list/{listId}/item")]
-        public Guid? AddItem(Guid listId, ListItem newItem)
+		[Route("list/{listId}/item")]
+		public NewItem AddItem(Guid listId, ListItem newItem)
         {
-            return listLogic.AddItem(listId, newItem);
+			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(listId, newItem) };
+			return newGuid;
         }
 
         [HttpPut]
-        [Route("list/{listId}/item")]
-        public void UpdateItem(Guid listId, ListItem updatedItem)
+		[Route("list/{listId}/item")]
+		public void UpdateItem(Guid listId, ListItem updatedItem)
         {
             listLogic.UpdateItem(listId, updatedItem);
         }
 
         [HttpDelete]
-        [Route("list/{listId}/item/{itemId}")]
-        public void DeleteItem(Guid listId, Guid itemId)
+		[Route("list/{listId}/item/{itemId}")]
+		public UserList DeleteItem(Guid listId, Guid itemId)
         {
-            listLogic.DeleteItem(listId, itemId);
+            return listLogic.DeleteItem(listId, itemId);
         }
     }
 }

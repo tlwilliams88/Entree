@@ -15,12 +15,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/<controller>/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST api/<controller>
         public void Post([FromBody]string value)
         {
@@ -34,6 +28,32 @@ namespace KeithLink.Svc.WebApi.Controllers
         // DELETE api/<controller>/5
         public void Delete(int id)
         {
+        }
+
+        [HttpGet]
+        [Route("profile/{emailAddress}")]
+        public Core.Profile.UserProfileReturn GetUser(string emailAddress)
+        {
+            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
+
+            return userRepo.GetUserProfile(emailAddress);
+        }
+
+        [HttpPost]
+        [Route("profile/login/{emailAddress}/{password}")]
+        public Core.Profile.UserProfileReturn Login(string emailAddress, string password)
+        {
+            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
+
+            Core.Profile.UserProfileReturn retVal = null;
+
+            if (userRepo.AuthenticateUser(emailAddress, password, out retVal))
+            {
+                return retVal;
+            }
+            else { 
+                return null; 
+            }
         }
     }
 }

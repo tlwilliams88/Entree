@@ -56,7 +56,7 @@ angular
     })
     // /catalog/:type/:id
     .state('menu.catalog.products.list', {
-      url: ':type/:id/',
+      url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController'
     })

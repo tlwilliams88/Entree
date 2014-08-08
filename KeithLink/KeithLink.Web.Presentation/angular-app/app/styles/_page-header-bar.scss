@@ -65,7 +65,7 @@
   }
 
   .page-subheader-bar__container {
-    padding-left: 10px;
+    padding-left: 15px;
     padding-right: 0px;
     color: #A1A1A1;
     
@@ -82,17 +82,21 @@
     @include header-bar($color-white, 0px);
 
     .page-subheader-bar__message {
-      padding-top: 8px;
-      padding-bottom: 8px;
+      padding-top: 10px;
+      padding-bottom: 4px;
       display: inline-block;
-
+      width: 75%;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
     }
     .page-subheader-bar__filter {
-      padding: 8px 16px 8px 16px;
       border-left: 1px solid #c3bc9c;
       float: right;
       font-weight: 400;
       cursor: pointer;
+      line-height: 35px;
+      text-align: center;
+      width: 80px;
       }
   }
 }

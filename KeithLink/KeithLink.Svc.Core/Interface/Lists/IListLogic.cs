@@ -4,22 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListLogic
     {
-        Guid CreateList(UserList list);
+        Guid CreateList(string branchId, UserList list);
         Guid? AddItem(Guid listId, ListItem newItem);
         void UpdateItem(Guid listId, ListItem updatedItem);
         void UpdateList(UserList list);
 
         void DeleteList(Guid listId);
-        void DeleteItem(Guid listId, Guid itemId);
+        UserList DeleteItem(Guid listId, Guid itemId);
 
-        List<UserList> ReadAllLists(bool headerInfoOnly);
+        List<UserList> ReadAllLists(string branchId, bool headerInfoOnly);
         UserList ReadList(Guid listId);
         List<string> ReadListLabels(Guid listId);
-        List<string> ReadListLabels();
+        List<string> ReadListLabels(string branchId);
+
+		void MarkFavoriteProducts(string branchId, ProductsReturn products);
     }
 }

@@ -16,7 +16,7 @@ angular.module('bekApp')
     function concatenateNestedParameters(name, list) {
       var filters = name + ':';
       angular.forEach(list, function (item, index) {
-        filters += item.name + '|';
+        filters += item + '|';
       });
       return filters.substr(0, filters.length-1);
     }
@@ -60,11 +60,14 @@ angular.module('bekApp')
         if (brands && brands.length > 0) {
           facets += concatenateNestedParameters('brands', brands);
         }
-        if (brands && brands.length > 0 && facetCategoryId) {
-          facets += '&';
-        }
-        if (facetCategoryId) {
-          facets += 'categories:' + categoryId;
+        //if (brands && brands.length > 0 && facetCategoryId) {
+        //  facets += '&';
+        //}
+        //if (facetCategoryId) {
+        //  facets += 'categories:' + categoryId;
+        //}
+        if(facetCategoryId){
+          categoryId = facetCategoryId;
         }
         
         return $http.get('/catalog/search/category/' + branchId + '/' + categoryId + '/products', {

@@ -13,42 +13,47 @@ namespace KeithLink.Svc.Impl.Repository.Lists
     {
         private readonly OrderContext orderContext;
 
-        private readonly Guid EXAMPLEUSERID = Guid.Parse("95436e7d-d09f-426b-a0c3-d4d702ee7422"); //TODO: Use real UserId once Auth/Profiles are completed
-
+        
         public ListRepositoryImpl()
         {
             orderContext = OrderContext.Create(Configuration.CSSiteName);
         }
 
-        public Guid CreateList(UserList list)
+        public Guid CreateList(Guid userId, string branchId, UserList list)
         {
-            var newBasket = orderContext.GetBasket(EXAMPLEUSERID, list.Name);
+			var newBasket = orderContext.GetBasket(userId, list.FormattedName(branchId));
+			
             var orderForm = new OrderForm();
+			newBasket["DisplayName"] = list.Name;
+			newBasket["BranchId"] = branchId;
 
 			if(list.Items != null)
 				foreach (var item in list.Items)
-					orderForm.LineItems.Add(new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber });
-            
+				{
+					var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
+					newItem["LinePosition"] = item.Position;
+					orderForm.LineItems.Add(newItem);
+				}
 			
 			newBasket.OrderForms.Add(orderForm);
 
             newBasket.Save();
             return newBasket.OrderGroupId;
         }
-		       
-        public void UpdateList(UserList list)
+
+		public void UpdateList(Guid userId, UserList list)
         {
-			var basket = orderContext.GetBasket(EXAMPLEUSERID, list.ListId);
+			var basket = orderContext.GetBasket(userId, list.ListId);
 
 			if (basket == null) //Throw error?
-				return;
+				return ;
 
-			basket.Name = list.Name;
+			basket["DisplayName"] = list.Name;
 			
 			for (int x = 0; x < basket.LineItemCount; x++)
 			{
-				if (list.Items != null && list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
-					basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems[x]);
+				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
+					basket.OrderForms[0].LineItems.Remove(x);
 			}
 
 			if (list.Items != null)
@@ -62,7 +67,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 						existingItem.ProductId = item.ItemNumber;
 						existingItem.Quantity = item.ParLevel;
 						existingItem.DisplayName = item.Label;
-						//existingItem.Index = item.Position;
 					}
 					else
 					{
@@ -72,48 +76,96 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					}
 				}
 			}
-
-				
-
-			basket.Save();
 			
+			basket.Save();
         }
 
-        public void DeleteList(Guid listId)
+		public void DeleteList(Guid userId, Guid listId)
         {
-			var basket = orderContext.GetBasket(EXAMPLEUSERID, listId);
+			var basket = orderContext.GetBasket(userId, listId);
 
 			if (basket != null)
 				basket.Delete();
         }
 
-        public void DeleteItem(UserList list, Guid itemId)
+		public List<UserList> ReadAllLists(Guid userId, string branchId)
         {
-            throw new NotImplementedException();
+			var baskets = orderContext.GetBasketsForUser(userId);
+
+			return baskets.Cast<OrderGroup>().Where(i => i["BranchId"].ToString() == branchId).Select(b => new UserList() { 
+				ListId = b.OrderGroupId, 
+				Name = b["DisplayName"].ToString(), 
+				BranchId = b["BranchId"].ToString(),
+				Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { 
+					ItemNumber = l.ProductId, 
+					Label = l.DisplayName,
+					ListItemId = l.LineItemId,
+					ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
+
         }
 
-        public List<UserList> ReadAllLists()
+		public UserList ReadList(Guid userId, Guid listId)
         {
-			var baskets = orderContext.GetBasketsForUser(EXAMPLEUSERID);
-
-			return baskets.Cast<OrderGroup>().Select(b => new UserList() { ListId = b.OrderGroupId, Name = b.Name, Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
-
-        }
-
-        public UserList ReadList(Guid listId)
-        {
-			var basket = orderContext.GetBasket(EXAMPLEUSERID, listId);
+			var basket = orderContext.GetBasket(userId, listId);
 
 			if (basket == null)
 				return null;
 
+			return ToUserList(basket);
+        }
+
+		public UserList DeleteItem(Guid userId, Guid listId, Guid itemId)
+		{
+			var basket = orderContext.GetBasket(userId, listId);
+
+			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.Cast<LineItem>().Where(i => i.LineItemId.Equals(itemId)).FirstOrDefault());
+			basket.Save();
+
+			return ToUserList(basket);
+		}
+
+		private UserList ToUserList(Basket basket)
+		{
 			return new UserList()
 			{
 				ListId = basket.OrderGroupId,
-				Name = basket.Name,
-				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { ItemNumber = l.ProductId, Label = l.DisplayName, ListItemId = l.LineItemId, ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList()
+				Name = basket["DisplayName"].ToString(),
+				BranchId = basket["BranchId"].ToString(),
+				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem()
+					{
+						ItemNumber = l.ProductId,
+						Label = l.DisplayName,
+						ListItemId = l.LineItemId,
+						ParLevel = (int)l.Quantity,
+						Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString())
+					}).ToList()
 			};
-        }
+			
+		}
+
+
+		public UserList ReadList(Guid userId, string listName)
+		{
+			
+			var list = orderContext.GetBasket(userId, listName);
+			if (list == null || list["BranchId"] == null)
+				return null;
+			return ToUserList(list);
+		}
+
+
+		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
+		{
+			var basket = orderContext.GetBasket(userId, listId);
+
+			var newCSItem = new LineItem() { DisplayName = newItem.Label, ProductId = newItem.ItemNumber, Quantity = newItem.ParLevel };
+			newCSItem["LinePosition"] = newItem.Position;
+			basket.OrderForms[0].LineItems.Add(newCSItem);
+
+			basket.Save();
+
+			return newCSItem.LineItemId;
+		}
 	}
 
 }

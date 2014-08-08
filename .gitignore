@@ -198,4 +198,4 @@ node_modules/
 
 
 #Ignore Log Files
-/KeithLink/KeithLink.Web.Presentation/BuildLogs/
+grunt_log.txt

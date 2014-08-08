@@ -66,6 +66,8 @@
     <Compile Include="Impl_PriceCacheRepositoryImpl.cs" />
     <Compile Include="Impl_Profile_ExternalUserDomainRepository.cs" />
     <Compile Include="Impl_Profile_InternalUserDomainRepository.cs" />
+    <Compile Include="Impl_Profile_CustomerContainerRepository.cs" />
+    <Compile Include="Impl_Profile_UserProfileRepository.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
   </ItemGroup>
   <ItemGroup>

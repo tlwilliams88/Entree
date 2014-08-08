@@ -4,7 +4,7 @@ angular.module('bekApp')
   .filter('reverse', function() {
     return function(input, uppercase) {
       input = input || '';
-      var out = "";
+      var out = '';
       for (var i = 0; i < input.length; i++) {
         out = input.charAt(i) + out;
       }

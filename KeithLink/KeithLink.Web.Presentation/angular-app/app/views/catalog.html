@@ -90,11 +90,11 @@
 					<img ng-src="{{brand.imageUrl}}" alt="image">
 					<div class="featured-item__detail">
 						{{brand.name}}
-						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.id })" class="text-uppercase">view brand</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.name })" class="text-uppercase">view brand</a>
 					</div>
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm sub-content" featured-item-carousel items="brands" link="'menu.catalog.products.list({ type: \'brand\', id: item.id })'"></div>
+		<div class="visible-xs visible-sm sub-content" featured-item-carousel items="brands" link="'menu.catalog.products.list({ type: \'brand\', id: item })'"></div>
 	</div>
 </div>

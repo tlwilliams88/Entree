@@ -74,6 +74,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 
+		[DataMember(Name ="favorite")]
+		public bool Favorite { get; set; }
+
         [DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
     }

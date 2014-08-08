@@ -15,7 +15,6 @@ angular.module('bekApp')
            $scope.userBar.universalSearchTerm = '';
        }
        
-       $scope.breadcrumbs = [];
        $scope.loadingResults = true;
 
          $scope.itemsPerPage = 30;
@@ -44,7 +43,9 @@ angular.module('bekApp')
            } else if (type === 'search') {
 
                var searchTerm = $stateParams.id;
+               $scope.searchTerm = '\"'+searchTerm+'\"';
                return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+
            } else if (type === 'brand') {
 
                var brandName = $stateParams.id;
@@ -56,6 +57,7 @@ angular.module('bekApp')
            $scope.loadingResults = true;
 
            return getData().then(function(data) {
+            $scope.filterCount = 0;
 
                // append results to existing data
                if (appendResults) { 
@@ -64,11 +66,35 @@ angular.module('bekApp')
                } else { 
                    $scope.products = data.products;
                }
-
-               // $scope.categories = data.facets.categories;
-               // $scope.brands = data.facets.brands;
                $scope.totalItems = data.totalcount;
-               
+
+               $scope.breadcrumbs = [];
+               //check initial page view
+               if($stateParams.type === 'category'){
+                $scope.breadcrumbs.push({type: 'category', id:$stateParams.id, name: $stateParams.id});
+                $scope.filterCount++;
+               }
+               if($stateParams.type === 'brand'){
+                $scope.selectedBrands.push($stateParams.id);
+                $scope.filterCount++;
+               }
+
+               //check for selected facets
+               if($scope.selectedCategory){
+                $scope.breadcrumbs.push({type: 'category', id:$scope.selectedCategory, name: $scope.selectedCategory});
+                $scope.filterCount++;
+              }
+               var brandsBreadcrumb = 'Brand: ';
+               angular.forEach($scope.selectedBrands, function (item, index) {
+                brandsBreadcrumb += item + ' or ';
+                $scope.filterCount++;
+              });
+               if(brandsBreadcrumb!='Brand: '){
+                $scope.breadcrumbs.push({type: 'brand', id:$scope.selectedBrands , name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length-4)});
+             }
+             if($stateParams.type === 'search'){
+              $scope.breadcrumbs.push({type: 'search', id:'search', name: "\"" + $stateParams.id + "\""});
+             }
                $scope.loadingResults = false;
 
                return data.facets;
@@ -92,8 +118,18 @@ angular.module('bekApp')
            loadProducts(true);
        };
 
-       
-
+       $scope.breadcrumbClickEvent = function(type,id){
+        if(type==="category"){
+          $scope.selectedBrands = [];
+          loadProducts().then(function(facets) {
+                $scope.categories = facets.categories;
+               });
+        }
+        if(type==="brand"){
+          $scope.selectedBrands = id;
+          loadProducts();
+        }
+       }
 
        $scope.showContextMenu = function(e, idx) {
            $scope.contextMenuLocation = { 'top': e.y, 'left': e.x };
@@ -111,7 +147,7 @@ angular.module('bekApp')
        };
 
        $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
-           selectedFacet.show = !selectedFacet.show;
+           //selectedFacet.show = !selectedFacet.show;
            var idx;
            if (filter === 'brand') {
                idx = $scope.selectedBrands.indexOf(selectedFacet);

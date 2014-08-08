@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Profile
     public class UserProfile
     {
         #region attributes
+        private StringBuilder _userId;
         private StringBuilder _userName;
         private StringBuilder _firstName;
         private StringBuilder _lastName;
@@ -22,6 +23,7 @@ namespace KeithLink.Svc.Core.Profile
         #region ctor
         public UserProfile()
         {
+            _userId = new StringBuilder();
             _userName = new StringBuilder();
             _firstName = new StringBuilder();
             _lastName = new StringBuilder();
@@ -32,6 +34,13 @@ namespace KeithLink.Svc.Core.Profile
         #endregion
 
         #region properties
+        [DataMember(Name="UserId")]
+        public string UserId
+        {
+            get { return _userId.ToString(); }
+            set { _userId = new StringBuilder(value); }
+        }
+
         [DataMember(Name = "UserName")]
         public string UserName
         {
