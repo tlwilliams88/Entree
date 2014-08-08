@@ -21,5 +21,24 @@ namespace KeithLink.Svc.Test
 
             userProfile.GetUserProfile("joesmith@company.com");
         }
+
+        [TestMethod]
+        public void AuthenticateUser()
+        {
+            KeithLink.Svc.Impl.Profile.UserProfileRepository userProfile = new Impl.Profile.UserProfileRepository();
+
+            Assert.IsTrue(userProfile.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
+        }
+
+        [TestMethod]
+        public void AuthenticateUserAndRetrieveUserProfile()
+        {
+            KeithLink.Svc.Impl.Profile.UserProfileRepository repo = new Impl.Profile.UserProfileRepository();
+            KeithLink.Svc.Core.Profile.UserProfileReturn profileReturn = null;
+
+            repo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e", out profileReturn);
+
+            Assert.IsNotNull(profileReturn);
+        }
     }
 }
