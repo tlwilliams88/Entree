@@ -1,3 +1,8 @@
+.item-details__icons {
+  margin-left: $gutter-size;
+  font-size: 15px;
+}
+
 .item-details__actions {
   padding-top: $gutter-size;
 }
@@ -39,11 +44,6 @@
       padding-left: 10px;
       padding-bottom: 10px;
       border-bottom: 1px solid $color-border;
-    }
-
-    // hide additional images tab
-    &:last-child {
-      display: none !important;
     }
   }
 

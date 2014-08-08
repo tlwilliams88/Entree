@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
+    <Compile Include="Models\Lists\NewItem.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Interface\Lists\IListRepository.cs" />
@@ -104,6 +105,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

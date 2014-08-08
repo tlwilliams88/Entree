@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', function ($http) {
+  .factory('ProductService', ['$http', 'UserProfileService', function ($http, UserProfileService) {
    
     var defaultPageSize = 15,
       defaultStartingIndex = 0;
@@ -22,9 +22,11 @@ angular.module('bekApp')
     }
  
     var Service = {
-      getProducts: function(branchId, searchTerm, pageSize, index, brands, facetCategoryId) {
+      getProducts: function(searchTerm, pageSize, index, brands, facetCategoryId) {
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+
+        var branchId = UserProfileService.getCurrentLocation().branchId;
  
         var facets = '';
         if (brands && brands.length > 0) {
@@ -48,9 +50,11 @@ angular.module('bekApp')
         });
       },
  
-      getProductsByCategory: function(branchId, categoryId, pageSize, index, brands, facetCategoryId) {
+      getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategoryId) {
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+
+        var branchId = UserProfileService.getCurrentLocation().branchId;
 
         var facets = '';
         if (brands && brands.length > 0) {
@@ -77,11 +81,12 @@ angular.module('bekApp')
         });
       },
  
-      getProductDetails: function(branchId, id) {
+      getProductDetails: function(id) {
+        var branchId = UserProfileService.getCurrentLocation().branchId;
         return $http.get('/catalog/product/' + branchId + '/' + id);
       }
     };
  
     return Service;
  
-  });
+  }]);

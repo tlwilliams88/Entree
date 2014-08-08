@@ -111,6 +111,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
         {
+			if (!res.Response.Contains("aggregations"))
+				return;
 
             foreach (var oFacet in res.Response["aggregations"])
             {
@@ -213,6 +215,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             branch = branch.ToLower();
 
             ElasticsearchResponse<DynamicDictionary> res = client.Get(branch, "product", id);
+
+			if (res.Response == null)
+				return null;
 
             return LoadProductFromElasticSearchProduct(res.Response);
         }
@@ -372,6 +377,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 return val;
             }
         }
+
+        public ProductsReturn GetProductsByIds(string branch, List<string> ids)
+		{
+			var productList = String.Join(" OR ", ids);
+			var query = @"{
+						""query"":{
+						""query_string"" : {
+						""fields"" : [""itemnumber""],
+							""query"" : """ + productList + @""",
+						""use_dis_max"" : true
+							}
+						}}";
+
+			return GetProductsFromElasticSearch(branch, query);
+
+        }
+
         #endregion
 
     } // end class

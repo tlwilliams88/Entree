@@ -198,4 +198,4 @@ node_modules/
 
 
 #Ignore Log Files
-grunt_logs.txt
+grunt_log.txt

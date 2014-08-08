@@ -166,6 +166,7 @@
     <Content Include="Presentation.config" />
     <Content Include="Caching.config" />
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
 
@@ -41,6 +42,87 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        public void CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
+        {
+            const int NORMAL_ACCT = 0x200;
+            const int PWD_NOTREQD = 0x20;
+
+            string adPath = string.Format("LDAP://{0}:389/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            DirectoryEntry boundServer = null;
+            // connect to the external AD server
+            try
+            {
+                boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.RefreshCache();
+            } catch (Exception ex){
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                log.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                throw;
+            }
+
+            DirectoryEntry newUser = null;
+            // create the user
+            try
+            {
+                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+                string userCN = string.Format("CN={0}", userName);
+
+                newUser = boundServer.Children.Add(userCN, "user");
+                newUser.Properties["company"].Value = customerName;
+                newUser.Properties["displayName"].Value = string.Format("{0} {1}", firstName, lastName);
+                newUser.Properties["givenName"].Value = firstName;
+                newUser.Properties["name"].Value = userName;
+                newUser.Properties["sAmAccountName"].Value = userName;
+                newUser.Properties["sn"].Value = lastName;
+                newUser.Properties["userPrincipalName"].Value = emailAddress;
+                newUser.Properties["userAccountControl"].Value = NORMAL_ACCT | PWD_NOTREQD;
+                newUser.CommitChanges();
+            }
+            catch(Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                log.WriteErrorLog("Could not create user on external AD server.", ex);
+
+                throw;
+            }
+
+            // set the user's password
+            try
+            {
+                newUser.Invoke("SetPassword", new object[] { password });
+                newUser.Properties["userAccountControl"].Value = NORMAL_ACCT;
+                newUser.CommitChanges();
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                log.WriteErrorLog("Could not set password for user on external AD server.", ex);
+
+                throw;
+            }
+
+            // assign user to the specified role
+            try
+            {
+                string groupName = string.Format("{0} {1}", customerName, roleName);
+                string groupDN = string.Format("CN={0},OU=groups,OU={1},{2}", groupName, customerName, Configuration.ActiveDirectoryExternalRootNode);
+                string groupPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, groupDN);
+
+                DirectoryEntry group = new DirectoryEntry(groupPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                group.Properties["member"].Add(newUser.Properties["distinguishedName"].Value);
+                group.CommitChanges();
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                log.WriteErrorLog("Could not assign user to a role on external AD server.", ex);
+                
+                throw;
+            }
+        }
+        
         /// <summary>
         /// return the domain and username
         /// </summary>
@@ -52,6 +134,33 @@ namespace KeithLink.Svc.Impl.Profile
         private string GetDomainUserName(string userName)
         {
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
+        }
+        
+        public UserPrincipal GetUser(string userName)
+        {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword))
+                {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+
+                    return user;
+                }
+            }
+            catch (Exception ex)
+            {
+                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -81,7 +190,7 @@ namespace KeithLink.Svc.Impl.Profile
                                                                          Configuration.ActiveDirectoryExternalPassword))
                 {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
-
+                    
                     if (user == null)
                         return false;
                     else
