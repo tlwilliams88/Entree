@@ -7,53 +7,40 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	public class LoginModel
+	{
+		public string Email { get; set; }
+		public string Password { get; set; }
+	}
+
     public class ProfileController : ApiController
     {
-        // GET api/<controller>
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        
+		//[HttpGet]
+		//[Route("profile/{emailAddress}")]
+		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
+		//{
+		//	Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
 
-        // POST api/<controller>
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/<controller>/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/<controller>/5
-        public void Delete(int id)
-        {
-        }
-
-        [HttpGet]
-        [Route("profile/{emailAddress}")]
-        public Core.Profile.UserProfileReturn GetUser(string emailAddress)
-        {
-            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
-
-            return userRepo.GetUserProfile(emailAddress);
-        }
+		//	return userRepo.GetUserProfile(emailAddress);
+		//}
 
         [HttpPost]
-        [Route("profile/login/{emailAddress}/{password}")]
-        public Core.Profile.UserProfileReturn Login(string emailAddress, string password)
+        [Route("profile/login")]
+        public Core.Profile.UserProfileReturn Login(LoginModel login)
         {
             Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
 
             Core.Profile.UserProfileReturn retVal = null;
 
-            if (userRepo.AuthenticateUser(emailAddress, password, out retVal))
-            {
-                return retVal;
-            }
-            else { 
-                return null; 
-            }
+			if (userRepo.AuthenticateUser(login.Email, login.Password, out retVal))
+			{
+				return retVal;
+			}
+			else
+			{
+				return null;
+			}
         }
     }
 }
