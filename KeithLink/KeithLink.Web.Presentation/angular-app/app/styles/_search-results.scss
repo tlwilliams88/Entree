@@ -49,6 +49,10 @@
   display: none;
 }
 
+.hidespec{
+  display: none;
+}
+
 .mobile-filter{
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
