@@ -37,10 +37,12 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Allergen
     {
-        [DataMember(Name = "allergentype")]
-        public string AllergenType { get; set; }
-        [DataMember(Name = "level")]
-        public string Level { get; set; }
+		[DataMember(Name = "freefrom")]
+		public List<string> freefrom { get; set; }
+		[DataMember(Name = "maycontain")]
+		public List<string> maycontain { get; set; }
+		[DataMember(Name = "contains")]
+		public List<string> contains { get; set; }
     }
 
     [DataContract(Name = "gs1")]
@@ -90,6 +92,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "diet")]
         public List<Diet> DietInfo { get; set; }
         [DataMember(Name = "allergens")]
-        public List<Allergen> Allergens { get; set; }
+        public Allergen Allergens { get; set; }
     }
 }
