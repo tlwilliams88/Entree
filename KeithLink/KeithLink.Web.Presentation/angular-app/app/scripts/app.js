@@ -70,6 +70,11 @@ angular
       url: '/lists/',
       templateUrl: 'views/lists.html',
       controller: 'ListController'
+    })
+    .state('menu.listitems', {
+      url: '/lists/:listId/',
+      templateUrl: 'views/lists.html',
+      controller: 'ListController'
     });
 
   $stateProvider
