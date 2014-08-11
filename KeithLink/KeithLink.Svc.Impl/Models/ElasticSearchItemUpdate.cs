@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Impl.Models
         
         public List<ItemNutrition> nutrition { get; set; }
         public List<Diet> diet { get; set; }
-        public List<Allergen> allergen { get; set; }
+        public Allergen allergen { get; set; }
     }
 
     public class ItemNutrition
@@ -105,13 +105,19 @@ namespace KeithLink.Svc.Impl.Models
     public class Diet
     {
         public string diettype { get; set; }
-        public string value { get; set; }
     }
 
     public class Allergen
     {
-        public string allergentype { get; set; }
-        public string level { get; set; }
+		public Allergen()
+		{
+			freefrom = new List<string>();
+			maycontain = new List<string>();
+			contains = new List<string>();
+		}
+		public List<string> freefrom { get; set; }
+		public List<string> maycontain { get; set; }
+		public List<string> contains { get; set; }
     }
 
 }

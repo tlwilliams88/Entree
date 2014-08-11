@@ -251,17 +251,38 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 gs1.Height = oProd._source.gs1.height;
                 gs1.Length = oProd._source.gs1.length;
                 gs1.Width = oProd._source.gs1.width;
-                gs1.Allergens = new List<Allergen>();
+                gs1.Allergens = new Allergen();
                 gs1.NutritionInfo = new List<Nutrition>();
                 gs1.DietInfo = new List<Diet>();
-                if (oProd._source.gs1.allergen != null)
-                {
-                    foreach (var allergen in oProd._source.gs1.allergen)
-                    {
-                        Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
-                        gs1.Allergens.Add(a);
-                    }
-                }
+				if (oProd._source.gs1.allergen != null)
+				{
+					if (oProd._source.gs1.allergen.freefrom != null)
+					{
+						gs1.Allergens.freefrom = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.freefrom)
+							gs1.Allergens.freefrom.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.contains != null)
+					{
+						gs1.Allergens.contains = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.contains)
+							gs1.Allergens.contains.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.maycontain != null)
+					{
+						gs1.Allergens.maycontain = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.maycontain)
+							gs1.Allergens.maycontain.Add(ff);
+					}
+
+					//foreach (var allergen in oProd._source.gs1.allergen)
+					//{
+					//	Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
+					//	gs1.Allergens.Add(a);
+					//}
+				}
                 if (oProd._source.gs1.nutrition != null)
                 {
                     foreach (var nutrition in oProd._source.gs1.nutrition)
