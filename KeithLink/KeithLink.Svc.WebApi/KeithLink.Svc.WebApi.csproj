@@ -151,6 +151,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
