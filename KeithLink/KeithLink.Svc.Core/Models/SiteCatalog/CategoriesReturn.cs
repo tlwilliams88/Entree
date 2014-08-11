@@ -8,6 +8,7 @@ using Nest;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
+    [DataContract(Name="CategoriesReturn")]
     public class CategoriesReturn
     {
         [DataMember(Name = "categories")]
