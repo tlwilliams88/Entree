@@ -14,12 +14,12 @@ angular.module('bekApp')
  
     var Service = {
       getCategories: function() {
-          if (!categories) {
-             categories = $http.get('/catalog/categories').then(function (response) {
-                return response.data;
-            });
-          }
-      return categories;
+        if (!categories) {
+           categories = $http.get('/catalog/categories').then(function (response) {
+              return response.data;
+          });
+        }
+        return categories;
       }
   };
  

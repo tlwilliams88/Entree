@@ -22,13 +22,19 @@ angular.module('bekApp')
           listFound = list;
         }
       });
+
       listFound.isFavoritesList = true;
-      Service.favoritesList = listFound;
+      angular.copy(listFound, Service.favoritesList);
+
+      if (!Service.favoritesList.items) {
+        Service.getList(Service.favoritesList.listid).then(function (response) {
+          Service.favoritesList.items = response.items;
+        });
+      }
     }
 
     function addItemToList(listId, item) {
       return $http.post('/list/' + listId + '/item', item).then(function(response) {
-        debugger;
         item.listitemid = response.data.listitemid;
         var updatedList = Service.findListById(listId);
         if (updatedList && updatedList.items){
@@ -40,7 +46,6 @@ angular.module('bekApp')
 
     var Service = {
       lists: [],
-      selectedList: {},
       favoritesList: {},
       labels: [],
 
@@ -55,7 +60,7 @@ angular.module('bekApp')
       },
 
       getList: function(listId) {
-        return $http.get('/list/' + listId).then(function(response) {
+        return $http.get('/list/' + getBranch() + '/' + listId).then(function(response) {
           return response.data;
         });
       },
@@ -156,22 +161,49 @@ angular.module('bekApp')
 
       addItemToFavorites: function(item) {
         var newItem = item;
-        return addItemToList(Service.favoritesList.listid, item).then(function(response) {
-          newItem.listitemid = response.listitemid;
-          if (Service.favoritesList.items) {
-            Service.favoritesList.items.push(newItem);
+
+        // check if item number already exists in favorites list
+        var existingItem;
+        angular.forEach(Service.favoritesList.items, function(item, index) {
+          if (item.itemnumber === newItem.itemnumber) {
+            existingItem = item;
           }
-          return response.listitemid;
         });
+        
+        var newFavoritesListItemId;
+
+        if (!existingItem) {
+          newFavoritesListItemId = addItemToList(Service.favoritesList.listid, item).then(function(response) {
+            var newListItemId = response.listitemid;
+
+            newItem.listitemid = newListItemId;
+            newItem.favorite = true;
+            if (Service.favoritesList.items) {
+              Service.favoritesList.items.push(newItem);
+            }
+
+            return newListItemId;
+          });
+        } else {
+          newFavoritesListItemId = existingItem.listitemid;
+        }
+        return newFavoritesListItemId;
       },
 
-      removeItemFromFavorites: function(item) {
-        // TODO: can you have multiple of the same item in a favorites list? how will I know which item to delete from the favorites list if they are editing from another list?
+      removeItemFromFavorites: function(itemNumber) {
+        var removedItem, removedIndex;
+        angular.forEach(Service.favoritesList.items, function(item, index) {
+          if (item.itemnumber === itemNumber) {
+            removedItem = item;
+            removedIndex = index;
+          }
+        });
 
+        return this.deleteItem(Service.favoritesList.listid, removedItem.listitemid).then(function(response) {
+          Service.favoritesList.items.splice(removedIndex, 1);
 
-        // return this.deleteItem(favoritesList.listid, item.listitemid).then(function(response) {
-        //   response.data;
-        // });
+          return response.data;
+        });
       },
 
       findListById: function(listId) {

@@ -72,7 +72,7 @@
           <th>
             Name
           </th>
-          <th>
+          <th ng-if="!selectedList.isFavoritesList">
             Label
           </th>
           <th></th>
@@ -93,7 +93,7 @@
           <td>
             {{item.name}}
           </td>
-          <td class="table-input hidden-drag">
+          <td class="table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
             
             <div ng-hide="item.isEditing">
               <div class="select-div hidden-print">
@@ -113,7 +113,7 @@
             <span class="visible-print">{{item.label}}</span>
           </td>
           <td class="table-icon hidden-drag">
-            <a class="hidden-print icon-plus2" ng-mouseleave="isContextMenuDisplayed=false" ng-mouseenter="isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
+            <a class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
             <span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
           </td>
         </tr>
