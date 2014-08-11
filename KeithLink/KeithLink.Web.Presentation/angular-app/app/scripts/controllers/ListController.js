@@ -13,6 +13,9 @@ angular.module('bekApp')
     $scope.alerts = [];
     $scope.loadingResults = true;
 
+    $scope.sortBy = 'itemnumber';
+    $scope.sortOrder = false;
+
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
@@ -106,6 +109,14 @@ angular.module('bekApp')
       });
     };
 
+    $scope.editParLevel = function(listId, item) {
+      ListService.updateItem(listId, item).then(function(data) {
+        addSuccessAlert('Successfully update PAR Level for item ' + item.itemnumber + '.');
+      },function(error) {
+        addErrorAlert('Error updating PAR level.');
+      });
+    };
+
     $scope.deleteItem = function(event, helper, list) { //DONE
       var selectedItem = helper.draggable.data('product');
       
@@ -160,6 +171,17 @@ angular.module('bekApp')
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
+    };
+
+    $scope.listSearchTerm = '';
+    $scope.search = function (row) {
+      var term = $scope.listSearchTerm.toLowerCase();
+
+      var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
+        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1,
+        labelMatch =  row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);
+
+      return !!(itemnumberMatch || nameMatch || labelMatch);
     };
 
   }]);

@@ -49,37 +49,59 @@
     <div>
       <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
     </div>
-
-    <form name="listSearchForm" class="hidden-print search-form" novalidate>
-      <div class="input-group">
-        <input required ng-minlength="3" ng-model="listSearchForm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
-        <span class="input-group-btn">
-        <button ng-disabled="listSearchForm.$invalid" class="btn cta-btn" type="submit"><span class="icon-search"></span> SEARCH</button>
-        </span>
-      </div>
-    </form>
     
-    <table class="table table-striped">
+    <div style="margin-bottom:15px;">
+      <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
+    </div>
+  
+    <div class="text-right">
+    Showing {{filteredItems.length}} of {{selectedList.items.length}} Results
+    </div>
+
+    <table class="table table-striped sub-content">
       <thead>
         <tr>
           <th></th>
-          <th>
+          <th style="cursor:pointer;" ng-click="sortOrder=!sortOrder; sortBy='itemnumber';">
             Item #
+             <span ng-class="{
+              'icon-menu':sortBy !== 'itemnumber',
+              'icon-arrow-down4':sortBy == 'itemnumber' && !sortOrder,
+              'icon-arrow-up3': sortBy == 'itemnumber' && sortOrder
+            }"></span>
           </th>
           <th class="hidden-sm hidden-xs">
             Pack / Size
           </th>
-          <th>
+          <th ng-click="sortOrder=!sortOrder;sortBy='name';">
             Name
+            <span ng-class="{
+              'icon-menu':sortBy !== 'name',
+              'icon-arrow-down4':sortBy == 'name' && !sortOrder,
+              'icon-arrow-up3': sortBy == 'name' && sortOrder
+            }"></span>
           </th>
-          <th ng-if="!selectedList.isFavoritesList">
+          <th ng-click="sortOrder=!sortOrder;sortBy='label';" ng-show="!selectedList.isFavoritesList">
             Label
+            <span ng-class="{
+              'icon-menu':sortBy !== 'label',
+              'icon-arrow-down4':sortBy == 'label' && !sortOrder,
+              'icon-arrow-up3': sortBy == 'label' && sortOrder
+            }"></span>
+          </th>
+          <th ng-click="sortOrder=!sortOrder;sortBy='parlevel';" ng-show="!selectedList.isFavoritesList">
+            PAR Level
+            <span ng-class="{
+              'icon-menu':sortBy !== 'parlevel',
+              'icon-arrow-down4':sortBy == 'parlevel' && !sortOrder,
+              'icon-arrow-up3': sortBy == 'parlevel' && sortOrder
+            }"></span>
           </th>
           <th></th>
         </tr>
       </thead>
       <tbody>
-        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in selectedList.items track by item.listitemid" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
+        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder))" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
           <td class="text-light table-icon hidden-drag">
             <span class="icon-list2" style="cursor:move;"></span>
             <span favorite-item-click-handlers><span favorite-icons></span></span>
@@ -111,6 +133,13 @@
             </form>
             
             <span class="visible-print">{{item.label}}</span>
+          </td>
+          <td class="table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
+            <form class="hidden-print" name="editParForm">
+              <input type="text" placeholder="" min-length="3" allow-one-positive-decimal="item.parlevel" ng-model="item.parlevel" style="width:50px;text-align:right;" />
+              <button ng-disabled="editParForm.$invalid || editParForm.$pristine" class="btn-no-style" type="submit" ng-click="editParLevel(selectedList.listid, item)"><span class="large-icon text-green icon-checkmark"></span></button>
+            </form>
+            <span class="visible-print">{{item.parlevel}}</span>
           </td>
           <td class="table-icon hidden-drag">
             <a class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
