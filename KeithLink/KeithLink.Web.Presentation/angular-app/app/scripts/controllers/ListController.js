@@ -13,6 +13,9 @@ angular.module('bekApp')
     $scope.alerts = [];
     $scope.loadingResults = true;
 
+    $scope.sortBy = 'itemnumber';
+    $scope.sortOrder = false;
+
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
@@ -103,6 +106,14 @@ angular.module('bekApp')
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
       },function(error) {
         addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
+      });
+    };
+
+    $scope.editParLevel = function(listId, item) {
+      ListService.updateItem(listId, item).then(function(data) {
+        addSuccessAlert('Successfully update PAR Level for item ' + item.itemnumber + '.');
+      },function(error) {
+        addErrorAlert('Error updating PAR level.');
       });
     };
 
