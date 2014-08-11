@@ -52,20 +52,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             size = GetProductPagingSize(size);
 
-            category = category.ToLower();
             List<string> childCategories = new List<string>();
 
-            CategoriesReturn ret = GetCategories(0, Configuration.DefaultCategoryReturnSize);
-            foreach (var c in ret.Categories)
-            {
-                if (category == c.Id.ToLower())
-                {
-                    foreach (var subC in c.SubCategories)
-                    {
-                        childCategories.Add(subC.Id);
-                    }
-                }
-            }
+            childCategories = (from x in GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories
+                               from y in x.SubCategories
+                               where x.Id == category.ToLower()
+                               select y.Id.ToString()).ToList();
+                                
 
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             List<string> facetTerms = new List<string>();
@@ -86,6 +79,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
+
+
 
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
@@ -328,7 +323,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return size;
         }
 
-        
         #endregion
 
         #region " properties "
