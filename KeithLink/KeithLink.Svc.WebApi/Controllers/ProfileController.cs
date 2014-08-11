@@ -25,6 +25,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+        [HttpPost]
+        [Route("profile/create")]
+        public void CreateUser(UserProfileModel userInfo)
+        {
+            Core.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
+
+            // create the customer container if it does not exist
+            if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
+
+            _profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, userInfo.FirstName, userInfo.LastName, userInfo.Phone, userInfo.RoleName);
+        }
+
         //[HttpGet]
 		//[Route("profile/{emailAddress}")]
 		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)

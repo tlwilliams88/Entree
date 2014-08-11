@@ -64,8 +64,20 @@ namespace KeithLink.Svc.Impl.Profile
             };
         }
 
-        public void CreateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber)
+        public void CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
         {
+            string userName = null;
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddres, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            {
+                // cannot create a user on the internal server
+            }
+            else
+            {
+                Impl.Profile.ExternalUserDomainRepository extAD = new ExternalUserDomainRepository();
+                userName = extAD.CreateUser(customerName, emailAddres, password, firstName, lastName, roleName);
+            }
+
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;
