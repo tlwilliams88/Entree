@@ -303,16 +303,15 @@ namespace KeithLink.Svc.Impl.ETL
 
                 }
             };
+			item.index.data.itemspecification = new List<string>();
 
-            ////Populate nutritional info
-            //if (gsData.Tables[0].Rows.Count > 0)
-            //{
-            //    item.index.data.gs1.nutrition = new List<ItemNutrition>();
-
-            //    foreach (DataRow subRow in gsData.Tables[0].Rows)
-            //        item.index.data.gs1.nutrition.Add(MapItemNutrition(subRow));
-            //}
-            
+			if (item.index.data.replacementitem != "000000")
+				item.index.data.itemspecification.Add("ReplacementItem");
+			if (item.index.data.replaceditem != "000000")
+				item.index.data.itemspecification.Add("ItemBeingReplaced");
+			if (item.index.data.cndoc.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+				item.index.data.itemspecification.Add("CNDoc");
+			
 
             return item;
         }
