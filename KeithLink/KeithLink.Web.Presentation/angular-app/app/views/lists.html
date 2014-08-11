@@ -37,7 +37,7 @@
         
         <button ng-click="createList()" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-list text-light">Create A List</button>
         
-        <button class="btn btn-icon large-icon btn-trash" ng-disabled="!isDragging" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItem(selectedList)'}"><span class="icon-trash"></span></button>
+        <button class="btn btn-icon large-icon btn-trash" ng-disabled="!isDragging" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
 
       </div>
     </div>
@@ -141,9 +141,10 @@
             </form>
             <span class="visible-print">{{item.parlevel}}</span>
           </td>
-          <td class="table-icon hidden-drag">
+          <td class="table-icon hidden-drag table-actions">
             <a class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
-            <span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
+            <a confirmed-click="deleteItem(selectedList, item)" ng-confirm-click="Are you sure you want to delete item {{item.itemnumber}}?"><span class="text-red icon-cross"></span></a>
+            <a><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
           </td>
         </tr>
         <tr ng-repeat-end ng-class="{ odd : $odd, even: $even }" ng-show="showDetails" class="table-striped__mobile-details">

@@ -44,6 +44,29 @@ angular.module('bekApp')
       });
     }
 
+    function isUsedName(listNames, name, number) {
+      return listNames.indexOf(name + ' ' + number) > -1;
+    }
+
+    function generateNewListName() {
+      var name = "New List",
+        number = 0;
+
+      var listNames = [];
+
+      angular.forEach(Service.lists, function(list, index) {
+        listNames.push(list.name);
+      });
+
+      var isNameUsed = isUsedName(listNames, name, number);
+      while (isNameUsed) {
+        number++;
+        isNameUsed = isUsedName(listNames, name, number);
+      }
+
+      return name + ' ' + number;
+    }
+
     var Service = {
       lists: [],
       favoritesList: {},
@@ -83,17 +106,15 @@ angular.module('bekApp')
           items = [];
         }
 
-        var date = new Date(),
-        dateString = date.getTime(),
-        newList = {
-          name: 'New List ' + dateString,
+        var newList = {
+          name: generateNewListName(),
           items: items
         };
 
         return $http.post('/list/' + getBranch(), newList).then(function(response) {
           newList.listid = response.data.listitemid;
           Service.lists.push(newList);
-          return response.data; // return listId
+          return newList; // return listId
         });
       },
 
@@ -129,7 +150,7 @@ angular.module('bekApp')
           item.isEditing = false;
 
           // add label to list of labels if it is new
-          if (Service.labels.indexOf(item.label) === -1) {
+          if (item.label && Service.labels.indexOf(item.label) === -1) {
             Service.labels.push(item.label);
           }
 
