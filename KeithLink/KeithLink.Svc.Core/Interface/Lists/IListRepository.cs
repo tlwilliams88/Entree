@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		Guid CreateList(Guid userId, string branchId, UserList list);
 		void UpdateList(Guid userId, UserList list);
 
+		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
+
 		void DeleteList(Guid userId, Guid listId);
 		UserList DeleteItem(Guid userId, Guid listId, Guid itemId);
 

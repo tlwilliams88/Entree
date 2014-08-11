@@ -121,6 +121,7 @@ angular.module('bekApp')
       }
 
       loadProducts().then(function(facets) {
+
         $scope.categories = facets.categories;
         $scope.brands = facets.brands;
         $scope.allergens = facets.allergens;
@@ -128,7 +129,7 @@ angular.module('bekApp')
 
       $scope.infiniteScrollLoadMore = function() {
 
-        if ($scope.products.length >= $scope.totalItems || $scope.loadingResults) {
+        if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
           return;
         }
 
@@ -148,7 +149,7 @@ angular.module('bekApp')
         if (type === "brand") {
           $scope.selectedBrands = id;
           loadProducts();
-        }
+        } << << << < HEAD
       }
 
       $scope.showContextMenu = function(e, idx) {
@@ -258,5 +259,10 @@ angular.module('bekApp')
         iconClass: 'text-regular icon-safety'
       }];
 
+      ListService.getAllLists({
+        'header': true
+      }).then(function(data) {
+        $scope.lists = data;
+      });
     }
   ]);

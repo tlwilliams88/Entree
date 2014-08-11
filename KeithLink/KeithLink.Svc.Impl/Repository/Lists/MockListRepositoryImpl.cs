@@ -114,5 +114,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

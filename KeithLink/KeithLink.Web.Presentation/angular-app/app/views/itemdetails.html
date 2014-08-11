@@ -10,11 +10,11 @@
 <div loading-spinner="loadingDetails"></div>
 
 <div class="row" ng-hide="loadingDetails">
-  <div class="col-sm-3" ng-if="{{item.imageUrl}}">
+  <!-- <div class="col-sm-3">
     <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
-  </div>
+  </div> -->
   <div class="col-sm-9">
-    <h2>{{item.name}}</h2>
+    <h2>{{item.name}}<span class="item-details__icons" item-icons="item"></span></h2>
     <div class="item-details">
       <div ng-if="item.description">
         <strong>Description:</strong> {{item.description}}
@@ -29,38 +29,14 @@
         <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
         <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
-      <div class="large-icon" item-icons="item"></div>
     </div>
     <div class="item-details__actions hidden-print">
-      <div style="display:inline-block;" ng-mouseenter="isContextMenuDisplayed = true" ng-mouseleave="isContextMenuDisplayed = false">
-        <button class="cta-btn btn">Add To... <span class="icon-arrow-down6"></span></button>
-        <!-- Context Menu -->
-        <div class="context-menu btn-group-vertical" ng-if="isContextMenuDisplayed">
-          <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-            <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-              Add to Order<span class="icon-arrow-right6"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <div class="btn-group-vertical">
-                <button type="button" class="btn">Order 1</button>
-                <button type="button" class="btn">Order 2</button>
-                <button type="button" class="btn">New Order...</button>
-              </div>
-            </ul>
-          </div>
-          <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-            <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-              Add to List <span class="icon-arrow-right6"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <div class="btn-group-vertical">
-                <button ng-repeat="list in lists" type="button" class="btn">{{list.name}}</button>
-              </div>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <button class="btn"><span class="icon-star2"></span> Save Item</button>
+      <button class="cta-btn btn" ng-mouseenter="isContextMenuDisplayed = true" ng-mouseleave="isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></button>
+      
+      <span favorite-item-click-handlers>
+        <button class="btn" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
+        <button class="btn" ng-show="item.favorite" ng-click="removeItemFromFavorites(item)"><span class="text-gold icon-star"></span> Remove Item</button>
+      </span>
     </div>
   </div>
 </div>
@@ -151,7 +127,7 @@
         </div>
       </tab>
       <tab heading="Dietary Specifications" ng-if="item.gs1.diet.length > 0 || item.gs1.allergens.length > 0">
-        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
             <colgroup>
@@ -205,7 +181,7 @@
           </table>
         </div>
       </tab>
-      <tab heading="Images">
+      <tab heading="Images" ng-if="items.images">
         <div class="hidden-print item-details__images">
           <img src="" alt="" style="width:200px;height:200px;">
           <img src="" alt="" style="width:200px;height:200px;">
