@@ -11,17 +11,17 @@ angular.module('bekApp')
 
       $scope.addItemToFavorites = function(item) {
         $scope.$emit('processing-start');
-        ListService.addItemToFavorites(item).then(function(data) {
+        var newItem = angular.copy(item);
+        ListService.addItemToFavorites(newItem).then(function(data) {
           item.favorite = true;
-          $scope.$emit('processing-end', { message: 'Added item to favorites.' });
         });
       };
       $scope.removeItemFromFavorites = function(item) {
         $scope.$emit('processing-start');
-        ListService.removeItemFromFavorites(item).then(function(data) {
+        var deletedItem = angular.copy(item);
+        ListService.removeItemFromFavorites(deletedItem.itemnumber).then(function(data) {
           item.favorite = false;
         });
-        $scope.$emit('processing-end', { message: 'Removed item from favorites.' });
       };
     }],
     // template: '<span ng-transclude></span>'
