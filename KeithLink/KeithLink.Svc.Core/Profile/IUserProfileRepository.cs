@@ -8,6 +8,8 @@ namespace KeithLink.Svc.Core.Profile
 {
     public interface IUserProfileRepository
     {
+        bool AuthenticateUser(string emailAddress, string password);
+        bool AuthenticateUser(string emailAddress, string password, out Core.Profile.UserProfileReturn userProfile);
         void CreateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber);
         void DeleteUserProfile(string userName);
         UserProfileReturn GetUserProfile(string userName);

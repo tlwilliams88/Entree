@@ -12,8 +12,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 
     public class ProfileController : ApiController
     {
-        
-		//[HttpGet]
+        #region attributes
+        private Core.Profile.ICustomerContainerRepository _custRepo;
+        private Core.Profile.IUserProfileRepository _profileRepo;
+        #endregion
+
+        #region ctor
+        public ProfileController(Core.Profile.ICustomerContainerRepository customerRepo, Core.Profile.IUserProfileRepository profileRepo) {
+            _custRepo = customerRepo;
+            _profileRepo = profileRepo;
+        }
+        #endregion
+
+        #region methods
+        //[HttpGet]
 		//[Route("profile/{emailAddress}")]
 		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
 		//{
@@ -26,11 +38,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("profile/login")]
         public Core.Profile.UserProfileReturn Login(LoginModel login)
         {
-            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
-
             Core.Profile.UserProfileReturn retVal = null;
 
-			if (userRepo.AuthenticateUser(login.Email, login.Password, out retVal))
+			if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
 			{
 				return retVal;
 			}
@@ -39,5 +49,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 				return null;
 			}
         }
+
+        [HttpGet]
+        [Route("profile/searchcustomer/{searchText}")]
+        public Core.Profile.CustomerContainerReturn SearchCustomers(string searchText)
+        {
+            return _custRepo.SearchCustomerContainers(searchText);
+        }
+        #endregion
     }
 }

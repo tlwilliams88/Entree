@@ -31,6 +31,9 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
+            builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Profile.ICustomerContainerRepository>();
+            builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Profile.IUserProfileRepository>();
+
             // Build the container.
             var container = builder.Build();
 
