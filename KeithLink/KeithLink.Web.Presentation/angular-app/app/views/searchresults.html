@@ -113,6 +113,7 @@
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
 				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
+				<a ng-class="{'hidebrand': !isBrandShowing}" ng-click="hideBrand()">- Show Less</a>
 			</div>
 		</div>
 		<div class="row sub-content">
@@ -120,13 +121,29 @@
 				<h3>Allergens</h3>
 				<div ng-repeat="allergen in allergens" ng-class="{hideallergen: $index > allergenHiddenNumber}">
 					<input type="checkbox"
-					value="allergenValue_{{allergen.id}}"
-					id="allergenId_{{allergen.id}}"
-					ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
+					value="allergenValue_{{allergen.name}}"
+					id="allergenId_{{allergen.name}}"
+					ng-checked="selectedAllergens.indexOf(allergen.name) > -1"
 					ng-click="toggleSelection(allergen,'allergen')">
-					<label for="allergenId_{{allergen.id}}">{{allergen.name}}</label>
+					<label for="allergenId_{{allergen.name}}">{{allergen.name}} ({{allergen.count}})</label>
 				</div>
 				<a ng-class="{'hideallergen': isAllergenShowing}" ng-click="showAllergen()">+ Show More</a>
+				<a ng-class="{'hideallergen': !isAllergenShowing}" ng-click="hideAllergen()">- Show Less</a>
+			</div>
+		</div>
+		<div class="row sub-content">
+			<div class="col-sm-12">
+				<h3>Item Specifications</h3>
+				<div ng-repeat="spec in itemSpecifications" ng-class="{hidespec: $index > specHiddenNumber}">
+					<input type="checkbox"
+					value="specValue_{{spec.id}}"
+					id="specId_{{spec.id}}"
+					ng-checked="selectedAllergens.indexOf(spec.id) > -1"
+					ng-click="toggleSelection(spec,'spec')">
+					<label for="specId_{{spec.id}}"><span class="{{spec.iconClass}}"></span> {{spec.name}}</label>
+				</div>
+				<a ng-class="{'hidespec': isSpecShowing}" ng-click="showSpec()">+ Show More</a>
+				<a ng-class="{'hidespec': !isSpecShowing}" ng-click="hideSpec()">- Show Less</a>
 			</div>
 		</div>
 	</div>
@@ -187,7 +204,7 @@
 						<td class="hidden-sm hidden-xs icons" item-icons>
 						</td>
 						<td class="table-icon">
-							<a class="icon-plus2" ng-mouseleave="isContextMenuDisplayed=false" ng-mouseenter="isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
+							<a class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
 							<span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span>
 						</td>
 					</tr>
