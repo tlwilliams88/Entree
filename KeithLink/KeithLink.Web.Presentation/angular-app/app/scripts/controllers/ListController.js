@@ -173,4 +173,15 @@ angular.module('bekApp')
       $scope.alerts.splice(index, 1);
     };
 
+    $scope.listSearchTerm = '';
+    $scope.search = function (row) {
+      var term = $scope.listSearchTerm.toLowerCase();
+
+      var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
+        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1,
+        labelMatch =  row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);
+
+      return !!(itemnumberMatch || nameMatch || labelMatch);
+    };
+
   }]);

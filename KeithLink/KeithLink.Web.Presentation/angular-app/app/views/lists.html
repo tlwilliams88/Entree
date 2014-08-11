@@ -49,17 +49,16 @@
     <div>
       <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
     </div>
-
-    <form name="listSearchForm" class="hidden-print search-form" novalidate>
-      <div class="input-group">
-        <input required ng-minlength="3" ng-model="listSearchForm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
-        <span class="input-group-btn">
-        <button ng-disabled="listSearchForm.$invalid" class="btn cta-btn" type="submit"><span class="icon-search"></span> SEARCH</button>
-        </span>
-      </div>
-    </form>
     
-    <table class="table table-striped">
+    <div style="margin-bottom:15px;">
+      <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
+    </div>
+  
+    <div class="text-right">
+    Showing {{filteredItems.length}} of {{selectedList.items.length}} Results
+    </div>
+
+    <table class="table table-striped sub-content">
       <thead>
         <tr>
           <th></th>
@@ -102,7 +101,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in selectedList.items | orderBy:sortBy:sortOrder" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
+        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder))" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
           <td class="text-light table-icon hidden-drag">
             <span class="icon-list2" style="cursor:move;"></span>
             <span favorite-item-click-handlers><span favorite-icons></span></span>
@@ -139,7 +138,6 @@
             <form class="hidden-print" name="editParForm">
               <input type="text" placeholder="" min-length="3" allow-one-positive-decimal="item.parlevel" ng-model="item.parlevel" style="width:50px;text-align:right;" />
               <button ng-disabled="editParForm.$invalid || editParForm.$pristine" class="btn-no-style" type="submit" ng-click="editParLevel(selectedList.listid, item)"><span class="large-icon text-green icon-checkmark"></span></button>
-              {{editParForm.$invalid}}
             </form>
             <span class="visible-print">{{item.parlevel}}</span>
           </td>
