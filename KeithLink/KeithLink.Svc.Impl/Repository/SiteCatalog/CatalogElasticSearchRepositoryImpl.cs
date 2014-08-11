@@ -54,12 +54,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             List<string> childCategories = new List<string>();
 
-            childCategories = (from x in GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories
-                               from y in x.SubCategories
-                               where x.Id == category.ToLower()
-                               select y.Id.ToString()).ToList();
-                                
-
+			childCategories = GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
+			
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             List<string> facetTerms = new List<string>();
             foreach (string s in facets)
