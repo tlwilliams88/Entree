@@ -5,10 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 using Newtonsoft.Json;
+using Nest;
 
 namespace KeithLink.Svc.Core.Models.Brand
 {
     
+    [DataContract(Name="brand")]
+    [ElasticType(Name="brand")]
     public class Brand
     {
         #region " attributes "
@@ -31,6 +34,8 @@ namespace KeithLink.Svc.Core.Models.Brand
 
         #region " properties "
 
+        [DataMember(Name="id")]
+        [ElasticProperty(Name="id")]
         public string Id
         {
             get
@@ -43,6 +48,8 @@ namespace KeithLink.Svc.Core.Models.Brand
             }
         }
 
+        [DataMember(Name="name")]
+        [ElasticProperty(Name="name")]
         public string Name
         {
             get
@@ -55,6 +62,8 @@ namespace KeithLink.Svc.Core.Models.Brand
             }
         }
 
+        [DataMember(Name="imageurl")]
+        [ElasticProperty(Name="imageurl")]
         public string ImageURL
         {
             get
