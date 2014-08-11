@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', 'ProductService', 'CategoryService', '$stateParams',
-    function($scope, ProductService, CategoryService, $stateParams) {
+  .controller('SearchController', ['$scope', 'ProductService', 'CategoryService', 'ListService', '$stateParams',
+    function($scope, ProductService, CategoryService, ListService, $stateParams) {
       //debugger;
       // clear keyword search term at top of the page
       if ($scope.userBar) {
@@ -36,23 +36,24 @@ angular.module('bekApp')
       $scope.hidden = true;
 
       function getData() {
+        debugger;
         var type = $stateParams.type;
         var branchId = $scope.currentUser.currentLocation.branchId;
 
         if (type === 'category') {
 
           var categoryId = $stateParams.id;
-          return ProductService.getProductsByCategory(branchId, categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+          return ProductService.getProductsByCategory( categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
 
         } else if (type === 'search') {
 
           var searchTerm = $stateParams.id;
           $scope.searchTerm = "\"" + searchTerm + "\"";
-          return ProductService.getProducts(branchId, searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+          return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
         } else if (type === 'brand') {
 
           var brandName = $stateParams.id;
-          return ProductService.getProducts(branchId, brandName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
+          return ProductService.getProducts(brandName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory);
         }
       }
 
@@ -149,7 +150,7 @@ angular.module('bekApp')
         if (type === "brand") {
           $scope.selectedBrands = id;
           loadProducts();
-        } << << << < HEAD
+        }
       }
 
       $scope.showContextMenu = function(e, idx) {

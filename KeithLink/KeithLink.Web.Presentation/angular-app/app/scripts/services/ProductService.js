@@ -46,12 +46,12 @@ angular.module('bekApp')
             facets: facets
           }
         }).then(function(response) {
-          debugger;
           return response.data;
         });
       },
  
       getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategoryId) {
+
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
