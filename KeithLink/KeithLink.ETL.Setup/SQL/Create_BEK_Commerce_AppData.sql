@@ -278,7 +278,15 @@ CREATE TABLE [ETL].[Staging_ItemData](
 	[TempZone] [char](1) NULL,
 	[CNDoc] [char](1) NULL,
 	[HACCP] [char](1) NULL,
-	[HACCPDoce] [char](5) NULL
+	[HACCPDoce] [char](5) NULL,
+	[FDAProductFlag] [char](1) NULL,
+	[FPLength] [int] NULL,
+	[FPWidth] [int] NULL,
+	[FPHeight] [int] NULL,
+	[FPGrossWt] [int] NULL,
+	[FPNetWt] [int] NULL,
+	[FPCube] [int] NULL,
+	[NonStock] [char](1) NULL
 ) ON [PRIMARY]
 
 GO

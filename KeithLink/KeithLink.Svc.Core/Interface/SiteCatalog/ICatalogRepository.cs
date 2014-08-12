@@ -9,8 +9,8 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogRepository
     {
-        ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters);
-        ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters);
+        ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir);
+		ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir);
         CategoriesReturn GetCategories(int from, int size);
         Product GetProductById(string branch, string id);
 		ProductsReturn GetProductsByIds(string branch, List<string> ids);

@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         #region " methods / functions "
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             size = GetProductPagingSize(size);
 
@@ -76,7 +76,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
+			var sort = string.Empty;
 
+			if (!string.IsNullOrEmpty(sortField))
+			{
+				sort = string.Format(",\"sort\" : [ {{\"{0}\" : \"{1}\"}} ]", sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
+			}
 
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
@@ -88,13 +93,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                           ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
                       }
-                    }
+                    } 
                    ,""filter"":
                     {
                         " + filterTerms + @"
                     }
                   }
-                }" + ElasticSearchAggregations + @"
+                }" + sort + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, categoryFilter);
@@ -140,7 +145,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return results;
         }
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
@@ -235,6 +240,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.VendorItemNumber = oProd._source.vendor1;
             p.ItemClass = oProd._source.itemclass;
             p.CaseCube = oProd._source.icube;
+			p.NonStock = oProd._source.nonstock;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
@@ -257,7 +263,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 gs1.Volume = oProd._source.gs1.volume;
                 gs1.Height = oProd._source.gs1.height;
                 gs1.Length = oProd._source.gs1.length;
-                gs1.Width = oProd._source.gs1.width;
+				gs1.Width = oProd._source.gs1.width;
                 gs1.Allergens = new Allergen();
                 gs1.NutritionInfo = new List<Nutrition>();
                 gs1.DietInfo = new List<Diet>();
@@ -328,14 +334,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private int GetCategoryPagingSize(int size)
         {
-            if (size < 0)
+            if (size <= 0)
                 return Configuration.DefaultCategoryReturnSize;
             return size;
         }
 
         private int GetProductPagingSize(int size)
         {
-            if (size < 0)
+            if (size <= 0)
                 return Configuration.DefaultProductReturnSize;
             return size;
         }

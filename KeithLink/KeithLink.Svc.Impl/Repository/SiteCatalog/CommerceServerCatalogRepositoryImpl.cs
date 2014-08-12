@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             throw new NotImplementedException();
         }
@@ -61,5 +61,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             throw new NotImplementedException();
         }
-    }
+
+		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

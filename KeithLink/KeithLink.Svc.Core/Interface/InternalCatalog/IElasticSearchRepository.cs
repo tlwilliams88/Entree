@@ -9,5 +9,9 @@ namespace KeithLink.Svc.Core.Interface.InternalCatalog
     public interface IElasticSearchRepository
     {
         void Create(string json);
+		void MapProductProperties(string branchId, string json);
+		void DeleteBranch(string branchId);
+		bool CheckIfIndexExist(string branchId);
+		void CreateEmptyIndex(string branchId);
     }
 }

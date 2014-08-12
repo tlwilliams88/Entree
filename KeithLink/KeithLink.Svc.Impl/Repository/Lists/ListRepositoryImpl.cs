@@ -118,7 +118,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			var basket = orderContext.GetBasket(userId, listId);
 
-			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.Cast<LineItem>().Where(i => i.LineItemId.Equals(itemId)).FirstOrDefault());
+			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(itemId));
 			basket.Save();
 
 			return ToUserList(basket);
