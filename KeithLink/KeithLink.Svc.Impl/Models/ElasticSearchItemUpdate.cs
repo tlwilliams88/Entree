@@ -62,6 +62,7 @@ namespace KeithLink.Svc.Impl.Models
         public string itemnumber { get; set; }
         public string icube { get; set; }
         public GS1Data gs1 { get; set; }
+		public string nonstock { get; set; }
 
 		public List<string> itemspecification { get; set; }
     }
