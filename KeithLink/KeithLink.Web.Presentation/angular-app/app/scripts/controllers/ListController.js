@@ -104,7 +104,7 @@ angular.module('bekApp')
     };
 
     $scope.addItemToList = function (event, helper, listId) {
-      var selectedItem = helper.draggable.data('product');
+      var selectedItem = angular.copy(helper.draggable.data('product'));
 
       ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');

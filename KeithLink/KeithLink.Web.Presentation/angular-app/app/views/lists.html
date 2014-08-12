@@ -54,9 +54,9 @@
       <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
     </div>
   
-    <!-- <div class="text-right">
+    <div class="text-right">
     Showing {{filteredItems.length}} of {{selectedList.items.length}} Results
-    </div> -->
+    </div>
 
     <table class="table table-striped custom-lists__table sub-content">
       <thead>
@@ -108,6 +108,7 @@
           </td>
           <td>
             <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
+            {{item.listitemid}}
           </td>
           <td class="hidden-sm hidden-xs">
             {{item.packsize}}
