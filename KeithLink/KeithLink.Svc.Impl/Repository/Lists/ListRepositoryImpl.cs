@@ -48,6 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			if (basket == null) //Throw error?
 				return ;
 
+			basket.Name = list.FormattedName(basket["BranchId"].ToString());
 			basket["DisplayName"] = list.Name;
 			
 			for (int x = 0; x < basket.LineItemCount; x++)

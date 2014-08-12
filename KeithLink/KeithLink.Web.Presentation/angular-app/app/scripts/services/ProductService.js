@@ -38,7 +38,10 @@ angular.module('bekApp')
         if (facetCategoryId) {
           facets += 'categories:' + facetCategoryId;
         }
- 
+        if(facets===''){
+          facets=null;
+        }
+
         return $http.get('/catalog/search/' + branchId + '/' + searchTerm + '/products', {
           params: {
             size: pageSize,
@@ -64,6 +67,9 @@ angular.module('bekApp')
         if(facetCategoryId){
           categoryId = facetCategoryId;
         }
+        if(facets===''){
+          facets=null;
+        }
         
         return $http.get('/catalog/search/category/' + branchId + '/' + categoryId + '/products', {
           params: {

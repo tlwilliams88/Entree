@@ -76,13 +76,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-			var sort = string.Empty;
-
-			if (!string.IsNullOrEmpty(sortField))
-			{
-				sort = string.Format(",\"sort\" : [ {{\"{0}\" : \"{1}\"}} ]", sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
-			}
-
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
                 ""query"":{
@@ -99,11 +92,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         " + filterTerms + @"
                     }
                   }
-                }" + sort + ElasticSearchAggregations + @"
+                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, categoryFilter);
         }
+
+		private static string BuildSort(string sortField, string sortDir)
+		{
+			var sort = string.Empty;
+
+			if (!string.IsNullOrEmpty(sortField))
+			{
+				sort = string.Format(",\"sort\" : [ {{\"{0}\" : \"{1}\"}} ]", sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
+			}
+			return sort;
+		}
 
         private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
         {
@@ -187,7 +191,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         " + filterTerms + @"
                     }
                   }
-                }" + ElasticSearchAggregations + @"
+                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, searchBody);
