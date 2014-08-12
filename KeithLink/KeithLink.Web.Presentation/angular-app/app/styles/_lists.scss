@@ -63,6 +63,9 @@
   } 
 }
 
-.custom-lists__table tr:hover td {
-  background-color: #EBE7D9 !important;
+// highlight row when hovering on desktop only
+@media (min-width: $mobile-max) {
+  .custom-lists__table tr:hover td {
+    background-color: #EBE7D9 !important;
+  }
 }

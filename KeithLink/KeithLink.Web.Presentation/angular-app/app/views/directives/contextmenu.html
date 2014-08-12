@@ -22,7 +22,7 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: lists.length | limitTo: -(lists.length-1)" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-hide="list.name === 'Favorites'" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
           <button type="button" class="btn" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>

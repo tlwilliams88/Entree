@@ -10,7 +10,7 @@ angular.module('bekApp')
         var params = {
           email: email,
           password: password
-        }
+        };
 
         return $http.post('/profile/login', params).then(function (response) {
           var profile = response.data.UserProfiles[0];
