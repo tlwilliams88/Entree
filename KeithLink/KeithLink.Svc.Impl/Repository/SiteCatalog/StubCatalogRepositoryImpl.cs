@@ -22,20 +22,20 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         Category[] categories = new Category[]
         {
             new Category() { Name = "Shrimp", Description="Shrimp, Headless, Raw", Id="FS940"
-                , SubCategories = new Category[] {
-                    new Category() { Id = "FS942", Name="Jumbo Shrimp", Description="Shrimp, Headless, Raw 12 Ct"},
-                    new Category() { Id = "FS941", Name="Popcorn Shrimp", Description="Shrimp, Headless, Raw 65 Ct"}}},
+                , SubCategories = new SubCategory[] {
+                    new SubCategory() { Id = "FS942", Name="Jumbo Shrimp", Description="Shrimp, Headless, Raw 12 Ct"},
+                    new SubCategory() { Id = "FS941", Name="Popcorn Shrimp", Description="Shrimp, Headless, Raw 65 Ct"}}},
             new Category() { Name = "Cakes", Description="Cakes Silly", Id="CS940"
-                , SubCategories = new Category[] {
-                    new Category() { Id = "CS942", Name="Cakes, Decorated", Description="Decorated Cakes"},
-                    new Category() { Id = "CS941", Name="Cakes, Bulk", Description="Un-decorated cakes"}}},
+                , SubCategories = new SubCategory[] {
+                    new SubCategory() { Id = "CS942", Name="Cakes, Decorated", Description="Decorated Cakes"},
+                    new SubCategory() { Id = "CS941", Name="Cakes, Bulk", Description="Un-decorated cakes"}}},
             new Category() { Name = "Pork", Description="Soo weee!!!", Id="PS940"
-                , SubCategories = new Category[] {
-                    new Category() { Id = "PS942", Name="Pork Shoulder", Description="Bulk Pork Shoulder"},
-                    new Category() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
+                , SubCategories = new SubCategory[] {
+                    new SubCategory() { Id = "PS942", Name="Pork Shoulder", Description="Bulk Pork Shoulder"},
+                    new SubCategory() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             if (String.IsNullOrEmpty(category))
             {
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         }
 
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             throw new NotImplementedException();
         }
@@ -75,5 +75,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		{
 			throw new NotImplementedException();
 		}
+
 	}
 }

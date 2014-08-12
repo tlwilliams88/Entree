@@ -4,10 +4,12 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Autofac.Integration.WebApi;
+using KeithLink.Svc.Core.Interface.Brand;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Logic;
 
 namespace KeithLink.Svc.WebApi
@@ -27,9 +29,13 @@ namespace KeithLink.Svc.WebApi
             //builder.Register(c => new CommerceServerCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+            builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
 
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
+
+            builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Profile.ICustomerContainerRepository>();
+            builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Profile.IUserProfileRepository>();
 
             // Build the container.
             var container = builder.Build();

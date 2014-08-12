@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
+using Nest;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -14,19 +16,15 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string Id { get; set; }
 
         [DataMember(Name = "name")]
+        [ElasticProperty(Name="name")]
         public string Name { get; set; }
 
         [DataMember(Name = "description")]
+        [ElasticProperty(Name="description")]
         public string Description { get; set; }
 
         [DataMember(Name = "subcategories")]
-        public Category[] SubCategories { get; set; }
-    }
-
-    [DataContract(Name="CategoriesReturn")]
-    public class CategoriesReturn
-    {
-        [DataMember(Name="categories")]
-        public List<Category> Categories { get; set; }
+        [ElasticProperty(Name="subcategories")]
+        public SubCategory[] SubCategories { get; set; }
     }
 }

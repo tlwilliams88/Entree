@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Models
         [JsonIgnore]
         public AdditionalData data { get; set; }
     }
-
+	
     public class AdditionalData
     {
         public string categoryid { get; set; }
@@ -62,6 +62,9 @@ namespace KeithLink.Svc.Impl.Models
         public string itemnumber { get; set; }
         public string icube { get; set; }
         public GS1Data gs1 { get; set; }
+		public string nonstock { get; set; }
+
+		public List<string> itemspecification { get; set; }
     }
 
     public class GS1Data
@@ -86,11 +89,11 @@ namespace KeithLink.Svc.Impl.Models
         public string height { get; set; }
         public string length { get; set; }
         public string width { get; set; }
-        
+
         
         public List<ItemNutrition> nutrition { get; set; }
         public List<Diet> diet { get; set; }
-        public List<Allergen> allergen { get; set; }
+        public Allergen allergen { get; set; }
     }
 
     public class ItemNutrition
@@ -101,17 +104,23 @@ namespace KeithLink.Svc.Impl.Models
         public string nutrienttypecode { get; set; }
         public string nutrienttype { get; set; }
     }
-
+	
     public class Diet
     {
         public string diettype { get; set; }
-        public string value { get; set; }
     }
 
     public class Allergen
     {
-        public string allergentype { get; set; }
-        public string level { get; set; }
+		public Allergen()
+		{
+			freefrom = new List<string>();
+			maycontain = new List<string>();
+			contains = new List<string>();
+		}
+		public List<string> freefrom { get; set; }
+		public List<string> maycontain { get; set; }
+		public List<string> contains { get; set; }
     }
 
 }

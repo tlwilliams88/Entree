@@ -12,8 +12,51 @@ namespace KeithLink.Svc.WebApi.Controllers
 
     public class ProfileController : ApiController
     {
-        
-		//[HttpGet]
+        #region attributes
+        private Core.Profile.ICustomerContainerRepository _custRepo;
+        private Core.Profile.IUserProfileRepository _profileRepo;
+        #endregion
+
+        #region ctor
+        public ProfileController(Core.Profile.ICustomerContainerRepository customerRepo, Core.Profile.IUserProfileRepository profileRepo) {
+            _custRepo = customerRepo;
+            _profileRepo = profileRepo;
+        }
+        #endregion
+
+        #region methods
+        [HttpPost]
+        [Route("profile/create")]
+        public OperationReturnModel<Core.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
+        {
+
+            OperationReturnModel<Core.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Profile.UserProfileReturn>();
+
+            try
+            {
+                Core.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
+
+                // create the customer container if it does not exist
+                if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
+
+                retVal.SuccessResponse =_profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, 
+                                                                       userInfo.FirstName, userInfo.LastName, userInfo.Phone, 
+                                                                       userInfo.RoleName);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+            }
+
+
+            return retVal;
+        }
+
+        //[HttpGet]
 		//[Route("profile/{emailAddress}")]
 		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
 		//{
@@ -26,11 +69,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("profile/login")]
         public Core.Profile.UserProfileReturn Login(LoginModel login)
         {
-            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
-
             Core.Profile.UserProfileReturn retVal = null;
 
-			if (userRepo.AuthenticateUser(login.Email, login.Password, out retVal))
+			if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
 			{
 				return retVal;
 			}
@@ -39,5 +80,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 				return null;
 			}
         }
+
+        [HttpGet]
+        [Route("profile/searchcustomer/{searchText}")]
+        public Core.Profile.CustomerContainerReturn SearchCustomers(string searchText)
+        {
+            return _custRepo.SearchCustomerContainers(searchText);
+        }
+        #endregion
     }
 }

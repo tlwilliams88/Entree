@@ -11,7 +11,7 @@ angular.module('bekApp')
   .factory('ProductService', ['$http', 'UserProfileService',
     function($http, UserProfileService) {
 
-      var defaultPageSize = 15,
+      var defaultPageSize = 30,
         defaultStartingIndex = 0;
 
       function concatenateNestedParameters(name, list) {

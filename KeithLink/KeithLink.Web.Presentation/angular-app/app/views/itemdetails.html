@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="item-details__actions hidden-print">
-      <button class="cta-btn btn" ng-mouseenter="isContextMenuDisplayed = true" ng-mouseleave="isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></button>
+      <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
         <button class="btn" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
@@ -126,7 +126,7 @@
           </table>
         </div>
       </tab>
-      <tab heading="Dietary Specifications" ng-if="item.gs1.diet.length > 0 || item.gs1.allergens.length > 0">
+      <tab heading="Dietary Specifications">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
@@ -136,22 +136,33 @@
             </colgroup>
             <tbody>
               <tr class="even">
-                <th>Diet Type</th>
-                <th>Value</th>
+                <th>Diet Types</th>
+                <td ng-if="item.gs1.diet" class="text-capitalize">
+                  <span ng-repeat-start="diet in item.gs1.diet">{{diet.diettype}}</span>
+                  <span ng-repeat-end ng-if="!$last">, </span>
+                </td>
+                <td ng-if="!item.gs1.diet.length > 0">Not Tested</td>
               </tr>
-              <tr ng-repeat="diet in item.gs1.diet" ng-class="{ odd : $even, even: $odd }">
-                <td class="text-capitalize">{{diet.diettype}}</td>
-                <td class="text-uppercase">{{diet.value}}</td>
+              <tr class="odd">
+                <th>Contains</th>
+                <td ng-if="item.gs1.allergens.contains.length > 0">{{item.gs1.allergens.contains.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.contains.length > 0">Not Tested</td>
               </tr>
-              <tr ng-repeat="allergen in item.gs1.allergens" ng-class="{ odd : !highlightRow($index, item.gs1.diet.length), even: highlightRow($index, item.gs1.diet.length) }">
-                <td>{{allergen.allergentype}}</td>
-                <td>{{allergen.level}}</td>
+              <tr class="even">
+                <th>May Contain</th>
+                <td ng-if="item.gs1.allergens.maycontain.length > 0">{{item.gs1.allergens.maycontain.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.maycontain.length > 0">Not Tested</td>
+              </tr>
+              <tr class="odd">
+                <th>Free From</th>
+                <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
               </tr>
             </tbody>
           </table>
         </div>
       </tab>
-      <tab heading="Nutrition" ng-if="item.gs1.nutrition.length > 0">
+      <tab heading="Nutrition">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
@@ -177,6 +188,7 @@
                 <td>{{nutrition.measurementtypeid}}</td>
                 <td>{{nutrition.measurementvalue}}</td>
               </tr>
+              <tr class="odd" ng-if="item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
             </tbody>
           </table>
         </div>

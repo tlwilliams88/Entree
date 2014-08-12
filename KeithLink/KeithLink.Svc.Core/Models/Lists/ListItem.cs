@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "label")]
         public string Label { get; set; }
         [DataMember(Name = "parlevel")]
-        public int ParLevel { get; set; }
+        public decimal ParLevel { get; set; }
         [DataMember(Name = "position")]
         public int Position { get; set; }
 		[DataMember(Name = "packsize")]

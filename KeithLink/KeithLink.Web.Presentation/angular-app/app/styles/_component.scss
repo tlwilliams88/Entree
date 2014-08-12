@@ -7,11 +7,12 @@
 /* BUTTONS */
 
 // default button
-button.btn {
+.btn {
   @include component;
   min-height: 40px;
   background-color: white;
   white-space: inherit;
+  padding: 9px 12px;
   
   // call to action button
   &.cta-btn {
@@ -21,7 +22,7 @@ button.btn {
   }
 }
 
-button.btn-no-style {
+.btn-no-style {
   background: transparent;
   border: none;
 

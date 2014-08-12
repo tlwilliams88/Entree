@@ -1,8 +1,8 @@
 <!-- Context Menu -->
-<div class="context-menu" ng-show="isContextMenuDisplayed">
+<div class="context-menu" ng-show="displayedItems.isContextMenuDisplayed">
   <div class="btn-group-vertical">
-    
-      <button favorite-item-click-handlers ng-click="addItemToFavorites(item)" class="btn text-uppercase">To Favorites</button>
+
+    <button favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn text-uppercase">To Favorites</button>
     
     <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
       <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
@@ -22,12 +22,11 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: lists.length | limitTo: -(lists.length-1)" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-hide="list.name === 'Favorites'" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
           <button type="button" class="btn" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
     </div>
-    <button ng-if="selectedList" ng-click="removeItem(selectedList, item)" class="btn"><span class="icon-trash"></span> Remove From List</button>
   </div>
   <div class="text-center" loading-spinner="loadingContextMenu"></div>
 </div>

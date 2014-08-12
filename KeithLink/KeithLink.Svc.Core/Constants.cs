@@ -11,8 +11,9 @@ namespace KeithLink.Svc.Core
         public static string ReturnSizeQueryStringParam { get { return "size"; } }
         public static string ReturnFromQueryStringParam { get { return "from"; } }
 
-        public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
+        public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
+        public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";
 
         public const string ROLE_EXTERNAL_ACCOUNTING = "Accounting";
         public const string ROLE_EXTERNAL_OWNER = "Owner";
@@ -33,6 +34,14 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSR_FLR = "flrk-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FSA = "fsan-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FOK = "fokc-ls-sys-ac-dsrs";
+
+
+
+        // Elastic Search : Indexes
+        public const string ES_INDEX_CATEGORIES = "categories";
+
+        // Elastic Search : Types
+        public const string ES_TYPE_CATEGORY = "category";
 
     }
 }

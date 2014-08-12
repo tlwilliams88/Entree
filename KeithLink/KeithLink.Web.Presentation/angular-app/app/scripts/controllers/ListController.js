@@ -13,6 +13,9 @@ angular.module('bekApp')
     $scope.alerts = [];
     $scope.loadingResults = true;
 
+    $scope.sortBy = 'itemnumber';
+    $scope.sortOrder = false;
+
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
@@ -31,13 +34,23 @@ angular.module('bekApp')
 
     ListService.getAllLabels();
 
+    // INFINITE SCROLL
+    var itemsPerPage = 30;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      $scope.itemsToDisplay += itemsPerPage;
+    };
+
     $scope.goToList = function(list) {
       $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
       $scope.selectedList = list;
+      $scope.itemsToDisplay = itemsPerPage;
     };
 
     $scope.createList = function(items) { //DONE
       ListService.createList().then(function(data) {
+        $state.transitionTo('menu.listitems', {listId: data.listid}, {notify: false});
+        $scope.selectedList = data;
         addSuccessAlert('Successfully created a new list.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -47,6 +60,8 @@ angular.module('bekApp')
     $scope.createListWithItem = function(event, helper) { //DONE
       var selectedItem = helper.draggable.data('product');
       ListService.createListWithItem(selectedItem).then(function(data) {
+        $state.transitionTo('menu.listitems', {listId: data[0].listid}, {notify: false});
+        $scope.selectedList = data[0];
         addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -55,7 +70,7 @@ angular.module('bekApp')
 
     $scope.deleteList = function(listId) { //DONE
       ListService.deleteList(listId).then(function(data) {
-        $scope.selectedList = $scope.lists[0];
+        $scope.selectedList = ListService.favoritesList;
         addSuccessAlert('Successfully deleted list.');
       },function(error) {
         addErrorAlert('Error deleting list.');
@@ -66,7 +81,7 @@ angular.module('bekApp')
       ListService.updateItem(listId, item).then(function(data) {
         addSuccessAlert('Successfully added label ' + item.label + ' to item ' + item.itemnumber + '.');
       },function(error) {
-        addErrorAlert('Error deleting list.');
+        addErrorAlert('Error updating label.');
       });
     };
 
@@ -97,7 +112,7 @@ angular.module('bekApp')
     };
 
     $scope.addItemToList = function (event, helper, listId) {
-      var selectedItem = helper.draggable.data('product');
+      var selectedItem = angular.copy(helper.draggable.data('product'));
 
       ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
@@ -106,13 +121,26 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteItem = function(event, helper, list) { //DONE
+    $scope.editParLevel = function(listId, item) {
+      ListService.updateItem(listId, item).then(function(data) {
+        addSuccessAlert('Successfully update PAR Level for item ' + item.itemnumber + '.');
+      },function(error) {
+        addErrorAlert('Error updating PAR level.');
+      });
+    };
+
+    $scope.deleteItemFromDrag = function(event, helper, list) { //DONE
       var selectedItem = helper.draggable.data('product');
       
-      ListService.deleteItem(list.listid, selectedItem.listitemid).then(function(data) {
-        addSuccessAlert('Successfully removed item ' + selectedItem.itemnumber + '.');
+      $scope.deleteItem(list, selectedItem);
+    };
+
+    $scope.deleteItem = function(list, item) {
+      var deletedItem = angular.copy(item);
+      ListService.deleteItem(list.listid, item.listitemid).then(function(data) {
+        addSuccessAlert('Successfully removed item ' + deletedItem.itemnumber + '.');
       },function(error) {
-        addErrorAlert('Error removing item ' + selectedItem.itemnumber + ' from list.');
+        addErrorAlert('Error removing item ' + deletedItem.itemnumber + ' from list.');
       });
     };
 
@@ -160,6 +188,18 @@ angular.module('bekApp')
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);
+    };
+
+    // FILTER LIST
+    $scope.listSearchTerm = '';
+    $scope.search = function (row) {
+      var term = $scope.listSearchTerm.toLowerCase();
+
+      var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
+        nameMatch = row.name===null || row.name.toLowerCase().indexOf(term || '') !== -1,
+        labelMatch =  row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);
+
+      return !!(itemnumberMatch || nameMatch || labelMatch);
     };
 
   }]);

@@ -9,37 +9,53 @@ using Elasticsearch.Net;
 using System.Dynamic;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Nest;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {
+        #region " attributes "
+
+        private Helpers.ElasticSearch _eshelper;
+
         private ElasticsearchClient client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+
+
+        private string _elasticSearchAggreagations = @",
+                ""aggregations"" : {
+                    ""categories"" : {
+                    ""terms"" : {
+                        ""field"" : ""categoryid""
+                    }
+                    }, ""brands"" : {
+                    ""terms"" : {
+                        ""field"" : ""brand""
+                    }
+                    }
+                }";
+
+        #endregion
+
+        #region " constructor "
 
         public CatalogElasticSearchRepositoryImpl()
         {
-            
+            _eshelper = new Helpers.ElasticSearch();
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
+        #endregion
+
+        #region " methods / functions "
+
+		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             size = GetProductPagingSize(size);
 
-            category = category.ToLower();
             List<string> childCategories = new List<string>();
 
-            CategoriesReturn ret = GetCategories(0, Configuration.DefaultCategoryReturnSize);
-            foreach (var c in ret.Categories)
-            {
-                if (category == c.Id.ToLower())
-                {
-                    foreach (var subC in c.SubCategories)
-                    {
-                        childCategories.Add(subC.Id);
-                    }
-                }
-            }
-
+			childCategories = GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
+			
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             List<string> facetTerms = new List<string>();
             foreach (string s in facets)
@@ -70,17 +86,28 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                           ""query"" : """ + categorySearch + @""",
                                                ""use_dis_max"" : true
                       }
-                    }
+                    } 
                    ,""filter"":
                     {
                         " + filterTerms + @"
                     }
                   }
-                }" + ElasticSearchAggregations + @"
+                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, categoryFilter);
         }
+
+		private static string BuildSort(string sortField, string sortDir)
+		{
+			var sort = string.Empty;
+
+			if (!string.IsNullOrEmpty(sortField))
+			{
+				sort = string.Format(",\"sort\" : [ {{\"{0}\" : \"{1}\"}} ]", sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
+			}
+			return sort;
+		}
 
         private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
         {
@@ -95,6 +122,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     var facetValue = new ExpandoObject() as IDictionary<string, object>;
                     facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
                     facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
+                    if (oFacet.Key == "categories")
+                    {
+                        facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+                    }
                     facet.Add(facetValue as ExpandoObject);
                 }
 
@@ -104,36 +135,25 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            size = GetCategoryPagingSize(size);
+            var response = _eshelper.Client.Search<Category>(s => s
+                .From(from)
+                .Size(GetCategoryPagingSize(size))
+                .Type(Constants.ES_TYPE_CATEGORY)
+                .Index(Constants.ES_INDEX_CATEGORIES)
+                );
 
-            var categoryFilter = @"{
-                ""from"" : " + from + @", ""size"" : " + size + @"
-                }";
-
-            ElasticsearchResponse<DynamicDictionary> res = client.Search("categories", "category", categoryFilter);
-            List<Category> cats = new List<Category>();
-
-            foreach (var oCat in res.Response["hits"]["hits"])
+            // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
+            foreach (var r in response.Hits)
             {
-                if (oCat._source.subcategories != null)
-                {
-                    Category cat = new Category() { Id = oCat._id, Name = oCat._source.name, Description = oCat._source.name };
-                    List<Category> subCats = new List<Category>();
-                    foreach (var oSubCat in oCat._source.subcategories)
-                    {
-                        Category subCat = new Category() { Id = oSubCat.categoryid, Name = oSubCat.name, Description = oSubCat.name };
-                        subCats.Add(subCat);
-                    }
-
-                    cat.SubCategories = subCats.ToArray();
-                    cats.Add(cat);
-                }
+                r.Source.Id = r.Id;
             }
 
-            return new CategoriesReturn() { Categories = cats };
+            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s=>s.SubCategories != null).ToList<Category>() };
+
+            return results;
         }
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
+		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
         {
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
@@ -171,7 +191,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         " + filterTerms + @"
                     }
                   }
-                }" + ElasticSearchAggregations + @"
+                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
             }";
 
             return GetProductsFromElasticSearch(branch, searchBody);
@@ -228,6 +248,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.VendorItemNumber = oProd._source.vendor1;
             p.ItemClass = oProd._source.itemclass;
             p.CaseCube = oProd._source.icube;
+			p.NonStock = oProd._source.nonstock;
             // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
@@ -250,18 +271,39 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 gs1.Volume = oProd._source.gs1.volume;
                 gs1.Height = oProd._source.gs1.height;
                 gs1.Length = oProd._source.gs1.length;
-                gs1.Width = oProd._source.gs1.width;
-                gs1.Allergens = new List<Allergen>();
+				gs1.Width = oProd._source.gs1.width;
+                gs1.Allergens = new Allergen();
                 gs1.NutritionInfo = new List<Nutrition>();
                 gs1.DietInfo = new List<Diet>();
-                if (oProd._source.gs1.allergen != null)
-                {
-                    foreach (var allergen in oProd._source.gs1.allergen)
-                    {
-                        Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
-                        gs1.Allergens.Add(a);
-                    }
-                }
+				if (oProd._source.gs1.allergen != null)
+				{
+					if (oProd._source.gs1.allergen.freefrom != null)
+					{
+						gs1.Allergens.freefrom = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.freefrom)
+							gs1.Allergens.freefrom.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.contains != null)
+					{
+						gs1.Allergens.contains = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.contains)
+							gs1.Allergens.contains.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.maycontain != null)
+					{
+						gs1.Allergens.maycontain = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.maycontain)
+							gs1.Allergens.maycontain.Add(ff);
+					}
+
+					//foreach (var allergen in oProd._source.gs1.allergen)
+					//{
+					//	Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
+					//	gs1.Allergens.Add(a);
+					//}
+				}
                 if (oProd._source.gs1.nutrition != null)
                 {
                     foreach (var nutrition in oProd._source.gs1.nutrition)
@@ -300,30 +342,21 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private int GetCategoryPagingSize(int size)
         {
-            if (size < 0)
+            if (size <= 0)
                 return Configuration.DefaultCategoryReturnSize;
             return size;
         }
 
         private int GetProductPagingSize(int size)
         {
-            if (size < 0)
+            if (size <= 0)
                 return Configuration.DefaultProductReturnSize;
             return size;
         }
 
-        private string _elasticSearchAggreagations = @",
-                ""aggregations"" : {
-                    ""categories"" : {
-                    ""terms"" : {
-                        ""field"" : ""categoryid""
-                    }
-                    }, ""brands"" : {
-                    ""terms"" : {
-                        ""field"" : ""brand""
-                    }
-                    }
-                }";
+        #endregion
+
+        #region " properties "
 
         public string ElasticSearchAggregations {
             get
@@ -339,7 +372,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         if (aggregationParams.Length != 2)
                             throw new ApplicationException("Incorrect aggreation configuration");
 
-                        aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                        if (aggregationParams[0] == "categories")
+                        {
+                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\" }}}}");
+                        } else {
+                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                        }
                     }
 
                     string formatString = s.ToString();
@@ -370,8 +408,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
         }
 
-
-		public ProductsReturn GetProductsByIds(string branch, List<string> ids)
+        public ProductsReturn GetProductsByIds(string branch, List<string> ids)
 		{
 			var productList = String.Join(" OR ", ids);
 			var query = @"{
@@ -384,7 +421,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 						}}";
 
 			return GetProductsFromElasticSearch(branch, query);
-		
-		}
-	}
-}
+
+        }
+
+        #endregion
+
+    } // end class
+} // end namespace

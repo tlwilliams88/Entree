@@ -26,11 +26,28 @@ namespace KeithLink.Svc.Impl.ETL
     public class CatalogLogicImpl: ICatalogLogic
     {
         private const string Language = "en-US";
+		private readonly string ItemSpec_NonStock = "NonStock";
+		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
+		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
+		private readonly string ItemSpec_CNDoc = "CNDoc";
 
-        ILogger log = LogManager.GetLogger(typeof(CatalogLogicImpl));
+		private readonly string ProductMapping = @"{
+			  ""product"" : {
+				   ""properties"" : {
+					   ""categoryname"" : {
+							  ""type"" : ""string"",
+							  ""index"" : ""not_analyzed""
+						},
+					 ""brand"" : {
+					   ""type"" : ""string"",
+							  ""index"" : ""not_analyzed""
+					 }
+				   }
+				}
+			}";
 
 
-        private readonly ICatalogInternalRepository catalogRepository;
+		private readonly ICatalogInternalRepository catalogRepository;
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
         
@@ -45,8 +62,6 @@ namespace KeithLink.Svc.Impl.ETL
         {
             try
             {
-                log.Debug("Start Processing Staged Catalog Data");
-                
                 var catTask = Task.Factory.StartNew(() => ImportCatalog());
                 var profileTask = Task.Factory.StartNew(() => ImportProfiles());
                 var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
@@ -54,12 +69,10 @@ namespace KeithLink.Svc.Impl.ETL
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
 
-                log.Debug("Staged Data Processed");
 
             }
             catch (Exception ex) 
             {
-                log.Error(ex);
                 throw ex;
             }
         }
@@ -90,6 +103,17 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportItemsToElasticSearch()
         {
+			var branches = stagingRepository.ReadAllBranches();
+
+			Parallel.ForEach(branches.AsEnumerable(), row =>
+			{
+				if (!elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
+				{
+					elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
+					elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
+				}
+			});
+
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
             var products = new BlockingCollection<ElasticSearchItemUpdate>();
 
@@ -197,13 +221,6 @@ namespace KeithLink.Svc.Impl.ETL
                 newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
                 newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
                 //These properties are commented out for now while we decide if having them in elastic search is enough
-                //newProd.MfrName = row.GetString("MfrName");
-                //newProd.MfrNumber = row.GetString("MfrNumber");
-                //newProd.Pack = row.GetString("Pack");
-                //newProd.Size = row.GetString("Size");
-                //newProd.UPC = row.GetString("UPC");
-                //newProd.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
-                //newProd.Brand = row.GetString("Brand");
                 products.Add(newProd);
             }
 
@@ -239,7 +256,7 @@ namespace KeithLink.Svc.Impl.ETL
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, List<Allergen>> allergens)
+        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens)
         {
             var item =  new ElasticSearchItemUpdate()
             {
@@ -281,6 +298,7 @@ namespace KeithLink.Svc.Impl.ETL
                         replacementitem = row.GetString("ReplacementItem"),
                         cndoc = row.GetString("CNDoc"),
                         itemnumber = row.GetString("ItemId"),
+						nonstock = row.GetString("NonStock"),
                         gs1 = new GS1Data()
                         {
                             brandowner = row.GetString("BrandOwner"),
@@ -310,16 +328,19 @@ namespace KeithLink.Svc.Impl.ETL
 
                 }
             };
+			item.index.data.itemspecification = new List<string>();
 
-            ////Populate nutritional info
-            //if (gsData.Tables[0].Rows.Count > 0)
-            //{
-            //    item.index.data.gs1.nutrition = new List<ItemNutrition>();
+			
 
-            //    foreach (DataRow subRow in gsData.Tables[0].Rows)
-            //        item.index.data.gs1.nutrition.Add(MapItemNutrition(subRow));
-            //}
-            
+			if (item.index.data.replacementitem != "000000")
+				item.index.data.itemspecification.Add(ItemSpec_ReplacementItem);
+			if (item.index.data.replaceditem != "000000")
+				item.index.data.itemspecification.Add(ItemSpec_Replaced);
+			if (item.index.data.cndoc.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+				item.index.data.itemspecification.Add(ItemSpec_CNDoc);
+			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
+			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
+			
 
             return item;
         }
@@ -363,39 +384,63 @@ namespace KeithLink.Svc.Impl.ETL
 
             foreach (DataRow row in gsData.Tables[1].Rows)
             {
-                if (itemDiets.ContainsKey(row.GetString("gtin")))
-                    itemDiets[row.GetString("gtin")].Add(MapDiet(row));
-                else
-                    itemDiets.Add(row.GetString("gtin"), new List<Diet>() { MapDiet(row) });
+				if (row.GetString("Value").Equals("y", StringComparison.CurrentCultureIgnoreCase))
+					if (itemDiets.ContainsKey(row.GetString("gtin")))
+						itemDiets[row.GetString("gtin")].Add(MapDiet(row));
+					else
+						itemDiets.Add(row.GetString("gtin"), new List<Diet>() { MapDiet(row) });
             }
 
             return itemDiets;
         }
 
-        private Dictionary<string, List<Allergen>> BuildAllergenDictionary(DataSet gsData)
+        private Dictionary<string, Allergen> BuildAllergenDictionary(DataSet gsData)
         {
-            var itemAllergen = new Dictionary<string, List<Allergen>>();
+            var itemAllergen = new Dictionary<string, Allergen>();
 
             foreach (DataRow row in gsData.Tables[2].Rows)
             {
-                if (itemAllergen.ContainsKey(row.GetString("gtin")))
-                    itemAllergen[row.GetString("gtin")].Add(MappAllergen(row));
-                else
-                    itemAllergen.Add(row.GetString("gtin"), new List<Allergen>() { MappAllergen(row) });
+				if (itemAllergen.ContainsKey(row.GetString("gtin")))
+				{
+					var existing = itemAllergen[row.GetString("gtin")];
+					MapAllergen(existing, row);
+				}
+				else
+				{
+					var newItem = new Allergen();
+					MapAllergen(newItem, row);
+					itemAllergen.Add(row.GetString("gtin"), newItem);
+				}
             }
 
             return itemAllergen;
         }
 
-        private static Allergen MappAllergen(DataRow row)
-        {
-            return new Allergen() { allergentype = row.GetString("AllergenTypeDesc"), level = row.GetString("LevelOfContainment") };
-        }
+		private static void MapAllergen(Allergen allergen, DataRow row)
+		{
+			switch (row.GetString("LevelOfContainment"))
+			{
+				case "FREE_FROM":
+					allergen.freefrom.Add(row.GetString("AllergenTypeDesc"));
+					break;
+				case "CONTAINS":
+					allergen.contains.Add(row.GetString("AllergenTypeDesc"));
+					break;
+				case "MAY_CONTAIN":
+					allergen.maycontain.Add(row.GetString("AllergenTypeDesc"));
+					break;
+			}
+		}
+
+		//private static Allergen MappAllergen(DataRow row)
+		//{
+		//	return new Allergen() { allergentype = row.GetString("AllergenTypeDesc"), level = row.GetString("LevelOfContainment") };
+		//}
 
 
         private static Diet MapDiet(DataRow row)
         {
-            return new Diet() { diettype = row.GetString("DietType"), value = row.GetString("Value") };
+            return new Diet() { diettype = row.GetString("DietType") };
         }
 
         private ItemNutrition MapItemNutrition(DataRow subRow)
