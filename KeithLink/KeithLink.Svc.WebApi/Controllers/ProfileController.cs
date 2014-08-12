@@ -25,6 +25,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+        [AllowAnonymous]
         [HttpPost]
         [Route("profile/create")]
         public OperationReturnModel<Core.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
@@ -56,6 +57,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+        //[AllowAnonymous]
         //[HttpGet]
 		//[Route("profile/{emailAddress}")]
 		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
@@ -65,6 +67,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		//	return userRepo.GetUserProfile(emailAddress);
 		//}
 
+        [AllowAnonymous]
         [HttpPost]
         [Route("profile/login")]
         public Core.Profile.UserProfileReturn Login(LoginModel login)
@@ -81,6 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
         }
 
+        [AllowAnonymous]
         [HttpGet]
         [Route("profile/searchcustomer/{searchText}")]
         public Core.Profile.CustomerContainerReturn SearchCustomers(string searchText)

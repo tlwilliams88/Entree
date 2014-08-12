@@ -11,6 +11,20 @@ namespace KeithLink.Svc.WebApi
     {
         public static void Register(HttpConfiguration config)
         {
+            //******************************************************
+            // moved from Global.asax
+            //******************************************************
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
+
+            // Configure Web API with the dependency resolver.
+            var resolver = DependencyMap.Build();
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
+
+            GlobalConfiguration.Configuration.EnsureInitialized();
+            //******************************************************
+            // end of move from Global.asax
+            //******************************************************
+            
             // Web API configuration and services
             System.Web.Http.Cors.EnableCorsAttribute enableCors = new System.Web.Http.Cors.EnableCorsAttribute(
                 KeithLink.Svc.Impl.Configuration.CorsEnabledDomains,
@@ -29,6 +43,10 @@ namespace KeithLink.Svc.WebApi
 
             config.Formatters.Clear();
             config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());
+
+            // from web sample
+            var jsonFormatter = config.Formatters.OfType<System.Net.Http.Formatting.JsonMediaTypeFormatter>().First();
+            jsonFormatter.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.CamelCasePropertyNamesContractResolver();
         }
     }
 }
