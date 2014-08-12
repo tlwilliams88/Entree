@@ -8,6 +8,112 @@ namespace KeithLink.Svc.Impl.Profile
     public class UserProfileRepository : Core.Profile.IUserProfileRepository
     {
         #region methods
+        private void AssertCustomerNameLength(string customerName)
+        {
+            if (customerName.Length == 0) throw new ApplicationException("Customer name is blank");
+        }
+
+        private void AssertCustomerNameValidCharacters(string customerName)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(customerName, Core.Constants.REGEX_AD_ILLEGALCHARACTERS)) { throw new ApplicationException("Invalid characters in customer name"); }
+        }
+
+        private void AssertEmailAddress(string emailAddress)
+        {
+            try
+            {
+                System.Net.Mail.MailAddress testAddress = new System.Net.Mail.MailAddress(emailAddress);
+            }
+            catch
+            {
+                throw new ApplicationException("Invalid email address");
+            }
+        }
+
+        private void AssertEmailAddressLength(string emailAddress)
+        {
+            if (emailAddress.Length == 0) throw new ApplicationException("Email address is blank");
+        }
+
+        private void AssertEmailAddressUnique(string emailAddress){
+            ExternalUserDomainRepository extAd = new ExternalUserDomainRepository();
+
+            if (extAd.GetUser(emailAddress) != null)
+            {
+                throw new ApplicationException("Email address is already in use");
+            }
+        }
+
+        private void AssertFirstNameLength(string firstName)
+        {
+            if (firstName.Length == 0) throw new ApplicationException("First name is blank");
+        }
+
+        private void AssertLastNameLength(string lastName)
+        {
+            if (lastName.Length == 0) throw new ApplicationException("Last name is blank");
+        }
+
+        private void AssertPasswordComplexity(string password)
+        {
+            if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) { 
+                throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number"); 
+            }
+        }
+
+        private void AssertPasswordLength(string password)
+        {
+            if (password.Length < 7) throw new ApplicationException("Minimum password length is 7 characters");
+        }
+
+        private void AssertPasswordVsAttributes(string password, string customerName, string firstName, string lastName)
+        {
+            bool matched = false;
+
+            if (string.Compare(password, customerName, true) == 0) { matched = true; }
+            if (string.Compare(password, firstName, true) == 0) { matched = true; }
+            if (string.Compare(password, lastName, true) == 0) { matched = true; }
+
+            if (matched)
+            {
+                throw new ApplicationException("Invalid password");
+            }
+        }
+
+        private void AssertRoleName(string roleName)
+        {
+            bool found = false;
+
+            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
+            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_OWNER, true) == 0) { found = true; }
+            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_PURCHASING, true) == 0) { found = true; }
+
+            if (found == false)
+            {
+                throw new ApplicationException("Role name is unknown");
+            }
+        }
+
+        private void AssertRoleNameLength(string roleName)
+        {
+            if (roleName.Length == 0) { throw new ApplicationException("Role name is blank"); }
+        }
+
+        private void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
+        {
+            AssertCustomerNameLength(customerName);
+            AssertCustomerNameValidCharacters(customerName);
+            AssertEmailAddress(emailAddres);
+            AssertEmailAddressLength(emailAddres);
+            AssertFirstNameLength(firstName);
+            AssertLastNameLength(lastName);
+            AssertPasswordComplexity(password);
+            AssertPasswordLength(password);
+            AssertPasswordVsAttributes(password, customerName, firstName, lastName);
+            AssertRoleName(roleName);
+            AssertRoleNameLength(roleName);
+        }
+
         public bool AuthenticateUser(string emailAddress, string password)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
@@ -64,8 +170,10 @@ namespace KeithLink.Svc.Impl.Profile
             };
         }
 
-        public void CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
+        public Core.Profile.UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
         {
+            AssertUserProfile(customerName, emailAddres, password, firstName, lastName, phoneNumber, roleName);
+
             string userName = null;
 
             if (System.Text.RegularExpressions.Regex.IsMatch(emailAddres, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
@@ -74,6 +182,8 @@ namespace KeithLink.Svc.Impl.Profile
             }
             else
             {
+                AssertEmailAddressUnique(emailAddres);
+
                 Impl.Profile.ExternalUserDomainRepository extAD = new ExternalUserDomainRepository();
                 userName = extAD.CreateUser(customerName, emailAddres, password, firstName, lastName, roleName);
             }
@@ -99,6 +209,8 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, createUser.ToRequest());
 
             CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
+
+            return (GetUserProfile(emailAddres));
         }
 
         public void DeleteUserProfile(string userName)
@@ -143,7 +255,6 @@ namespace KeithLink.Svc.Impl.Profile
         {
             throw new NotImplementedException();
         }
-
         #endregion
     }
 }

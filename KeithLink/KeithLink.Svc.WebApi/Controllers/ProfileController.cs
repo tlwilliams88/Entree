@@ -27,14 +27,33 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [HttpPost]
         [Route("profile/create")]
-        public void CreateUser(UserProfileModel userInfo)
+        public OperationReturnModel<Core.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
         {
-            Core.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
 
-            // create the customer container if it does not exist
-            if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
+            OperationReturnModel<Core.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Profile.UserProfileReturn>();
 
-            _profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, userInfo.FirstName, userInfo.LastName, userInfo.Phone, userInfo.RoleName);
+            try
+            {
+                Core.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
+
+                // create the customer container if it does not exist
+                if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
+
+                retVal.SuccessResponse =_profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, 
+                                                                       userInfo.FirstName, userInfo.LastName, userInfo.Phone, 
+                                                                       userInfo.RoleName);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+            }
+
+
+            return retVal;
         }
 
         //[HttpGet]

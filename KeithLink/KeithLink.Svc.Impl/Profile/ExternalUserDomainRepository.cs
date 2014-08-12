@@ -196,7 +196,7 @@ namespace KeithLink.Svc.Impl.Profile
                 }
 
                 DirectorySearcher userSearch = new DirectorySearcher(boundServer);
-                userSearch.Filter = string.Format("cn={0}", userName);
+                userSearch.Filter = string.Format("cn={0}*", userName);
 
                 SearchResultCollection results = userSearch.FindAll();
 
