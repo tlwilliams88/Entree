@@ -118,6 +118,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     var facetValue = new ExpandoObject() as IDictionary<string, object>;
                     facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
                     facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
+                    if (oFacet.Key == "categories")
+                    {
+                        facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+                    }
                     facet.Add(facetValue as ExpandoObject);
                 }
 
@@ -364,7 +368,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         if (aggregationParams.Length != 2)
                             throw new ApplicationException("Incorrect aggreation configuration");
 
-                        aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                        if (aggregationParams[0] == "categories")
+                        {
+                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\" }}}}");
+                        } else {
+                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                        }
                     }
 
                     string formatString = s.ToString();

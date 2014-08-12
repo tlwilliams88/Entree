@@ -147,10 +147,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		public UserList ReadList(Guid userId, string listName)
 		{
 			
-			var list = orderContext.GetBasket(userId, listName);
-			if (list == null || list["BranchId"] == null)
-				return null;
-			return ToUserList(list);
+            var list = orderContext.GetBasket(userId, listName);
+            if (list == null || list["BranchId"] == null)
+                return null;
+            return ToUserList(list);
 		}
 
 
