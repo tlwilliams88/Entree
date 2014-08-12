@@ -83,8 +83,9 @@
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Elasticsearch.Net">
-      <HintPath>..\packages\Elasticsearch.Net.1.0.0\lib\Elasticsearch.Net.dll</HintPath>
+    <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Elasticsearch.Net.1.0.1\lib\Elasticsearch.Net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -98,8 +99,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Nest">
+      <HintPath>..\packages\NEST.1.0.1\lib\Nest.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -120,6 +125,7 @@
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearchItemUpdate.cs" />
@@ -136,6 +142,7 @@
     <Compile Include="Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Profile\UserProfileRepository.cs" />
+    <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CommerceServerCatalogRepositoryImpl.cs" />

@@ -51,6 +51,7 @@ angular.module('bekApp')
       },
  
       getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategoryId) {
+
         pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
         index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -60,12 +61,6 @@ angular.module('bekApp')
         if (brands && brands.length > 0) {
           facets += concatenateNestedParameters('brands', brands);
         }
-        //if (brands && brands.length > 0 && facetCategoryId) {
-        //  facets += '&';
-        //}
-        //if (facetCategoryId) {
-        //  facets += 'categories:' + categoryId;
-        //}
         if(facetCategoryId){
           categoryId = facetCategoryId;
         }

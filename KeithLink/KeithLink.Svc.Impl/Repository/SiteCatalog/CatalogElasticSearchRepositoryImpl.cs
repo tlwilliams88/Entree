@@ -9,37 +9,53 @@ using Elasticsearch.Net;
 using System.Dynamic;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Nest;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
     {
+        #region " attributes "
+
+        private Helpers.ElasticSearch _eshelper;
+
         private ElasticsearchClient client = GetElasticsearchClient(Configuration.ElasticSearchURL);
+
+
+        private string _elasticSearchAggreagations = @",
+                ""aggregations"" : {
+                    ""categories"" : {
+                    ""terms"" : {
+                        ""field"" : ""categoryid""
+                    }
+                    }, ""brands"" : {
+                    ""terms"" : {
+                        ""field"" : ""brand""
+                    }
+                    }
+                }";
+
+        #endregion
+
+        #region " constructor "
 
         public CatalogElasticSearchRepositoryImpl()
         {
-            
+            _eshelper = new Helpers.ElasticSearch();
         }
+
+        #endregion
+
+        #region " methods / functions "
 
         public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters)
         {
             size = GetProductPagingSize(size);
 
-            category = category.ToLower();
             List<string> childCategories = new List<string>();
 
-            CategoriesReturn ret = GetCategories(0, Configuration.DefaultCategoryReturnSize);
-            foreach (var c in ret.Categories)
-            {
-                if (category == c.Id.ToLower())
-                {
-                    foreach (var subC in c.SubCategories)
-                    {
-                        childCategories.Add(subC.Id);
-                    }
-                }
-            }
-
+			childCategories = GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
+			
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             List<string> facetTerms = new List<string>();
             foreach (string s in facets)
@@ -59,6 +75,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
+
+
 
             var categoryFilter = @"{
                 ""from"" : " + from + @", ""size"" : " + size + @",
@@ -104,33 +122,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            size = GetCategoryPagingSize(size);
+            var response = _eshelper.Client.Search<Category>(s => s
+                .From(from)
+                .Size(GetCategoryPagingSize(size))
+                .Type(Constants.ES_TYPE_CATEGORY)
+                .Index(Constants.ES_INDEX_CATEGORIES)
+                );
 
-            var categoryFilter = @"{
-                ""from"" : " + from + @", ""size"" : " + size + @"
-                }";
-
-            ElasticsearchResponse<DynamicDictionary> res = client.Search("categories", "category", categoryFilter);
-            List<Category> cats = new List<Category>();
-
-            foreach (var oCat in res.Response["hits"]["hits"])
+            // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
+            foreach (var r in response.Hits)
             {
-                if (oCat._source.subcategories != null)
-                {
-                    Category cat = new Category() { Id = oCat._id, Name = oCat._source.name, Description = oCat._source.name };
-                    List<Category> subCats = new List<Category>();
-                    foreach (var oSubCat in oCat._source.subcategories)
-                    {
-                        Category subCat = new Category() { Id = oSubCat.categoryid, Name = oSubCat.name, Description = oSubCat.name };
-                        subCats.Add(subCat);
-                    }
-
-                    cat.SubCategories = subCats.ToArray();
-                    cats.Add(cat);
-                }
+                r.Source.Id = r.Id;
             }
 
-            return new CategoriesReturn() { Categories = cats };
+            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s=>s.SubCategories != null).ToList<Category>() };
+
+            return results;
         }
 
         public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters)
@@ -251,17 +258,38 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 gs1.Height = oProd._source.gs1.height;
                 gs1.Length = oProd._source.gs1.length;
                 gs1.Width = oProd._source.gs1.width;
-                gs1.Allergens = new List<Allergen>();
+                gs1.Allergens = new Allergen();
                 gs1.NutritionInfo = new List<Nutrition>();
                 gs1.DietInfo = new List<Diet>();
-                if (oProd._source.gs1.allergen != null)
-                {
-                    foreach (var allergen in oProd._source.gs1.allergen)
-                    {
-                        Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
-                        gs1.Allergens.Add(a);
-                    }
-                }
+				if (oProd._source.gs1.allergen != null)
+				{
+					if (oProd._source.gs1.allergen.freefrom != null)
+					{
+						gs1.Allergens.freefrom = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.freefrom)
+							gs1.Allergens.freefrom.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.contains != null)
+					{
+						gs1.Allergens.contains = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.contains)
+							gs1.Allergens.contains.Add(ff);
+					}
+
+					if (oProd._source.gs1.allergen.maycontain != null)
+					{
+						gs1.Allergens.maycontain = new List<string>();
+						foreach (var ff in oProd._source.gs1.allergen.maycontain)
+							gs1.Allergens.maycontain.Add(ff);
+					}
+
+					//foreach (var allergen in oProd._source.gs1.allergen)
+					//{
+					//	Allergen a = new Allergen() { AllergenType = allergen.allergentype, Level = allergen.level };
+					//	gs1.Allergens.Add(a);
+					//}
+				}
                 if (oProd._source.gs1.nutrition != null)
                 {
                     foreach (var nutrition in oProd._source.gs1.nutrition)
@@ -312,18 +340,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return size;
         }
 
-        private string _elasticSearchAggreagations = @",
-                ""aggregations"" : {
-                    ""categories"" : {
-                    ""terms"" : {
-                        ""field"" : ""categoryid""
-                    }
-                    }, ""brands"" : {
-                    ""terms"" : {
-                        ""field"" : ""brand""
-                    }
-                    }
-                }";
+        #endregion
+
+        #region " properties "
 
         public string ElasticSearchAggregations {
             get
@@ -370,8 +389,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
         }
 
-
-		public ProductsReturn GetProductsByIds(string branch, List<string> ids)
+        public ProductsReturn GetProductsByIds(string branch, List<string> ids)
 		{
 			var productList = String.Join(" OR ", ids);
 			var query = @"{
@@ -384,7 +402,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 						}}";
 
 			return GetProductsFromElasticSearch(branch, query);
-		
-		}
-	}
-}
+
+        }
+
+        #endregion
+
+    } // end class
+} // end namespace

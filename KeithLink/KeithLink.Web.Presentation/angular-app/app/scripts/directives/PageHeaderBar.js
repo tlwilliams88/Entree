@@ -16,16 +16,7 @@ angular.module('bekApp')
       restrict: 'A',
       replace : true,
       transclude: 'element',
-      templateUrl: 'views/directives/headerBar.html',
-      controller: function($scope) {
-        $scope.$on('processing-start', function(event, args) {
-          $scope.message = '';
-        });
-
-        $scope.$on('processing-end', function(event, args) {
-          $scope.message = args.message;
-        });
-      }
+      templateUrl: 'views/directives/headerBar.html'
     };
   })
   .directive('headerMessage', function() {
