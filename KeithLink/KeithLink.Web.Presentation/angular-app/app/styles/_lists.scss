@@ -62,3 +62,7 @@
     display: none;
   } 
 }
+
+.custom-lists__table tr:hover td {
+  background-color: #EBE7D9 !important;
+}

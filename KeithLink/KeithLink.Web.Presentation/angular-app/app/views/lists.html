@@ -54,11 +54,11 @@
       <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
     </div>
   
-    <div class="text-right">
+    <!-- <div class="text-right">
     Showing {{filteredItems.length}} of {{selectedList.items.length}} Results
-    </div>
+    </div> -->
 
-    <table class="table table-striped sub-content">
+    <table class="table table-striped custom-lists__table sub-content">
       <thead>
         <tr>
           <th></th>
@@ -101,7 +101,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder))" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
+        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder)) track by item.listitemid" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
           <td class="text-light table-icon hidden-drag">
             <span class="icon-list2" style="cursor:move;"></span>
             <span favorite-item-click-handlers><span favorite-icons></span></span>
