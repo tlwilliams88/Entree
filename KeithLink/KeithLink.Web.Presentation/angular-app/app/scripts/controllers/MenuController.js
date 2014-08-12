@@ -27,8 +27,6 @@ angular.module('bekApp')
       AuthenticationService.login(loginInfo.username, loginInfo.password);
     };
 
-    $scope.login($scope.loginInfo);
-
     $scope.logout = function() {
       AuthenticationService.logout();
       $scope.displayUserMenu = false;
