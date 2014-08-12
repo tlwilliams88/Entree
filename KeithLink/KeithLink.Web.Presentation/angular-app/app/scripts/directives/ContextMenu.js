@@ -21,16 +21,7 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', {listId: data[0].listitemid});
-        });
-      };
-
-      $scope.removeItem = function(selectedList, item) {
-        $scope.loadingContextMenu = true;
-
-        ListService.deleteItem(selectedList.listid, item.listitemid).then(function(data) {
-          $scope.loadingContextMenu = false;
-          $scope.displayedItems.isContextMenuDisplayed = false;
+          $state.go('menu.listitems', {listId: data[0].listid});
         });
       };
 

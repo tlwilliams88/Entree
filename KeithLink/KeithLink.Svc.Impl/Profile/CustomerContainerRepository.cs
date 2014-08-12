@@ -131,6 +131,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <returns>CustomerContainerReturn</returns>
         /// <remarks>
         /// jwames - 8/7/2014 - original code
+        /// jwames - 8/11/2014 - remove the OU= from the string returned
         /// </remarks>
         public Core.Profile.CustomerContainerReturn GetCustomerContainer(string customerName)
         {
@@ -166,7 +167,8 @@ namespace KeithLink.Svc.Impl.Profile
 
                 if (entry != null)
                 {
-                    retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(entry.Name));
+                    // do not include the "OU=" in the name that is returned
+                    retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(entry.Name.Substring(3)));
                 }
             }
             catch (NullReferenceException) { 
@@ -190,6 +192,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <returns>CustomerContainerReturn</returns>
         /// <remarks>
         /// jwames - 8/7/2014 - original code
+        /// jwames - 8/11/2014 - remove the OU= from the string returned
         /// </remarks>
         public Core.Profile.CustomerContainerReturn SearchCustomerContainers(string searchText)
         {
@@ -227,7 +230,8 @@ namespace KeithLink.Svc.Impl.Profile
                 {
                     foreach (SearchResult result in results)
                     {
-                        retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(result.GetDirectoryEntry().Name));
+                        // do not include "OU=" in the name that is returned
+                        retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(result.GetDirectoryEntry().Name.Substring(3)));
                     }
                 }
             }

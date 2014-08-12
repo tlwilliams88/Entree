@@ -1,6 +1,6 @@
 <!-- Mobile Sidebar -->
 <div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
- <div ng-show="isLoggedIn()" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
+ <div ng-show="isValidUser()" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
     <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
@@ -61,10 +61,10 @@
       <span><a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a></span>
     </div>
   </div>
-  <div ng-if="isLoggedIn()" class="sidebar-actions text-center">
+  <div ng-if="isValidUser()" class="sidebar-actions text-center">
     <button class="btn cta-btn">Place Your Order</button>
   </div>
-  <div ng-if="!isLoggedIn()" class="sidebar-actions text-center">
+  <div ng-if="!isValidUser()" class="sidebar-actions text-center">
     <a ng-click="login()" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
     <button class="btn cta-btn">Register Now</button>
   </div>
@@ -151,11 +151,11 @@
           </form>
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right">
-          <div ng-if="isLoggedIn()">
+          <div ng-if="isValidUser()">
             <span class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
-                <span class="user-info__name">{{currentUser.name}}</span> 
+                <span class="user-info__name">{{currentUser.FirstName}}</span> 
                 <span class="user-info__job-title">{{currentUser.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn">Account Settings</button>
@@ -169,9 +169,13 @@
             </div>
           </div>
 
-          <div ng-if="!isLoggedIn()" style="display:inline-block;">
-            <a ng-click="login()" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
-            <button class="btn cta-btn">Register Now</button>
+          <div ng-if="!isValidUser()" style="display:inline-block;">
+            <form class="form-inline" role="form"  style="display:inline-block;">
+              <input type="text" class="form-control" placeholder="username" ng-model="loginInfo.username" style="display:none;">
+              <input type="password" class="form-control" placeholder="password" ng-model="loginInfo.password" style="display:none;">
+              <a ng-click="login(loginInfo)" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
+            </form>
+            <button style="display:inline-block;" class="btn cta-btn">Register Now</button>
           </div>
         </div>
       </div>

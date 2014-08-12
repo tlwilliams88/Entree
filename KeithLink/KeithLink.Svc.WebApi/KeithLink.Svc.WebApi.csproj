@@ -162,6 +162,8 @@
     </Compile>
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\SearchInputModel.cs" />
+    <Compile Include="Models\OperationReturnModel.cs" />
+    <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

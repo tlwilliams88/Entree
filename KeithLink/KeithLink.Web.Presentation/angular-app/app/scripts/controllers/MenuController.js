@@ -8,30 +8,31 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', 'UserProfileService', function ($scope, UserProfileService) {
-    
-    $scope.isAdmin = false;
-    $scope.isBuyer = false;
-    $scope.isPayer = false;
+  .controller('MenuController', ['$scope', 'AuthenticationService', 'UserProfileService', function ($scope, AuthenticationService, UserProfileService) {
 
+    $scope.currentUser = UserProfileService.profile;
 
-    $scope.currentUser = UserProfileService.getProfile();
-
-
-    var isLoggedIn = false;
-    $scope.isLoggedIn = function() {
-      return isLoggedIn;
+    $scope.loginInfo = {
+      username: 'sabroussard@somecompany.com',
+      password: 'L1ttleStev1e'
     };
 
-    $scope.login = function() {
-      isLoggedIn = true;
+
+
+    $scope.isValidUser = function() {
+      return AuthenticationService.isLoggedIn();
     };
+
+    $scope.login = function(loginInfo) {
+      AuthenticationService.login(loginInfo.username, loginInfo.password);
+    };
+
+    $scope.login($scope.loginInfo);
 
     $scope.logout = function() {
+      AuthenticationService.logout();
       $scope.displayUserMenu = false;
-      isLoggedIn = false;
     };
-
 
     $scope.print = function () {
       window.print(); 

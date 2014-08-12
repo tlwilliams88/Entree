@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
-        public void CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
+        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
         {
             const int NORMAL_ACCT = 0x200;
             const int PWD_NOTREQD = 0x20;
@@ -62,11 +62,13 @@ namespace KeithLink.Svc.Impl.Profile
                 throw;
             }
 
+            //string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+            string userName = GetNewUserName(emailAddress);
+
             DirectoryEntry newUser = null;
             // create the user
             try
             {
-                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
                 string userCN = string.Format("CN={0}", userName);
 
                 newUser = boundServer.Children.Add(userCN, "user");
@@ -121,6 +123,8 @@ namespace KeithLink.Svc.Impl.Profile
                 
                 throw;
             }
+
+            return userName;
         }
         
         /// <summary>
@@ -160,6 +164,48 @@ namespace KeithLink.Svc.Impl.Profile
                 new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
 
                 return null;
+            }
+        }
+
+        public string GetNewUserName(string emailAddress)
+        {
+            string userName = null;
+
+            if (emailAddress.IndexOf('@') == -1)
+                userName = emailAddress;
+            else
+                userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+            if (UsernameExists(userName))
+            {
+                string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+                DirectoryEntry boundServer = null;
+
+                // connect to the external AD server
+                try
+                {
+                    boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                    boundServer.RefreshCache();
+                }
+                catch (Exception ex)
+                {
+                    KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                    log.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                    throw;
+                }
+
+                DirectorySearcher userSearch = new DirectorySearcher(boundServer);
+                userSearch.Filter = string.Format("cn={0}*", userName);
+
+                SearchResultCollection results = userSearch.FindAll();
+
+                // recursive call to make sure that the new user name does not also exist
+                return GetNewUserName(string.Format("{0}{1}", userName, results.Count));
+            }
+            else
+            {
+                return userName;
             }
         }
 
@@ -210,6 +256,42 @@ namespace KeithLink.Svc.Impl.Profile
 
                 return false;
             }
+        }
+
+        public bool UsernameExists(string userName)
+        {
+            string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            DirectoryEntry boundServer = null;
+            // connect to the external AD server
+            try
+            {
+                boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.RefreshCache();
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
+                log.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                throw;
+            }
+
+            try
+            {
+                DirectorySearcher userSearch = new DirectorySearcher(boundServer);
+                userSearch.Filter = string.Format("cn={0}", userName);
+
+                SearchResultCollection results = userSearch.FindAll();
+
+                if(results.Count >= 1)
+                    return true;
+                else
+                    return false;
+            } catch{
+                return false;
+            }
+
         }
         #endregion
     }
