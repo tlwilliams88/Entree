@@ -41,6 +41,7 @@ angular.module('bekApp')
           }
           if (facetCategoryId) {
             facets += 'categories:' + facetCategoryId;
+            facets += ',';
           }
           if (allergens && allergens.length > 0) {
             facets += concatenateNestedParameters('allergens', allergens);
@@ -54,6 +55,7 @@ angular.module('bekApp')
             facets += concatenateNestedParameters('itemspecs', itemspecs);
             facets += ',';
           }
+
           if (facets === '') {
             facets = null;
           }
@@ -98,6 +100,7 @@ angular.module('bekApp')
             facets += concatenateNestedParameters('itemspecs', itemspecs);
             facets += ',';
           }
+          
           if (facets === '') {
             facets = null;
           }
