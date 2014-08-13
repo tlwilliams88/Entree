@@ -19,6 +19,17 @@
     <button class="btn btn-icon"><span class="icon-disk"></span></button>
   </div>
 </div>
+<div class="visible-xs visible-sm row page-subheader-bar">
+  <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__filter">
+    Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
+  </div>
+</div>
+
+<div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
+  <div class="btn-group-vertical list-names text-blue">
+    <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-list">{{list.name}}</button>
+  </div>
+</div>
 
 <div class="row">
   <!-- Available Lists -->
@@ -73,7 +84,7 @@
           <th class="hidden-sm hidden-xs">
             Pack / Size
           </th>
-          <th ng-click="sortOrder=!sortOrder;sortBy='name';">
+          <th style="cursor:pointer;" ng-click="sortOrder=!sortOrder;sortBy='name';">
             Name
             <span ng-class="{
               'icon-menu':sortBy !== 'name',
@@ -81,7 +92,7 @@
               'icon-arrow-up3': sortBy == 'name' && sortOrder
             }"></span>
           </th>
-          <th class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='label';" ng-show="!selectedList.isFavoritesList">
+          <th style="cursor:pointer;" class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='label';" ng-show="!selectedList.isFavoritesList">
             Label
             <span ng-class="{
               'icon-menu':sortBy !== 'label',
@@ -89,7 +100,7 @@
               'icon-arrow-up3': sortBy == 'label' && sortOrder
             }"></span>
           </th>
-          <th class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='parlevel';" ng-show="!selectedList.isFavoritesList">
+          <th  style="cursor:pointer;" class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='parlevel';" ng-show="!selectedList.isFavoritesList">
             PAR Level
             <span ng-class="{
               'icon-menu':sortBy !== 'parlevel',
@@ -142,7 +153,9 @@
             <span class="visible-print">{{item.parlevel}}</span>
           </td>
           <td class="table-icon hidden-drag table-actions">
-            <a class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
+            <a class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true">
+              <div context-menu class="context-menu__in-list"></div>
+            </a>
             <a confirmed-click="deleteItem(selectedList, item)" ng-confirm-click="Are you sure you want to delete item {{item.itemnumber}}?"><span class="text-red icon-cross"></span></a>
             <a><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
           </td>
@@ -151,8 +164,8 @@
           <td colspan="5">
             <div>
               <p>Pack/Size: {{item.packsize}}</p>
-              <p class="hidden-xs hidden-sm">Label: {{item.label}}</p>
-              <p class="hidden-xs hidden-sm">PAR Level: {{item.parlevel}}</p>
+              <p ng-hide="isFavoriteList">Label: {{item.label}}</p>
+              <p ng-hide="isFavoriteList">PAR Level: {{item.parlevel}}</p>
             </div>
           </td>
         </tr>
