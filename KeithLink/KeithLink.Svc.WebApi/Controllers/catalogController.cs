@@ -10,6 +10,7 @@ using KeithLink.Svc.Core;
 using System.Web.Http.Cors;
 using System.Dynamic;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.WebApi.Models;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -36,23 +37,17 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [Route("catalog/category/{id}/categories")]
-        public CategoriesReturn GetSubCategoriesByParentId(string id)
+        public CategoriesReturn GetSubCategoriesByParentId(string id, [FromUri] SearchInputModel searchModel)
         {
-            int from, size;
-            string facets;
-            ReadQueryStringParams(out from, out size, out facets);
-            return _catalogRepository.GetCategories(from, size);
+            return _catalogRepository.GetCategories(searchModel.From, searchModel.Size);
         }
 
         [HttpGet]
         [Route("catalog/search/category/{branchId}/{categoryId}/products")]
-        public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId)
+        public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId, [FromUri] SearchInputModel searchModel)
         {
-            int from, size;
-            string facets;
-            ReadQueryStringParams(out from, out size, out facets);
 
-            ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, from, size, facets);
+			ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, searchModel.From, searchModel.Size, searchModel.Facets, searchModel.SField, searchModel.SDir);
             GetPricingInfo(prods);
 			_listLogic.MarkFavoriteProducts(branchId, prods);
             return prods;
@@ -60,13 +55,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [Route("catalog/category/{id}")]
-        public CategoriesReturn GetCategoriesById(string id)
+		public CategoriesReturn GetCategoriesById(string id, [FromUri] SearchInputModel searchModel)
         {
-            int from, size;
-            string facets;
-            ReadQueryStringParams(out from, out size, out facets);
-
-            return _catalogRepository.GetCategories(from, size);
+			//TODO: This is not actually getting a category by ID (ID is never used).
+			return _catalogRepository.GetCategories(searchModel.From, searchModel.Size);
         }
 
         [HttpGet]
@@ -83,38 +75,34 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [Route("catalog/search/{branchId}/{searchTerms}/products")]
-        public ProductsReturn GetProductsSearch(string branchId, string searchTerms)
+		public ProductsReturn GetProductsSearch(string branchId, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
-            int from, size;
-            string facets;
-            ReadQueryStringParams(out from, out size, out facets);
-
-            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, from, size, facets);
+            ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, searchModel.From, searchModel.Size, searchModel.Facets, searchModel.SField, searchModel.SDir);
             GetPricingInfo(prods);
 			_listLogic.MarkFavoriteProducts(branchId, prods);
             return prods;
         }
 
-        private void ReadQueryStringParams(out int from, out int size, out string facets)
-        {
-            Dictionary<string, string> pairs = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
-            from = 0;
-            size = -1;
-            facets = string.Empty;
+		//private void ReadQueryStringParams(out int from, out int size, out string facets)
+		//{
+		//	Dictionary<string, string> pairs = Request.GetQueryNameValuePairs().ToDictionary(x => x.Key, x => x.Value);
+		//	from = 0;
+		//	size = -1;
+		//	facets = string.Empty;
 
-            if (pairs.ContainsKey(Constants.ReturnSizeQueryStringParam))
-            {
-                size = Convert.ToInt32(pairs[Constants.ReturnSizeQueryStringParam]);
-            }
-            if (pairs.ContainsKey(Constants.ReturnFromQueryStringParam))
-            {
-                from = Convert.ToInt32(pairs[Constants.ReturnFromQueryStringParam]);
-            }
-            if (pairs.ContainsKey("facets"))
-            {
-                facets = pairs["facets"];
-            }
-        }
+		//	if (pairs.ContainsKey(Constants.ReturnSizeQueryStringParam))
+		//	{
+		//		size = Convert.ToInt32(pairs[Constants.ReturnSizeQueryStringParam]);
+		//	}
+		//	if (pairs.ContainsKey(Constants.ReturnFromQueryStringParam))
+		//	{
+		//		from = Convert.ToInt32(pairs[Constants.ReturnFromQueryStringParam]);
+		//	}
+		//	if (pairs.ContainsKey("facets"))
+		//	{
+		//		facets = pairs["facets"];
+		//	}
+		//}
 
         private void GetPricingInfo(ProductsReturn prods)
         {

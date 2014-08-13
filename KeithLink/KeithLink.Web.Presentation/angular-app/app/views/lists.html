@@ -58,7 +58,7 @@
     Showing {{filteredItems.length}} of {{selectedList.items.length}} Results
     </div>
 
-    <table class="table table-striped sub-content">
+    <table class="table table-striped custom-lists__table sub-content" when-scrolled="infiniteScrollLoadMore()">
       <thead>
         <tr>
           <th></th>
@@ -81,7 +81,7 @@
               'icon-arrow-up3': sortBy == 'name' && sortOrder
             }"></span>
           </th>
-          <th ng-click="sortOrder=!sortOrder;sortBy='label';" ng-show="!selectedList.isFavoritesList">
+          <th class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='label';" ng-show="!selectedList.isFavoritesList">
             Label
             <span ng-class="{
               'icon-menu':sortBy !== 'label',
@@ -89,7 +89,7 @@
               'icon-arrow-up3': sortBy == 'label' && sortOrder
             }"></span>
           </th>
-          <th ng-click="sortOrder=!sortOrder;sortBy='parlevel';" ng-show="!selectedList.isFavoritesList">
+          <th class="hidden-sm hidden-xs" ng-click="sortOrder=!sortOrder;sortBy='parlevel';" ng-show="!selectedList.isFavoritesList">
             PAR Level
             <span ng-class="{
               'icon-menu':sortBy !== 'parlevel',
@@ -101,7 +101,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder))" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
+        <tr style="cursor:move;" ng-class="{ odd : $odd, even: $even }" ng-repeat-start="item in (filteredItems = (selectedList.items | filter:search | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.listitemid" data-product="{{item}}" data-drag="true" data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }}" jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}" class="table-striped__desktop-details">
           <td class="text-light table-icon hidden-drag">
             <span class="icon-list2" style="cursor:move;"></span>
             <span favorite-item-click-handlers><span favorite-icons></span></span>
@@ -115,7 +115,7 @@
           <td>
             {{item.name}}
           </td>
-          <td class="table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
+          <td class="hidden-sm hidden-xs table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
             
             <div ng-hide="item.isEditing">
               <div class="select-div hidden-print">
@@ -134,7 +134,7 @@
             
             <span class="visible-print">{{item.label}}</span>
           </td>
-          <td class="table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
+          <td class="hidden-xs hidden-sm table-input hidden-drag" ng-if="!selectedList.isFavoritesList">
             <form class="hidden-print" name="editParForm">
               <input type="text" placeholder="" min-length="3" allow-one-positive-decimal="item.parlevel" ng-model="item.parlevel" style="width:50px;text-align:right;" />
               <button ng-disabled="editParForm.$invalid || editParForm.$pristine" class="btn-no-style" type="submit" ng-click="editParLevel(selectedList.listid, item)"><span class="large-icon text-green icon-checkmark"></span></button>
@@ -147,10 +147,12 @@
             <a><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
           </td>
         </tr>
-        <tr ng-repeat-end ng-class="{ odd : $odd, even: $even }" ng-show="showDetails" class="table-striped__mobile-details">
+        <tr ng-repeat-end ng-class="{ odd : $odd, even: $even }" ng-show="showDetails" class="table-striped__mobile-details hidden-md hidden-lg">
           <td colspan="5">
             <div>
               <p>Pack/Size: {{item.packsize}}</p>
+              <p class="hidden-xs hidden-sm">Label: {{item.label}}</p>
+              <p class="hidden-xs hidden-sm">PAR Level: {{item.parlevel}}</p>
             </div>
           </td>
         </tr>

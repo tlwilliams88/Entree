@@ -49,7 +49,7 @@ angular.module('bekApp')
     }
 
     function generateNewListName() {
-      var name = "New List",
+      var name = 'New List',
         number = 0;
 
       var listNames = [];
@@ -65,6 +65,16 @@ angular.module('bekApp')
       }
 
       return name + ' ' + number;
+    }
+
+    function updateListFavorites(itemNumber, isFavorite) {
+      angular.forEach(Service.lists, function(list, listIndex) {
+        angular.forEach(list.items, function(item, itemIndex) {
+          if (item.itemnumber === itemNumber) {
+            item.favorite = isFavorite;
+          }
+        });
+      });
     }
 
     var Service = {
@@ -203,6 +213,9 @@ angular.module('bekApp')
               Service.favoritesList.items.push(newItem);
             }
 
+            // favorite the item in all other lists
+            updateListFavorites(newItem.itemnumber, true);
+
             return newListItemId;
           });
         } else {
@@ -222,6 +235,9 @@ angular.module('bekApp')
 
         return this.deleteItem(Service.favoritesList.listid, removedItem.listitemid).then(function(response) {
           Service.favoritesList.items.splice(removedIndex, 1);
+
+          // unfavorite the item in all other lists
+          updateListFavorites(removedItem.itemnumber, false);
 
           return response.data;
         });

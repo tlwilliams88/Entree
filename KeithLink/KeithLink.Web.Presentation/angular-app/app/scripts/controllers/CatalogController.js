@@ -8,33 +8,19 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', function ($scope, $state, CategoryService, ProductService) {
+  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', function ($scope, $state, CategoryService, ProductService, BrandService) {
     
     $scope.loadingCategories = true;
+    $scope.loadingBrands = true;
 
     CategoryService.getCategories().then(function(data) {
       $scope.loadingCategories = false;
       $scope.categories = data.categories;
     });
 
-    $scope.brands = [
-      {
-        id: 1,
-        imageUrl: 'images/admiral.jpg',
-        name: 'Admiral Of The Fleet'
-      },{
-        id: 2,
-        imageUrl: 'images/admiral.jpg',
-        name: 'Cortona'
-      },{
-        id: 3,
-        imageUrl: 'images/admiral.jpg',
-        name: 'Ellington Farms'
-      },{
-        id: 4,
-        imageUrl: 'images/admiral.jpg',
-        name: 'Golden Harvest'
-      }
-    ];
+    BrandService.getHouseBrands().then(function(data){
+      $scope.loadingBrands = false;
+      $scope.brands = data;
+    });
 
   }]);

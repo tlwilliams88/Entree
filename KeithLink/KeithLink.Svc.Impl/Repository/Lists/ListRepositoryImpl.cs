@@ -48,6 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			if (basket == null) //Throw error?
 				return ;
 
+			basket.Name = list.FormattedName(basket["BranchId"].ToString());
 			basket["DisplayName"] = list.Name;
 			
 			for (int x = 0; x < basket.LineItemCount; x++)
@@ -118,7 +119,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			var basket = orderContext.GetBasket(userId, listId);
 
-			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.Cast<LineItem>().Where(i => i.LineItemId.Equals(itemId)).FirstOrDefault());
+			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(itemId));
 			basket.Save();
 
 			return ToUserList(basket);
@@ -147,10 +148,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		public UserList ReadList(Guid userId, string listName)
 		{
 			
-			var list = orderContext.GetBasket(userId, listName);
-			if (list == null || list["BranchId"] == null)
-				return null;
-			return ToUserList(list);
+            var list = orderContext.GetBasket(userId, listName);
+            if (list == null || list["BranchId"] == null)
+                return null;
+            return ToUserList(list);
 		}
 
 

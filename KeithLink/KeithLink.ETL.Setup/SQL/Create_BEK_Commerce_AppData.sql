@@ -278,7 +278,15 @@ CREATE TABLE [ETL].[Staging_ItemData](
 	[TempZone] [char](1) NULL,
 	[CNDoc] [char](1) NULL,
 	[HACCP] [char](1) NULL,
-	[HACCPDoce] [char](5) NULL
+	[HACCPDoce] [char](5) NULL,
+	[FDAProductFlag] [char](1) NULL,
+	[FPLength] [int] NULL,
+	[FPWidth] [int] NULL,
+	[FPHeight] [int] NULL,
+	[FPGrossWt] [int] NULL,
+	[FPNetWt] [int] NULL,
+	[FPCube] [int] NULL,
+	[NonStock] [char](1) NULL
 ) ON [PRIMARY]
 
 GO
@@ -382,6 +390,259 @@ CREATE TABLE ETL.Staging_FSE_ProductAllergens (
 	, AllergenTypeDesc varchar(50)
 	, LevelOfContainment varchar(20)
 );
+GO
+CREATE PROCEDURE [ETL].[ReadBranches]
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT * FROM [ETL].Staging_Branch WHERE LocationTypeId=3
+END
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadFullItemData]
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT 
+		BranchId, 
+		ItemId, 
+		ETL.initcap(Name) as Name, 
+		ETL.initcap(Description) as Description, 
+		i.Brand, 
+		Pack, 
+		Size, 
+		UPC, 
+		MfrNumber, 
+		MfrName, 
+		Cases, 
+		Package, 
+		PreferredItemCode, 
+		ItemType, 
+		Status1, 
+		Status2, 
+		ICSEOnly, 
+		SpecialOrderItem, 
+		Vendor1, 
+		Vendor2, 
+		Class, 
+		CatMgr, 
+		HowPrice, 
+		Buyer, 
+		Kosher, 
+		c.CategoryId, 
+		ReplacementItem, 
+		ReplacedItem, 
+		CNDoc,
+		[Cube], 
+		ETL.initcap(c.CategoryName) as CategoryName, 
+		(SELECT CategoryId from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryId, 
+		(SELECT ETL.initcap(CategoryName) from ETL.Staging_Category WHERE CategoryId = SUBSTRING(c.CategoryId, 1, 2) + '000') as ParentCategoryName,
+		ps.BrandOwner,
+		ps.CountryOfOrigin,
+		ps.GrossWeight,
+		ps.HandlingInstruction,
+		ps.Height,
+		ps.Ingredients,
+		ps.Length,
+		ps.MarketingMessage,
+		ps.MoreInformation,
+		ps.ServingSize,
+		ps.ServingSizeUOM,
+		ps.ServingsPerPack,
+		ps.ServingSuggestion,
+		ps.Shelf,
+		ps.StorageTemp,
+		ps.UnitMeasure,
+		ps.UnitsPerCase,
+		ps.Volume,
+		ps.Width,
+		i.NonStock,
+		FDAProductFlag	 
+	FROM  
+		ETL.Staging_ItemData i inner join 
+		ETL.Staging_Category c on i.CategoryId = c.CategoryId left outer join
+		ETL.Staging_FSE_ProductSpec ps on i.UPC = ps.Gtin
+	WHERE 
+		  i.ItemId NOT LIKE '999%'  AND SpecialOrderItem <>'Y'
+END
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadItemGS1Data]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT
+		n.DailyValue,
+		n.Gtin,
+		n.MeasurementValue,
+		n.MeasurmentTypeId,
+		n.NutrientTypeCode,
+		n.NutrientTypeDesc
+	FROM
+		ETL.Staging_FSE_ProductNutrition n
+	WHERE
+		n.DailyValue IS NOT NULL
+
+	SELECT
+		d.Gtin,
+		d.DietType,
+		d.Value
+	FROM
+		ETL.Staging_FSE_ProductDiet d
+	WHERE
+		d.Value IS NOT NULL
+
+	SELECT
+		a.Gtin,
+		a.AllergenTypeCode,
+		a.AllergenTypeDesc,
+		a.LevelOfContainment		
+	FROM
+		ETL.Staging_FSE_ProductAllergens a
+	WHERE
+		a.AllergenTypeDesc IS NOT NULL
+END
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadItemsByBranch]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadItemsByBranch]
+	@branchId nvarchar(3)
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT DISTINCT 
+		i.[ItemId] 
+		,ETL.initcap([Name]) as Name 
+		,ETL.initcap([Description]) as Description 
+		,ETL.initcap([Brand]) as Brand 
+		,[Pack] 
+		,[Size] 
+		,[UPC] 
+		,[MfrNumber] 
+		,ETL.initcap([MfrName]) as MfrName 
+		,i.CategoryId 
+	FROM [ETL].[Staging_ItemData] i inner join 
+		ETL.Staging_Category c on i.CategoryId = c.CategoryId 
+	WHERE 
+		i.BranchId = @branchId AND ItemId NOT LIKE '999%' AND SpecialOrderItem <>'Y'
+	Order by i.[ItemId]
+END
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadParentCategories]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadParentCategories]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT 
+		CategoryId, 
+		[ETL].initcap(CategoryName) as CategoryName, 
+		PPICode 
+	FROM 
+		[ETL].Staging_Category 
+	WHERE 
+		CategoryId like '%000'
+END
+
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadSubCategories]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadSubCategories]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT 
+		SUBSTRING(CategoryId, 1, 2) + '000' AS ParentCategoryId, 
+		CategoryId, 
+		[ETL].initcap(CategoryName) as CategoryName, 
+		PPICode 
+	FROM 
+		[ETL].Staging_Category 
+	WHERE 
+		CategoryId not like '%000'
+END
+
+
+
 GO
 
 

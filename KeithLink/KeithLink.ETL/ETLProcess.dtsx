@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
   DTS:refId="Package"
   DTS:CreationDate="7/23/2014 10:53:30 AM"
@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess"
   DTS:PackageType="5"
-  DTS:VersionBuild="68"
-  DTS:VersionGUID="{FC6E9D2E-E48D-489E-9FB3-E7EB975FA791}">
+  DTS:VersionBuild="70"
+  DTS:VersionGUID="{36AB0D9E-199A-4E06-846E-AAA0496B901D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -27,7 +27,7 @@
           DTS:Format="FixedWidth"
           DTS:LocaleID="1033"
           DTS:HeaderRowsToSkip="1"
-          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:HeaderRowDelimiter="_x000A__x0009__x0009_"
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAniywOvTuuKFB35eFw24/nAAAAAASAAACgAAAAEAAAAL/QFyliM5/8AxA/tNPqO40IAAAAKYtKyDikWKQUAAAAoWSSJ0ag+ESpnH3NTMPsVsaoY80</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADyHsLlcqwqVeizMz1wIln8AAAAAASAAACgAAAAEAAAAHR4WWk4TU2lyabsV3Zc7q8IAAAAIy0oOLWiA+gUAAAAtkSEySYTVGpHjSOIX/dpmi+LE4M</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACPXv/iiaL/7aBE5TeY24tkAAAAAASAAACgAAAAEAAAAAwb+fEMKuAY/vhK7HsiFmAIAAAApIPw+4EicpwUAAAA0QFA9D5sU7RdpKU0z+nMlsuQuig</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAF5MPJsZHUROCBICjc1Uu5AAAAAASAAACgAAAAEAAAAHU2XUOws3/W79RTJMKLgYMIAAAA/s/xtDVqHeEUAAAA3sa0UC/jYzaJJ/Ut0ougiG7VYZU</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -6789,6 +6789,58 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedName="Ihaccp_doc"
                           externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HACCPDoce]"
                           lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[Ihaccp_doc]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifda_product_flag]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="ifda_product_flag"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FDAProductFlag]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifda_product_flag]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifplength]"
+                          cachedDataType="i4"
+                          cachedName="ifplength"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPLength]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifplength]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpwidth]"
+                          cachedDataType="i4"
+                          cachedName="ifpwidth"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPWidth]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpwidth]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpheight]"
+                          cachedDataType="i4"
+                          cachedName="ifpheight"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPHeight]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpheight]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpgrosswt]"
+                          cachedDataType="i4"
+                          cachedName="ifpgrosswt"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPGrossWt]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpgrosswt]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpnetwt]"
+                          cachedDataType="i4"
+                          cachedName="ifpnetwt"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPNetWt]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpnetwt]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpcube]"
+                          cachedDataType="i4"
+                          cachedName="ifpcube"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPCube]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpcube]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[inon_stock]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="inon_stock"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
+                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -7074,6 +7126,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="str"
                           length="5"
                           name="HACCPDoce" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FDAProductFlag]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="FDAProductFlag" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPLength]"
+                          dataType="i4"
+                          name="FPLength" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPWidth]"
+                          dataType="i4"
+                          name="FPWidth" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPHeight]"
+                          dataType="i4"
+                          name="FPHeight" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPGrossWt]"
+                          dataType="i4"
+                          name="FPGrossWt" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPNetWt]"
+                          dataType="i4"
+                          name="FPNetWt" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPCube]"
+                          dataType="i4"
+                          name="FPCube" />
+                        <externalMetadataColumn
+                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="NonStock" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -10799,6 +10887,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HandlingInstruction]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[HandlingInstructions]" />
                         <inputColumn
+                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[Country of Origin]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="100"
+                          cachedName="Country of Origin"
+                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CountryOfOrigin]"
+                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Country of Origin]" />
+                        <inputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[PackageGtin]"
                           cachedDataType="i4"
                           cachedName="PackageGtin"
@@ -10843,14 +10939,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedName="CountryOfOriginName"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[CountryOfOriginName]" />
-                        <inputColumn
-                          refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[Country of Origin]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="100"
-                          cachedName="Country of Origin"
-                          externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CountryOfOrigin]"
-                          lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Country of Origin]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -11139,6 +11227,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -11257,35 +11375,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -11574,35 +11663,34 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -12656,7 +12744,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="127,42"
           Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
@@ -12696,9 +12784,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -12953,7 +13039,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -12993,9 +13079,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

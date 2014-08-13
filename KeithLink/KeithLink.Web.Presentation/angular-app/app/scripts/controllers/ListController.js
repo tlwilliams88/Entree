@@ -34,9 +34,17 @@ angular.module('bekApp')
 
     ListService.getAllLabels();
 
+    // INFINITE SCROLL
+    var itemsPerPage = 30;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      $scope.itemsToDisplay += itemsPerPage;
+    };
+
     $scope.goToList = function(list) {
       $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
       $scope.selectedList = list;
+      $scope.itemsToDisplay = itemsPerPage;
     };
 
     $scope.createList = function(items) { //DONE
@@ -104,7 +112,7 @@ angular.module('bekApp')
     };
 
     $scope.addItemToList = function (event, helper, listId) {
-      var selectedItem = helper.draggable.data('product');
+      var selectedItem = angular.copy(helper.draggable.data('product'));
 
       ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
@@ -182,12 +190,13 @@ angular.module('bekApp')
       $scope.alerts.splice(index, 1);
     };
 
+    // FILTER LIST
     $scope.listSearchTerm = '';
     $scope.search = function (row) {
       var term = $scope.listSearchTerm.toLowerCase();
 
       var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
-        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1,
+        nameMatch = row.name===null || row.name.toLowerCase().indexOf(term || '') !== -1,
         labelMatch =  row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);
 
       return !!(itemnumberMatch || nameMatch || labelMatch);

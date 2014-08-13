@@ -26,11 +26,28 @@ namespace KeithLink.Svc.Impl.ETL
     public class CatalogLogicImpl: ICatalogLogic
     {
         private const string Language = "en-US";
+		private readonly string ItemSpec_NonStock = "NonStock";
+		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
+		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
+		private readonly string ItemSpec_CNDoc = "CNDoc";
 
-        ILogger log = LogManager.GetLogger(typeof(CatalogLogicImpl));
+		private readonly string ProductMapping = @"{
+			  ""product"" : {
+				   ""properties"" : {
+					   ""categoryname"" : {
+							  ""type"" : ""string"",
+							  ""index"" : ""not_analyzed""
+						},
+					 ""brand"" : {
+					   ""type"" : ""string"",
+							  ""index"" : ""not_analyzed""
+					 }
+				   }
+				}
+			}";
 
 
-        private readonly ICatalogInternalRepository catalogRepository;
+		private readonly ICatalogInternalRepository catalogRepository;
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
         
@@ -45,8 +62,6 @@ namespace KeithLink.Svc.Impl.ETL
         {
             try
             {
-                log.Debug("Start Processing Staged Catalog Data");
-                
                 var catTask = Task.Factory.StartNew(() => ImportCatalog());
                 var profileTask = Task.Factory.StartNew(() => ImportProfiles());
                 var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
@@ -54,12 +69,10 @@ namespace KeithLink.Svc.Impl.ETL
 
                 Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
 
-                log.Debug("Staged Data Processed");
 
             }
             catch (Exception ex) 
             {
-                log.Error(ex);
                 throw ex;
             }
         }
@@ -90,6 +103,17 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportItemsToElasticSearch()
         {
+			var branches = stagingRepository.ReadAllBranches();
+
+			Parallel.ForEach(branches.AsEnumerable(), row =>
+			{
+				if (!elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
+				{
+					elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
+					elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
+				}
+			});
+
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
             var products = new BlockingCollection<ElasticSearchItemUpdate>();
 
@@ -274,6 +298,7 @@ namespace KeithLink.Svc.Impl.ETL
                         replacementitem = row.GetString("ReplacementItem"),
                         cndoc = row.GetString("CNDoc"),
                         itemnumber = row.GetString("ItemId"),
+						nonstock = row.GetString("NonStock"),
                         gs1 = new GS1Data()
                         {
                             brandowner = row.GetString("BrandOwner"),
@@ -305,12 +330,16 @@ namespace KeithLink.Svc.Impl.ETL
             };
 			item.index.data.itemspecification = new List<string>();
 
+			
+
 			if (item.index.data.replacementitem != "000000")
-				item.index.data.itemspecification.Add("ReplacementItem");
+				item.index.data.itemspecification.Add(ItemSpec_ReplacementItem);
 			if (item.index.data.replaceditem != "000000")
-				item.index.data.itemspecification.Add("ItemBeingReplaced");
+				item.index.data.itemspecification.Add(ItemSpec_Replaced);
 			if (item.index.data.cndoc.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-				item.index.data.itemspecification.Add("CNDoc");
+				item.index.data.itemspecification.Add(ItemSpec_CNDoc);
+			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
+			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
 			
 
             return item;
