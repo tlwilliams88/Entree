@@ -192,6 +192,7 @@ angular.module('bekApp')
       };
 
       $scope.breadcrumbClickEvent = function(type, id) {
+        $scope.loadingResults = true;
         if (type === "topcategory") {
           $scope.selectedBrands = [];
           $scope.selectedAllergens = [];
@@ -295,6 +296,7 @@ angular.module('bekApp')
       };
 
       $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
+        $scope.loadingResults = true;
         $scope.itemsPerPage = 30;
         $scope.itemIndex = 0;
         var idx;
