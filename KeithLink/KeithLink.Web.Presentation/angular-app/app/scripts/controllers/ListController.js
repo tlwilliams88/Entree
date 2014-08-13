@@ -25,7 +25,7 @@ angular.module('bekApp')
         $scope.selectedList = ListService.findListById($stateParams.listId, data);
       }
       if (!$scope.selectedList) {
-        $scope.selectedList = $scope.lists[0];
+        $scope.selectedList = ListService.favoritesList;
         $state.transitionTo('menu.lists', {}, {notify: false});
       }
 

@@ -21,65 +21,65 @@
 	</div>
 </div>
 <!-- <div class="row" ng-hide="hidden">
-	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
-		<div class="row">
-			<accordion close-others="oneAtATime">
-				<accordion-group is-open="status.open">
-					<accordion-heading>
-						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open, 'icon-arrow-down7': !status.open}"></i>
-					</accordion-heading>
-					<accordion close-others="false">
-						<accordion-group is-open="status.subopen[$index]" ng-repeat="category in categories | orderBy : ['name']" class="sub-accordion">
-							<accordion-heading>
-								<div class="panel panel-default">
-									<div class="panel-body">
-										<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
-									</div>
+				<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
+								<div class="row">
+												<accordion close-others="oneAtATime">
+																<accordion-group is-open="status.open">
+																				<accordion-heading>
+																								Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open, 'icon-arrow-down7': !status.open}"></i>
+																				</accordion-heading>
+																				<accordion close-others="false">
+																								<accordion-group is-open="status.subopen[$index]" ng-repeat="category in categories | orderBy : ['name']" class="sub-accordion">
+																												<accordion-heading>
+																																<div class="panel panel-default">
+																																				<div class="panel-body">
+																																								<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
+																																				</div>
+																																</div>
+																												</accordion-heading>
+																												<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
+																																<div class="panel-body">
+																																				<li ng-click="toggleSelection(subcategory, 'subcategory')">
+																																								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+																																				</li>
+																																</div>
+																												</div>
+																								</accordion-group>
+																				</accordion>
+																</accordion-group>
+																<accordion-group is-open="status.open2">
+																				<accordion-heading>
+																								Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open2, 'icon-arrow-down7': !status.open2}"></i>
+																				</accordion-heading>
+																				<div ng-repeat="brand in brands" class="panel panel-default">
+																								<div class="panel-body">
+																												<input type="checkbox"
+																												value="brandValue_{{brand.name}}"
+																												id="brandId_{{brand.name}}"
+																												ng-checked="selectedBrands.indexOf(brand.name) > -1"
+																												ng-click="toggleSelection(brand,'brand')">
+																												<label for="brandId_{{brand.name}}">{{brand.name}}</label>
+																								</div>
+																				</div>
+																</accordion-group>
+																<accordion-group is-open="status.open3">
+																				<accordion-heading>
+																								Allergens<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open3, 'icon-arrow-down7': !status.open3}"></i>
+																				</accordion-heading>
+																				<div ng-repeat="allergen in allergens" class="panel panel-default">
+																								<div class="panel-body">
+																												<input type="checkbox"
+																												value="allergenValue_{{allergen.id}}"
+																												id="allergenId_{{allergen.id}}"
+																												ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
+																												ng-click="toggleSelection(allergen.id,'allergen')">
+																												<label for="allergenId_{{allergen.id}}">{{allergen.name}}</label>
+																								</div>
+																				</div>
+																</accordion-group>
+												</accordion>
 								</div>
-							</accordion-heading>
-							<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
-								<div class="panel-body">
-									<li ng-click="toggleSelection(subcategory, 'subcategory')">
-										<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-									</li>
-								</div>
-							</div>
-						</accordion-group>
-					</accordion>
-				</accordion-group>
-				<accordion-group is-open="status.open2">
-					<accordion-heading>
-						Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open2, 'icon-arrow-down7': !status.open2}"></i>
-					</accordion-heading>
-					<div ng-repeat="brand in brands" class="panel panel-default">
-						<div class="panel-body">
-							<input type="checkbox"
-							value="brandValue_{{brand.name}}"
-							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1"
-							ng-click="toggleSelection(brand,'brand')">
-							<label for="brandId_{{brand.name}}">{{brand.name}}</label>
-						</div>
-					</div>
-				</accordion-group>
-				<accordion-group is-open="status.open3">
-					<accordion-heading>
-						Allergens<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open3, 'icon-arrow-down7': !status.open3}"></i>
-					</accordion-heading>
-					<div ng-repeat="allergen in allergens" class="panel panel-default">
-						<div class="panel-body">
-							<input type="checkbox"
-							value="allergenValue_{{allergen.id}}"
-							id="allergenId_{{allergen.id}}"
-							ng-checked="selectedAllergens.indexOf(allergen.id) > -1"
-							ng-click="toggleSelection(allergen.id,'allergen')">
-							<label for="allergenId_{{allergen.id}}">{{allergen.name}}</label>
-						</div>
-					</div>
-				</accordion-group>
-			</accordion>
-		</div>
-	</div>
+				</div>
 </div> -->
 <div class="row">
 	<!-- Filters -->
@@ -90,7 +90,7 @@
 				<ul class="nav search-results__category">
 					<li class="text-center" loading-spinner="loadingCategories"></li>
 					<li ng-repeat="category in categories | orderBy : ['name']">
-						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}} ({{category.count}})</a>
+						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.categoryname}} ({{category.count}})</a>
 						<ul ng-show="category.show" class="">
 							<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
 								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
@@ -111,8 +111,10 @@
 					ng-click="toggleSelection(brand.name,'brand')">
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
-				<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
-				<a ng-class="{'hidebrand': !isBrandShowing}" ng-click="hideBrand()">- Show Less</a>
+				<div ng-class="{'hidebrand': brandCount <= constantHiddenNumber}">
+					<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
+					<a ng-class="{'hidebrand': !isBrandShowing}" ng-click="hideBrand()">- Show Less</a>
+				</div>
 			</div>
 		</div>
 		<div class="row sub-content">
@@ -126,8 +128,10 @@
 					ng-click="toggleSelection(allergen.name,'allergen')">
 					<label for="allergenId_{{allergen.name}}">{{allergen.name}} ({{allergen.count}})</label>
 				</div>
-				<a ng-class="{'hideallergen': isAllergenShowing}" ng-click="showAllergen()">+ Show More</a>
-				<a ng-class="{'hideallergen': !isAllergenShowing}" ng-click="hideAllergen()">- Show Less</a>
+				<div ng-class="{'hideallergen': allergenCount <= constantHiddenNumber}">
+					<a ng-class="{'hideallergen': isAllergenShowing}" ng-click="showAllergen()">+ Show More</a>
+					<a ng-class="{'hideallergen': !isAllergenShowing}" ng-click="hideAllergen()">- Show Less</a>
+				</div>
 			</div>
 		</div>
 		<div class="row sub-content">
@@ -141,8 +145,10 @@
 					ng-click="toggleSelection(diet.name,'dietary')">
 					<label for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
 				</div>
-				<a ng-class="{'hidedietary': isDietaryShowing}" ng-click="showDietary()">+ Show More</a>
-				<a ng-class="{'hidedietary': !isDietaryShowing}" ng-click="hideDietary()">- Show Less</a>
+				<div ng-class="{'hidedietary': dietaryCount <= constantHiddenNumber}">
+					<a ng-class="{'hidedietary': isDietaryShowing}" ng-click="showDietary()">+ Show More</a>
+					<a ng-class="{'hidedietary': !isDietaryShowing}" ng-click="hideDietary()">- Show Less</a>
+				</div>
 			</div>
 		</div>
 		<div class="row sub-content">
@@ -156,8 +162,10 @@
 					ng-click="toggleSelection(spec.name,'spec')">
 					<label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span> {{spec.displayname}} ({{spec.count}})</label>
 				</div>
-				<a ng-class="{'hidespec': isSpecShowing}" ng-click="showSpec()">+ Show More</a>
-				<a ng-class="{'hidespec': !isSpecShowing}" ng-click="hideSpec()">- Show Less</a>
+				<div ng-class="{'hidespec': specCount <= constantHiddenNumber}">
+					<a ng-class="{'hidespec': isSpecShowing}" ng-click="showSpec()">+ Show More</a>
+					<a ng-class="{'hidespec': !isSpecShowing}" ng-click="hideSpec()">- Show Less</a>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -222,7 +230,7 @@
 							<a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
 						</td>
 					</tr>
-					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details" ng-class="{ odd : $odd, even: $even }">
+					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
 						<td colspan=4>
 							<div>
 								<p>Pack / Size: {{item.cases}} / {{item.size}}</p>

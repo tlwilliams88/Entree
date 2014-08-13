@@ -69,3 +69,12 @@
     background-color: #EBE7D9 !important;
   }
 }
+
+@media (max-width: $mobile-max) {
+  .custom-lists {
+    position:absolute; 
+    z-index:1; 
+    right: 10px; 
+    top: 155px;
+  }
+}
