@@ -208,7 +208,7 @@
 							<a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
 						</td>
 					</tr>
-					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details" ng-class="{ odd : $odd, even: $even }">
+					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
 						<td colspan=4>
 							<div>
 								<p>Pack / Size: {{item.cases}} / {{item.size}}</p>
