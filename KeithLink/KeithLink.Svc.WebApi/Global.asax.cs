@@ -21,11 +21,11 @@ namespace KeithLink.Svc.WebApi
             //******************************************************
             //GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            //// Configure Web API with the dependency resolver.
-            //var resolver = DependencyMap.Build();
-            //GlobalConfiguration.Configuration.DependencyResolver = resolver;
+            // Configure Web API with the dependency resolver.
+            var resolver = DependencyMap.Build();
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
 
-            //GlobalConfiguration.Configuration.EnsureInitialized(); 
+            GlobalConfiguration.Configuration.EnsureInitialized(); 
         }
     }
 }

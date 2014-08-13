@@ -7,8 +7,7 @@ namespace KeithLink.Svc.WebApi
 {
     public class SimpleAuthorizationServerProvider : Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerProvider
     {
-        #region IOAuthAuthorizationServerProvider Members
-
+        #region
         public override async System.Threading.Tasks.Task GrantResourceOwnerCredentials(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
@@ -26,7 +25,7 @@ namespace KeithLink.Svc.WebApi
             }
 
             var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new System.Security.Claims.Claim("sub", context.UserName));
+            identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
             identity.AddClaim(new System.Security.Claims.Claim("role", "Owner"));
 
             context.Validated(identity);

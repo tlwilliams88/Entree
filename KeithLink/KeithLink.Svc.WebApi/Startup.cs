@@ -26,7 +26,7 @@ namespace KeithLink.Svc.WebApi
         {
             OAuthAuthorizationServerOptions serverOptions = new OAuthAuthorizationServerOptions(){
                 AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/token"),
+                TokenEndpointPath = new PathString("/authen"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider()
             };

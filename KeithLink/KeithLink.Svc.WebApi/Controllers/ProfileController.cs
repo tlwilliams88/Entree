@@ -10,7 +10,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 {
 	
 
-    public class ProfileController : ApiController
+    public class ProfileController : BaseController
     {
         #region attributes
         private Core.Profile.ICustomerContainerRepository _custRepo;
@@ -18,7 +18,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
-        public ProfileController(Core.Profile.ICustomerContainerRepository customerRepo, Core.Profile.IUserProfileRepository profileRepo) {
+        public ProfileController(Core.Profile.ICustomerContainerRepository customerRepo, Core.Profile.IUserProfileRepository profileRepo) : base(profileRepo) {
             _custRepo = customerRepo;
             _profileRepo = profileRepo;
         }
@@ -57,15 +57,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        //[AllowAnonymous]
-        //[HttpGet]
-		//[Route("profile/{emailAddress}")]
-		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
-		//{
-		//	Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
+        [Authorize]
+        [HttpGet]
+        [Route("profile/{emailAddress}")]
+        public Core.Profile.UserProfileReturn GetUser(string emailAddress)
+        {
+            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
 
-		//	return userRepo.GetUserProfile(emailAddress);
-		//}
+            return userRepo.GetUserProfile(emailAddress);
+        }
 
         [AllowAnonymous]
         [HttpPost]
@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
         }
 
-        [AllowAnonymous]
+        [Authorize()]
         [HttpGet]
         [Route("profile/searchcustomer/{searchText}")]
         public Core.Profile.CustomerContainerReturn SearchCustomers(string searchText)
