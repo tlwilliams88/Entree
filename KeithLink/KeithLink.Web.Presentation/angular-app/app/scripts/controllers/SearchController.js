@@ -72,7 +72,8 @@ angular.module('bekApp')
           return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.sortField, $scope.sortDirection);
         } else if (type === 'brand') {
           var brandName = $stateParams.id;
-          return ProductService.getProducts(brandName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.sortField, $scope.sortDirection);
+          $scope.selectedBrands.push(brandName);
+          return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.sortField, $scope.sortDirection);
         }
       }
 
@@ -107,10 +108,6 @@ angular.module('bekApp')
               id: $stateParams.id,
               name: "All Categories"
             });
-          }
-          if ($stateParams.type === 'brand') {
-            $scope.selectedBrands.push($stateParams.id);
-            $scope.filterCount++;
           }
 
           //check for selected facets
