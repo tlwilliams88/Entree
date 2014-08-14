@@ -5,10 +5,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Profile
+namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="UserProfile")]
-    public class UserProfile
+    public class UserProfile : System.Security.Principal.IIdentity
     {
         #region attributes
         private StringBuilder _userId;
@@ -18,6 +18,8 @@ namespace KeithLink.Svc.Core.Profile
         private StringBuilder _emailAddress;
         private StringBuilder _phoneNumber;
         private CustomerContainer _customer;
+
+        private bool _isAuthenticated;
         #endregion
 
         #region ctor
@@ -30,6 +32,8 @@ namespace KeithLink.Svc.Core.Profile
             _emailAddress = new StringBuilder();
             _phoneNumber = new StringBuilder();
             _customer = new CustomerContainer();
+
+            _isAuthenticated = false;
         }
         #endregion
 
@@ -81,6 +85,22 @@ namespace KeithLink.Svc.Core.Profile
         {
             get { return _customer.Name; }
             set { _customer.Name = value; }
+        }
+
+        public string AuthenticationType
+        {
+            get { return "Active Directory"; }
+        }
+
+        public bool IsAuthenticated
+        {
+            get { return _isAuthenticated; }
+            set { _isAuthenticated = value; }
+        }
+
+        public string Name
+        {
+            get { return EmailAddress; }
         }
         #endregion
     }

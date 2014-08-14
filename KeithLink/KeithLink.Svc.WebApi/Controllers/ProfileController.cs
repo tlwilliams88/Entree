@@ -59,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("profile/{emailAddress}")]
+        [Route("profile")]
         public Core.Profile.UserProfileReturn GetUser(string emailAddress)
         {
             Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();

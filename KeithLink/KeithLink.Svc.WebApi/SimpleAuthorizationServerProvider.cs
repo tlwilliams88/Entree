@@ -14,17 +14,14 @@ namespace KeithLink.Svc.WebApi
 
             Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
 
-            Core.Profile.UserProfileReturn userProfile = null;
-
-            bool success = userRepo.AuthenticateUser(context.UserName, context.Password, out userProfile);
-
-            if (!success)
+            if (userRepo.AuthenticateUser(context.UserName, context.Password) == false)
             {
                 context.SetError("invalid_grant", "The use name or password is incorrect.");
                 return;
             }
 
             var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
+            identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));
             identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
             identity.AddClaim(new System.Security.Claims.Claim("role", "Owner"));
 

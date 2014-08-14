@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
@@ -6,7 +7,7 @@ using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    public class ExternalUserDomainRepository : Svc.Core.Profile.IUserDomainRepository
+    public class ExternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
         #region methods
 
