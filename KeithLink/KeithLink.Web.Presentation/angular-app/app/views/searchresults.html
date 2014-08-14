@@ -218,20 +218,20 @@
 				<thead>
 					<tr>
 						<th style="width:10px;"></th>
-						<th ng-click="sortTable('itemnumber')">
+						<th class="hand" ng-click="sortTable('itemnumber')">
 							Item <span ng-class="{
 							'icon-menu':sortField !== 'itemnumber',
 							'icon-arrow-down4':sortField == 'itemnumber' && asc,
 							'icon-arrow-up3':sortField == 'itemnumber' && !asc
 							}"></span>
 						</th>
-						<th class="hidden-sm hidden-xs" ng-click="sortTable('brand')">
+						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand')">
 							Brand <span ng-class="{
 							'icon-menu':sortField !== 'brand',
 							'icon-arrow-down4':sortField == 'brand' && asc,
 							'icon-arrow-up3':sortField == 'brand' && !asc
 						}"></span></th>
-						<th ng-click="sortTable('name')">Name <span ng-class="{
+						<th class="hand" ng-click="sortTable('name')">Name <span ng-class="{
 							'icon-menu':sortField !== 'name',
 							'icon-arrow-down4':sortField == 'name' && asc,
 							'icon-arrow-up3':sortField == 'name' && !asc
@@ -240,7 +240,7 @@
 							Pack/Size
 						</th>
 						<th class="hidden-sm hidden-xs"></th>
-						<th class="hidden-sm hidden-xs" ng-click="sortTable('caseprice')">Price <span ng-class="{
+						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('caseprice')">Price <span ng-class="{
 							'icon-menu':sortField !== 'caseprice',
 							'icon-arrow-down4':sortField == 'caseprice' && asc,
 							'icon-arrow-up3':sortField == 'caseprice' && !asc

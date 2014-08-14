@@ -374,9 +374,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
                         if (aggregationParams[0] == "categories")
                         {
-                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\" }}}}");
+							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\", \"size\": 500 }}}}");
                         } else {
-                            aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 }}");
                         }
                     }
 
