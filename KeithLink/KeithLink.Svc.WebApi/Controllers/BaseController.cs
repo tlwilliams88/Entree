@@ -10,12 +10,12 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class BaseController : ApiController
     {
         #region attributes
-        private Core.Profile.IUserProfileRepository _userRepo;
-        private Core.Profile.UserProfile _user;
+        private Core.Interface.Profile.IUserProfileRepository _userRepo;
+        private Core.Models.Profile.UserProfile _user;
         #endregion
 
         #region ctor
-        public BaseController(Core.Profile.IUserProfileRepository userProfileRepo)
+        public BaseController(Core.Interface.Profile.IUserProfileRepository userProfileRepo)
         {
             _userRepo = userProfileRepo;
         }
@@ -29,7 +29,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             if (controllerContext.RequestContext.Principal.Identity.IsAuthenticated && 
                 string.Compare(controllerContext.RequestContext.Principal.Identity.AuthenticationType, "bearer", true) == 0)
             {
-                Core.Profile.UserProfileReturn retVal = _userRepo.GetUserProfile(
+                Core.Models.Profile.UserProfileReturn retVal = _userRepo.GetUserProfile(
                                                                 ((System.Security.Claims.ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value
                                                             );
 
@@ -47,9 +47,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region properties
-        public Core.Profile.UserProfile AuthenticatedUser
+        public Core.Models.Profile.UserProfile AuthenticatedUser
         {
-            get { return (Core.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity; }
+            get { return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity; }
         }
 
         #endregion

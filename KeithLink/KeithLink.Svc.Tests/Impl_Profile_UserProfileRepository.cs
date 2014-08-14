@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Test
         public void AuthenticateUserAndRetrieveUserProfile()
         {
             KeithLink.Svc.Impl.Profile.UserProfileRepository repo = new Impl.Profile.UserProfileRepository();
-            KeithLink.Svc.Core.Profile.UserProfileReturn profileReturn = null;
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn profileReturn = null;
 
             repo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e", out profileReturn);
 
