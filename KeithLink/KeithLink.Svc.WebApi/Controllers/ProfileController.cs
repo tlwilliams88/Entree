@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
         }
 
-        [Authorize()]
+        [AllowAnonymous]
         [HttpGet]
         [Route("profile/searchcustomer/{searchText}")]
         public Core.Models.Profile.CustomerContainerReturn SearchCustomers(string searchText)
