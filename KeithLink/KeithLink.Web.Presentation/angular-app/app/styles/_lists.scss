@@ -93,6 +93,10 @@
   width: 95% !important;
   background-color: #EBE7D9 !important;
 }
+// prevents weird page jumping when reordering items that are scrolled down the page
+.bek-reorder-overflow {
+  overflow: auto;
+}
 
 // highlight row when hovering on desktop only
 @media (min-width: $mobile-max) {
@@ -113,6 +117,14 @@
     .edit-label {
       display: inline-block;
     }
+  }
+
+  .custom-lists__save {
+    min-height: 0;
+    font-size: 10px;
+    float: right;
+    margin: 3px 10px;
+    padding: 7px;
   }
 }
 
