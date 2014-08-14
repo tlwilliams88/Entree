@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Test
             KeithLink.Svc.Impl.Profile.UserProfileRepository userProfile = new Impl.Profile.UserProfileRepository();
 
             //userProfile.CreateUserProfile("mytest", "Test Customer", "joesmith@company.com", "Joe", "Smith", "1234567890");
-            //userProfile.CreateUserProfile("sabroussard@somecompany.com", "Jimmys Chicken Shack", "sabroussard@somecompany.com", "Steven", "Broussard", "1234567890");
+            userProfile.CreateUserProfile("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", "(817)877-5700", "Owner");
 
             Assert.IsTrue(true);
         }
@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Test
         public void AuthenticateUserAndRetrieveUserProfile()
         {
             KeithLink.Svc.Impl.Profile.UserProfileRepository repo = new Impl.Profile.UserProfileRepository();
-            KeithLink.Svc.Core.Profile.UserProfileReturn profileReturn = null;
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn profileReturn = null;
 
             repo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e", out profileReturn);
 

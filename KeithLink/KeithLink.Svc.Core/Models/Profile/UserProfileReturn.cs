@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Profile
+namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="UserProfileReturn")]
     public class UserProfileReturn

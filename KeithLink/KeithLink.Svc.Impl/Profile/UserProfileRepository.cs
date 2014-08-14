@@ -1,11 +1,12 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    public class UserProfileRepository : Core.Profile.IUserProfileRepository
+    public class UserProfileRepository : Core.Interface.Profile.IUserProfileRepository
     {
         #region methods
         private void AssertCustomerNameLength(string customerName)
@@ -130,20 +131,20 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
-        public bool AuthenticateUser(string emailAddress, string password, out Core.Profile.UserProfileReturn userProfile)
+        public bool AuthenticateUser(string emailAddress, string password, out UserProfileReturn userProfile)
         {
             bool success = AuthenticateUser(emailAddress, password);
 
             if (success) { 
                 userProfile = GetUserProfile(emailAddress); 
             } else {
-                userProfile = new Core.Profile.UserProfileReturn();
+                userProfile = new UserProfileReturn();
             }
 
             return success;
         }
 
-        private Core.Profile.UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
+        private UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
         {
             System.DirectoryServices.AccountManagement.UserPrincipal adProfile = null;
 
@@ -160,7 +161,7 @@ namespace KeithLink.Svc.Impl.Profile
                 adProfile = externalAD.GetUser(emailAddress);
             }
 
-            return new Core.Profile.UserProfile(){
+            return new UserProfile(){
                 UserId = csProfile.Id,
                 UserName = adProfile.UserPrincipalName,
                 FirstName = csProfile.FirstName,
@@ -170,7 +171,7 @@ namespace KeithLink.Svc.Impl.Profile
             };
         }
 
-        public Core.Profile.UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
+        public UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
         {
             AssertUserProfile(customerName, emailAddres, password, firstName, lastName, phoneNumber, roleName);
 
@@ -218,7 +219,7 @@ namespace KeithLink.Svc.Impl.Profile
             throw new NotImplementedException();
         }
 
-        public Core.Profile.UserProfileReturn GetUserProfile(string userName)
+        public UserProfileReturn GetUserProfile(string userName)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = userName;
@@ -240,13 +241,13 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
 
-            Core.Profile.UserProfileReturn retVal = new Core.Profile.UserProfileReturn();
+            UserProfileReturn retVal = new UserProfileReturn();
             retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
             
             return retVal;
         }
 
-        public Core.Profile.UserProfileReturn GetUserProfilesByCustomerName(string customerName)
+        public UserProfileReturn GetUserProfilesByCustomerName(string customerName)
         {
             throw new NotImplementedException();
         }
