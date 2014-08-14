@@ -15,7 +15,6 @@ angular.module('bekApp')
     }
 
     function setFavoritesList() {
-
       var listFound;
       angular.forEach(Service.lists, function(list, index) {
         if (list.name === 'Favorites') {
@@ -88,7 +87,7 @@ angular.module('bekApp')
         }).then(function(response) {
 
           var returnedLists = response.data;
-          
+
           angular.copy(returnedLists, Service.lists);
           setFavoritesList();
           return response.data;

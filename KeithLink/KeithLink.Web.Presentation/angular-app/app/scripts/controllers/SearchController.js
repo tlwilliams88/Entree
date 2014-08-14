@@ -493,10 +493,9 @@ angular.module('bekApp')
           return "Child Nutrition Sheet"
       }
 
+      $scope.lists = ListService.lists;
       ListService.getAllLists({
         'header': true
-      }).then(function(data) {
-        $scope.lists = data;
       });
     }
   ]);

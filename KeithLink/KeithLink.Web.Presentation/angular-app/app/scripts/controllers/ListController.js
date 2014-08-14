@@ -103,6 +103,8 @@ angular.module('bekApp')
         $scope.sortBy = 'editPosition';
         $scope.sortOrder = false;
 
+        $scope.unsavedChanges = false;
+
         $scope.selectedList = updatedList;
         addSuccessAlert('Successfully saved list ' + list.name + '.');
       }, function(error) {
@@ -155,7 +157,21 @@ angular.module('bekApp')
       }
 
       $scope.selectedList.items.splice(deletedIndex, 1);
+      updateItemIndexes();
+      $scope.unsavedChanges = true;
     };
+
+    $scope.deleteItemFromDrag = function(event, helper) {
+      var selectedItem = angular.copy(helper.draggable.data('product'));
+      $scope.deleteItem(selectedItem);
+    };
+
+    // warn user when exiting page without saved changes
+    // window.onbeforeunload = function(){
+    //   if (unsavedChanges) {
+    //     debugger;
+    //   }
+    // };
 
     // ORDERING/SORTING LIST
 
@@ -165,12 +181,6 @@ angular.module('bekApp')
         item.editPosition = index + 1;
       });
     }
-
-    $scope.orderList = function(e, ui) {
-      updateItemIndexes($scope.selectedList.items);
-      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
-      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
-    };
 
     $scope.sortList = function(sortBy, sortOrder) {
       $scope.selectedList.items = orderBy($scope.selectedList.items, sortBy, sortOrder);
@@ -184,6 +194,19 @@ angular.module('bekApp')
       //   $scope.sortOrder = false;
       //   $scope.sortList('editPosition', false);
       // }
+    };
+
+    $scope.reorderList = function(e, ui) {
+      updateItemIndexes($scope.selectedList.items);
+      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
+      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
+    };
+
+    $scope.startReorder = function (event, ui) {
+      angular.element(event.target.parentElement).addClass('bek-reorder-overflow');
+    };
+    $scope.stopReorder = function () {
+      angular.element(event.target.parentElement).removeClass('bek-reorder-overflow');
     };
 
     // Dragging, used to enable DOM elements

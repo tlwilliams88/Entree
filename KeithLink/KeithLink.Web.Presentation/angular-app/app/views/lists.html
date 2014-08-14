@@ -4,7 +4,7 @@
       <span>{{selectedList.name}}</span>
       <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.isFavoritesList">
         <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"</span></a>
-        <a confirmed-click="deleteList(selectedList.listid)" ng-confirm-click="This will delete the list {{selectedList.name}} and all items within. Are you sure you want to delete this list?"><span class="large-icon text-light icon-trash"></span></a>
+        <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="This will delete the list {{selectedList.name}} and all items within. Are you sure you want to delete this list?"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
@@ -20,11 +20,11 @@
     <button class="btn btn-icon"><span class="icon-disk"></span></button>
   </div>
 </div>
-<div class="visible-xs visible-sm row page-subheader-bar text-right;">
-  <a ng-click="saveList(selectedList)">Save List</a>
+<div class="visible-xs visible-sm hidden-print row page-subheader-bar text-right;">
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__filter">
     Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
   </div>
+  <button class="custom-lists__save btn cta-btn" ng-click="saveList(selectedList)">Save List</button>
 </div>
 
 <div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
@@ -41,16 +41,16 @@
         <h3>Your Lists</h3>
 
         <div class="btn-group-vertical list-names text-blue">
-          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-list" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list.listid)'}">{{list.name}}</button>
+          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list.listid)'}">{{list.name}}</button>
         </div>
         <p class="custom-lists__more">
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()">Show More...</a>
           <a href=""></a>
         </p>
         
-        <button ng-click="createList()" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-list text-light">Create A List</button>
+        <button ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-list text-light">Create A List</button>
         
-        <button class="btn btn-icon large-icon btn-trash" ng-disabled="!isDragging" data-drop="true" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
+        <button class="btn btn-icon large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
 
       </div>
     </div>
@@ -59,11 +59,11 @@
   <!-- Items in List -->
   <div class="col-md-10 col-xs-12">
     
-    <div>
+    <div class="hidden-print">
       <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
     </div>
     
-    <div class="input-group">
+    <div class="input-group hidden-print">
       <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item # or label">
       <span class="input-group-btn">
         <button  ng-click="listSearchTerm = ''" class="btn"><span class="icon-cross"></span></button>
@@ -127,8 +127,9 @@
         </div>
       </div>
 
-      <div class="table-body row" style="overflow:auto" ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-        <div class="col-xs-12" ui-sortable="{ handle: '.icon-list2', stop: orderList }" ng-model="selectedList.items" >
+  {{isReordering}}
+      <div class="table-body row" ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+        <div class="col-xs-12" ui-sortable="{ handle: '.icon-list2', update:reorderList, stop: stopReorder, start:startReorder }" ng-model="selectedList.items" >
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
@@ -148,7 +149,7 @@
                   </span>
                 </div>
                 <div class="col-md-1 col-xs-2">
-                  {{item.itemnumber}}  
+                  <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
                 </div>
                 <div class="col-md-3 col-xs-5">
                   {{item.name}}
