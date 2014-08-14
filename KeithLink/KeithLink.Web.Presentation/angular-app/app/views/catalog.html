@@ -67,7 +67,7 @@
 			<li loading-spinner="loadingCategories"></li>
 			<li ng-repeat="category in categories" class="item-holder">
 				<div class="featured-item text-center">
-					<img src="images/green-apple.jpg" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" src="images/green-apple.jpg" alt="image">
 					<div class="featured-item__detail">
 						{{category.name}}
 						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" class="text-uppercase">view category</a>
@@ -88,7 +88,7 @@
 			<li loading-spinner="loadingBrands"></li>
 			<li ng-repeat="brand in brands | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
-					<img ng-src="{{brand.imageurl}}" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.name })" ng-src="{{brand.imageurl}}" alt="image">
 					<div class="featured-item__detail">
 						{{brand.name}}
 						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.name })" class="text-uppercase">view brand</a>

@@ -404,6 +404,7 @@ angular.module('bekApp')
         } else {
           $scope.itemspecs = [];
         }
+        $scope.nonstock = facets.nonstock;
       }
 
       function addIcons(itemspecs) {
