@@ -16,6 +16,7 @@ angular
     'ngTouch',
     'ui.router',
     'ui.bootstrap',
+    'ui.sortable',
     'shoppinpal.mobile-menu',
     'ngDragDrop'
   ])
@@ -122,10 +123,10 @@ angular
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
-   ApiService.endpointUrl = 'http://devapi.bekco.com';
-  // ApiService.getEndpointUrl().then(function(response) {
-  //   ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
-  // });
+   // ApiService.endpointUrl = 'http://devapi.bekco.com';
+  ApiService.getEndpointUrl().then(function(response) {
+    ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+  });
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // debugger;

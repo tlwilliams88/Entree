@@ -1,4 +1,4 @@
-// all buttons on the left side nav
+/* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
   min-width: 130px;
   font-size: $font-size;
@@ -30,7 +30,6 @@
   }
 }
 
-
 // 'Show More' link
 .custom-lists__more {
   margin-top: 10px;
@@ -51,21 +50,152 @@
   }
 }
 
+/* LIST TABLE */
+.custom-lists__table {
+
+  .table-row 
+
+  .edit-parlevel {
+    width: calc(100% - 15px);
+  }
+
+  .edit-label {
+    width: calc(100% - 25px);
+  }
+}
+
+/* DRAG AND DROP */
+.ui-draggable-handle {
+  cursor: move;
+}
 .ui-draggable-dragging {
   border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
-
-  td {
+  // width: 400px;
+  
+  [class^='col-'] {
+    width: inherit;
+    float: none;
     background-color: $color-white !important;
+    display: inline-block;
   }
+
+  // [class^='col-'] {
+  //   background-color: $color-white !important;
+  // }
   .hidden-drag {
     display: none;
   } 
 }
+.ui-sortable-helper {
+  border: 1px solid $color-border !important;
+  box-shadow: 0px 0px 10px $color-border;
+  width: 95% !important;
+  background-color: #EBE7D9 !important;
+}
+// prevents weird page jumping when reordering items that are scrolled down the page
+.bek-reorder-overflow {
+  overflow: auto;
+}
 
 // highlight row when hovering on desktop only
 @media (min-width: $mobile-max) {
-  .custom-lists__table tr:hover td {
+  .custom-lists__table .table-body .table-row:hover [class^='col-'] {
     background-color: #EBE7D9 !important;
+  }
+}
+
+@media (max-width: $mobile-max) {
+  .custom-lists {
+    position:absolute; 
+    z-index: 3; 
+    right: 10px; 
+    top: 155px;
+  }
+
+  .custom-lists__table {
+    .edit-label {
+      display: inline-block;
+    }
+  }
+
+  .custom-lists__save {
+    min-height: 0;
+    font-size: 10px;
+    float: right;
+    margin: 3px 10px;
+    padding: 7px;
+  }
+}
+
+.bootstrap-table {
+  > .row {
+    margin: 0;
+  }
+
+  .table-row-data [class^='col-'] {
+    padding: 14px 5px;
+  }
+
+  .table-header {
+    .table-row {
+      font-weight: 600;
+      border: 1px solid $color-border;
+      background-color: $background;
+    }
+  }
+
+  .table-body, .table-footer {
+    .table-row  {
+      border-bottom: 1px solid $color-border;
+      border-left: 1px solid $color-border;
+      border-right: 1px solid $color-border;
+      background-color: $color-white;
+    }
+  }
+
+  .table-row {
+    
+    .table-col-icons {
+      padding: 8px 5px;
+
+      a,span {
+        display: inline-block;
+        font-size: 18px;
+      }
+    }
+
+    .table-col-input {
+      padding-top: 6px;
+      padding-bottom: 4px;
+
+      input {   
+        min-height: 0;
+        padding: 5px;
+      }
+
+      .select-div {
+        min-height: 0;
+
+        select {
+          padding: 5px;
+          min-height: 0;
+        }
+      }  
+    }
+    
+    &.odd {
+      background-color: $background;
+    }
+
+  }
+}
+
+.form-control-group {
+  padding-bottom: $gutter-size;
+
+  .form-control-group__label, .form-control-group__input { 
+    display: inline-block;
+    vertical-align: middle;
   }
 }

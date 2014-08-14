@@ -26,7 +26,7 @@ angular.module('bekApp')
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
     }, 
-    INTEGER_REGEXP : /^\+?(0|[1-9]\d*)$/
+    INTEGER_REGEXP : /^([1-9]\d*|0)(\.\d)?$/
   };
 
   return directive;
