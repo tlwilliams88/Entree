@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string filterTerms = string.Empty;
             if (facetTerms.Count > 0)
             {
-                filterTerms = @"""bool"" : { ""should"" : [ 
+                filterTerms = @"""bool"" : { ""must"" : [ 
                         " + String.Join(",", facetTerms.ToArray())
                         + @"] }";
             }
@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string filterTerms = string.Empty;
             if (facetTerms.Count > 0)
             {
-                filterTerms = @"""bool"" : { ""should"" : [ 
+                filterTerms = @"""bool"" : { ""must"" : [ 
                         " + String.Join(",", facetTerms.ToArray())
                         + @"] }";
             }

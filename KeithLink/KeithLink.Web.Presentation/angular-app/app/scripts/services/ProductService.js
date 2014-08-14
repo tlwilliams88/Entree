@@ -28,7 +28,7 @@ angular.module('bekApp')
       }
 
       var Service = {
-        getProducts: function(searchTerm, pageSize, index, brands, facetCategoryId, allergens, dietary, itemspecs) {
+        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -39,8 +39,8 @@ angular.module('bekApp')
             facets += concatenateNestedParameters('brands', brands);
             facets += ',';
           }
-          if (facetCategoryId) {
-            facets += 'categories:' + facetCategoryId;
+          if (facetCategory) {
+            facets += 'categories:' + facetCategory.name;
             facets += ',';
           }
           if (allergens && allergens.length > 0) {
@@ -67,14 +67,16 @@ angular.module('bekApp')
             params: {
               size: pageSize,
               from: index,
-              facets: facets
+              facets: facets,
+              sfield: sortfield,
+              sdir: sortdirection
             }
           }).then(function(response) {
             return response.data;
           });
         },
 
-        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategoryId, allergens, dietary, itemspecs) {
+        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -85,8 +87,8 @@ angular.module('bekApp')
             facets += concatenateNestedParameters('brands', brands);
             facets += ',';
           }
-          if (facetCategoryId) {
-            categoryId = facetCategoryId;
+          if (facetCategory) {
+            categoryId = facetCategory.name;
           }
           if (allergens && allergens.length > 0) {
             facets += concatenateNestedParameters('allergens', allergens);
@@ -108,12 +110,13 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-
           return $http.get('/catalog/search/category/' + branchId + '/' + categoryId + '/products', {
             params: {
               size: pageSize,
               from: index,
-              facets: facets
+              facets: facets,
+              sfield: sortfield,
+              sdir: sortdirection
             }
           }).then(function(response) {
             return response.data;

@@ -86,7 +86,10 @@ angular.module('bekApp')
         return $http.get('/list/' + getBranch(), {
           params: requestParams
         }).then(function(response) {
-          angular.copy(response.data, Service.lists);
+
+          var returnedLists = response.data;
+          
+          angular.copy(returnedLists, Service.lists);
           setFavoritesList();
           return response.data;
         });
