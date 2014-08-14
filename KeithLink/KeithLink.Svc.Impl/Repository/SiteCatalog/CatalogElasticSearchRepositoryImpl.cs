@@ -412,6 +412,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		{
 			var productList = String.Join(" OR ", ids);
 			var query = @"{
+						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
 						""fields"" : [""itemnumber""],
