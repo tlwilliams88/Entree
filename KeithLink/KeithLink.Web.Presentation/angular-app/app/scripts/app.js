@@ -120,6 +120,9 @@ angular
       }
     };
   }]);
+
+  // // add authorization headers
+  $httpProvider.interceptors.push('AuthenticationInterceptorService');
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
