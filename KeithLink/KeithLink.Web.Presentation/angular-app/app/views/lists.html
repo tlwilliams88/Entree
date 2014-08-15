@@ -107,20 +107,20 @@
             <div class="col-md-1 col-lg-2 hidden-sm hidden-xs">
               Pack/Size
             </div>
-            <div class="col-md-3 hidden-sm hidden-xs" ng-hide="selectedList.isFavoritesList" style="cursor:pointer;" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
+            <div class="col-md-3 hidden-sm hidden-xs" ng-hide="selectedList.isFavoritesList" style="cursor:pointer;" ng-click="sortOrder=!sortOrder;sortList('editLabel',sortOrder)">
               Label
               <span ng-class="{
-                'icon-menu':sortBy !== 'label',
-                'icon-arrow-down4':sortBy == 'label' && !sortOrder,
-                'icon-arrow-up3': sortBy == 'label' && sortOrder
+                'icon-menu':sortBy !== 'editLabel',
+                'icon-arrow-down4':sortBy == 'editLabel' && !sortOrder,
+                'icon-arrow-up3': sortBy == 'editLabel' && sortOrder
               }"></span>
             </div>
-            <div class="col-md-2 hidden-sm hidden-xs" ng-hide="selectedList.isFavoritesList" style="cursor:pointer;" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
+            <div class="col-md-2 hidden-sm hidden-xs" ng-hide="selectedList.isFavoritesList" style="cursor:pointer;" ng-click="sortOrder=!sortOrder;sortList('editParlevel',sortOrder)">
               PAR Level
               <span ng-class="{
-                'icon-menu':sortBy !== 'parlevel',
-                'icon-arrow-down4':sortBy == 'parlevel' && !sortOrder,
-                'icon-arrow-up3': sortBy == 'parlevel' && sortOrder
+                'icon-menu':sortBy !== 'editParlevel',
+                'icon-arrow-down4':sortBy == 'editParlevel' && !sortOrder,
+                'icon-arrow-up3': sortBy == 'editParlevel' && sortOrder
               }"></span>
             </div>
           </div>
@@ -145,7 +145,6 @@
                   <span favorite-item-click-handlers><span favorite-icons class="bek-no-drag"></span></span>
                   <span style="font-size:12px;margin-left:5px;">
                     {{item.position}}
-                    {{item.editPosition}}
                   </span>
                 </div>
                 <div class="col-md-1 col-xs-2">
