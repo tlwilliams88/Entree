@@ -16,11 +16,14 @@ namespace KeithLink.Svc.WebApi
     {
         protected void Application_Start()
         {
-            GlobalConfiguration.Configure(WebApiConfig.Register);
+            //******************************************************
+            // moved to App_Start/WebApiConfig
+            //******************************************************
+            //GlobalConfiguration.Configure(WebApiConfig.Register);
 
             // Configure Web API with the dependency resolver.
-            var resolver = DependencyMap.Build();
-            GlobalConfiguration.Configuration.DependencyResolver = resolver;
+            //var resolver = DependencyMap.Build();
+            //GlobalConfiguration.Configuration.DependencyResolver = resolver;
 
             GlobalConfiguration.Configuration.EnsureInitialized(); 
         }

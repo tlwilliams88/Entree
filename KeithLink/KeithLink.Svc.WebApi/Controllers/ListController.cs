@@ -21,6 +21,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
         [HttpGet]
+		[Authorize]
 		[Route("list/{branchId}")]
         public List<UserList> List(string branchId, bool header = false)
         {
