@@ -44,6 +44,12 @@
   display: none;
 }
 
+.smallspinner{
+  img{
+    width:18px !important;
+  }
+}
+
 .mobile-filter{
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
