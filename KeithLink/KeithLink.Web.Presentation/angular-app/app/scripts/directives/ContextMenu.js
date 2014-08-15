@@ -21,7 +21,7 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', {listId: data[0].listid});
+          $state.go('menu.listitems', { listId: data[0].listid, renameList: true });
         });
       };
 
