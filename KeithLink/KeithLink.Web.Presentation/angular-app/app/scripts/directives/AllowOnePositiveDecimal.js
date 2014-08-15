@@ -14,7 +14,7 @@ angular.module('bekApp')
           if (directive.INTEGER_REGEXP.test(viewValue)) {
             // it is valid
             ctrl.$setValidity('allowOnePositiveDecimal', true);
-            return viewValue;
+            return parseFloat(viewValue);
           } else {
             // it is invalid, return undefined (no model update)
             ctrl.$setValidity('allowOnePositiveDecimal', false);

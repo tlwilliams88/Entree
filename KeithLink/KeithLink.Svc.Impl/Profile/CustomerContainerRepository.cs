@@ -1,11 +1,11 @@
-﻿using System;
-//using System.Collections.Generic;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using System;
 using System.DirectoryServices;
 using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    public class CustomerContainerRepository : KeithLink.Svc.Core.Profile.ICustomerContainerRepository
+    public class CustomerContainerRepository : KeithLink.Svc.Core.Interface.Profile.ICustomerContainerRepository
     {
         #region methods
 
@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/7/2014 - original code
         /// jwames - 8/11/2014 - remove the OU= from the string returned
         /// </remarks>
-        public Core.Profile.CustomerContainerReturn GetCustomerContainer(string customerName)
+        public CustomerContainerReturn GetCustomerContainer(string customerName)
         {
             if (customerName.Length == 0) { throw new ArgumentException("customerName is required", "customerName"); }
             if (customerName == null) { throw new ArgumentNullException("customerName", "customerName is null"); }
@@ -156,7 +156,7 @@ namespace KeithLink.Svc.Impl.Profile
                 throw;
             }
 
-            Core.Profile.CustomerContainerReturn retVal = new Core.Profile.CustomerContainerReturn();
+            CustomerContainerReturn retVal = new CustomerContainerReturn();
 
             try
             {
@@ -168,7 +168,7 @@ namespace KeithLink.Svc.Impl.Profile
                 if (entry != null)
                 {
                     // do not include the "OU=" in the name that is returned
-                    retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(entry.Name.Substring(3)));
+                    retVal.CustomerContainers.Add(new CustomerContainer(entry.Name.Substring(3)));
                 }
             }
             catch (NullReferenceException) { 
@@ -194,7 +194,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/7/2014 - original code
         /// jwames - 8/11/2014 - remove the OU= from the string returned
         /// </remarks>
-        public Core.Profile.CustomerContainerReturn SearchCustomerContainers(string searchText)
+        public CustomerContainerReturn SearchCustomerContainers(string searchText)
         {
             if (searchText.Length == 0) { throw new ArgumentException("searchText is required", "searchText"); }
             if (searchText == null) { throw new ArgumentNullException("searchText", "searchText is null"); }
@@ -217,7 +217,7 @@ namespace KeithLink.Svc.Impl.Profile
                 throw;
             }
 
-            Core.Profile.CustomerContainerReturn retVal = new Core.Profile.CustomerContainerReturn();
+            CustomerContainerReturn retVal = new CustomerContainerReturn();
 
             try
             {
@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Profile
                     foreach (SearchResult result in results)
                     {
                         // do not include "OU=" in the name that is returned
-                        retVal.CustomerContainers.Add(new Core.Profile.CustomerContainer(result.GetDirectoryEntry().Name.Substring(3)));
+                        retVal.CustomerContainers.Add(new CustomerContainer(result.GetDirectoryEntry().Name.Substring(3)));
                     }
                 }
             }

@@ -73,7 +73,7 @@ angular
       controller: 'ListController'
     })
     .state('menu.listitems', {
-      url: '/lists/:listId/',
+      url: '/lists/:listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController'
     });
