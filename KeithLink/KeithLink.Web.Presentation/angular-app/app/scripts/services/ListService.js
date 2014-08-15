@@ -36,6 +36,8 @@ angular.module('bekApp')
     function addItemToList(listId, item) {
       return $http.post('/list/' + listId + '/item', item).then(function(response) {
         item.listitemid = response.data.listitemid;
+        item.isEditing = false;
+        item.position = 0;
         var updatedList = Service.findListById(listId);
         if (updatedList && updatedList.items){
           updatedList.items.push(item);
