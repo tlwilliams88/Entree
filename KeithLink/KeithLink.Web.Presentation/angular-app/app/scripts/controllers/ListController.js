@@ -59,9 +59,10 @@ angular.module('bekApp')
     };
 
     $scope.goToList = function(list) {
-      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
       $scope.selectedList = list;
       $scope.itemsToDisplay = itemsPerPage;
+      $scope.sortList('position', false);
+      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
     };
 
     $scope.createList = function() { //DONE
@@ -214,7 +215,13 @@ angular.module('bekApp')
 
     // sort list by column
     $scope.sortList = function(sortBy, sortOrder) {
-      $scope.selectedList.items = orderBy($scope.selectedList.items, sortBy, sortOrder);
+      var sortField = sortBy;
+      $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+        if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
+          return 1000;
+        }
+        return item[sortField];
+      }, sortOrder);
 
       $scope.sortBy = sortBy;
       updateItemPositions();
