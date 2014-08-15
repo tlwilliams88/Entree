@@ -34,14 +34,21 @@ angular.module('bekApp')
     }
 
     function addItemToList(listId, item) {
+      item.position = 0;
+      item.label = null;
+      item.parlevel = 0;
+
       return $http.post('/list/' + listId + '/item', item).then(function(response) {
         item.listitemid = response.data.listitemid;
-        item.isEditing = false;
-        item.position = 0;
+        item.editPositioin = 0;
+        item.editLabel = null;
+        item.editParlevel = 0;
+        
         var updatedList = Service.findListById(listId);
         if (updatedList && updatedList.items){
           updatedList.items.push(item);
         }
+        
         return response.data;
       });
     }
@@ -161,7 +168,7 @@ angular.module('bekApp')
         ]);
       },
 
-      updateItem: function(listId, item) {
+      /*updateItem: function(listId, item) {
         return $http.put('/list/' + listId + '/item', item).then(function(response) {
 
           // add label to list of labels if it is new
@@ -171,7 +178,7 @@ angular.module('bekApp')
 
           return response.data;
         });
-      },
+      },*/
 
       deleteItem: function(listId, listItemId) {
         // TODO: sometimes reloads all listitemids but this is inconsistent
@@ -188,6 +195,13 @@ angular.module('bekApp')
 
       updateList: function(list) {
         return $http.put('/list', list).then(function(response) {
+
+          angular.forEach(list.items, function(item, index) {
+            if (item.label && Service.labels.indexOf(item.label) === -1) {
+              Service.labels.push(item.label);
+            }
+          });
+          
           var updatedList = Service.findListById(list.listid);
           var idx = Service.lists.indexOf(updatedList);
           Service.lists[idx] = list;

@@ -106,6 +106,7 @@ angular.module('bekApp')
         item.label = item.editLabel;
         item.parlevel = item.editParlevel;
         item.position = item.editPosition;
+        item.isEditing = false;
       });
 
       ListService.updateList(updatedList).then(function(data) {
@@ -132,7 +133,7 @@ angular.module('bekApp')
       // check for duplicate list names
       // TODO: move into directive
       angular.forEach($scope.lists, function(list, index) {
-        if (list.name === listName) {
+        if (list.name === listName && list.listid !== listId) {
           addErrorAlert('Error creating list. Duplicate names.');
           return;
         }
@@ -158,7 +159,14 @@ angular.module('bekApp')
     $scope.addItemToList = function (event, helper, listId) {
       var selectedItem = angular.copy(helper.draggable.data('product'));
 
-      ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
+      var promise;
+      if (listId === ListService.favoritesList.listid) {
+        promise = ListService.addItemToFavorites(selectedItem);
+      } else {
+        promise = ListService.addItemToListAndFavorites(listId, selectedItem);
+      }
+
+      promise.then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
       },function(error) {
         addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');

@@ -64,13 +64,14 @@ angular.module('bekApp')
 
       login: function(username, password) {
         $q.all([ 
-          // validateUser(username, password),
+          //validateUser(username, password),
           getProfile(username, password)
         ]).then(function(data) {
           var profile = data[0];
+          debugger;
 
           profile.token = {
-            'access_token': 'RK_8ezoiIiCnvwv6_macV7LCMZ0kClWkS3nOzC7ptqrNGyvMlvMOPJb2HN9wnP6Ip-3dcrCw_79XkOLcmMBLl-XfP12mZjE5nVUDkGuU-4yza4-hJGLi2dYQHCwovaXwE-MK-fSvWopzJMEYER7NOLUG9iZlzgYMXtjROHtmXgUXuoN4VtIOgGvCb3yuu9RXS-bT3P8btqkep7qjhBnS6IzNQ-DNbFK3055edLG4iC18cOpJ08HII2Q8Z7bkmLiw3Eq5gbw9gt5JTtOCn57iWg',
+            'access_token': '3GT4Y5XUpED5W8Ri6hptEJKtE2P3EBDU03jSMPXiar3C0YIzK5W9PhPC36nQMgm2qTaYTLvvCu_VVq1nsyaxjEDvyViSHrue0Q-mjOg46cbnRrhNqb9FdVW2b57fRL0_69C782HfFAmsHnFv4-FAr2CUw0mqr-W48gWtq_qZNz-f4T5SCXkWhoLqrqeDIbYPJl_cxfH47nwLnYEcxrmpH7wzuKoY_zm49A1Yp2R7gXfhVv7Ci-YDaySvD596cfLq1ZqKb4KGl_o9gm3VYFyoNQ',
             'token_type': 'bearer',
             'expires_in': 86399
           };
