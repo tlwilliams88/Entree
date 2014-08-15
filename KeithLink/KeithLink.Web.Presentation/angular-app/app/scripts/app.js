@@ -123,7 +123,7 @@ angular
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
-   // ApiService.endpointUrl = 'http://devapi.bekco.com';
+  //  ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
   });
