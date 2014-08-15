@@ -88,10 +88,10 @@
 			<li loading-spinner="loadingBrands"></li>
 			<li ng-repeat="brand in brands | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.name })" ng-src="{{brand.imageurl}}" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.id })" ng-src="{{brand.imageurl}}" alt="image">
 					<div class="featured-item__detail">
 						{{brand.name}}
-						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.name })" class="text-uppercase">view brand</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.id })" class="text-uppercase">view brand</a>
 					</div>
 				</div>
 			</li>

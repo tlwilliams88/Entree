@@ -20,15 +20,15 @@ angular.module('bekApp')
           if (name === "brands" || name === "allergens" || name === "dietary" || name==="itemspecs") {
             filters += item + '|';
           }
-          // if (name === "itemspecs") {
-          //   filters += item.name + '|';
-          // }
+          if (name === "nonstock") {
+            filters += "y|";
+          }
         });
         return filters.substr(0, filters.length - 1);
       }
 
       var Service = {
-        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, sortfield, sortdirection) {
+        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -55,6 +55,10 @@ angular.module('bekApp')
             facets += concatenateNestedParameters('itemspecs', itemspecs);
             facets += ',';
           }
+          if (nonstock && nonstock.length > 0) {
+            facets += concatenateNestedParameters('nonstock', nonstock);
+            facets += ',';
+          }
 
           if (facets === '') {
             facets = null;
@@ -76,7 +80,7 @@ angular.module('bekApp')
           });
         },
 
-        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, sortfield, sortdirection) {
+        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -100,6 +104,10 @@ angular.module('bekApp')
           }
           if (itemspecs && itemspecs.length > 0) {
             facets += concatenateNestedParameters('itemspecs', itemspecs);
+            facets += ',';
+          }
+          if (nonstock && nonstock.length > 0) {
+            facets += concatenateNestedParameters('nonstock', nonstock);
             facets += ',';
           }
           
