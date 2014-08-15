@@ -42,8 +42,8 @@ angular.module('bekApp')
       $scope.dietaryCount = 0;
       $scope.specCount = 0;
       $scope.hidden = true;
-      $scope.sortField = "itemnumber";
-      $scope.sortDirection = "asc";
+      $scope.sortField = '';
+      $scope.sortDirection = '';
       $scope.asc = true;
       $scope.paramType = $stateParams.type;
       $scope.categoryName = '';

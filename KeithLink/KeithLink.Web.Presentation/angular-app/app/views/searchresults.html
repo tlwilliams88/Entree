@@ -13,7 +13,7 @@
 			<div ng-repeat="bc in breadcrumbs"><a ng-click="breadcrumbClickEvent(bc.type,bc.id)">{{bc.name}} </a> <span>>></span></div>
 		</div>
 		<div class="page-subheader-bar__message hidden-lg hidden-md">
-			{{searchTerm}}
+			{{categoryName}}{{searchTerm}}
 		</div>
 		<div ng-click="hidden = ! hidden" class="hidden-lg hidden-md page-subheader-bar__filter">
 			Filter <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
@@ -136,8 +136,8 @@
 	<div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
 		<div class="row">
 			<div class="col-sm-12">
-				<h3 ng-show="paramType !== 'category'">Categories <span loading-spinner="loadingResults"></span></h3>
-				<h3 ng-show="paramType === 'category'">{{categoryName}} <span loading-spinner="loadingResults"></span></h3>
+				<h3 ng-show="paramType !== 'category'">Categories</h3>
+				<h3 ng-show="paramType === 'category'">{{categoryName}}</h3>
 				<ul class="nav search-results__category">
 					<li ng-repeat="category in categories">
 						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
@@ -229,7 +229,8 @@
 	</div>
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
-		<h2 class="hidden-xs hidden-sm">Search Results</h2>
+		<h2 class="col-md-6 no-padding hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
+		<span class="col-md-6 no-padding pull-right hidden-xs hidden-sm" style="width: initial;">{{totalItems}} results</span>
 		<div>
 			<table class="table table-striped" when-scrolled="infiniteScrollLoadMore()">
 				<thead>

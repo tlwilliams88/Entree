@@ -65,7 +65,7 @@
 		<h3>Select A Category</h3>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
 			<li loading-spinner="loadingCategories"></li>
-			<li ng-repeat="category in categories" class="item-holder">
+			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
 					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" src="images/green-apple.jpg" alt="image">
 					<div class="featured-item__detail">
