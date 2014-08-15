@@ -1,6 +1,6 @@
 <!-- Mobile Sidebar -->
 <div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
- <div ng-show="isValidUser()" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
+ <div ng-show="isLoggedIn()" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
     <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
@@ -61,10 +61,10 @@
       <span><a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a></span>
     </div>
   </div>
-  <div ng-if="isValidUser()" class="sidebar-actions text-center">
+  <div ng-if="isLoggedIn()" class="sidebar-actions text-center">
     <button class="btn cta-btn">Place Your Order</button>
   </div>
-  <div ng-if="!isValidUser()" class="sidebar-actions text-center">
+  <div ng-if="!isLoggedIn()" class="sidebar-actions text-center">
     <a ng-click="login()" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
     <button class="btn cta-btn">Register Now</button>
   </div>
@@ -128,13 +128,13 @@
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
-          <a ng-click="isSearchBarDisplayed = !isSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
+          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a href=""><li><span class="icon-truck"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
       </div>
 
-      <div class="row user-bar hidden-print" ng-init="isSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isSearchBarDisplayed }">
+      <div class="row user-bar hidden-print" ng-hide="showLoginForm" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
         <div class="select-div">
           <select name="" id="" ng-options="store.name for store in currentUser.stores track by store.customerNumber" ng-model="currentUser.currentLocation"></select>
@@ -151,7 +151,7 @@
           </form>
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right">
-          <div ng-if="isValidUser()">
+          <div ng-if="isLoggedIn()">
             <span class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
@@ -169,14 +169,31 @@
             </div>
           </div>
 
-          <div ng-if="!isValidUser()" style="display:inline-block;">
-            <form class="form-inline" role="form"  style="display:inline-block;">
-              <input type="text" class="form-control" placeholder="username" ng-model="loginInfo.username" style="display:none;">
-              <input type="password" class="form-control" placeholder="password" ng-model="loginInfo.password" style="display:none;">
-              <a ng-click="login(loginInfo)" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
-            </form>
+          <div ng-show="!isLoggedIn()">
+            <a ng-click="showLoginForm = true;" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
             <button style="display:inline-block;" class="btn cta-btn">Register Now</button>
           </div>
+        </div>
+      </div>
+
+      <div class="row user-bar hidden-print" ng-show="showLoginForm">
+        <div class="col-xs-12">
+          <form novalidate name="loginForm" class="form-inline">
+            <div class="form-group">
+              <label class="sr-only" for="username">Username</label>
+              <input id="username" required="" name="username" type="text" class="form-control" placeholder="username" ng-model="loginInfo.username">  
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="password">Password</label>
+              <input id="password" required=""  name="password" type="password" class="form-control" placeholder="password" ng-model="loginInfo.password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn cta-btn" ng-click="login(loginInfo)" ng-disabled="loginForm.$invalid">Login</button>
+            </div>
+            <div class="form-group">
+              <button class="btn-no-style" ng-click="showLoginForm = false;">Cancel</button>
+            </div>
+          </form>
         </div>
       </div>
 

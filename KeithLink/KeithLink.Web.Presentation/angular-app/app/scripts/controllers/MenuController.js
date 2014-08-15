@@ -17,9 +17,7 @@ angular.module('bekApp')
       password: 'L1ttleStev1e'
     };
 
-
-
-    $scope.isValidUser = function() {
+    $scope.isLoggedIn = function() {
       return AuthenticationService.isLoggedIn();
     };
 
