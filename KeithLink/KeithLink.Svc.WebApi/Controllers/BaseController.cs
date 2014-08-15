@@ -49,9 +49,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region properties
         public Core.Models.Profile.UserProfile AuthenticatedUser
         {
-            get { return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity; }
+			get
+			{
+				if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+					return null;
+				else
+					return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity;
+			}
         }
-
+		
         #endregion
     }
 }

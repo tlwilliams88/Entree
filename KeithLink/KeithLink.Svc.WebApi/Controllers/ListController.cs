@@ -1,5 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Common.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +11,22 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class ListController : ApiController
+	[Authorize]
+    public class ListController : BaseController
     {
+		private readonly IListLogic listLogic;
 
-        private readonly IListLogic listLogic;
-
-        public ListController(IListLogic listLogic)
+		public ListController(IListLogic listLogic, IUserProfileRepository userProfileRepo): base (userProfileRepo)
         {
             this.listLogic = listLogic;
         }
 
 
         [HttpGet]
-		[Authorize]
 		[Route("list/{branchId}")]
         public List<UserList> List(string branchId, bool header = false)
         {
-			var model = listLogic.ReadAllLists(branchId, header);
+			var model = listLogic.ReadAllLists(this.AuthenticatedUser.UserId, branchId, header);
             return model;
         }
 
@@ -33,7 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/")]
 		public void Put(UserList updatedList)
         {
-            listLogic.UpdateList(updatedList);
+			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList);
         }
 
 
@@ -41,28 +42,28 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/{branchId}/{listId}")]
 		public UserList List(Guid listId)
         {
-            return listLogic.ReadList(listId);
+			return listLogic.ReadList(this.AuthenticatedUser.UserId, listId);
         }
 
         [HttpGet]
 		[Route("list/{branchId}/labels")]
         public List<string> ListLabels(string branchId)
         {
-            return listLogic.ReadListLabels(branchId);
+			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, branchId);
         }
 
         [HttpGet]
 		[Route("list/{branchId}/{listId}/labels")]
 		public List<string> ListLabels(string branchId, Guid listId)
         {
-            return listLogic.ReadListLabels(listId);
+			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, listId);
         }
 
         [HttpPost]
 		[Route("list/{branchId}")]
 		public NewItem List(string branchId, UserList list)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(branchId, list) };
+			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, branchId, list) };
 			return newGuid;
         }
 
@@ -70,14 +71,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/{listId}")]
 		public void DeleteList(Guid listId)
         {
-            listLogic.DeleteList(listId);
+			listLogic.DeleteList(this.AuthenticatedUser.UserId, listId);
         }
 
         [HttpPost]
 		[Route("list/{listId}/item")]
 		public NewItem AddItem(Guid listId, ListItem newItem)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(listId, newItem) };
+			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(this.AuthenticatedUser.UserId, listId, newItem) };
 			return newGuid;
         }
 
@@ -85,14 +86,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/{listId}/item")]
 		public void UpdateItem(Guid listId, ListItem updatedItem)
         {
-            listLogic.UpdateItem(listId, updatedItem);
+			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem);
         }
 
         [HttpDelete]
 		[Route("list/{listId}/item/{itemId}")]
 		public UserList DeleteItem(Guid listId, Guid itemId)
         {
-            return listLogic.DeleteItem(listId, itemId);
+			return listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
         }
     }
 }
