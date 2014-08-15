@@ -53,14 +53,22 @@
 /* LIST TABLE */
 .custom-lists__table {
 
-  .table-row 
+  .table-body {
 
-  .edit-parlevel {
-    width: calc(100% - 15px);
-  }
+    .table-row {
+      &.bek-reordered-item  {
+        background-color: #E6F8E0 !important;
+      }
 
-  .edit-label {
-    width: calc(100% - 25px);
+      
+    }
+
+    .edit-parlevel {
+      width: calc(100% - 15px);
+    }
+    .edit-label {
+      width: calc(100% - 25px);
+    }
   }
 }
 
@@ -71,18 +79,14 @@
 .ui-draggable-dragging {
   border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
-  // width: 400px;
+  background-color: $color-white !important;
   
   [class^='col-'] {
     width: inherit;
     float: none;
-    background-color: $color-white !important;
     display: inline-block;
   }
 
-  // [class^='col-'] {
-  //   background-color: $color-white !important;
-  // }
   .hidden-drag {
     display: none;
   } 
@@ -100,8 +104,8 @@
 
 // highlight row when hovering on desktop only
 @media (min-width: $mobile-max) {
-  .custom-lists__table .table-body .table-row:hover [class^='col-'] {
-    background-color: #EBE7D9 !important;
+  .custom-lists__table .table-body .table-row:hover {
+    background-color: #EBE7D9;
   }
 }
 

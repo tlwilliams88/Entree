@@ -494,6 +494,7 @@ angular.module('bekApp')
           return "Child Nutrition Sheet"
       }
 
+      // TODO: move into context menu controller
       $scope.lists = ListService.lists;
       ListService.getAllLists({
         'header': true
