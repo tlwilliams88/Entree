@@ -20,7 +20,13 @@ namespace KeithLink.Svc.Impl.Profile
         #endregion
 
         #region methods
-
+        /// <summary>
+        /// authenticates the user to the benekeith.com domain and throws an exception for any problems encountered
+        /// </summary>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - change to call new authenticateuser method with a string output
+        /// </remarks>
         public bool AuthenticateUser(string userName, string password)
         {
             string msg = null;
@@ -128,6 +134,12 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// create a user in the benekeith.com domain
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
         {
             const int NORMAL_ACCT = 0x200;
@@ -226,6 +238,12 @@ namespace KeithLink.Svc.Impl.Profile
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
         }
         
+        /// <summary>
+        /// get the user principal from the benekeith.com domain
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
@@ -253,6 +271,14 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// get a unique user name for AD based on the user name in the email address
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <returns>a user name</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public string GetNewUserName(string emailAddress)
         {
             string userName = null;
@@ -344,6 +370,12 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// check the benekeith.com domain for the username
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public bool UsernameExists(string userName)
         {
             string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);

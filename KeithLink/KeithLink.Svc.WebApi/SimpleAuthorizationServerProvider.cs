@@ -8,6 +8,13 @@ namespace KeithLink.Svc.WebApi
     public class SimpleAuthorizationServerProvider : Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerProvider
     {
         #region
+        /// <summary>
+        /// handles the authentication of the user and creates the authentication token
+        /// </summary>
+        /// <returns>nothing</returns>
+        /// <remarks>
+        /// jwames - 8/12/2014 - original code
+        /// </remarks>
         public override async System.Threading.Tasks.Task GrantResourceOwnerCredentials(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
@@ -29,6 +36,12 @@ namespace KeithLink.Svc.WebApi
             context.Validated(identity);
         }
 
+        /// <summary>
+        /// returns the validated status
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/12/2014 - original code
+        /// </remarks>
         public override async System.Threading.Tasks.Task ValidateClientAuthentication(Microsoft.Owin.Security.OAuth.OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();

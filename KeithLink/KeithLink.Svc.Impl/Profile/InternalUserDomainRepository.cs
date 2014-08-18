@@ -19,6 +19,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
+        /// jwames - 8/18/2014 - change to throw exceptions when authentication fails
         /// </remarks>
         public bool AuthenticateUser(string userName, string password)
         {
@@ -36,6 +37,16 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// authenticate the user and return an error message when authentication fails
+        /// </summary>
+        /// <param name="userName">the user's network user id</param>
+        /// <param name="password">the user's password</param>
+        /// <param name="errorMessage">reason for failing authentication</param>
+        /// <returns>true/false</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public bool AuthenticateUser(string userName, string password, out string errorMessage)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
@@ -129,6 +140,12 @@ namespace KeithLink.Svc.Impl.Profile
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryInternalDomain, userName);
         }
 
+        /// <summary>
+        /// get the user from AD
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
