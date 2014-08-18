@@ -10,19 +10,19 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListLogic
     {
-        Guid CreateList(string branchId, UserList list);
-        Guid? AddItem(Guid listId, ListItem newItem);
-        void UpdateItem(Guid listId, ListItem updatedItem);
-        void UpdateList(UserList list);
+        Guid CreateList(Guid userId, string branchId, UserList list);
+		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
+		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem);
+		void UpdateList(Guid userId, UserList list);
 
-        void DeleteList(Guid listId);
-        UserList DeleteItem(Guid listId, Guid itemId);
+		void DeleteList(Guid userId, Guid listId);
+		UserList DeleteItem(Guid userId, Guid listId, Guid itemId);
 
-        List<UserList> ReadAllLists(string branchId, bool headerInfoOnly);
-        UserList ReadList(Guid listId);
-        List<string> ReadListLabels(Guid listId);
-        List<string> ReadListLabels(string branchId);
+		List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly);
+		UserList ReadList(Guid userId, Guid listId);
+		List<string> ReadListLabels(Guid userId, Guid listId);
+		List<string> ReadListLabels(Guid userId, string branchId);
 
-		void MarkFavoriteProducts(string branchId, ProductsReturn products);
+		void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products);
     }
 }

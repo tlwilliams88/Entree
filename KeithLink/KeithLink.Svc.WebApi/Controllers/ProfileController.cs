@@ -10,31 +10,32 @@ namespace KeithLink.Svc.WebApi.Controllers
 {
 	
 
-    public class ProfileController : ApiController
+    public class ProfileController : BaseController
     {
         #region attributes
-        private Core.Profile.ICustomerContainerRepository _custRepo;
-        private Core.Profile.IUserProfileRepository _profileRepo;
+        private Core.Interface.Profile.ICustomerContainerRepository _custRepo;
+        private Core.Interface.Profile.IUserProfileRepository _profileRepo;
         #endregion
 
         #region ctor
-        public ProfileController(Core.Profile.ICustomerContainerRepository customerRepo, Core.Profile.IUserProfileRepository profileRepo) {
+        public ProfileController(Core.Interface.Profile.ICustomerContainerRepository customerRepo, Core.Interface.Profile.IUserProfileRepository profileRepo) : base(profileRepo) {
             _custRepo = customerRepo;
             _profileRepo = profileRepo;
         }
         #endregion
 
         #region methods
+        [AllowAnonymous]
         [HttpPost]
         [Route("profile/create")]
-        public OperationReturnModel<Core.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
+        public OperationReturnModel<Core.Models.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
         {
 
-            OperationReturnModel<Core.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Profile.UserProfileReturn>();
+            OperationReturnModel<Core.Models.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Models.Profile.UserProfileReturn>();
 
             try
             {
-                Core.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
+                Core.Models.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
 
                 // create the customer container if it does not exist
                 if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
@@ -56,34 +57,37 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-        //[HttpGet]
-		//[Route("profile/{emailAddress}")]
-		//public Core.Profile.UserProfileReturn GetUser(string emailAddress)
-		//{
-		//	Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
-
-		//	return userRepo.GetUserProfile(emailAddress);
-		//}
-
-        [HttpPost]
-        [Route("profile/login")]
-        public Core.Profile.UserProfileReturn Login(LoginModel login)
+        [Authorize]
+        [HttpGet]
+        [Route("profile")]
+        public Core.Models.Profile.UserProfileReturn GetUser(string emailAddress)
         {
-            Core.Profile.UserProfileReturn retVal = null;
+            Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
 
-			if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
-			{
-				return retVal;
-			}
-			else
-			{
-				return null;
-			}
+            return userRepo.GetUserProfile(emailAddress);
         }
 
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("profile/login")]
+        //public Core.Models.Profile.UserProfileReturn Login(LoginModel login)
+        //{
+        //    Core.Models.Profile.UserProfileReturn retVal = null;
+
+        //    if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
+        //    {
+        //        return retVal;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        [AllowAnonymous]
         [HttpGet]
         [Route("profile/searchcustomer/{searchText}")]
-        public Core.Profile.CustomerContainerReturn SearchCustomers(string searchText)
+        public Core.Models.Profile.CustomerContainerReturn SearchCustomers(string searchText)
         {
             return _custRepo.SearchCustomerContainers(searchText);
         }

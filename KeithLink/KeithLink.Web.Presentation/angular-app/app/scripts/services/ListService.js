@@ -34,12 +34,21 @@ angular.module('bekApp')
     }
 
     function addItemToList(listId, item) {
+      item.position = 0;
+      item.label = null;
+      item.parlevel = 0;
+
       return $http.post('/list/' + listId + '/item', item).then(function(response) {
         item.listitemid = response.data.listitemid;
+        item.editPositioin = 0;
+        item.editLabel = null;
+        item.editParlevel = 0;
+        
         var updatedList = Service.findListById(listId);
         if (updatedList && updatedList.items){
           updatedList.items.push(item);
         }
+        
         return response.data;
       });
     }
@@ -49,7 +58,7 @@ angular.module('bekApp')
     }
 
     function generateNewListName() {
-      var name = "New List",
+      var name = 'New List',
         number = 0;
 
       var listNames = [];
@@ -67,6 +76,17 @@ angular.module('bekApp')
       return name + ' ' + number;
     }
 
+    // updates favorite status of given itemNumber in all lists
+    function updateListFavorites(itemNumber, isFavorite) {
+      angular.forEach(Service.lists, function(list, listIndex) {
+        angular.forEach(list.items, function(item, itemIndex) {
+          if (item.itemnumber === itemNumber) {
+            item.favorite = isFavorite;
+          }
+        });
+      });
+    }
+
     var Service = {
       lists: [],
       favoritesList: {},
@@ -76,9 +96,12 @@ angular.module('bekApp')
         return $http.get('/list/' + getBranch(), {
           params: requestParams
         }).then(function(response) {
-          angular.copy(response.data, Service.lists);
+
+          var returnedLists = response.data;
+
+          angular.copy(returnedLists, Service.lists);
           setFavoritesList();
-          return response.data;
+          return returnedLists;
         });
       },
 
@@ -122,8 +145,8 @@ angular.module('bekApp')
         var items = [item];
 
         return $q.all([
-          this.createList(items),
-          this.addItemToFavorites(item)
+          Service.createList(items),
+          Service.addItemToFavorites(item)
         ]);
       },
 
@@ -145,9 +168,8 @@ angular.module('bekApp')
         ]);
       },
 
-      updateItem: function(listId, item) {
+      /*updateItem: function(listId, item) {
         return $http.put('/list/' + listId + '/item', item).then(function(response) {
-          item.isEditing = false;
 
           // add label to list of labels if it is new
           if (item.label && Service.labels.indexOf(item.label) === -1) {
@@ -156,7 +178,7 @@ angular.module('bekApp')
 
           return response.data;
         });
-      },
+      },*/
 
       deleteItem: function(listId, listItemId) {
         // TODO: sometimes reloads all listitemids but this is inconsistent
@@ -173,10 +195,16 @@ angular.module('bekApp')
 
       updateList: function(list) {
         return $http.put('/list', list).then(function(response) {
+
+          angular.forEach(list.items, function(item, index) {
+            if (item.label && Service.labels.indexOf(item.label) === -1) {
+              Service.labels.push(item.label);
+            }
+          });
+          
           var updatedList = Service.findListById(list.listid);
           var idx = Service.lists.indexOf(updatedList);
           Service.lists[idx] = list;
-
         });
       },
 
@@ -191,8 +219,8 @@ angular.module('bekApp')
           }
         });
         
+        // return existing item or add new item to favorites list
         var newFavoritesListItemId;
-
         if (!existingItem) {
           newFavoritesListItemId = addItemToList(Service.favoritesList.listid, item).then(function(response) {
             var newListItemId = response.listitemid;
@@ -203,6 +231,9 @@ angular.module('bekApp')
               Service.favoritesList.items.push(newItem);
             }
 
+            // favorite the item in all other lists
+            updateListFavorites(newItem.itemnumber, true);
+
             return newListItemId;
           });
         } else {
@@ -212,18 +243,30 @@ angular.module('bekApp')
       },
 
       removeItemFromFavorites: function(itemNumber) {
+
         var removedItem, removedIndex;
-        angular.forEach(Service.favoritesList.items, function(item, index) {
+        
+        var updatedFavoritesList = angular.copy(Service.favoritesList);
+
+        var newPosition = 1;
+        angular.forEach(updatedFavoritesList.items, function(item, index) {
           if (item.itemnumber === itemNumber) {
+            // find deleted item in the list
             removedItem = item;
             removedIndex = index;
+          } else {
+            // update positions of remaining items
+            item.position = newPosition;
+            newPosition++;
           }
-        });
+        });        
+        updatedFavoritesList.items.splice(removedIndex, 1);
 
-        return this.deleteItem(Service.favoritesList.listid, removedItem.listitemid).then(function(response) {
-          Service.favoritesList.items.splice(removedIndex, 1);
+        return this.updateList(updatedFavoritesList).then(function(response) {
+          angular.copy(updatedFavoritesList, Service.favoritesList);
 
-          return response.data;
+          // unfavorite the item in all other lists
+          updateListFavorites(removedItem.itemnumber, false);
         });
       },
 

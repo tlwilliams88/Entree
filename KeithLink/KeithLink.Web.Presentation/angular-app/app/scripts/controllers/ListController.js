@@ -8,25 +8,42 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$state', '$stateParams', 'ListService', function($scope, $state, $stateParams, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'ListService', function($scope, $filter, $timeout, $state, $stateParams, ListService) {
+    var orderBy = $filter('orderBy');
 
     $scope.alerts = [];
     $scope.loadingResults = true;
-
-    $scope.sortBy = 'itemnumber';
-    $scope.sortOrder = false;
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
     ListService.getAllLists().then(function(data) {
       
+      // switch to specific list or default to Favorites list
       if ($stateParams.listId) {
         $scope.selectedList = ListService.findListById($stateParams.listId, data);
       }
       if (!$scope.selectedList) {
-        $scope.selectedList = $scope.lists[0];
+        $scope.selectedList = ListService.favoritesList;
         $state.transitionTo('menu.lists', {}, {notify: false});
+      }
+
+      // set placeholders for editable item fields
+      angular.forEach(ListService.lists, function(list, listIndex) {
+        angular.forEach(list.items, function(item, itemIndex) {
+          item.editLabel = item.label;
+          item.editParlevel = item.parlevel;
+          item.editPosition = item.position;
+        });
+      });
+
+      // set initial sort fields
+      $scope.sortList('position', false);
+
+      // set focus to rename list if it is a new list
+      if ($stateParams.renameList === 'true') {
+        $scope.startEditListName($scope.selectedList.name);
+        $state.transitionTo('menu.listitems', {listId: $scope.selectedList.listid}, {notify: false});
       }
 
       $scope.loadingResults = false;
@@ -34,15 +51,25 @@ angular.module('bekApp')
 
     ListService.getAllLabels();
 
-    $scope.goToList = function(list) {
-      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
-      $scope.selectedList = list;
+    // INFINITE SCROLL
+    var itemsPerPage = 30;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      $scope.itemsToDisplay += itemsPerPage;
     };
 
-    $scope.createList = function(items) { //DONE
+    $scope.goToList = function(list) {
+      $scope.selectedList = list;
+      $scope.itemsToDisplay = itemsPerPage;
+      $scope.sortList('position', false);
+      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
+    };
+
+    $scope.createList = function() { //DONE
       ListService.createList().then(function(data) {
         $state.transitionTo('menu.listitems', {listId: data.listid}, {notify: false});
         $scope.selectedList = data;
+        $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -51,9 +78,12 @@ angular.module('bekApp')
 
     $scope.createListWithItem = function(event, helper) { //DONE
       var selectedItem = helper.draggable.data('product');
+      
       ListService.createListWithItem(selectedItem).then(function(data) {
-        $state.transitionTo('menu.listitems', {listId: data[0].listid}, {notify: false});
-        $scope.selectedList = data[0];
+        var newList = data[0];
+        $state.transitionTo('menu.listitems', {listId: newList.listid}, {notify: false});
+        $scope.selectedList = newList;
+        $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -69,71 +99,148 @@ angular.module('bekApp')
       });
     };
 
-    $scope.updateLabel = function(listId, item) { //DONE
-      ListService.updateItem(listId, item).then(function(data) {
-        addSuccessAlert('Successfully added label ' + item.label + ' to item ' + item.itemnumber + '.');
-      },function(error) {
-        addErrorAlert('Error updating label.');
-      });
-    };
+    $scope.saveList = function(list) {
 
-    $scope.addNewLabel = function(listId, newLabel, item) { //DONE
-      item.label = newLabel;
-      $scope.updateLabel(listId, item);
+      var updatedList = angular.copy(list);
+
+      angular.forEach(updatedList.items, function(item, itemIndex) {
+        item.label = item.editLabel;
+        item.parlevel = item.editParlevel;
+        item.position = item.editPosition;
+        item.isEditing = false;
+      });
+
+      ListService.updateList(updatedList).then(function(data) {
+        // hide renameListForm form
+        $scope.selectedList.isRenaming = false;
+
+        // reset column sort 
+        $scope.sortBy = 'editPosition';
+        $scope.sortOrder = false;
+
+        $scope.unsavedChanges = false;
+
+        $scope.selectedList = updatedList;
+        addSuccessAlert('Successfully saved list ' + list.name + '.');
+      }, function(error) {
+        addErrorAlert('Error saving list ' + list.name + '.');
+      });
     };
 
     $scope.renameList = function (listId, listName) { //DONE
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
+      // check for duplicate list names
+      // TODO: move into directive
+      angular.forEach($scope.lists, function(list, index) {
+        if (list.name === listName && list.listid !== listId) {
+          addErrorAlert('Error creating list. Duplicate names.');
+          return;
+        }
+      });
+
       ListService.updateList(list).then(function(data) {
-        $scope.displayEditingListName = false;
+        $scope.selectedList.isRenaming = false;
         $scope.selectedList.name = listName;
         addSuccessAlert('Successfully renamed list to ' + listName + '.');
       });
     };
 
     $scope.cancelEditListName = function() { //DONE
-      $scope.displayEditingListName = false;
+      $scope.selectedList.isRenaming = false;
     };
 
     $scope.startEditListName = function(listName) { //DONE
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
-      $scope.displayEditingListName = true;
+      $scope.selectedList.isRenaming = true;
     };
 
     $scope.addItemToList = function (event, helper, listId) {
       var selectedItem = angular.copy(helper.draggable.data('product'));
 
-      ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
+      var promise;
+      if (listId === ListService.favoritesList.listid) {
+        promise = ListService.addItemToFavorites(selectedItem);
+      } else {
+        promise = ListService.addItemToListAndFavorites(listId, selectedItem);
+      }
+
+      promise.then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
       },function(error) {
         addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
       });
     };
 
-    $scope.editParLevel = function(listId, item) {
-      ListService.updateItem(listId, item).then(function(data) {
-        addSuccessAlert('Successfully update PAR Level for item ' + item.itemnumber + '.');
-      },function(error) {
-        addErrorAlert('Error updating PAR level.');
-      });
+    $scope.deleteItem = function(item) {
+
+      var deletedIndex = $scope.selectedList.items.indexOf(item);
+
+      if (deletedIndex < 0) {
+        var deletedItem = angular.copy(item);
+        angular.forEach($scope.selectedList.items, function(listItem, index) {
+          if (listItem.listitemid === deletedItem.listitemid) {
+            deletedIndex = index;
+          }
+        });
+      }
+
+      $scope.selectedList.items.splice(deletedIndex, 1);
+      updateItemPositions();
+      $scope.unsavedChanges = true;
     };
 
-    $scope.deleteItemFromDrag = function(event, helper, list) { //DONE
-      var selectedItem = helper.draggable.data('product');
-      
-      $scope.deleteItem(list, selectedItem);
+    $scope.deleteItemFromDrag = function(event, helper) {
+      var selectedItem = angular.copy(helper.draggable.data('product'));
+      $scope.deleteItem(selectedItem);
     };
 
-    $scope.deleteItem = function(list, item) {
-      var deletedItem = angular.copy(item);
-      ListService.deleteItem(list.listid, item.listitemid).then(function(data) {
-        addSuccessAlert('Successfully removed item ' + deletedItem.itemnumber + '.');
-      },function(error) {
-        addErrorAlert('Error removing item ' + deletedItem.itemnumber + ' from list.');
+    // warn user when exiting page without saved changes
+    // window.onbeforeunload = function(){
+    //   if (unsavedChanges) {
+    //     debugger;
+    //   }
+    // };
+
+    // ORDERING/SORTING LIST
+
+    // saves new item indexes in cached editPosition field after sorting or ordering the list items
+    function updateItemPositions() {
+      angular.forEach($scope.selectedList.items, function(item, index) {
+        item.editPosition = index + 1;
       });
+    }
+
+    // sort list by column
+    $scope.sortList = function(sortBy, sortOrder) {
+      var sortField = sortBy;
+      $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+        if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
+          return 1000;
+        }
+        return item[sortField];
+      }, sortOrder);
+
+      $scope.sortBy = sortBy;
+      updateItemPositions();
+    };
+
+    // reorder list by drag and drop
+    $scope.stopReorder = function (e, ui) {
+      ui.item.addClass('bek-reordered-item');
+
+      $timeout(function() {
+        ui.item.removeClass('bek-reordered-item');
+        console.log('remove class');
+      }, 500);
+
+      updateItemPositions();
+
+    };
+    $scope.work = function(event, ui) {  
+        // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 
     // Dragging, used to enable DOM elements
@@ -182,12 +289,13 @@ angular.module('bekApp')
       $scope.alerts.splice(index, 1);
     };
 
+    // FILTER LIST
     $scope.listSearchTerm = '';
     $scope.search = function (row) {
       var term = $scope.listSearchTerm.toLowerCase();
 
       var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
-        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1,
+        nameMatch = row.name===null || row.name.toLowerCase().indexOf(term || '') !== -1,
         labelMatch =  row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);
 
       return !!(itemnumberMatch || nameMatch || labelMatch);

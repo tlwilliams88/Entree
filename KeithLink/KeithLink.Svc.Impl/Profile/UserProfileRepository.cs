@@ -1,23 +1,42 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace KeithLink.Svc.Impl.Profile
 {
-    public class UserProfileRepository : Core.Profile.IUserProfileRepository
+    public class UserProfileRepository : Core.Interface.Profile.IUserProfileRepository
     {
         #region methods
+        /// <summary>
+        /// check that the customer name is longer the 0 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertCustomerNameLength(string customerName)
         {
             if (customerName.Length == 0) throw new ApplicationException("Customer name is blank");
         }
 
+        /// <summary>
+        /// make sure that there are not any special characters in the customer name
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertCustomerNameValidCharacters(string customerName)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(customerName, Core.Constants.REGEX_AD_ILLEGALCHARACTERS)) { throw new ApplicationException("Invalid characters in customer name"); }
         }
 
+        /// <summary>
+        /// test to make sure that it is a correctly formatted email address
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertEmailAddress(string emailAddress)
         {
             try
@@ -30,11 +49,23 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// make sure that the email address is longer the 0 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertEmailAddressLength(string emailAddress)
         {
             if (emailAddress.Length == 0) throw new ApplicationException("Email address is blank");
         }
 
+        /// <summary>
+        /// make sure that the email address does not already exist
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertEmailAddressUnique(string emailAddress){
             ExternalUserDomainRepository extAd = new ExternalUserDomainRepository();
 
@@ -44,16 +75,34 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// make sure that the first name is longer than 0 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertFirstNameLength(string firstName)
         {
             if (firstName.Length == 0) throw new ApplicationException("First name is blank");
         }
 
+        /// <summary>
+        /// make sure that the last name is longer than 0 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertLastNameLength(string lastName)
         {
             if (lastName.Length == 0) throw new ApplicationException("Last name is blank");
         }
 
+        /// <summary>
+        /// make sure that the password meets our complexity rules of 1 upper case letter, 1 lower case letter, and 1 number
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertPasswordComplexity(string password)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) { 
@@ -61,11 +110,23 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// make sure that the password is longer than 7 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertPasswordLength(string password)
         {
             if (password.Length < 7) throw new ApplicationException("Minimum password length is 7 characters");
         }
 
+        /// <summary>
+        /// make sure that the password does not contain any of the values stored in the attributes such as first or last name
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertPasswordVsAttributes(string password, string customerName, string firstName, string lastName)
         {
             bool matched = false;
@@ -80,6 +141,12 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// make sure that the role name is a valid role
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertRoleName(string roleName)
         {
             bool found = false;
@@ -94,11 +161,23 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// make sure that the role name is longer than 0 characters
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertRoleNameLength(string roleName)
         {
             if (roleName.Length == 0) { throw new ApplicationException("Role name is blank"); }
         }
 
+        /// <summary>
+        /// validate all of the attributes of the user's profile
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         private void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
         {
             AssertCustomerNameLength(customerName);
@@ -114,6 +193,12 @@ namespace KeithLink.Svc.Impl.Profile
             AssertRoleNameLength(roleName);
         }
 
+        /// <summary>
+        /// test the user against internal or external AD based on the email address' domain name. Will throw an exception if authentication fails
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public bool AuthenticateUser(string emailAddress, string password)
         {
             if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
@@ -130,20 +215,44 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
-        public bool AuthenticateUser(string emailAddress, string password, out Core.Profile.UserProfileReturn userProfile)
+        /// <summary>
+        /// authenticate a user against internal or external AD based on the email address' domain. Authentication failure does not throw an exception
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <param name="password">the user's password</param>
+        /// <param name="errorMessage">authentication failure messages</param>
+        /// <returns>true/false</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
-            bool success = AuthenticateUser(emailAddress, password);
+            errorMessage = null;
 
-            if (success) { 
-                userProfile = GetUserProfile(emailAddress); 
-            } else {
-                userProfile = new Core.Profile.UserProfileReturn();
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            {
+                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
+                return internalAD.AuthenticateUser(userName, password, out errorMessage);
             }
-
-            return success;
+            else
+            {
+                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
+                return externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
+            }
         }
 
-        private Core.Profile.UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
+        /// <summary>
+        /// combines the attributes from AD and Commerce Server into our UserProfile class
+        /// </summary>
+        /// <param name="csProfile">commerce server user profile</param>
+        /// <param name="emailAddress">the user's email address to lookup in AD</param>
+        /// <returns>UserProfile object with attributes filled from both locations</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        private UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
         {
             System.DirectoryServices.AccountManagement.UserPrincipal adProfile = null;
 
@@ -160,8 +269,8 @@ namespace KeithLink.Svc.Impl.Profile
                 adProfile = externalAD.GetUser(emailAddress);
             }
 
-            return new Core.Profile.UserProfile(){
-                UserId = csProfile.Id,
+            return new UserProfile(){
+                UserId = Guid.Parse(csProfile.Id),
                 UserName = adProfile.UserPrincipalName,
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
@@ -170,7 +279,14 @@ namespace KeithLink.Svc.Impl.Profile
             };
         }
 
-        public Core.Profile.UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
+        /// <summary>
+        /// create the user in AD if external address, and always create a Commerce Server profile
+        /// </summary>
+        /// <returns>a completed user profile</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName)
         {
             AssertUserProfile(customerName, emailAddres, password, firstName, lastName, phoneNumber, roleName);
 
@@ -213,12 +329,24 @@ namespace KeithLink.Svc.Impl.Profile
             return (GetUserProfile(emailAddres));
         }
 
+        /// <summary>
+        /// delete the user from Commerce Server (not implemented)
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public void DeleteUserProfile(string userName)
         {
             throw new NotImplementedException();
         }
 
-        public Core.Profile.UserProfileReturn GetUserProfile(string userName)
+        /// <summary>
+        /// get the user profile
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfile(string userName)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = userName;
@@ -240,17 +368,29 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
 
-            Core.Profile.UserProfileReturn retVal = new Core.Profile.UserProfileReturn();
+            UserProfileReturn retVal = new UserProfileReturn();
             retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
-            
+
             return retVal;
         }
 
-        public Core.Profile.UserProfileReturn GetUserProfilesByCustomerName(string customerName)
+        /// <summary>
+        /// get all of the users for the customer name (not implemented)
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfilesByCustomerName(string customerName)
         {
             throw new NotImplementedException();
         }
 
+        /// <summary>
+        /// update the user profile in Commerce Server (not implemented)
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public void UpdateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber)
         {
             throw new NotImplementedException();

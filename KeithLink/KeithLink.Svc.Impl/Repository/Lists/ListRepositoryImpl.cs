@@ -50,11 +50,18 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
 			basket.Name = list.FormattedName(basket["BranchId"].ToString());
 			basket["DisplayName"] = list.Name;
-			
+
+			var itemsToRemove = new List<Guid>();
+
 			for (int x = 0; x < basket.LineItemCount; x++)
 			{
 				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
-					basket.OrderForms[0].LineItems.Remove(x);
+					itemsToRemove.Add(basket.OrderForms[0].LineItems[x].LineItemId);
+			}
+
+			foreach (var toDelete in itemsToRemove)
+			{
+				basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(toDelete));
 			}
 
 			if (list.Items != null)
@@ -66,12 +73,13 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					{
 						existingItem["LinePosition"] = item.Position;
 						existingItem.ProductId = item.ItemNumber;
-						existingItem.Quantity = item.ParLevel;
+						existingItem["ParLevel"] = item.ParLevel;
 						existingItem.DisplayName = item.Label;
 					}
 					else
 					{
-						var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber, Quantity = item.ParLevel };
+						var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
+						newItem["ParLevel"] = item.ParLevel;
 						newItem["LinePosition"] = item.Position;
 						basket.OrderForms[0].LineItems.Add(newItem);
 					}
@@ -101,7 +109,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					ItemNumber = l.ProductId, 
 					Label = l.DisplayName,
 					ListItemId = l.LineItemId,
-					ParLevel = (int)l.Quantity, Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString()) }).ToList() }).ToList();
+					ParLevel = l["ParLevel"] == null ? 0 : (decimal)l["ParLevel"],
+					Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString())
+				}).ToList()
+			}).ToList();
 
         }
 
@@ -137,7 +148,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 						ItemNumber = l.ProductId,
 						Label = l.DisplayName,
 						ListItemId = l.LineItemId,
-						ParLevel = (int)l.Quantity,
+						ParLevel = l["ParLevel"] == null ? 0 : (decimal)l["ParLevel"],
 						Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString())
 					}).ToList()
 			};
@@ -148,10 +159,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		public UserList ReadList(Guid userId, string listName)
 		{
 			
-			var list = orderContext.GetBasket(userId, listName);
-			if (list == null || list["BranchId"] == null)
-				return null;
-			return ToUserList(list);
+            var list = orderContext.GetBasket(userId, listName);
+            if (list == null || list["BranchId"] == null)
+                return null;
+            return ToUserList(list);
 		}
 
 
@@ -159,7 +170,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			var basket = orderContext.GetBasket(userId, listId);
 
-			var newCSItem = new LineItem() { DisplayName = newItem.Label, ProductId = newItem.ItemNumber, Quantity = newItem.ParLevel };
+			var newCSItem = new LineItem() { DisplayName = newItem.Label, ProductId = newItem.ItemNumber};
+			newCSItem["ParLevel"] = newItem.ParLevel;
 			newCSItem["LinePosition"] = newItem.Position;
 			basket.OrderForms[0].LineItems.Add(newCSItem);
 

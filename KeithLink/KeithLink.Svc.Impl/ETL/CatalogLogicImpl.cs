@@ -39,10 +39,14 @@ namespace KeithLink.Svc.Impl.ETL
 							  ""type"" : ""string"",
 							  ""index"" : ""not_analyzed""
 						},
-					 ""brand"" : {
-					   ""type"" : ""string"",
-							  ""index"" : ""not_analyzed""
-					 }
+						""brand"" : {
+							""type"" : ""string"",
+							""index"" : ""not_analyzed""
+						},
+         				""name"" : {
+           					""type"" : ""string"",
+							""index"" : ""not_analyzed""
+         				}
 				   }
 				}
 			}";

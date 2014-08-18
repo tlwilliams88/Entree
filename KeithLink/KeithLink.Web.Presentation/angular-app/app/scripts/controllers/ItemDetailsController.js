@@ -17,13 +17,13 @@ angular.module('bekApp')
       $scope.loadingDetails = false;
     });
 
-
-    ListService.getAllLists({'header': true}).then(function(data) {
-     $scope.lists = data;
-    }); 
-
     $scope.highlightRow = function(index, totalItems) {
       return Boolean((index + totalItems) % 2);
     };
 
+    // TODO: move into context menu controller
+    $scope.lists = ListService.lists;
+    ListService.getAllLists({
+      'header': true
+    });
   }]);

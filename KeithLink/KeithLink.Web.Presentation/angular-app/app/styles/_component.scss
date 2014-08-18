@@ -7,11 +7,12 @@
 /* BUTTONS */
 
 // default button
-button.btn {
+.btn {
   @include component;
   min-height: 40px;
   background-color: white;
   white-space: inherit;
+  padding: 9px 12px;
   
   // call to action button
   &.cta-btn {
@@ -21,7 +22,7 @@ button.btn {
   }
 }
 
-button.btn-no-style {
+.btn-no-style {
   background: transparent;
   border: none;
 
@@ -62,6 +63,7 @@ button.btn-no-style {
    overflow: hidden;
    background: url("../images/down-arrow.png") no-repeat 96% $color-white;
    border: 1px solid #c3bc9c;
+   vertical-align: middle;
 }
 
 /* TEXT INPUTS */
@@ -177,4 +179,8 @@ input[type="checkbox"]:checked + label {
   input {
     border-right: none;
   }
+}
+
+.hand{
+  cursor: pointer;
 }

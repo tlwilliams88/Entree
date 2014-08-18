@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="item-details__actions hidden-print">
-      <button class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></button>
+      <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
         <button class="btn" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>

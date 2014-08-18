@@ -5,40 +5,43 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Profile
+namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="UserProfile")]
-    public class UserProfile
+    public class UserProfile : System.Security.Principal.IIdentity
     {
         #region attributes
-        private StringBuilder _userId;
+        private Guid _userId;
         private StringBuilder _userName;
         private StringBuilder _firstName;
         private StringBuilder _lastName;
         private StringBuilder _emailAddress;
         private StringBuilder _phoneNumber;
         private CustomerContainer _customer;
+
+        private bool _isAuthenticated;
         #endregion
 
         #region ctor
         public UserProfile()
         {
-            _userId = new StringBuilder();
             _userName = new StringBuilder();
             _firstName = new StringBuilder();
             _lastName = new StringBuilder();
             _emailAddress = new StringBuilder();
             _phoneNumber = new StringBuilder();
             _customer = new CustomerContainer();
+
+            _isAuthenticated = false;
         }
         #endregion
 
         #region properties
         [DataMember(Name="UserId")]
-        public string UserId
+        public Guid UserId
         {
-            get { return _userId.ToString(); }
-            set { _userId = new StringBuilder(value); }
+            get { return _userId; }
+            set { _userId = value; }
         }
 
         [DataMember(Name = "UserName")]
@@ -81,6 +84,22 @@ namespace KeithLink.Svc.Core.Profile
         {
             get { return _customer.Name; }
             set { _customer.Name = value; }
+        }
+
+        public string AuthenticationType
+        {
+            get { return "Active Directory"; }
+        }
+
+        public bool IsAuthenticated
+        {
+            get { return _isAuthenticated; }
+            set { _isAuthenticated = value; }
+        }
+
+        public string Name
+        {
+            get { return EmailAddress; }
         }
         #endregion
     }

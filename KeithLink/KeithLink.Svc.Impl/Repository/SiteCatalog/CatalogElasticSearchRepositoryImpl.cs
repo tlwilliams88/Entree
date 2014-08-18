@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string filterTerms = string.Empty;
             if (facetTerms.Count > 0)
             {
-                filterTerms = @"""bool"" : { ""should"" : [ 
+                filterTerms = @"""bool"" : { ""must"" : [ 
                         " + String.Join(",", facetTerms.ToArray())
                         + @"] }";
             }
@@ -122,6 +122,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     var facetValue = new ExpandoObject() as IDictionary<string, object>;
                     facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
                     facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
+                    if (oFacet.Key == "categories")
+                    {
+                        facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+                    }
                     facet.Add(facetValue as ExpandoObject);
                 }
 
@@ -166,7 +170,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string filterTerms = string.Empty;
             if (facetTerms.Count > 0)
             {
-                filterTerms = @"""bool"" : { ""should"" : [ 
+                filterTerms = @"""bool"" : { ""must"" : [ 
                         " + String.Join(",", facetTerms.ToArray())
                         + @"] }";
             }
@@ -177,7 +181,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                   ""filtered"":{
                    ""query"": {
                     ""query_string"" : {
-                          ""fields"" : [""name"", ""description"", ""categoryname""],
+                          ""fields"" : [""name"", ""description"", ""categoryname"", ""itemnumber""],
                           ""query"" : """ + search + @""",
                                                ""use_dis_max"" : true
                         }
@@ -245,7 +249,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ItemClass = oProd._source.itemclass;
             p.CaseCube = oProd._source.icube;
 			p.NonStock = oProd._source.nonstock;
-            // TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
+			// TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
             {
@@ -368,7 +372,12 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         if (aggregationParams.Length != 2)
                             throw new ApplicationException("Incorrect aggreation configuration");
 
-                        aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\" }}");
+                        if (aggregationParams[0] == "categories")
+                        {
+							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\", \"size\": 500 }}}}");
+                        } else {
+							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 }}");
+                        }
                     }
 
                     string formatString = s.ToString();
@@ -403,6 +412,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		{
 			var productList = String.Join(" OR ", ids);
 			var query = @"{
+						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
 						""fields"" : [""itemnumber""],
