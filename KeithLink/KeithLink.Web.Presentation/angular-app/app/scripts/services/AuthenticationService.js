@@ -6,11 +6,13 @@ angular.module('bekApp')
     var isValid = false;
 
     function validateUser(username, password) {
-      var data = {
-        username: username,
-        password: password,
-        grant_type: 'password'
-      };
+      // var data = {
+      //   username: username,
+      //   password: password,
+      //   grant_type: 'password'
+      // };
+
+      var data = "grant_type=password&username=" + username + "&password=" + password;
 
       var headers = { headers : {
           'Content-Type': 'application/x-www-form-urlencoded' 
@@ -64,16 +66,13 @@ angular.module('bekApp')
 
       login: function(username, password) {
         $q.all([ 
-          //validateUser(username, password),
+          validateUser(username, password),
           getProfile(username, password)
         ]).then(function(data) {
-          var profile = data[0];
+          var token = data[0],
+            profile = data[1];
           
-          profile.token = {
-            'access_token': '3GT4Y5XUpED5W8Ri6hptEJKtE2P3EBDU03jSMPXiar3C0YIzK5W9PhPC36nQMgm2qTaYTLvvCu_VVq1nsyaxjEDvyViSHrue0Q-mjOg46cbnRrhNqb9FdVW2b57fRL0_69C782HfFAmsHnFv4-FAr2CUw0mqr-W48gWtq_qZNz-f4T5SCXkWhoLqrqeDIbYPJl_cxfH47nwLnYEcxrmpH7wzuKoY_zm49A1Yp2R7gXfhVv7Ci-YDaySvD596cfLq1ZqKb4KGl_o9gm3VYFyoNQ',
-            'token_type': 'bearer',
-            'expires_in': 86399
-          };
+          profile.token = token;
 
           UserProfileService.setProfile(profile);
         });        

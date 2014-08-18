@@ -18,7 +18,8 @@ angular
     'ui.bootstrap',
     'ui.sortable',
     'shoppinpal.mobile-menu',
-    'ngDragDrop'
+    'ngDragDrop',
+    'infinite-scroll'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
   // the $stateProvider determines path urls and their related controllers
@@ -126,7 +127,7 @@ angular
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
-  //  ApiService.endpointUrl = 'http://devapi.bekco.com';
+  // ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
   });

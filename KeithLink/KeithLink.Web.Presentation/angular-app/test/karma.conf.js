@@ -23,6 +23,7 @@ module.exports = function(config) {
       'app/lib/ng-mobile-menu/ng-mobile-menu.js',
       'app/lib/angular-dragdrop/angular-dragdrop.js',
       'app/lib/angular-ui-sortable/sortable.js',
+      'app/lib/ng-infinite-scroll/ng-infinite-scroll.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

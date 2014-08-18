@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_INTERNAL_ROOTNODE = "ADIntRoot";
         private const string KEY_AD_INTERNAL_SERVERNAME = "ADIntServer";
         private const string KEY_AD_INTERNAL_USER = "ADIntUser";
+        private const string KEY_AD_INVALIDATTEMPTS = "ADBadPwdCount";
+        private const string KEY_AD_LOCKOUTDURATION = "ADLockoutDuration";
         private const string KEY_APP_NAME = "AppName";
         private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
@@ -35,6 +37,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_SITE_NAME = "CS_SiteName";
+        private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         #endregion
 
         #region properties
@@ -116,6 +119,33 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static int ActiveDirectoryInvalidAttempts { 
+            get 
+            {
+                try
+                {
+                    return Convert.ToInt32(GetValue(KEY_AD_INVALIDATTEMPTS, "3"));
+                }
+                catch
+                {
+                    return 3;
+                }
+            } 
+        }
+
+        public static int ActiveDirectoryLockoutDuration { 
+            get {
+                try
+                {
+                    return Convert.ToInt32(GetValue(KEY_AD_LOCKOUTDURATION, "30"));
+
+                }
+                catch {
+                    return 30;
+                }
+            } 
+        }
+
         public static string AppDataConnectionString
         {
             get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
@@ -189,6 +219,11 @@ namespace KeithLink.Svc.Impl
         public static string ElasticSearchURL
         {
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
+        }
+
+        public static string CategoryPrefixesToExclude
+        {
+            get { return GetValue(CATEGORY_PREFIXES, string.Empty); }
         }
         #endregion
     }

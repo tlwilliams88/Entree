@@ -9,7 +9,39 @@ namespace KeithLink.Svc.Impl.Profile
 {
     public class ExternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
+        #region attributes
+        private enum UserAccountControlFlag
+        {
+            Disabled = 0x0002,
+            Locked = 0x10,
+            NormalAccount = 0x200,
+            PasswordNotRequired = 0x20
+        }
+        #endregion
+
         #region methods
+        /// <summary>
+        /// authenticates the user to the benekeith.com domain and throws an exception for any problems encountered
+        /// </summary>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - change to call new authenticateuser method with a string output
+        /// </remarks>
+        public bool AuthenticateUser(string userName, string password)
+        {
+            string msg = null;
+            bool success = AuthenticateUser(userName, password, out msg);
+
+            if (success)
+            {
+                return true;
+            }
+            else
+            {
+                throw new ApplicationException(msg);
+                //return false;
+            }
+        }
 
         /// <summary>
         /// test user credentials
@@ -20,29 +52,94 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
+        /// jwames - 8/15/2014 - add locking tests
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password)
+        public bool AuthenticateUser(string userName, string password, out string errorMessage)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
 
+            errorMessage = null;
+
+            // connect to server
             try
             {
-                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain, Configuration.ActiveDirectoryExternalServerName))
+                using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
+                                                            Configuration.ActiveDirectoryExternalServerName,
+                                                            Configuration.ActiveDirectoryExternalRootNode,
+                                                            ContextOptions.SimpleBind,
+                                                            GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                            Configuration.ActiveDirectoryExternalPassword))
                 {
-                    return principal.ValidateCredentials(userName, password, ContextOptions.SimpleBind);
+                    // if user exists
+                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, userName);
+
+                    if (authenticatingUser == null)
+                    {
+                        errorMessage = "User name or password is invalid";
+                        return false;
+                    }
+
+                    // if account is enabled 
+                    if (authenticatingUser.Enabled == false)
+                    {
+                        errorMessage = "User account is disabled";
+                        return false;
+                    }
+
+                    // if locked 
+                    if (authenticatingUser.IsAccountLockedOut())
+                    {
+                        if (authenticatingUser.AccountLockoutTime.HasValue)
+                        {
+                            DateTime endOfLockout = authenticatingUser.AccountLockoutTime.Value.AddMinutes(Configuration.ActiveDirectoryLockoutDuration);
+
+                            if (DateTime.Now < endOfLockout)
+                            {
+                                errorMessage = "User account is locked and cannot sign in now";
+                                return false;
+                            }
+                        }
+
+                    }
+
+                    // validate password
+                    if (boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
+                        {
+                            errorMessage = "User account is locked and cannot sign in now";
+                        }
+                        else
+                        {
+                            errorMessage = "User name or password is invalid";
+                        }
+
+                        return false;
+                    }
+
+
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not authenticate user", ex);
-
+                errorMessage = "Could not connect to authentication server for benekeith.com";
                 return false;
             }
         }
 
+        /// <summary>
+        /// create a user in the benekeith.com domain
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
         {
             const int NORMAL_ACCT = 0x200;
@@ -141,6 +238,12 @@ namespace KeithLink.Svc.Impl.Profile
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
         }
         
+        /// <summary>
+        /// get the user principal from the benekeith.com domain
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
@@ -168,6 +271,14 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// get a unique user name for AD based on the user name in the email address
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <returns>a user name</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public string GetNewUserName(string emailAddress)
         {
             string userName = null;
@@ -259,6 +370,12 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
+        /// <summary>
+        /// check the benekeith.com domain for the username
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public bool UsernameExists(string userName)
         {
             string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);

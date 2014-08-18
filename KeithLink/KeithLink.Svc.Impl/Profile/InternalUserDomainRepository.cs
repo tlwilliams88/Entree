@@ -19,25 +19,110 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
+        /// jwames - 8/18/2014 - change to throw exceptions when authentication fails
         /// </remarks>
         public bool AuthenticateUser(string userName, string password)
+        {
+            string msg = null;
+            bool success = AuthenticateUser(userName, password, out msg);
+
+            if (success)
+            {
+                return true;
+            }
+            else
+            {
+                throw new ApplicationException(msg);
+                //return false;
+            }
+        }
+
+        /// <summary>
+        /// authenticate the user and return an error message when authentication fails
+        /// </summary>
+        /// <param name="userName">the user's network user id</param>
+        /// <param name="password">the user's password</param>
+        /// <param name="errorMessage">reason for failing authentication</param>
+        /// <returns>true/false</returns>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public bool AuthenticateUser(string userName, string password, out string errorMessage)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
 
+            errorMessage = null;
+
+            // connect to server
             try
             {
-                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain, Configuration.ActiveDirectoryInternalServerName))
+                using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
+                                                            Configuration.ActiveDirectoryInternalServerName,
+                                                            Configuration.ActiveDirectoryInternalRootNode,
+                                                            ContextOptions.Negotiate,
+                                                            GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
+                                                            Configuration.ActiveDirectoryInternalPassword))
                 {
-                    return principal.ValidateCredentials(GetDomainUserName(userName), password, ContextOptions.SimpleBind);
+                    // if user exists
+                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, userName);
+
+                    if (authenticatingUser == null)
+                    {
+                        errorMessage = "User name or password is invalid";
+                        return false;
+                    }
+
+                    // if account is enabled 
+                    if (authenticatingUser.Enabled == false)
+                    {
+                        errorMessage = "User account is disabled";
+                        return false;
+                    }
+
+                    // if locked 
+                    if (authenticatingUser.IsAccountLockedOut())
+                    {
+                        if (authenticatingUser.AccountLockoutTime.HasValue)
+                        {
+                            DateTime endOfLockout = authenticatingUser.AccountLockoutTime.Value.AddMinutes(Configuration.ActiveDirectoryLockoutDuration);
+
+                            if (DateTime.Now < endOfLockout)
+                            {
+                                errorMessage = "User account is locked and cannot sign in now";
+                                return false;
+                            }
+                        }
+
+                    }
+
+                    // validate password
+                    if (boundServer.ValidateCredentials(userName, password))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
+                        {
+                            errorMessage = "User account is locked and cannot sign in now";
+                        }
+                        else
+                        {
+                            errorMessage = "User name or password is invalid";
+                        }
+
+                        return false;
+                    }
+
+
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not authenticate user", ex);
-
+                errorMessage = "Could not connect to authentication server for benekeith.com";
                 return false;
             }
         }
@@ -55,6 +140,12 @@ namespace KeithLink.Svc.Impl.Profile
             return string.Format("{0}\\{1}", Configuration.ActiveDirectoryInternalDomain, userName);
         }
 
+        /// <summary>
+        /// get the user from AD
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }

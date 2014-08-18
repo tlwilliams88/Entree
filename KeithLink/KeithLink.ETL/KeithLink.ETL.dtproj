@@ -14,8 +14,13 @@
     <Manifest>
       <DTSPackages>
         <DtsPackage FormatVersion="6">
-          <Name>ETLProcess.dtsx</Name>
-          <FullPath>ETLProcess.dtsx</FullPath>
+          <Name>ETLProcess_QA.dtsx</Name>
+          <FullPath>ETLProcess_QA.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>ETLProcess_DEV.dtsx</Name>
+          <FullPath>ETLProcess_DEV.dtsx</FullPath>
           <References />
         </DtsPackage>
       </DTSPackages>
