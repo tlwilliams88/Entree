@@ -167,7 +167,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
 
             return new UserProfile(){
-                UserId = csProfile.Id,
+                UserId = Guid.Parse(csProfile.Id),
                 UserName = adProfile.UserPrincipalName,
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
@@ -248,7 +248,7 @@ namespace KeithLink.Svc.Impl.Profile
 
             UserProfileReturn retVal = new UserProfileReturn();
             retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
-            
+
             return retVal;
         }
 

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class BaseController : ApiController
+	public class BaseController : ApiController
     {
         #region attributes
         private Core.Interface.Profile.IUserProfileRepository _userRepo;
@@ -49,9 +50,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region properties
         public Core.Models.Profile.UserProfile AuthenticatedUser
         {
-            get { return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity; }
+			get
+			{
+				if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
+					return null;
+				else
+					return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity;
+			}
         }
-
+		
         #endregion
     }
 }

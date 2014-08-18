@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Models.Profile
     public class UserProfile : System.Security.Principal.IIdentity
     {
         #region attributes
-        private StringBuilder _userId;
+        private Guid _userId;
         private StringBuilder _userName;
         private StringBuilder _firstName;
         private StringBuilder _lastName;
@@ -25,7 +25,6 @@ namespace KeithLink.Svc.Core.Models.Profile
         #region ctor
         public UserProfile()
         {
-            _userId = new StringBuilder();
             _userName = new StringBuilder();
             _firstName = new StringBuilder();
             _lastName = new StringBuilder();
@@ -39,10 +38,10 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         #region properties
         [DataMember(Name="UserId")]
-        public string UserId
+        public Guid UserId
         {
-            get { return _userId.ToString(); }
-            set { _userId = new StringBuilder(value); }
+            get { return _userId; }
+            set { _userId = value; }
         }
 
         [DataMember(Name = "UserName")]

@@ -13,7 +13,7 @@
 			<div ng-repeat="bc in breadcrumbs"><a ng-click="breadcrumbClickEvent(bc.type,bc.id)">{{bc.name}} </a> <span>>></span></div>
 		</div>
 		<div class="page-subheader-bar__message hidden-lg hidden-md">
-			{{searchTerm}}
+			{{categoryName}}{{searchTerm}}
 		</div>
 		<div ng-click="hidden = ! hidden" class="hidden-lg hidden-md page-subheader-bar__filter">
 			Filter <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
@@ -32,16 +32,16 @@
 						<accordion-group is-open="status.subopen[$index]" ng-repeat="category in categories | orderBy : ['name']" class="sub-accordion">
 							<accordion-heading>
 												<div class="panel panel-default">
-																			<div class="panel-body">
-																										<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
-																			</div>
+																					<div class="panel-body">
+																														<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
+																					</div>
 												</div>
 							</accordion-heading>
 							<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
 												<div class="panel-body">
-																			<li ng-click="toggleSelection(subcategory, 'subcategory')">
-																										<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-																			</li>
+																					<li ng-click="toggleSelection(subcategory, 'subcategory')">
+																														<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+																					</li>
 												</div>
 							</div>
 						</accordion-group>
@@ -106,6 +106,16 @@
 					<accordion-heading>
 						Item Specifications<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
 					</accordion-heading>
+					<div ng-class="{hidenonstock: !hasNonstock}" class="panel panel-default">
+						<div class="panel-body">	
+							<input type="checkbox"
+							value="nonstockValue_{{nonstock.name}}"
+							id="nonstockId_{{nonstock.name}}"
+							ng-checked="selectedNonstock.indexOf(nonstock.name) > -1"
+							ng-click="toggleSelection(nonstock.name,'nonstock')">
+							<label for="nonstockId_{{nonstock.name}}"><span class="{{nonstock.iconclass}}"></span> {{nonstock.displayname}} ({{nonstock.count}})</label>
+						</div>
+					</div>
 					<div ng-repeat="spec in itemspecs" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
@@ -129,13 +139,12 @@
 				<h3 ng-show="paramType !== 'category'">Categories</h3>
 				<h3 ng-show="paramType === 'category'">{{categoryName}}</h3>
 				<ul class="nav search-results__category">
-					<li class="text-center" loading-spinner="loadingCategories"></li>
 					<li ng-repeat="category in categories">
 						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
 						<!-- <ul ng-show="category.show" class="">
-													<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
-																				<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-													</li>
+															<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
+																								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+															</li>
 						</ul> -->
 					</li>
 				</ul>
@@ -195,6 +204,14 @@
 		<div class="row sub-content">
 			<div class="col-sm-12">
 				<h3>Item Specifications</h3>
+				<div ng-class="{hidenonstock: !hasNonstock}">
+					<input type="checkbox"
+					value="nonstockValue_{{nonstock.name}}"
+					id="nonstockId_{{nonstock.name}}"
+					ng-checked="selectedNonstock.indexOf(nonstock.name) > -1"
+					ng-click="toggleSelection(nonstock.name,'nonstock')">
+					<label for="nonstockId_{{nonstock.name}}"><span class="{{nonstock.iconclass}}"></span> {{nonstock.displayname}} ({{nonstock.count}})</label>
+				</div>
 				<div ng-repeat="spec in itemspecs" ng-class="{hidespec: $index > specHiddenNumber}">
 					<input type="checkbox"
 					value="specValue_{{spec.name}}"
@@ -212,7 +229,8 @@
 	</div>
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
-		<h2 class="hidden-xs hidden-sm">Search Results</h2>
+		<h2 class="col-md-6 no-padding hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
+		<span class="col-md-6 no-padding pull-right hidden-xs hidden-sm" style="width: initial;">{{totalItems}} results</span>
 		<div>
 			<table class="table table-striped" when-scrolled="infiniteScrollLoadMore()">
 				<thead>
@@ -221,20 +239,20 @@
 						<th class="hand" ng-click="sortTable('itemnumber')">
 							Item <span ng-class="{
 							'icon-menu':sortField !== 'itemnumber',
-							'icon-arrow-down4':sortField == 'itemnumber' && asc,
-							'icon-arrow-up3':sortField == 'itemnumber' && !asc
+							'icon-arrow-up3':sortField == 'itemnumber' && asc,
+							'icon-arrow-down4':sortField == 'itemnumber' && !asc
 							}"></span>
 						</th>
 						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand')">
 							Brand <span ng-class="{
 							'icon-menu':sortField !== 'brand',
-							'icon-arrow-down4':sortField == 'brand' && asc,
-							'icon-arrow-up3':sortField == 'brand' && !asc
+							'icon-arrow-up3':sortField == 'brand' && asc,
+							'icon-arrow-down4':sortField == 'brand' && !asc
 						}"></span></th>
 						<th class="hand" ng-click="sortTable('name')">Name <span ng-class="{
 							'icon-menu':sortField !== 'name',
-							'icon-arrow-down4':sortField == 'name' && asc,
-							'icon-arrow-up3':sortField == 'name' && !asc
+							'icon-arrow-up3':sortField == 'name' && asc,
+							'icon-arrow-down4':sortField == 'name' && !asc
 						}"></span></th>
 						<th class="hidden-sm hidden-xs">
 							Pack/Size
@@ -242,8 +260,8 @@
 						<th class="hidden-sm hidden-xs"></th>
 						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('caseprice')">Price <span ng-class="{
 							'icon-menu':sortField !== 'caseprice',
-							'icon-arrow-down4':sortField == 'caseprice' && asc,
-							'icon-arrow-up3':sortField == 'caseprice' && !asc
+							'icon-arrow-up3':sortField == 'caseprice' && asc,
+							'icon-arrow-down4':sortField == 'caseprice' && !asc
 						}"></span></th>
 						<th></th>
 					</tr>

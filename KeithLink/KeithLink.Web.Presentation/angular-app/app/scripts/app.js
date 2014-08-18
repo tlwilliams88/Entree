@@ -73,7 +73,7 @@ angular
       controller: 'ListController'
     })
     .state('menu.listitems', {
-      url: '/lists/:listId/',
+      url: '/lists/:listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController'
     });
@@ -120,10 +120,13 @@ angular
       }
     };
   }]);
+
+  // // add authorization headers
+  $httpProvider.interceptors.push('AuthenticationInterceptorService');
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
-   // ApiService.endpointUrl = 'http://devapi.bekco.com';
+  //  ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
     ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
   });

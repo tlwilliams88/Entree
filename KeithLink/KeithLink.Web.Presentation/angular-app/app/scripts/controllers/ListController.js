@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$state', '$stateParams', 'ListService', function($scope, $filter, $state, $stateParams, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'ListService', function($scope, $filter, $timeout, $state, $stateParams, ListService) {
     var orderBy = $filter('orderBy');
 
     $scope.alerts = [];
@@ -19,6 +19,7 @@ angular.module('bekApp')
 
     ListService.getAllLists().then(function(data) {
       
+      // switch to specific list or default to Favorites list
       if ($stateParams.listId) {
         $scope.selectedList = ListService.findListById($stateParams.listId, data);
       }
@@ -36,7 +37,15 @@ angular.module('bekApp')
         });
       });
 
-      $scope.sortList('editPosition', false);
+      // set initial sort fields
+      $scope.sortList('position', false);
+
+      // set focus to rename list if it is a new list
+      if ($stateParams.renameList === 'true') {
+        $scope.startEditListName($scope.selectedList.name);
+        $state.transitionTo('menu.listitems', {listId: $scope.selectedList.listid}, {notify: false});
+      }
+
       $scope.loadingResults = false;
     });
 
@@ -50,15 +59,17 @@ angular.module('bekApp')
     };
 
     $scope.goToList = function(list) {
-      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
       $scope.selectedList = list;
       $scope.itemsToDisplay = itemsPerPage;
+      $scope.sortList('position', false);
+      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
     };
 
-    $scope.createList = function(items) { //DONE
+    $scope.createList = function() { //DONE
       ListService.createList().then(function(data) {
         $state.transitionTo('menu.listitems', {listId: data.listid}, {notify: false});
         $scope.selectedList = data;
+        $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -67,9 +78,12 @@ angular.module('bekApp')
 
     $scope.createListWithItem = function(event, helper) { //DONE
       var selectedItem = helper.draggable.data('product');
+      
       ListService.createListWithItem(selectedItem).then(function(data) {
-        $state.transitionTo('menu.listitems', {listId: data[0].listid}, {notify: false});
-        $scope.selectedList = data[0];
+        var newList = data[0];
+        $state.transitionTo('menu.listitems', {listId: newList.listid}, {notify: false});
+        $scope.selectedList = newList;
+        $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
       }, function(error) {
         addErrorAlert('Error creating list.');
@@ -93,11 +107,12 @@ angular.module('bekApp')
         item.label = item.editLabel;
         item.parlevel = item.editParlevel;
         item.position = item.editPosition;
+        item.isEditing = false;
       });
 
       ListService.updateList(updatedList).then(function(data) {
         // hide renameListForm form
-        $scope.displayEditingListName = false;
+        $scope.selectedList.isRenaming = false;
 
         // reset column sort 
         $scope.sortBy = 'editPosition';
@@ -116,27 +131,43 @@ angular.module('bekApp')
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
+      // check for duplicate list names
+      // TODO: move into directive
+      angular.forEach($scope.lists, function(list, index) {
+        if (list.name === listName && list.listid !== listId) {
+          addErrorAlert('Error creating list. Duplicate names.');
+          return;
+        }
+      });
+
       ListService.updateList(list).then(function(data) {
-        $scope.displayEditingListName = false;
+        $scope.selectedList.isRenaming = false;
         $scope.selectedList.name = listName;
         addSuccessAlert('Successfully renamed list to ' + listName + '.');
       });
     };
 
     $scope.cancelEditListName = function() { //DONE
-      $scope.displayEditingListName = false;
+      $scope.selectedList.isRenaming = false;
     };
 
     $scope.startEditListName = function(listName) { //DONE
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
-      $scope.displayEditingListName = true;
+      $scope.selectedList.isRenaming = true;
     };
 
     $scope.addItemToList = function (event, helper, listId) {
       var selectedItem = angular.copy(helper.draggable.data('product'));
 
-      ListService.addItemToListAndFavorites(listId, selectedItem).then(function(data) {
+      var promise;
+      if (listId === ListService.favoritesList.listid) {
+        promise = ListService.addItemToFavorites(selectedItem);
+      } else {
+        promise = ListService.addItemToListAndFavorites(listId, selectedItem);
+      }
+
+      promise.then(function(data) {
         addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
       },function(error) {
         addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
@@ -157,7 +188,7 @@ angular.module('bekApp')
       }
 
       $scope.selectedList.items.splice(deletedIndex, 1);
-      updateItemIndexes();
+      updateItemPositions();
       $scope.unsavedChanges = true;
     };
 
@@ -176,37 +207,40 @@ angular.module('bekApp')
     // ORDERING/SORTING LIST
 
     // saves new item indexes in cached editPosition field after sorting or ordering the list items
-    function updateItemIndexes() {
+    function updateItemPositions() {
       angular.forEach($scope.selectedList.items, function(item, index) {
         item.editPosition = index + 1;
       });
     }
 
+    // sort list by column
     $scope.sortList = function(sortBy, sortOrder) {
-      $scope.selectedList.items = orderBy($scope.selectedList.items, sortBy, sortOrder);
+      var sortField = sortBy;
+      $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+        if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
+          return 1000;
+        }
+        return item[sortField];
+      }, sortOrder);
 
       $scope.sortBy = sortBy;
-      updateItemIndexes();
-
-      // $scope.selectedList.items = orderBy(tempSort, 'editPosition', false);
-
-      // if (sortBy === 'editPosition' && sortOrder) { // reverse editPosition
-      //   $scope.sortOrder = false;
-      //   $scope.sortList('editPosition', false);
-      // }
+      updateItemPositions();
     };
 
-    $scope.reorderList = function(e, ui) {
-      updateItemIndexes($scope.selectedList.items);
-      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
-      // $scope.selectedList.items = orderBy($scope.selectedList.items, 'editPosition', false);
-    };
+    // reorder list by drag and drop
+    $scope.stopReorder = function (e, ui) {
+      ui.item.addClass('bek-reordered-item');
 
-    $scope.startReorder = function (event, ui) {
-      angular.element(event.target.parentElement).addClass('bek-reorder-overflow');
+      $timeout(function() {
+        ui.item.removeClass('bek-reordered-item');
+        console.log('remove class');
+      }, 500);
+
+      updateItemPositions();
+
     };
-    $scope.stopReorder = function () {
-      angular.element(event.target.parentElement).removeClass('bek-reorder-overflow');
+    $scope.work = function(event, ui) {  
+        // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 
     // Dragging, used to enable DOM elements

@@ -11,16 +11,18 @@ using System.Web.Http.Cors;
 using System.Dynamic;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.WebApi.Models;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class CatalogController : ApiController
+    public class CatalogController : BaseController
     {
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogRepository _catalogRepository;
         KeithLink.Svc.Core.Interface.SiteCatalog.IPriceRepository _priceRepository;
 		private readonly IListLogic _listLogic;
 
-        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository, IListLogic listLogic)
+        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository, IListLogic listLogic, IUserProfileRepository userProfileRepo): base (userProfileRepo)
         {
             _catalogRepository = catalogRepository;
             _priceRepository = priceRepository;
@@ -49,7 +51,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			ProductsReturn prods = _catalogRepository.GetProductsByCategory(branchId, categoryId, searchModel.From, searchModel.Size, searchModel.Facets, searchModel.SField, searchModel.SDir);
             GetPricingInfo(prods);
-			_listLogic.MarkFavoriteProducts(branchId, prods);
+			
+			if(this.AuthenticatedUser != null)
+				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
+
             return prods;
         }
 
@@ -69,7 +74,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             Product prod = _catalogRepository.GetProductById(branchId, id);
             ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
             GetPricingInfo(prods);
-			_listLogic.MarkFavoriteProducts(branchId, prods);
+
+			if (this.AuthenticatedUser != null)
+				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
+
             return prod;
         }
 
@@ -79,7 +87,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             ProductsReturn prods = _catalogRepository.GetProductsBySearch(branchId, searchTerms, searchModel.From, searchModel.Size, searchModel.Facets, searchModel.SField, searchModel.SDir);
             GetPricingInfo(prods);
-			_listLogic.MarkFavoriteProducts(branchId, prods);
+
+			if (this.AuthenticatedUser != null)
+				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
+
             return prods;
         }
 

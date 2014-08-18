@@ -40,20 +40,14 @@
     }
   }
 }
-.hidebrand{
+.hidebrand , .hideallergen, .hidedietary, .hidespec, .hidenonstock{
   display: none;
 }
 
-.hideallergen{
-  display: none;
-}
-
-.hidedietary{
-  display: none;
-}
-
-.hidespec{
-  display: none;
+.smallspinner{
+  img{
+    width:18px !important;
+  }
 }
 
 .mobile-filter{

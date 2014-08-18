@@ -14,9 +14,7 @@ namespace KeithLink.Svc.Impl.Logic
     public class ListLogicImpl: IListLogic
     {
 		private const string FAVORITESLIST = "Favorites";
-		private readonly Guid EXAMPLEUSERID = Guid.Parse("95436e7d-d09f-426b-a0c3-d4d702ee7422"); //TODO: Use real UserId once Auth/Profiles are completed
-
-
+		
         private readonly IListRepository listRepository;
 		private readonly ICatalogRepository catalogRepository;
         //TODO: Everything should only work with list for the current user. Waiting for Auth/login to be completed.
@@ -27,19 +25,19 @@ namespace KeithLink.Svc.Impl.Logic
 			this.catalogRepository = catalogRepository;
         }
 
-        public Guid CreateList(string branchId, UserList list)
+		public Guid CreateList(Guid userId, string branchId, UserList list)
         {
-			return listRepository.CreateList(EXAMPLEUSERID, branchId, list);
+			return listRepository.CreateList(userId, branchId, list);
         }
 
-        public Guid? AddItem(Guid listId, ListItem newItem)
+		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
         {
-			return listRepository.AddItem(EXAMPLEUSERID, listId, newItem);
+			return listRepository.AddItem(userId, listId, newItem);
 		}
 
-        public void UpdateItem(Guid listId, ListItem updatedItem)
+		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem)
         {
-			var list = listRepository.ReadList(EXAMPLEUSERID, listId);
+			var list = listRepository.ReadList(userId, listId);
 
             if (list == null)
                 return;
@@ -56,37 +54,37 @@ namespace KeithLink.Svc.Impl.Logic
 				item.ItemNumber = updatedItem.ItemNumber;
 			}
 
-			listRepository.UpdateList(EXAMPLEUSERID, list);
+			listRepository.UpdateList(userId, list);
         }
 
-        public void UpdateList(UserList list)
+		public void UpdateList(Guid userId, UserList list)
         {
-			listRepository.UpdateList(EXAMPLEUSERID, list);
+			listRepository.UpdateList(userId, list);
         }
 
-        public void DeleteList(Guid listId)
+		public void DeleteList(Guid userId, Guid listId)
         {
-			listRepository.DeleteList(EXAMPLEUSERID, listId);
+			listRepository.DeleteList(userId, listId);
         }
 
-        public UserList DeleteItem(Guid listId, Guid itemId)
+		public UserList DeleteItem(Guid userId, Guid listId, Guid itemId)
         {
-			var list = listRepository.DeleteItem(EXAMPLEUSERID, listId, itemId);
+			var list = listRepository.DeleteItem(userId, listId, itemId);
 			if (list.Items != null)
 				list.Items.Sort();
-			LookupProductDetails(list);
+			LookupProductDetails(userId, list);
 			return list;
         }
 
-        public List<UserList> ReadAllLists(string branchId, bool headerInfoOnly)
+		public List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly)
         {
-			var lists = listRepository.ReadAllLists(EXAMPLEUSERID, branchId);
+			var lists = listRepository.ReadAllLists(userId, branchId);
 
 			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				listRepository.CreateList(EXAMPLEUSERID, branchId, new UserList() { Name = FAVORITESLIST});
-				lists = listRepository.ReadAllLists(EXAMPLEUSERID, branchId);
+				listRepository.CreateList(userId, branchId, new UserList() { Name = FAVORITESLIST});
+				lists = listRepository.ReadAllLists(userId, branchId);
 			}
 
 			if (headerInfoOnly)
@@ -95,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				lists.ForEach(delegate(UserList list)
 				{
-					LookupProductDetails(list);
+					LookupProductDetails(userId, list);
 					if (list.Items != null)
 						list.Items.Sort();
 				});
@@ -103,20 +101,20 @@ namespace KeithLink.Svc.Impl.Logic
 			}
         }
 
-        public UserList ReadList(Guid listId)
+		public UserList ReadList(Guid userId, Guid listId)
         {
-			var list = listRepository.ReadList(EXAMPLEUSERID, listId);
+			var list = listRepository.ReadList(userId, listId);
 			if (list == null)
 				return null;
 			if(list.Items != null)
 				list.Items.Sort();
-			LookupProductDetails(list);
+			LookupProductDetails(userId, list);
 			return list;
         }
 
-        public List<string> ReadListLabels(Guid listId)
+		public List<string> ReadListLabels(Guid userId, Guid listId)
         {
-			var lists = listRepository.ReadList(EXAMPLEUSERID, listId);
+			var lists = listRepository.ReadList(userId, listId);
             
             if (lists == null || lists.Items == null)
                 return null;
@@ -124,19 +122,19 @@ namespace KeithLink.Svc.Impl.Logic
             return lists.Items.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-        public List<string> ReadListLabels(string branchId)
+		public List<string> ReadListLabels(Guid userId, string branchId)
         {
-			var lists = listRepository.ReadAllLists(EXAMPLEUSERID, branchId);
+			var lists = listRepository.ReadAllLists(userId, branchId);
 			return lists.Where(i =>  i.Items != null).SelectMany(l => l.Items.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
-		private void LookupProductDetails(UserList list)
+		private void LookupProductDetails(Guid userId, UserList list)
 		{
 			if (list.Items == null)
 				return;
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var favorites = listRepository.ReadList(EXAMPLEUSERID, string.Format("{0}_{1}", list.BranchId, FAVORITESLIST));
+			var favorites = listRepository.ReadList(userId, string.Format("{0}_{1}", list.BranchId, FAVORITESLIST));
 
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
@@ -155,17 +153,16 @@ namespace KeithLink.Svc.Impl.Logic
 			});
 			
 		}
-
-
+		
 		/// <summary>
 		/// Checks if any of the products are in the user's Favorites list. 
 		/// If so, their Favorite property is set to "true"
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProducts(string branchId, ProductsReturn products)
+		public void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products)
 		{
-			var list = listRepository.ReadList(EXAMPLEUSERID, string.Format("{0}_{1}", branchId, FAVORITESLIST));
+			var list = listRepository.ReadList(userId, string.Format("{0}_{1}", branchId, FAVORITESLIST));
 
 			if (list == null || list.Items == null)
 				return;
