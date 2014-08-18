@@ -129,7 +129,7 @@ angular
 
   // ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
-    ApiService.endpointUrl = 'http://' + response.data.ClientApiEndpoint;
+    ApiService.endpointUrl = location.protocol + '//' + response.data.ClientApiEndpoint;
   });
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
