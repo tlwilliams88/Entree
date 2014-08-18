@@ -67,22 +67,22 @@ namespace KeithLink.Svc.WebApi.Controllers
             return userRepo.GetUserProfile(emailAddress);
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("profile/login")]
-        public Core.Models.Profile.UserProfileReturn Login(LoginModel login)
-        {
-            Core.Models.Profile.UserProfileReturn retVal = null;
+        //[AllowAnonymous]
+        //[HttpPost]
+        //[Route("profile/login")]
+        //public Core.Models.Profile.UserProfileReturn Login(LoginModel login)
+        //{
+        //    Core.Models.Profile.UserProfileReturn retVal = null;
 
-			if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
-			{
-				return retVal;
-			}
-			else
-			{
-				return null;
-			}
-        }
+        //    if (_profileRepo.AuthenticateUser(login.Email, login.Password, out retVal))
+        //    {
+        //        return retVal;
+        //    }
+        //    else
+        //    {
+        //        return null;
+        //    }
+        //}
 
         [AllowAnonymous]
         [HttpGet]

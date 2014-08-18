@@ -7,15 +7,91 @@ namespace KeithLink.Svc.Test
     public class Impl_Profile_ExternalUserDomainRepository
     {
         [TestMethod]
-        public void CanAuthenticate()
+        public void AuthenticateBadUserName()
         {
             KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
-            //bool success = ad.AuthenticateUser("sabroussard@benekeith.com", "L1ttleStev1e");
+
+            string errMessage = null;
+
+            if (ad.AuthenticateUser("nonexistantuser@somecompany.com", "irrelevant", out errMessage))
+            {
+                Assert.IsTrue(false);
+            }
+            else
+            {
+                Assert.IsTrue(errMessage.Contains("invalid"));
+            }
+        }
+
+        [TestMethod]
+        public void AuthenticateBadPassword()
+        {
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+
+            string errMsg = null;
+
+            if (ad.AuthenticateUser("sabroussard@somecompany.com", "badpassword", out errMsg))
+            {
+                Assert.IsTrue(false);
+            }
+            else
+            {
+                Assert.IsTrue(errMsg.Contains("invalid"));
+            }
+        }
+
+        [TestMethod]
+        public void AuthenticateDisabledUser()
+        {
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+
+            string errMessage = null;
+
+            if (ad.AuthenticateUser("disableduser@somecompany.com", "D1sabled", out errMessage))
+            {
+                Assert.IsTrue(false);
+            }
+            else
+            {
+                Assert.IsTrue(errMessage.Contains("disabled"));
+            }
+        }
+
+        [TestMethod]
+        public void AuthenticateGoodCredentials()
+        {
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
             bool success = ad.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e");
 
             Assert.IsTrue(success);
         }
+        
+        [TestMethod]
+        public void AuthenticateLockedUser()
+        {
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
 
+            for (int i = 0; i < Impl.Configuration.ActiveDirectoryInvalidAttempts; i++)
+            {
+                try
+                {
+                    ad.AuthenticateUser("lockeduser@somecompany.com", "badpassword");
+                }
+                catch { }
+            }
+
+            string errMsg = null;
+
+            if (ad.AuthenticateUser("lockeduser@somecompany.com", "badpassword", out errMsg))
+            {
+                Assert.IsTrue(false);
+            }
+            else
+            {
+                Assert.IsTrue(errMsg.Contains("locked"));
+            }
+        }
+        
         [TestMethod]
         public void BelongsToGroup()
         {
@@ -32,7 +108,7 @@ namespace KeithLink.Svc.Test
             {
                 KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
 
-                //ad.CreateUser("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", Core.Constants.ROLE_EXTERNAL_OWNER);
+                //ad.CreateUser("Jimmys Chicken Shack", "lockeduser@somecompany.com", "L0ckedUs3r", "Locked", "User", Core.Constants.ROLE_EXTERNAL_OWNER);
 
                 Assert.IsTrue(true);
             }
