@@ -8,11 +8,14 @@
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerFile.SSIS</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>http://devkeithlink.bekco.com:9876/ETLService.svc?wsdl</ConfiguredValue>
+    <ConfiguredValue>http://corpkecdev1:9876/ETLService.svc?wsdl</ConfiguredValue>
   </Configuration>
-  <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[Timeout]" ValueType="Int32">
-    <ConfiguredValue>30</ConfiguredValue>
-  </Configuration>
+  <!--
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService_App_2].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>http://corpkecqas2:9876/ETLService.svc?wsdl</ConfiguredValue>
+	</Configuration>
+	-->
+  <!--DEV-->
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;</ConfiguredValue>
   </Configuration>
@@ -28,6 +31,24 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[SMTP].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;</ConfiguredValue>
   </Configuration>
+  <!---->
+  <!--UNCOMMENT FOR QA
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=corpkecqdb1;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;User Id=ecom;Password=Qa!2klkA5;</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_FSE].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=corpkecqdb1;Initial Catalog=FSE;Provider=SQLNCLI11.1;User Id=ecom;Password=Qa!2klkA5;</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_Log].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_PRODCAT].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=corpkecqdb1;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;User Id=ecom;Password=Qa!2klkA5;</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[SMTP].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;</ConfiguredValue>
+	</Configuration>
+	-->
   <!--VARIABLES-->
   <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_KeithComDir].Properties[Value]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom</ConfiguredValue>

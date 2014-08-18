@@ -21,6 +21,7 @@ using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
 using KeithLink.Common.Core.Logging;
 
+
 namespace KeithLink.Svc.Impl.ETL
 {
     public class CatalogLogicImpl: ICatalogLogic
@@ -230,6 +231,11 @@ namespace KeithLink.Svc.Impl.ETL
         private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
         {
             List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
+
+            string[] prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',');
+            
+
+            
             var dataTable = stagingRepository.ReadParentCategories();
             var childTable = stagingRepository.ReadSubCategories();
 
@@ -242,10 +248,15 @@ namespace KeithLink.Svc.Impl.ETL
 
             foreach (DataRow subCat in childTable.Rows)
             {
-                var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
-                newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
-                newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
-                categories.Add(newSubCat);
+                
+                if (prefixesToExclude.Contains(subCat.GetString("CategoryId")) == false) //ignore certain product category id's
+                {
+                    var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
+                    newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
+                    newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
+                    categories.Add(newSubCat);
+                }
+                
             }
 
             return categories.ToArray();
