@@ -66,7 +66,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
 	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev = KeithLink.ETL.Setup\Config\Development\ETLProcess.dtsConfig.Dev
+		KeithLink.ETL.Setup\Config\Development\ETLProcess_DEV.dtsConfig = KeithLink.ETL.Setup\Config\Development\ETLProcess_DEV.dtsConfig
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Local", "Local", "{9E8ECE67-A483-40C2-B612-A1A3B357F1FE}"
@@ -90,7 +90,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.FoundationSvc
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QA", "QA", "{0AA5ACC1-A2AB-472C-8802-C84D15574D14}"
 	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA = KeithLink.ETL.Setup\Config\QA\ETLProcess.dtsConfig.QA
+		KeithLink.ETL.Setup\Config\QA\ETLProcess_QA.dtsConfig = KeithLink.ETL.Setup\Config\QA\ETLProcess_QA.dtsConfig
 	EndProjectSection
 EndProject
 Global
@@ -269,7 +269,7 @@ Global
 		{0AA5ACC1-A2AB-472C-8802-C84D15574D14} = {BA613763-1505-4E83-969D-18E6D28B95CA}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
 		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
 	EndGlobalSection
 EndGlobal

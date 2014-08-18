@@ -37,6 +37,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_SITE_NAME = "CS_SiteName";
+        private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         #endregion
 
         #region properties
@@ -218,6 +219,11 @@ namespace KeithLink.Svc.Impl
         public static string ElasticSearchURL
         {
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
+        }
+
+        public static string CategoryPrefixesToExclude
+        {
+            get { return GetValue(CATEGORY_PREFIXES, string.Empty); }
         }
         #endregion
     }

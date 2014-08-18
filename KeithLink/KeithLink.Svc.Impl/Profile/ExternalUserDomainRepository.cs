@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Profile
                 using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
                                                             Configuration.ActiveDirectoryExternalServerName,
                                                             Configuration.ActiveDirectoryExternalRootNode,
-                                                            ContextOptions.Negotiate,
+                                                            ContextOptions.SimpleBind,
                                                             GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
                                                             Configuration.ActiveDirectoryExternalPassword))
                 {
@@ -106,7 +106,7 @@ namespace KeithLink.Svc.Impl.Profile
                     }
 
                     // validate password
-                    if (boundServer.ValidateCredentials(userName, password))
+                    if (boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
                     {
                         return true;
                     }
