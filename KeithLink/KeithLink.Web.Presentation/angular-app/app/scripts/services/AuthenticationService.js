@@ -12,6 +12,8 @@ angular.module('bekApp')
         grant_type: 'password'
       };
 
+      // var data = var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+
       var headers = { headers : {
           'Content-Type': 'application/x-www-form-urlencoded' 
         }
@@ -64,13 +66,13 @@ angular.module('bekApp')
 
       login: function(username, password) {
         $q.all([ 
-          //validateUser(username, password),
+          validateUser(username, password),
           getProfile(username, password)
         ]).then(function(data) {
           var profile = data[0];
           
           profile.token = {
-            'access_token': '3GT4Y5XUpED5W8Ri6hptEJKtE2P3EBDU03jSMPXiar3C0YIzK5W9PhPC36nQMgm2qTaYTLvvCu_VVq1nsyaxjEDvyViSHrue0Q-mjOg46cbnRrhNqb9FdVW2b57fRL0_69C782HfFAmsHnFv4-FAr2CUw0mqr-W48gWtq_qZNz-f4T5SCXkWhoLqrqeDIbYPJl_cxfH47nwLnYEcxrmpH7wzuKoY_zm49A1Yp2R7gXfhVv7Ci-YDaySvD596cfLq1ZqKb4KGl_o9gm3VYFyoNQ',
+            'access_token': 'dCldubIJCMgW_aPgggfFNJvGtsSx9tSfPtbYwjPEsXNchZKYOYs9ZcOd3sRTWNK2Llf5CDx7P0UjD_1LLiaGxeAQ2twW0ysZEjwrxJb0qhqyGRP0x_S2SPn8OICDJCMPs4SmvZW8zN6hgYqmG6cCpqGX6y0w-Cd5CUt3qzQCnXzD351-JdNmkm8fh7w3cvPkcKRWcx_TLUuewLpeOMKf4ERFkbRwXw-FcwbwWMz5St0C1OpueOfSTjIx_GxkESD2GDALrHipILqYpc7WL8arGQ',
             'token_type': 'bearer',
             'expires_in': 86399
           };
