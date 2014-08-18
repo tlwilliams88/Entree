@@ -1,15 +1,20 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptorService', ['$q', '$location', 'UserProfileService', function ($q, $location, UserProfileService) {
+.factory('AuthenticationInterceptorService', ['$q', '$location', 'localStorageService', 'Constants', function ($q, $location, localStorageService, Constants) {
  
     var authInterceptorServiceFactory = {
         request: function (config) {
  
+            var authorizedUrls = [
+                '/authen'
+            ];
+
             config.headers = config.headers || {};
      
-            var authData = UserProfileService.getProfile().token;
-            if (authData) {
+            var authData = localStorageService.get(Constants.localStorage.userToken);
+            // add auth data if present and if url accepts an authorization token
+            if (authData && authorizedUrls.indexOf(config.url) === -1) {
                 config.headers.Authorization = 'Bearer ' + authData.access_token;
             }
      

@@ -14,9 +14,11 @@ angular
     // 'ngCookies',
     'ngResource',
     'ngTouch',
+    'LocalStorageModule',
     'ui.router',
     'ui.bootstrap',
     'ui.sortable',
+    'ui.keypress',
     'shoppinpal.mobile-menu',
     'ngDragDrop',
     'infinite-scroll'
@@ -104,6 +106,9 @@ angular
     return path + '/';
   });
 
+  // add authorization headers
+  $httpProvider.interceptors.push('AuthenticationInterceptorService');
+
   // append correct api url to all relevant http requests
   $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
     return {
@@ -122,8 +127,6 @@ angular
     };
   }]);
 
-  // // add authorization headers
-  $httpProvider.interceptors.push('AuthenticationInterceptorService');
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
 
