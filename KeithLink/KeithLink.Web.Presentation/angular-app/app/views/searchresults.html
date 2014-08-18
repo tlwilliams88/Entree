@@ -232,7 +232,7 @@
 		<h2 class="col-md-6 no-padding hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
 		<span class="col-md-6 no-padding pull-right hidden-xs hidden-sm" style="width: initial;">{{totalItems}} results</span>
 		<div>
-			<table class="table table-striped" when-scrolled="infiniteScrollLoadMore()">
+			<table class="table table-striped" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
 				<thead>
 					<tr>
 						<th style="width:10px;"></th>
