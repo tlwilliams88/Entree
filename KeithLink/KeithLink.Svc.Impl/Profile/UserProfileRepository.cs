@@ -131,17 +131,22 @@ namespace KeithLink.Svc.Impl.Profile
             }
         }
 
-        public bool AuthenticateUser(string emailAddress, string password, out UserProfileReturn userProfile)
+        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
-            bool success = AuthenticateUser(emailAddress, password);
+            errorMessage = null;
 
-            if (success) { 
-                userProfile = GetUserProfile(emailAddress); 
-            } else {
-                userProfile = new UserProfileReturn();
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            {
+                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
+                return internalAD.AuthenticateUser(userName, password, out errorMessage);
             }
-
-            return success;
+            else
+            {
+                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
+                return externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
+            }
         }
 
         private UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)

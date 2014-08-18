@@ -13,10 +13,11 @@ namespace KeithLink.Svc.WebApi
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
             Impl.Profile.UserProfileRepository userRepo = new Impl.Profile.UserProfileRepository();
+            string errMsg = null;
 
-            if (userRepo.AuthenticateUser(context.UserName, context.Password) == false)
+            if (userRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false)
             {
-                context.SetError("invalid_grant", "The use name or password is incorrect.");
+                context.SetError("invalid_grant", errMsg);
                 return;
             }
 

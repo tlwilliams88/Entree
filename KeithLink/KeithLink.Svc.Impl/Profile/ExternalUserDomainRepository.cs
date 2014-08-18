@@ -9,7 +9,33 @@ namespace KeithLink.Svc.Impl.Profile
 {
     public class ExternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
+        #region attributes
+        private enum UserAccountControlFlag
+        {
+            Disabled = 0x0002,
+            Locked = 0x10,
+            NormalAccount = 0x200,
+            PasswordNotRequired = 0x20
+        }
+        #endregion
+
         #region methods
+
+        public bool AuthenticateUser(string userName, string password)
+        {
+            string msg = null;
+            bool success = AuthenticateUser(userName, password, out msg);
+
+            if (success)
+            {
+                return true;
+            }
+            else
+            {
+                throw new ApplicationException(msg);
+                //return false;
+            }
+        }
 
         /// <summary>
         /// test user credentials
@@ -20,25 +46,84 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/1/2014 - original code
         /// jwames - 8/5/2014 - add tests for argument length
+        /// jwames - 8/15/2014 - add locking tests
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password)
+        public bool AuthenticateUser(string userName, string password, out string errorMessage)
         {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
 
+            errorMessage = null;
+
+            // connect to server
             try
             {
-                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain, Configuration.ActiveDirectoryExternalServerName))
+                using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
+                                                            Configuration.ActiveDirectoryExternalServerName,
+                                                            Configuration.ActiveDirectoryExternalRootNode,
+                                                            ContextOptions.Negotiate,
+                                                            GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                            Configuration.ActiveDirectoryExternalPassword))
                 {
-                    return principal.ValidateCredentials(userName, password, ContextOptions.SimpleBind);
+                    // if user exists
+                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, userName);
+
+                    if (authenticatingUser == null)
+                    {
+                        errorMessage = "User name or password is invalid";
+                        return false;
+                    }
+
+                    // if account is enabled 
+                    if (authenticatingUser.Enabled == false)
+                    {
+                        errorMessage = "User account is disabled";
+                        return false;
+                    }
+
+                    // if locked 
+                    if (authenticatingUser.IsAccountLockedOut())
+                    {
+                        if (authenticatingUser.AccountLockoutTime.HasValue)
+                        {
+                            DateTime endOfLockout = authenticatingUser.AccountLockoutTime.Value.AddMinutes(Configuration.ActiveDirectoryLockoutDuration);
+
+                            if (DateTime.Now < endOfLockout)
+                            {
+                                errorMessage = "User account is locked and cannot sign in now";
+                                return false;
+                            }
+                        }
+
+                    }
+
+                    // validate password
+                    if (boundServer.ValidateCredentials(userName, password))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
+                        {
+                            errorMessage = "User account is locked and cannot sign in now";
+                        }
+                        else
+                        {
+                            errorMessage = "User name or password is invalid";
+                        }
+
+                        return false;
+                    }
+
+
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not authenticate user", ex);
-
+                errorMessage = "Could not connect to authentication server for benekeith.com";
                 return false;
             }
         }
