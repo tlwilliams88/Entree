@@ -158,10 +158,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
     <Content Include="favicon.ico" />
     <Content Include="FoundationService.svc" />
     <Content Include="Global.asax" />
@@ -187,7 +187,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Dev.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
