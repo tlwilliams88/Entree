@@ -68,7 +68,7 @@ angular.module('bekApp')
         } else if (type === 'search') {
 
           var searchTerm = $stateParams.id;
-          $scope.searchTerm = "\"" + searchTerm + "\"";
+          $scope.searchTerm = '\"' + searchTerm + '\"';
           return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
         } else if (type === 'brand') {
           var brandName = $stateParams.id;
@@ -96,7 +96,7 @@ angular.module('bekApp')
           //check initial page view
           if ($stateParams.type === 'category') {
             $scope.breadcrumbs.push({
-              type: "topcategory",
+              type: 'topcategory',
               id: $stateParams.id,
               name: $scope.categoryName
             });
@@ -104,78 +104,78 @@ angular.module('bekApp')
           }
           if ($stateParams.type === 'search') {
             $scope.breadcrumbs.push({
-              type: "allcategories",
+              type: 'allcategories',
               id: $stateParams.id,
-              name: "All Categories"
+              name: 'All Categories'
             });
           }
 
           //check for selected facets
           if ($scope.selectedCategory) {
             $scope.breadcrumbs.push({
-              type: "category",
+              type: 'category',
               id: $scope.selectedCategory.name,
               name: $scope.selectedCategory.categoryname
             });
             $scope.filterCount++;
           }
-          var brandsBreadcrumb = "Brand: ";
+          var brandsBreadcrumb = 'Brand: ';
           angular.forEach($scope.selectedBrands, function(item, index) {
-            brandsBreadcrumb += item + " or ";
+            brandsBreadcrumb += item + ' or ';
             $scope.filterCount++;
           });
-          if (brandsBreadcrumb != "Brand: ") {
+          if (brandsBreadcrumb !== 'Brand: ') {
             $scope.breadcrumbs.push({
-              type: "brand",
+              type: 'brand',
               id: $scope.selectedBrands,
               name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length - 4)
             });
           }
-          var allergensBreadcrumb = "Allergens: ";
+          var allergensBreadcrumb = 'Allergens: ';
           angular.forEach($scope.selectedAllergens, function(item, index) {
-            allergensBreadcrumb += item + " or ";
+            allergensBreadcrumb += item + ' or ';
             $scope.filterCount++;
           });
-          if (allergensBreadcrumb != "Allergens: ") {
+          if (allergensBreadcrumb !== 'Allergens: ') {
             $scope.breadcrumbs.push({
-              type: "allergen",
+              type: 'allergen',
               id: $scope.selectedAllergens,
               name: allergensBreadcrumb.substr(0, allergensBreadcrumb.length - 4)
             });
           }
-          var dietaryBreadcrumb = "Dietary: ";
+          var dietaryBreadcrumb = 'Dietary: ';
           angular.forEach($scope.selectedDietary, function(item, index) {
-            dietaryBreadcrumb += item + " or ";
+            dietaryBreadcrumb += item + ' or ';
             $scope.filterCount++;
           });
-          if (dietaryBreadcrumb != "Dietary: ") {
+          if (dietaryBreadcrumb !== 'Dietary: ') {
             $scope.breadcrumbs.push({
-              type: "dietary",
+              type: 'dietary',
               id: $scope.selectedDietary,
               name: dietaryBreadcrumb.substr(0, dietaryBreadcrumb.length - 4)
             });
           }
-          var specBreadcrumb = "Item Specifications: ";
+          var specBreadcrumb = 'Item Specifications: ';
           angular.forEach($scope.selectedSpecs, function(item, index) {
-            specBreadcrumb += changeSpecDisplayName(item) + " or ";
+            specBreadcrumb += changeSpecDisplayName(item) + ' or ';
             $scope.filterCount++;
           });
           angular.forEach($scope.selectedNonstock, function(item, index) {
-            specBreadcrumb += changeSpecDisplayName(item) + " or ";
+            specBreadcrumb += changeSpecDisplayName(item) + ' or ';
             $scope.filterCount++;
           });
-          if (specBreadcrumb != "Item Specifications: ") {
+          if (specBreadcrumb !== 'Item Specifications: ') {
             $scope.breadcrumbs.push({
-              type: "spec",
+              type: 'spec',
               id: $scope.selectedSpecs,
               name: specBreadcrumb.substr(0, specBreadcrumb.length - 4)
             });
           }
           if ($stateParams.type === 'search') {
             $scope.breadcrumbs.push({
-              type: "search",
-              id: "search",
-              name: "\"" + $stateParams.id + "\""
+              type: 'search',
+              id: 'search',
+              name: '\"' + $stateParams.id + '\"'
             });
           }
           $scope.loadingResults = false;
@@ -206,7 +206,7 @@ angular.module('bekApp')
 
       $scope.breadcrumbClickEvent = function(type, id) {
         $scope.loadingResults = true;
-        if (type === "topcategory" || type === "allcategories") {
+        if (type === 'topcategory' || type === 'allcategories') {
           $scope.selectedBrands = [];
           $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
@@ -217,7 +217,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === "category") {
+        if (type === 'category') {
           $scope.selectedBrands = [];
           $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
@@ -227,7 +227,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === "brand") {
+        if (type === 'brand') {
           $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
@@ -237,7 +237,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === "allergen") {
+        if (type === 'allergen') {
           $scope.selectedBrands = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
@@ -247,7 +247,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === "dietary") {
+        if (type === 'dietary') {
           $scope.selectedBrands = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
@@ -257,7 +257,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === "spec") {
+        if (type === 'spec') {
           $scope.selectedBrands = [];
           $scope.selectedAllergens = [];
           $scope.selectedDietary = [];
@@ -266,7 +266,7 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-      }
+      };
 
       $scope.showContextMenu = function(e, idx) {
         $scope.contextMenuLocation = {
@@ -313,21 +313,21 @@ angular.module('bekApp')
       };
 
       $scope.sortTable = function sortTable(field) {
-        if ($scope.sortField != field) {
+        if ($scope.sortField !== field) {
           $scope.sortField = field;
-          $scope.sortDirection = "asc";
+          $scope.sortDirection = 'asc';
           $scope.asc = true;
         } else {
-          if ($scope.sortDirection == "asc") {
-            $scope.sortDirection = "desc";
+          if ($scope.sortDirection === 'asc') {
+            $scope.sortDirection = 'desc';
             $scope.asc = false;
           } else {
-            $scope.sortDirection = "asc";
+            $scope.sortDirection = 'asc';
             $scope.asc = true;
           }
         }
         loadProducts();
-      }
+      };
 
       $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
         $scope.loadingResults = true;
@@ -430,11 +430,11 @@ angular.module('bekApp')
         var hasNonstock = false;
         if (facets.nonstock && facets.nonstock.length > 0) {
           angular.forEach(facets.nonstock, function(item, index) {
-            if (item.name === "y") {
+            if (item.name === 'y') {
               $scope.nonstock = {
-                name: "nonstock",
-                displayname: "Non-Stock Item",
-                iconclass: "text-regular icon-user",
+                name: 'nonstock',
+                displayname: 'Non-Stock Item',
+                iconclass: 'text-regular icon-user',
                 count: item.count
               };
               hasNonstock = true;
@@ -470,52 +470,52 @@ angular.module('bekApp')
             itemcount = item.count;
           }
 
-          if (itemname === "itembeingreplaced") {
+          if (itemname === 'itembeingreplaced') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "Item Being Replaced",
-              iconclass: "text-red icon-cycle",
+              displayname: 'Item Being Replaced',
+              iconclass: 'text-red icon-cycle',
               count: itemcount
             });
           }
-          if (itemname === "replacementitem") {
+          if (itemname === 'replacementitem') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "Replacement Item",
-              iconclass: "text-green icon-cycle",
+              displayname: 'Replacement Item',
+              iconclass: 'text-green icon-cycle',
               count: itemcount
             });
           }
-          if (itemname === "cndoc") {
+          if (itemname === 'cndoc') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "Child Nutrition Sheet",
-              iconclass: "text-regular icon-apple",
+              displayname: 'Child Nutrition Sheet',
+              iconclass: 'text-regular icon-apple',
               count: itemcount
             });
           }
           //THESE ITEM.NAMES ARE CURRENTLY JUST GUESSES --- I HAVE NOT SEEN WHAT THESE 4 ARE CALLED YET
-          if (itemname === "DeviatedCost") {
+          if (itemname === 'DeviatedCost') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "DeviatedCost",
-              iconclass: "text-regular icon-dollar",
+              displayname: 'DeviatedCost',
+              iconclass: 'text-regular icon-dollar',
               count: itemcount
             });
           }
-          if (itemname === "ItemDetailsSheet") {
+          if (itemname === 'ItemDetailsSheet') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "Item Details Sheet",
-              iconclass: "text-regular icon-cell-sheet",
+              displayname: 'Item Details Sheet',
+              iconclass: 'text-regular icon-cell-sheet',
               count: itemcount
             });
           }
-          if (item.name === "MaterialSafety") {
+          if (item.name === 'MaterialSafety') {
             itemspecsArray.push({
               name: itemname,
-              displayname: "Material Safety Data Sheet",
-              iconclass: "text-regular icon-safety",
+              displayname: 'Material Safety Data Sheet',
+              iconclass: 'text-regular icon-safety',
               count: itemcount
             });
           }
@@ -524,14 +524,14 @@ angular.module('bekApp')
       }
 
       function changeSpecDisplayName(name) {
-        if (name === "itembeingreplaced")
-          return "Item Being Replaced";
-        if (name === "replacementitem")
-          return "Replacement Item";
-        if (name === "cndoc")
-          return "Child Nutrition Sheet";
-        if (name === "nonstock")
-          return "Non-Stock Item";
+        if (name === 'itembeingreplaced')
+          return 'Item Being Replaced';
+        if (name === 'replacementitem')
+          return 'Replacement Item';
+        if (name === 'cndoc')
+          return 'Child Nutrition Sheet';
+        if (name === 'nonstock')
+          return 'Non-Stock Item';
       }
 
       // TODO: move into context menu controller

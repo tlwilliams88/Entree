@@ -20,11 +20,11 @@ angular.module('bekApp')
       function concatenateNestedParameters(name, list) {
         var filters = name + ':';
         angular.forEach(list, function(item, index) {
-          if (name === "brands" || name === "allergens" || name === "dietary" || name==="itemspecs") {
+          if (name === 'brands' || name === 'allergens' || name === 'dietary' || name==='itemspecs') {
             filters += item + '|';
           }
-          if (name === "nonstock") {
-            filters += "y|";
+          if (name === 'nonstock') {
+            filters += 'y|';
           }
         });
         return filters.substr(0, filters.length - 1);
