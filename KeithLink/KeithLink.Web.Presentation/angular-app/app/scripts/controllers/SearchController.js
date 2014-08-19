@@ -60,7 +60,6 @@ angular.module('bekApp')
 
       function getData() {
         var type = $stateParams.type;
-        var branchId = $scope.currentUser.currentLocation.branchId;
 
         if (type === 'category') {
           var categoryId = $stateParams.id;
