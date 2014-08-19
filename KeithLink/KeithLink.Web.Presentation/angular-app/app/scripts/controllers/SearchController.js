@@ -51,8 +51,9 @@ angular.module('bekApp')
       function getCategoryById(categoryId) {
         return CategoryService.getCategories().then(function(data) {
           angular.forEach(data.categories, function(item, index) {
-            if (item.id === categoryId)
+            if (item.id === categoryId) {
               $scope.categoryName = item.name;
+            }
           });
           return ProductService.getProductsByCategory(categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
         });
@@ -524,14 +525,18 @@ angular.module('bekApp')
       }
 
       function changeSpecDisplayName(name) {
-        if (name === 'itembeingreplaced')
+        if (name === 'itembeingreplaced') {
           return 'Item Being Replaced';
-        if (name === 'replacementitem')
+        }
+        if (name === 'replacementitem') {
           return 'Replacement Item';
-        if (name === 'cndoc')
+        }
+        if (name === 'cndoc') {
           return 'Child Nutrition Sheet';
-        if (name === 'nonstock')
+        }
+        if (name === 'nonstock') {
           return 'Non-Stock Item';
+        }
       }
 
       // TODO: move into context menu controller
