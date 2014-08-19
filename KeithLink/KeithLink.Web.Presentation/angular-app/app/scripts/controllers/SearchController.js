@@ -24,21 +24,17 @@ angular.module('bekApp')
       $scope.selectedCategory = '';
       $scope.selectedSubcategory = '';
       $scope.selectedBrands = [];
-      $scope.selectedAllergens = [];
       $scope.selectedDietary = [];
       $scope.selectedSpecs = [];
       $scope.selectedNonstock = [];
       $scope.isBrandShowing = false;
-      $scope.isAllergenShowing = false;
       $scope.isDietaryShowing = false;
       $scope.isSpecShowing = false;
       $scope.brandHiddenNumber = 3;
-      $scope.allergenHiddenNumber = 3;
       $scope.dietaryHiddenNumber = 3;
       $scope.specHiddenNumber = 3;
       $scope.constantHiddenNumber = 4;
       $scope.brandCount = 0;
-      $scope.allergenCount = 0;
       $scope.dietaryCount = 0;
       $scope.specCount = 0;
       $scope.hidden = true;
@@ -51,16 +47,16 @@ angular.module('bekApp')
       function getCategoryById(categoryId) {
         return CategoryService.getCategories().then(function(data) {
           angular.forEach(data.categories, function(item, index) {
-            if (item.id === categoryId)
+            if (item.id === categoryId) {
               $scope.categoryName = item.name;
+            }
           });
-          return ProductService.getProductsByCategory(categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+          return ProductService.getProductsByCategory(categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
         });
       }
 
       function getData() {
         var type = $stateParams.type;
-        var branchId = $scope.currentUser.currentLocation.branchId;
 
         if (type === 'category') {
           var categoryId = $stateParams.id;
@@ -70,11 +66,11 @@ angular.module('bekApp')
 
           var searchTerm = $stateParams.id;
           $scope.searchTerm = '\"' + searchTerm + '\"';
-          return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+          return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
         } else if (type === 'brand') {
           var brandName = $stateParams.id;
           $scope.selectedBrands.push(brandName);
-          return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedAllergens, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+          return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
         }
       }
 
@@ -132,18 +128,6 @@ angular.module('bekApp')
               name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length - 4)
             });
           }
-          var allergensBreadcrumb = 'Allergens: ';
-          angular.forEach($scope.selectedAllergens, function(item, index) {
-            allergensBreadcrumb += item + ' or ';
-            $scope.filterCount++;
-          });
-          if (allergensBreadcrumb !== 'Allergens: ') {
-            $scope.breadcrumbs.push({
-              type: 'allergen',
-              id: $scope.selectedAllergens,
-              name: allergensBreadcrumb.substr(0, allergensBreadcrumb.length - 4)
-            });
-          }
           var dietaryBreadcrumb = 'Dietary: ';
           angular.forEach($scope.selectedDietary, function(item, index) {
             dietaryBreadcrumb += item + ' or ';
@@ -181,7 +165,6 @@ angular.module('bekApp')
           }
           $scope.loadingResults = false;
           $scope.brandCount = data.facets.brands.length;
-          $scope.allergenCount = data.facets.allergens.length;
           $scope.dietaryCount = data.facets.dietary.length;
           $scope.specCount = data.facets.itemspecs.length + data.facets.nonstock.length;
 
@@ -209,7 +192,6 @@ angular.module('bekApp')
         $scope.loadingResults = true;
         if (type === 'topcategory' || type === 'allcategories') {
           $scope.selectedBrands = [];
-          $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
           $scope.selectedDietary = [];
@@ -220,7 +202,6 @@ angular.module('bekApp')
         }
         if (type === 'category') {
           $scope.selectedBrands = [];
-          $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
           $scope.selectedDietary = [];
@@ -229,7 +210,6 @@ angular.module('bekApp')
           });
         }
         if (type === 'brand') {
-          $scope.selectedAllergens = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
           $scope.selectedDietary = [];
@@ -238,21 +218,10 @@ angular.module('bekApp')
             refreshScopeFacets(facets);
           });
         }
-        if (type === 'allergen') {
-          $scope.selectedBrands = [];
-          $scope.selectedSpecs = [];
-          $scope.selectedNonstock = [];
-          $scope.selectedDietary = [];
-          $scope.selectedAllergens = id;
-          loadProducts().then(function(facets) {
-            refreshScopeFacets(facets);
-          });
-        }
         if (type === 'dietary') {
           $scope.selectedBrands = [];
           $scope.selectedSpecs = [];
           $scope.selectedNonstock = [];
-          $scope.selectedAllergens = [];
           $scope.selectedDietary = id;
           loadProducts().then(function(facets) {
             refreshScopeFacets(facets);
@@ -260,7 +229,6 @@ angular.module('bekApp')
         }
         if (type === 'spec') {
           $scope.selectedBrands = [];
-          $scope.selectedAllergens = [];
           $scope.selectedDietary = [];
           $scope.selectedSpecs = id;
           loadProducts().then(function(facets) {
@@ -284,15 +252,6 @@ angular.module('bekApp')
       $scope.hideBrand = function() {
         $scope.isBrandShowing = false;
         $scope.brandHiddenNumber = 3;
-      };
-
-      $scope.showAllergen = function() {
-        $scope.isAllergenShowing = true;
-        $scope.allergenHiddenNumber = 500;
-      };
-      $scope.hideAllergen = function() {
-        $scope.isAllergenShowing = false;
-        $scope.allergenHiddenNumber = 3;
       };
 
       $scope.showDietary = function() {
@@ -347,20 +306,6 @@ angular.module('bekApp')
             $scope.selectedBrands.push(selectedFacet);
           }
 
-          loadProducts().then(function(facets) {
-            refreshScopeFacets(facets);
-          });
-        } else if (filter === 'allergen') {
-          idx = $scope.selectedAllergens.indexOf(selectedFacet);
-
-          // is currently selected
-          if (idx > -1) {
-            $scope.selectedAllergens.splice(idx, 1);
-          }
-          // is newly selected
-          else {
-            $scope.selectedAllergens.push(selectedFacet);
-          }
           loadProducts().then(function(facets) {
             refreshScopeFacets(facets);
           });
@@ -421,7 +366,6 @@ angular.module('bekApp')
       function refreshScopeFacets(facets) {
         $scope.categories = facets.categories;
         $scope.brands = facets.brands;
-        $scope.allergens = facets.allergens;
         $scope.dietary = facets.dietary;
         if (facets.itemspecs && facets.itemspecs.length > 0) {
           $scope.itemspecs = addIcons(facets.itemspecs);
@@ -525,14 +469,18 @@ angular.module('bekApp')
       }
 
       function changeSpecDisplayName(name) {
-        if (name === 'itembeingreplaced')
+        if (name === 'itembeingreplaced') {
           return 'Item Being Replaced';
-        if (name === 'replacementitem')
+        }
+        if (name === 'replacementitem') {
           return 'Replacement Item';
-        if (name === 'cndoc')
+        }
+        if (name === 'cndoc') {
           return 'Child Nutrition Sheet';
-        if (name === 'nonstock')
+        }
+        if (name === 'nonstock') {
           return 'Non-Stock Item';
+        }
       }
 
       // TODO: move into context menu controller
