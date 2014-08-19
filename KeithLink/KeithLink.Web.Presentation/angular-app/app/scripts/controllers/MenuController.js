@@ -34,7 +34,7 @@ angular.module('bekApp')
 
           $scope.showLoginForm = false;
         });
-      })
+      });
 
     };
 
