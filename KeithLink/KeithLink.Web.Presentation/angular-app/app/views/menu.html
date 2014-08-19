@@ -1,13 +1,13 @@
 <!-- Mobile Sidebar -->
 <div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
  <div ng-show="isLoggedIn()" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
-    <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
-        <span class="text-white user-info__name">{{currentUser.name}}</span>  
+        <span class="text-white user-info__name">{{userProfile.name}}</span>  
       </div>
       <div>
-        <span class="user-info__job-title">{{currentUser.role}}</span>
+        <span class="user-info__job-title">{{userProfile.role}}</span>
       </div>
     </div>
     <div class="person-info__section text-white">
@@ -48,17 +48,17 @@
         <a ui-sref="menu.notifications" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
         </a>
-        <a ng-show="currentUser.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
+        <a ng-show="userProfile.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
     </ul>
   </nav>
   <div class="person-info sidebar-dsr">
-    <div class="person-info__section"><img ng-src="{{currentUser.salesRep.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
-      <span class="text-white">{{currentUser.salesRep.name}}</span>  
-      <span class="text-white">{{currentUser.salesRep.phone}}</span>
-      <span><a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a></span>
+      <span class="text-white">{{userProfile.salesRep.name}}</span>  
+      <span class="text-white">{{userProfile.salesRep.phone}}</span>
+      <span><a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a></span>
     </div>
   </div>
   <div ng-if="isLoggedIn()" class="sidebar-actions text-center">
@@ -98,7 +98,7 @@
         <a ui-sref="menu.emenu" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
-        <a ng-show="currentUser.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
+        <a ng-show="userProfile.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
         <a ui-sref="menu.lists" ui-sref-active="is-selected">
@@ -109,12 +109,12 @@
 
     <div class="sidebar-dsr text-center">
       <p>Your Sales Rep</p>
-      <img ng-show="currentUser.salesRep.imageUrl" ng-src="{{currentUser.salesRep.imageUrl}}" alt="dsr image" />
+      <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{userProfile.salesRep.imageUrl}}" alt="dsr image" />
       <p class="contact-info">
-        <span>{{currentUser.salesRep.name}}</span>
-        <span>{{currentUser.salesRep.phone}}</span>
+        <span>{{userProfile.salesRep.name}}</span>
+        <span>{{userProfile.salesRep.phone}}</span>
       </p>
-      <a class="text-uppercase" href="mailto:{{currentUser.salesRep.email}}">Email Me</a>
+      <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
     </div>
     <div class="text-center sidebar-meta">
       <span>Copyright 2014 Ben E. Keith</span>
@@ -137,7 +137,7 @@
       <div class="row user-bar hidden-print" ng-hide="showLoginForm" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
         <div class="select-div">
-          <select name="" id="" ng-options="store.name for store in currentUser.stores track by store.customerNumber" ng-model="currentUser.currentLocation"></select>
+          <select name="" id="" ng-change="changeLocation(store)" ng-options="store.name for store in userProfile.stores track by store.customerNumber" ng-model="currentLocation"></select>
           </div>
         </div>
         <div class="col-md-4">
@@ -155,8 +155,8 @@
             <span class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
-                <span class="user-info__name">{{currentUser.FirstName}}</span> 
-                <span class="user-info__job-title">{{currentUser.role}}</span>
+                <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
+                <span class="user-info__job-title">{{userProfile.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn">Account Settings</button>
                   <button class="btn" ng-click="logout()">Sign Out</button>
@@ -165,7 +165,7 @@
               <div class="person-info__section">
                 <span class="icon-arrow-down5"></span>
               </div>
-              <div class="person-info__section"><img ng-src="{{currentUser.imageUrl}}" alt=""></div>
+              <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
             </div>
           </div>
 

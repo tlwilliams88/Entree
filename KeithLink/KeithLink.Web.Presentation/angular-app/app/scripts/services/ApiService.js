@@ -8,15 +8,15 @@
  * calls service to get endpoint url
  */
 angular.module('bekApp')
-  .factory('ApiService', function ($http) {
+  .factory('ApiService', ['$http', 'Constants', function ($http, Constants) {
     
     var Service = {
       endpointUrl: undefined,
       getEndpointUrl: function() {
-        return $http.get('../servicelocator');
+        return $http.get(Constants.servicelocatorUrl);
       }
     };
 
     return Service;
 
-  });
+  }]);

@@ -8,23 +8,62 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ function () {
+  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants', function ($http, localStorageService, Constants) {
 
     var Service = {
-      // profile: {'UserId':'{4065067c-bae0-41cd-a2f9-e89f377d4386}','UserName':'sabroussard@somecompany.com','FirstName':'Steven','LastName':'Broussard','EmailAddress':'','PhoneNumber':'','CustomerName':'','stores':[{'name':'Dallas Ft Worth','customerNumber':453234,'branchId':'fdf'},{'name':'San Antonio','customerNumber':534939,'branchId':'fsa'},{'name':'Amarillo','customerNumber':534939,'branchId':'fam'}],'salesRep':{'id':34234,'name':'Heather Hill','phone':'(888) 912-2342','email':'heather.hill@ben.e.keith.com','imageUrl':'../images/placeholder-dsr.jpg'},'currentLocation':{'name':'Dallas Ft Worth','customerNumber':453234,'branchId':'fdf'}},
-
-      profile: {},
-
-      getProfile: function() {
-        return Service.profile;
+      
+      profile: function() {
+        return localStorageService.get(Constants.localStorage.userProfile);
       },
 
-      setProfile: function(newProfile) {
-        angular.copy(newProfile, Service.profile);
+      getProfile: function(email) {
+        var data = { 
+          params: {
+            emailAddress: email
+          }
+        };
+
+        return $http.get('/profile', data).then(function (response) {
+          var profile = response.data.userProfiles[0];
+
+          profile.stores = [{
+            'name': 'Dallas Ft Worth',
+            'customerNumber': 453234,
+            'branchId': 'fdf'
+          }, {
+            'name': 'San Antonio',
+            'customerNumber': 534939,
+            'branchId': 'fsa'
+          }, {
+            'name': 'Amarillo',
+            'customerNumber': 534939,
+            'branchId': 'fam'
+          }];
+
+          profile.salesRep = {
+            'id': 34234,
+            'name': 'Heather Hill',
+            'phone': '(888) 912-2342',
+            'email': 'heather.hill@ben.e.keith.com',
+            'imageUrl': '../images/placeholder-dsr.jpg'
+          };
+
+          Service.setProfile(profile);
+
+          return profile;
+        });
+      },
+
+      setProfile: function(profile) {
+        localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 
       getCurrentLocation: function() {
-        return Service.profile.currentLocation;
+        return localStorageService.get(Constants.localStorage.currentLocation);
+      },
+
+      setCurrentLocation: function(location) {
+        localStorageService.set(Constants.localStorage.currentLocation, location);
       },
 
       createUser: function() {

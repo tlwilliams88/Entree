@@ -157,20 +157,20 @@ angular.module('bekApp')
       $scope.selectedList.isRenaming = true;
     };
 
-    $scope.addItemToList = function (event, helper, listId) {
+    $scope.addItemToList = function (event, helper, list) {
       var selectedItem = angular.copy(helper.draggable.data('product'));
 
       var promise;
-      if (listId === ListService.favoritesList.listid) {
+      if (list.listid === ListService.favoritesList.listid) {
         promise = ListService.addItemToFavorites(selectedItem);
       } else {
-        promise = ListService.addItemToListAndFavorites(listId, selectedItem);
+        promise = ListService.addItemToListAndFavorites(list.listid, selectedItem);
       }
 
       promise.then(function(data) {
-        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list.');
+        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
       },function(error) {
-        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list.');
+        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
       });
     };
 
