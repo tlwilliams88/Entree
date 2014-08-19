@@ -8,20 +8,23 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService',
-    function($http, UserProfileService) {
+  .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
 
       var defaultPageSize = 30,
         defaultStartingIndex = 0;
 
+      function getBranch() {
+        return UserProfileService.getCurrentBranchId();
+      }
+
       function concatenateNestedParameters(name, list) {
         var filters = name + ':';
         angular.forEach(list, function(item, index) {
-          if (name === "brands" || name === "allergens" || name === "dietary" || name==="itemspecs") {
+          if (name === 'brands' || name === 'allergens' || name === 'dietary' || name==='itemspecs') {
             filters += item + '|';
           }
-          if (name === "nonstock") {
-            filters += "y|";
+          if (name === 'nonstock') {
+            filters += 'y|';
           }
         });
         return filters.substr(0, filters.length - 1);
@@ -31,8 +34,6 @@ angular.module('bekApp')
         getProducts: function(searchTerm, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
-
-          var branchId = UserProfileService.getCurrentLocation().branchId;
 
           var facets = '';
           if (brands && brands.length > 0) {
@@ -67,7 +68,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/' + branchId + '/' + searchTerm + '/products', {
+          return $http.get('/catalog/search/' + getBranch() + '/' + searchTerm + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -83,8 +84,6 @@ angular.module('bekApp')
         getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
-
-          var branchId = UserProfileService.getCurrentLocation().branchId;
 
           var facets = '';
           if (brands && brands.length > 0) {
@@ -118,7 +117,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/category/' + branchId + '/' + categoryId + '/products', {
+          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryId + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -132,8 +131,7 @@ angular.module('bekApp')
         },
 
         getProductDetails: function(id) {
-          var branchId = UserProfileService.getCurrentLocation().branchId;
-          return $http.get('/catalog/product/' + branchId + '/' + id);
+          return $http.get('/catalog/product/' + getBranch() + '/' + id);
         }
       };
 

@@ -58,6 +58,10 @@ angular.module('bekApp')
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 
+      getCurrentBranchId: function() {
+        return Service.getCurrentLocation().branchId;
+      },
+
       getCurrentLocation: function() {
         return localStorageService.get(Constants.localStorage.currentLocation);
       },

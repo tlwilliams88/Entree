@@ -23,7 +23,7 @@ angular
     'ngDragDrop',
     'infinite-scroll'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     .state('login', {
@@ -126,6 +126,9 @@ angular
       }
     };
   }]);
+
+  // set local storage prefix
+  localStorageServiceProvider.setPrefix('bek');
 
 }])
 .run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
