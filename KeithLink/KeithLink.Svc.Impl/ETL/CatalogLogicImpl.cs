@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.ETL
             memoryStream.Position = 0;
             var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
             
-            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Incremental, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
+            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
         }
 
         public void ImportProfiles()
@@ -219,13 +219,17 @@ namespace KeithLink.Svc.Impl.ETL
         {
             var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
             var itemTable = stagingRepository.ReadItems(branchId);
+			var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
 
             foreach (DataRow row in itemTable.Rows)
             {
+				if(prefixesToExclude.Contains(row.GetString("CategoryId").Substring(0,2)))
+					continue;
+
                 var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ItemId"), Definition = "Item" };
                 newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Name") } };
                 newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("CategoryId"), rank = "0" } };
-                //These properties are commented out for now while we decide if having them in elastic search is enough
+				newProd.listprice = "0";
                 products.Add(newProd);
             }
 
@@ -236,7 +240,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
 
-            string[] prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',');
+            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
             
 
             
@@ -250,18 +254,19 @@ namespace KeithLink.Svc.Impl.ETL
                 categories.Add(newSubCat);
             }
 
-            foreach (DataRow subCat in childTable.Rows)
-            {
-                
-                if (prefixesToExclude.Contains(subCat.GetString("CategoryId")) == false) //ignore certain product category id's
-                {
-                    var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
-                    newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
-                    newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
-                    categories.Add(newSubCat);
-                }
-                
-            }
+			foreach (DataRow subCat in childTable.Rows)
+			{
+
+				if (prefixesToExclude.Contains(subCat.GetString("CategoryId").Substring(0, 2)))
+					continue;
+
+				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("CategoryId"), Definition = "Category" };
+				newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
+				newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
+				categories.Add(newSubCat);
+
+
+			}
 
             return categories.ToArray();
         }
