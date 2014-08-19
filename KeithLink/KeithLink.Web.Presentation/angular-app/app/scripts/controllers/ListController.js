@@ -17,6 +17,7 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    // load data
     ListService.getAllLists().then(function(data) {
       
       // switch to specific list or default to Favorites list
@@ -58,6 +59,7 @@ angular.module('bekApp')
       $scope.itemsToDisplay += itemsPerPage;
     };
 
+    // LIST INTERACTIONS
     $scope.goToList = function(list) {
       $scope.selectedList = list;
       $scope.itemsToDisplay = itemsPerPage;
@@ -197,6 +199,17 @@ angular.module('bekApp')
       $scope.deleteItem(selectedItem);
     };
 
+    // navigate list input fields using enter key, tab, or down arrow
+    $scope.goToNextField = function(event, index) {
+      var tabindex = index+1;
+      var elems = angular.element('[tabindex=' + tabindex + ']');
+      if (elems.length === 1) {
+        elems[0].focus();
+      } else { // go back to the beginning of the list
+        angular.element('[tabindex=1]')[0].focus();
+      }
+    };
+
     // warn user when exiting page without saved changes
     // window.onbeforeunload = function(){
     //   if (unsavedChanges) {
@@ -239,7 +252,8 @@ angular.module('bekApp')
       updateItemPositions();
 
     };
-    $scope.work = function(event, ui) {  
+    
+    $scope.work = function(event, ui) {  // fix for chrome position:relative issue
         // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 

@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <ng-form name="parlevelForm" action="">
-                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" />
+                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" ui-keyup="{'enter 40 13':'goToNextField($event, $index+selectedList.items.length+1)'}" />
                   </ng-form>
                 </div>
                 <div class="col-md-1 col-xs-2 table-col-icons hidden-drag">
