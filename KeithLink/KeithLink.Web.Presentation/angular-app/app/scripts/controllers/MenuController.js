@@ -7,8 +7,22 @@
  * # HomeController
  * Controller of the bekApp
  */
+
+var GuestModalController = function ($scope, $modalInstance) {
+
+  $scope.ok = function () {
+    $modalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+};
+
+
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', 'localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', function ($scope, localStorageService, Constants, AuthenticationService, UserProfileService) {
+  .controller('MenuController', ['$scope', '$modal', 'localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 'AuthorizationService', 
+    function ($scope, $modal, localStorageService, Constants, AuthenticationService, UserProfileService, AuthorizationService) {
 
     $scope.userProfile = UserProfileService.profile();
     $scope.currentLocation = UserProfileService.getCurrentLocation();
@@ -19,7 +33,11 @@ angular.module('bekApp')
     };
 
     $scope.isLoggedIn = function() {
-      return AuthenticationService.verified();
+      return AuthorizationService.isLoggedIn();
+    };
+
+    $scope.isCustomer = function() {
+      return AuthorizationService.isCustomer();
     };
 
     $scope.login = function(loginInfo) {
@@ -41,10 +59,6 @@ angular.module('bekApp')
     $scope.logout = function() {
       AuthenticationService.logout();
       $scope.displayUserMenu = false;
-    };
-
-    $scope.changeLocation = function(newLocation) {
-      UserProfileService.setCurrentLocation(newLocation);
     };
 
     $scope.print = function () {

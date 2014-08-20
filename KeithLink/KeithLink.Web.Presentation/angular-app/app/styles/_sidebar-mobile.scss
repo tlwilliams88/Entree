@@ -6,7 +6,6 @@
   
     // nav menu items
     li {
-      border-top: 1px solid $sidebar-nav-mobile__border;
       padding-top: 12px;
       padding-bottom: 12px;
     }
@@ -21,11 +20,10 @@
   .sidebar-mobile {
     .user-info {
       background-color: $sidebar__background--dark;
+      border-bottom: 1px solid $sidebar-nav__border;
     }
 
     .sidebar-dsr {
-      border-top: 1px solid $sidebar-nav-mobile__border;
-      border-bottom: 1px solid $sidebar-nav-mobile__border;
       background-color: transparent;
     }
 
