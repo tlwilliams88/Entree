@@ -39,14 +39,17 @@ angular
     // register
     .state('menu.register', {
       url: '/register/',
-      templateUrl: 'views/register.html',
+      templateUrl: 'views/register.html'
       // controller: 'RegisterController'
     })    
     // /home
     .state('menu.home', {
       url: '/home/',
       templateUrl: 'views/home.html',
-      controller: 'HomeController'
+      controller: 'HomeController',
+      data: {
+        authorize: 'isOrderEntryCustomer'
+      }
     })
     .state('menu.catalog', {
       abstract: true,
@@ -57,7 +60,10 @@ angular
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
-      controller: 'CatalogController'
+      controller: 'CatalogController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     .state('menu.catalog.products', {
       abstract: true,
@@ -68,23 +74,35 @@ angular
     .state('menu.catalog.products.list', {
       url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
-      controller: 'SearchController'
+      controller: 'SearchController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     // /catalog/products/:itemNumber (item details page)
     .state('menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
-      controller: 'ItemDetailsController'
+      controller: 'ItemDetailsController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     .state('menu.lists', {
       url: '/lists/',
       templateUrl: 'views/lists.html',
-      controller: 'ListController'
+      controller: 'ListController',
+      data: {
+        authorize: 'canManageLists'
+      }
     })
     .state('menu.listitems', {
       url: '/lists/:listId/?renameList',
       templateUrl: 'views/lists.html',
-      controller: 'ListController'
+      controller: 'ListController',
+      data: {
+        authorize: 'canManageLists'
+      }
     });
 
   $stateProvider
@@ -137,7 +155,7 @@ angular
   localStorageServiceProvider.setPrefix('bek');
 
 }])
-.run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
+.run(['$rootScope', '$state', 'ApiService', 'AccessService', function($rootScope, $state, ApiService, AccessService) {
 
   // ApiService.endpointUrl = 'http://devapi.bekco.com';
   ApiService.getEndpointUrl().then(function(response) {
@@ -145,19 +163,10 @@ angular
   });
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    // debugger;
-    // if (!Auth.authorize(toState.data.access)) {
-    //   $rootScope.error = 'Access denied';
-    //   event.preventDefault();
-
-    //   if(fromState.url === '^') {
-    //     if(Auth.isLoggedIn())
-    //       $state.go('user.home');
-    //     else {
-    //       $rootScope.error = null;
-    //       $state.go('anon.login');
-    //     }
-    //   }
-    // }
+    if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
+      $state.transitionTo("menu.register");
+      event.preventDefault(); 
+    }
+    
   });
 }]);
