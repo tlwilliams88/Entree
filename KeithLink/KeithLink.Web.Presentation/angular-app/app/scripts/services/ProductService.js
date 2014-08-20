@@ -10,7 +10,7 @@
 angular.module('bekApp')
   .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
 
-      var defaultPageSize = 30,
+      var defaultPageSize = 50,
         defaultStartingIndex = 0;
 
       function getBranch() {

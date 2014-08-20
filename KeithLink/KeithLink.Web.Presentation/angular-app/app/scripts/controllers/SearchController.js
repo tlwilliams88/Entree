@@ -17,7 +17,7 @@ angular.module('bekApp')
 
       $scope.loadingResults = true;
 
-      $scope.itemsPerPage = 30;
+      $scope.itemsPerPage = 50;
       $scope.itemIndex = 0;
 
       $scope.oneAtATime = true;
@@ -273,6 +273,8 @@ angular.module('bekApp')
       };
 
       $scope.sortTable = function sortTable(field) {
+        $scope.itemsPerPage = 50;
+        $scope.itemIndex = 0;
         if ($scope.sortField !== field) {
           $scope.sortField = field;
           $scope.sortDirection = 'asc';
@@ -291,7 +293,7 @@ angular.module('bekApp')
 
       $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
         $scope.loadingResults = true;
-        $scope.itemsPerPage = 30;
+        $scope.itemsPerPage = 50;
         $scope.itemIndex = 0;
         var idx;
         if (filter === 'brand') {
