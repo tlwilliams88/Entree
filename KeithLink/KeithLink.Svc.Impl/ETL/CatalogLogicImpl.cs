@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
-
+		
 		private readonly string ProductMapping = @"{
 			  ""product"" : {
 				   ""properties"" : {
@@ -55,30 +55,33 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly ICatalogInternalRepository catalogRepository;
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
+		private readonly IEventLogRepository eventLog;
         
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
+			this.eventLog = eventLog;
         }
 
         public void ProcessStagedData()
         {
             try
             {
-                var catTask = Task.Factory.StartNew(() => ImportCatalog());
-                var profileTask = Task.Factory.StartNew(() => ImportProfiles());
-                var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
-                var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
+				var catTask = Task.Factory.StartNew(() => ImportCatalog());
+				var profileTask = Task.Factory.StartNew(() => ImportProfiles());
+				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
+				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
 
-                Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
+				Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
 
 
             }
             catch (Exception ex) 
             {
-                throw ex;
+				//log
+				eventLog.WriteErrorLog("Catalog Import Error", ex);
             }
         }
 

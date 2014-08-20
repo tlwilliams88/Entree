@@ -158,10 +158,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
-    <Content Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
+    <None Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
     <Content Include="favicon.ico" />
     <Content Include="FoundationService.svc" />
     <Content Include="Global.asax" />
@@ -186,8 +186,11 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\Dev.pubxml" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
@@ -227,6 +230,10 @@
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>cd $(OutDir)
+del CommerceServer.Core.Internal.ContentListHelper.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
