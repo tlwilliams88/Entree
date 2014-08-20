@@ -36,6 +36,12 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController'
     })
+    // register
+    .state('menu.register', {
+      url: '/register/',
+      templateUrl: 'views/register.html',
+      // controller: 'RegisterController'
+    })    
     // /home
     .state('menu.home', {
       url: '/home/',

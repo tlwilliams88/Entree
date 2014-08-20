@@ -53,7 +53,7 @@
         </a>
     </ul>
   </nav>
-  <div class="person-info sidebar-dsr">
+  <div class="person-info sidebar-dsr" ng-if="isCustomer()">
     <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <span class="text-white">{{userProfile.salesRep.name}}</span>  
@@ -84,7 +84,7 @@
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
         <a ui-sref="menu.orders" ui-sref-active="is-selected">
-          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>Orders</li>
+          <li><div class="sidebar-nav__icon"><span class="icon-truck"></span></div>Orders</li>
         </a>
         <a ui-sref="menu.catalog.home" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
@@ -102,12 +102,12 @@
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
         <a ui-sref="menu.lists" ui-sref-active="is-selected">
-          <li><div class="sidebar-nav__icon"></div>Lists</li>
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
         </a>
       </ul>
     </nav>
 
-    <div class="sidebar-dsr text-center">
+    <div class="sidebar-dsr text-center" ng-if="isCustomer()">
       <p>Your Sales Rep</p>
       <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{userProfile.salesRep.imageUrl}}" alt="dsr image" />
       <p class="contact-info">
@@ -136,12 +136,13 @@
 
       <div class="row user-bar hidden-print" ng-hide="showLoginForm" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
-        <div class="select-div">
-          <select name="" id="" ng-change="changeLocation(store)" ng-options="store.name for store in userProfile.stores track by store.customerNumber" ng-model="currentLocation"></select>
+        <div class="select-div" ng-if="isLoggedIn()">
+          <select name="" id="" ng-if="isLoggedIn()" ng-change="changeLocation(store)" ng-options="location.name for location in userProfile.stores track by store.customerNumber" ng-model="currentLocation"></select>
+          <select name="" id="" ng-if="!isLoggedIn()" ng-change="changeLocation(store)" ng-options="location.name for location in locations" ng-model="currentLocation"></select>
           </div>
         </div>
         <div class="col-md-4">
-          <form name="universalSearchForm" novalidate>
+          <form name="universalSearchForm" novalidate ng-if="isLoggedIn()">
             <div class="input-group">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
@@ -177,7 +178,7 @@
       </div>
 
       <div class="row user-bar hidden-print" ng-show="showLoginForm">
-        <div class="col-xs-12">
+        <div class="col-xs-12 text-right">
           <form novalidate name="loginForm" class="form-inline">
             <div class="form-group">
               <label class="sr-only" for="username">Username</label>
@@ -191,7 +192,7 @@
               <button type="submit" class="btn cta-btn" ng-click="login(loginInfo)" ng-disabled="loginForm.$invalid">Login</button>
             </div>
             <div class="form-group">
-              <button class="btn-no-style" ng-click="showLoginForm = false;">Cancel</button>
+              <a ng-click="showLoginForm = false;">Cancel</a>
             </div>
           </form>
         </div>

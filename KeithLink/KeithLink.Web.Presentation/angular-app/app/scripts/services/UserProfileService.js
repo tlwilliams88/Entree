@@ -48,6 +48,8 @@ angular.module('bekApp')
             'imageUrl': '../images/placeholder-dsr.jpg'
           };
 
+          profile.role = 'Owner';
+
           Service.setProfile(profile);
 
           return profile;
@@ -60,6 +62,10 @@ angular.module('bekApp')
 
       getCurrentBranchId: function() {
         return Service.getCurrentLocation().branchId;
+      },
+
+      getCurrentRole: function() {
+        return Service.profile().role;
       },
 
       getCurrentLocation: function() {

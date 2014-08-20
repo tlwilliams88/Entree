@@ -6,8 +6,6 @@ $sidebar-nav__border: #706457;
 $sidebar-nav__background--selected: #2a2621;
 $sidebar-nav__text--selected: $color-white;
 
-$sidebar-nav-mobile__border: #463E35; 
-
 .sidebar {
   color: $sidebar__text;
   font-size: 13px;
@@ -34,6 +32,7 @@ $sidebar-nav-mobile__border: #463E35;
   .sidebar-logo {
     padding: 25px 0;
     background-color: $sidebar__background--dark;
+    border-bottom: 1px solid $sidebar-nav__border;
 
     img {
       height: 75px;
@@ -41,7 +40,7 @@ $sidebar-nav-mobile__border: #463E35;
   }
 
   $border__size: 3px;
-  $padding__size: 14px;
+  $padding__size: 8px;
 
   .sidebar-nav ul { 
     margin-bottom: 0; 
@@ -51,13 +50,13 @@ $sidebar-nav-mobile__border: #463E35;
       padding: 14px $padding__size;
       color: $sidebar--text;
       cursor: pointer;
-      border-top: 1px solid $sidebar-nav__border;
+      border-bottom: 1px solid $sidebar-nav__border;
       font-weight: 400;
       letter-spacing: 1px;
       
       // menu icons
       .sidebar-nav__icon {
-        width: 25px;
+        width: 35px;
         display: inline-block;
         text-align: center;
         font-size: 16px;
@@ -76,7 +75,6 @@ $sidebar-nav-mobile__border: #463E35;
     padding: 20px;
     background-color: $sidebar__background--dark;
     border-bottom: 1px solid $sidebar-nav__border;
-    border-top: 1px solid $sidebar-nav__border;
     letter-spacing: 1px;
 
     img {
