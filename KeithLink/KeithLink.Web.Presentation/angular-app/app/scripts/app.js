@@ -18,7 +18,6 @@ angular
     'ui.router',
     'ui.bootstrap',
     'ui.sortable',
-    'ui.keypress',
     'shoppinpal.mobile-menu',
     'ngDragDrop',
     'infinite-scroll'
@@ -39,9 +38,9 @@ angular
     // register
     .state('menu.register', {
       url: '/register/',
-      templateUrl: 'views/register.html'
-      // controller: 'RegisterController'
-    })    
+      templateUrl: 'views/register.html',
+      controller: 'RegisterController'
+    })
     // /home
     .state('menu.home', {
       url: '/home/',
@@ -111,8 +110,8 @@ angular
       templateUrl: 'views/404.html'
     });
   // redirect to /home route when going to '' or '/' paths
-  $urlRouterProvider.when('', '/home');
-  $urlRouterProvider.when('/', '/home');
+  $urlRouterProvider.when('', '/register');
+  $urlRouterProvider.when('/', '/register');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
@@ -164,9 +163,14 @@ angular
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
-      $state.transitionTo("menu.register");
+      $state.transitionTo('menu.register');
       event.preventDefault(); 
     }
-    
+
+    if (toState.name === 'menu.register' && AccessService.isLoggedIn()) {
+      $state.transitionTo('menu.home');
+      event.preventDefault(); 
+    }
+
   });
 }]);

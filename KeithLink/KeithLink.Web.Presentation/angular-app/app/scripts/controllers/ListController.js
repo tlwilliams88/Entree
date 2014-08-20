@@ -199,17 +199,6 @@ angular.module('bekApp')
       $scope.deleteItem(selectedItem);
     };
 
-    // navigate list input fields using enter key, tab, or down arrow
-    $scope.goToNextField = function(event, index) {
-      var tabindex = index+1;
-      var elems = angular.element('[tabindex=' + tabindex + ']');
-      if (elems.length === 1) {
-        elems[0].focus();
-      } else { // go back to the beginning of the list
-        angular.element('[tabindex=1]')[0].focus();
-      }
-    };
-
     // warn user when exiting page without saved changes
     // window.onbeforeunload = function(){
     //   if (unsavedChanges) {

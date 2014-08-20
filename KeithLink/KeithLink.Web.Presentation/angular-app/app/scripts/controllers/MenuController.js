@@ -37,51 +37,6 @@ angular.module('bekApp')
       setLocations(UserProfileService.profile());
     }
 
-    function setDefaultLocations() {
-      $scope.locations = [{
-        'name': 'Dallas Ft Worth',
-        'branchId': 'fdf'
-      }, {
-        'name': 'San Antonio',
-        'branchId': 'fsa'
-      }, {
-        'name': 'Amarillo',
-        'branchId': 'fam'
-      }];
-    }
-
-    function setLocations(profile) {
-      if (AccessService.isOrderEntryCustomer()) {
-        // branches will the branches the user has access to, this will come back in the profile
-        $scope.locations = profile.stores;
-        var currentLocation = profile.stores[0];
-        $scope.currentLocation = currentLocation;
-      } else {
-        // branches will the full list of branches with the user's default branch selected
-        setDefaultLocations();
-        $scope.currentLocation =  { 'name': 'San Antonio', 'branchId': 'fsa' }; // default location
-      }
-
-      // set the user's current location from cache if available
-      if (UserProfileService.getCurrentLocation()) {
-        $scope.currentLocation = UserProfileService.getCurrentLocation();
-      }
-
-      UserProfileService.setCurrentLocation($scope.currentLocation);
-    }
-
-    function refreshAccessPermissions() {
-      $scope.isLoggedIn = AccessService.isLoggedIn();
-      $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
-      
-      $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
-      $scope.canManageLists = AccessService.canManageLists();
-      $scope.canCreateOrders = AccessService.canCreateOrders();
-      $scope.canSubmitOrders = AccessService.canSubmitOrders();
-      $scope.canPayInvoices = AccessService.canPayInvoices();
-      $scope.canManageAccount = AccessService.canManageAccount();
-    }
-
     $scope.login = function(loginInfo) {
 
       AuthenticationService.authenticateUser(loginInfo.username, loginInfo.password).then(function(token) {
@@ -103,6 +58,7 @@ angular.module('bekApp')
       AuthenticationService.logout();
       refreshAccessPermissions();
 
+      $state.transitionTo('menu.register');
       $scope.displayUserMenu = false;
     };
 
@@ -113,5 +69,51 @@ angular.module('bekApp')
     $scope.print = function () {
       window.print(); 
     };
+
+
+    function setLocations(profile) {
+      if (AccessService.isOrderEntryCustomer()) {
+        // branches will the branches the user has access to, this will come back in the profile
+        $scope.locations = profile.stores;
+        var currentLocation = profile.stores[0];
+        $scope.currentLocation = currentLocation;
+      } else {
+        // branches will the full list of branches with the user's default branch selected
+        setDefaultLocations();
+        $scope.currentLocation =  { 'name': 'San Antonio', 'branchId': 'fsa' }; // default location
+      }
+
+      // set the user's current location from cache if available
+      if (UserProfileService.getCurrentLocation()) {
+        $scope.currentLocation = UserProfileService.getCurrentLocation();
+      }
+
+      UserProfileService.setCurrentLocation($scope.currentLocation);
+    }
+
+    function setDefaultLocations() {
+      $scope.locations = [{
+        'name': 'Dallas Ft Worth',
+        'branchId': 'fdf'
+      }, {
+        'name': 'San Antonio',
+        'branchId': 'fsa'
+      }, {
+        'name': 'Amarillo',
+        'branchId': 'fam'
+      }];
+    }
+
+    function refreshAccessPermissions() {
+      $scope.isLoggedIn = AccessService.isLoggedIn();
+      $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
+      
+      $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
+      $scope.canManageLists = AccessService.canManageLists();
+      $scope.canCreateOrders = AccessService.canCreateOrders();
+      $scope.canSubmitOrders = AccessService.canSubmitOrders();
+      $scope.canPayInvoices = AccessService.canPayInvoices();
+      $scope.canManageAccount = AccessService.canManageAccount();
+    }
     
   }]);
