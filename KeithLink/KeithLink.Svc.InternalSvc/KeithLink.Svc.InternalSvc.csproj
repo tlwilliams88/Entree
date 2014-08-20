@@ -112,6 +112,10 @@
       <Project>{a5061d47-ad81-4c9d-b171-8d92f38db60d}</Project>
       <Name>KeithLink.Common.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Common.Impl\KeithLink.Common.Impl.csproj">
+      <Project>{562e7a83-563d-4848-af64-7dcb432935e8}</Project>
+      <Name>KeithLink.Common.Impl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
       <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
       <Name>KeithLink.Svc.Core</Name>
