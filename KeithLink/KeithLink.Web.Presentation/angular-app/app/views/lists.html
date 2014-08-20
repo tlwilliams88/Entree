@@ -3,7 +3,7 @@
     <div ng-hide="selectedList.isRenaming">
       <span>{{selectedList.name}}</span>
       <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.isFavoritesList">
-        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"</span></a>
+        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
         <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="This will delete the list {{selectedList.name}} and all items within. Are you sure you want to delete this list?"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <ng-form name="parlevelForm" action="">
-                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" />
+                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" ui-keyup="{'enter 40 13':'goToNextField($event, $index+selectedList.items.length+1)'}" />
                   </ng-form>
                 </div>
                 <div class="col-md-1 col-xs-2 table-col-icons hidden-drag">
