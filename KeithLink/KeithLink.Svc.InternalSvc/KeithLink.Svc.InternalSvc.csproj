@@ -77,7 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
-    <Compile Include="Configuration.cs" />
     <Compile Include="ETLService.svc.cs">
       <DependentUpon>ETLService.svc</DependentUpon>
     </Compile>
