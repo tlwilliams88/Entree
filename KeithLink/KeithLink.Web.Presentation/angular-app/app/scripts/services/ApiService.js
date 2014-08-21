@@ -8,15 +8,17 @@
  * calls service to get endpoint url
  */
 angular.module('bekApp')
-  .factory('ApiService', ['$http', 'Constants', function ($http, Constants) {
+  .factory('ApiService', ['$http', 'ApiSettings', function ($http, ApiSettings) {
     
     var Service = {
-      endpointUrl: undefined,
       getEndpointUrl: function() {
-        return $http.get(Constants.servicelocatorUrl);
+        return $http.get('../servicelocator').then(function(response) {
+        	ApiSettings.url = location.protocol + '//' + response.data.ClientApiEndpoint;
+        });
       }
     };
 
     return Service;
 
-  }]);
+  }])
+.value('ApiSettings', { url: 'http://devapi.bekco.com' } );

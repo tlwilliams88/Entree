@@ -42,7 +42,7 @@
         <a ui-sref="menu.invoices" ui-sref-active="is-selected">
           <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
         </a>
-        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageAccount">
+        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageeMenu">
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
         <a ui-sref="menu.notifications" ui-sref-active="is-selected" ng-if="isOrderEntryCustomer">
@@ -98,7 +98,7 @@
         <a ui-sref="menu.invoices" ui-sref-active="is-selected" ng-if="canPayInvoices">
           <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
         </a>
-        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageAccount">
+        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageeMenu">
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
         <!-- <a ng-show="userProfile.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
