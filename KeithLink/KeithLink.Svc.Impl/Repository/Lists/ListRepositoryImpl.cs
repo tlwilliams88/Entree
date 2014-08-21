@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class ListRepositoryImpl: IListRepository
     {
-        public Guid CreateList(Guid userId, string branchId, UserList list)
+		public Guid CreateOrUpdateList(Guid userId, string branchId, UserList list)
         {
 			var updateOrder = new CommerceUpdate<Basket>();
 			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
@@ -64,55 +64,6 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 				return Guid.Empty;
 
 			return ((CommerceUpdateOperationResponse)response.OperationResponses[0]).CommerceEntities[0].Id.ToGuid();
-        }
-
-		
-		public void UpdateList(Guid userId, UserList list)
-        {
-			//var basket = orderContext.GetBasket(userId, list.ListId);
-
-			//if (basket == null) //Throw error?
-			//	return ;
-
-			//basket.Name = list.FormattedName(basket["BranchId"].ToString());
-			//basket["DisplayName"] = list.Name;
-
-			//var itemsToRemove = new List<Guid>();
-
-			//for (int x = 0; x < basket.LineItemCount; x++)
-			//{
-			//	if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
-			//		itemsToRemove.Add(basket.OrderForms[0].LineItems[x].LineItemId);
-			//}
-
-			//foreach (var toDelete in itemsToRemove)
-			//{
-			//	basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(toDelete));
-			//}
-
-			//if (list.Items != null)
-			//{
-			//	foreach (var item in list.Items.OrderBy(s => s.Position))
-			//	{
-			//		var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
-			//		if (existingItem != null)
-			//		{
-			//			existingItem["LinePosition"] = item.Position;
-			//			existingItem.ProductId = item.ItemNumber;
-			//			existingItem["ParLevel"] = item.ParLevel;
-			//			existingItem.DisplayName = item.Label;
-			//		}
-			//		else
-			//		{
-			//			var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
-			//			newItem["ParLevel"] = item.ParLevel;
-			//			newItem["LinePosition"] = item.Position;
-			//			basket.OrderForms[0].LineItems.Add(newItem);
-			//		}
-			//	}
-			//}
-			
-			//basket.Save();
         }
 
 		public void DeleteList(Guid userId, Guid listId)

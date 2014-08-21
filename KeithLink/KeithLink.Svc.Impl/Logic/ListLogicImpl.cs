@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public Guid CreateList(Guid userId, string branchId, UserList list)
         {
-			return listRepository.CreateList(userId, branchId, list);
+			return listRepository.CreateOrUpdateList(userId, branchId, list);
         }
 
 		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Logic
 				item.ItemNumber = updatedItem.ItemNumber;
 			}
 
-			listRepository.CreateList(userId, list.BranchId, list);
+			listRepository.CreateOrUpdateList(userId, list.BranchId, list);
         }
 
 		public void UpdateList(Guid userId, UserList list)
@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic
 				}
 			}
 
-			listRepository.CreateList(userId, updateList.BranchId, updateList);
+			listRepository.CreateOrUpdateList(userId, updateList.BranchId, updateList);
 
 			foreach (var toDelete in itemsToRemove)
 			{
@@ -124,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				listRepository.CreateList(userId, branchId, new UserList() { Name = FAVORITESLIST});
+				listRepository.CreateOrUpdateList(userId, branchId, new UserList() { Name = FAVORITESLIST });
 				lists = listRepository.ReadAllLists(userId, branchId);
 			}
 
