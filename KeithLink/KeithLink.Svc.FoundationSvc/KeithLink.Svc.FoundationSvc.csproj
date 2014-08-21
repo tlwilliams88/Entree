@@ -177,9 +177,13 @@
     <Content Include="pipelines\checkout.pcf" />
     <Content Include="pipelines\basket.pcf" />
     <Content Include="pipelines\Advertising.PCF" />
-    <Content Include="ChannelConfiguration.config" />
+    <Content Include="ChannelConfiguration.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="RequestTemplateDefinition.xml" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

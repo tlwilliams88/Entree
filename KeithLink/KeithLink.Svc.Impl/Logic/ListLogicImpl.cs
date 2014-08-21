@@ -54,12 +54,53 @@ namespace KeithLink.Svc.Impl.Logic
 				item.ItemNumber = updatedItem.ItemNumber;
 			}
 
-			listRepository.UpdateList(userId, list);
+			listRepository.CreateList(userId, list.BranchId, list);
         }
 
 		public void UpdateList(Guid userId, UserList list)
         {
-			listRepository.UpdateList(userId, list);
+			var updateList = listRepository.ReadList(userId, list.ListId);
+
+
+			if (updateList == null) //Throw error?
+				return;
+
+			updateList.Name = list.Name;
+
+			var itemsToRemove = new List<Guid>();
+
+			foreach (var item in updateList.Items)
+			{
+				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(item.ListItemId)).Any())
+					itemsToRemove.Add(item.ListItemId);
+			}
+
+			if (list.Items != null)
+			{
+				foreach (var item in list.Items)
+				{
+					if (item.ListItemId == null)
+						updateList.Items.Add(item);
+					else
+					{
+						var existingItem = updateList.Items.Where(i => i.ListItemId.Equals(item.ListItemId)).FirstOrDefault();
+						if (existingItem == null)
+							continue;
+						existingItem.Label = item.Label;
+						existingItem.ParLevel = item.ParLevel;
+						existingItem.Position = item.Position;
+					}
+				}
+			}
+
+			listRepository.CreateList(userId, updateList.BranchId, updateList);
+
+			foreach (var toDelete in itemsToRemove)
+			{
+				listRepository.DeleteItem(userId, updateList.ListId, toDelete);
+			}
+
+			
         }
 
 		public void DeleteList(Guid userId, Guid listId)

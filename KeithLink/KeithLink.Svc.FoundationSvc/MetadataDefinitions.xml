@@ -2002,7 +2002,11 @@ This file contains the Metadata Repository
               <PropertyMapping property="BasketErrors"            csProperty="_Basket_Errors"/>
               <PropertyMapping property="PurchaseErrors"          csProperty="_Purchase_Errors"/>
               <PropertyMapping property="IsMultiShipping"          csProperty="IsMultiShipping"/>
-             
+							
+							<!-- Custom Properties -->
+							<PropertyMapping property="BranchId" csProperty="BranchId"/>
+							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
+							
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2061,6 +2065,15 @@ This file contains the Metadata Repository
           <Property name="IsMultiShipping" dataType="Boolean" >
             <DisplayName value="Is Multi-Shipping"/>
           </Property>
+					
+					<!-- Custom Properties -->
+					<Property name="BranchId" dataType="String" >
+						<DisplayName value="BranchId"/>
+					</Property>
+					<Property name="DisplayName" dataType="String" >
+						<DisplayName value="Is Multi-Shipping"/>
+					</Property>
+					
         </Properties>
 
         <Relationships>
@@ -2302,6 +2315,12 @@ This file contains the Metadata Repository
 
               <PropertyMapping property="_product_ProductSize" csProperty="_product_ProductSize" />
               <PropertyMapping property="_product_ProductColor" csProperty="_product_ProductColor" />
+							
+							<!-- Custom Properties -->
+							<PropertyMapping property="LinePosition" csProperty="LinePosition"/>
+							<PropertyMapping property="Label" csProperty="Label"/>
+							<PropertyMapping property="ParLevel" csProperty="ParLevel" />
+							
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2344,7 +2363,19 @@ This file contains the Metadata Repository
           <Property name="_product_ProductColor" dataType="String" >
             <DisplayName value="Product Color"/>
           </Property>
-        </Properties>
+
+					<!-- Custom Properties -->
+					<Property name="LinePosition" dataType="String" >
+						<DisplayName value="LinePosition"/>
+					</Property>
+					<Property name="Label" dataType="String">
+						<DisplayName value="Label"/>
+					</Property>
+					<Property name="ParLevel" dataType="Decimal">
+						<DisplayName value="ParLevel" />
+					</Property>
+
+				</Properties>
 
         <Relationships>
           <Relationship name="BasketLevelDiscounts" type="Relationship" isMultipleItems="true" modelName="Discount"></Relationship>
