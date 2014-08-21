@@ -11,7 +11,7 @@ angular.module('bekApp')
       },
 
       isOrderEntryCustomer: function() {
-        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isPurchasing() ) );
+        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() ) );
       },
 
       // ROLES
@@ -24,8 +24,12 @@ angular.module('bekApp')
         return ( UserProfileService.getCurrentRole() === Constants.roles.ACCOUNTING );
       },
 
-      isPurchasing: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.PURCHASING );
+      isApprover: function() {
+        return ( UserProfileService.getCurrentRole() === Constants.roles.APPROVER );
+      },
+
+      isShopper: function() {
+        return ( UserProfileService.getCurrentRole() === Constants.roles.SHOPPER );
       },
 
       isUser: function() {
@@ -35,19 +39,19 @@ angular.module('bekApp')
       // PRIVILEDGES
 
       canBrowseCatalog: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isPurchasing() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
       },
 
       canManageLists: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isPurchasing() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
       },
 
       canCreateOrders: function() {
-        return ( Service.isOwner() || Service.isPurchasing() );
+        return ( Service.isOwner()  || Service.isApprover() || Service.isShopper() );
       },
 
       canSubmitOrders: function() {
-        return ( Service.isOwner() || Service.isPurchasing() );
+        return ( Service.isOwner() || Service.isApprover() );
       },
 
       canPayInvoices: function() {
@@ -55,6 +59,10 @@ angular.module('bekApp')
       },
 
       canManageAccount: function() {
+        return ( Service.isOwner() );
+      },
+
+      canManageeMenu: function() {
         return ( Service.isOwner() );
       }
 
