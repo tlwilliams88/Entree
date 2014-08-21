@@ -129,26 +129,8 @@ angular
     return path + '/';
   });
 
-  // add authorization headers
+  // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptorService');
-
-  // append correct api url to all relevant http requests
-  $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
-    return {
-     'request': function(config) {
-        $injector.invoke(['$http', 'ApiService', function($http, ApiService) {
-          if (config.url[0] === '/') {
-            config.url = ApiService.endpointUrl + config.url;
-
-            console.log('url: ' + config.url);
-            console.log(config.params);
-            
-          }
-       }]);
-       return config || $q.when(config);
-      }
-    };
-  }]);
 
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');
@@ -156,19 +138,24 @@ angular
 }])
 .run(['$rootScope', '$state', 'ApiService', 'AccessService', function($rootScope, $state, ApiService, AccessService) {
 
-  // ApiService.endpointUrl = 'http://devapi.bekco.com';
-  ApiService.getEndpointUrl().then(function(response) {
-    ApiService.endpointUrl = location.protocol + '//' + response.data.ClientApiEndpoint;
-  });
+  ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    // check if user has access to the route
     if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
       $state.transitionTo('menu.register');
       event.preventDefault(); 
     }
 
+    // if logged in, redirect register page to homepage
     if (toState.name === 'menu.register' && AccessService.isLoggedIn()) {
-      $state.transitionTo('menu.home');
+
+      if ( AccessService.isOrderEntryCustomer() ) {
+        $state.transitionTo('menu.home');  
+      } else {
+        $state.transitionTo('menu.catalog.home');
+      }
+
       event.preventDefault(); 
     }
 

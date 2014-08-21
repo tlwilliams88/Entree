@@ -9,8 +9,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListRepository
     {
-		Guid CreateList(Guid userId, string branchId, UserList list);
-		void UpdateList(Guid userId, UserList list);
+		Guid CreateOrUpdateList(Guid userId, string branchId, UserList list);
 
 		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
 
