@@ -337,7 +337,6 @@
     <Content Include="angular-app\app\views\home.html" />
     <Content Include="angular-app\app\views\itemdetails.html" />
     <Content Include="angular-app\app\views\login.html" />
-    <Content Include="angular-app\app\views\menu-anon.html" />
     <Content Include="angular-app\app\views\menu.html" />
     <Content Include="angular-app\app\views\searchresults.html" />
     <Content Include="angular-app\build.bat" />

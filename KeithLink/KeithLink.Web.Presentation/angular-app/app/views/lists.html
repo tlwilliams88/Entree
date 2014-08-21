@@ -162,7 +162,7 @@
                 <div class="col-md-3 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <div ng-hide="item.isEditing">
                     <div class="select-div bek-no-drag edit-label hidden-print">
-                      <select tabindex="{{$index+1}}" ng-change="updateLabel(selectedList.listid, item)" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
+                      <select tabindex="{{$index+1}}" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
                         <option value="">Select A Label...</option>
                       </select>
                     </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <ng-form name="parlevelForm" action="">
-                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" ui-keyup="{'enter 40 13':'goToNextField($event, $index+selectedList.items.length+1)'}" />
+                    <input tabindex="{{$index+selectedList.items.length+1}}" go-to-next-parlevel required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" />
                   </ng-form>
                 </div>
                 <div class="col-md-1 col-xs-2 table-col-icons hidden-drag">
@@ -195,7 +195,7 @@
                     <div class="form-control-group__label">Label: </div>
                     <div ng-hide="item.isEditing" class="form-control-group__input">
                       <div class="select-div bek-no-drag hidden-print">
-                        <select ng-change="updateLabel(selectedList.listid, item)" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
+                        <select name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
                           <option value="">Select A Label...</option>
                         </select>
                       </div>

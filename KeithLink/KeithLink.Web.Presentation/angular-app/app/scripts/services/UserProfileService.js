@@ -65,7 +65,9 @@ angular.module('bekApp')
       },
 
       getCurrentRole: function() {
-        return Service.profile().role;
+        if (Service.profile()) {
+          return Service.profile().role;
+        }
       },
 
       getCurrentLocation: function() {

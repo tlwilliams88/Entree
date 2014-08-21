@@ -6,7 +6,7 @@ angular.module('bekApp')
     var authInterceptorServiceFactory = {
         request: function (config) {
  
-            var authorizedUrls = [
+            var authorizedApiUrls = [
                 '/authen'
             ];
 
@@ -14,7 +14,7 @@ angular.module('bekApp')
      
             var authData = localStorageService.get(Constants.localStorage.userToken);
             // add auth data if present and if url accepts an authorization token
-            if (authData && authorizedUrls.indexOf(config.url) === -1) {
+            if (authData && authorizedApiUrls.indexOf(config.url) === -1) {
                 config.headers.Authorization = 'Bearer ' + authData.access_token;
             }
      
@@ -23,7 +23,7 @@ angular.module('bekApp')
 
          responseError: function (rejection) {
             if (rejection.status === 401) {
-                // $location.path('/login');
+                $location.path('/register');
             }
             return $q.reject(rejection);
         }

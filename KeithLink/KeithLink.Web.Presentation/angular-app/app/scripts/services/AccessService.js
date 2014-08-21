@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthorizationService', ['localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 
+  .factory('AccessService', ['localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 
     function (localStorageService, Constants, AuthenticationService, UserProfileService) {
 
     var Service = {
@@ -10,8 +10,8 @@ angular.module('bekApp')
         return !!(AuthenticationService.getToken());
       },
 
-      isCustomer: function() {
-        return false;
+      isOrderEntryCustomer: function() {
+        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isPurchasing() ) );
       },
 
       // ROLES
@@ -42,7 +42,11 @@ angular.module('bekApp')
         return ( Service.isOwner() || Service.isAccounting() || Service.isPurchasing() || Service.isUser() );
       },
 
-      canPlaceOrder: function() {
+      canCreateOrders: function() {
+        return ( Service.isOwner() || Service.isPurchasing() );
+      },
+
+      canSubmitOrders: function() {
         return ( Service.isOwner() || Service.isPurchasing() );
       },
 

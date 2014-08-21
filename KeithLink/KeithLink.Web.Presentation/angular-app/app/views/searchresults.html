@@ -32,16 +32,16 @@
 						<accordion-group is-open="status.subopen[$index]" ng-repeat="category in categories | orderBy : ['name']" class="sub-accordion">
 							<accordion-heading>
 												<div class="panel panel-default">
-																					<div class="panel-body">
-																														<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
-																					</div>
+																						<div class="panel-body">
+																																<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
+																						</div>
 												</div>
 							</accordion-heading>
 							<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
 												<div class="panel-body">
-																					<li ng-click="toggleSelection(subcategory, 'subcategory')">
-																														<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-																					</li>
+																						<li ng-click="toggleSelection(subcategory, 'subcategory')">
+																																<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+																						</li>
 												</div>
 							</div>
 						</accordion-group>
@@ -92,7 +92,7 @@
 						Item Specifications<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
 					</accordion-heading>
 					<div ng-class="{hidenonstock: !hasNonstock}" class="panel panel-default">
-						<div class="panel-body">	
+						<div class="panel-body">
 							<input type="checkbox"
 							value="nonstockValue_{{nonstock.name}}"
 							id="nonstockId_{{nonstock.name}}"
@@ -127,9 +127,9 @@
 					<li ng-repeat="category in categories">
 						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
 						<!-- <ul ng-show="category.show" class="">
-															<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
-																								<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-															</li>
+																<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
+																										<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
+																</li>
 						</ul> -->
 					</li>
 				</ul>
@@ -197,8 +197,11 @@
 	</div>
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
-		<h2 class="col-md-6 no-padding hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
-		<span class="col-md-6 no-padding pull-right hidden-xs hidden-sm" style="width: initial;">{{totalItems}} results</span>
+		<div class="row">
+			<h2 class="col-md-6 hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
+			<span class="col-md-6 pull-right hidden-xs hidden-sm" style="width: inherit;">{{totalItems}} results</span>
+		</div>
+		
 		<div>
 			<table class="table table-striped" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
 				<thead>
