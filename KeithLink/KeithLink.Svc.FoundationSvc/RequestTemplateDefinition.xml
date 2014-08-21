@@ -484,12 +484,17 @@
           <Argument name="ProductId" />
           <Argument name="VariantId" />
           <Argument name="Quantity" />
+					<Argument name="ParLevel" />
+					<Argument name="Label" value=""/>
+					<Argument name="Position" value="" />
         </PropertiesToSet>
       </Operation>
     </Operation>
   </RequestTemplate>
 
-  <RequestTemplate id="UpdateBasket" group="Orders" cached="false" containsSensitiveData="true">
+	
+
+	<RequestTemplate id="UpdateBasket" group="Orders" cached="false" containsSensitiveData="true">
     <Descriptions>
       <Description culture="en-US" value="Updates a basket"/>
     </Descriptions>
@@ -810,6 +815,9 @@
       </Operation>
     </Operation>
   </RequestTemplate>
+
+	
+	
   
   <RequestTemplate id="CreateLineItemWithPagedLineItems" group="Orders" cached="false">
     <Descriptions>
@@ -1051,4 +1059,82 @@
       </PropertiesToReturn>
     </Operation>
   </RequestTemplate>
+
+
+	<RequestTemplate id="AddToList" group="Orders" cached="false" containsSensitiveData="false">
+		<Descriptions>
+			<Description culture="en-US" value="Adds a product to list."/>
+		</Descriptions>
+		<Operation id="1" builder="UpdateOperationBuilder" entity="Basket" commerceArea="Orders">
+			<Search builder="ModelSearchCriteriaBuilder">
+				<Argument name="Name" value="Default" />
+				<Argument name="UserId" />
+				<Argument name="BasketType" value="0" />
+			</Search>
+			<Options builder="BasketUpdateOptionsBuilder">
+				<Argument name="RefreshBasket" value="true" />
+			</Options>
+			<PropertiesToReturn>
+				<Property name="BasketErrors" />
+				<Property name="BasketWarnings" />
+			</PropertiesToReturn>
+			<Operation id="1-1" builder="CreateRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<PropertiesToSet>
+					<Argument name="CatalogName" />
+					<Argument name="ProductId" />
+					<Argument name="ParLevel" />
+					<Argument name="Label"/>
+					<Argument name="LinePosition" />
+				</PropertiesToSet>
+			</Operation>
+			<Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<!-- Return All Properties -->
+				<Search builder="ModelSearchCriteriaBuilder"/>
+			</Operation>
+		</Operation>
+	</RequestTemplate>
+
+	<RequestTemplate id="DeleteItemFromList" group="Orders" cached="false">
+		<Descriptions>
+			<Description value="Delete Item From List" />
+		</Descriptions>
+		<Operation id="1" builder="UpdateOperationBuilder" entity="Basket" commerceArea="Orders">
+			<Search>
+				<Argument name="Name" value="Default" />
+				<Argument name="UserId" />
+				<Argument name="BasketType" value="0" />
+			</Search>
+			<Options builder="BasketUpdateOptionsBuilder">
+				<Argument name="RefreshBasket" value="true" />
+			</Options>
+			<PropertiesToReturn>
+				<Property name="Id" />
+				<Property name="Name" />
+				<Property name="UserId" />
+				<Property name="OrderGroupId" />
+				<Property name="Total" />
+				<Property name="SubTotal" />
+				<Property name="TaxTotal" />
+				<Property name="LineItemCount" />
+				<Property name="BasketErrors" />
+				<Property name="BasketWarnings" />
+				<Property name="BasketLevelDiscountsTotal" />
+				<Property name="DiscountsTotal" />
+				<Property name="LineItemDiscountsTotal" />
+				<Property name="ShippingDiscountsTotal" />
+				<Property name="CurrencyCulture" />
+				<Property name="DisplayName" />
+				<Property name="BranchId" />
+			</PropertiesToReturn>
+			<Operation id="1-1" builder="DeleteRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<Search builder="ModelSearchCriteriaBuilder">
+					<Argument name="Id" alias="LineItemId"/>
+				</Search>
+			</Operation>
+			<Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<Search builder="ModelSearchCriteriaBuilder" />
+			</Operation>
+		</Operation>
+	</RequestTemplate>
+
 </RequestTemplates>

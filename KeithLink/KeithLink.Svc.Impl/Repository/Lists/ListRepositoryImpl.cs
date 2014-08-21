@@ -1,183 +1,248 @@
-﻿using CommerceServer.Core.Runtime.Orders;
+﻿using CommerceServer.Foundation;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Impl.Models.Generated;
+using KeithLink.Common.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Common.Core;
+using RT = KeithLink.Svc.Impl.RequestTemplates;
 
 namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class ListRepositoryImpl: IListRepository
     {
-        private readonly OrderContext orderContext;
-
-        
-        public ListRepositoryImpl()
-        {
-            orderContext = OrderContext.Create(Configuration.CSSiteName);
-        }
-
         public Guid CreateList(Guid userId, string branchId, UserList list)
         {
-			var newBasket = orderContext.GetBasket(userId, list.FormattedName(branchId));
-			
-            var orderForm = new OrderForm();
-			newBasket["DisplayName"] = list.Name;
-			newBasket["BranchId"] = branchId;
+			var updateOrder = new CommerceUpdate<Basket>();
+			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
+			updateOrder.SearchCriteria.Model.BasketType = 0;
 
-			if(list.Items != null)
+			if (list.ListId != Guid.Empty)
+				updateOrder.SearchCriteria.Model.Id = list.ListId.ToString("B");
+			else
+				updateOrder.SearchCriteria.Model.Name = list.FormattedName(branchId);
+			
+			updateOrder.Model.Properties["BranchId"] = branchId;
+			updateOrder.Model.Name = list.FormattedName(branchId);
+			updateOrder.Model.Properties["DisplayName"] = list.Name;
+			updateOrder.Model.Status = "InProcess";
+			updateOrder.Model.Properties.Add("Id");
+			updateOrder.UpdateOptions.ReturnModel = new Basket();
+
+			
+			if (list.Items != null)
 				foreach (var item in list.Items)
 				{
-					var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
-					newItem["LinePosition"] = item.Position;
-					orderForm.LineItems.Add(newItem);
-				}
-			
-			newBasket.OrderForms.Add(orderForm);
-
-            newBasket.Save();
-            return newBasket.OrderGroupId;
-        }
-
-		public void UpdateList(Guid userId, UserList list)
-        {
-			var basket = orderContext.GetBasket(userId, list.ListId);
-
-			if (basket == null) //Throw error?
-				return ;
-
-			basket.Name = list.FormattedName(basket["BranchId"].ToString());
-			basket["DisplayName"] = list.Name;
-
-			var itemsToRemove = new List<Guid>();
-
-			for (int x = 0; x < basket.LineItemCount; x++)
-			{
-				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
-					itemsToRemove.Add(basket.OrderForms[0].LineItems[x].LineItemId);
-			}
-
-			foreach (var toDelete in itemsToRemove)
-			{
-				basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(toDelete));
-			}
-
-			if (list.Items != null)
-			{
-				foreach (var item in list.Items.OrderBy(s => s.Position))
-				{
-					var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
-					if (existingItem != null)
+					var newItem = new LineItem() { ProductId = item.ItemNumber };
+					newItem.Properties["LinePosition"] = item.Position;
+					newItem.Properties["Label"] = item.Label;
+					newItem.Properties["ParLevel"] = item.ParLevel;
+					newItem.CatalogName = branchId;
+					if (item.ListItemId == Guid.Empty)
 					{
-						existingItem["LinePosition"] = item.Position;
-						existingItem.ProductId = item.ItemNumber;
-						existingItem["ParLevel"] = item.ParLevel;
-						existingItem.DisplayName = item.Label;
+						var lineItemCreate = new CommerceCreateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
+						lineItemCreate.Model = newItem;
+						updateOrder.RelatedOperations.Add(lineItemCreate);
 					}
 					else
 					{
-						var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
-						newItem["ParLevel"] = item.ParLevel;
-						newItem["LinePosition"] = item.Position;
-						basket.OrderForms[0].LineItems.Add(newItem);
+						var lineItemUpdate = new CommerceUpdateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
+						lineItemUpdate.Model = newItem;
+						updateOrder.RelatedOperations.Add(lineItemUpdate);
 					}
 				}
-			}
 			
-			basket.Save();
+			// create the request
+			var response = FoundationService.ExecuteRequest(updateOrder.ToRequest());
+
+			if(response.OperationResponses.Count !=1 )
+				return Guid.Empty;
+
+			return ((CommerceUpdateOperationResponse)response.OperationResponses[0]).CommerceEntities[0].Id.ToGuid();
+        }
+
+		
+		public void UpdateList(Guid userId, UserList list)
+        {
+			//var basket = orderContext.GetBasket(userId, list.ListId);
+
+			//if (basket == null) //Throw error?
+			//	return ;
+
+			//basket.Name = list.FormattedName(basket["BranchId"].ToString());
+			//basket["DisplayName"] = list.Name;
+
+			//var itemsToRemove = new List<Guid>();
+
+			//for (int x = 0; x < basket.LineItemCount; x++)
+			//{
+			//	if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(basket.OrderForms[0].LineItems[x].LineItemId)).Any())
+			//		itemsToRemove.Add(basket.OrderForms[0].LineItems[x].LineItemId);
+			//}
+
+			//foreach (var toDelete in itemsToRemove)
+			//{
+			//	basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(toDelete));
+			//}
+
+			//if (list.Items != null)
+			//{
+			//	foreach (var item in list.Items.OrderBy(s => s.Position))
+			//	{
+			//		var existingItem = basket.OrderForms[0].LineItems.Cast<LineItem>().Where(l => l.LineItemId.Equals(item.ListItemId)).FirstOrDefault();
+			//		if (existingItem != null)
+			//		{
+			//			existingItem["LinePosition"] = item.Position;
+			//			existingItem.ProductId = item.ItemNumber;
+			//			existingItem["ParLevel"] = item.ParLevel;
+			//			existingItem.DisplayName = item.Label;
+			//		}
+			//		else
+			//		{
+			//			var newItem = new LineItem() { DisplayName = item.Label, ProductId = item.ItemNumber };
+			//			newItem["ParLevel"] = item.ParLevel;
+			//			newItem["LinePosition"] = item.Position;
+			//			basket.OrderForms[0].LineItems.Add(newItem);
+			//		}
+			//	}
+			//}
+			
+			//basket.Save();
         }
 
 		public void DeleteList(Guid userId, Guid listId)
         {
-			var basket = orderContext.GetBasket(userId, listId);
+			var deleteBasket = new CommerceDelete<Basket>();
+			deleteBasket.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			deleteBasket.SearchCriteria.Model.Properties["BasketType"] = 0;
+			deleteBasket.SearchCriteria.Model.Id = listId.ToString("B");
 
-			if (basket != null)
-				basket.Delete();
+			var response = FoundationService.ExecuteRequest(deleteBasket.ToRequest());
         }
 
 		public List<UserList> ReadAllLists(Guid userId, string branchId)
         {
-			var baskets = orderContext.GetBasketsForUser(userId);
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
 
-			return baskets.Cast<OrderGroup>().Where(i => i["BranchId"].ToString() == branchId).Select(b => new UserList() { 
-				ListId = b.OrderGroupId, 
-				Name = b["DisplayName"].ToString(), 
-				BranchId = b["BranchId"].ToString(),
-				Items = b.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem() { 
-					ItemNumber = l.ProductId, 
-					Label = l.DisplayName,
-					ListItemId = l.LineItemId,
-					ParLevel = l["ParLevel"] == null ? 0 : (decimal)l["ParLevel"],
-					Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString())
-				}).ToList()
-			}).ToList();
+			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+			queryBaskets.RelatedOperations.Add(queryLineItems);
+
+
+			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+			var basketList = new List<UserList>();
+
+			foreach (Basket basket in basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(b => b.Properties["BranchId"].ToString().Equals(branchId)))
+			{
+				basketList.Add(new UserList() {
+					ListId = basket.Id.ToGuid(),
+					Name = basket.Properties["DisplayName"].ToString(),
+					BranchId = basket.Properties["BranchId"].ToString(),
+					Items = basket.LineItems.Select(l => new ListItem() {
+						ItemNumber = l.ProductId,
+						Label = l.Properties["Label"] == null ? string.Empty : l.Properties["Label"].ToString(),
+						ListItemId = l.Id.ToGuid(),
+						ParLevel = l.Properties["ParLevel"] == null ? 0 : (decimal)l.Properties["ParLevel"],
+						Position = l.Properties["LinePosition"] == null ? 0 : int.Parse(l.Properties["LinePosition"].ToString())
+					}).ToList()
+				});
+			}
+						
+			return basketList;
 
         }
 
 		public UserList ReadList(Guid userId, Guid listId)
         {
-			var basket = orderContext.GetBasket(userId, listId);
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
+			queryBaskets.SearchCriteria.Model.Id = listId.ToString("B");
 
-			if (basket == null)
+			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+			queryBaskets.RelatedOperations.Add(queryLineItems);
+
+			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+			if (response.OperationResponses.Count == 0)
 				return null;
 
-			return ToUserList(basket);
+			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+			return ToUserList(((Basket)basketResponse.CommerceEntities[0]));
         }
 
 		public UserList DeleteItem(Guid userId, Guid listId, Guid itemId)
 		{
-			var basket = orderContext.GetBasket(userId, listId);
+			var list = ReadList(userId, listId);
 
-			basket.OrderForms[0].LineItems.Remove(basket.OrderForms[0].LineItems.IndexOf(itemId));
-			basket.Save();
-
-			return ToUserList(basket);
+			var basket = RT.Orders.DeleteItemFromList(list.FormattedName(list.BranchId), userId.ToString("B"), "0", "true", itemId.ToString("B"));
+			return ToUserList(((Basket)basket[0]));
+			
 		}
 
 		private UserList ToUserList(Basket basket)
 		{
 			return new UserList()
 			{
-				ListId = basket.OrderGroupId,
-				Name = basket["DisplayName"].ToString(),
-				BranchId = basket["BranchId"].ToString(),
-				Items = basket.OrderForms[0].LineItems.Cast<LineItem>().Select(l => new ListItem()
-					{
-						ItemNumber = l.ProductId,
-						Label = l.DisplayName,
-						ListItemId = l.LineItemId,
-						ParLevel = l["ParLevel"] == null ? 0 : (decimal)l["ParLevel"],
-						Position = l["LinePosition"] == null ? 0 : int.Parse(l["LinePosition"].ToString())
-					}).ToList()
+				ListId = basket.Id.ToGuid(),
+				Name = basket.Properties["DisplayName"].ToString(),
+				BranchId = basket.Properties["BranchId"].ToString(),
+				Items = basket.LineItems.Select(l => new ListItem()
+				{
+					ItemNumber = l.ProductId,
+					Label = l.Properties["Label"] == null ? string.Empty : l.Properties["Label"].ToString(),
+					ListItemId = l.Id.ToGuid(),
+					ParLevel = l.Properties["ParLevel"] == null ? 0M : (decimal)l.Properties["ParLevel"],
+					Position = l.Properties["LinePosition"] == null ? 0 : int.Parse(l.Properties["LinePosition"].ToString())
+				}).ToList()
 			};
 			
 		}
-
-
+		
 		public UserList ReadList(Guid userId, string listName)
 		{
-			
-            var list = orderContext.GetBasket(userId, listName);
-            if (list == null || list["BranchId"] == null)
-                return null;
-            return ToUserList(list);
+
+			var queryBaskets = new CommerceQuery<Basket>();
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
+			queryBaskets.SearchCriteria.Model.Name = listName;
+
+			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+			queryBaskets.RelatedOperations.Add(queryLineItems);
+
+			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+			if (response.OperationResponses.Count == 0)
+				return null;
+
+			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+			return ToUserList(((Basket)basketResponse.CommerceEntities[0]));
 		}
-
-
+		
 		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
 		{
-			var basket = orderContext.GetBasket(userId, listId);
+			var basket = ReadList(userId, listId);
+			var existingIds = basket.Items.Select(i => i.ListItemId).ToList();
 
-			var newCSItem = new LineItem() { DisplayName = newItem.Label, ProductId = newItem.ItemNumber};
-			newCSItem["ParLevel"] = newItem.ParLevel;
-			newCSItem["LinePosition"] = newItem.Position;
-			basket.OrderForms[0].LineItems.Add(newCSItem);
+			var test = RT.Orders.AddToList(basket.FormattedName(basket.BranchId), userId.ToString("B"), "0", "true", basket.BranchId, newItem.ItemNumber, newItem.ParLevel.ToString(), newItem.Label, newItem.Position.ToString());
 
-			basket.Save();
+			//CS returns all of the items, so this is how we have to determine the Id for the newly created item
+			foreach (var item in ((Basket) test[0]).LineItems)
+			{
+				if (!existingIds.Contains(item.Id.ToGuid()))
+					return item.Id.ToGuid();
+			}
 
-			return newCSItem.LineItemId;
+			return null;
 		}
 	}
 
