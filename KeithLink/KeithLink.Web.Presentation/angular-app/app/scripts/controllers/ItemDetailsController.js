@@ -17,10 +17,6 @@ angular.module('bekApp')
       $scope.loadingDetails = false;
     });
 
-    $scope.highlightRow = function(index, totalItems) {
-      return Boolean((index + totalItems) % 2);
-    };
-
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({

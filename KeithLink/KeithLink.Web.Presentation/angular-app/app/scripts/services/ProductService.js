@@ -10,7 +10,7 @@
 angular.module('bekApp')
   .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
 
-      var defaultPageSize = 30,
+      var defaultPageSize = 50,
         defaultStartingIndex = 0;
 
       function getBranch() {
@@ -20,18 +20,18 @@ angular.module('bekApp')
       function concatenateNestedParameters(name, list) {
         var filters = name + ':';
         angular.forEach(list, function(item, index) {
-          if (name === "brands" || name === "allergens" || name === "dietary" || name==="itemspecs") {
+          if (name === 'brands' || name === 'dietary' || name==='itemspecs') {
             filters += item + '|';
           }
-          if (name === "nonstock") {
-            filters += "y|";
+          if (name === 'nonstock') {
+            filters += 'y|';
           }
         });
         return filters.substr(0, filters.length - 1);
       }
 
       var Service = {
-        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -42,10 +42,6 @@ angular.module('bekApp')
           }
           if (facetCategory) {
             facets += 'categories:' + facetCategory.name;
-            facets += ',';
-          }
-          if (allergens && allergens.length > 0) {
-            facets += concatenateNestedParameters('allergens', allergens);
             facets += ',';
           }
           if (dietary && dietary.length > 0) {
@@ -81,7 +77,7 @@ angular.module('bekApp')
           });
         },
 
-        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, allergens, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -92,10 +88,6 @@ angular.module('bekApp')
           }
           if (facetCategory) {
             categoryId = facetCategory.name;
-          }
-          if (allergens && allergens.length > 0) {
-            facets += concatenateNestedParameters('allergens', allergens);
-            facets += ',';
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);

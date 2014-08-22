@@ -38,6 +38,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
+
         #endregion
 
         #region properties

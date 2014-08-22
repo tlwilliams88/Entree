@@ -155,21 +155,29 @@ input[type='text'], input[type='email'], input[type='password'] {
 
 /* Checkboxes */
 
+
+@mixin style-checkbox ($clear-url, $checked-url, $vertical-position, $horizontal-position, $size) {
+  input[type="checkbox"] + label{
+    background:url('../images/' + $clear-url) $vertical-position $horizontal-position no-repeat;
+    background-size: $size;
+  }
+  input[type="checkbox"]:checked + label {
+    background:url('../images/' + $checked-url) $vertical-position $horizontal-position no-repeat;
+    background-size: $size;
+  }
+}
+
 input[type="checkbox"] {
     display:none;
 }
 input[type="checkbox"] + label {
   display: inline-block;
   vertical-align: middle;
-  background: url("../images/checkbox-clear.png") top left no-repeat;
   cursor: pointer;
-  background-size: 20px;
   padding-left: 25px;
 }
-input[type="checkbox"]:checked + label {
-  background:url('../images/checkbox-checked.png') top left no-repeat;
-  background-size: 20px;  
-}
+@include style-checkbox('checkbox-clear.png', 'checkbox-checked.png', center, left, 20px);
+
 
 /* Search Form */
 
@@ -179,6 +187,10 @@ input[type="checkbox"]:checked + label {
   input {
     border-right: none;
   }
+}
+
+hr {
+  border-top: 1px solid $color-border;
 }
 
 .hand{

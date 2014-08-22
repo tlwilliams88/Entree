@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public Guid CreateList(Guid userId, string branchId, UserList list)
         {
-			return listRepository.CreateList(userId, branchId, list);
+			return listRepository.CreateOrUpdateList(userId, branchId, list);
         }
 
 		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
@@ -54,12 +54,53 @@ namespace KeithLink.Svc.Impl.Logic
 				item.ItemNumber = updatedItem.ItemNumber;
 			}
 
-			listRepository.UpdateList(userId, list);
+			listRepository.CreateOrUpdateList(userId, list.BranchId, list);
         }
 
 		public void UpdateList(Guid userId, UserList list)
         {
-			listRepository.UpdateList(userId, list);
+			var updateList = listRepository.ReadList(userId, list.ListId);
+
+
+			if (updateList == null) //Throw error?
+				return;
+
+			updateList.Name = list.Name;
+
+			var itemsToRemove = new List<Guid>();
+
+			foreach (var item in updateList.Items)
+			{
+				if (list.Items != null && !list.Items.Where(i => i.ListItemId.Equals(item.ListItemId)).Any())
+					itemsToRemove.Add(item.ListItemId);
+			}
+
+			if (list.Items != null)
+			{
+				foreach (var item in list.Items)
+				{
+					if (item.ListItemId == null)
+						updateList.Items.Add(item);
+					else
+					{
+						var existingItem = updateList.Items.Where(i => i.ListItemId.Equals(item.ListItemId)).FirstOrDefault();
+						if (existingItem == null)
+							continue;
+						existingItem.Label = item.Label;
+						existingItem.ParLevel = item.ParLevel;
+						existingItem.Position = item.Position;
+					}
+				}
+			}
+
+			listRepository.CreateOrUpdateList(userId, updateList.BranchId, updateList);
+
+			foreach (var toDelete in itemsToRemove)
+			{
+				listRepository.DeleteItem(userId, updateList.ListId, toDelete);
+			}
+
+			
         }
 
 		public void DeleteList(Guid userId, Guid listId)
@@ -83,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				listRepository.CreateList(userId, branchId, new UserList() { Name = FAVORITESLIST});
+				listRepository.CreateOrUpdateList(userId, branchId, new UserList() { Name = FAVORITESLIST });
 				lists = listRepository.ReadAllLists(userId, branchId);
 			}
 

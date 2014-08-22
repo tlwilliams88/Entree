@@ -8,7 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants', function ($http, localStorageService, Constants) {
+  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants',
+    function ($http, localStorageService, Constants) {
 
     var Service = {
       
@@ -48,6 +49,8 @@ angular.module('bekApp')
             'imageUrl': '../images/placeholder-dsr.jpg'
           };
 
+          profile.role = 'Owner';
+
           Service.setProfile(profile);
 
           return profile;
@@ -60,6 +63,12 @@ angular.module('bekApp')
 
       getCurrentBranchId: function() {
         return Service.getCurrentLocation().branchId;
+      },
+
+      getCurrentRole: function() {
+        if (Service.profile()) {
+          return Service.profile().role;
+        }
       },
 
       getCurrentLocation: function() {

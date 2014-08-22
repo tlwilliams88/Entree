@@ -3,7 +3,7 @@
     <div ng-hide="selectedList.isRenaming">
       <span>{{selectedList.name}}</span>
       <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.isFavoritesList">
-        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"</span></a>
+        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
         <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="This will delete the list {{selectedList.name}} and all items within. Are you sure you want to delete this list?"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
@@ -162,7 +162,7 @@
                 <div class="col-md-3 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <div ng-hide="item.isEditing">
                     <div class="select-div bek-no-drag edit-label hidden-print">
-                      <select tabindex="{{$index+1}}" ng-change="updateLabel(selectedList.listid, item)" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
+                      <select tabindex="{{$index+1}}" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
                         <option value="">Select A Label...</option>
                       </select>
                     </div>
@@ -176,7 +176,7 @@
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <ng-form name="parlevelForm" action="">
-                    <input tabindex="{{$index+selectedList.items.length+1}}" required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" />
+                    <input tabindex="{{$index+selectedList.items.length+1}}" go-to-next-parlevel required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.editParlevel" class="edit-parlevel bek-no-drag" />
                   </ng-form>
                 </div>
                 <div class="col-md-1 col-xs-2 table-col-icons hidden-drag">
@@ -195,7 +195,7 @@
                     <div class="form-control-group__label">Label: </div>
                     <div ng-hide="item.isEditing" class="form-control-group__input">
                       <div class="select-div bek-no-drag hidden-print">
-                        <select ng-change="updateLabel(selectedList.listid, item)" name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
+                        <select name="" id="" ng-model="item.editLabel" ng-options="label for label in labels">
                           <option value="">Select A Label...</option>
                         </select>
                       </div>

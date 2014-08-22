@@ -18,18 +18,18 @@ angular
     'ui.router',
     'ui.bootstrap',
     'ui.sortable',
-    'ui.keypress',
     'shoppinpal.mobile-menu',
     'ngDragDrop',
     'infinite-scroll'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
-    .state('login', {
-      url: '/login/',
-      templateUrl: 'views/login.html'
-      // controller: 'MenuController'
+    // register
+    .state('register', {
+      url: '/register/',
+      templateUrl: 'views/register.html',
+      controller: 'RegisterController'
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
@@ -40,7 +40,10 @@ angular
     .state('menu.home', {
       url: '/home/',
       templateUrl: 'views/home.html',
-      controller: 'HomeController'
+      controller: 'HomeController',
+      data: {
+        authorize: 'isOrderEntryCustomer'
+      }
     })
     .state('menu.catalog', {
       abstract: true,
@@ -51,7 +54,10 @@ angular
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
-      controller: 'CatalogController'
+      controller: 'CatalogController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     .state('menu.catalog.products', {
       abstract: true,
@@ -62,23 +68,35 @@ angular
     .state('menu.catalog.products.list', {
       url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
-      controller: 'SearchController'
+      controller: 'SearchController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     // /catalog/products/:itemNumber (item details page)
     .state('menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
-      controller: 'ItemDetailsController'
+      controller: 'ItemDetailsController',
+      data: {
+        authorize: 'canBrowseCatalog'
+      }
     })
     .state('menu.lists', {
       url: '/lists/',
       templateUrl: 'views/lists.html',
-      controller: 'ListController'
+      controller: 'ListController',
+      data: {
+        authorize: 'canManageLists'
+      }
     })
     .state('menu.listitems', {
       url: '/lists/:listId/?renameList',
       templateUrl: 'views/lists.html',
-      controller: 'ListController'
+      controller: 'ListController',
+      data: {
+        authorize: 'canManageLists'
+      }
     });
 
   $stateProvider
@@ -87,8 +105,8 @@ angular
       templateUrl: 'views/404.html'
     });
   // redirect to /home route when going to '' or '/' paths
-  $urlRouterProvider.when('', '/home');
-  $urlRouterProvider.when('/', '/home');
+  $urlRouterProvider.when('', '/register');
+  $urlRouterProvider.when('/', '/register');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
@@ -106,49 +124,35 @@ angular
     return path + '/';
   });
 
-  // add authorization headers
+  // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptorService');
 
-  // append correct api url to all relevant http requests
-  $httpProvider.interceptors.push(['$q', '$injector', function($q, $injector) {
-    return {
-     'request': function(config) {
-        $injector.invoke(['$http', 'ApiService', function($http, ApiService) {
-          if (config.url[0] === '/') {
-            config.url = ApiService.endpointUrl + config.url;
-
-            console.log('url: ' + config.url);
-            console.log(config.params);
-            
-          }
-       }]);
-       return config || $q.when(config);
-      }
-    };
-  }]);
+  // set local storage prefix
+  localStorageServiceProvider.setPrefix('bek');
 
 }])
-.run(['$rootScope', 'ApiService', function($rootScope, ApiService) {
+.run(['$rootScope', '$state', 'ApiService', 'AccessService', function($rootScope, $state, ApiService, AccessService) {
 
-  // ApiService.endpointUrl = 'http://devapi.bekco.com';
-  ApiService.getEndpointUrl().then(function(response) {
-    ApiService.endpointUrl = location.protocol + '//' + response.data.ClientApiEndpoint;
-  });
+  ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    // debugger;
-    // if (!Auth.authorize(toState.data.access)) {
-    //   $rootScope.error = 'Access denied';
-    //   event.preventDefault();
+    // check if user has access to the route
+    if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
+      $state.transitionTo('register');
+      event.preventDefault(); 
+    }
 
-    //   if(fromState.url === '^') {
-    //     if(Auth.isLoggedIn())
-    //       $state.go('user.home');
-    //     else {
-    //       $rootScope.error = null;
-    //       $state.go('anon.login');
-    //     }
-    //   }
-    // }
+    // if logged in, redirect register page to homepage
+    if (toState.name === 'register' && AccessService.isLoggedIn()) {
+
+      if ( AccessService.isOrderEntryCustomer() ) {
+        $state.transitionTo('menu.home');  
+      } else {
+        $state.transitionTo('menu.catalog.home');
+      }
+
+      event.preventDefault(); 
+    }
+
   });
 }]);

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Impl.Logging;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -23,8 +25,11 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
+			builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
 
             return builder.Build();
         }
-    }
+
+		
+	}
 }

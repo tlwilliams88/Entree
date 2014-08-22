@@ -337,7 +337,6 @@
     <Content Include="angular-app\app\views\home.html" />
     <Content Include="angular-app\app\views\itemdetails.html" />
     <Content Include="angular-app\app\views\login.html" />
-    <Content Include="angular-app\app\views\menu-anon.html" />
     <Content Include="angular-app\app\views\menu.html" />
     <Content Include="angular-app\app\views\searchresults.html" />
     <Content Include="angular-app\build.bat" />
@@ -459,11 +458,12 @@
   <PropertyGroup>
     <PreBuildEvent>cd $(ProjectDir)angular-app
 dir /b /a "node_modules\*" | &gt;nul c:\windows\syswow64\findstr.exe "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt)
+dir /b /a "node_modules\*" | &gt;nul c:\windows\SysWOW64\findstr.exe "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt-cli)
 
 if $(ConfigurationName) == Debug goto :debug
 if $(ConfigurationName) == Dev goto :debug
-goto :debug
-call grunt --no-color build &gt; $(ProjectDir)grunt_log.txt
+
+call grunt --no-color &gt; $(ProjectDir)grunt_log.txt
 
 goto :done
 

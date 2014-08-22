@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService', function ($http, $q, localStorageService, Constants, UserProfileService) {
+  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService',
+    function ($http, $q, localStorageService, Constants, UserProfileService) {
 
     var Service = {
 
@@ -21,11 +22,14 @@ angular.module('bekApp')
         });
       },
 
-      verified: function() {
-        if (Service.getToken()) {
-          return true;
-        }
-        return false;
+      login: function(username, password) {
+        return Service.authenticateUser(username, password).then(function(token) {
+          return UserProfileService.getProfile(username).then(function(profile) {
+            return profile;
+          }, function(error) {
+            AuthenticationService.logout();
+          });
+        });
       },
 
       logout: function() {
@@ -40,6 +44,14 @@ angular.module('bekApp')
       setToken: function(token) {
         localStorageService.set(Constants.localStorage.userToken, token);
       },
+
+      getLeadGenInfo: function() {
+        return localStorageService.set(Constants.localStorage.leadGenInfo);
+      },
+
+      setLeadGenInfo: function(leadGenInfo) {
+        localStorageService.set(Constants.localStorage.leadGenInfo, leadGenInfo);
+      }
 
     };
  

@@ -17,6 +17,7 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    // load data
     ListService.getAllLists().then(function(data) {
       
       // switch to specific list or default to Favorites list
@@ -58,6 +59,7 @@ angular.module('bekApp')
       $scope.itemsToDisplay += itemsPerPage;
     };
 
+    // LIST INTERACTIONS
     $scope.goToList = function(list) {
       $scope.selectedList = list;
       $scope.itemsToDisplay = itemsPerPage;
@@ -239,7 +241,8 @@ angular.module('bekApp')
       updateItemPositions();
 
     };
-    $scope.work = function(event, ui) {  
+    
+    $scope.work = function(event, ui) {  // fix for chrome position:relative issue
         // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 

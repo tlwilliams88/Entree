@@ -71,7 +71,7 @@
     <Reference Include="CommerceServerContrib.CodeGeneration, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\CommerceServerContrib.CodeGeneration.1.0.48.0\lib\Net35\CommerceServerContrib.CodeGeneration.dll</HintPath>
-      <Private>False</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CommerceServerContrib.CrossTier, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -126,6 +126,7 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
+    <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearchItemUpdate.cs" />

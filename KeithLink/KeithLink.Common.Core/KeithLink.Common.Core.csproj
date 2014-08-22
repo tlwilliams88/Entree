@@ -68,6 +68,7 @@
     <Compile Include="ConfigurationFacade.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Logging\IEventLogRepository.cs" />
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\Log4Net\Log4NetErrorHandler.cs" />
