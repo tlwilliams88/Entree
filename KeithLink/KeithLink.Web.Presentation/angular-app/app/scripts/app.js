@@ -25,21 +25,16 @@ angular
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
-    .state('login', {
-      url: '/login/',
-      templateUrl: 'views/login.html'
-      // controller: 'MenuController'
+    // register
+    .state('register', {
+      url: '/register/',
+      templateUrl: 'views/register.html',
+      controller: 'RegisterController'
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
       controller: 'MenuController'
-    })
-    // register
-    .state('menu.register', {
-      url: '/register/',
-      templateUrl: 'views/register.html',
-      controller: 'RegisterController'
     })
     // /home
     .state('menu.home', {
@@ -143,12 +138,12 @@ angular
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // check if user has access to the route
     if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
-      $state.transitionTo('menu.register');
+      $state.transitionTo('register');
       event.preventDefault(); 
     }
 
     // if logged in, redirect register page to homepage
-    if (toState.name === 'menu.register' && AccessService.isLoggedIn()) {
+    if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
         $state.transitionTo('menu.home');  

@@ -7,7 +7,7 @@ angular.module('bekApp')
     var Service = {
 
       isLoggedIn: function() {
-        return !!(AuthenticationService.getToken());
+        return !!(AuthenticationService.getToken() && UserProfileService.profile());
       },
 
       isOrderEntryCustomer: function() {

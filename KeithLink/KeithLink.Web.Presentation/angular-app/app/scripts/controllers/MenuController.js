@@ -8,18 +8,6 @@
  * Controller of the bekApp
  */
 
-var GuestModalController = function ($scope, $modalInstance) {
-
-  $scope.ok = function () {
-    $modalInstance.close();
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-};
-
-
 angular.module('bekApp')
   .controller('MenuController', ['$scope', '$state', '$modal', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
     function ($scope, $state, $modal, Constants, AuthenticationService, UserProfileService, AccessService) {
@@ -39,17 +27,15 @@ angular.module('bekApp')
 
     $scope.login = function(loginInfo) {
 
-      AuthenticationService.authenticateUser(loginInfo.username, loginInfo.password).then(function(token) {
-        UserProfileService.getProfile(loginInfo.username).then(function(profile) {
-          $scope.showLoginForm = false;
+      AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
+        $scope.showLoginForm = false;
 
-          $scope.userProfile = profile;
+        $scope.userProfile = profile;
 
-          refreshAccessPermissions();         
-          setLocations(profile);
+        refreshAccessPermissions();         
+        setLocations(profile);
 
-          $state.transitionTo('menu.home');
-        });
+        $state.transitionTo('menu.home');
       });
 
     };
@@ -58,7 +44,7 @@ angular.module('bekApp')
       AuthenticationService.logout();
       refreshAccessPermissions();
 
-      $state.transitionTo('menu.register');
+      $state.transitionTo('register');
       $scope.displayUserMenu = false;
     };
 

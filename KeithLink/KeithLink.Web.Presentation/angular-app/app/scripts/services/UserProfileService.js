@@ -8,7 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants', function ($http, localStorageService, Constants) {
+  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants',
+    function ($http, localStorageService, Constants) {
 
     var Service = {
       
