@@ -15,13 +15,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private Core.Interface.Profile.ICustomerContainerRepository _custRepo;
         private Core.Interface.Profile.IUserProfileRepository _profileRepo;
-        private KeithLink.Common.Impl.Logging.EventLogRepositoryImpl _log;
+        private KeithLink.Common.Core.Logging.IEventLogRepository _log;
         #endregion
 
         #region ctor
         public ProfileController(Core.Interface.Profile.ICustomerContainerRepository customerRepo, 
                                  Core.Interface.Profile.IUserProfileRepository profileRepo,
-                                 KeithLink.Common.Impl.Logging.EventLogRepositoryImpl logRepo ) : base(profileRepo) {
+                                 KeithLink.Common.Core.Logging.IEventLogRepository logRepo ) : base(profileRepo) {
             _custRepo = customerRepo;
             _profileRepo = profileRepo;
             _log = logRepo;
