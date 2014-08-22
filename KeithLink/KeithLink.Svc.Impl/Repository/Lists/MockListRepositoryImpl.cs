@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             return sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault();
         }
 
-		public Guid CreateList(Guid userId, string branchId, UserList list)
+		public Guid CreateOrUpdateList(Guid userId, string branchId, UserList list)
         {
             sampleList.Add(list);
             return list.ListId;
@@ -90,16 +90,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         {
             sampleList.Where(l => l.ListId.Equals(listId)).FirstOrDefault().Name = name;
         }
-
-
-		public void UpdateList(Guid userId, UserList list)
-        {
-            var currentlist = sampleList.Where(l => l.ListId.Equals(list.ListId)).FirstOrDefault();
-            currentlist.Name = list.Name;
-        }
-
-
-
+		
 		public void DeleteItem(Guid userId, Guid listId, Guid itemId)
 		{
 			throw new NotImplementedException();
