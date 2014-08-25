@@ -52,6 +52,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					else
 					{
 						var lineItemUpdate = new CommerceUpdateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
+						lineItemUpdate.SearchCriteria.Model.Id = item.ListItemId.ToString("B");
 						lineItemUpdate.Model = newItem;
 						updateOrder.RelatedOperations.Add(lineItemUpdate);
 					}
