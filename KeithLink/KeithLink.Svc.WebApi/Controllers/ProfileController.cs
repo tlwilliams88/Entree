@@ -15,12 +15,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private Core.Interface.Profile.ICustomerContainerRepository _custRepo;
         private Core.Interface.Profile.IUserProfileRepository _profileRepo;
+        private KeithLink.Common.Core.Logging.IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public ProfileController(Core.Interface.Profile.ICustomerContainerRepository customerRepo, Core.Interface.Profile.IUserProfileRepository profileRepo) : base(profileRepo) {
+        public ProfileController(Core.Interface.Profile.ICustomerContainerRepository customerRepo, 
+                                 Core.Interface.Profile.IUserProfileRepository profileRepo,
+                                 KeithLink.Common.Core.Logging.IEventLogRepository logRepo ) : base(profileRepo) {
             _custRepo = customerRepo;
             _profileRepo = profileRepo;
+            _log = logRepo;
         }
         #endregion
 
@@ -47,10 +51,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (ApplicationException axe)
             {
                 retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
             }
             catch (Exception ex)
             {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
             }
 
 

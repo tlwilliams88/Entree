@@ -37,6 +37,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
             builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
 
+            builder.Register(l => new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl(Impl.Configuration.ApplicationName)).As<KeithLink.Common.Core.Logging.IEventLogRepository>().InstancePerRequest();
+
             // Build the container.
             var container = builder.Build();
 

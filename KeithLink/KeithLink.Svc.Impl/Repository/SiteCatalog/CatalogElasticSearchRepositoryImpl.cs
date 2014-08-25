@@ -181,7 +181,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                   ""filtered"":{
                    ""query"": {
                     ""query_string"" : {
-                          ""fields"" : [""name"", ""description"", ""categoryname"", ""itemnumber""],
+                          ""fields"" : [""name_analyzed"", ""description"", ""categoryname_analyzed"", ""itemnumber""],
                           ""query"" : """ + search + @""",
                                                ""use_dis_max"" : true
                         }
