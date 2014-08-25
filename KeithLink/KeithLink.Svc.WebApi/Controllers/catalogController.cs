@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	[Authorize]
     public class CatalogController : BaseController
     {
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogRepository _catalogRepository;
@@ -117,8 +118,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         private void GetPricingInfo(ProductsReturn prods)
         {
-            // TODO: Get branch and customer info from UI and/or profile
-		
+            if (this.AuthenticatedUser == null)
+				return;
+
             PriceReturn pricingInfo = _priceRepository.GetPrices(this.AuthenticatedUser.BranchId, this.AuthenticatedUser.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Product p in prods.Products)

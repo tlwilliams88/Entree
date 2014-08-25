@@ -174,7 +174,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var favorites = listRepository.ReadList(userId, string.Format("{0}_{1}", list.BranchId, FAVORITESLIST));
+			var favorites = listRepository.ReadList(userId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
 
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
@@ -202,7 +202,7 @@ namespace KeithLink.Svc.Impl.Logic
 		/// <param name="products">List of products</param>
 		public void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products)
 		{
-			var list = listRepository.ReadList(userId, string.Format("{0}_{1}", branchId, FAVORITESLIST));
+			var list = listRepository.ReadList(userId, string.Format("l{0}_{1}", branchId, FAVORITESLIST));
 
 			if (list == null || list.Items == null)
 				return;
