@@ -1077,12 +1077,10 @@ public static BaseController<IRequestTemplateController> GetBasketPaymentAndShip
 		/// <param name="productId">The propertiestoset argument for ProductId</param>
 		/// <param name="variantId">The propertiestoset argument for VariantId</param>
 		/// <param name="quantity">The propertiestoset argument for Quantity</param>
-		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
-		/// <param name="label">The propertiestoset argument for Label</param>
-		/// <param name="position">The propertiestoset argument for Position</param>
+		/// <param name="notes">The propertiestoset argument for Notes</param>
 
 /// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
-public static List<CommerceEntity> AddToCart(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string variantId, string quantity, string parLevel, string label, string position)
+public static List<CommerceEntity> AddToCart(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string variantId, string quantity, string notes)
 {
 
 	var parameters = new RequestTemplateParameterCollection();
@@ -1104,11 +1102,7 @@ public static List<CommerceEntity> AddToCart(string name, string userId, string 
 
 	parameters.Add(new RequestTemplateParameter("Quantity", quantity, RequestTemplateParameterType.PropertiesToSet));
 
-	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Position", position, RequestTemplateParameterType.PropertiesToSet));
+	parameters.Add(new RequestTemplateParameter("Notes", notes, RequestTemplateParameterType.PropertiesToSet));
 
 	var controller = ControllerFactory.GetController("Orders");
 	var serviceAdapterResponse = controller.ProcessRequest("AddToCart", parameters, "POCO");
@@ -1144,12 +1138,10 @@ public static List<CommerceEntity> AddToCart(string name, string userId, string 
 		/// <param name="productId">The propertiestoset argument for ProductId</param>
 		/// <param name="variantId">The propertiestoset argument for VariantId</param>
 		/// <param name="quantity">The propertiestoset argument for Quantity</param>
-		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
-		/// <param name="label">The propertiestoset argument for Label</param>
-		/// <param name="position">The propertiestoset argument for Position</param>
+		/// <param name="notes">The propertiestoset argument for Notes</param>
 
 /// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
-public static BaseController<IRequestTemplateController> AddToCartQueued(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string variantId, string quantity, string parLevel, string label, string position)
+public static BaseController<IRequestTemplateController> AddToCartQueued(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string variantId, string quantity, string notes)
 {
 
 	var parameters = new RequestTemplateParameterCollection();
@@ -1171,131 +1163,10 @@ public static BaseController<IRequestTemplateController> AddToCartQueued(string 
 
 	parameters.Add(new RequestTemplateParameter("Quantity", quantity, RequestTemplateParameterType.PropertiesToSet));
 
-	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Position", position, RequestTemplateParameterType.PropertiesToSet));
+	parameters.Add(new RequestTemplateParameter("Notes", notes, RequestTemplateParameterType.PropertiesToSet));
 
 	var controller = ControllerFactory.GetController("Orders");
 	controller.QueueRequest("AddToCart", parameters, "POCO");
-	return controller;
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/// <summary>
-/// Adds a product to list.
-/// </summary>
-
-/// <param name="name">The search argument for Name</param>
-		/// <param name="userId">The search argument for UserId</param>
-		/// <param name="basketType">The search argument for BasketType</param>
-		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
-		/// <param name="catalogName">The propertiestoset argument for CatalogName</param>
-		/// <param name="productId">The propertiestoset argument for ProductId</param>
-		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
-		/// <param name="label">The propertiestoset argument for Label</param>
-		/// <param name="linePosition">The propertiestoset argument for LinePosition</param>
-
-/// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
-public static List<CommerceEntity> AddToList(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string parLevel, string label, string linePosition)
-{
-
-	var parameters = new RequestTemplateParameterCollection();
-
-
-	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
-
-	parameters.Add(new RequestTemplateParameter("CatalogName", catalogName, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("ProductId", productId, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("LinePosition", linePosition, RequestTemplateParameterType.PropertiesToSet));
-
-	var controller = ControllerFactory.GetController("Orders");
-	var serviceAdapterResponse = controller.ProcessRequest("AddToList", parameters, "POCO");
-
-	if (serviceAdapterResponse.Succeeded)
-	{
-		var response = serviceAdapterResponse.Value as List<CommerceEntity>;
-		if(response !=null && response.Count >0)
-		{
-			return response;
-		}
-		//	It's possible that request template doesn't return anything so it's not an error if it returns nothing
-	}
-	else
-	{
-		// It is an issue if Succeeded == false
-		throw new RequestTemplateException() { Errors = serviceAdapterResponse.Errors };
-	}
-
-	return null;
-
-}
-
-/// <summary>
-/// Adds a product to list.
-/// </summary>
-
-/// <param name="name">The search argument for Name</param>
-		/// <param name="userId">The search argument for UserId</param>
-		/// <param name="basketType">The search argument for BasketType</param>
-		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
-		/// <param name="catalogName">The propertiestoset argument for CatalogName</param>
-		/// <param name="productId">The propertiestoset argument for ProductId</param>
-		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
-		/// <param name="label">The propertiestoset argument for Label</param>
-		/// <param name="linePosition">The propertiestoset argument for LinePosition</param>
-
-/// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
-public static BaseController<IRequestTemplateController> AddToListQueued(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string parLevel, string label, string linePosition)
-{
-
-	var parameters = new RequestTemplateParameterCollection();
-
-
-	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
-
-	parameters.Add(new RequestTemplateParameter("CatalogName", catalogName, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("ProductId", productId, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
-
-	parameters.Add(new RequestTemplateParameter("LinePosition", linePosition, RequestTemplateParameterType.PropertiesToSet));
-
-	var controller = ControllerFactory.GetController("Orders");
-	controller.QueueRequest("AddToList", parameters, "POCO");
 	return controller;
 
 }
@@ -2029,99 +1900,6 @@ public static BaseController<IRequestTemplateController> CreateLineItemQueued(st
 
 
 /// <summary>
-/// Delete Item From List
-/// </summary>
-
-/// <param name="name">The search argument for Name</param>
-		/// <param name="userId">The search argument for UserId</param>
-		/// <param name="basketType">The search argument for BasketType</param>
-		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
-		/// <param name="lineItemId">The search argument for LineItemId</param>
-
-/// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
-public static List<CommerceEntity> DeleteItemFromList(string name, string userId, string basketType, string refreshBasket, string lineItemId)
-{
-
-	var parameters = new RequestTemplateParameterCollection();
-
-
-	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
-
-	parameters.Add(new RequestTemplateParameter("LineItemId", lineItemId, RequestTemplateParameterType.Search));
-
-	var controller = ControllerFactory.GetController("Orders");
-	var serviceAdapterResponse = controller.ProcessRequest("DeleteItemFromList", parameters, "POCO");
-
-	if (serviceAdapterResponse.Succeeded)
-	{
-		var response = serviceAdapterResponse.Value as List<CommerceEntity>;
-		if(response !=null && response.Count >0)
-		{
-			return response;
-		}
-		//	It's possible that request template doesn't return anything so it's not an error if it returns nothing
-	}
-	else
-	{
-		// It is an issue if Succeeded == false
-		throw new RequestTemplateException() { Errors = serviceAdapterResponse.Errors };
-	}
-
-	return null;
-
-}
-
-/// <summary>
-/// Delete Item From List
-/// </summary>
-
-/// <param name="name">The search argument for Name</param>
-		/// <param name="userId">The search argument for UserId</param>
-		/// <param name="basketType">The search argument for BasketType</param>
-		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
-		/// <param name="lineItemId">The search argument for LineItemId</param>
-
-/// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
-public static BaseController<IRequestTemplateController> DeleteItemFromListQueued(string name, string userId, string basketType, string refreshBasket, string lineItemId)
-{
-
-	var parameters = new RequestTemplateParameterCollection();
-
-
-	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
-
-	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
-
-	parameters.Add(new RequestTemplateParameter("LineItemId", lineItemId, RequestTemplateParameterType.Search));
-
-	var controller = ControllerFactory.GetController("Orders");
-	controller.QueueRequest("DeleteItemFromList", parameters, "POCO");
-	return controller;
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-/// <summary>
 /// Create Basket Line Item with Paged Line Items.
 /// </summary>
 
@@ -2625,6 +2403,216 @@ public static BaseController<IRequestTemplateController> GetOrderQueued(string n
 
 	var controller = ControllerFactory.GetController("Orders");
 	controller.QueueRequest("GetOrder", parameters, "POCO");
+	return controller;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/// <summary>
+/// Adds a product to list.
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="catalogName">The propertiestoset argument for CatalogName</param>
+		/// <param name="productId">The propertiestoset argument for ProductId</param>
+		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
+		/// <param name="label">The propertiestoset argument for Label</param>
+		/// <param name="linePosition">The propertiestoset argument for LinePosition</param>
+
+/// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
+public static List<CommerceEntity> AddToList(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string parLevel, string label, string linePosition)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("CatalogName", catalogName, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("ProductId", productId, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("LinePosition", linePosition, RequestTemplateParameterType.PropertiesToSet));
+
+	var controller = ControllerFactory.GetController("Orders");
+	var serviceAdapterResponse = controller.ProcessRequest("AddToList", parameters, "POCO");
+
+	if (serviceAdapterResponse.Succeeded)
+	{
+		var response = serviceAdapterResponse.Value as List<CommerceEntity>;
+		if(response !=null && response.Count >0)
+		{
+			return response;
+		}
+		//	It's possible that request template doesn't return anything so it's not an error if it returns nothing
+	}
+	else
+	{
+		// It is an issue if Succeeded == false
+		throw new RequestTemplateException() { Errors = serviceAdapterResponse.Errors };
+	}
+
+	return null;
+
+}
+
+/// <summary>
+/// Adds a product to list.
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="catalogName">The propertiestoset argument for CatalogName</param>
+		/// <param name="productId">The propertiestoset argument for ProductId</param>
+		/// <param name="parLevel">The propertiestoset argument for ParLevel</param>
+		/// <param name="label">The propertiestoset argument for Label</param>
+		/// <param name="linePosition">The propertiestoset argument for LinePosition</param>
+
+/// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
+public static BaseController<IRequestTemplateController> AddToListQueued(string name, string userId, string basketType, string refreshBasket, string catalogName, string productId, string parLevel, string label, string linePosition)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("CatalogName", catalogName, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("ProductId", productId, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("ParLevel", parLevel, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("Label", label, RequestTemplateParameterType.PropertiesToSet));
+
+	parameters.Add(new RequestTemplateParameter("LinePosition", linePosition, RequestTemplateParameterType.PropertiesToSet));
+
+	var controller = ControllerFactory.GetController("Orders");
+	controller.QueueRequest("AddToList", parameters, "POCO");
+	return controller;
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/// <summary>
+/// Delete Item From List
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="lineItemId">The search argument for LineItemId</param>
+
+/// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
+public static List<CommerceEntity> DeleteItemFromList(string name, string userId, string basketType, string refreshBasket, string lineItemId)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("LineItemId", lineItemId, RequestTemplateParameterType.Search));
+
+	var controller = ControllerFactory.GetController("Orders");
+	var serviceAdapterResponse = controller.ProcessRequest("DeleteItemFromList", parameters, "POCO");
+
+	if (serviceAdapterResponse.Succeeded)
+	{
+		var response = serviceAdapterResponse.Value as List<CommerceEntity>;
+		if(response !=null && response.Count >0)
+		{
+			return response;
+		}
+		//	It's possible that request template doesn't return anything so it's not an error if it returns nothing
+	}
+	else
+	{
+		// It is an issue if Succeeded == false
+		throw new RequestTemplateException() { Errors = serviceAdapterResponse.Errors };
+	}
+
+	return null;
+
+}
+
+/// <summary>
+/// Delete Item From List
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="lineItemId">The search argument for LineItemId</param>
+
+/// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
+public static BaseController<IRequestTemplateController> DeleteItemFromListQueued(string name, string userId, string basketType, string refreshBasket, string lineItemId)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("LineItemId", lineItemId, RequestTemplateParameterType.Search));
+
+	var controller = ControllerFactory.GetController("Orders");
+	controller.QueueRequest("DeleteItemFromList", parameters, "POCO");
 	return controller;
 
 }

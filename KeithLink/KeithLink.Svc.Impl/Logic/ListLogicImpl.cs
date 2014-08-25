@@ -17,8 +17,7 @@ namespace KeithLink.Svc.Impl.Logic
 		
         private readonly IListRepository listRepository;
 		private readonly ICatalogRepository catalogRepository;
-        //TODO: Everything should only work with list for the current user. Waiting for Auth/login to be completed.
-
+		        
         public ListLogicImpl(IListRepository listRepository, ICatalogRepository catalogRepository)
         {
             this.listRepository = listRepository;

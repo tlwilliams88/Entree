@@ -2006,6 +2006,7 @@ This file contains the Metadata Repository
 							<!-- Custom Properties -->
 							<PropertyMapping property="BranchId" csProperty="BranchId"/>
 							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
+							<PropertyMapping property="BEKBasketType" csProperty="BEKBasketType" />
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2071,7 +2072,10 @@ This file contains the Metadata Repository
 						<DisplayName value="BranchId"/>
 					</Property>
 					<Property name="DisplayName" dataType="String" >
-						<DisplayName value="Is Multi-Shipping"/>
+						<DisplayName value="Display Name"/>
+					</Property>
+					<Property name="BEKBasketType" dataType="String">
+						<DisplayName value="BEKBasketType" /> 
 					</Property>
 					
         </Properties>
@@ -2320,6 +2324,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="LinePosition" csProperty="LinePosition"/>
 							<PropertyMapping property="Label" csProperty="Label"/>
 							<PropertyMapping property="ParLevel" csProperty="ParLevel" />
+							<PropertyMapping property="Notes" csProperty="Notes"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2373,6 +2378,9 @@ This file contains the Metadata Repository
 					</Property>
 					<Property name="ParLevel" dataType="Decimal">
 						<DisplayName value="ParLevel" />
+					</Property>
+					<Property name="Notes" dataType="String">
+						<DisplayName value="Notes" />
 					</Property>
 
 				</Properties>
