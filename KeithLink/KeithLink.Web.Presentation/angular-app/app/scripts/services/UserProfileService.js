@@ -28,7 +28,7 @@ angular.module('bekApp')
           var profile = response.data.userProfiles[0];
 
           profile.stores = [{
-            'name': 'Dallas Ft Worth',
+            'name': 'Dallas-Ft. Worth',
             'customerNumber': 453234,
             'branchId': 'fdf'
           }, {
@@ -48,6 +48,8 @@ angular.module('bekApp')
             'email': 'heather.hill@ben.e.keith.com',
             'imageUrl': '../images/placeholder-dsr.jpg'
           };
+
+          profile.imageUrl = '../images/placeholder-user.png';
 
           profile.role = 'Owner';
 
@@ -80,11 +82,24 @@ angular.module('bekApp')
       },
 
       createUser: function() {
-
+        $http.post('/profile/create');
+        // { 
+        //   "customername" : "Jeremys Chicken Shack", 
+        //   "email" : "jeremy@somecompany.com", 
+        //   "password" : "abcd123", 
+        //   "firstname": "Jeremy", 
+        //   "lastname": "Ames", 
+        //   "phone": "817-877-5700", 
+        //   "rolename" :"Owner" 
+        // }
       },
 
       updateUser: function() {
 
+      },
+
+      searchCustomers: function() {
+        // /profile/searchcustomer/
       }
     };
 
