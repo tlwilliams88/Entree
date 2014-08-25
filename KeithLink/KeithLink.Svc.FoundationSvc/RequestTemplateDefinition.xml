@@ -484,9 +484,7 @@
           <Argument name="ProductId" />
           <Argument name="VariantId" />
           <Argument name="Quantity" />
-					<Argument name="ParLevel" />
-					<Argument name="Label" value=""/>
-					<Argument name="Position" value="" />
+					<Argument name="Notes" />
         </PropertiesToSet>
       </Operation>
     </Operation>

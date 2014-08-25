@@ -16,6 +16,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 {
     public class ListRepositoryImpl: IListRepository
     {
+		private readonly string BasketStatus = "CustomerList";
+
 		public Guid CreateOrUpdateList(Guid userId, string branchId, UserList list)
         {
 			var updateOrder = new CommerceUpdate<Basket>();
@@ -30,7 +32,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			updateOrder.Model.Properties["BranchId"] = branchId;
 			updateOrder.Model.Name = list.FormattedName(branchId);
 			updateOrder.Model.Properties["DisplayName"] = list.Name;
-			updateOrder.Model.Status = "InProcess";
+			updateOrder.Model.Status = BasketStatus;
 			updateOrder.Model.Properties.Add("Id");
 			updateOrder.UpdateOptions.ReturnModel = new Basket();
 
@@ -93,7 +95,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 
 			var basketList = new List<UserList>();
 
-			foreach (Basket basket in basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(b => b.Properties["BranchId"].ToString().Equals(branchId)))
+			foreach (Basket basket in basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(b => b.Properties["BranchId"].ToString().Equals(branchId) && 
+				b.Properties["Status"].ToString().Equals(BasketStatus)))
 			{
 				basketList.Add(new UserList() {
 					ListId = basket.Id.ToGuid(),

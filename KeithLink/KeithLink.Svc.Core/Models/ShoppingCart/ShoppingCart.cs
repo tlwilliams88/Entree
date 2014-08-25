@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
+namespace KeithLink.Svc.Core.Models.ShoppingCart
+{
+	[DataContract(Name="ShoppingCart")]
+	public class ShoppingCart
+	{
+		[DataMember(Name="id")]
+		public Guid CartId { get; set; }
+		[DataMember(Name="name")]
+		public string Name { get; set; }
+		[DataMember(Name="items")]
+		public List<ShoppingCartItem> Items { get; set; }
+		public string BranchId { get; set; }
+
+		public string FormattedName(string branchId)
+		{
+			return string.Format("s{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
+		}
+	}
+}

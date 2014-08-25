@@ -10,97 +10,35 @@ namespace KeithLink.Svc.Core.Models.Profile
     [DataContract(Name="UserProfile")]
     public class UserProfile : System.Security.Principal.IIdentity
     {
-        #region attributes
-        private Guid _userId;
-        private StringBuilder _userName;
-        private StringBuilder _firstName;
-        private StringBuilder _lastName;
-        private StringBuilder _emailAddress;
-        private StringBuilder _phoneNumber;
-        private CustomerContainer _customer;
-
-        private bool _isAuthenticated;
-        #endregion
-
-        #region ctor
-        public UserProfile()
-        {
-            _userName = new StringBuilder();
-            _firstName = new StringBuilder();
-            _lastName = new StringBuilder();
-            _emailAddress = new StringBuilder();
-            _phoneNumber = new StringBuilder();
-            _customer = new CustomerContainer();
-
-            _isAuthenticated = false;
-        }
-        #endregion
-
-        #region properties
         [DataMember(Name="UserId")]
-        public Guid UserId
-        {
-            get { return _userId; }
-            set { _userId = value; }
-        }
-
+        public Guid UserId {get;set;}
         [DataMember(Name = "UserName")]
-        public string UserName
-        {
-            get { return _userName.ToString(); }
-            set { _userName = new StringBuilder(value); }
-        }
-
+		public string UserName { get; set; }
         [DataMember(Name="FirstName")]
-        public string FirstName
-        {
-            get { return _firstName.ToString(); }
-            set { _firstName = new StringBuilder(value); }
-        }
-
+		public string FirstName { get; set; }
         [DataMember(Name="LastName")]
-        public string LastName
-        {
-            get { return _lastName.ToString(); }
-            set { _lastName = new StringBuilder(value); }
-        }
-
+		public string LastName { get; set; }
         [DataMember(Name="EmailAddress")]
-        public string EmailAddress
-        {
-            get { return _emailAddress.ToString(); }
-            set { _emailAddress = new StringBuilder(value); }
-        }
-
+		public string EmailAddress { get; set; }
         [DataMember(Name="PhoneNumber")]
-        public string PhoneNumber
-        {
-            get { return _phoneNumber.ToString(); }
-            set { _phoneNumber = new StringBuilder(value); }
-        }
-
+		public string PhoneNumber { get; set; }
         [DataMember(Name="CustomerName")]
-        public string CustomerName
-        {
-            get { return _customer.Name; }
-            set { _customer.Name = value; }
-        }
-
+		public string CustomerName { get; set; }
         public string AuthenticationType
         {
             get { return "Active Directory"; }
         }
 
-        public bool IsAuthenticated
-        {
-            get { return _isAuthenticated; }
-            set { _isAuthenticated = value; }
-        }
+		//TODO: These values should be retrieved for the logged in user
+		[DataMember(Name="CustomerId")]
+		public string CustomerId { get { return "00187";  } }
+		[DataMember(Name = "BranchId")]
+		public string BranchId { get { return "fam"; } }
 
+		public bool IsAuthenticated { get; set; }
         public string Name
         {
             get { return EmailAddress; }
         }
-        #endregion
     }
 }
