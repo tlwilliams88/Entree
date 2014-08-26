@@ -37,23 +37,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
 		{
-			var cart = shoppingCartRepository.ReadCart(user.UserId, cartId);
-
-			if (cart == null)
-				return;
-
-			var item = cart.Items.Where(i => i.CartItemId.Equals(updatedItem.CartItemId)).FirstOrDefault();
-
-			if (item == null)
-				cart.Items.Add(updatedItem);
-			else
-			{
-				item.Notes = updatedItem.Notes;
-				item.Quantity = updatedItem.Quantity;
-				item.ItemNumber = updatedItem.ItemNumber;
-			}
-
-			shoppingCartRepository.CreateOrUpdateCart(user.UserId, cart.BranchId, cart);
+			shoppingCartRepository.UpdateItem(user.UserId, cartId, updatedItem);
 		}
 
 		public void UpdateCart(UserProfile user, ShoppingCart cart)
@@ -107,8 +91,6 @@ namespace KeithLink.Svc.Impl.Logic
 		public ShoppingCart DeleteItem(UserProfile user, Guid cartId, Guid itemId)
 		{
 			var cart = shoppingCartRepository.DeleteItem(user.UserId, cartId, itemId);
-			if (cart.Items != null)
-				cart.Items.Sort();
 			LookupProductDetails(user, cart);
 			return cart;
 		}
@@ -134,8 +116,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var cart = shoppingCartRepository.ReadCart(user.UserId, cartId);
 			if (cart == null)
 				return null;
-			if (cart.Items != null)
-				cart.Items.Sort();
+			
 			LookupProductDetails(user, cart);
 			return cart;
 		}

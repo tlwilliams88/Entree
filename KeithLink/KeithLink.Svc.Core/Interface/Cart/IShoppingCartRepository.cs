@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		Guid CreateOrUpdateCart(Guid userId, string branchId, ShoppingCart cart);
 
 		Guid? AddItem(Guid userId, Guid cartId, ShoppingCartItem newItem);
-
+		void UpdateItem(Guid userId, Guid cartId, ShoppingCartItem updatedItem);
 		void DeleteCart(Guid userId, Guid cartId);
 		ShoppingCart DeleteItem(Guid userId, Guid cartId, Guid itemId);
 

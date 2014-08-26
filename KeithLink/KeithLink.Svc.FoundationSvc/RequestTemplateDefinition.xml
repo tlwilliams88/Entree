@@ -487,6 +487,10 @@
 					<Argument name="Notes" />
         </PropertiesToSet>
       </Operation>
+			<Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<!-- Return All Properties -->
+				<Search builder="ModelSearchCriteriaBuilder"/>
+			</Operation>
     </Operation>
   </RequestTemplate>
 
@@ -930,6 +934,8 @@
         <Property name="LineItemDiscountsTotal" />
         <Property name="ShippingDiscountsTotal" />
         <Property name="CurrencyCulture" />
+				<Property name="DisplayName" />
+				<Property name="BranchId" />
       </PropertiesToReturn>
       <Operation id="1-1" builder="DeleteRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
         <Search builder="ModelSearchCriteriaBuilder">
@@ -938,27 +944,7 @@
       </Operation>
       <Operation id="1-2" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
         <Search builder="ModelSearchCriteriaBuilder" />
-        <PropertiesToReturn>
-          <Property name="Id" />
-          <Property name="CatalogName" />
-          <Property name="ProductId" />
-          <Property name="VariantId" />
-          <Property name="Quantity" />
-          <Property name="DisplayName" />
-          <Property name="Total" />
-          <Property name="InStockQuantity" />
-          <Property name="ListPrice" />
-          <Property name="_product_ProductLandingPage" />
-          <Property name="_product_ProductOriginalPrice" />
-          <Property name="_product_Image_filename" />
-          <Property name="_product_VariantOriginalPrice" />
-          <Property name="_product_ProductShortDescription" />
-          <Property name="BasketLevelDiscountAmount" />
-          <Property name="ItemLevelDiscountAmount" />
-          <Property name="TotalDiscountAmount" />
-          <Property name="CatPath" />
-          <Property name="CurrencyCulture" />
-        </PropertiesToReturn>
+        
       </Operation>
     </Operation>
   </RequestTemplate>
