@@ -10,9 +10,8 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button type="button" class="btn">Order 1</button>
-          <button type="button" class="btn">Order 2</button>
-          <button type="button" class="btn">New Order...</button>
+          <button type="button" class="btn" ng-repeat="order in orders | orderBy: ['name']" ng-click="addItemToOrder(order.id, item)">{{order.name}}</button>
+          <button type="button" class="btn" ng-click="createOrderWithItem(item)">New Order...</button>
         </div>
       </ul>
     </div>
@@ -22,7 +21,7 @@
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}} {{list.isFavoritesList}} </button>
+          <button ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
           <button type="button" class="btn" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
