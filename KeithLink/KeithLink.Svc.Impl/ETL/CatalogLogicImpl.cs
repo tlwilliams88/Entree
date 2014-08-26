@@ -46,6 +46,10 @@ namespace KeithLink.Svc.Impl.ETL
          				""name"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
+         				},
+         				""preferreditemcode"" : {
+           					""type"" : ""string"",
+							""index"" : ""not_analyzed""
          				}
 				   }
 				}
@@ -311,7 +315,7 @@ namespace KeithLink.Svc.Impl.ETL
                         package = row.GetString("Package"),
                         parentcategoryid = row.GetString("ParentCategoryId"),
                         parentcategoryname = row.GetString("ParentCategoryName"),
-                        perferreditemcode = row.GetString("PreferredItemCode"),
+                        preferreditemcode = row.GetString("PreferredItemCode"),
                         size = row.GetString("Size"),
                         specialorderitem = row.GetString("SpecialOrderItem"),
                         status1 = row.GetString("Status1"),

@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Models
         public string mfrname { get; set; }
         public string cases { get; set; }
         public string package { get; set; }
-        public string perferreditemcode { get; set; }
+        public string preferreditemcode { get; set; }
         public string itemtype { get; set; }
         public string status1 { get; set; }
         public string status2 { get; set; }
