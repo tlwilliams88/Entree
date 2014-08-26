@@ -18,5 +18,6 @@ namespace KeithLink.Svc.Core.Interface.Cart
 
 		List<ShoppingCart> ReadAllCarts(Guid userId, string branchId);
 		ShoppingCart ReadCart(Guid userId, Guid cartId);
+
 	}
 }
