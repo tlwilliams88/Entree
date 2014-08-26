@@ -11,15 +11,9 @@ namespace KeithLink.Svc.Core.Models.Profile
     public class CustomerContainer
     {
         #region attributes
-        private StringBuilder _name;
-        #endregion
+         #endregion
 
         #region ctor
-        public CustomerContainer()
-        {
-            _name = new StringBuilder();
-        }
-
         public CustomerContainer(string CustomerName)
         {
             Name = CustomerName;
@@ -28,11 +22,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         #region properties
         [DataMember(Name="Name")]
-        public string Name
-        {
-            get { return _name.ToString(); }
-            set { _name = new StringBuilder(value); }
-        }
+		public string Name { get; set; }
         #endregion
     }
 }
