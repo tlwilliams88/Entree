@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', 'ProductService', 'CategoryService', 'ListService', '$stateParams',
-    function($scope, ProductService, CategoryService, ListService, $stateParams) {
+  .controller('SearchController', ['$scope', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'OrderService',
+    function($scope, $stateParams, ProductService, CategoryService, ListService, OrderService) {
       // clear keyword search term at top of the page
       if ($scope.userBar) {
         $scope.userBar.universalSearchTerm = '';
@@ -488,6 +488,11 @@ angular.module('bekApp')
       // TODO: move into context menu controller
       $scope.lists = ListService.lists;
       ListService.getAllLists({
+        'header': true
+      });
+
+      $scope.orders = OrderService.orders;
+      OrderService.getAllOrders({
         'header': true
       });
     }

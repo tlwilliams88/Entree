@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', 'UserProfileService', function ($http, $q, UserProfileService) {
+  .factory('ListService', ['$http', '$q', 'UserProfileService', 'NameGeneratorService', function ($http, $q, UserProfileService, NameGeneratorService) {
 
     function getBranch() {
       return UserProfileService.getCurrentBranchId();
@@ -51,29 +51,6 @@ angular.module('bekApp')
         
         return response.data;
       });
-    }
-
-    function isUsedName(listNames, name, number) {
-      return listNames.indexOf(name + ' ' + number) > -1;
-    }
-
-    function generateNewListName() {
-      var name = 'New List',
-        number = 0;
-
-      var listNames = [];
-
-      angular.forEach(Service.lists, function(list, index) {
-        listNames.push(list.name);
-      });
-
-      var isNameUsed = isUsedName(listNames, name, number);
-      while (isNameUsed) {
-        number++;
-        isNameUsed = isUsedName(listNames, name, number);
-      }
-
-      return name + ' ' + number;
     }
 
     // updates favorite status of given itemNumber in all lists
@@ -130,7 +107,7 @@ angular.module('bekApp')
         }
 
         var newList = {
-          name: generateNewListName(),
+          name: NameGeneratorService.generateName('List', Service.lists),
           items: items
         };
 
@@ -142,6 +119,7 @@ angular.module('bekApp')
       },
 
       createListWithItem: function(item) {
+        delete item.listitemid;
         var items = [item];
 
         return $q.all([
@@ -151,7 +129,10 @@ angular.module('bekApp')
       },
 
       deleteList: function(listId) {
-        return $http.delete('/list/' + listId).then(function(response) {
+        return $http({
+          method: 'DELETE', 
+          url: '/list/' + listId
+        }).then(function(response) {
           var deletedList = Service.findListById(listId);
           var idx = Service.lists.indexOf(deletedList);
           if (idx > -1) {
@@ -182,7 +163,10 @@ angular.module('bekApp')
 
       deleteItem: function(listId, listItemId) {
         // TODO: sometimes reloads all listitemids but this is inconsistent
-        return $http.delete('/list/' + listId + '/item/' + listItemId).then(function(response) {
+        return $http({
+          method: 'DELETE', 
+          url: '/list/' + listId + '/item/' + listItemId
+        }).then(function(response) {
           var updatedList = Service.findListById(listId);
           angular.forEach(updatedList.items, function(item, index) {
             if (item.listitemid === listItemId) {

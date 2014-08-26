@@ -49,14 +49,14 @@
     font-weight: 400;
   }
 
-  .checkbox {
-    label {
-      padding-left: 45px;
-      padding-top: 5px;
-      padding-bottom: 5px;
-    }
-    @include style-checkbox('graycheckbox-clear.png', 'graycheckbox-checked.png', center, left, 30px);
-  }
+  // .checkbox {
+  //   label {
+  //     padding-left: 45px;
+  //     padding-top: 5px;
+  //     padding-bottom: 5px;
+  //   }
+  //   @include style-checkbox('graycheckbox-clear.png', 'graycheckbox-checked.png', center, left, 30px);
+  // }
 
   .select-div {
     display: block;
