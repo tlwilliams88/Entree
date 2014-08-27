@@ -1,7 +1,6 @@
 ﻿using CommerceServer.Foundation;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Impl.Models.Generated;
 using KeithLink.Common.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -11,6 +10,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Common.Core;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
+using KeithLink.Svc.Core.Models.Generated;
 
 namespace KeithLink.Svc.Impl.Repository.Lists
 {

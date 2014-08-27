@@ -1,0 +1,121 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>KeithLink</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+    <!-- build:css(app) styles/vendor.css -->
+    <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
+    <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
+    <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
+    <link rel="stylesheet" href="lib/icomoon/css/style.css" />
+    <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
+    <!-- endbuild -->
+    <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="css/main.css">
+    <!-- endbuild -->
+  </head>
+  <body ng-app="BEKPhoneGap">
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div ui-view="" class="container-fluid">
+    </div> <!-- end container -->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+    //    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    //    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    //    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    //    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    //    ga('create', 'UA-XXXXX-X');
+    //    ga('send', 'pageview');
+    </script>
+
+    <!--[if lt IE 9]
+    <script src="lib/es5-shim/es5-shim.js"></script>
+    <script src="lib/json3/lib/json3.min.js"></script>
+    <script src="lib/html5shiv/html5shiv.min.js"></script>
+    <script src="lib/html5shiv/html5shiv-printshiv.min.js"></script>
+    <script src="lib/respondjs/respond.min.js"></script>
+    <script src="lib/respondjs/respond.matchmedia.addListener.min.js"></script>
+    <script src="lib/angular-ui-utils/ui-utils-ieshiv.js"></script>
+    <script>
+        document.createElement('tabset');
+        document.createElement('tab');
+        document.createElement('accordion');
+    </script>
+    <![endif]-->
+
+
+    <!-- build:js(app) scripts/vendor.js -->
+    <script src="lib/fastclick/fastclick.js"></script>
+    <script src="lib/jquery/jquery-1.11.1.min.js"></script>
+    <script src="lib/jquery-ui/jquery-ui.js"></script>
+    <script src="lib/touchpunch/jquery.ui.touch-punch.min.js"></script>
+    <script src="lib/angular/angular.js"></script>
+    <script src="lib/json3/lib/json3.js"></script>
+    <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.js"></script>
+    <script src="lib/angular-animate/angular-animate.js"></script>
+    <script src="lib/angular-touch/angular-touch.js"></script>
+    <script src="lib/angular-ui-router/angular-ui-router.js"></script>
+    <script src="lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.0.min.js"></script>
+    <script src="lib/angular-local-storage/angular-local-storage.js"></script>
+    <script src="lib/ng-mobile-menu/ng-mobile-menu.js"></script>
+    <script src="lib/angular-dragdrop/angular-dragdrop.js"></script>
+    <script src="lib/angular-ui-sortable/sortable.js"></script>
+    <script src="lib/ng-infinite-scroll/ng-infinite-scroll.js"></script>
+    <!-- endbuild -->
+
+     <script id="template/carousel/carousel.html" type="text/ng-template">
+      <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
+        <ol class="carousel-paging" ng-show="slides.length > 1">
+            <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
+        </ol>
+        <div class="carousel-inner" ng-transclude></div>
+        <a class="left carousel-control" ng-click="prev()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-left"></span></a>
+        <a class="right carousel-control" ng-click="next()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-right"></span></a>
+    </div>
+    </script>
+
+
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/controllers/CatalogController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/HomeController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ItemDetailsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ListController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/MenuController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/SearchController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
+    <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
+    <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
+    <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
+    <script type="text/javascript" src="scripts/directives/PageHeaderBar.js"></script>
+    <script type="text/javascript" src="scripts/directives/ConfirmClick.js"></script>
+    <script type="text/javascript" src="scripts/directives/ContextMenu.js"></script>
+    <script type="text/javascript" src="scripts/directives/FavoriteIcons.js"></script>
+    <script type="text/javascript" src="scripts/directives/FavoriteItemClickHandlers.js"></script>
+    <script type="text/javascript" src="scripts/directives/AllowOnePositiveDecimal.js"></script>
+    <script type="text/javascript" src="scripts/directives/FocusMe.js"></script>
+    <script type="text/javascript" src="scripts/directives/GoToNextParlevel.js"></script>
+    <script type="text/javascript" src="scripts/directives/MatchInput.js"></script>
+    <script type="text/javascript" src="scripts/services/Constants.js"></script>
+    <script type="text/javascript" src="scripts/services/ApiService.js"></script>
+    <script type="text/javascript" src="scripts/services/AccessService.js"></script>
+    <script type="text/javascript" src="scripts/services/AuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/services/AuthenticationInterceptorService.js"></script>
+    <script type="text/javascript" src="scripts/services/BrandService.js"></script>
+    <script type="text/javascript" src="scripts/services/CategoryService.js"></script>
+    <script type="text/javascript" src="scripts/services/ListService.js"></script>
+    <script type="text/javascript" src="scripts/services/ProductService.js"></script>
+    <script type="text/javascript" src="scripts/services/UserProfileService.js"></script>
+    <!-- endbuild -->
+</body>
+</html>

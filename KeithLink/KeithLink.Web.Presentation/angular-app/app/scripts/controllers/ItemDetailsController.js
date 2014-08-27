@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', function ($scope, $stateParams, ProductService, ListService) {
+  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', 'OrderService', function ($scope, $stateParams, ProductService, ListService, OrderService) {
     
     var itemNumber = $stateParams.itemNumber;
     $scope.loadingDetails = true;
@@ -20,6 +20,11 @@ angular.module('bekApp')
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({
+      'header': true
+    });
+
+    $scope.orders = OrderService.orders;
+    OrderService.getAllOrders({
       'header': true
     });
   }]);

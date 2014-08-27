@@ -3,13 +3,23 @@ using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Profile
 {
     public class InternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
+        #region attributes
+        IEventLogRepository _logger;
+        #endregion
         #region methods
 
+        #region ctor
+        public InternalUserDomainRepository(IEventLogRepository logger)
+        {
+            _logger = logger;
+        }
+        #endregion
         /// <summary>
         /// test user credentials
         /// </summary>
@@ -167,7 +177,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
+                _logger.WriteErrorLog("Could not get user", ex);
 
                 return null;
             }
@@ -216,13 +226,12 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get lookup users's role membership", ex);
+                _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
             }
         }
         
         #endregion
-
     }
 }
