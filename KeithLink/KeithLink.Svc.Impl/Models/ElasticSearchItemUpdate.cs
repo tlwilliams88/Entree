@@ -31,11 +31,14 @@ namespace KeithLink.Svc.Impl.Models
     {
         public string categoryid { get; set; }
         public string categoryname { get; set; }
+        public string categoryname_analyzed { get; set; }
         public string parentcategoryid { get; set; }
         public string parentcategoryname { get; set; }
         public string name { get; set; }
+        public string name_analyzed { get; set; }
         public string description { get; set; }
         public string brand { get; set; }
+        public string brand_analyzed { get; set; }
         public string pack { get; set; }
         public string size { get; set; }
         public string upc { get; set; }

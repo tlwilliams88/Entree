@@ -290,10 +290,12 @@ namespace KeithLink.Svc.Impl.ETL
                     data = new AdditionalData()
                     {
                         brand = row.GetString("Brand"),
+                        brand_analyzed = row.GetString("Brand"),
                         buyer = row.GetString("Buyer"),
                         cases = row.GetString("Cases"),
                         categoryid = row.GetString("CategoryId"),
                         categoryname = row.GetString("CategoryName"),
+                        categoryname_analyzed = row.GetString("CategoryName"),
                         catmgr = row.GetString("CatMgr"),
                         description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
                         icseonly = row.GetString("ICSEOnly"),
@@ -304,6 +306,7 @@ namespace KeithLink.Svc.Impl.ETL
                         mfrname = row.GetString("MfrName"),
                         mfrnumber = row.GetString("MfrNumber"),
                         name = row.GetString("Name"),
+                        name_analyzed = row.GetString("Name"),
                         pack = row.GetString("Pack"),
                         package = row.GetString("Package"),
                         parentcategoryid = row.GetString("ParentCategoryId"),

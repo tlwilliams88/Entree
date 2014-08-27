@@ -3,11 +3,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Profile
 {
     public class UserProfileRepository : Core.Interface.Profile.IUserProfileRepository
     {
+        #region attributes
+        IEventLogRepository _logger;
+        InternalUserDomainRepository _internalAD;
+        ExternalUserDomainRepository _externalAD;
+        #endregion
+
+        #region ctor
+        public UserProfileRepository(IEventLogRepository logger, ExternalUserDomainRepository externalAD, InternalUserDomainRepository internalAD)
+        {
+            _logger = logger;
+            _internalAD = internalAD;
+            _externalAD = externalAD;
+        }
+        #endregion
+
         #region methods
         /// <summary>
         /// check that the customer name is longer the 0 characters
@@ -67,9 +84,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// jwames - 8/18/2014 - documented
         /// </remarks>
         private void AssertEmailAddressUnique(string emailAddress){
-            ExternalUserDomainRepository extAd = new ExternalUserDomainRepository();
-
-            if (extAd.GetUser(emailAddress) != null)
+            if (_externalAD.GetUser(emailAddress) != null)
             {
                 throw new ApplicationException("Email address is already in use");
             }
@@ -205,13 +220,11 @@ namespace KeithLink.Svc.Impl.Profile
             {
                 string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
 
-                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
-                return internalAD.AuthenticateUser(userName, password);
+                return _internalAD.AuthenticateUser(userName, password);
             }
             else
             {
-                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
-                return externalAD.AuthenticateUser(emailAddress, password);
+                return _externalAD.AuthenticateUser(emailAddress, password);
             }
         }
 
@@ -233,13 +246,11 @@ namespace KeithLink.Svc.Impl.Profile
             {
                 string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
 
-                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
-                return internalAD.AuthenticateUser(userName, password, out errorMessage);
+                return _internalAD.AuthenticateUser(userName, password, out errorMessage);
             }
             else
             {
-                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
-                return externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
+                return _externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
             }
         }
 
@@ -260,13 +271,11 @@ namespace KeithLink.Svc.Impl.Profile
             {
                 string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
 
-                InternalUserDomainRepository internalAD = new InternalUserDomainRepository();
-                adProfile = internalAD.GetUser(userName);
+                adProfile = _internalAD.GetUser(userName);
             }
             else
             {
-                ExternalUserDomainRepository externalAD = new ExternalUserDomainRepository();
-                adProfile = externalAD.GetUser(emailAddress);
+                adProfile = _externalAD.GetUser(emailAddress);
             }
 
             return new UserProfile(){
@@ -300,8 +309,7 @@ namespace KeithLink.Svc.Impl.Profile
             {
                 AssertEmailAddressUnique(emailAddres);
 
-                Impl.Profile.ExternalUserDomainRepository extAD = new ExternalUserDomainRepository();
-                userName = extAD.CreateUser(customerName, emailAddres, password, firstName, lastName, roleName);
+                userName = _externalAD.CreateUser(customerName, emailAddres, password, firstName, lastName, roleName);
             }
 
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
