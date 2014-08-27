@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:focusMe
+ * @description
+ * sets focus to given element when focusMe attr is true
+ */
 angular.module('bekApp')
 .directive('focusMe', function($timeout, $parse) {
   return {
