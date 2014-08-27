@@ -16,7 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	[Authorize]
+	//[Authorize]
     public class CatalogController : BaseController
     {
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogRepository _catalogRepository;
