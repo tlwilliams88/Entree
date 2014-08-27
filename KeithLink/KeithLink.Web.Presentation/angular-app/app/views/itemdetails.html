@@ -31,6 +31,11 @@
       </div>
     </div>
     <div class="item-details__actions hidden-print">
+      <div class="select-div">
+        <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
+          <option value=""></option>
+        </select>
+      </div>
       <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>

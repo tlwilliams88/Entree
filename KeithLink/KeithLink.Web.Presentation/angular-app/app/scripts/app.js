@@ -106,10 +106,10 @@ angular
         authorize: 'canManageLists'
       }
     })
-    .state('menu.orders', {
-      url: '/orders/',
-      templateUrl: 'views/orders.html',
-      controller: 'OrderController',
+    .state('menu.cart', {
+      url: '/cart/',
+      templateUrl: 'views/cart.html',
+      controller: 'CartController',
       data: {
         authorize: 'canCreateOrders'
       }

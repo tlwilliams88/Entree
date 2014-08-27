@@ -1,25 +1,25 @@
 <div page-header-bar>
   <div header-message>
-    <div ng-hide="currentOrder.isRenaming">
-      <span>{{currentOrder.name}}</span>
-      <div style="display:inline-block;" ng-show="currentOrder">
-        <a ng-click="startEditOrderName(currentOrder.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-        <a confirmed-click="deleteOrder(currentOrder.id)" class="hidden-print" ng-confirm-click="This will delete the order {{currentOrder.name}} and all items within. Are you sure you want to delete this order?"><span class="large-icon text-light icon-trash"></span></a>
+    <div ng-hide="currentCart.isRenaming">
+      <span>{{currentCart.name}}</span>
+      <div style="display:inline-block;" ng-show="currentCart">
+        <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+        <a confirmed-click="deleteCart(currentCart.id)" class="hidden-print" ng-confirm-click="This will delete the cart {{currentCart.name}} and all items within. Are you sure you want to delete this cart?"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
-    <form name="renameOrderForm" class="style-validation-errors inline-header-form" ng-show="currentOrder.isRenaming">
-      <input check-duplicate-field="name" collection="orders" type="text" focus-me="currentOrder.isRenaming" required ng-model="editOrder.name" name="orderName" id="orderName" />
-      <button ng-disabled="renameorderForm.$invalid" class="btn-no-style" type="submit" ng-click="renameOrder(currentOrder.id, editOrder.name)"><span class="large-icon text-green icon-checkmark"></span></button>
-      <a ng-click="currentOrder.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
-      <span class="form-error-message" ng-show="renameOrderForm.orderName.$error.required">Order name is required</span>
-      <span class="form-error-message" ng-show="renameOrderForm.orderName.$error.checkDuplicateField">Duplicate order name</span>
+    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming">
+      <input check-duplicate-field="name" collection="carts" type="text" focus-me="currentCart.isRenaming" required ng-model="editCart.name" name="cartName" id="cartName" />
+      <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name)"><span class="large-icon text-green icon-checkmark"></span></button>
+      <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
+      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
+      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
     </form>
   </div>
   <div header-buttons>
     <button class="btn btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
     <button class="btn btn-icon"><span class="icon-export"></span></button>
-    <button class="btn cta-btn" ng-disabled="orderForm.$invalid && orderForm.$dirty" ng-click="saveOrder(currentOrder)">Save Order</button>
+    <button class="btn cta-btn" ng-disabled="cartForm.$invalid && cartForm.$dirty" ng-click="saveCart(currentCart)">Save Cart</button>
     <button class="btn cta-btn">Place Order</button>
   </div>
 </div>
@@ -28,17 +28,17 @@
   <div class="col-md-12">
     
     <div class="text-right">
-    {{currentOrder.items.length}} Items in Order
+    {{currentCart.items.length}} Items in Cart
     </div>
 
     <div class="row">
       <div class="col-xs-4">
-        <span class="text-light">Start Order from History</span>
-        <span>History</span>
+        <div class="select-div">
+          <select name="" id="" ng-options="cart.name for cart in carts" ng-model="currentCart"></select>
+        </div>
       </div>
       <div class="col-xs-4">
-        <span class="text-light">Select a label</span>
-        <span>Back Bar Area</span>
+        Active Cart
       </div>
       <div class="col-xs-4">
         <span class="text-light">Select a ship date</span>
@@ -46,43 +46,43 @@
       </div>
     </div>
     
-    <div class="bootstrap-table order__table">
+    <div class="bootstrap-table cart__table sub-content">
       <div class="row table-header">
         <div class="col-xs-12">
           <div class="row table-row table-row-data">
-            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
+            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortCart=!sortCart;sortList('itemnumber',sortCart)">
               Item #
-              <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'itemnumber'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
-            <div class="col-md-2 hidden-xs hidden-sm hand nowrap" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
+            <div class="col-md-2 hidden-xs hidden-sm hand nowrap" ng-click="sortCart=!sortCart;sortList('notes',sortCart)">
               Notes
-              <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'notes'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
             <div class="col-md-1 hidden-xs hidden-sm">
               Pack/Size
             </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
+            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortCart=!sortCart;sortList('brand',sortCart)">
               Brand
-              <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'brand'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
-            <div class="col-md-2 col-xs-6 hand nowrap" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
+            <div class="col-md-2 col-xs-6 hand nowrap" ng-click="sortCart=!sortCart;sortList('name',sortCart)">
               Name
-              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'name'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
             <div class="col-md-1 hidden-xs hidden-sm">
               
             </div>
-            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortOrder=!sortOrder;sortList('qty',sortOrder)">
+            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortCart=!sortCart;sortList('qty',sortCart)">
               Qty
-              <span sort-icons field="'qty'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'qty'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortOrder=!sortOrder;sortList('each',sortOrder)">
+            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortCart=!sortCart;sortList('each',sortCart)">
               Each
-              <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'each'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
+            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortCart=!sortCart;sortList('itemnumber',sortCart)">
               Price
-              <span sort-icons field="'price'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'price'" sortcart="sortCart" sortby="sortBy"></span>
             </div>
             <div class="col-md-1 hidden-xs hidden-sm hand nowrap">
               Ext Price
@@ -92,18 +92,18 @@
         </div>
       </div>
 
-      <div class="table-body row" ng-hide="(currentOrder.items.length === 0 || !currentOrder.items) && currentOrder" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
+      <div class="table-body row" ng-hide="(currentCart.items.length === 0 || !currentCart.items) && currentCart" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
         <div class="col-xs-12">
-          <form novalidate name="orderForm" class="style-validation-errors">
+          <form novalidate name="cartForm" class="style-validation-errors">
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat="item in (filteredItems = (currentOrder.items)) track by item.cartitemid"
+            ng-repeat="item in (filteredItems = (currentCart.items)) track by item.cartitemid"
            >
             <div class="col-xs-12">
               <div class="row table-row-data">
                 <div class="col-md-1 col-xs-2">
-                  <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
+                  <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
                 </div>
                 <div class="col-md-2 table-col-input hidden-xs hidden-sm">
                   <ng-form class="hidden-print" name="notesForm">
@@ -128,8 +128,8 @@
                         <option value=""></option>
                       </select>
                     </div>
-                    {{item.editQuantity}}
                   </ng-form>
+                  {{item.quantity}}
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs">
                   <ng-form name="eachForm">

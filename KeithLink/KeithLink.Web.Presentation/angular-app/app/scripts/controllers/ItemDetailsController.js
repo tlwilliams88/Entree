@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', 'OrderService', function ($scope, $stateParams, ProductService, ListService, OrderService) {
+  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', 'CartService', function ($scope, $stateParams, ProductService, ListService, CartService) {
     
     var itemNumber = $stateParams.itemNumber;
     $scope.loadingDetails = true;
@@ -23,8 +23,8 @@ angular.module('bekApp')
       'header': true
     });
 
-    $scope.orders = OrderService.orders;
-    OrderService.getAllOrders({
+    $scope.orders = CartService.carts;
+    CartService.getAllCarts({
       'header': true
     });
   }]);
