@@ -11906,6 +11906,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the Each property.
+	    /// </summary>
+	    /// <value>
+	    /// The Each property from the property collection.
+	    /// </value>
+		public virtual bool? Each
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Each) as bool?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Each, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProductCategory property.
 	    /// </summary>
 	    /// <value>
@@ -12387,6 +12406,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing Notes property.
 	        /// </summary>
 			public const string Notes = "Notes";
+	
+			/// <summary>
+	        /// Constant for accessing Each property.
+	        /// </summary>
+			public const string Each = "Each";
 	
 			/// <summary>
 	        /// Constant for accessing ProductCategory property.

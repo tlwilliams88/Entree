@@ -7,12 +7,12 @@ using Autofac.Integration.WebApi;
 using KeithLink.Svc.Core.Interface.Brand;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Core.Interface.Cart;
-using KeithLink.Svc.Impl.Repository.Cart;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Core.Interface.Orders;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -33,13 +33,12 @@ namespace KeithLink.Svc.WebApi
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
 			
-            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
             builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
             builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
-			builder.RegisterType<ShoppingCartRepositoryImpl>().As<IShoppingCartRepository>();
+			builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
 
             builder.Register(l => new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl(Impl.Configuration.ApplicationName)).As<KeithLink.Common.Core.Logging.IEventLogRepository>().InstancePerRequest();
 

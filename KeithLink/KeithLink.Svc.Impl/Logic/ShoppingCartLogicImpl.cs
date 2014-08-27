@@ -10,20 +10,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ShoppingCartLogicImpl: IShoppingCartLogic
 	{
-		private readonly IShoppingCartRepository shoppingCartRepository;
+		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
 
 		private readonly string BasketStatus = "ShoppingCart";
 
-		public ShoppingCartLogicImpl(IShoppingCartRepository shoppingCartRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
 		{
-			this.shoppingCartRepository = shoppingCartRepository;
+			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceRepository = priceRepository;
 		}
@@ -36,30 +38,30 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Status = BasketStatus;
 			newBasket.Name = cart.FormattedName(branchId);
 
-			return shoppingCartRepository.CreateOrUpdateCart(user.UserId, branchId, newBasket, cart.Items.Select(l => new CS.LineItem() { CatalogName = branchId, Notes = l.Notes, ProductId = l.ItemNumber, Quantity = l.Quantity }).ToList());
+			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId, newBasket, cart.Items.Select(l => l.ToLineItem(branchId)).ToList());
 		}
 
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
 		{
-			var basket = shoppingCartRepository.ReadCart(user.UserId, cartId);
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
 			if (basket == null)
 				return null;
-
-			var newLineItem = new CS.LineItem() { ProductId = newItem.ItemNumber, Notes = newItem.Notes, Quantity = newItem.Quantity, CatalogName = basket.BranchId };
-
-			return shoppingCartRepository.AddItem(user.UserId, cartId, newLineItem);
+						
+			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId));
 		}
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
 		{
-			var updatedLineItem = new CS.LineItem() { Id = updatedItem.CartItemId.ToString("B"), ProductId = updatedItem.ItemNumber, Notes = updatedItem.Notes, Quantity = updatedItem.Quantity };
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+			if (basket == null)
+				return;
 
-			shoppingCartRepository.UpdateItem(user.UserId, cartId, updatedLineItem);
+			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
 		public void UpdateCart(UserProfile user, ShoppingCart cart)
 		{
-			var updateCart = shoppingCartRepository.ReadCart(user.UserId, cart.CartId);
+			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
 			if (updateCart == null)
 				return;
@@ -72,30 +74,30 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items != null)
 			{
 				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
-				lineItems = cart.Items.Select(s => new CS.LineItem() { Id = s.CartItemId == null ? Guid.Empty.ToString("B") : s.CartItemId.ToString("B"), ProductId = s.ItemNumber, Notes = s.Notes, Quantity = s.Quantity, CatalogName = updateCart.BranchId }).ToList();
+				lineItems = cart.Items.Select(s => s.ToLineItem(updateCart.BranchId)).ToList();
 			}
 			
-			shoppingCartRepository.CreateOrUpdateCart(user.UserId, updateCart.BranchId, updateCart, lineItems);
+			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
 			foreach (var toDelete in itemsToRemove)
 			{
-				shoppingCartRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
+				basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
 			}
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
 		{
-			shoppingCartRepository.DeleteCart(user.UserId, cartId);
+			basketRepository.DeleteBasket(user.UserId, cartId);
 		}
 
 		public void DeleteItem(UserProfile user, Guid cartId, Guid itemId)
 		{
-			shoppingCartRepository.DeleteItem(user.UserId, cartId, itemId);
+			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
 		{
-			var lists = shoppingCartRepository.ReadAllCarts(user.UserId, branchId);
+			var lists = basketRepository.ReadAllBaskets(user.UserId, branchId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.Name }).ToList();
@@ -112,7 +114,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public ShoppingCart ReadCart(UserProfile user, Guid cartId)
 		{
-			var basket = shoppingCartRepository.ReadCart(user.UserId, cartId);
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
 			if (basket == null)
 				return null;
 
@@ -141,6 +143,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
+					item.StorageTemp = prod.Gs1.StorageTemp;
 				}
 				if (price != null)
 				{
