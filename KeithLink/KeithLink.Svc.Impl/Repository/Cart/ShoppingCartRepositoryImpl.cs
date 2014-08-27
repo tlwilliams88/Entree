@@ -64,16 +64,7 @@ namespace KeithLink.Svc.Impl.Repository.Cart
 		public Guid? AddItem(Guid userId, Guid cartId, LineItem newItem)
 		{
 			var basket = ReadCart(userId, cartId);
-			//var existingIds = basket.LineItems.Select(i => i.Id).ToList();
-
-			////var test = RT.Orders.AddToCart(basket.FormattedName(basket.BranchId), userId.ToString("B"), "0", "true", basket.BranchId, newItem.ProductId, string.Empty, newItem.Quantity.ToString(), newItem.Notes);
-
-			////CS returns all of the items, so this is how we have to determine the Id for the newly created item
-			//var newId = ((Basket)test[0]).LineItems.Where(b => !existingIds.Any(i => i.Equals(b.Id.ToGuid()))).FirstOrDefault();
-
-			//if (newId != null)
-			//	return newId.Id.ToGuid();
-
+			
 			var updateOrder = new CommerceUpdate<Basket>();
 			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
 			updateOrder.SearchCriteria.Model.BasketType = 0;
