@@ -1,0 +1,12 @@
+.form-control-group {
+  padding-bottom: $gutter-size;
+
+  .form-control-group__label, .form-control-group__input { 
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+form.style-validation-errors input.ng-dirty.ng-invalid {
+  border: 1px solid $color-red !important;
+}

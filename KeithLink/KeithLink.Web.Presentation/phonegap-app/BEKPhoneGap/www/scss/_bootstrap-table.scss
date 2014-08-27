@@ -1,0 +1,63 @@
+// table using bootstrap rows and columns instead of the <table> tag for more flexibility
+.bootstrap-table {
+  > .row {
+    margin: 0;
+  }
+
+  .table-row-data [class^='col-'] {
+    padding: 14px 5px;
+  }
+
+  .table-header {
+    .table-row {
+      font-weight: 600;
+      border: 1px solid $color-border;
+      background-color: $background;
+    }
+  }
+
+  .table-body, .table-footer {
+    .table-row  {
+      border-bottom: 1px solid $color-border;
+      border-left: 1px solid $color-border;
+      border-right: 1px solid $color-border;
+      background-color: $color-white;
+    }
+  }
+
+  .table-row {
+    
+    .table-col-icons {
+      padding: 8px 5px;
+
+      a,span {
+        display: inline-block;
+        font-size: 18px;
+      }
+    }
+
+    .table-col-input {
+      padding-top: 6px;
+      padding-bottom: 4px;
+
+      input {   
+        min-height: 0;
+        padding: 5px;
+      }
+
+      .select-div {
+        min-height: 0;
+
+        select {
+          padding: 5px;
+          min-height: 0;
+        }
+      }  
+    }
+    
+    &.odd {
+      background-color: $background;
+    }
+
+  }
+}

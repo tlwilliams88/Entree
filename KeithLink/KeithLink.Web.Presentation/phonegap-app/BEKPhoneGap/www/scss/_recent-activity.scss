@@ -1,0 +1,11 @@
+.notification {
+  padding-top: 15px;
+}
+.notification__message {
+  background-color: $color-white;
+  padding: 10px;
+  border: 1px solid $color-border;
+  display: inline-block;
+  border-radius: 5px;
+  letter-spacing: 1px;
+}
