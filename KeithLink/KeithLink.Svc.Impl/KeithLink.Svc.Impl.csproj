@@ -135,11 +135,6 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
-    <Compile Include="Models\CommerceEntities.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommerceEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Profile\CustomerContainerRepository.cs" />
     <Compile Include="Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Profile\InternalUserDomainRepository.cs" />
@@ -182,11 +177,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Caching.config" />
-    <None Include="Models\CommerceEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CommerceEntities.cs</LastGenOutput>
-    </None>
-    <None Include="Models\CommerceEntityTemplate.tt" />
     <None Include="packages.config" />
     <None Include="Presentation.config" />
     <None Include="RequestTemplates\RequestTemplates.tt">
