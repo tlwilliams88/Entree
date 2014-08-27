@@ -15,6 +15,7 @@ using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Impl.Repository.Cart;
+using KeithLink.Svc.Impl;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -45,9 +46,6 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ShoppingCartRepositoryImpl>().As<IShoppingCartRepository>();
             builder.RegisterType<Impl.Profile.ExternalUserDomainRepository>().As<Impl.Profile.ExternalUserDomainRepository>();
             builder.RegisterType<Impl.Profile.InternalUserDomainRepository>().As<Impl.Profile.InternalUserDomainRepository>();
-
-
-            builder.Register(l => new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl(Impl.Configuration.ApplicationName)).As<KeithLink.Common.Core.Logging.IEventLogRepository>().InstancePerRequest();
 
             // Build the container.
             var container = builder.Build();
