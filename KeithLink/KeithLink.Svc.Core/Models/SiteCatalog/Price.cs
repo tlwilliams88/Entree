@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
@@ -10,6 +6,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [DataContract(Name="Price")]
     public class Price
     {
+        #region properties
         [DataMember(Name="BranchId")]
         public string BranchId { get; set; }
 
@@ -24,16 +21,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name="PackagePrice")]
         public double PackagePrice { get; set; }
-    }
-
-    [DataContract(Name="PriceReturn")]
-    public class PriceReturn
-    {
-        public PriceReturn() { 
-            Prices = new List<Price>();
-        }
-
-        [DataMember(Name="Prices")]
-        public List<Price> Prices { get; set; }
+        #endregion
     }
 }

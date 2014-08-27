@@ -73,15 +73,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
+    <Compile Include="Interface\Cart\IShoppingCartRepository.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
     <Compile Include="Models\Lists\NewItem.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Interface\Lists\IListRepository.cs" />
     <Compile Include="Models\Lists\ListItem.cs" />
+    <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
+    <Compile Include="Models\SiteCatalog\ProductImage.cs" />
+    <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductsReturn.cs" />
     <Compile Include="ETL\ICatalogLogic.cs" />
     <Compile Include="Models\SiteCatalog\Category.cs" />

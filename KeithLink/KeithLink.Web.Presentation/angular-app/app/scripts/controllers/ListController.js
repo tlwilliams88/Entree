@@ -32,7 +32,7 @@ angular.module('bekApp')
       // set placeholders for editable item fields
       angular.forEach(ListService.lists, function(list, listIndex) {
         angular.forEach(list.items, function(item, itemIndex) {
-          item.editLabel = item.label;
+          item.editLabel = item.label === '' ? null : item.label;
           item.editParlevel = item.parlevel;
           item.editPosition = item.position;
         });
@@ -67,7 +67,7 @@ angular.module('bekApp')
       $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
     };
 
-    $scope.createList = function() { //DONE
+    $scope.createList = function() {
       ListService.createList().then(function(data) {
         $state.transitionTo('menu.listitems', {listId: data.listid}, {notify: false});
         $scope.selectedList = data;
@@ -78,7 +78,7 @@ angular.module('bekApp')
       });
     };
 
-    $scope.createListWithItem = function(event, helper) { //DONE
+    $scope.createListWithItem = function(event, helper) {
       var selectedItem = helper.draggable.data('product');
       
       ListService.createListWithItem(selectedItem).then(function(data) {
@@ -92,7 +92,7 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteList = function(listId) { //DONE
+    $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
         $scope.selectedList = ListService.favoritesList;
         addSuccessAlert('Successfully deleted list.');
@@ -129,18 +129,9 @@ angular.module('bekApp')
       });
     };
 
-    $scope.renameList = function (listId, listName) { //DONE
+    $scope.renameList = function (listId, listName) {
       var list = angular.copy($scope.selectedList);
       list.name = listName;
-
-      // check for duplicate list names
-      // TODO: move into directive
-      angular.forEach($scope.lists, function(list, index) {
-        if (list.name === listName && list.listid !== listId) {
-          addErrorAlert('Error creating list. Duplicate names.');
-          return;
-        }
-      });
 
       ListService.updateList(list).then(function(data) {
         $scope.selectedList.isRenaming = false;
@@ -149,11 +140,7 @@ angular.module('bekApp')
       });
     };
 
-    $scope.cancelEditListName = function() { //DONE
-      $scope.selectedList.isRenaming = false;
-    };
-
-    $scope.startEditListName = function(listName) { //DONE
+    $scope.startEditListName = function(listName) {
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
       $scope.selectedList.isRenaming = true;

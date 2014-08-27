@@ -12,33 +12,15 @@ angular.module('bekApp')
   .controller('MenuController', ['$scope', '$state', '$modal', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
     function ($scope, $state, $modal, Constants, AuthenticationService, UserProfileService, AccessService) {
 
-    $scope.loginInfo = {
-      username: 'sabroussard@somecompany.com',
-      password: 'L1ttleStev1e'
-    };
-
     $scope.userProfile = UserProfileService.profile();
+    $scope.userBar = {};
+    $scope.userBar.universalSearchTerm = '';
 
     refreshAccessPermissions();
 
     if (AccessService.isLoggedIn()) {
       setLocations(UserProfileService.profile());
     }
-
-    $scope.login = function(loginInfo) {
-
-      AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-        $scope.showLoginForm = false;
-
-        $scope.userProfile = profile;
-
-        refreshAccessPermissions();         
-        setLocations(profile);
-
-        $state.transitionTo('menu.home');
-      });
-
-    };
 
     $scope.logout = function() {
       AuthenticationService.logout();
@@ -55,7 +37,6 @@ angular.module('bekApp')
     $scope.print = function () {
       window.print(); 
     };
-
 
     function setLocations(profile) {
       if (AccessService.isOrderEntryCustomer()) {

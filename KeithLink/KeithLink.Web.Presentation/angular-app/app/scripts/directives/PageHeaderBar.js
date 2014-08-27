@@ -4,11 +4,18 @@
  * @ngdoc function
  * @name bekApp.directive:pageHeaderBar
  * @description
- * loops through items in a list and creates the carousel slides for mobile devices
+ * creates the page header bar with the page title at the top of most pages
  * 
- * Inputs 
- * message: title or message displayed at the top of the page
- * this directive will also tranclude whatever is included within the directive tags
+ * Example
+
+ <div page-header-bar>
+  <div header-message>
+    Item Details
+  </div>
+  <div header-buttons>
+      <button class="btn btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+  </div>
+</div>
  */
 angular.module('bekApp')
   .directive('pageHeaderBar', function() {
