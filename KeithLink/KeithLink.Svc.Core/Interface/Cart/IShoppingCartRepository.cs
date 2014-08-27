@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.ShoppingCart;
+﻿using KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,18 @@ namespace KeithLink.Svc.Core.Interface.Cart
 {
 	public interface IShoppingCartRepository
 	{
-		Guid CreateOrUpdateCart(Guid userId, string branchId, ShoppingCart cart);
-
-		Guid? AddItem(Guid userId, Guid cartId, ShoppingCartItem newItem);
-		void UpdateItem(Guid userId, Guid cartId, ShoppingCartItem updatedItem);
 		void DeleteCart(Guid userId, Guid cartId);
-		ShoppingCart DeleteItem(Guid userId, Guid cartId, Guid itemId);
+		
+		Guid CreateOrUpdateCart(Guid userId, string branchId, Basket basket, List<LineItem> items);
 
-		List<ShoppingCart> ReadAllCarts(Guid userId, string branchId);
-		ShoppingCart ReadCart(Guid userId, Guid cartId);
+		void DeleteItem(Guid userId, Guid cartId, Guid itemId);
+		
+		void UpdateItem(Guid userId, Guid cartId, LineItem updatedItem);
+		
+		Guid? AddItem(Guid userId, Guid cartId, LineItem newItem);
 
+		List<Basket> ReadAllCarts(Guid userId, string branchId);
+		
+		Basket ReadCart(Guid userId, Guid cartId);
 	}
 }

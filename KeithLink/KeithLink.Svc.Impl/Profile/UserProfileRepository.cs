@@ -252,7 +252,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private UserProfile CombineProfileFromCSAndAD(Models.Generated.UserProfile csProfile, string emailAddress)
+        private UserProfile CombineProfileFromCSAndAD(Core.Models.Generated.UserProfile csProfile, string emailAddress)
         {
             System.DirectoryServices.AccountManagement.UserPrincipal adProfile = null;
 
@@ -304,7 +304,7 @@ namespace KeithLink.Svc.Impl.Profile
                 userName = extAD.CreateUser(customerName, emailAddres, password, firstName, lastName, roleName);
             }
 
-            var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
+			var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;
             createUser.Model.LastName = lastName;
@@ -348,7 +348,7 @@ namespace KeithLink.Svc.Impl.Profile
         /// </remarks>
         public UserProfileReturn GetUserProfile(string userName)
         {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Impl.Models.Generated.UserProfile>("UserProfile");
+			var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = userName;
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
@@ -369,7 +369,7 @@ namespace KeithLink.Svc.Impl.Profile
 
 
             UserProfileReturn retVal = new UserProfileReturn();
-            retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
+			retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
 
             return retVal;
         }

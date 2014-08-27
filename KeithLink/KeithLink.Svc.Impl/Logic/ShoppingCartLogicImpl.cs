@@ -1,6 +1,7 @@
 ﻿
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using System;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -16,7 +18,8 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IShoppingCartRepository shoppingCartRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
-		
+
+		private readonly string BasketStatus = "ShoppingCart";
 
 		public ShoppingCartLogicImpl(IShoppingCartRepository shoppingCartRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
 		{
@@ -27,59 +30,56 @@ namespace KeithLink.Svc.Impl.Logic
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
 		{
-			return shoppingCartRepository.CreateOrUpdateCart(user.UserId, branchId, cart);
+			var newBasket = new CS.Basket();
+			newBasket.BranchId = branchId;
+			newBasket.DisplayName = cart.Name;
+			newBasket.Status = BasketStatus;
+			newBasket.Name = cart.FormattedName(branchId);
+
+			return shoppingCartRepository.CreateOrUpdateCart(user.UserId, branchId, newBasket, cart.Items.Select(l => new CS.LineItem() { CatalogName = branchId, Notes = l.Notes, ProductId = l.ItemNumber, Quantity = l.Quantity }).ToList());
 		}
 
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
 		{
-			return shoppingCartRepository.AddItem(user.UserId, cartId, newItem);
+			var basket = shoppingCartRepository.ReadCart(user.UserId, cartId);
+			if (basket == null)
+				return null;
+
+			var newLineItem = new CS.LineItem() { ProductId = newItem.ItemNumber, Notes = newItem.Notes, Quantity = newItem.Quantity, CatalogName = basket.BranchId };
+
+			return shoppingCartRepository.AddItem(user.UserId, cartId, newLineItem);
 		}
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
 		{
-			shoppingCartRepository.UpdateItem(user.UserId, cartId, updatedItem);
+			var updatedLineItem = new CS.LineItem() { Id = updatedItem.CartItemId.ToString("B"), ProductId = updatedItem.ItemNumber, Notes = updatedItem.Notes, Quantity = updatedItem.Quantity };
+
+			shoppingCartRepository.UpdateItem(user.UserId, cartId, updatedLineItem);
 		}
 
 		public void UpdateCart(UserProfile user, ShoppingCart cart)
 		{
 			var updateCart = shoppingCartRepository.ReadCart(user.UserId, cart.CartId);
-
-
-			if (updateCart == null) 
+			
+			if (updateCart == null)
 				return;
 
-			updateCart.Name = cart.Name;
-
+			updateCart.DisplayName = cart.Name;
+			updateCart.Name = cart.FormattedName(updateCart.BranchId);
 			var itemsToRemove = new List<Guid>();
-
-			foreach (var item in updateCart.Items)
-			{
-				if (cart.Items != null && !cart.Items.Where(i => i.CartItemId.Equals(item.CartItemId)).Any())
-					itemsToRemove.Add(item.CartItemId);
-			}
+			var lineItems = new List<CS.LineItem>();
 
 			if (cart.Items != null)
 			{
-				foreach (var item in cart.Items)
-				{
-					if (item.CartItemId == null)
-						updateCart.Items.Add(item);
-					else
-					{
-						var existingItem = updateCart.Items.Where(i => i.CartItemId.Equals(item.CartItemId)).FirstOrDefault();
-						if (existingItem == null)
-							continue;
-						existingItem.Quantity = item.Quantity;
-						existingItem.Notes = item.Notes;
-					}
-				}
+				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
+				lineItems = cart.Items.Select(s => new CS.LineItem() { Id = s.CartItemId == null ? Guid.Empty.ToString("B") : s.CartItemId.ToString("B"), ProductId = s.ItemNumber, Notes = s.Notes, Quantity = s.Quantity, CatalogName = updateCart.BranchId }).ToList();
 			}
-
-			shoppingCartRepository.CreateOrUpdateCart(user.UserId, updateCart.BranchId, updateCart);
+			
+			shoppingCartRepository.CreateOrUpdateCart(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
 			foreach (var toDelete in itemsToRemove)
 			{
-				shoppingCartRepository.DeleteItem(user.UserId, updateCart.CartId, toDelete);
+				shoppingCartRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
 			}
 		}
 
@@ -88,38 +88,41 @@ namespace KeithLink.Svc.Impl.Logic
 			shoppingCartRepository.DeleteCart(user.UserId, cartId);
 		}
 
-		public ShoppingCart DeleteItem(UserProfile user, Guid cartId, Guid itemId)
+		public void DeleteItem(UserProfile user, Guid cartId, Guid itemId)
 		{
-			var cart = shoppingCartRepository.DeleteItem(user.UserId, cartId, itemId);
-			LookupProductDetails(user, cart);
-			return cart;
+			shoppingCartRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
 		{
 			var lists = shoppingCartRepository.ReadAllCarts(user.UserId, branchId);
-
+			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
-				return lists.Select(l => new ShoppingCart() { CartId = l.CartId, Name = l.Name }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.Name }).ToList();
 			else
 			{
-				lists.ForEach(delegate(ShoppingCart list)
+				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
+				returnCart.ForEach(delegate(ShoppingCart list)
 				{
 					LookupProductDetails(user, list);
 				});
-				return lists;
+				return returnCart;
 			}
 		}
 
 		public ShoppingCart ReadCart(UserProfile user, Guid cartId)
 		{
-			var cart = shoppingCartRepository.ReadCart(user.UserId, cartId);
-			if (cart == null)
+			var basket = shoppingCartRepository.ReadCart(user.UserId, cartId);
+			if (basket == null)
 				return null;
-			
+
+			var cart = ToShoppingCart(basket);
+
 			LookupProductDetails(user, cart);
 			return cart;
 		}
+
+		#region Helper Methods
 
 		private void LookupProductDetails(UserProfile user, ShoppingCart cart)
 		{
@@ -147,6 +150,25 @@ namespace KeithLink.Svc.Impl.Logic
 			});
 
 		}
-		
+
+		private ShoppingCart ToShoppingCart(CS.Basket basket)
+		{
+			return new ShoppingCart()
+			{
+				CartId = basket.Id.ToGuid(),
+				Name = basket.DisplayName,
+				BranchId = basket.BranchId,
+				Items = basket.LineItems.Select(l => new ShoppingCartItem()
+				{
+					ItemNumber = l.ProductId,
+					CartItemId = l.Id.ToGuid(),
+					Notes = l.Notes,
+					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0
+				}).ToList()
+			};
+
+		}
+
+		#endregion
 	}
 }
