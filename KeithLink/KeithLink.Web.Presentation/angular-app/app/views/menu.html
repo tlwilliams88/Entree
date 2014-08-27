@@ -19,7 +19,7 @@
     <ul class="list-unstyled" ng-click="$spMenu.hide()">
         
         <div ng-show="displayUserMenu">
-          <a ui-sref="menu.account" ui-sref-active="is-selected">
+          <a ui-sref="menu.accountdetails" ui-sref-active="is-selected">
             <li>Account Settings</li>
           </a>
           <a ng-click="logout()">
@@ -83,7 +83,7 @@
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
         <a ui-sref="menu.orders" ui-sref-active="is-selected" ng-if="canCreateOrders">
-          <li><div class="sidebar-nav__icon"><span class="icon-truck"></span></div>Orders</li>
+          <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Orders</li>
         </a>
         <a ui-sref="menu.catalog.home" ui-sref-active="is-selected" ng-if="canBrowseCatalog">
           <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
@@ -102,6 +102,9 @@
         </a> -->
         <a ui-sref="menu.lists" ui-sref-active="is-selected" ng-if="canManageLists">
           <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+        </a>
+        <a ui-sref="menu.lists" ui-sref-active="is-selected" ng-if="canManageLists">
+          <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
       </ul>
     </nav>
@@ -157,7 +160,7 @@
                 <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
                 <span class="user-info__job-title">{{userProfile.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn">Account Settings</button>
+                  <button class="btn" ui-sref="menu.accountdetails">Account Settings</button>
                   <button class="btn" ng-click="logout()">Sign Out</button>
                 </div>
               </div>

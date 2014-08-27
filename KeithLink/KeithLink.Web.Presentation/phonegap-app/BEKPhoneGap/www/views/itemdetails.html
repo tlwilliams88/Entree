@@ -1,0 +1,211 @@
+ <div page-header-bar>
+  <div header-message>
+    Item Details
+  </div>
+  <div header-buttons>
+      <button class="btn btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+  </div>
+</div>
+
+<div loading-spinner="loadingDetails"></div>
+
+<div class="row" ng-hide="loadingDetails">
+  <!-- <div class="col-sm-3">
+    <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
+  </div> -->
+  <div class="col-sm-9">
+    <h2>{{item.name}}<span class="item-details__icons" item-icons="item"></span></h2>
+    <div class="item-details">
+      <div ng-if="item.description">
+        <strong>Description:</strong> {{item.description}}
+      </div>
+      <div>
+        <span ng-if="item.itemnumber !== null"><strong>Item #</strong> {{item.itemnumber}} | </span>
+        <span ng-if="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
+        <span ng-if="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
+        <span ng-if="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
+      </div>
+      <div>
+        <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
+        <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+      </div>
+    </div>
+    <div class="item-details__actions hidden-print">
+      <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
+      
+      <span favorite-item-click-handlers>
+        <button class="btn" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
+        <button class="btn" ng-show="item.favorite" ng-click="removeItemFromFavorites(item)"><span class="text-gold icon-star"></span> Remove Item</button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row sub-content" ng-hide="loadingDetails">
+  <div class="col-lg-12">
+    <tabset class="tabset">
+      <tab heading="Item Specifications">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
+        <div class="table-responsive">
+          <table class="item-details__table table table-striped">
+            <colgroup>
+              <col style="width: 25%">
+              <col style="width: 75%">
+            </colgroup>
+            <tbody>
+              <tr class="even">
+                <th>Specification</th>
+                <th>Details</th>
+              </tr>
+              <tr class="odd">
+                <td>Item #</td>
+                <td>{{item.itemnumber}}</td>
+              </tr>
+              <tr class="even">
+                <td>GTIN</td>
+                <td>{{item.upc}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Servings / Case</td>
+                <td>{{item.gs1.servingsperpack}}</td>
+              </tr>
+              <tr class="even">
+                <td>Portion Cost</td>
+                <td>{{item.packageprice}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Portion Size</td>
+                <td>{{item.gs1.servingsize}} {{item.gs1.servingsizeuom}}</td>
+              </tr>
+              <!-- Always null
+              <tr>
+                <td>Portion Size</td>
+                <td>{{item.gs1.servingsuggestion}}</td>
+              </tr> -->
+              <tr class="even">
+                <td>Previous Orders</td>
+                <td></td>
+              </tr>
+              <tr class="odd">
+                <td>Manufacturer</td>
+                <td>{{item.manufacturer_name}}</td>
+              </tr>
+              <tr class="even">
+                <td>Brand</td>
+                <td>{{item.manufacturer_brand}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Vendor</td>
+                <td>{{item.vendor_num}}</td>
+              </tr>
+              <tr class="even">
+                <td>Vendor Item #</td>
+                <td>{{item.manufacturer_number}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Category</td>
+                <td>{{item.categoryname}}</td>
+              </tr>
+              <tr class="even">
+                <td>Class</td>
+                <td>{{item.iclass}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Storage Instructions</td>
+                <td>{{item.gs1.storagetemp}}</td>
+              </tr>
+              <tr class="even">
+                <td>Gross Wt</td>
+                <td>{{item.gs1.grossweight}}</td>
+              </tr>
+              <tr class="odd">
+                <td>Case Cube</td>
+                <td>{{item.icube}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+      <tab heading="Dietary Specifications">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
+        <div class="table-responsive">
+          <table class="item-details__table table table-striped">
+            <colgroup>
+              <col style="width: 25%">
+              <col style="width: 75%">
+            </colgroup>
+            <tbody>
+              <tr class="even">
+                <th>Diet Types</th>
+                <td ng-if="item.gs1.diet" class="text-capitalize">
+                  <span ng-repeat-start="diet in item.gs1.diet">{{diet.diettype}}</span>
+                  <span ng-repeat-end ng-if="!$last">, </span>
+                </td>
+                <td ng-if="!item.gs1.diet.length > 0">Not Tested</td>
+              </tr>
+              <tr class="odd">
+                <th>Contains</th>
+                <td ng-if="item.gs1.allergens.contains.length > 0">{{item.gs1.allergens.contains.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.contains.length > 0">Not Tested</td>
+              </tr>
+              <tr class="even">
+                <th>May Contain</th>
+                <td ng-if="item.gs1.allergens.maycontain.length > 0">{{item.gs1.allergens.maycontain.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.maycontain.length > 0">Not Tested</td>
+              </tr>
+              <tr class="odd">
+                <th>Free From</th>
+                <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
+                <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+      <tab heading="Nutrition">
+        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+        <div class="table-responsive">
+          <table class="item-details__table table table-striped">
+            <colgroup>
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+              <col style="width: 20%">
+            </colgroup>
+            <tbody>
+              <tr class="even">
+                <th>Nutrient Type</th>
+                <th>Nutrient Type Code</th>
+                <th>Daily Value</th>
+                <th>Measurement Type ID</th>
+                <th>Measurement Value</th>
+              </tr>
+              <tr ng-repeat="nutrition in item.gs1.nutrition" ng-class="{ odd : $even, even: $odd }">
+                <td>{{nutrition.nutrienttype}}</td>
+                <td>{{nutrition.nutrienttypecode}}</td>
+                <td>{{nutrition.dailyvalue}}</td>
+                <td>{{nutrition.measurementtypeid}}</td>
+                <td>{{nutrition.measurementvalue}}</td>
+              </tr>
+              <tr class="odd" ng-if="item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </tab>
+      <tab heading="Images" ng-if="items.images">
+        <div class="hidden-print item-details__images">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+          <img src="" alt="" style="width:200px;height:200px;">
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>

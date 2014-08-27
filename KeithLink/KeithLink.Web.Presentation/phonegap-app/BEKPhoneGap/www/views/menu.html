@@ -1,0 +1,208 @@
+<!-- Mobile Sidebar -->
+<div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
+ <div ng-show="isLoggedIn" class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
+    <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+    <div class="person-info__section person-info__details">
+      <div>
+        <span class="text-white user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span>  
+      </div>
+      <div>
+        <span class="user-info__job-title">{{userProfile.role}}</span>
+      </div>
+    </div>
+    <div class="person-info__section text-white">
+      <span class="icon-arrow-down6"></span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <ul class="list-unstyled" ng-click="$spMenu.hide()">
+        
+        <div ng-show="displayUserMenu">
+          <a ui-sref="menu.account" ui-sref-active="is-selected">
+            <li>Account Settings</li>
+          </a>
+          <a ng-click="logout()">
+            <li>Sign Out</li>
+          </a>
+        </div>
+
+        <a ui-sref="menu.home" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+        </a>
+        <a ui-sref="menu.orders" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>Orders</li>
+        </a>
+        <a ui-sref="menu.catalog.home" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+        </a>
+        <a ui-sref="menu.reports" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+        </a>
+        <a ui-sref="menu.invoices" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+        </a>
+        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageAccount">
+          <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+        </a>
+        <a ui-sref="menu.notifications" ui-sref-active="is-selected" ng-if="isOrderEntryCustomer">
+          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
+        </a>
+        <!-- <a ng-show="userProfile.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
+        </a> -->
+        <a ui-sref="menu.lists" ui-sref-active="is-selected" ng-if="canManageLists">
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+        </a>
+    </ul>
+  </nav>
+  <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
+    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
+    <div class="person-info__section person-info__details">
+      <span class="text-white">{{userProfile.salesRep.name}}</span>  
+      <span class="text-white">{{userProfile.salesRep.phone}}</span>
+      <span><a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a></span>
+    </div>
+  </div>
+  <div ng-if="isOrder" class="sidebar-actions text-center">
+    <button class="btn cta-btn">View Your Order</button>
+  </div>
+  <div ng-if="!isLoggedIn" class="sidebar-actions text-center">
+    <a ng-click="login()" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
+    <button class="btn cta-btn">Register Now</button>
+  </div>
+</div>
+
+<div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="wrapper">
+  
+  <!-- Desktop Sidebar -->
+  <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
+    <div class="sidebar-logo text-center">
+      <img src="images/bek-logo.png" alt="logo" />
+    </div>
+
+    <nav class="sidebar-nav">
+      <ul class="list-unstyled">
+        <a ui-sref="menu.home" ui-sref-active="is-selected" ng-if="isOrderEntryCustomer">
+          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+        </a>
+        <a ui-sref="menu.orders" ui-sref-active="is-selected" ng-if="canCreateOrders">
+          <li><div class="sidebar-nav__icon"><span class="icon-truck"></span></div>Orders</li>
+        </a>
+        <a ui-sref="menu.catalog.home" ui-sref-active="is-selected" ng-if="canBrowseCatalog">
+          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+        </a>
+        <a ui-sref="menu.reports" ui-sref-active="is-selected" ng-if="canPayInvoices">
+          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+        </a>
+        <a ui-sref="menu.invoices" ui-sref-active="is-selected" ng-if="canPayInvoices">
+          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+        </a>
+        <a ui-sref="menu.emenu" ui-sref-active="is-selected" ng-if="canManageAccount">
+          <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+        </a>
+        <!-- <a ng-show="userProfile.role === 'Internal'" ui-sref="menu.admin" ui-sref-active="is-selected">
+          <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
+        </a> -->
+        <a ui-sref="menu.lists" ui-sref-active="is-selected" ng-if="canManageLists">
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+        </a>
+      </ul>
+    </nav>
+
+    <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer">
+      <p>Your Sales Rep</p>
+      <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{userProfile.salesRep.imageUrl}}" alt="dsr image" />
+      <p class="contact-info">
+        <span>{{userProfile.salesRep.name}}</span>
+        <span>{{userProfile.salesRep.phone}}</span>
+      </p>
+      <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
+    </div>
+    <div class="text-center sidebar-meta">
+      <span>Copyright 2014 Ben E. Keith</span>
+      <a href="#">benekeith.com</a>
+    </div>
+  </div>
+
+  <div class="row page-content">
+    <div class="col-sm-12">
+      
+      <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
+        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
+        <ul>
+          <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
+          <a href=""><li><span class="icon-truck"></span></li></a>
+          <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
+        </ul>
+      </div>
+
+      <div class="row user-bar hidden-print" ng-hide="showLoginForm" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
+        <div class="col-md-4 hidden-sm hidden-xs">
+          <div class="select-div" ng-show="canBrowseCatalog">
+            <select ng-change="changeLocation()" ng-options="location.name for location in locations track by location.name" ng-model="currentLocation"></select>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <form name="universalSearchForm" novalidate ng-if="canBrowseCatalog">
+            <div class="input-group">
+              <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
+              <span class="input-group-btn">
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+              </span>
+            </div>
+          </form>
+        </div>
+        <div class="col-md-4 hidden-sm hidden-xs text-right">
+          <div ng-if="isLoggedIn">
+            <span ng-if="isOrderEntryCustomer" class="icon-bell user-bar__notification"></span>
+            <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
+              <div class="person-info__section person-info__details">
+                <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
+                <span class="user-info__job-title">{{userProfile.role}}</span>
+                <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
+                  <button class="btn">Account Settings</button>
+                  <button class="btn" ng-click="logout()">Sign Out</button>
+                </div>
+              </div>
+              <div class="person-info__section">
+                <span class="icon-arrow-down5"></span>
+              </div>
+              <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+            </div>
+          </div>
+
+          <div ng-show="!isLoggedIn">
+            <a ng-click="showLoginForm = true;" style="font-size: 14px;font-weight: 400;margin-right: 15px;">Login</a>
+            <button style="display:inline-block;" class="btn cta-btn">Register Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row user-bar hidden-print" ng-show="showLoginForm">
+        <div class="col-xs-12 text-right">
+          <form novalidate name="loginForm" class="form-inline">
+            <div class="form-group">
+              <label class="sr-only" for="username">Username</label>
+              <input id="username" focus-me="showLoginForm" required="" name="username" type="text" class="form-control" placeholder="username" ng-model="loginInfo.username">  
+            </div>
+            <div class="form-group">
+              <label class="sr-only" for="password">Password</label>
+              <input id="password" required=""  name="password" type="password" class="form-control" placeholder="password" ng-model="loginInfo.password">
+            </div>
+            <div class="form-group">
+              <button type="submit" class="btn cta-btn" ng-click="login(loginInfo)" ng-disabled="loginForm.$invalid">Login</button>
+            </div>
+            <div class="form-group">
+              <a ng-click="showLoginForm = false;">Cancel</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="view" ui-view="">
+          <p loading-spinner="true"></p>
+      </div>
+    </div>
+  </div>
+</div>

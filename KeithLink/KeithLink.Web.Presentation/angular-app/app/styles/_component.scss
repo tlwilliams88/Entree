@@ -167,17 +167,17 @@ input[type='text'], input[type='email'], input[type='password'] {
   }
 }
 
-input[type="checkbox"] {
-    display:none;
-}
-input[type="checkbox"] + label {
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-  padding-left: 25px;
-}
-@include style-checkbox('checkbox-clear.png', 'checkbox-checked.png', center, left, 20px);
-
+// input[type="checkbox"] {
+//     display:none;
+// }
+// input[type="checkbox"] + label {
+//   display: inline-block;
+//   vertical-align: middle;
+//   cursor: pointer;
+//   padding-left: 25px;
+//   content: '';
+// }
+// @include style-checkbox('checkbox-clear.png', 'checkbox-checked.png', center, left, 20px);
 
 /* Search Form */
 
@@ -191,8 +191,4 @@ input[type="checkbox"] + label {
 
 hr {
   border-top: 1px solid $color-border;
-}
-
-.hand{
-  cursor: pointer;
 }

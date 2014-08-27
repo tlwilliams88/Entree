@@ -13,7 +13,8 @@ using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl;
+using KeithLink.Svc.Core.Interface.Cart;
+using KeithLink.Svc.Impl.Repository.Cart;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -34,14 +35,19 @@ namespace KeithLink.Svc.WebApi
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
             builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-
+			
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
             builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
             builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
+			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
+			builder.RegisterType<ShoppingCartRepositoryImpl>().As<IShoppingCartRepository>();
             builder.RegisterType<Impl.Profile.ExternalUserDomainRepository>().As<Impl.Profile.ExternalUserDomainRepository>();
             builder.RegisterType<Impl.Profile.InternalUserDomainRepository>().As<Impl.Profile.InternalUserDomainRepository>();
+
+
+            builder.Register(l => new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl(Impl.Configuration.ApplicationName)).As<KeithLink.Common.Core.Logging.IEventLogRepository>().InstancePerRequest();
 
             // Build the container.
             var container = builder.Build();

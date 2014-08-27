@@ -1,0 +1,6 @@
+@mixin header-bar($background-color, $padding) {
+  background-color: $background-color;
+  border-bottom: 1px solid $color-border;
+  padding-top: $padding;
+  padding-bottom: $padding;
+}

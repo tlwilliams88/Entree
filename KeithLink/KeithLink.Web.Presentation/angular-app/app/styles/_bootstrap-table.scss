@@ -43,14 +43,17 @@
       input {   
         min-height: 0;
         padding: 5px;
+        width: 100%;
       }
 
       .select-div {
         min-height: 0;
+        width: 100%;
 
         select {
           padding: 5px;
           min-height: 0;
+          width: calc(100% + 40px);
         }
       }  
     }
