@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(i => (Basket)i).Where(b => b.BranchId.Equals(branchId)).ToList();
+			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(i => (Basket)i).ToList();
 		}
 
 		public Guid? AddItem(Guid userId, Guid cartId, LineItem newItem)

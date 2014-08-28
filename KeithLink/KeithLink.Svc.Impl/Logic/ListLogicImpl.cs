@@ -197,7 +197,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ListId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-				Items = basket.LineItems.Select(l => new ListItem()
+				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
 					Label = l.Label,
