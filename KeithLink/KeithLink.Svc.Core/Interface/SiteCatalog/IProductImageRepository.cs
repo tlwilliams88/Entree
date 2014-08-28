@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
-    interface IProductImageRepository
+    public interface IProductImageRepository
     {
         Models.SiteCatalog.ProductImageReturn GetImageList(string itemNumber);
     }
