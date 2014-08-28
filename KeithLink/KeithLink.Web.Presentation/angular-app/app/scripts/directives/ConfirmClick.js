@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:ngConfirmClick
+ * @description
+ * displays confirmation message and executes the given function if message is approved
+ *
+ * used when deleting lists and orders
+ */
 angular.module('bekApp')
 .directive('ngConfirmClick', [ function(){
     return {

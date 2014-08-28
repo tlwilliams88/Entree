@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	//[Authorize]
     public class CatalogController : BaseController
     {
         #region attributes
@@ -135,8 +136,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         private void GetPricingInfo(ProductsReturn prods)
         {
-            // TODO: Get branch and customer info from UI and/or profile
-            PriceReturn pricingInfo = _priceRepository.GetPrices("FAM", "011807", DateTime.Now.AddDays(1), prods.Products);
+            if (this.AuthenticatedUser == null)
+				return;
+
+            PriceReturn pricingInfo = _priceRepository.GetPrices(this.AuthenticatedUser.BranchId, this.AuthenticatedUser.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Product p in prods.Products)
             {

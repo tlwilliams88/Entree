@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void UpdateList(Guid userId, UserList list);
 
 		void DeleteList(Guid userId, Guid listId);
-		UserList DeleteItem(Guid userId, Guid listId, Guid itemId);
+		void DeleteItem(Guid userId, Guid listId, Guid itemId);
 
 		List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly);
 		UserList ReadList(Guid userId, Guid listId);

@@ -45,6 +45,14 @@ angular
         authorize: 'isOrderEntryCustomer'
       }
     })
+    .state('menu.accountdetails', {
+      url: '/account/',
+      templateUrl: 'views/accountdetails.html',
+      controller: 'AccountDetailsController',
+      data: {
+        authorize: 'isLoggedIn'
+      }
+    })
     .state('menu.catalog', {
       abstract: true,
       url: '/catalog/',
@@ -97,6 +105,14 @@ angular
       data: {
         authorize: 'canManageLists'
       }
+    })
+    .state('menu.orders', {
+      url: '/orders/',
+      templateUrl: 'views/orders.html',
+      controller: 'OrderController',
+      data: {
+        authorize: 'canCreateOrders'
+      }
     });
 
   $stateProvider
@@ -131,18 +147,29 @@ angular
   localStorageServiceProvider.setPrefix('bek');
 
 }])
-.run(['$rootScope', '$state', 'ApiService', 'AccessService', function($rootScope, $state, ApiService, AccessService) {
+.run(['$rootScope', '$state', 'ApiService', 'AccessService', 'AuthenticationService', function($rootScope, $state, ApiService, AccessService, AuthenticationService) {
 
   ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    // check if user has access to the route
-    if (toState.data && toState.data.authorize && !AccessService[toState.data.authorize]()) {
-      $state.transitionTo('register');
-      event.preventDefault(); 
+    
+    // check if route is protected
+    if (toState.data && toState.data.authorize) {
+      // check if user's token is expired
+      if (!AccessService.isLoggedIn()) {
+        AuthenticationService.logout();
+        $state.transitionTo('register');
+        event.preventDefault();
+      }
+
+      // check if user has access to the route
+      if (!AccessService[toState.data.authorize]()) {
+        $state.transitionTo('register');
+        event.preventDefault(); 
+      }
     }
 
-    // if logged in, redirect register page to homepage
+    // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {

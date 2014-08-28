@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		
 		public string FormattedName(string branchId) 
 		{ 
-			return string.Format("{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
+			return string.Format("l{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
 		}
 
     }

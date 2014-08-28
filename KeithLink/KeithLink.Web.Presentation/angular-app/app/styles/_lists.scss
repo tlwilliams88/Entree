@@ -60,14 +60,16 @@
         background-color: #f3f3d1 !important;
       }
 
-      
-    }
+      .edit-parlevel {
+        width: calc(100% - 15px);
+      }
+      .edit-label {
+        width: calc(100% - 25px);
 
-    .edit-parlevel {
-      width: calc(100% - 15px);
-    }
-    .edit-label {
-      width: calc(100% - 25px);
+        select {
+          width: 110%;
+        }
+      } 
     }
   }
 }

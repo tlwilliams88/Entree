@@ -21,20 +21,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private ElasticsearchClient client = GetElasticsearchClient(Configuration.ElasticSearchURL);
 
-
-        private string _elasticSearchAggreagations = @",
-                ""aggregations"" : {
-                    ""categories"" : {
-                    ""terms"" : {
-                        ""field"" : ""categoryid""
-                    }
-                    }, ""brands"" : {
-                    ""terms"" : {
-                        ""field"" : ""brand""
-                    }
-                    }
-                }";
-
         #endregion
 
         #region " constructor "
@@ -52,85 +38,118 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             size = GetProductPagingSize(size);
 
-            List<string> childCategories = new List<string>();
-
-			childCategories = GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
+            List<string> childCategories = 
+                GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
 			
+            ExpandoObject filterTerms = BuildFilterTerms(facetFilters);
+
+            string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
+
+            dynamic categorySearchExpression = BuildFunctionScoreQuery(from, size, sortField, sortDir, filterTerms, new List<string>() { "categoryid" }, categorySearch);
+
+            return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
+        }
+
+        private dynamic BuildFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression)
+        {
+            return new {
+                from = from,
+                size = size,
+                query = new {
+                    function_score = new {
+                        query = new {
+                            filtered = new {
+                                query = new {
+                                    query_string = new {
+                                        fields = fieldsToSearch,
+                                        query = searchExpression,
+                                        use_dis_max = true
+                                    }
+                                },
+                                filter = filterTerms
+                            }
+                        },
+                        functions = BuildPreferredItemBoostFunctions(),
+                        score_mode = "max",
+                        boost_mode = "multiply"
+                    }
+                },
+                sort = BuildSort(sortField, sortDir),
+                aggregations = ElasticSearchAggregations
+            };
+        }
+
+        private static List<dynamic> BuildPreferredItemBoostFunctions()
+        {
+            return new List<dynamic>
+                    {
+                        new { filter = new { term = new { preferreditemcode = "A" } }, boost_factor = 300 },
+                        new { filter = new { term = new { preferreditemcode = "B" } }, boost_factor = 200 },
+                        new { filter = new { term = new { preferreditemcode = "C" } }, boost_factor = 100 }
+                    };
+        }
+
+        private ExpandoObject BuildFilterTerms(string facetFilters)
+        {
+            List<dynamic> facetTerms = new List<dynamic>();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> facetTerms = new List<string>();
             foreach (string s in facets)
             {
                 string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
                 string[] values = s.Substring(s.IndexOf(":") + 1).Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
                 string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
                 string selectedValues = String.Join("\",\"", values);
-                facetTerms.Add(@"{ ""terms"": { """ + keyValue + @""": [""" + selectedValues + @"""] } }");
+                ExpandoObject keyValueSelectedValues = new ExpandoObject();
+                (keyValueSelectedValues as IDictionary<string, object>).Add(keyValue, values);
+                facetTerms.Add(new { terms = keyValueSelectedValues });
             }
-            string filterTerms = string.Empty;
-            if (facetTerms.Count > 0)
-            {
-                filterTerms = @"""bool"" : { ""must"" : [ 
-                        " + String.Join(",", facetTerms.ToArray())
-                        + @"] }";
-            }
+            
+            ExpandoObject filterTerms = new ExpandoObject();
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms });
 
-            string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
-
-            var categoryFilter = @"{
-                ""from"" : " + from + @", ""size"" : " + size + @",
-                ""query"":{
-                  ""filtered"":{
-                   ""query"": {
-                      ""query_string"" : {
-                         ""fields"" : [""categoryid""],
-                          ""query"" : """ + categorySearch + @""",
-                                               ""use_dis_max"" : true
-                      }
-                    } 
-                   ,""filter"":
-                    {
-                        " + filterTerms + @"
-                    }
-                  }
-                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
-            }";
-
-            return GetProductsFromElasticSearch(branch, categoryFilter);
+            return filterTerms;
         }
 
-		private static string BuildSort(string sortField, string sortDir)
-		{
-			var sort = string.Empty;
-
-			if (!string.IsNullOrEmpty(sortField))
-			{
-				sort = string.Format(",\"sort\" : [ {{\"{0}\" : \"{1}\"}} ]", sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
-			}
-			return sort;
-		}
-
-        private static void LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res, ExpandoObject facets)
+        private static dynamic BuildSort(string sortField, string sortDir)
         {
-			if (!res.Response.Contains("aggregations"))
-				return;
-
-            foreach (var oFacet in res.Response["aggregations"])
+            if (!string.IsNullOrEmpty(sortField))
             {
-                var facet = new List<ExpandoObject>();
-                foreach (var oFacetValue in oFacet.Value["buckets"])
-                {
-                    var facetValue = new ExpandoObject() as IDictionary<string, object>;
-                    facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
-                    facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
-                    if (oFacet.Key == "categories")
-                    {
-                        facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
-                    }
-                    facet.Add(facetValue as ExpandoObject);
-                }
-
-                (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
+                ExpandoObject sortObject = new ExpandoObject();
+                (sortObject as IDictionary<string, object>).Add(sortField, string.IsNullOrEmpty(sortDir) ? "asc" : sortDir);
+                return sortObject;
             }
+            else
+            {
+                return new {_score = "desc" };
+            }
+        }
+
+        private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res)
+        {
+            ExpandoObject facets = new ExpandoObject();
+
+            if (res.Response.Contains("aggregations"))
+            {
+                foreach (var oFacet in res.Response["aggregations"])
+                {
+                    var facet = new List<ExpandoObject>();
+                    foreach (var oFacetValue in oFacet.Value["buckets"])
+                    {
+                        var facetValue = new ExpandoObject() as IDictionary<string, object>;
+                        facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
+                        facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
+                        if (oFacet.Key == "categories")
+                        {
+                            facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+                        }
+                        facet.Add(facetValue as ExpandoObject);
+                    }
+
+                    (facets as IDictionary<string, object>).Add(oFacet.Key, facet);
+                }
+            }
+
+            return facets;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -157,58 +176,39 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             size = GetProductPagingSize(size);
             branch = branch.ToLower();
-            string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> facetTerms = new List<string>();
-            foreach (string s in facets)
-            {
-                string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
-                string[] values = s.Substring(s.IndexOf(":") + 1).Split(new string[] { "|" }, StringSplitOptions.RemoveEmptyEntries);
-                string keyValue = ElasticSearchAggregationsMap[keyValues[0]];
-                string selectedValues = String.Join("\",\"", values);
-                facetTerms.Add(@"{ ""terms"": { """ + keyValue + @""": [""" + selectedValues + @"""] } }");
-            }
-            string filterTerms = string.Empty;
-            if (facetTerms.Count > 0)
-            {
-                filterTerms = @"""bool"" : { ""must"" : [ 
-                        " + String.Join(",", facetTerms.ToArray())
-                        + @"] }";
+            ExpandoObject filterTerms = BuildFilterTerms(facetFilters);
+
+            string termSearch = search;
+            List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+            System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
+            if (matchOnlyDigits.IsMatch(search))
+            { // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
+                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + search))).ToList();
+                digitSearchTerms.Insert(0, search);
+                termSearch = String.Join(" OR ", digitSearchTerms);
             }
 
-            var searchBody = @"{
-                ""from"" : " + from + @", ""size"" : " + size + @",
-                ""query"":{
-                  ""filtered"":{
-                   ""query"": {
-                    ""query_string"" : {
-                          ""fields"" : [""name"", ""description"", ""categoryname"", ""itemnumber""],
-                          ""query"" : """ + search + @""",
-                                               ""use_dis_max"" : true
-                        }
-                    }
-                   ,""filter"":
-                    {
-                        " + filterTerms + @"
-                    }
-                  }
-                }" + BuildSort(sortField, sortDir) + ElasticSearchAggregations + @"
-            }";
+            dynamic termSearchExpression = BuildFunctionScoreQuery(from, size, sortField, sortDir, filterTerms, fieldsToSearch, termSearch);
 
-            return GetProductsFromElasticSearch(branch, searchBody);
+            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }
 
-        private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody)
+        private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null)
         {
-            ElasticsearchResponse<DynamicDictionary> res = client.Search(branch, "product", searchBody);
+            ElasticsearchResponse<DynamicDictionary> res = null;
+
+            if (searchBodyD == null)
+                res = client.Search(branch, "product", searchBody);
+            else
+                res = client.Search(branch, "product", searchBodyD);
 
             List<Product> products = new List<Product>();
-            ExpandoObject facets = new ExpandoObject();
             foreach (var oProd in res.Response["hits"]["hits"])
             {
                 Product p = LoadProductFromElasticSearchProduct(oProd);
                 products.Add(p);
             }
-            LoadFacetsFromElasticSearchResponse(res, facets);
+            ExpandoObject facets = LoadFacetsFromElasticSearchResponse(res);
             int totalCount = Convert.ToInt32(res.Response["hits"]["total"].Value);
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
@@ -358,14 +358,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         #region " properties "
 
-        public string ElasticSearchAggregations {
+        public ExpandoObject ElasticSearchAggregations
+        {
             get
             {
                 if (!String.IsNullOrEmpty(Configuration.ElasticSearchAggregations))
                 {
-                    List<string> aggregationsFromConfig = new List<string>();
-                    StringBuilder s = new StringBuilder();
-                    s.Append(",\"aggregations\" : {{\r\n {0} \r\n}}");
+                    ExpandoObject aggregationsFromConfig = new ExpandoObject();
+
                     foreach (string aggregation in Configuration.ElasticSearchAggregations.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries))
                     {
                         string[] aggregationParams = aggregation.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);
@@ -374,21 +374,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
                         if (aggregationParams[0] == "categories")
                         {
-							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 },\r\n    \"aggregations\" : { \"category_meta\" : { \"terms\" : { \"field\" : \"categoryname\", \"size\": 500 }}}}");
-                        } else {
-							aggregationsFromConfig.Add("\r\n\"" + aggregationParams[0] + "\" : {\r\n    \"terms\" : { \"field\": \"" + aggregationParams[1] + "\", \"size\": 500 }}");
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname", size = 500 } } } });
+                        }
+                        else
+                        {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 } });
                         }
                     }
-
-                    string formatString = s.ToString();
-                    string aggregationsString = String.Join(",", aggregationsFromConfig.ToArray());
-                    return string.Format(formatString, aggregationsString);
+                    return aggregationsFromConfig;
                 }
-                return _elasticSearchAggreagations;
-            }
-            set
-            {
-                _elasticSearchAggreagations = value;
+                return new ExpandoObject();
             }
         }
 

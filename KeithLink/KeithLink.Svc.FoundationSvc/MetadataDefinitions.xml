@@ -2006,6 +2006,8 @@ This file contains the Metadata Repository
 							<!-- Custom Properties -->
 							<PropertyMapping property="BranchId" csProperty="BranchId"/>
 							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
+							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
+							<PropertyMapping property="Active" csProperty="Active"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2071,7 +2073,14 @@ This file contains the Metadata Repository
 						<DisplayName value="BranchId"/>
 					</Property>
 					<Property name="DisplayName" dataType="String" >
-						<DisplayName value="Is Multi-Shipping"/>
+						<DisplayName value="Display Name"/>
+					</Property>
+					
+					<Property name="RequestedShipDate" dataType="DateTime">
+						<DisplayName value="Requested Ship Date"/>
+					</Property>
+					<Property name="Active" dataType="Boolean">
+						<DisplayName value="Active"/>
 					</Property>
 					
         </Properties>
@@ -2320,7 +2329,8 @@ This file contains the Metadata Repository
 							<PropertyMapping property="LinePosition" csProperty="LinePosition"/>
 							<PropertyMapping property="Label" csProperty="Label"/>
 							<PropertyMapping property="ParLevel" csProperty="ParLevel" />
-							
+							<PropertyMapping property="Notes" csProperty="Notes"/>
+							<PropertyMapping property="Each" csProperty="Each"/>
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2374,6 +2384,13 @@ This file contains the Metadata Repository
 					<Property name="ParLevel" dataType="Decimal">
 						<DisplayName value="ParLevel" />
 					</Property>
+					<Property name="Notes" dataType="String">
+						<DisplayName value="Notes" />
+					</Property>
+					<Property name="Each" dataType="Boolean">
+						<DisplayName value="Each" />
+					</Property>
+
 
 				</Properties>
 
