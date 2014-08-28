@@ -290,6 +290,38 @@ CREATE TABLE [ETL].[Staging_ItemData](
 ) ON [PRIMARY]
 
 GO
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Brands](
+	[Brand] [varchar](20) NULL,
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_BrandControlLabels](
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/********************************************************************************************/
 
 
 SET ANSI_NULLS ON
@@ -435,6 +467,7 @@ BEGIN
 		UPC, 
 		MfrNumber, 
 		MfrName, 
+		(SELECT b.ExtendedDescription FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription,
 		Cases, 
 		Package, 
 		PreferredItemCode, 
@@ -645,6 +678,32 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadBrandControlLabels]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT
+		b.ControlLabel,
+		b.ExtendedDescription
+	FROM
+		ETL.Staging_BRandControlLabels b
+END
+
+GO
 
 SET ANSI_PADDING OFF
 GO

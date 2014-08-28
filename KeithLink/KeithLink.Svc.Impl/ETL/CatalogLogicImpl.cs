@@ -20,6 +20,7 @@ using System.Text.RegularExpressions;
 using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
 
 
 namespace KeithLink.Svc.Impl.ETL
@@ -127,7 +128,7 @@ namespace KeithLink.Svc.Impl.ETL
 			});
 
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
-            var products = new BlockingCollection<ElasticSearchItemUpdate>();
+            var products = new BlockingCollection<ItemUpdate>();
 
             var gsData = stagingRepository.ReadGSDataForItems();
 
@@ -283,9 +284,9 @@ namespace KeithLink.Svc.Impl.ETL
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ElasticSearchItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens)
+        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens)
         {
-            var item =  new ElasticSearchItemUpdate()
+            var item =  new ItemUpdate()
             {
                 index = new RootData()
                 {
@@ -293,81 +294,82 @@ namespace KeithLink.Svc.Impl.ETL
                     _index = row.GetString("BranchId").ToLower(),
                     data = new AdditionalData()
                     {
-                        brand = row.GetString("Brand"),
-                        brand_analyzed = row.GetString("Brand"),
-                        buyer = row.GetString("Buyer"),
-                        cases = row.GetString("Cases"),
-                        categoryid = row.GetString("CategoryId"),
-                        categoryname = row.GetString("CategoryName"),
-                        categoryname_analyzed = row.GetString("CategoryName"),
-                        catmgr = row.GetString("CatMgr"),
-                        description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
-                        icseonly = row.GetString("ICSEOnly"),
-                        icube = row.GetString("Cube"),
-                        itemclass = row.GetString("Class"),
-                        itemtype = row.GetString("ItemType"),
-                        kosher = row.GetString("Kosher"),
-                        mfrname = row.GetString("MfrName"),
-                        mfrnumber = row.GetString("MfrNumber"),
-                        name = row.GetString("Name"),
-                        name_analyzed = row.GetString("Name"),
-                        pack = row.GetString("Pack"),
-                        package = row.GetString("Package"),
-                        parentcategoryid = row.GetString("ParentCategoryId"),
-                        parentcategoryname = row.GetString("ParentCategoryName"),
-                        preferreditemcode = row.GetString("PreferredItemCode"),
-                        size = row.GetString("Size"),
-                        specialorderitem = row.GetString("SpecialOrderItem"),
-                        status1 = row.GetString("Status1"),
-                        status2 = row.GetString("Status2"),
-                        upc = row.GetString("UPC"),
-                        vendor1 = row.GetString("Vendor1"),
-                        vendor2 = row.GetString("Vendor2"),
-                        branchid = row.GetString("BranchId"),
-                        replaceditem = row.GetString("ReplacedItem"),
-                        replacementitem = row.GetString("ReplacementItem"),
-                        cndoc = row.GetString("CNDoc"),
-                        itemnumber = row.GetString("ItemId"),
-						nonstock = row.GetString("NonStock"),
-                        gs1 = new GS1Data()
+                        Brand = row.GetString("Brand"),
+                        BrandNotAnalyzed = row.GetString("Brand"),
+                        BrandDescription = row.GetString("BrandDescription"),
+                        BrandDescriptionNotAnalyzed = row.GetString("BrandDescriptionNotAnalyzed"),
+                        Buyer = row.GetString("Buyer"),
+                        Cases = row.GetString("Cases"),
+                        CategoryId = row.GetString("CategoryId"),
+                        CategoryName = row.GetString("CategoryName"),
+                        CategoryNameNotAnalyzed = row.GetString("CategoryName"),
+                        CatMgr = row.GetString("CatMgr"),
+                        Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
+                        CaseOnly = row.GetString("ICSEOnly"),
+                        ItemClass = row.GetString("Class"),
+                        ItemType = row.GetString("ItemType"),
+                        Kosher = row.GetString("Kosher"),
+                        MfrName = row.GetString("MfrName"),
+                        MfrNumber = row.GetString("MfrNumber"),
+                        Name = row.GetString("Name"),
+                        NameNotAnalyzed = row.GetString("Name"),
+                        Pack = row.GetString("Pack"),
+                        Package = row.GetString("Package"),
+                        ParentCategoryId = row.GetString("ParentCategoryId"),
+                        ParentCategoryName = row.GetString("ParentCategoryName"),
+                        PreferredItemCode = row.GetString("PreferredItemCode"),
+                        Size = row.GetString("Size"),
+                        SpecialOrderItem = row.GetString("SpecialOrderItem"),
+                        Status1 = row.GetString("Status1"),
+                        Status2 = row.GetString("Status2"),
+                        Upc = row.GetString("UPC"),
+                        Vendor1 = row.GetString("Vendor1"),
+                        Vendor2 = row.GetString("Vendor2"),
+                        BranchId = row.GetString("BranchId"),
+                        ReplacedItem = row.GetString("ReplacedItem"),
+                        ReplacementItem = row.GetString("ReplacementItem"),
+                        ChildNutrition = row.GetString("CNDoc"),
+                        ItemNumber = row.GetString("ItemId"),
+						NonStock = row.GetString("NonStock"),
+                        Nutritional = new NutritionalInformation()
                         {
-                            brandowner = row.GetString("BrandOwner"),
-                            countryoforigin = row.GetString("CountryOfOrigin"),
-                            grossweight = row.GetString("GrossWeight"),
-                            handlinginstruction = row.GetString("HandlingInstruction"),
-                            height = row.GetString("Height"),
-                            ingredients = row.GetString("Ingredients"),
-                            length = row.GetString("Length"),
-                            marketingmessage = row.GetString("MarketingMessage"),
-                            moreinformation = row.GetString("MoreInformation"),
-                            servingsize = row.GetString("ServingSize"),
-                            servingsizeuom = row.GetString("ServingSizeUOM"),
-                            servingsperpack = row.GetString("ServingsPerPack"),
-                            servingsuggestion = row.GetString("ServingSuggestion"),
-                            shelf = row.GetString("Shelf"),
-                            storagetemp = row.GetString("StorageTemp"),
-                            unitmeasure = row.GetString("UnitMeasure"),
-                            unitspercase = row.GetString("UnitsPerCase"),
-                            volume = row.GetString("Volume"),
-                            width = row.GetString("Width"),
-                            nutrition = nutrition.ContainsKey(row.GetString("UPC")) ? nutrition[row.GetString("UPC")] : null,
-                            diet = diets.ContainsKey(row.GetString("UPC")) ? diets[row.GetString("UPC")] : null,
-                            allergen = allergens.ContainsKey(row.GetString("UPC")) ? allergens[row.GetString("UPC")] : null,
+                            BrandOwner = row.GetString("BrandOwner"),
+                            CountryOfOrigin = row.GetString("CountryOfOrigin"),
+                            GrossWeight = row.GetString("GrossWeight"),
+                            HandlingInstruction = row.GetString("HandlingInstruction"),
+                            Height = row.GetString("Height"),
+                            Ingredients = row.GetString("Ingredients"),
+                            Length = row.GetString("Length"),
+                            MarketingMessage = row.GetString("MarketingMessage"),
+                            MoreInformation = row.GetString("MoreInformation"),
+                            ServingSize = row.GetString("ServingSize"),
+                            ServingSizeUom = row.GetString("ServingSizeUOM"),
+                            ServingsPerPack = row.GetString("ServingsPerPack"),
+                            ServingSuggestion = row.GetString("ServingSuggestion"),
+                            Shelf = row.GetString("Shelf"),
+                            StorageTemp = row.GetString("StorageTemp"),
+                            UnitMeasure = row.GetString("UnitMeasure"),
+                            UnitsPerCase = row.GetString("UnitsPerCase"),
+                            Volume = row.GetString("Volume"),
+                            Width = row.GetString("Width"),
+                            Nutrition = nutrition.ContainsKey(row.GetString("UPC")) ? nutrition[row.GetString("UPC")] : null,
+                            Diet = diets.ContainsKey(row.GetString("UPC")) ? diets[row.GetString("UPC")] : null,
+                            Allergen = allergens.ContainsKey(row.GetString("UPC")) ? allergens[row.GetString("UPC")] : null,
                         }
                     }
 
                 }
             };
-			item.index.data.itemspecification = new List<string>();
+			item.index.data.ItemSpecification = new List<string>();
 
 			
 
-			if (item.index.data.replacementitem != "000000")
-				item.index.data.itemspecification.Add(ItemSpec_ReplacementItem);
-			if (item.index.data.replaceditem != "000000")
-				item.index.data.itemspecification.Add(ItemSpec_Replaced);
-			if (item.index.data.cndoc.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-				item.index.data.itemspecification.Add(ItemSpec_CNDoc);
+			if (item.index.data.ReplacementItem != "000000")
+				item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
+			if (item.index.data.ReplacedItem != "000000")
+				item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
+			if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc);
 			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
 			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
 			
@@ -451,13 +453,13 @@ namespace KeithLink.Svc.Impl.ETL
 			switch (row.GetString("LevelOfContainment"))
 			{
 				case "FREE_FROM":
-					allergen.freefrom.Add(row.GetString("AllergenTypeDesc"));
+					allergen.FreeFrom.Add(row.GetString("AllergenTypeDesc"));
 					break;
 				case "CONTAINS":
-					allergen.contains.Add(row.GetString("AllergenTypeDesc"));
+					allergen.Contains.Add(row.GetString("AllergenTypeDesc"));
 					break;
 				case "MAY_CONTAIN":
-					allergen.maycontain.Add(row.GetString("AllergenTypeDesc"));
+					allergen.MayContain.Add(row.GetString("AllergenTypeDesc"));
 					break;
 			}
 		}
@@ -470,18 +472,18 @@ namespace KeithLink.Svc.Impl.ETL
 
         private static Diet MapDiet(DataRow row)
         {
-            return new Diet() { diettype = row.GetString("DietType") };
+            return new Diet() { DietType = row.GetString("DietType") };
         }
 
         private ItemNutrition MapItemNutrition(DataRow subRow)
         {
             return new ItemNutrition()
             {
-                dailyvalue = subRow.GetString("DailyValue"),
-                measurementtypeid = subRow.GetString("MeasurmentTypeId"),
-                measurementvalue = subRow.GetString("MeasurementValue"),
-                nutrienttype = subRow.GetString("NutrientTypeDesc"),
-                nutrienttypecode = subRow.GetString("NutrientTypeCode")
+                DailyValue = subRow.GetString("DailyValue"),
+                MeasurementTypeId = subRow.GetString("MeasurmentTypeId"),
+                MeasurementValue = subRow.GetString("MeasurementValue"),
+                NutrientType = subRow.GetString("NutrientTypeDesc"),
+                NutrientTypeCode = subRow.GetString("NutrientTypeCode")
             };
         }
 

@@ -64,13 +64,13 @@ namespace KeithLink.Svc.Impl.Models
         public string cndoc { get; set; }
         public string itemnumber { get; set; }
         public string icube { get; set; }
-        public GS1Data gs1 { get; set; }
+        public NutritionalInformation gs1 { get; set; }
 		public string nonstock { get; set; }
 
 		public List<string> itemspecification { get; set; }
     }
 
-    public class GS1Data
+    public class NutritionalInformation
     {
         public string brandowner { get; set; }
         public string countryoforigin { get; set; }
