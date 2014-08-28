@@ -100,7 +100,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var lists = basketRepository.ReadAllBaskets(user.UserId, branchId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.Name }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
