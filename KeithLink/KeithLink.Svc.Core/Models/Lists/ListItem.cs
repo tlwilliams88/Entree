@@ -28,6 +28,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public bool Favorite { get; set; }
 		[DataMember (Name ="storagetemp")]
 		public string StorageTemp { get; set; }
+		[DataMember (Name="brand")]
+		public string Brand { get; set; }
 
 
 		public int CompareTo(object obj)

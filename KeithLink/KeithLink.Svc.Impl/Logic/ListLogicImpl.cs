@@ -161,6 +161,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 					listItem.StorageTemp = prod.Gs1.StorageTemp;
+					listItem.Brand = prod.Brand;
 				}
 				if (favorites != null)
 				{
