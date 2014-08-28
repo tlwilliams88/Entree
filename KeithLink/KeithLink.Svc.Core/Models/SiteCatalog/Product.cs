@@ -91,6 +91,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
 
+        [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }
         #endregion
     }

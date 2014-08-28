@@ -81,14 +81,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
             Product prod = _catalogRepository.GetProductById(branchId, id);
-            ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
-            GetPricingInfo(prods);
 
-			if (this.AuthenticatedUser != null)
-				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
+            if (prod == null)
+            {
+                prod = new Product();
+            } 
+            else 
+            {
+                ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
+                GetPricingInfo(prods);
 
-            prod.ProductImages = _imgRepository.GetImageList(prod.ItemNumber).ProductImages;
-            
+                if (this.AuthenticatedUser != null)
+                    _listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
+
+                prod.ProductImages = _imgRepository.GetImageList(prod.ItemNumber).ProductImages;
+            }
             return prod;
         }
 
