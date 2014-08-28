@@ -91,9 +91,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpDelete]
 		[Route("list/{listId}/item/{itemId}")]
-		public UserList DeleteItem(Guid listId, Guid itemId)
+		public void DeleteItem(Guid listId, Guid itemId)
         {
-			return listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
+			listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
         }
     }
 }

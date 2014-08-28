@@ -135,23 +135,16 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
-    <Compile Include="Models\CommerceEntities.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommerceEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Profile\CustomerContainerRepository.cs" />
     <Compile Include="Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Profile\UserProfileRepository.cs" />
-    <Compile Include="Repository\Cart\ShoppingCartRepositoryImpl.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\MockListRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
@@ -182,11 +175,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Caching.config" />
-    <None Include="Models\CommerceEntities.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CommerceEntities.cs</LastGenOutput>
-    </None>
-    <None Include="Models\CommerceEntityTemplate.tt" />
     <None Include="packages.config" />
     <None Include="Presentation.config" />
     <None Include="RequestTemplates\RequestTemplates.tt">

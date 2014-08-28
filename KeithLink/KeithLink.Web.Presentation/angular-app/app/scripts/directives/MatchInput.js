@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:sortIcons
+ * @description
+ * form validation that requires the input to match the given matchInput attr
+ */
 angular.module('bekApp')
 .directive('matchInput', function () {
         return {

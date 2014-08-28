@@ -1,5 +1,11 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:goToNextParlevel
+ * @description
+ * use keyboard arrow keys and enter keys to navigate between parlevels
+ */
 angular.module('bekApp')
 .directive('goToNextParlevel', function () {
 	return {
