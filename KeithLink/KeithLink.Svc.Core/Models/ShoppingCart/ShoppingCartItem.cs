@@ -26,5 +26,9 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public double PackagePrice { get; set; }
 		[DataMember(Name = "caseprice")]
 		public double CasePrice { get; set; }
+		[DataMember(Name="each")]
+		public bool Each { get; set; }
+		[DataMember(Name = "storagetemp")]
+		public string StorageTemp { get; set; }
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Profile
 {
@@ -16,6 +17,14 @@ namespace KeithLink.Svc.Impl.Profile
             Locked = 0x10,
             NormalAccount = 0x200,
             PasswordNotRequired = 0x20
+        }
+        IEventLogRepository _logger;
+        #endregion
+
+        #region ctor
+        public ExternalUserDomainRepository(IEventLogRepository logger)
+        {
+            _logger = logger;
         }
         #endregion
 
@@ -154,8 +163,7 @@ namespace KeithLink.Svc.Impl.Profile
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
                 boundServer.RefreshCache();
             } catch (Exception ex){
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }
@@ -182,8 +190,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch(Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not create user on external AD server.", ex);
+                _logger.WriteErrorLog("Could not create user on external AD server.", ex);
 
                 throw;
             }
@@ -197,8 +204,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not set password for user on external AD server.", ex);
+                _logger.WriteErrorLog("Could not set password for user on external AD server.", ex);
 
                 throw;
             }
@@ -216,8 +222,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not assign user to a role on external AD server.", ex);
+                _logger.WriteErrorLog("Could not assign user to a role on external AD server.", ex);
                 
                 throw;
             }
@@ -265,7 +270,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get user", ex);
+                _logger.WriteErrorLog("Could not get user", ex);
 
                 return null;
             }
@@ -301,8 +306,7 @@ namespace KeithLink.Svc.Impl.Profile
                 }
                 catch (Exception ex)
                 {
-                    KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                    log.WriteErrorLog("Could not bind to external AD server.", ex);
+                    _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                     throw;
                 }
@@ -364,7 +368,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName).WriteErrorLog("Could not get lookup users's role membership", ex);
+                _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
             }
@@ -389,8 +393,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }

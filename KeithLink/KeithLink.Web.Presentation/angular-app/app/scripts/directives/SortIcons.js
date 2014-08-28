@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:sortIcons
+ * @description
+ * provides the sort arrow icons for table headers
+ *
+ * used for lists, orders, and search results
+ */
 angular.module('bekApp')
   .directive('sortIcons', [function() {
     return {

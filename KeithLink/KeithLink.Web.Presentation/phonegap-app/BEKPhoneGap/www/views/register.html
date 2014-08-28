@@ -1,0 +1,124 @@
+<div class="row register-wrapper view sub-content">
+  <div class="col-md-10 col-md-offset-1 col-xs-12">
+
+    <div class="row register-header">
+      <div class="col-md-6">
+        <img src="images/bek-logo.png" alt="logo" />
+      </div>
+
+      <div class="col-md-6">
+        <form novalidate name="loginForm" class="login-form style-validation-errors">
+            
+            <div class="row">
+              <div class="col-md-5 form-group">
+                <label for="username">Email Address</label>
+                <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span>
+                <input id="username" ng-trim focus-me="true" required name="username" type="text" class="form-control" ng-model="loginInfo.username">  
+              </div>
+              <div class="col-md-5 form-group">
+                <label for="password">Password</label>
+                <span ng-show="loginForm.password.$error.required && loginForm.password.$dirty" class="text-red">Password is required</span>
+                <input id="password" ng-trim required  name="password" type="password" class="form-control" ng-model="loginInfo.password">
+              </div>
+              <div class="col-md-2 form-group">
+                <button ng-disabled="loginForm.$invalid" class="cta-btn btn" type="submit" ng-click="login(loginInfo)">Login</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-offset-5 col-md-5">
+                <a href=""><strong>Forgot your password?</strong></a>
+              </div>
+              
+            </div>
+          </form>
+
+      </div>
+    </div>
+  
+    <div class="register-body sub-content">
+
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Product Catalog Registration</h1>
+          <p>
+            Please register by completing the form below. Only items marked with an "*" are required. The registration is good for 6 months from today. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
+          </p>    
+        </div>
+      </div>
+
+      <form name="registrationForm" novalidate class="register-form sub-content style-validation-errors">
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label for="username">Email Address*</label>
+            <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
+            <input required ng-trim class="form-control" type="text" id="username" name="username" ng-model="register.email">
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="confirmUsername">Confirm Email*</label>
+            <span ng-show="registrationForm.confirmUsername.$error.matchInput && registrationForm.confirmUsername.$dirty" class="text-red">Emails do not match</span>
+            <span ng-show="registrationForm.confirmUsername.$error.required && registrationForm.confirmUsername.$dirty" class="text-red">Email confirmation is required</span>
+            <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="register.confirmEmail" match-input="register.email">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label for="password">Password*</label>
+            <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
+            <input required class="form-control" id="password" type="password" name="password" ng-model="register.password">
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="confirmPassword">Confirm Password*</label>
+            <span ng-show="registrationForm.confirmPassword.$error.matchInput && registrationForm.confirmPassword.$dirty" class="text-red">Passwords do not match</span>
+            <span ng-show="registrationForm.confirmPassword.$error.required && registrationForm.confirmPassword.$dirty" class="text-red">Password confirmation is required</span>
+            <input required class="form-control" id="confirmPassword" type="password" name="confirmPassword" ng-model="register.confirmPassword" match-input="register.password">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 form-group">
+            <label for="customerStatus">Customer Status*</label>
+            <div class="radio">
+              <label>
+                <input required ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus1" value="'Not a Customer'" checked>
+                I am NOT a current customer
+              </label>
+            </div>
+             <div class="radio">
+              <label>
+                <input required ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus2" value="'Current Customer'">
+                I am a current customer
+              </label>
+            </div>
+          </div>
+          <div class="col-md-6 form-group">
+            <label for="branch">Default Branch Catalog*</label>
+            <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Default catalog is required</span>
+            <select required name="branch" id="branch" class="form-control" ng-model="register.branch">
+              <option value="">Please select a catalog</option>
+              <option value="Dallas">Dallas</option>
+            </select>
+          </div>
+        </div>
+        
+        <hr>
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="checkbox">
+              <input type="checkbox" value="" name="discounts" id="discounts" checked>
+              <label for="discounts">Select checkbox if you would like discounts from Ben E. Keith</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row sub-content">
+          <div class="col-xs-12">
+            <button ng-disabled="registrationForm.$invalid" type="submit" class="btn cta-btn">Submit Registration</button>
+            <a href="">Cancel</a>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

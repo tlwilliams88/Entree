@@ -29,13 +29,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             var categories = RT.Catalog.GetTopLevelCategories("FAM", "500", "true", null);
             foreach (var cat in categories)
             {
-                KeithLink.Svc.Impl.Models.Generated.Category currCat = (KeithLink.Svc.Impl.Models.Generated.Category)cat;
+				KeithLink.Svc.Core.Models.Generated.Category currCat = (KeithLink.Svc.Core.Models.Generated.Category)cat;
 
                 if (currCat.ChildCategories != null && currCat.ChildCategories.Count > 0)
                 {
                     foreach (var childCat in currCat.ChildCategories)
                     {
-                        KeithLink.Svc.Impl.Models.Generated.Category currChildCat = (KeithLink.Svc.Impl.Models.Generated.Category)childCat;
+						KeithLink.Svc.Core.Models.Generated.Category currChildCat = (KeithLink.Svc.Core.Models.Generated.Category)childCat;
                         Category c = new Category() { Description = currChildCat.DisplayName, Id = currChildCat.Id, Name = currChildCat.DisplayName};
                         ret.Categories.Add(c);
                     }
