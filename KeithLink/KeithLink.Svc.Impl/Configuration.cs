@@ -36,6 +36,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_AGGREGATIONS = "ElasticSearchAggregations";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+        private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
 
@@ -225,6 +226,11 @@ namespace KeithLink.Svc.Impl
         public static string CategoryPrefixesToExclude
         {
             get { return GetValue(CATEGORY_PREFIXES, string.Empty); }
+        }
+
+        public static string MultiDocsUrl
+        {
+            get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
         }
         #endregion
     }

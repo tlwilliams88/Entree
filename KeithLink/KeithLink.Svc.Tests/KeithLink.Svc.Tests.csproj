@@ -68,6 +68,7 @@
     <Compile Include="Impl_Profile_InternalUserDomainRepository.cs" />
     <Compile Include="Impl_Profile_CustomerContainerRepository.cs" />
     <Compile Include="Impl_Profile_UserProfileRepository.cs" />
+    <Compile Include="Impl_SiteCatalog_ProductImageRepository.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name="ProductImage")]
-    class ProductImage
+    public class ProductImage
     {
         #region properties
         [DataMember(Name="FileName")]
