@@ -18,17 +18,26 @@ namespace KeithLink.Svc.WebApi.Controllers
 {
     public class CatalogController : BaseController
     {
+        #region attributes
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogRepository _catalogRepository;
         KeithLink.Svc.Core.Interface.SiteCatalog.IPriceRepository _priceRepository;
+        KeithLink.Svc.Core.Interface.SiteCatalog.IProductImageRepository _imgRepository;
 		private readonly IListLogic _listLogic;
+        #endregion
 
-        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository, IListLogic listLogic, IUserProfileRepository userProfileRepo): base (userProfileRepo)
+        #region ctor
+        public CatalogController(ICatalogRepository catalogRepository, IPriceRepository priceRepository, IListLogic listLogic,
+                                 IUserProfileRepository userProfileRepo, IProductImageRepository imgRepository)
+            : base(userProfileRepo)
         {
             _catalogRepository = catalogRepository;
+            _imgRepository = imgRepository;
             _priceRepository = priceRepository;
-			_listLogic = listLogic;
+            _listLogic = listLogic;
         }
+        #endregion
 
+        #region methods
         [HttpGet]
         [Route("catalog/categories")]
         public CategoriesReturn GetCategories()
@@ -78,6 +87,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			if (this.AuthenticatedUser != null)
 				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
 
+            prod.ProductImages = _imgRepository.GetImageList(prod.ItemNumber).ProductImages;
+            
             return prod;
         }
 
@@ -147,5 +158,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             facetWrapper.Add("facets", new List<ExpandoObject>() { facetList as ExpandoObject });
             return facetWrapper as ExpandoObject;
         }
+        #endregion
     }
 }

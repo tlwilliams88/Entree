@@ -30,6 +30,7 @@ namespace KeithLink.Svc.WebApi
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
+            builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
 
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
