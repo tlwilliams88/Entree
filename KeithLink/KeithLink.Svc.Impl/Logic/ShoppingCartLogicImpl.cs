@@ -37,6 +37,9 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = cart.FormattedName(branchId);
+			newBasket.Active = cart.Active;
+			newBasket.RequestedShipDate = cart.RequestedShipDate;
+
 
 			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId, newBasket, cart.Items.Select(l => l.ToLineItem(branchId)).ToList());
 		}
@@ -68,6 +71,9 @@ namespace KeithLink.Svc.Impl.Logic
 
 			updateCart.DisplayName = cart.Name;
 			updateCart.Name = cart.FormattedName(updateCart.BranchId);
+			updateCart.Active = cart.Active;
+			updateCart.RequestedShipDate = cart.RequestedShipDate;
+
 			var itemsToRemove = new List<Guid>();
 			var lineItems = new List<CS.LineItem>();
 
@@ -161,6 +167,8 @@ namespace KeithLink.Svc.Impl.Logic
 				CartId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
+				RequestedShipDate = basket.RequestedShipDate,
+				Active = basket.Active.HasValue ? basket.Active.Value : false,
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
 				{
 					ItemNumber = l.ProductId,
