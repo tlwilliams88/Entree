@@ -166,7 +166,8 @@ namespace KeithLink.Svc.Impl.Logic
 					ItemNumber = l.ProductId,
 					CartItemId = l.Id.ToGuid(),
 					Notes = l.Notes,
-					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0
+					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+					Each = l.Each.HasValue ? l.Each.Value : false
 				}).ToList()
 			};
 
