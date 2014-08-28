@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((Basket)basketResponse.CommerceEntities[0]);
 		}
 
-		public List<Basket> ReadAllBaskets(Guid userId, string branchId)
+		public List<Basket> ReadAllBaskets(Guid userId)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
