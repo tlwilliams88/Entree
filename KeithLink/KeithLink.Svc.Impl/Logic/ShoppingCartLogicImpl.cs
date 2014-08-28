@@ -37,9 +37,12 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = cart.FormattedName(branchId);
+
+			if(cart.Active)
+				MarkCurrentActiveCartAsInactive(user,branchId);
+
 			newBasket.Active = cart.Active;
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
-
 
 			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId, newBasket, cart.Items.Select(l => l.ToLineItem(branchId)).ToList());
 		}
@@ -71,6 +74,12 @@ namespace KeithLink.Svc.Impl.Logic
 
 			updateCart.DisplayName = cart.Name;
 			updateCart.Name = cart.FormattedName(updateCart.BranchId);
+
+			if (cart.Active && (updateCart.Active.HasValue && !updateCart.Active.Value))
+			{
+				MarkCurrentActiveCartAsInactive(user, updateCart.BranchId);
+			}
+
 			updateCart.Active = cart.Active;
 			updateCart.RequestedShipDate = cart.RequestedShipDate;
 
@@ -132,6 +141,17 @@ namespace KeithLink.Svc.Impl.Logic
 
 		#region Helper Methods
 
+		private void MarkCurrentActiveCartAsInactive(UserProfile user, string branchId)
+		{
+			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId, branchId).Where(b => b.Active.Equals(true)).FirstOrDefault();
+
+			if (currentlyActiveCart != null)
+			{
+				currentlyActiveCart.Active = false;
+				basketRepository.CreateOrUpdateBasket(user.UserId, currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
+			}
+		}
+		
 		private void LookupProductDetails(UserProfile user, ShoppingCart cart)
 		{
 			if (cart.Items == null)
