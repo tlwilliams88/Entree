@@ -2006,7 +2006,8 @@ This file contains the Metadata Repository
 							<!-- Custom Properties -->
 							<PropertyMapping property="BranchId" csProperty="BranchId"/>
 							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
-							<PropertyMapping property="BEKBasketType" csProperty="BEKBasketType" />
+							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
+							<PropertyMapping property="Active" csProperty="Active"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2074,8 +2075,12 @@ This file contains the Metadata Repository
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
 					</Property>
-					<Property name="BEKBasketType" dataType="String">
-						<DisplayName value="BEKBasketType" /> 
+					
+					<Property name="RequestedShipDate" dataType="DateTime">
+						<DisplayName value="Requested Ship Date"/>
+					</Property>
+					<Property name="Active" dataType="Boolean">
+						<DisplayName value="Active"/>
 					</Property>
 					
         </Properties>
@@ -2325,7 +2330,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Label" csProperty="Label"/>
 							<PropertyMapping property="ParLevel" csProperty="ParLevel" />
 							<PropertyMapping property="Notes" csProperty="Notes"/>
-							
+							<PropertyMapping property="Each" csProperty="Each"/>
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2382,6 +2387,10 @@ This file contains the Metadata Repository
 					<Property name="Notes" dataType="String">
 						<DisplayName value="Notes" />
 					</Property>
+					<Property name="Each" dataType="Boolean">
+						<DisplayName value="Each" />
+					</Property>
+
 
 				</Properties>
 

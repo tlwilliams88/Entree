@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
 .directive('focusMe', function($timeout, $parse) {
   return {
     //scope: true,   // optionally create a child scope

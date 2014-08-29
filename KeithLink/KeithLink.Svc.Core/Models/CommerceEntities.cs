@@ -9395,21 +9395,40 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the BEKBasketType property.
+	    /// Gets or sets the RequestedShipDate property.
 	    /// </summary>
 	    /// <value>
-	    /// The BEKBasketType property from the property collection.
+	    /// The RequestedShipDate property from the property collection.
 	    /// </value>
-		public virtual string BEKBasketType
+		public virtual DateTime? RequestedShipDate
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.BEKBasketType) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.RequestedShipDate) as DateTime?;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.BEKBasketType, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.RequestedShipDate, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the Active property.
+	    /// </summary>
+	    /// <value>
+	    /// The Active property from the property collection.
+	    /// </value>
+		public virtual bool? Active
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Active) as bool?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Active, value);
 			}
 		}
 	
@@ -9678,9 +9697,14 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string DisplayName = "DisplayName";
 	
 			/// <summary>
-	        /// Constant for accessing BEKBasketType property.
+	        /// Constant for accessing RequestedShipDate property.
 	        /// </summary>
-			public const string BEKBasketType = "BEKBasketType";
+			public const string RequestedShipDate = "RequestedShipDate";
+	
+			/// <summary>
+	        /// Constant for accessing Active property.
+	        /// </summary>
+			public const string Active = "Active";
 	
 			/// <summary>
 	        /// Constant for accessing Status property.
@@ -11906,6 +11930,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the Each property.
+	    /// </summary>
+	    /// <value>
+	    /// The Each property from the property collection.
+	    /// </value>
+		public virtual bool? Each
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Each) as bool?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Each, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProductCategory property.
 	    /// </summary>
 	    /// <value>
@@ -12387,6 +12430,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing Notes property.
 	        /// </summary>
 			public const string Notes = "Notes";
+	
+			/// <summary>
+	        /// Constant for accessing Each property.
+	        /// </summary>
+			public const string Each = "Each";
 	
 			/// <summary>
 	        /// Constant for accessing ProductCategory property.

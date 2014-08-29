@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
 .directive('ngConfirmClick', [ function(){
     return {
         link: function (scope, element, attr) {

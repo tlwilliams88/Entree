@@ -114,6 +114,11 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
@@ -135,20 +140,19 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
-    <Compile Include="Profile\CustomerContainerRepository.cs" />
-    <Compile Include="Profile\ExternalUserDomainRepository.cs" />
-    <Compile Include="Profile\InternalUserDomainRepository.cs" />
-    <Compile Include="Profile\UserProfileRepository.cs" />
-    <Compile Include="Repository\Cart\ShoppingCartRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
+    <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogElasticSearchRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CommerceServerCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\MockListRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
     <Compile Include="RequestTemplates\ControllerFactory.cs" />
     <Compile Include="RequestTemplates\RequestTemplateException.cs" />
