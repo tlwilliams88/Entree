@@ -40,12 +40,12 @@ namespace KeithLink.Svc.WebApi
 			
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 
-            builder.RegisterType<Impl.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
-            builder.RegisterType<Impl.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
+            builder.RegisterType<Impl.Repository.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
+            builder.RegisterType<Impl.Repository.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
 			builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
-            builder.RegisterType<Impl.Profile.ExternalUserDomainRepository>().As<Impl.Profile.ExternalUserDomainRepository>();
-            builder.RegisterType<Impl.Profile.InternalUserDomainRepository>().As<Impl.Profile.InternalUserDomainRepository>();
+            builder.RegisterType<Impl.Repository.Profile.ExternalUserDomainRepository>().As<Impl.Repository.Profile.ExternalUserDomainRepository>();
+            builder.RegisterType<Impl.Repository.Profile.InternalUserDomainRepository>().As<Impl.Repository.Profile.InternalUserDomainRepository>();
 
             // Build the container.
             var container = builder.Build();

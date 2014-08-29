@@ -5,7 +5,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Text;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class InternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {

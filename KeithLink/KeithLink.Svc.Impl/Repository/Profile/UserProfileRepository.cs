@@ -6,7 +6,7 @@ using System.Text;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class UserProfileRepository : Core.Interface.Profile.IUserProfileRepository
     {
