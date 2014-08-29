@@ -7,7 +7,7 @@
  * # CategoryService
  * Service of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .factory('CategoryService', function ($http) {
     
     var categories;

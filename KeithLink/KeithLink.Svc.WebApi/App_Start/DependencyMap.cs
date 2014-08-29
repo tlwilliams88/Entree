@@ -16,6 +16,8 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -30,8 +32,6 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
 
             // Register other dependencies.
-            //builder.Register(c => new StubCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
-            //builder.Register(c => new CommerceServerCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
             builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
@@ -39,13 +39,12 @@ namespace KeithLink.Svc.WebApi
             builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
 			
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
-
-            builder.RegisterType<Impl.Repository.Profile.CustomerContainerRepository>().As<Core.Interface.Profile.ICustomerContainerRepository>();
-            builder.RegisterType<Impl.Repository.Profile.UserProfileRepository>().As<Core.Interface.Profile.IUserProfileRepository>();
+			builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
+            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
 			builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
-            builder.RegisterType<Impl.Repository.Profile.ExternalUserDomainRepository>().As<Impl.Repository.Profile.ExternalUserDomainRepository>();
-            builder.RegisterType<Impl.Repository.Profile.InternalUserDomainRepository>().As<Impl.Repository.Profile.InternalUserDomainRepository>();
+            builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
+            builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
 
             // Build the container.
             var container = builder.Build();

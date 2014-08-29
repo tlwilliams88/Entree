@@ -100,7 +100,7 @@ namespace KeithLink.Svc.Impl.Logic
 		
 		public List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly)
         {
-			var lists = basketRepository.ReadAllBaskets(userId, branchId);
+			var lists = basketRepository.ReadAllBaskets(userId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
@@ -139,8 +139,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<string> ReadListLabels(Guid userId, string branchId)
         {
-			var lists = basketRepository.ReadAllBaskets(userId, branchId);
-			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus)).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+			var lists = basketRepository.ReadAllBaskets(userId);
+			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(branchId)).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
 		private void LookupProductDetails(Guid userId, UserList list)
@@ -197,7 +197,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ListId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-				Items = basket.LineItems.Select(l => new ListItem()
+				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
 					Label = l.Label,

@@ -14,11 +14,19 @@ namespace KeithLink.Svc.Test
 		private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), new StubCatalogRepositoryImpl());
 
         [TestMethod]
-        public void ReadList()
+        public void ReadAllList()
         {
-			var list = listLogic.ReadAllLists(Guid.NewGuid(), "fdf",true);
+			var lists = listLogic.ReadAllLists(Guid.NewGuid(), "fdf",true);
+
+			Assert.IsNotNull(lists);
+        }
+
+		[TestMethod]
+		public void ReadList()
+		{
+			var list = listLogic.ReadList(Guid.NewGuid(), Guid.NewGuid());
 
 			Assert.IsNotNull(list);
-        }
+		}
     }
 }

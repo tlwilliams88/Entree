@@ -7,7 +7,7 @@
  * # ListService
  * Service of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .factory('ListService', ['$http', '$q', 'UserProfileService', function ($http, $q, UserProfileService) {
 
     function getBranch() {
