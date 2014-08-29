@@ -286,6 +286,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             };
         }
 
+        /// <summary>
+        /// create a Commerce Server User Profile for a BEK user
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <remarks>
+        /// jwames - 8/29/2014 - original code
+        /// </remarks>
         public void CreateBekUserProfile(string emailAddress)
         {
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
@@ -379,6 +386,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </summary>
         /// <remarks>
         /// jwames - 8/18/2014 - documented
+        /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress)
         {
