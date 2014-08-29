@@ -11,6 +11,14 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Product
     {
+        #region ctor
+        public Product()
+        {
+            ProductImages = new List<ProductImage>();
+        }
+        #endregion
+
+        #region properties
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -82,5 +90,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
+
+        [DataMember(Name = "productimages")]
+        public List<ProductImage> ProductImages { get; set; }
+        #endregion
     }
 }

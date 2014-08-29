@@ -1,6 +1,7 @@
 ﻿
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using System;
@@ -8,119 +9,149 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ShoppingCartLogicImpl: IShoppingCartLogic
 	{
-		private readonly IShoppingCartRepository shoppingCartRepository;
+		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
-		
 
-		public ShoppingCartLogicImpl(IShoppingCartRepository shoppingCartRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+		private readonly string BasketStatus = "ShoppingCart";
+
+		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
 		{
-			this.shoppingCartRepository = shoppingCartRepository;
+			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceRepository = priceRepository;
 		}
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
 		{
-			return shoppingCartRepository.CreateOrUpdateCart(user.UserId, branchId, cart);
+			var newBasket = new CS.Basket();
+			newBasket.BranchId = branchId;
+			newBasket.DisplayName = cart.Name;
+			newBasket.Status = BasketStatus;
+			newBasket.Name = cart.FormattedName(branchId);
+
+			if(cart.Active)
+				MarkCurrentActiveCartAsInactive(user,branchId);
+
+			newBasket.Active = cart.Active;
+			newBasket.RequestedShipDate = cart.RequestedShipDate;
+
+			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId, newBasket, cart.Items.Select(l => l.ToLineItem(branchId)).ToList());
 		}
 
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
 		{
-			return shoppingCartRepository.AddItem(user.UserId, cartId, newItem);
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+			if (basket == null)
+				return null;
+						
+			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId));
 		}
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
 		{
-			shoppingCartRepository.UpdateItem(user.UserId, cartId, updatedItem);
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+			if (basket == null)
+				return;
+
+			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
 		public void UpdateCart(UserProfile user, ShoppingCart cart)
 		{
-			var updateCart = shoppingCartRepository.ReadCart(user.UserId, cart.CartId);
-
-
-			if (updateCart == null) 
+			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
+			
+			if (updateCart == null)
 				return;
 
-			updateCart.Name = cart.Name;
+			updateCart.DisplayName = cart.Name;
+			updateCart.Name = cart.FormattedName(updateCart.BranchId);
+
+			if (cart.Active && (updateCart.Active.HasValue && !updateCart.Active.Value))
+			{
+				MarkCurrentActiveCartAsInactive(user, updateCart.BranchId);
+			}
+
+			updateCart.Active = cart.Active;
+			updateCart.RequestedShipDate = cart.RequestedShipDate;
 
 			var itemsToRemove = new List<Guid>();
-
-			foreach (var item in updateCart.Items)
-			{
-				if (cart.Items != null && !cart.Items.Where(i => i.CartItemId.Equals(item.CartItemId)).Any())
-					itemsToRemove.Add(item.CartItemId);
-			}
+			var lineItems = new List<CS.LineItem>();
 
 			if (cart.Items != null)
 			{
-				foreach (var item in cart.Items)
-				{
-					if (item.CartItemId == null)
-						updateCart.Items.Add(item);
-					else
-					{
-						var existingItem = updateCart.Items.Where(i => i.CartItemId.Equals(item.CartItemId)).FirstOrDefault();
-						if (existingItem == null)
-							continue;
-						existingItem.Quantity = item.Quantity;
-						existingItem.Notes = item.Notes;
-					}
-				}
+				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
+				lineItems = cart.Items.Select(s => s.ToLineItem(updateCart.BranchId)).ToList();
 			}
-
-			shoppingCartRepository.CreateOrUpdateCart(user.UserId, updateCart.BranchId, updateCart);
+			
+			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
 			foreach (var toDelete in itemsToRemove)
 			{
-				shoppingCartRepository.DeleteItem(user.UserId, updateCart.CartId, toDelete);
+				basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
 			}
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
 		{
-			shoppingCartRepository.DeleteCart(user.UserId, cartId);
+			basketRepository.DeleteBasket(user.UserId, cartId);
 		}
 
-		public ShoppingCart DeleteItem(UserProfile user, Guid cartId, Guid itemId)
+		public void DeleteItem(UserProfile user, Guid cartId, Guid itemId)
 		{
-			var cart = shoppingCartRepository.DeleteItem(user.UserId, cartId, itemId);
-			LookupProductDetails(user, cart);
-			return cart;
+			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
 		{
-			var lists = shoppingCartRepository.ReadAllCarts(user.UserId, branchId);
-
+			var lists = basketRepository.ReadAllBaskets(user.UserId);
+			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
-				return lists.Select(l => new ShoppingCart() { CartId = l.CartId, Name = l.Name }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
 			{
-				lists.ForEach(delegate(ShoppingCart list)
+				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
+				returnCart.ForEach(delegate(ShoppingCart list)
 				{
 					LookupProductDetails(user, list);
 				});
-				return lists;
+				return returnCart;
 			}
 		}
 
 		public ShoppingCart ReadCart(UserProfile user, Guid cartId)
 		{
-			var cart = shoppingCartRepository.ReadCart(user.UserId, cartId);
-			if (cart == null)
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+			if (basket == null)
 				return null;
-			
+
+			var cart = ToShoppingCart(basket);
+
 			LookupProductDetails(user, cart);
 			return cart;
 		}
 
+		#region Helper Methods
+
+		private void MarkCurrentActiveCartAsInactive(UserProfile user, string branchId)
+		{
+			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
+
+			if (currentlyActiveCart != null)
+			{
+				currentlyActiveCart.Active = false;
+				basketRepository.CreateOrUpdateBasket(user.UserId, currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
+			}
+		}
+		
 		private void LookupProductDetails(UserProfile user, ShoppingCart cart)
 		{
 			if (cart.Items == null)
@@ -138,6 +169,8 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
+					item.StorageTemp = prod.Gs1.StorageTemp;
+					item.Brand = prod.Brand;
 				}
 				if (price != null)
 				{
@@ -147,6 +180,28 @@ namespace KeithLink.Svc.Impl.Logic
 			});
 
 		}
-		
+
+		private ShoppingCart ToShoppingCart(CS.Basket basket)
+		{
+			return new ShoppingCart()
+			{
+				CartId = basket.Id.ToGuid(),
+				Name = basket.DisplayName,
+				BranchId = basket.BranchId,
+				RequestedShipDate = basket.RequestedShipDate,
+				Active = basket.Active.HasValue ? basket.Active.Value : false,
+				Items = basket.LineItems.Select(l => new ShoppingCartItem()
+				{
+					ItemNumber = l.ProductId,
+					CartItemId = l.Id.ToGuid(),
+					Notes = l.Notes,
+					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+					Each = l.Each.HasValue ? l.Each.Value : false
+				}).ToList()
+			};
+
+		}
+
+		#endregion
 	}
 }

@@ -15,10 +15,14 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public Guid CartId { get; set; }
 		[DataMember(Name="name")]
 		public string Name { get; set; }
+		public string BranchId { get; set; }
+		[DataMember(Name="requestedshipdate")]
+		public DateTime? RequestedShipDate { get; set; }
+		[DataMember(Name="active")]
+		public bool Active { get; set; }
 		[DataMember(Name="items")]
 		public List<ShoppingCartItem> Items { get; set; }
-		public string BranchId { get; set; }
-
+		
 		public string FormattedName(string branchId)
 		{
 			return string.Format("s{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));

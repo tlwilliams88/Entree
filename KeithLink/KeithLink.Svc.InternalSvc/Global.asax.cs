@@ -15,7 +15,6 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            LogManager.SetApplicationName("KeithLink.Svc.InternalSvc");
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
         }

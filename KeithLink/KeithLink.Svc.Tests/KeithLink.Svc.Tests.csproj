@@ -38,6 +38,18 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CommerceServer.Foundation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\Foundation_Assemblies\CommerceServer.Foundation.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\Foundation_Assemblies\CommerceServer.Foundation.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\Foundation_Assemblies\CommerceServer.Foundation.Presentation.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -60,6 +72,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="MockRepository\BasketRepositoryMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Impl_ListLogic.cs" />
     <Compile Include="Impl_PriceRepositoryImpl.cs" />
@@ -68,6 +81,7 @@
     <Compile Include="Impl_Profile_InternalUserDomainRepository.cs" />
     <Compile Include="Impl_Profile_CustomerContainerRepository.cs" />
     <Compile Include="Impl_Profile_UserProfileRepository.cs" />
+    <Compile Include="Impl_SiteCatalog_ProductImageRepository.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -210,9 +210,9 @@
 
       <div class="row table-footer">
         <div class="col-xs-12">
-          <div class="row table-row table-row-data" ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+          <div class="row table-row table-row-data" ng-show="(selectedList.items.length === 0 || !selectedList.items || filteredItems.length === 0) && selectedList">
             <div class="col-xs-12">
-              There are no products in this list.
+              There are no products to display.
             </div>
           </div>
         </div>

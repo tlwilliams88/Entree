@@ -34,8 +34,11 @@ namespace KeithLink.Svc.Impl
         private const string KEY_DEFAULT_CATEGORY_RETURN_SIZE = "DefaultCategoryReturnSize";
         private const string KEY_DEFAULT_PRODUCT_RETURN_SIZE = "DefaultProductReturnSize";
         private const string KEY_ELASTIC_SEARCH_AGGREGATIONS = "ElasticSearchAggregations";
+        private const string KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS = "ElasticSearchTermSearchFields";
+        private const string KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS = "ElasticSearchDigitSearchFields";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+        private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
 
@@ -207,6 +210,27 @@ namespace KeithLink.Svc.Impl
         {
             get { return GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
         }
+
+        public static List<string> ElasticSearchTermSearchFields
+        {
+            get 
+            {
+                string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
+                if (!String.IsNullOrEmpty(val))
+                    return (val.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)).ToList();
+                return new List<string>();
+            }
+        }
+        public static List<string> ElasticSearchDigitSearchFields
+        {
+            get 
+            { 
+                string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
+                if (!String.IsNullOrEmpty(val))
+                    return (val.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)).ToList();
+                return new List<string>();
+            }
+        }
         
         public static int ElasticSearchBatchSize
         {
@@ -225,6 +249,11 @@ namespace KeithLink.Svc.Impl
         public static string CategoryPrefixesToExclude
         {
             get { return GetValue(CATEGORY_PREFIXES, string.Empty); }
+        }
+
+        public static string MultiDocsUrl
+        {
+            get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
         }
         #endregion
     }
