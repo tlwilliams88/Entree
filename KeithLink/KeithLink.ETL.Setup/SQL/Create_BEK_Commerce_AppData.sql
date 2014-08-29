@@ -696,11 +696,12 @@ BEGIN
 	SET NOCOUNT ON;
 
     -- Insert statements for procedure here
-	SELECT
+	SELECT DISTINCT
 		b.ControlLabel,
 		b.ExtendedDescription
 	FROM
 		ETL.Staging_BRandControlLabels b
+	GROUP BY b.ControlLabel
 END
 
 GO

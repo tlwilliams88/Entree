@@ -44,6 +44,10 @@ namespace KeithLink.Svc.Impl.ETL
 							""type"" : ""string"",
 							""index"" : ""not_analyzed""
 						},
+                        ""brand_extended_description"" : {
+                            ""type"" : ""string"",
+                            ""index"" : ""not_analyzed""
+                        },
          				""name"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
@@ -297,7 +301,7 @@ namespace KeithLink.Svc.Impl.ETL
                         Brand = row.GetString("Brand"),
                         BrandNotAnalyzed = row.GetString("Brand"),
                         BrandDescription = row.GetString("BrandDescription"),
-                        BrandDescriptionNotAnalyzed = row.GetString("BrandDescriptionNotAnalyzed"),
+                        BrandDescriptionNotAnalyzed = row.GetString("BrandDescription"),
                         Buyer = row.GetString("Buyer"),
                         Cases = row.GetString("Cases"),
                         CategoryId = row.GetString("CategoryId"),

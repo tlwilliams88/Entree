@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
-    class AdditionalData
+    public class AdditionalData
     {
         [DataMember(Name="categoryid")]
         public string CategoryId { get; set; }
