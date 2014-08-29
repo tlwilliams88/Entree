@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract]
-    class ProductImageReturn
+    public class ProductImageReturn
     {
         #region ctor
         public ProductImageReturn()
