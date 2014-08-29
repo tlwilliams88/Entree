@@ -136,8 +136,8 @@
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
             <colgroup>
-              <col style="width: 25%">
-              <col style="width: 75%">
+              <col style="width: 15%">
+              <col style="width: 85%">
             </colgroup>
             <tbody>
               <tr class="even">
@@ -162,6 +162,10 @@
                 <th>Free From</th>
                 <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
+              </tr>
+              <tr class="even">
+                <th>Ingredients</th>
+                <td>{{item.gs1.ingredients}}</td>
               </tr>
             </tbody>
           </table>
