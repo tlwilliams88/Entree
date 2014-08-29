@@ -491,7 +491,7 @@ angular.module('bekApp')
         'header': true
       });
 
-      $scope.orders = CartService.carts;
+      $scope.carts = CartService.carts;
       CartService.getAllCarts({
         'header': true
       });

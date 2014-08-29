@@ -113,6 +113,14 @@ angular
       data: {
         authorize: 'canCreateOrders'
       }
+    })
+    .state('menu.cartitems', {
+      url: '/cart/:cartId/?renameCart',
+      templateUrl: 'views/cart.html',
+      controller: 'CartController',
+      data: {
+        authorize: 'canCreateOrders'
+      }
     });
 
   $stateProvider

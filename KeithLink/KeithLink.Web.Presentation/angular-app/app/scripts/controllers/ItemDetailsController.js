@@ -14,6 +14,7 @@ angular.module('bekApp')
     $scope.loadingDetails = true;
     ProductService.getProductDetails(itemNumber).then(function(response) {
       $scope.item = response.data;
+      $scope.item.quantity = 1;
       $scope.loadingDetails = false;
     });
 
@@ -23,7 +24,7 @@ angular.module('bekApp')
       'header': true
     });
 
-    $scope.orders = CartService.carts;
+    $scope.carts = CartService.carts;
     CartService.getAllCarts({
       'header': true
     });

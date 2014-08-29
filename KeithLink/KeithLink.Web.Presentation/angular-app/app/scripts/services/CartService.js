@@ -53,7 +53,12 @@ angular.module('bekApp')
       },
 
       createCartWithItem: function(item) {
-        // delete item.listitemid;
+        delete item.cartitemid;
+
+        if (item.quantity) {
+          item.quantity = 1;
+        }
+
         var items = [item];
 
         return Service.createCart(items);
@@ -74,6 +79,10 @@ angular.module('bekApp')
       },
 
       addItemToCart: function(cartId, item) {
+        if (item.quantity) {
+          item.quantity = 1;
+        }
+        
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
           console.log(response);
           return response;

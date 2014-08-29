@@ -1,0 +1,23 @@
+.cart-info {
+  background-color: $color-white;
+  border: 1px solid $color-border;
+  padding: $gutter-size;
+
+  .cart-info-item {
+    margin-bottom: 5px;
+
+    &.cart-info-item__ship-date {
+      line-height: 21px;
+    }
+  }
+}
+
+@media(min-width: $mobile-max) {
+  .cart-info {
+    .cart-info-item {
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}

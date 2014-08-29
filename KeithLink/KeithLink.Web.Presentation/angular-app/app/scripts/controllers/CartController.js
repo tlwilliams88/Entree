@@ -8,25 +8,26 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartController', ['$scope', 'CartService', function($scope,  CartService) {
+  .controller('CartController', ['$scope', '$state', 'CartService', function($scope, $state,  CartService) {
     
     $scope.loadingResults = true;
 
     $scope.carts = CartService.carts;
     
     CartService.getAllCarts().then(function(data) {
-      $scope.setCurrentCart(CartService.carts[0]);
+      $scope.currentCart = CartService.carts[0];
+      $scope.goToCart();
+      $scope.sortBy = null;
+      $scope.sortOrder = false;
       $scope.loadingResults = false;
     });
 
-    $scope.setCurrentCart = function(cart) {
-      angular.forEach(cart.items, function(item, itemIndex) {
-        item.editNotes = item.notes;
-        item.editQuantity = item.quantity;
-        item.editEach = item.each;
-        // item.editPosition = item.position;
+    $scope.goToCart = function() {
+      angular.forEach($scope.currentCart.items, function(item, index) {
+        item.packageprice = 4;
+        item.caseprice = 16;
       });
-      $scope.currentCart = cart;
+      $state.transitionTo('menu.cartitems', {cartId: $scope.currentCart.id}, {notify: false});
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -36,20 +37,11 @@ angular.module('bekApp')
     };
 
     $scope.saveCart = function(cart) {
-
-      var updatedCart = angular.copy(cart);
-      angular.forEach(cart.items, function(item, itemIndex) {
-        item.notes = item.editNotes;
-        item.quantity = item.editQuantity;
-        item.each = item.editEach;
-        // item.editPosition = item.position;
-      });
-
       CartService.updateCart(cart).then(function() {
         $scope.currentCart.isRenaming = false;
-        $scope.sortBy = 'position';
-        $scope.sortCart = false;
-        $scope.currentCart = updatedCart;
+        $scope.sortBy = null;
+        $scope.sortOrder = false;
+        $scope.currentCart = cart;
         console.log('Successfully saved cart ' + cart.name);
       }, function() {
         console.log('Error saving cart ' + cart.name);
@@ -75,6 +67,14 @@ angular.module('bekApp')
       }, function() {
         console.log('Error deleting cart.');
       });
+    };
+
+    $scope.getSubtotal = function(cartItems) {
+      var subtotal = 0;
+      angular.forEach(cartItems, function(item, index) {
+        subtotal +=( item.quantity * (item.each ? item.packageprice : item.caseprice) );
+      });
+      return subtotal;
     };
 
   }]);
