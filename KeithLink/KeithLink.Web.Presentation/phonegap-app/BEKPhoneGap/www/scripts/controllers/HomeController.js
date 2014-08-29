@@ -7,7 +7,7 @@
  * # HomeController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('HomeController', function($scope) {
     
     $scope.orders = [{
