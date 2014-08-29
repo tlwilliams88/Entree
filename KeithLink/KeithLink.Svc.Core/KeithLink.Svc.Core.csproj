@@ -99,6 +99,7 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Cart\IShoppingCartRepository.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
