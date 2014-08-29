@@ -1,0 +1,108 @@
+/* TABLES */
+
+.table-responsive {
+  // border: none;
+  margin-bottom: 0;
+}
+
+.table {
+  margin-bottom: 0; 
+  border: 1px solid $color-border;
+  background-color: $color-white;
+
+  thead {
+    background-color: $background;
+    border-bottom: 1px solid $color-border;
+
+    > tr > th:last-child {
+      border-right: 1px solid $color-border;
+    }
+  }
+
+  thead > tr > th, 
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  thead > tr > td, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    border-top: none;
+    border-bottom: none;
+  }
+
+  tbody > tr > th, 
+  tfoot > tr > th, 
+  tbody > tr > td, 
+  tfoot > tr > td {
+    padding: $gutter-size 10px;
+    
+    &.table-icon {
+      font-size: 18px;
+      padding-top: 11px;
+      padding-bottom: 10px;
+      cursor: pointer;
+      @media (max-width: $mobile-max) { padding: 9px 5px; }
+    }
+
+    &.table-input {
+      padding: 8px;
+
+      .select-div {
+        width: 160px;
+        min-height: 20px;
+
+        select {
+          width: 185px;
+          min-height: 20px;
+          padding: 4px;
+        }
+      }
+
+      input {
+        min-height: 29px;
+        padding: 5px;
+      }
+    }
+
+    &.table-actions a {
+      display: inline-block;
+    }
+  }
+  
+  tr {
+    border-bottom: 1px solid  $color-border;
+  }
+}
+
+/*
+for IE8 support use add code to tr ng-repeat
+ng-class="{ odd : $odd, even: $even }"
+*/
+.table-striped {
+  tbody > tr {
+    &.odd > td, &.odd > th {
+      background-color: $background;
+    }
+    &.even > td, &.even > th {
+      background-color: $color-white;
+    }
+
+    &.table-striped__desktop-details td:last-child {
+      min-width: 60px;
+    }
+
+    @media (max-width: $mobile-max) {
+      &.table-striped__desktop-details {
+        border-bottom: none;
+        border-top: 1px solid $color-border;
+
+        td:last-child {
+          min-width: 75px;
+        }
+      }
+      &.table-striped__mobile-details {
+        border-top: none;
+        border-bottom: 1px solid $color-border;
+      }
+    }
+  }
+}

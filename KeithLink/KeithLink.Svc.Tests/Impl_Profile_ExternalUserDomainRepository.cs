@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void AuthenticateBadUserName()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             string errMessage = null;
 
@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void AuthenticateBadPassword()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             string errMsg = null;
 
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void AuthenticateDisabledUser()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             string errMessage = null;
 
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void AuthenticateGoodCredentials()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
             bool success = ad.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e");
 
             Assert.IsTrue(success);
@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void AuthenticateLockedUser()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             for (int i = 0; i < Impl.Configuration.ActiveDirectoryInvalidAttempts; i++)
             {
@@ -95,7 +95,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void BelongsToGroup()
         {
-            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+            KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
             bool hasAccess = ad.IsInGroup("sabroussard@somecompany.com", "Jimmys Chicken Shack Owner");
 
             Assert.IsTrue(hasAccess);
@@ -106,7 +106,7 @@ namespace KeithLink.Svc.Test
         {
             try
             {
-                KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository();
+                KeithLink.Svc.Impl.Profile.ExternalUserDomainRepository ad = new Impl.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
                 //ad.CreateUser("Jimmys Chicken Shack", "lockeduser@somecompany.com", "L0ckedUs3r", "Locked", "User", Core.Constants.ROLE_EXTERNAL_OWNER);
 

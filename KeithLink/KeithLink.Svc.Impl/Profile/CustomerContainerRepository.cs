@@ -2,13 +2,23 @@
 using System;
 using System.DirectoryServices;
 using System.Text;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Profile
 {
     public class CustomerContainerRepository : KeithLink.Svc.Core.Interface.Profile.ICustomerContainerRepository
     {
+        #region attributes
+        IEventLogRepository _logger;
+        #endregion
         #region methods
 
+        #region ctor
+        public CustomerContainerRepository(IEventLogRepository logger)
+        {
+            _logger = logger;
+        }
+        #endregion
         /// <summary>
         /// create a customer container in active directory with a user and group OU with related groups
         /// </summary>
@@ -34,8 +44,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }
@@ -69,8 +78,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not create organizational unit on external AD server.", ex);
+                _logger.WriteErrorLog("Could not create organizational unit on external AD server.", ex);
 
                 throw;
             }
@@ -100,8 +108,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }
@@ -117,8 +124,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not delete organizational unit on external AD server.", ex);
+                _logger.WriteErrorLog("Could not delete organizational unit on external AD server.", ex);
 
                 throw;
             }
@@ -150,8 +156,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }
@@ -176,8 +181,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not find organizational unit on external AD server.", ex);
+                _logger.WriteErrorLog("Could not find organizational unit on external AD server.", ex);
 
                 throw;
             }
@@ -211,8 +215,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not bind to external AD server.", ex);
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
             }
@@ -237,8 +240,7 @@ namespace KeithLink.Svc.Impl.Profile
             }
             catch (Exception ex)
             {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl log = new Common.Impl.Logging.EventLogRepositoryImpl(Configuration.ApplicationName);
-                log.WriteErrorLog("Could not find organizational units on external AD server.", ex);
+                _logger.WriteErrorLog("Could not find organizational units on external AD server.", ex);
 
                 throw;
             }

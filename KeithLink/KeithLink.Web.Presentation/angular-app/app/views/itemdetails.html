@@ -10,9 +10,9 @@
 <div loading-spinner="loadingDetails"></div>
 
 <div class="row" ng-hide="loadingDetails">
-  <!-- <div class="col-sm-3">
-    <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
-  </div> -->
+  <div class="col-sm-3" ng-show="item.productimages.length > 0">
+    <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
+  </div>
   <div class="col-sm-9">
     <h2>{{item.name}}<span class="item-details__icons" item-icons="item"></span></h2>
     <div class="item-details">
@@ -198,17 +198,12 @@
           </table>
         </div>
       </tab>
-      <tab heading="Images" ng-if="items.images">
+      <tab heading="Images" ng-show="item.productimages.length > 0">
         <div class="hidden-print item-details__images">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
+            <a ng-href="{{image.url}}" target="_blank" ng-repeat="image in item.productimages">
+                <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
+            </a>
+            <br />
         </div>
       </tab>
     </tabset>
