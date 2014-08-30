@@ -263,7 +263,8 @@ angular.module('bekApp')
       // switch to specific list or default to Favorites list
       if ($state.params.listId) {
         $scope.selectedList = ListService.findListById($state.params.listId, $scope.lists);
-      } else {
+      } 
+      if (!$scope.selectedList) {
         $scope.selectedList = ListService.favoritesList;
         $state.go('menu.lists.items', { listId: ListService.favoritesList.listid });
       }

@@ -72,6 +72,11 @@ angular.module('bekApp')
       return subtotal;
     };
 
+    $scope.deleteItem = function(item) {
+      var idx = $scope.currentCart.items.indexOf(item);
+      $scope.currentCart.items.splice(idx, 1);
+    };
+
     $scope.dateOptions = {
       formatYear: 'yy',
       startingDay: 1,
@@ -88,9 +93,18 @@ angular.module('bekApp')
     function initPage() {
       if ($state.params.cartId) {
         $scope.currentCart = CartService.findCartById($state.params.cartId);
-      } else {
-        $scope.currentCart = CartService.carts[0];
-        $state.go('menu.cart.items', { cartId: CartService.carts[0].id });
+      } 
+      if (!$scope.currentCart) {
+
+        // go to active cart
+
+        // go to first cart in list
+        if (CartService.carts && CartService.carts.length > 0) {
+          $scope.currentCart = CartService.carts[0];
+          $state.go('menu.cart.items', { cartId: CartService.carts[0].id });
+        }
+
+        // display default message
       }
       
       if ($stateParams.renameCart === 'true') {
