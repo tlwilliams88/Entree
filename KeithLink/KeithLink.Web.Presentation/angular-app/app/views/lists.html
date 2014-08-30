@@ -17,9 +17,8 @@
     </form>
   </div>
   <div header-buttons>
-    <button class="btn cta-btn" ng-disabled="listForm.$invalid && listForm.$dirty" ng-click="saveList(selectedList)">Save List</button>
-    <button class="btn btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon"><span class="icon-export"></span></button>
+    <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+    <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
   </div>
 </div>
 <!-- Mobile subheader bar -->
@@ -27,12 +26,11 @@
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__filter">
     Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
   </div>
-  <button class="custom-lists__save btn cta-btn" ng-disabled="listForm.$invalid && listForm.$dirty" ng-click="saveList(selectedList)">Save List</button>
 </div>
 
 <div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
   <div class="btn-group-vertical list-names text-blue">
-    <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-list">{{list.name}}</button>
+    <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-default btn-list">{{list.name}}</button>
   </div>
 </div>
 
@@ -44,16 +42,16 @@
         <h3>Your Lists</h3>
 
         <div class="btn-group-vertical list-names text-blue">
-          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
+          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
         </div>
         <p class="custom-lists__more">
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()">Show More...</a>
           <a href=""></a>
         </p>
         
-        <button ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-list text-light">Create A List</button>
+        <button ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-default btn-list text-light">Create A List</button>
         
-        <button class="btn btn-icon large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
+        <button class="btn btn-icon btn-default large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
 
       </div>
     </div>
@@ -67,11 +65,16 @@
       <alert ng-show="listForm.$invalid && listForm.$dirty" type="danger">List has some errors. Please fix these before saving.</alert>
     </div>
     
-    <div class="input-group hidden-print">
-      <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search current list by keyword, item # or label">
-      <span class="input-group-btn">
-        <button  ng-click="listSearchTerm = ''" class="btn"><span class="icon-cross"></span></button>
-      </span>
+    <div style="display: inline-block;width: calc(100% - 110px);vertical-align: middle;">
+      <div class="input-group hidden-print">
+        <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search current list by keyword, item # or label">
+        <span class="input-group-btn">
+          <button  ng-click="listSearchTerm = ''" class="btn btn-default"><span class="icon-cross"></span></button>
+        </span>
+      </div>
+    </div>
+    <div style="display: inline-block; float: right;">
+      <button class="btn btn-primary" ng-disabled="listForm.$invalid && listForm.$dirty" ng-click="saveList(selectedList)">Save List</button>
     </div>
   
     <div class="text-right sub-content">

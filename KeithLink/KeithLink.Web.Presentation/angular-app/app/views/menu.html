@@ -41,7 +41,7 @@
     </div>
   </div>
   <div ng-if="isOrder" class="sidebar-actions text-center">
-    <button class="btn cta-btn">View Your Order</button>
+    <button class="btn btn-primary">View Your Order</button>
   </div>
 </div>
 
@@ -83,7 +83,7 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
-          <a href=""><li><span class="icon-truck"></span></li></a>
+          <a ui-sref="menu.cart"><li><span class="icon-truck"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
       </div>
@@ -99,7 +99,7 @@
             <div class="input-group">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
               </span>
             </div>
           </form>
@@ -112,8 +112,8 @@
                 <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
                 <span class="user-info__job-title">{{userProfile.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn" ui-sref="menu.accountdetails">Account Settings</button>
-                  <button class="btn" ng-click="logout()">Sign Out</button>
+                  <button class="btn btn-default" ui-sref="menu.accountdetails">Account Settings</button>
+                  <button class="btn btn-default" ng-click="logout()">Sign Out</button>
                 </div>
               </div>
               <div class="person-info__section">

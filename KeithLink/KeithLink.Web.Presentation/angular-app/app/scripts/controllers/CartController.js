@@ -8,26 +8,18 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartController', ['$scope', '$state', 'CartService', function($scope, $state,  CartService) {
+  .controller('CartController', ['$scope', '$state', '$stateParams', 'CartService', 
+    function($scope, $state, $stateParams, CartService) {
     
-    $scope.loadingResults = true;
-
+    $scope.loadingResults = false;
+    $scope.sortBy = null;
+    $scope.sortOrder = false;
+    
     $scope.carts = CartService.carts;
-    
-    CartService.getAllCarts().then(function(data) {
-      $scope.currentCart = CartService.carts[0];
-      $scope.goToCart();
-      $scope.sortBy = null;
-      $scope.sortOrder = false;
-      $scope.loadingResults = false;
-    });
 
-    $scope.goToCart = function() {
-      angular.forEach($scope.currentCart.items, function(item, index) {
-        item.packageprice = 4;
-        item.caseprice = 16;
-      });
-      $state.transitionTo('menu.cartitems', {cartId: $scope.currentCart.id}, {notify: false});
+    $scope.goToCart = function(cart) {
+      $scope.currentCart = cart;
+      $state.transitionTo('menu.cart.items', {cartId: cart.id}, {notify: false});
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -61,8 +53,11 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteCart = function(cartId) {
-      CartService.deleteCart(cartId).then(function() {
+    $scope.deleteCart = function(cart) {
+      CartService.deleteCart(cart).then(function() {
+        if ($scope.carts.length > 0) {
+          $scope.goToCart($scope.carts[0]);
+        }
         console.log('Successfully deleted cart.');
       }, function() {
         console.log('Error deleting cart.');
@@ -76,5 +71,33 @@ angular.module('bekApp')
       });
       return subtotal;
     };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1,
+      showWeeks: false
+    };
+
+    $scope.openDatepicker = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.openedDatepicker = true;
+    };
+
+    function initPage() {
+      if ($state.params.cartId) {
+        $scope.currentCart = CartService.findCartById($state.params.cartId);
+      } else {
+        $scope.currentCart = CartService.carts[0];
+        $state.go('menu.cart.items', { cartId: CartService.carts[0].id });
+      }
+      
+      if ($stateParams.renameCart === 'true') {
+        $scope.startEditCartName($scope.currentCart.name);
+        $state.transitionTo('menu.cart.items', {cartId: $scope.currentCart.id}, {notify: false});
+      }
+    }
+    initPage();
 
   }]);

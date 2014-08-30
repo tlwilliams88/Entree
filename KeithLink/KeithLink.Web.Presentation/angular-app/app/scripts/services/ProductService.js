@@ -124,6 +124,10 @@ angular.module('bekApp')
 
         getProductDetails: function(id) {
           return $http.get('/catalog/product/' + getBranch() + '/' + id);
+        },
+
+        canOrderProduct: function(item) {
+          return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
         }
       };
 

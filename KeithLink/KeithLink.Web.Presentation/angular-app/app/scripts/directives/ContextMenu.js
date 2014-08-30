@@ -19,10 +19,12 @@ angular.module('bekApp')
       };
 
       $scope.createListWithItem = function(item) {
-        ListService.createListWithItem(item).then(function(data) {
-          $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', { listId: data[0].listid, renameList: true });
-        });
+        $state.go('menu.lists.items', { listId: '2254cadf-c0f6-43ad-91c4-09a373ab48ed', renameList: true });
+        
+        // ListService.createListWithItem(item).then(function(data) {
+        //   $scope.loadingContextMenu = false;
+        //   $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
+        // });
       };
 
       $scope.addItemToCart = function(cartId, item) {
@@ -32,9 +34,11 @@ angular.module('bekApp')
       };
 
       $scope.createCartWithItem = function(item) {
-        CartService.createCartWithItem(item).then(function(data) {
-          
-        });
+        $state.go('menu.cart.items', { cartId: '1971090b-bb40-4084-b17f-74988c8ce444', renameCart: true });
+        // var items = [item];
+        // CartService.createCart(items).then(function(data) {
+        //   $state.go('menu.cart.items', { cartId: data.listitemid, renameCart: true });
+        // });
       };
 
     }],
