@@ -7,9 +7,7 @@
   </div>
 </div>
 
-<div loading-spinner="loadingDetails"></div>
-
-<div class="row" ng-hide="loadingDetails">
+<div class="row">
   <div class="col-sm-3" ng-show="item.productimages.length > 0">
     <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
   </div>
@@ -43,7 +41,7 @@
   </div>
 </div>
 
-<div class="row sub-content" ng-hide="loadingDetails">
+<div class="row sub-content">
   <div class="col-lg-12">
     <tabset class="tabset">
       <tab heading="Item Specifications">

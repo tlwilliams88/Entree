@@ -123,7 +123,7 @@ angular
     })
     .state('menu.cart', {
       url: '/cart/',
-      template: '<ui-view/>',
+      templateUrl: 'views/cart.html',
       controller: 'CartController',
       data: {
         authorize: 'canCreateOrders'
@@ -134,12 +134,17 @@ angular
         }]
       }
     })
-    .state('menu.cart.items', {
-      url: ':cartId/?renameCart',
+    .state('menu.cartitems', {
+      url: '/cart/:cartId/?renameCart',
       templateUrl: 'views/cart.html',
       controller: 'CartController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        carts: ['CartService', function (CartService){
+          return CartService.getAllCarts();
+        }]
       }
     });
 

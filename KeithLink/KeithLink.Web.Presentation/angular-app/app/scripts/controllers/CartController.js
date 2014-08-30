@@ -19,7 +19,7 @@ angular.module('bekApp')
 
     $scope.goToCart = function(cart) {
       $scope.currentCart = cart;
-      $state.transitionTo('menu.cart.items', {cartId: cart.id}, {notify: false});
+      $state.transitionTo('menu.cartitems', {cartId: cart.id}, {notify: false});
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -55,9 +55,7 @@ angular.module('bekApp')
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart).then(function() {
-        if ($scope.carts.length > 0) {
-          $scope.goToCart($scope.carts[0]);
-        }
+        setCurrentCart();
         console.log('Successfully deleted cart.');
       }, function() {
         console.log('Error deleting cart.');
@@ -90,9 +88,9 @@ angular.module('bekApp')
       $scope.openedDatepicker = true;
     };
 
-    function initPage() {
-      if ($state.params.cartId) {
-        $scope.currentCart = CartService.findCartById($state.params.cartId);
+    function setCurrentCart() {
+      if ($stateParams.cartId) {
+        $scope.currentCart = CartService.findCartById($stateParams.cartId);
       } 
       if (!$scope.currentCart) {
 
@@ -100,18 +98,22 @@ angular.module('bekApp')
 
         // go to first cart in list
         if (CartService.carts && CartService.carts.length > 0) {
-          $scope.currentCart = CartService.carts[0];
-          $state.go('menu.cart.items', { cartId: CartService.carts[0].id });
+          $scope.goToCart(CartService.carts[0]);
+        } else { // display default message
+          $scope.currentCart = null;
+          $state.transitionTo('menu.cart', { }, {notify: false});
         }
-
-        // display default message
-      }
-      
-      if ($stateParams.renameCart === 'true') {
-        $scope.startEditCartName($scope.currentCart.name);
-        $state.transitionTo('menu.cart.items', {cartId: $scope.currentCart.id}, {notify: false});
       }
     }
-    initPage();
+
+    function renameRedirect() {
+      if ($stateParams.renameCart === 'true') {
+        $scope.startEditCartName($scope.currentCart.name);
+        $state.transitionTo('menu.cartitems', {cartId: $scope.currentCart.id}, {notify: false});
+      }
+    }
+    
+    setCurrentCart();
+    renameRedirect();
 
   }]);
