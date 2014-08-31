@@ -92,9 +92,7 @@ angular
       },
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
-          return ProductService.getProductDetails($stateParams.itemNumber).then(function(response){
-            return response.data;
-          });
+          return ProductService.getProductDetails($stateParams.itemNumber);
         }]
       }
     })

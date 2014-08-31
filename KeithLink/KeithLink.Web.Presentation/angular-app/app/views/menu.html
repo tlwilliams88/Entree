@@ -99,7 +99,7 @@
             <div class="input-group">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                <button ng-click="search(userBar.universalSearchTerm)" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
               </span>
             </div>
           </form>

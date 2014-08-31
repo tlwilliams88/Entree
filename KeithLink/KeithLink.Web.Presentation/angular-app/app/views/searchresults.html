@@ -236,7 +236,7 @@
 							<span favorite-item-click-handlers><span favorite-icons></span></span>
 						</td>
 						<td>
-							<a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+							<a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
 							{{item.brand}}
