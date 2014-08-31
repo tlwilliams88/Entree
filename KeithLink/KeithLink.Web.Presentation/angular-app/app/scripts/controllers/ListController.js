@@ -17,7 +17,7 @@ angular.module('bekApp')
     $scope.labels = ListService.labels;
 
     function goToListUrl(listId) {
-      $state.transitionTo('menu.lists.items', {listId: listId}, {notify: false});
+      return $state.go('menu.lists.items', {listId: listId});
     }
 
     // INFINITE SCROLL
@@ -29,9 +29,6 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      $scope.selectedList = list;
-      $scope.itemsToDisplay = itemsPerPage;
-      $scope.sortList('position', false);
       goToListUrl(list.listid);
     };
 
@@ -289,6 +286,7 @@ angular.module('bekApp')
         goToListUrl($scope.selectedList.listid);
       }
 
+      $scope.itemsToDisplay = itemsPerPage;
       $scope.loadingResults = false;
     }
     initPage();

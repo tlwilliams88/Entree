@@ -18,8 +18,9 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
 
     $scope.goToCart = function(cart) {
-      $scope.currentCart = cart;
-      $state.transitionTo('menu.cartitems', {cartId: cart.id}, {notify: false});
+      $state.go('menu.cartitems', {cartId: cart.id}).then(function() {
+        $scope.currentCart = cart;
+      });
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -101,7 +102,7 @@ angular.module('bekApp')
           $scope.goToCart(CartService.carts[0]);
         } else { // display default message
           $scope.currentCart = null;
-          $state.transitionTo('menu.cart', { }, {notify: false});
+          $state.go('menu.cart');
         }
       }
     }
@@ -109,7 +110,7 @@ angular.module('bekApp')
     function renameRedirect() {
       if ($stateParams.renameCart === 'true') {
         $scope.startEditCartName($scope.currentCart.name);
-        $state.transitionTo('menu.cartitems', {cartId: $scope.currentCart.id}, {notify: false});
+        $state.go('menu.cartitems', {cartId: $scope.currentCart.id});
       }
     }
     

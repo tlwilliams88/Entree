@@ -141,12 +141,13 @@ angular
       controller: 'CartController',
       data: {
         authorize: 'canCreateOrders'
-      },
-      resolve: {
-        carts: ['CartService', function (CartService){
-          return CartService.getAllCarts();
-        }]
       }
+      // ,
+      // resolve: {
+      //   carts: ['CartService', function (CartService){
+      //     return CartService.getAllCarts();
+      //   }]
+      // }
     });
 
   $stateProvider
