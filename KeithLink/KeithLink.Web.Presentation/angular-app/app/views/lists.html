@@ -116,7 +116,7 @@
 
       <div class="table-body row" ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
         <div class="col-xs-12">
-          <form novalidate name="listForm" class="style-validation-errors" ui-sortable="{ sort: work, handle: '.icon-list2', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items">
+          <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" ui-sortable="{ sort: work, handle: '.icon-list2', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items">
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 

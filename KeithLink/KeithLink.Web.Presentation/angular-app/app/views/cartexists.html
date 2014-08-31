@@ -57,6 +57,7 @@
   </div>
 </div>
 
+<form unsaved-warning-form novalidate name="cartForm" class="style-validation-errors">
 <div class="row">
   <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
     <div class="cart-info">
@@ -206,7 +207,6 @@
           </div> <!-- end Filter row -->
 
           <!-- Data rows -->
-          <form novalidate name="cartForm" class="style-validation-errors">
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
@@ -276,8 +276,7 @@
                 </div>  
               </div> <!-- end Mobile details -->
             </div>
-          </div>
-          </form> <!-- end Data rows -->
+          </div> <!-- end Data rows -->
         </div>
       </div>
 
@@ -294,3 +293,4 @@
     <div class="text-center sub-content" loading-spinner="loadingResults"></div>
   </div>
 </div>
+</form> 

@@ -20,7 +20,8 @@ angular
     'ui.sortable',
     'shoppinpal.mobile-menu',
     'ngDragDrop',
-    'infinite-scroll'
+    'infinite-scroll',
+    'unsavedChanges'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
   // the $stateProvider determines path urls and their related controllers
