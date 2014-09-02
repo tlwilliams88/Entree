@@ -700,8 +700,7 @@ BEGIN
 		b.ControlLabel,
 		b.ExtendedDescription
 	FROM
-		ETL.Staging_BRandControlLabels b
-	GROUP BY b.ControlLabel
+		ETL.Staging_BrandControlLabels b
 END
 
 GO
