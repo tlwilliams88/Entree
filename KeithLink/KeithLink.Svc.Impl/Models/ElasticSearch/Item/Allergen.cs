@@ -18,13 +18,13 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 		}
 
 
-        [DataMember(Name="freefrom")]
+        [JsonProperty("freefrom")]
 		public List<string> FreeFrom { get; set; }
 
-        [DataMember(Name="maycontain")]
+        [JsonProperty("maycontain")]
 		public List<string> MayContain { get; set; }
 
-        [DataMember(Name="contains")]
+        [JsonProperty("contains")]
         public List<string> Contains { get; set; } 
     }
 }
