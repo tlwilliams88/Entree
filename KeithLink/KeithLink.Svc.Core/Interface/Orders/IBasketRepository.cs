@@ -23,5 +23,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		Basket ReadBasket(Guid userId, Guid basketId);
 		Basket ReadBasket(Guid userId, string basketName);
+		
 	}
 }

@@ -23,17 +23,20 @@ angular.module('bekApp')
         }
       });
 
-      listFound.isFavoritesList = true;
-      angular.copy(listFound, Service.favoritesList);
+      if (listFound) {
+        listFound.isFavoritesList = true;
+        angular.copy(listFound, Service.favoritesList);
 
-      if (!Service.favoritesList.items) {
-        Service.getList(Service.favoritesList.listid).then(function (response) {
-          Service.favoritesList.items = response.items;
-        });
+        if (!Service.favoritesList.items) {
+          Service.getList(Service.favoritesList.listid).then(function (response) {
+            Service.favoritesList.items = response.items;
+          });
+        }
       }
     }
 
     function addItemToList(listId, item) {
+      delete item.listitemid;
       item.position = 0;
       item.label = null;
       item.parlevel = 0;

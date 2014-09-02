@@ -3,13 +3,11 @@
     Item Details
   </div>
   <div header-buttons>
-      <button class="btn btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+      <button class="btn btn-icon btn-default" ng-click="print()"><span class="icon-printer"></span></button>
   </div>
 </div>
 
-<div loading-spinner="loadingDetails"></div>
-
-<div class="row" ng-hide="loadingDetails">
+<div class="row">
   <div class="col-sm-3" ng-show="item.productimages.length > 0">
     <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
   </div>
@@ -20,7 +18,7 @@
         <strong>Description:</strong> {{item.description}}
       </div>
       <div>
-        <span ng-if="item.itemnumber !== null"><strong>Item #</strong> {{item.itemnumber}} | </span>
+        <span><strong>Item #</strong> {{item.itemnumber}} | </span>
         <span ng-if="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
         <span ng-if="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
         <span ng-if="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
@@ -30,23 +28,20 @@
         <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
       </div>
     </div>
-    <div class="item-details__actions hidden-print">
-      <div class="select-div">
-        <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
-          <option value=""></option>
-        </select>
-      </div>
-      <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
+    <div ng-if="canOrderProduct(item)" class="item-details__actions hidden-print">
+      {{item.quantity}}
+      <select name="quantity" id="quantity" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]"></select>
+      <a class="btn-primary btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
-        <button class="btn" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
-        <button class="btn" ng-show="item.favorite" ng-click="removeItemFromFavorites(item)"><span class="text-gold icon-star"></span> Remove Item</button>
+        <button class="btn btn-default" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
+        <button class="btn btn-default" ng-show="item.favorite" ng-click="removeItemFromFavorites(item)"><span class="text-gold icon-star"></span> Remove Item</button>
       </span>
     </div>
   </div>
 </div>
 
-<div class="row sub-content" ng-hide="loadingDetails">
+<div class="row sub-content">
   <div class="col-lg-12">
     <tabset class="tabset">
       <tab heading="Item Specifications">

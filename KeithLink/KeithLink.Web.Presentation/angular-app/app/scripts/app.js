@@ -20,7 +20,8 @@ angular
     'ui.sortable',
     'shoppinpal.mobile-menu',
     'ngDragDrop',
-    'infinite-scroll'
+    'infinite-scroll',
+    'unsavedChanges'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
   // the $stateProvider determines path urls and their related controllers
@@ -88,18 +89,31 @@ angular
       controller: 'ItemDetailsController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      resolve: {
+        item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
+          return ProductService.getProductDetails($stateParams.itemNumber);
+        }]
       }
     })
     .state('menu.lists', {
       url: '/lists/',
-      templateUrl: 'views/lists.html',
       controller: 'ListController',
+      template: '<ui-view/>',
       data: {
         authorize: 'canManageLists'
+      },
+      resolve: {
+        lists: ['$q', 'ListService', function ($q, ListService){
+          return $q.all([
+            ListService.getAllLists(),
+            ListService.getAllLabels()
+          ]);
+        }]
       }
     })
-    .state('menu.listitems', {
-      url: '/lists/:listId/?renameList',
+    .state('menu.lists.items', {
+      url: ':listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -112,6 +126,11 @@ angular
       controller: 'CartController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        carts: ['CartService', function (CartService){
+          return CartService.getAllCarts();
+        }]
       }
     })
     .state('menu.cartitems', {
@@ -121,6 +140,12 @@ angular
       data: {
         authorize: 'canCreateOrders'
       }
+      // ,
+      // resolve: {
+      //   carts: ['CartService', function (CartService){
+      //     return CartService.getAllCarts();
+      //   }]
+      // }
     });
 
   $stateProvider
@@ -160,7 +185,8 @@ angular
   ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    
+    console.log(toState.name);
+    console.log(toParams);
     // check if route is protected
     if (toState.data && toState.data.authorize) {
       // check if user's token is expired

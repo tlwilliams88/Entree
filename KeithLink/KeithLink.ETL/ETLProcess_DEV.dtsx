@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="81"
-  DTS:VersionGUID="{14A7D692-D4A9-4451-8A51-D6C88A87E089}">
+  DTS:VersionBuild="88"
+  DTS:VersionGUID="{9EC31644-1643-4A9E-B8BB-9821C93975A8}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -468,17 +468,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
+            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABlvgE5Jnf6kbpUYpNPVkhMAAAAAASAAACgAAAAEAAAABCV7WwajHK2CQklVALOo7QIAAAAG8kZLgR5DmwUAAAAh/cAm2iXjzDowwqLMxRFOE1rOm0</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAOXBQl7AG3b5m/m4cybApAAAAAAASAAACgAAAAEAAAAF0dDcrU0aZIExEzrjlh2PkIAAAAJxqtxm/haGwUAAAA6aLFri9Mvw8sZLDDEinLLsdTPr4</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACxOQT4+GJ7a7q+phRAMvJTAAAAAASAAACgAAAAEAAAAKNOuK3abYPFNI4+FcMg000IAAAAnsHAVDuS5EMUAAAAIc8GdJWZE0e1p8QN2d8byadRsFs</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAByMFDcRkqwHQx65wEBw20UAAAAAASAAACgAAAAEAAAAGHAIM0UczDwlh3hgOC1Yi4IAAAAeakaSO5IuR8UAAAAqDyiVctDWlwj40wmk8IobzC6f6U</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -490,7 +490,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -510,7 +510,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -6792,58 +6792,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedName="Ihaccp_doc"
                           externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HACCPDoce]"
                           lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[Ihaccp_doc]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifda_product_flag]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="1"
-                          cachedName="ifda_product_flag"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FDAProductFlag]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifda_product_flag]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifplength]"
-                          cachedDataType="i4"
-                          cachedName="ifplength"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPLength]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifplength]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpwidth]"
-                          cachedDataType="i4"
-                          cachedName="ifpwidth"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPWidth]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpwidth]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpheight]"
-                          cachedDataType="i4"
-                          cachedName="ifpheight"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPHeight]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpheight]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpgrosswt]"
-                          cachedDataType="i4"
-                          cachedName="ifpgrosswt"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPGrossWt]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpgrosswt]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpnetwt]"
-                          cachedDataType="i4"
-                          cachedName="ifpnetwt"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPNetWt]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpnetwt]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[ifpcube]"
-                          cachedDataType="i4"
-                          cachedName="ifpcube"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPCube]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[ifpcube]" />
-                        <inputColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[inon_stock]"
-                          cachedCodepage="1252"
-                          cachedDataType="str"
-                          cachedLength="1"
-                          cachedName="inon_stock"
-                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
-                          lineageId="Package\Catalog Import Tasks\Stage Items\PRODCAT.Outputs[OLE DB Source Output].Columns[inon_stock]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -7129,42 +7077,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="str"
                           length="5"
                           name="HACCPDoce" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FDAProductFlag]"
-                          codePage="1252"
-                          dataType="str"
-                          length="1"
-                          name="FDAProductFlag" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPLength]"
-                          dataType="i4"
-                          name="FPLength" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPWidth]"
-                          dataType="i4"
-                          name="FPWidth" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPHeight]"
-                          dataType="i4"
-                          name="FPHeight" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPGrossWt]"
-                          dataType="i4"
-                          name="FPGrossWt" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPNetWt]"
-                          dataType="i4"
-                          name="FPNetWt" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPCube]"
-                          dataType="i4"
-                          name="FPCube" />
-                        <externalMetadataColumn
-                          refId="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NonStock]"
-                          codePage="1252"
-                          dataType="str"
-                          length="1"
-                          name="NonStock" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -7218,7 +7130,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       dataType="System.String"
                       description="The SQL command to be executed."
                       name="SqlCommand"
-                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91">EXECUTE dbo.usp_ECOM_SelectItem</property>
                     <property
                       dataType="System.String"
                       description="The variable that contains the SQL command to be executed."
@@ -7235,7 +7147,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       dataType="System.Int32"
                       description="Specifies the mode used to access the database."
                       name="AccessMode"
-                      typeConverter="AccessMode">0</property>
+                      typeConverter="AccessMode">2</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
@@ -9458,7 +9370,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[MeasurementValue]"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[DailyValue]"
@@ -9503,7 +9415,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -9551,7 +9463,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Error Output].Columns[MeasurementValue]"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Error Output].Columns[DailyValue]"
                           codePage="1252"
@@ -9685,7 +9597,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="MeasurementValue"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MeasurementValue]"
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[MeasurementValue]" />
                         <inputColumn
@@ -9900,7 +9812,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasure]"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]"
@@ -9911,7 +9823,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]"
                           name="Length"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]"
@@ -9922,7 +9834,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]"
                           name="Width"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]"
@@ -9933,7 +9845,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]"
                           name="Height"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]"
@@ -9944,7 +9856,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]"
                           name="Volume"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Shelf]"
@@ -10015,7 +9927,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSize]"
                           name="ServingSize"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSizeUOM]"
@@ -10143,7 +10055,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[GrossWeight]"
                           name="GrossWeight"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]"
@@ -10154,7 +10066,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]"
                           name="NetWeight"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[TiHi]"
@@ -10226,31 +10138,31 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Shelf]"
                           dataType="i4"
@@ -10286,7 +10198,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -10354,13 +10266,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -10452,7 +10364,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[UnitMeasure]"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[UnitMeasureUOM]"
                           codePage="1252"
@@ -10466,42 +10378,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[GrossWeight]"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[NetWeight]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[NetWeight]"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Length]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Length]"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Width]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Width]"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Height]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Height]"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Volume]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Volume]"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[TiHi]"
                           codePage="1252"
@@ -10551,7 +10463,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[ServingSize]"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[ServingSizeUOM]"
                           codePage="1252"
@@ -10727,7 +10639,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="UnitMeasure"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasure]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasure]" />
                         <inputColumn
@@ -10735,7 +10647,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Length"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]" />
                         <inputColumn
@@ -10743,7 +10655,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Width"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]" />
                         <inputColumn
@@ -10751,7 +10663,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Height"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]" />
                         <inputColumn
@@ -10759,7 +10671,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Volume"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]" />
                         <inputColumn
@@ -10809,7 +10721,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="ServingSize"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSize]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSize]" />
                         <inputColumn
@@ -10856,7 +10768,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="GrossWeight"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[GrossWeight]" />
                         <inputColumn
@@ -10864,7 +10776,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="NetWeight"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]" />
                         <inputColumn
@@ -11230,14 +11142,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -11674,35 +11607,14 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -12518,6 +12430,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
+        <AnnotationLayout
+          Text="corpmi"
+          ParentId="Package"
+          FontInfo="{assembly:Null}"
+          Size="68,60"
+          Id="e5c44b66-04a4-451a-9ccf-123ff85f1f5c"
+          TopLeft="5.5,7" />
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -12747,7 +12666,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData"
@@ -12787,9 +12706,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -12971,7 +12888,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Nutrition">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="98,42"
           Id="Package\GS1 Import Tasks\Product Nutrition\FSE"
@@ -13011,9 +12928,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -13044,7 +12959,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -13084,9 +12999,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

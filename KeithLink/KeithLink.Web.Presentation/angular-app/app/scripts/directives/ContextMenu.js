@@ -21,7 +21,7 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', { listId: data[0].listid, renameList: true });
+          $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
         });
       };
 
@@ -32,8 +32,9 @@ angular.module('bekApp')
       };
 
       $scope.createCartWithItem = function(item) {
-        CartService.createCartWithItem(item).then(function(data) {
-          
+        var items = [item];
+        CartService.createCart(items).then(function(data) {
+          $state.go('menu.cartitems', { cartId: data.listitemid, renameCart: true });
         });
       };
 

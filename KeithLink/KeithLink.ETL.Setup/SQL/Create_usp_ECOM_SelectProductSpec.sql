@@ -12,6 +12,7 @@ CREATE PROCEDURE dbo.usp_ECOM_SelectProductSpec AS
 * DATE		AUTHOR			DESCRIPTION
 *-------------------------------------------------------------------
 * {date}	{developer}	{brief modification description}
+2014-08-01	jmmcmillan	Modified all decimal(20,10) fields to decimal(20,3)
 *******************************************************************/
 
 SET NOCOUNT ON;
@@ -27,14 +28,14 @@ SELECT
 	, id.AdditionalDescription 'ProductAdditionalDesc'
 	, ii.Code 'ManufacturerItemNumber' 
 	, ih.TotalLowerLevelItems 'UnitsPerCase'
-	, (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 5 ) 'UnitMeasure' 
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 5 )) 'UnitMeasure' 
 	, (SELECT UnitOfMeasure FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 5 ) 'UnitMeasureUOM'
-	, (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 0 )'GrossWeight'
-	, (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 1 ) 'NetWeight'	
-	, (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 2) 'Length'
-	, (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 3) 'Width'
-	, (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 4) 'Height'
-	, (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 7) 'Volume'
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 0 ))'GrossWeight'
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasurement WHERE Gtin = i.Gtin AND MeasurementTypeId = 1 )) 'NetWeight'	
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 2)) 'Length'
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 3)) 'Width'
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 4)) 'Height'
+	, CONVERT(decimal(20,3), (SELECT Value FROM ItemMeasureMent WHERE Gtin = i.Gtin AND MeasureMentTypeId = 7)) 'Volume'
 	, CONCAT(ih.ItemsPerPalletlayer, 'x', ih.LayersPerPallet) 'TiHi'
 	, ist.MinimumLifespanFromProduction 'Shelf'
 	, CONCAT( 
@@ -46,7 +47,7 @@ SELECT
 	, im.ServingSuggestion
 	, im.MoreInformation
 	, im.MarketingMessage
-	, fe.MeasurementValue 'ServingSize' 
+	, CONVERT(decimal(20,3), fe.MeasurementValue) 'ServingSize' 
 	, fe.MeasurementTypeId 'ServingSizeUOM'
 	, fe.Ingredients 'Ingredients'
 	, id.BrandName 'Brand'

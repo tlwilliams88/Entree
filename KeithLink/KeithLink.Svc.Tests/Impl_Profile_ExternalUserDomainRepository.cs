@@ -117,5 +117,13 @@ namespace KeithLink.Svc.Test
                 Assert.IsTrue(false);
             }
         }
+
+        [TestMethod]
+        public void UpdateUserPasswordGood()
+        {
+            KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository ad = new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+
+            ad.UpdatePassword("jeremy@somecompany.com", "Ab12345");
+        }
     }
 }
