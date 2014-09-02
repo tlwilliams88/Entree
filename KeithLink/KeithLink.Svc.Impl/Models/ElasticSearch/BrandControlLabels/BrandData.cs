@@ -10,10 +10,10 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.BrandControlLabels
 {
     public class BrandData
     {
-        [DataMember(Name = "brand_control_label")]
+        [JsonProperty("brand_control_label")]
         public string BrandControlLabel { get; set; }
 
-        [DataMember(Name = "extended_description")]
+        [JsonProperty("extended_description")]
         public string ExtendedDescription { get; set; }
     }
 }
