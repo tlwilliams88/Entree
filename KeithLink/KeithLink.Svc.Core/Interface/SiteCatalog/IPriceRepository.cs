@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface IPriceRepository
     {
-        PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products);
+        List<Price> GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products);
     }
 }

@@ -13,7 +13,7 @@ using Nest;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
-    public class CatalogElasticSearchRepositoryImpl : ICatalogRepository
+    public class ElasticSearchCatalogRepositoryImpl : ICatalogRepository
     {
         #region " attributes "
 
@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         #region " constructor "
 
-        public CatalogElasticSearchRepositoryImpl()
+        public ElasticSearchCatalogRepositoryImpl()
         {
             _eshelper = new Helpers.ElasticSearch();
         }
@@ -34,18 +34,18 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         #region " methods / functions "
 
-		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
+		public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel)
         {
-            size = GetProductPagingSize(size);
+            int size = GetProductPagingSize(searchModel.Size);
 
             List<string> childCategories = 
                 GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
-			
-            ExpandoObject filterTerms = BuildFilterTerms(facetFilters);
+
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
 
             string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-            dynamic categorySearchExpression = BuildFunctionScoreQuery(from, size, sortField, sortDir, filterTerms, new List<string>() { "categoryid" }, categorySearch);
+            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "categoryid" }, categorySearch);
 
             return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
         }
@@ -172,11 +172,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return results;
         }
 
-		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
+		public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel)
         {
-            size = GetProductPagingSize(size);
+            int size = GetProductPagingSize(searchModel.Size);
             branch = branch.ToLower();
-            ExpandoObject filterTerms = BuildFilterTerms(facetFilters);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
 
             string termSearch = search;
             List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
@@ -188,7 +188,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 termSearch = String.Join(" OR ", digitSearchTerms);
             }
 
-            dynamic termSearchExpression = BuildFunctionScoreQuery(from, size, sortField, sortDir, filterTerms, fieldsToSearch, termSearch);
+            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
 
             return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }

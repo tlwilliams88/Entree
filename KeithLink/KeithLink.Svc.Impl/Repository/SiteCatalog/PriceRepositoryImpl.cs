@@ -10,38 +10,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class PriceRepositoryImpl : IPriceRepository
     {
-        /// <summary>
-        /// separate items that are cached from non-cached items
-        /// </summary>  
-        /// <param name="branchId">the branch's unique identifier</param>
-        /// <param name="customerNumber">the customer's unique identifier</param>
-        /// <param name="fullList">the full list from the pricing request</param>
-        /// <param name="cachedList">the list of prices that have been cached</param>
-        /// <param name="newProductList">the list of products that have not been cached</param>
-        /// <remarks>
-        /// jwames - 7/28/2014 - original code
-        /// </remarks>
-        private void BuildCachedPriceList(string branchId, string customerNumber, List<Product> fullList,
-                                          out List<Price> cachedList, out List<Product> newProductList)
+        public PriceRepositoryImpl()
         {
-            cachedList = new List<Price>();
-            newProductList = new List<Product>();
-
-            PriceCacheRepositoryImpl cache = new PriceCacheRepositoryImpl();
-
-            foreach (Product currentProduct in fullList)
-            {
-                Price tempPrice = cache.GetPrice(branchId, customerNumber, currentProduct.ItemNumber);
-
-                if (tempPrice == null)
-                {
-                    newProductList.Add(currentProduct);
-                }
-                else
-                {
-                    cachedList.Add(tempPrice);
-                }
-            }
         }
 
         /// <summary>
@@ -55,54 +25,37 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 7/28/2014 - add pricing cache calls
         /// </remarks>
-        public KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
+        public List<Price> GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
-            List<Price> cachedPriceList = null;
-            List<Product> uncachedProductList = null;
-
-            BuildCachedPriceList(branchId, customerNumber, products, out cachedPriceList, out uncachedProductList);
-
+            // build the request XML
             KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
+            System.IO.StringWriter requestBody = new System.IO.StringWriter();
+            GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
 
-            if (uncachedProductList.Count == 0)
-            {
-                retVal.Prices.AddRange(cachedPriceList);
-            }
-            else
-            {
-                // build the request XML
-                System.IO.StringWriter requestBody = new System.IO.StringWriter();
-                GetRequestBody(branchId, customerNumber, shipDate, uncachedProductList).WriteXml(requestBody);
-
-                // load the pricing service
-                com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
+            // load the pricing service
+            com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
          
-                // call the pricing service and get the response XML
-                Schemas.PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
-            
-                // build the output
-                retVal.Prices.AddRange(cachedPriceList);
+            // call the pricing service and get the response XML
+            Schemas.PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
 
-                PriceCacheRepositoryImpl cache = new PriceCacheRepositoryImpl();
+            List<Price> prices = new List<Price>();
 
-                foreach (Schemas.PricingResponseMain._ItemRow item in pricingResponse._Item) {
-                    Price itemPrice = new Price();
+            foreach (Schemas.PricingResponseMain._ItemRow item in pricingResponse._Item) {
+                Price itemPrice = new Price();
 
-                    itemPrice.BranchId = branchId;
-                    itemPrice.CustomerNumber = customerNumber;
-                    itemPrice.ItemNumber = item.number;
+                itemPrice.BranchId = branchId;
+                itemPrice.CustomerNumber = customerNumber;
+                itemPrice.ItemNumber = item.number;
 
-                    Schemas.PricingResponseMain.PricesRow[] prices = item.GetPricesRows();
+                Schemas.PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
 
-                    itemPrice.CasePrice = (double)prices[0].NetCase;
-                    itemPrice.PackagePrice = (double)prices[0].NetEach;
+                itemPrice.CasePrice = (double)priceRows[0].NetCase;
+                itemPrice.PackagePrice = (double)priceRows[0].NetEach;
 
-                    retVal.Prices.Add(itemPrice);
-                    cache.AddItem(itemPrice);
-                }
+                prices.Add(itemPrice);
             }
             
-            return retVal;
+            return prices;
         }
 
         /// <summary>
