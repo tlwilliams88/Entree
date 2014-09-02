@@ -376,13 +376,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public void UpdatePassword(string emailAddress, string newPassword)
         {
-            string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+            string adPath = string.Format("LDAP://{0}/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
             try
             {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                //boundServer.AuthenticationType = AuthenticationTypes.Secure;
                 boundServer.RefreshCache();
             }
             catch (Exception ex)
@@ -409,6 +410,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             // set the user's password
             try
             {
+                //currentUser.AuthenticationType = AuthenticationTypes.Secure;
                 currentUser.Invoke("SetPassword", new object[] { newPassword});
                 currentUser.CommitChanges();
             }
