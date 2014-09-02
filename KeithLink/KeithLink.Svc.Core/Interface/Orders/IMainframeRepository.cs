@@ -8,6 +8,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
     interface IMainframeRepository
     {
-        bool SendOrder();
+        bool SendOrder(Models.Orders.OrderHeader header, List<Models.Orders.OrderDetail> details);
     }
 }

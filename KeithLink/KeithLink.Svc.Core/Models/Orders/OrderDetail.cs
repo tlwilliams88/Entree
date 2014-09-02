@@ -3,7 +3,7 @@ using System.Text;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {
-    class OrderDetail
+    public class OrderDetail
     {
         #region properties
         public string ItemNumber { get; set; }
