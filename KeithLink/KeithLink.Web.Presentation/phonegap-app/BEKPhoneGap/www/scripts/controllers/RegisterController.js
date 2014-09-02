@@ -7,7 +7,7 @@
  * RegisterController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('RegisterController', ['$scope', '$state', 'AuthenticationService', 
     function ($scope, $state, AuthenticationService) {
 

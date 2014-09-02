@@ -7,7 +7,7 @@
  * # ApiService
  * calls service to get endpoint url
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .factory('ApiService', ['$http', 'ApiSettings', function ($http, ApiSettings) {
     
     var Service = {

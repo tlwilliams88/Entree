@@ -7,7 +7,7 @@
  * # ProductDetailsController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', function ($scope, $stateParams, ProductService, ListService) {
     
     var itemNumber = $stateParams.itemNumber;

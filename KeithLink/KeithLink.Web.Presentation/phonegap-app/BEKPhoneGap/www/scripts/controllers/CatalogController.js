@@ -7,7 +7,7 @@
  * # CatalogController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', function ($scope, $state, CategoryService, ProductService, BrandService) {
     
     $scope.loadingCategories = true;

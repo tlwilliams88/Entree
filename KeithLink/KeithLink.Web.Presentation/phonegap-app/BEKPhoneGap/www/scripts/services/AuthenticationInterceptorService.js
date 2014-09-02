@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
 .factory('AuthenticationInterceptorService', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings',
   function ($q, $location, localStorageService, Constants, ApiSettings) {
 

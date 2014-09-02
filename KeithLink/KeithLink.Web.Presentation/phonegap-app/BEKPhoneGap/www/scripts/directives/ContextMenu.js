@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
 .directive('contextMenu', ['ListService', function(ListService){
   return {
     restrict: 'A',

@@ -9,7 +9,7 @@
  * Main module of the application.
  */
 angular
-  .module('BEKPhoneGap', [
+  .module('bekApp', [
     // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
@@ -129,6 +129,8 @@ angular
 
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');
+
+
 
 }])
 .run(['$rootScope', '$state', 'ApiService', 'AccessService', function($rootScope, $state, ApiService, AccessService) {

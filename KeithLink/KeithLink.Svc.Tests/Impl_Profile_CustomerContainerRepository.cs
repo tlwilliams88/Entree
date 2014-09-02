@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Test
         {
             //try
             //{
-            //    KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository();
+            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
             //    custCont.CreateCustomerContainer("Jeremys Chicken Shack");
 
             //    Assert.IsTrue(true);
@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Test
         {
             //try
             //{
-            //    KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository();
+            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
             //    custCont.CreateCustomerContainer("Jimmys Chicken Shack");
 
             //    // this should fail
@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Test
         {
             try
             {
-                KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
                 custCont.CreateCustomerContainer(string.Empty);
 
                 // this should fail
@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Test
         {
             try
             {
-                KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
                 custCont.CreateCustomerContainer(string.Empty);
 
                 // this should fail
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Test
         {
             //try
             //{
-            //    KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository();
+            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
             //    custCont.DeleteCustomerContainer("Jeremys Chicken Shack");
 
             //    Assert.IsTrue(true);
@@ -97,7 +97,7 @@ namespace KeithLink.Svc.Test
         {
             try
             {
-                KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
                 custCont.DeleteCustomerContainer("Non-Existant Container");
 
                 // this should fail
@@ -114,7 +114,7 @@ namespace KeithLink.Svc.Test
         {
             try
             {
-                KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
                 custCont.DeleteCustomerContainer(string.Empty);
 
                 // this should fail
@@ -129,7 +129,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void GetGoodContainer()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             Assert.IsTrue(custCont.GetCustomerContainer("Jimmys Chicken Shack").CustomerContainers.Count == 1);
         }
@@ -137,7 +137,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void GetContainerWithInvalidName()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             Assert.IsTrue(custCont.GetCustomerContainer("Jimmys").CustomerContainers.Count == 0);
         }
@@ -145,7 +145,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void GetContainerWithEmptyString()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             try
             {
@@ -163,7 +163,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void SearchCustomerContainers()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             Assert.IsTrue(custCont.SearchCustomerContainers("j").CustomerContainers.Count > 0);
         }
@@ -171,7 +171,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void SearchCustomerContainersWithEmptyString()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             try
             {
@@ -189,7 +189,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void SearchCustomerContainersWithSpecialCharacters()
         {
-            KeithLink.Svc.Impl.Profile.CustomerContainerRepository custCont = new Impl.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
             try
             {
