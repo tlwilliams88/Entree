@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Impl.ETL
 {
     public class CatalogLogicImpl: ICatalogLogic
     {
+        #region " attributes "
         private const string Language = "en-US";
 		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
@@ -65,7 +66,9 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
-        
+        #endregion
+
+        #region " Methods / Functions "
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog)
         {
             this.catalogRepository = catalogRepository;
@@ -82,10 +85,9 @@ namespace KeithLink.Svc.Impl.ETL
 				var profileTask = Task.Factory.StartNew(() => ImportProfiles());
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
+                var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
 
-				Task.WaitAll(catTask, profileTask, esItemTask, esCatTask);
-
-
+				Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask);
             }
             catch (Exception ex) 
             {
@@ -158,8 +160,6 @@ namespace KeithLink.Svc.Impl.ETL
 
         }
 
-       
-
         public void ImportCategoriesToElasticSearch()
         {
             var parentCategories = stagingRepository.ReadParentCategories();
@@ -205,8 +205,33 @@ namespace KeithLink.Svc.Impl.ETL
 
             elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
         }
-               
-        
+
+        public void ImportHouseBrandsToElasticSearch()
+        {
+            var brandsDataTable = stagingRepository.ReadBrandControlLabels();
+            var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
+
+            Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>
+                {
+                    brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate() 
+                    {
+                        index = new Models.ElasticSearch.BrandControlLabels.RootData()
+                        {
+                            _id = row.GetString("ControlLabel"),
+                            data = new Models.ElasticSearch.BrandControlLabels.BrandData()
+                            {
+                                BrandControlLabel = row.GetString("ControlLabel"),
+                                ExtendedDescription = row.GetString("ExtendedDescription")
+                            }
+                        }
+                    });
+                });
+
+            elasticSearchRepository.Create(string.Concat(brands.Select(c => c.ToJson())));
+        }
+
+        #endregion
+
         #region Helper Methods
 
         private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
@@ -493,11 +518,5 @@ namespace KeithLink.Svc.Impl.ETL
 
         #endregion
 
-
-
-
-
-
-        
     }
 }

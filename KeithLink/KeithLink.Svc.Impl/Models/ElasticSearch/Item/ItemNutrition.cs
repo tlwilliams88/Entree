@@ -10,19 +10,19 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
     public class ItemNutrition
     {
-        [DataMember(Name="dailyvalue")]
+        [JsonProperty("dailyvalue")]
         public string DailyValue { get; set; }
 
-        [DataMember(Name="measurementvalue")]
+        [JsonProperty("measurementvalue")]
         public string MeasurementValue { get; set; }
 
-        [DataMember(Name="measurementtypeid")]
+        [JsonProperty("measurementtypeid")]
         public string MeasurementTypeId { get; set; }
 
-        [DataMember(Name="nutrienttypecode")]
+        [JsonProperty("nutrienttypecode")]
         public string NutrientTypeCode { get; set; }
 
-        [DataMember(Name="nutrienttype")]
+        [JsonProperty("nutrienttype")]
         public string NutrientType { get; set; }
     }
 }

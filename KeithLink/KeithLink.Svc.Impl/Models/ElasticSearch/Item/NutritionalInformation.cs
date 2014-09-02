@@ -10,74 +10,74 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
     public class NutritionalInformation
     {
-        [DataMember(Name="brandowner")]
+        [JsonProperty("brandowner")]
         public string BrandOwner { get; set; }
 
-        [DataMember(Name="countryoforigin")]
+        [JsonProperty("countryoforigin")]
         public string CountryOfOrigin { get; set; }
 
-        [DataMember(Name="grossweight")]
+        [JsonProperty("grossweight")]
         public string GrossWeight { get; set; }
 
-        [DataMember(Name="handlinginstruction")]
+        [JsonProperty("handlinginstruction")]
         public string HandlingInstruction { get; set; }
 
-        [DataMember(Name="ingredients")]
+        [JsonProperty("ingredients")]
         public string Ingredients { get; set; }
 
-        [DataMember(Name="itemidentificationcode")]
+        [JsonProperty("itemidentificationcode")]
         public string ItemIdentificationCode { get; set; }
 
-        [DataMember(Name="marketingmessage")]
+        [JsonProperty("marketingmessage")]
         public string MarketingMessage { get; set; }
 
-        [DataMember(Name="moreinformation")]
+        [JsonProperty("moreinformation")]
         public string MoreInformation { get; set; }
 
-        [DataMember(Name="servingsize")]
+        [JsonProperty("servingsize")]
         public string ServingSize { get; set; }
 
-        [DataMember(Name="servingsizeuom")]
+        [JsonProperty("servingsizeuom")]
         public string ServingSizeUom { get; set; }
 
-        [DataMember(Name="servingsperpack")]
+        [JsonProperty("servingsperpack")]
         public string ServingsPerPack { get; set; }
 
-        [DataMember(Name="servingsuggestion")]
+        [JsonProperty("servingsuggestion")]
         public string ServingSuggestion { get; set; }
 
-        [DataMember(Name="shelf")]
+        [JsonProperty("shelf")]
         public string Shelf { get; set; }
 
-        [DataMember(Name="storagetemp")]
+        [JsonProperty("storagetemp")]
         public string StorageTemp { get; set; }
 
-        [DataMember(Name="unitmeasure")]
+        [JsonProperty("unitmeasure")]
         public string UnitMeasure { get; set; }
 
-        [DataMember(Name="unitspercase")]
+        [JsonProperty("unitspercase")]
         public string UnitsPerCase { get; set; }
 
-        [DataMember(Name="volume")]
+        [JsonProperty("volume")]
         public string Volume { get; set; }
 
-        [DataMember(Name="height")]
+        [JsonProperty("height")]
         public string Height { get; set; }
 
-        [DataMember(Name="length")]
+        [JsonProperty("length")]
         public string Length { get; set; }
 
-        [DataMember(Name="width")]
+        [JsonProperty("width")]
         public string Width { get; set; }
 
         
-        [DataMember(Name="nutrition")]
+        [JsonProperty("nutrition")]
         public List<ItemNutrition> Nutrition { get; set; }
 
-        [DataMember(Name="diet")]
+        [JsonProperty("diet")]
         public List<Diet> Diet { get; set; }
 
-        [DataMember(Name="allergen")]
+        [JsonProperty("allergen")]
         public Allergen Allergen { get; set; } 
     }
 }

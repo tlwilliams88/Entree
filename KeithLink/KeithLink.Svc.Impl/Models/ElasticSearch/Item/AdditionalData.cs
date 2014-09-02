@@ -10,121 +10,121 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
     public class AdditionalData
     {
-        [DataMember(Name="categoryid")]
+        [JsonProperty("categoryid")]
         public string CategoryId { get; set; }
         
-        [DataMember(Name="categoryname")]
+        [JsonProperty("categoryname")]
         public string CategoryName { get; set; }
         
-        [DataMember(Name="categoryname_not_analyzed")]
+        [JsonProperty("categoryname_not_analyzed")]
         public string CategoryNameNotAnalyzed { get; set; }
         
-        [DataMember(Name="parentcategoryid")]
+        [JsonProperty("parentcategoryid")]
         public string ParentCategoryId { get; set; }
 
-        [DataMember(Name="parentcategoryname")]
+        [JsonProperty("parentcategoryname")]
         public string ParentCategoryName { get; set; }
 
-        [DataMember(Name="name")]
+        [JsonProperty("name")]
         public string Name { get; set; }
 
-        [DataMember(Name="name_not_analyzed")]
+        [JsonProperty("name_not_analyzed")]
         public string NameNotAnalyzed { get; set; }
 
-        [DataMember(Name="description")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
-        [DataMember(Name="brand")]
+        [JsonProperty("brand")]
         public string Brand { get; set; }
 
-        [DataMember(Name="brand_not_analyzed")]
+        [JsonProperty("brand_not_analyzed")]
         public string BrandNotAnalyzed { get; set; }
 
-        [DataMember(Name="brand_description")]
+        [JsonProperty("brand_description")]
         public string BrandDescription { get; set; }
 
-        [DataMember(Name="brand_description_not_analyzed")]
+        [JsonProperty("brand_description_not_analyzed")]
         public string BrandDescriptionNotAnalyzed { get; set; }
 
-        [DataMember(Name="pack")]
+        [JsonProperty("pack")]
         public string Pack { get; set; }
 
-        [DataMember(Name="size")]
+        [JsonProperty("size")]
         public string Size { get; set; }
 
-        [DataMember(Name="upc")]
+        [JsonProperty("upc")]
         public string Upc { get; set; }
 
-        [DataMember(Name="mfrnumber")]
+        [JsonProperty("mfrnumber")]
         public string MfrNumber { get; set; }
 
-        [DataMember(Name="mfrname")]
+        [JsonProperty("mfrname")]
         public string MfrName { get; set; }
 
-        [DataMember(Name="cases")]
+        [JsonProperty("cases")]
         public string Cases { get; set; }
 
-        [DataMember(Name="package")]
+        [JsonProperty("package")]
         public string Package { get; set; }
 
-        [DataMember(Name="preferreditemcode")]
+        [JsonProperty("preferreditemcode")]
         public string PreferredItemCode { get; set; }
 
-        [DataMember(Name="itemtype")]
+        [JsonProperty("itemtype")]
         public string ItemType { get; set; }
 
-        [DataMember(Name="status1")]
+        [JsonProperty("status1")]
         public string Status1 { get; set; }
 
-        [DataMember(Name="status2")]
+        [JsonProperty("status2")]
         public string Status2 { get; set; }
 
-        [DataMember(Name="caseonly")]
+        [JsonProperty("caseonly")]
         public string CaseOnly { get; set; }
 
-        [DataMember(Name="specialorderitem")]
+        [JsonProperty("specialorderitem")]
         public string SpecialOrderItem { get; set; }
 
-        [DataMember(Name="vendor1")]
+        [JsonProperty("vendor1")]
         public string Vendor1 { get; set; }
 
-        [DataMember(Name="vendor2")]
+        [JsonProperty("vendor2")]
         public string Vendor2 { get; set; }
 
-        [DataMember(Name="itemclass")]
+        [JsonProperty("itemclass")]
         public string ItemClass { get; set; }
 
-        [DataMember(Name="catmgr")]
+        [JsonProperty("catmgr")]
         public string CatMgr { get; set; }
 
-        [DataMember(Name="buyer")]
+        [JsonProperty("buyer")]
         public string Buyer { get; set; }
 
-        [DataMember(Name="kosher")]
+        [JsonProperty("kosher")]
         public string Kosher { get; set; }
 
-        [DataMember(Name="branchid")]
+        [JsonProperty("branchid")]
         public string BranchId { get; set; }
 
-        [DataMember(Name="replacementitem")]
+        [JsonProperty("replacementitem")]
         public string ReplacementItem { get; set; }
 
-        [DataMember(Name="replaceditem")]
+        [JsonProperty("replaceditem")]
         public string ReplacedItem { get; set; }
 
-        [DataMember(Name="childnutrition")]
+        [JsonProperty("childnutrition")]
         public string ChildNutrition { get; set; }
 
-        [DataMember(Name="itemnumber")]
+        [JsonProperty("itemnumber")]
         public string ItemNumber { get; set; }
 
-        [DataMember(Name="nutritional")]
+        [JsonProperty("nutritional")]
         public NutritionalInformation Nutritional { get; set; }
 
-        [DataMember(Name="nonstock")]
+        [JsonProperty("nonstock")]
 		public string NonStock { get; set; }
 
-        [DataMember(Name="itemspecification")]
+        [JsonProperty("itemspecification")]
 		public List<string> ItemSpecification { get; set; }
     }
 }
