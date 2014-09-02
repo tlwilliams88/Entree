@@ -180,7 +180,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 			return ((Basket)basketResponse.CommerceEntities[0]);
-		}
+		}		
 	}
 }
 

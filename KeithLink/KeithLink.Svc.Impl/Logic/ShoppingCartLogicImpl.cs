@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(UserProfile user, ShoppingCart cart)
+		public void UpdateCart(UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -94,10 +94,11 @@ namespace KeithLink.Svc.Impl.Logic
 			
 			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
-			foreach (var toDelete in itemsToRemove)
-			{
-				basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
-			}
+			if(deleteOmmitedItems)
+				foreach (var toDelete in itemsToRemove)
+				{
+					basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
+				}
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
