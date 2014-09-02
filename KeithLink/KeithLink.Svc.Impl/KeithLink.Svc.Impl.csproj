@@ -136,6 +136,7 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
+    <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\RootData.cs" />
     <Compile Include="Models\ElasticSearch\Item\AdditionalData.cs" />
     <Compile Include="Models\ElasticSearch\Item\Allergen.cs" />
