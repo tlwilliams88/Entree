@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Orders
 {
-    interface IMainframeRepository
+    public interface IMainframeRepository
     {
         bool SendOrder(Models.Orders.OrderHeader header, List<Models.Orders.OrderDetail> details);
     }
