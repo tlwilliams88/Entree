@@ -8,7 +8,9 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'ListService', function($scope, $filter, $timeout, $state, $stateParams, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 
+    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService) {
+    
     var orderBy = $filter('orderBy');
 
     $scope.alerts = [];
@@ -21,10 +23,12 @@ angular.module('bekApp')
     }
 
     // INFINITE SCROLL
-    var itemsPerPage = 30;
+    var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      $scope.itemsToDisplay += itemsPerPage;
+      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
     };
 
     // LIST INTERACTIONS
@@ -75,6 +79,7 @@ angular.module('bekApp')
         item.parlevel = item.editParlevel;
         item.position = item.editPosition;
         item.isEditing = false;
+        $scope.listForm.$setPristine();
       });
 
       ListService.updateList(updatedList).then(function(data) {

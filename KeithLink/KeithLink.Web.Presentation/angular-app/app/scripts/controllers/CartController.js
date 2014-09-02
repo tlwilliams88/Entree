@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartController', ['$scope', '$state', '$stateParams', 'CartService', 
-    function($scope, $state, $stateParams, CartService) {
+  .controller('CartController', ['$scope', '$state', '$stateParams', 'Constants', 'CartService', 
+    function($scope, $state, $stateParams, Constants, CartService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -35,6 +35,7 @@ angular.module('bekApp')
         $scope.sortBy = null;
         $scope.sortOrder = false;
         $scope.currentCart = cart;
+        $scope.$$childTail.$$childTail.cartForm.$setPristine();
         console.log('Successfully saved cart ' + cart.name);
       }, function() {
         console.log('Error saving cart ' + cart.name);
@@ -106,6 +107,15 @@ angular.module('bekApp')
         }
       }
     }
+
+    // INFINITE SCROLL
+    var itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      if ($scope.itemsToDisplay < $scope.currentCart.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
+    };
 
     function renameRedirect() {
       if ($stateParams.renameCart === 'true') {

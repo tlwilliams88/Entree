@@ -18,5 +18,7 @@ angular.module('bekApp')
       APPROVER: 'Approver',
       SHOPPER: 'Shopper',
       USER: 'User'
-    }
+    },
+
+    infiniteScrollPageSize: 30
   });
