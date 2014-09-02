@@ -7,7 +7,7 @@
  * # SearchController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('SearchController', ['$scope', 'ProductService', 'CategoryService', 'ListService', '$stateParams',
     function($scope, ProductService, CategoryService, ListService, $stateParams) {
       // clear keyword search term at top of the page

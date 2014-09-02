@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
 .directive('allowOnePositiveDecimal',function(){
   var directive = {
     require: 'ngModel', 

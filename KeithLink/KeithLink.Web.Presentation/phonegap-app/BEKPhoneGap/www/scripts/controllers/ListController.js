@@ -7,7 +7,7 @@
  * # ListController
  * Controller of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'ListService', function($scope, $filter, $timeout, $state, $stateParams, ListService) {
     var orderBy = $filter('orderBy');
 

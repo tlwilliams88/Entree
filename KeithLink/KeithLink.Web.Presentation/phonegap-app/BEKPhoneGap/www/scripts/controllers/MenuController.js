@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .controller('MenuController', ['$scope', '$state', '$modal', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
     function ($scope, $state, $modal, Constants, AuthenticationService, UserProfileService, AccessService) {
 

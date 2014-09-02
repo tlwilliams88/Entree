@@ -7,7 +7,7 @@
  * # ProductService
  * Service of the bekApp
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
 
       var defaultPageSize = 50,

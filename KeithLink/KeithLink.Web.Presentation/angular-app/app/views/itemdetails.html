@@ -10,9 +10,9 @@
 <div loading-spinner="loadingDetails"></div>
 
 <div class="row" ng-hide="loadingDetails">
-  <!-- <div class="col-sm-3">
-    <img src="{{item.imageUrl}}" alt="" style="width:200px;height:200px;">
-  </div> -->
+  <div class="col-sm-3" ng-show="item.productimages.length > 0">
+    <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
+  </div>
   <div class="col-sm-9">
     <h2>{{item.name}}<span class="item-details__icons" item-icons="item"></span></h2>
     <div class="item-details">
@@ -31,6 +31,11 @@
       </div>
     </div>
     <div class="item-details__actions hidden-print">
+      <div class="select-div">
+        <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
+          <option value=""></option>
+        </select>
+      </div>
       <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
@@ -131,8 +136,8 @@
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
             <colgroup>
-              <col style="width: 25%">
-              <col style="width: 75%">
+              <col style="width: 15%">
+              <col style="width: 85%">
             </colgroup>
             <tbody>
               <tr class="even">
@@ -157,6 +162,10 @@
                 <th>Free From</th>
                 <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
+              </tr>
+              <tr class="even">
+                <th>Ingredients</th>
+                <td>{{item.gs1.ingredients}}</td>
               </tr>
             </tbody>
           </table>
@@ -193,17 +202,12 @@
           </table>
         </div>
       </tab>
-      <tab heading="Images" ng-if="items.images">
+      <tab heading="Images" ng-show="item.productimages.length > 0">
         <div class="hidden-print item-details__images">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
-          <img src="" alt="" style="width:200px;height:200px;">
+            <a ng-href="{{image.url}}" target="_blank" ng-repeat="image in item.productimages">
+                <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
+            </a>
+            <br />
         </div>
       </tab>
     </tabset>

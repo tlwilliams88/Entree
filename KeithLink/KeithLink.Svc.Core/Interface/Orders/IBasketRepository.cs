@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		Guid? AddItem(Guid userId, Guid basketId, LineItem newItem);
 
-		List<Basket> ReadAllBaskets(Guid userId, string branchId);
+		List<Basket> ReadAllBaskets(Guid userId);
 
 		Basket ReadBasket(Guid userId, Guid basketId);
 		Basket ReadBasket(Guid userId, string basketName);

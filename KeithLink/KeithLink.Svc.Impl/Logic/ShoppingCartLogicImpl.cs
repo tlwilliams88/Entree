@@ -112,7 +112,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
 		{
-			var lists = basketRepository.ReadAllBaskets(user.UserId, branchId);
+			var lists = basketRepository.ReadAllBaskets(user.UserId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
@@ -143,7 +143,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		private void MarkCurrentActiveCartAsInactive(UserProfile user, string branchId)
 		{
-			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId, branchId).Where(b => b.Active.Equals(true)).FirstOrDefault();
+			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
 
 			if (currentlyActiveCart != null)
 			{
@@ -170,6 +170,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 					item.StorageTemp = prod.Gs1.StorageTemp;
+					item.Brand = prod.Brand;
 				}
 				if (price != null)
 				{

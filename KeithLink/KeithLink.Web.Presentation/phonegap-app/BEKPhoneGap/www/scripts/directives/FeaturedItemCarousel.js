@@ -13,7 +13,7 @@
  * Example
  * <div featured-item-carousel items="items" link="'menu.catalog.products.details({ itemNumber : item.itemnumber })'"></div>
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .directive('featuredItemCarousel', function () {
     
     return {
