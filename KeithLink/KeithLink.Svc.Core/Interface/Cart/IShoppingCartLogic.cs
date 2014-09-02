@@ -21,5 +21,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly);
 		ShoppingCart ReadCart(UserProfile user, Guid cartId);
 
+		string SaveAsOrder(UserProfile user, Guid cartId);
+
 	}
 }

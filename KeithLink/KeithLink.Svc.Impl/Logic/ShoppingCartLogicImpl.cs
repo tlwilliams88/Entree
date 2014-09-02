@@ -203,5 +203,17 @@ namespace KeithLink.Svc.Impl.Logic
 		}
 
 		#endregion
+
+
+		public string SaveAsOrder(UserProfile user, Guid cartId)
+		{
+			//Save to Commerce Server
+			keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
+			var purchaseOrder = client.SaveCartAsOrder(user.UserId, cartId);
+
+			//TODO: Write order to Rabbit Mq for processing to main frame
+
+			return purchaseOrder; //Return actual order number
+		}
 	}
 }

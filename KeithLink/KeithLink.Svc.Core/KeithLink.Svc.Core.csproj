@@ -54,6 +54,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Core.Orders.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Foundation.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServer.Foundation.Presentation, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL" />
     <Reference Include="CommerceServerContrib.CodeGeneration">
@@ -100,6 +108,7 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
+    <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
