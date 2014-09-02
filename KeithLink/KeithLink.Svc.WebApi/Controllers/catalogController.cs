@@ -16,7 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	//[Authorize]
+	[Authorize]
     public class CatalogController : BaseController
     {
         #region attributes
