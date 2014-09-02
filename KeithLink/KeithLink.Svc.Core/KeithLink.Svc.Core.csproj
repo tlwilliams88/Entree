@@ -100,6 +100,7 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
+    <Compile Include="Interface\Orders\IMainframeRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
@@ -108,6 +109,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Orders\LineType.cs" />
+    <Compile Include="Models\Orders\OrderDetail.cs" />
+    <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Orders\OrderSource.cs" />
+    <Compile Include="Models\Orders\OrderType.cs" />
+    <Compile Include="Models\Orders\UnitOfMeasure.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
