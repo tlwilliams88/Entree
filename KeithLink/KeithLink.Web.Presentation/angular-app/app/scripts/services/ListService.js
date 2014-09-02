@@ -34,6 +34,7 @@ angular.module('bekApp')
     }
 
     function addItemToList(listId, item) {
+      delete item.listitemid;
       item.position = 0;
       item.label = null;
       item.parlevel = 0;

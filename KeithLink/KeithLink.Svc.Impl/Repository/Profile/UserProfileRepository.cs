@@ -6,7 +6,7 @@ using System.Text;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class UserProfileRepository : Core.Interface.Profile.IUserProfileRepository
     {
@@ -269,9 +269,7 @@ namespace KeithLink.Svc.Impl.Profile
 
             if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
             {
-                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
-
-                adProfile = _internalAD.GetUser(userName);
+                adProfile = _internalAD.GetUserByEmailAddress(emailAddress);
             }
             else
             {
@@ -286,6 +284,41 @@ namespace KeithLink.Svc.Impl.Profile
                 EmailAddress = csProfile.Email,
                 PhoneNumber = adProfile.VoiceTelephoneNumber
             };
+        }
+
+        /// <summary>
+        /// create a Commerce Server User Profile for a BEK user
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <remarks>
+        /// jwames - 8/29/2014 - original code
+        /// </remarks>
+        public void CreateBekUserProfile(string emailAddress)
+        {
+            var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
+
+            System.DirectoryServices.AccountManagement.UserPrincipal bekUser = _internalAD.GetUserByEmailAddress(emailAddress);
+            string fName = bekUser.DisplayName.Split(' ')[0];
+
+            createUser.Model.FirstName = fName;
+            createUser.Model.LastName = bekUser.Surname;
+            createUser.Model.Email = emailAddress;
+
+            createUser.CreateOptions.ReturnModel.Properties.Add("Id");
+
+            CommerceServer.Foundation.CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
+
+            // indicate the default channel
+            requestContext.Channel = string.Empty;
+            requestContext.RequestId = System.Guid.NewGuid().ToString("B");
+            requestContext.UserLocale = "en-US";
+            requestContext.UserUILocale = "en-US";
+
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.OperationServiceAgent serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
+            CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, createUser.ToRequest());
+
+            CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
         }
 
         /// <summary>
@@ -353,11 +386,12 @@ namespace KeithLink.Svc.Impl.Profile
         /// </summary>
         /// <remarks>
         /// jwames - 8/18/2014 - documented
+        /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
-        public UserProfileReturn GetUserProfile(string userName)
+        public UserProfileReturn GetUserProfile(string emailAddress)
         {
 			var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Email"] = userName;
+            profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
@@ -375,9 +409,21 @@ namespace KeithLink.Svc.Impl.Profile
             CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
-
             UserProfileReturn retVal = new UserProfileReturn();
-			retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], userName));
+
+            if (profileResponse.Count == 0)
+            {
+                if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+                {
+                    CreateBekUserProfile(emailAddress);
+
+                    return GetUserProfile(emailAddress);
+                }
+            }
+            else
+            {
+			    retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], emailAddress));
+            }
 
             return retVal;
         }

@@ -6,7 +6,7 @@ using System.DirectoryServices.AccountManagement;
 using System.Text;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class ExternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
@@ -371,6 +371,52 @@ namespace KeithLink.Svc.Impl.Profile
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
+            }
+        }
+
+        public void UpdatePassword(string emailAddress, string newPassword)
+        {
+            string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            DirectoryEntry boundServer = null;
+            // connect to the external AD server
+            try
+            {
+                boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.RefreshCache();
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                throw;
+            }
+
+            DirectoryEntry currentUser = null;
+
+            try
+            {
+                DirectorySearcher adSearch = new DirectorySearcher(boundServer, string.Concat("userPrincipalName=", emailAddress));
+                currentUser = adSearch.FindOne().GetDirectoryEntry();
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not find user on external Ad server.", ex);
+
+                throw;
+            }
+            
+            // set the user's password
+            try
+            {
+                currentUser.Invoke("SetPassword", new object[] { newPassword});
+                currentUser.CommitChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not change password for user on external AD server.", ex);
+
+                throw;
             }
         }
 
