@@ -6,7 +6,7 @@ namespace KeithLink.Svc.Core.Models.Order
     public class OrderHeader
     {
         #region properties
-        public OrderSystems OrderingSystem { get; set; }
+        public OrderSource OrderingSystem { get; set; }
         public string Branch { get; set; }
         public string CustomerNumber { get; set; }
         public DateTime DeliveryDate { get; set; }
