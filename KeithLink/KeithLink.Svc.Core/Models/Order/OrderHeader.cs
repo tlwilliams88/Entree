@@ -13,12 +13,12 @@ namespace KeithLink.Svc.Core.Models.Order
         public string PONumber { get; set; }
         public string Specialinstructions { get; set; }
         public string ControlNumber { get; set; }
-        public string OrderType { get; set; }
+        public OrderType OrderType { get; set; }
         public string InvoiceNumber { get; set; }
         public DateTime OrderCreateDateTime { get; set; }
         public DateTime OrderSendDateTime { get; set; }
-        public string OrderStatus { get; set; }
-        public string FutureItems { get; set; }
+        public bool OrderFilled { get; set; }
+        public bool FutureOrder { get; set; }
         #endregion
     }
 }
