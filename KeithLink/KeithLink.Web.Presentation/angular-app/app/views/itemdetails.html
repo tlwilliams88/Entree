@@ -31,6 +31,11 @@
       </div>
     </div>
     <div class="item-details__actions hidden-print">
+      <div class="select-div">
+        <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
+          <option value=""></option>
+        </select>
+      </div>
       <a class="cta-btn btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
@@ -131,8 +136,8 @@
         <div class="table-responsive">
           <table class="item-details__table table table-striped">
             <colgroup>
-              <col style="width: 25%">
-              <col style="width: 75%">
+              <col style="width: 15%">
+              <col style="width: 85%">
             </colgroup>
             <tbody>
               <tr class="even">
@@ -157,6 +162,10 @@
                 <th>Free From</th>
                 <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
+              </tr>
+              <tr class="even">
+                <th>Ingredients</th>
+                <td>{{item.gs1.ingredients}}</td>
               </tr>
             </tbody>
           </table>

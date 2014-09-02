@@ -4,7 +4,8 @@
     margin: 0;
   }
 
-  .table-row-data [class^='col-'] {
+  .table-row-data [class^='col-'],
+  .filter-row [class^='col-'] {
     padding: 14px 5px;
   }
 
@@ -62,5 +63,9 @@
       background-color: $background;
     }
 
+    &.filter-row {
+      border-bottom: none;
+      background-color: $color-white;
+    }
   }
 }

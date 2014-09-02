@@ -16,7 +16,7 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Profile;
+using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi
