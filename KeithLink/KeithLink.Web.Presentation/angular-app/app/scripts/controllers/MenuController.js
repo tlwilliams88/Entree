@@ -36,7 +36,7 @@ angular.module('bekApp')
 
     $scope.search = function(searchTerm) {
       $state.go('menu.catalog.products.list', { type: 'search', id: searchTerm }, { reload: true });
-    }
+    };
 
     $scope.print = function () {
       window.print(); 

@@ -127,7 +127,7 @@ angular.module('bekApp')
         getProductDetails: function(id) {
           var returnProduct;
           if (!Service.selectedProduct.name) {
-            returnProduct = $http.get('/catalog/product/' + getBranch() + '/' + id).then(function(response) {;
+            returnProduct = $http.get('/catalog/product/' + getBranch() + '/' + id).then(function(response) {
               return response.data;
             });
           } else {

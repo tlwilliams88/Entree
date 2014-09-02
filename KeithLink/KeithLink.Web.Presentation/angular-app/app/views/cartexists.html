@@ -66,7 +66,7 @@
           {{getSubtotal(currentCart.items) | currency}}
         </div>
         <div class="col-sm-7 cart-info-buttons">
-          <button class="btn text-light btn-default" ng-click="saveCart(currentCart)">Save Cart</button>
+          <button class="btn text-light btn-default" type="submit" ng-click="saveCart(currentCart)">Save Cart</button>
           <button class="btn btn-primary">Place Order</button>
         </div>
       </div>
@@ -101,8 +101,8 @@
       </div>
       <div class="row cart-info-item">
         <div class="col-xs-12">
-          <input type="checkbox">
-          <label for="" style="font-weight:normal;">Make this my Active Cart</label>
+          <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart">
+          <label for="activeCart" style="font-weight:normal;">Make this my Active Cart</label>
         </div>
       </div>
     </div>
@@ -210,7 +210,7 @@
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder)) track by item.cartitemid"
+            ng-repeat="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.cartitemid"
            >
             <div class="col-xs-12">
               <div class="row table-row-data">
