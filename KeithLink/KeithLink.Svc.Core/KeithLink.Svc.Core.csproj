@@ -119,6 +119,7 @@
     </Compile>
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
+    <Compile Include="Models\SiteCatalog\BaseProductInfo.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
     <Compile Include="Models\Lists\NewItem.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />

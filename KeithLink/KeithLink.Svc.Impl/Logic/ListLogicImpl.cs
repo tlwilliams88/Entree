@@ -12,6 +12,7 @@ using CommerceServer.Core.Runtime.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -22,11 +23,14 @@ namespace KeithLink.Svc.Impl.Logic
 
         private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
+		private readonly IPriceRepository priceRepository;
 
-		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository)
+
+		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
         {
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
+			this.priceRepository = priceRepository;
         }
 
 		public Guid CreateList(Guid userId, string branchId, UserList list)
@@ -97,17 +101,17 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(userId, listId, itemId);
         }
 
-		
-		public List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly)
+
+		public List<UserList> ReadAllLists(UserProfile user, string branchId, bool headerInfoOnly)
         {
-			var lists = basketRepository.ReadAllBaskets(userId);
+			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
 
 			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(userId, branchId, new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId, FAVORITESLIST)  }, null);
-				lists = basketRepository.ReadAllBaskets(userId);
+				basketRepository.CreateOrUpdateBasket(user.UserId, branchId, new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId, FAVORITESLIST)  }, null);
+				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
@@ -118,21 +122,21 @@ namespace KeithLink.Svc.Impl.Logic
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
 				returnList.ForEach(delegate(UserList list)
 				{
-					LookupProductDetails(userId, list);
+					LookupProductDetails(user, list);
 				});
 				return returnList;
 			}
         }
 
-		public UserList ReadList(Guid userId, Guid listId)
+		public UserList ReadList(UserProfile user, Guid listId)
         {
-			var basket = basketRepository.ReadBasket(userId, listId);
+			var basket = basketRepository.ReadBasket(user.UserId, listId);
 			if (basket == null)
 				return null;
 
 			var cart = ToUserList(basket);
 
-			LookupProductDetails(userId, cart);
+			LookupProductDetails(user, cart);
 			return cart;			
         }
 
@@ -152,29 +156,41 @@ namespace KeithLink.Svc.Impl.Logic
 			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(branchId)).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
-		private void LookupProductDetails(Guid userId, UserList list)
+		private void LookupProductDetails(UserProfile user, UserList list)
 		{
 			if (list.Items == null)
 				return;
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var favorites = basketRepository.ReadBasket(userId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
+			var favorites = basketRepository.ReadBasket(user.UserId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
+			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerId, DateTime.Now.AddDays(1), products.Products); 
 
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-
+				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
+				
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 					listItem.StorageTemp = prod.Gs1.StorageTemp;
 					listItem.Brand = prod.Brand;
+					listItem.ReplacedItem = prod.ReplacedItem;
+					listItem.ReplacementItem = prod.ReplacementItem;
+					listItem.NonStock = prod.NonStock;
+					listItem.CNDoc = prod.CNDoc;
 				}
 				if (favorites != null)
 				{
 					listItem.Favorite = favorites.LineItems.Where(i => i.ProductId.Equals(listItem.ItemNumber)).Any();
+				}
+				if (price != null)
+				{
+					listItem.PackagePrice = price.PackagePrice.ToString();
+					listItem.CasePrice = price.CasePrice.ToString();
+
 				}
 			});
 			

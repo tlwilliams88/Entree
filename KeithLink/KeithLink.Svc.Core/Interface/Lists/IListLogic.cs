@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
@@ -18,8 +19,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteList(Guid userId, Guid listId);
 		void DeleteItem(Guid userId, Guid listId, Guid itemId);
 
-		List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly);
-		UserList ReadList(Guid userId, Guid listId);
+		List<UserList> ReadAllLists(UserProfile user, string branchId, bool headerInfoOnly);
+		UserList ReadList(UserProfile user, Guid listId);
 		List<string> ReadListLabels(Guid userId, Guid listId);
 		List<string> ReadListLabels(Guid userId, string branchId);
 
