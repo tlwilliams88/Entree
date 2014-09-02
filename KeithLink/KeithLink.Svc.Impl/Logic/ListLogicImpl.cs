@@ -101,6 +101,15 @@ namespace KeithLink.Svc.Impl.Logic
 		public List<UserList> ReadAllLists(Guid userId, string branchId, bool headerInfoOnly)
         {
 			var lists = basketRepository.ReadAllBaskets(userId);
+
+
+			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
+			{
+				//favorites list doesn't exist yet, create an empty one
+				basketRepository.CreateOrUpdateBasket(userId, branchId, new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId, FAVORITESLIST)  }, null);
+				lists = basketRepository.ReadAllBaskets(userId);
+			}
+
 			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
