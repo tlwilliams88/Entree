@@ -39,6 +39,12 @@ angular.module('bekApp')
       createCart: function(items) {
         if (!items) {
           items = [];
+        } else {
+          angular.forEach(items, function (item, index) {
+            if (!item.quantity || item.quantity === 0) {
+              item.quantity = 1;
+            }
+          });
         }
 
         var newCart = {
@@ -52,18 +58,6 @@ angular.module('bekApp')
         });
       },
 
-      createCartWithItem: function(item) {
-        delete item.cartitemid;
-
-        if (item.quantity) {
-          item.quantity = 1;
-        }
-
-        var items = [item];
-
-        return Service.createCart(items);
-      },
-
       updateCart: function(cart) {
         return Cart.update(null, cart).$promise.then(function(response) {
           console.log(response.data);
@@ -71,15 +65,18 @@ angular.module('bekApp')
         });
       },
 
-      deleteCart: function(cartId) {
-        return Cart.delete({ cartId: cartId }).$promise.then(function(response) {
+      deleteCart: function(cart) {
+        var deletedCart = cart;
+        return Cart.delete({ cartId: cart.id }).$promise.then(function(response) {
+          var idx = Service.carts.indexOf(deletedCart);
+          Service.carts.splice(idx, 1);
           console.log(response);
           return response;
         });
       },
 
       addItemToCart: function(cartId, item) {
-        if (item.quantity) {
+        if (!item.quantity) {
           item.quantity = 1;
         }
         
@@ -101,6 +98,16 @@ angular.module('bekApp')
           console.log(response);
           return response;
         });
+      },
+
+      findCartById: function(cartId) {
+        var cartFound;
+        angular.forEach(Service.carts, function(cart, index) {
+          if (cart.id === cartId) {
+            cartFound = cart;
+          }
+        });
+        return cartFound;
       }
 
     };

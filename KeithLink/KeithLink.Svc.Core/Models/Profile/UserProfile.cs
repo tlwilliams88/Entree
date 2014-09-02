@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		//TODO: These values should be retrieved for the logged in user
 		[DataMember(Name="CustomerId")]
-		public string CustomerId { get { return "00187";  } }
+		public string CustomerId { get { return "011807"; } }
 		[DataMember(Name = "BranchId")]
 		public string BranchId { get { return "fam"; } }
 
