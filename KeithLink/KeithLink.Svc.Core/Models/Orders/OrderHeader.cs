@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace KeithLink.Svc.Core.Models.Order
+namespace KeithLink.Svc.Core.Models.Orders
 {
     public class OrderHeader
     {
