@@ -390,11 +390,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress)
         {
-			var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("Email");
 
 
             // create the request
@@ -422,7 +423,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
             else
             {
-			    retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], emailAddress));
+                retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], emailAddress));
             }
 
             return retVal;
