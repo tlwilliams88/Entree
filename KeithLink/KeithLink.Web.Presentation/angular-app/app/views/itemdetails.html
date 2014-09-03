@@ -29,8 +29,7 @@
       </div>
     </div>
     <div ng-if="canOrderProduct(item)" class="item-details__actions hidden-print">
-      {{item.quantity}}
-      <select name="quantity" id="quantity" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]"></select>
+      <div quantity-input="item.quantity"></div>
       <a class="btn-primary btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
