@@ -27,6 +27,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// </remarks>
         public List<Price> GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
+			if (products == null || products.Count == 0)
+				return null;
+
             // build the request XML
             KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
             System.IO.StringWriter requestBody = new System.IO.StringWriter();
