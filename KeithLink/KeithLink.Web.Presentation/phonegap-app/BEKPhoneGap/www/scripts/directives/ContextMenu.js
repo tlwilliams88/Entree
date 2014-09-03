@@ -5,7 +5,7 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     scope: true,
-    controller: ['$scope', '$element', '$state', 'ListService', function($scope, $element, $state, ListService){
+    controller: ['$scope', '$state', 'ListService', 'CartService', function($scope, $state, ListService, CartService){
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
@@ -21,7 +21,20 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', { listId: data[0].listid, renameList: true });
+          $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
+        });
+      };
+
+      $scope.addItemToCart = function(cartId, item) {
+        CartService.addItemToCart(cartId, item).then(function(data) {
+          
+        });
+      };
+
+      $scope.createCartWithItem = function(item) {
+        var items = [item];
+        CartService.createCart(items).then(function(data) {
+          $state.go('menu.cartitems', { cartId: data.listitemid, renameCart: true });
         });
       };
 

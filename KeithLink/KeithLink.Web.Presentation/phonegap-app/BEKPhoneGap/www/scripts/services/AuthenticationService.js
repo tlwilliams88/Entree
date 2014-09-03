@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService', 'ListService',
-    function ($http, $q, localStorageService, Constants, UserProfileService, ListService) {
+  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService',
+    function ($http, $q, localStorageService, Constants, UserProfileService) {
 
     var Service = {
 
@@ -17,6 +17,12 @@ angular.module('bekApp')
 
         return $http.post('/authen' , data, headers).then(function(response){
           var token = response.data;
+
+          // set date time when token expires
+          var expires_at = new Date();
+          expires_at.setSeconds(expires_at.getSeconds() + token.expires_in);
+
+          token.expires_at = expires_at;
           Service.setToken(token);
           return token;
         });
@@ -27,7 +33,7 @@ angular.module('bekApp')
           return UserProfileService.getProfile(username).then(function(profile) {
             return profile;
           }, function(error) {
-            AuthenticationService.logout();
+            Service.logout();
           });
         });
       },
@@ -43,6 +49,12 @@ angular.module('bekApp')
 
       setToken: function(token) {
         localStorageService.set(Constants.localStorage.userToken, token);
+      },
+
+      isValidToken: function() {
+        var token = Service.getToken();
+        var now = new Date();
+        return (now < new Date(token.expires_at));
       },
 
       getLeadGenInfo: function() {

@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.ETL
     public interface IStagingRepository
     {
         DataTable ReadAllBranches();
+        DataTable ReadBrandControlLabels();
         DataTable ReadItems(string branchId);
         DataTable ReadSubCategories();
         DataTable ReadParentCategories();

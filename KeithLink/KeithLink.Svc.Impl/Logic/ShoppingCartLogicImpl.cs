@@ -19,15 +19,15 @@ namespace KeithLink.Svc.Impl.Logic
 	{
 		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
-		private readonly IPriceRepository priceRepository;
+		private readonly IPriceLogic priceLogic;
 
 		private readonly string BasketStatus = "ShoppingCart";
 
-		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
-			this.priceRepository = priceRepository;
+			this.priceLogic = priceLogic;
 		}
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(UserProfile user, ShoppingCart cart)
+		public void UpdateCart(UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -94,10 +94,11 @@ namespace KeithLink.Svc.Impl.Logic
 			
 			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
-			foreach (var toDelete in itemsToRemove)
-			{
-				basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
-			}
+			if(deleteOmmitedItems)
+				foreach (var toDelete in itemsToRemove)
+				{
+					basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
+				}
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
@@ -158,7 +159,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerId, DateTime.Now.AddDays(1), products.Products); 
+			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerId, DateTime.Now.AddDays(1), products.Products); 
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
@@ -171,11 +172,16 @@ namespace KeithLink.Svc.Impl.Logic
 					item.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
 					item.StorageTemp = prod.Gs1.StorageTemp;
 					item.Brand = prod.Brand;
+					item.ReplacedItem = prod.ReplacedItem;
+					item.ReplacementItem = prod.ReplacementItem;
+					item.NonStock = prod.NonStock;
+					item.CNDoc = prod.CNDoc;
 				}
 				if (price != null)
 				{
-					item.PackagePrice = price.PackagePrice;
-					item.CasePrice = price.CasePrice;
+					item.PackagePrice = price.PackagePrice.ToString();
+					item.CasePrice = price.CasePrice.ToString();
+					
 				}
 			});
 
@@ -203,5 +209,17 @@ namespace KeithLink.Svc.Impl.Logic
 		}
 
 		#endregion
+
+
+		public string SaveAsOrder(UserProfile user, Guid cartId)
+		{
+			//Save to Commerce Server
+			keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
+			var purchaseOrder = client.SaveCartAsOrder(user.UserId, cartId);
+
+			//TODO: Write order to Rabbit Mq for processing to main frame
+
+			return purchaseOrder; //Return actual order number
+		}
 	}
 }

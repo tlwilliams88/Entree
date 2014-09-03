@@ -49,6 +49,18 @@
     <Reference Include="Autofac.Integration.Wcf">
       <HintPath>..\packages\Autofac.Wcf.3.0.1\lib\net40\Autofac.Integration.Wcf.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Core.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Orders.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.CrossTier.dll</HintPath>
+    </Reference>
+    <Reference Include="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.ServiceModel.Activation" />
@@ -72,6 +84,7 @@
   <ItemGroup>
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
+    <Content Include="OrderService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -88,6 +101,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IETLService.cs" />
+    <Compile Include="Interfaces\IOrderService.cs" />
+    <Compile Include="OrderService.svc.cs">
+      <DependentUpon>OrderService.svc</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

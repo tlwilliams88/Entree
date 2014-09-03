@@ -18,6 +18,11 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[ReadBranches]");
         }
 
+        public DataTable ReadBrandControlLabels()
+        {
+            return PopulateDataTable("[ETL].[ReadBrandControlLabels]");
+        }
+
         public DataTable ReadItems(string branchId)
         {
             var itemTable = new DataTable();

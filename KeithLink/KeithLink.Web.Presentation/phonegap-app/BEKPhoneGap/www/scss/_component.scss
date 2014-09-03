@@ -6,19 +6,38 @@
 
 /* BUTTONS */
 
+@mixin color-button($color) {
+  color: white;
+  background-color: $color;
+  border: none;
+}
+
 // default button
 .btn {
   @include component;
   min-height: 40px;
-  background-color: white;
+  // background-color: white;
   white-space: inherit;
   padding: 9px 12px;
   
-  // call to action button
-  &.cta-btn {
-    color: white;
-    background-color: $color-blue;
-    border: none;
+  &.btn-default {
+    &:hover, &:active, &:focus {
+      background-color: #EBE7D9;
+      border-color: $color-border;
+    }
+  }
+
+  &.btn-primary {
+    @include color-button($color-blue);
+  }
+  &.btn-danger {
+    @include color-button($color-red);
+  }
+  &.btn-success {
+    @include color-button($color-green);
+  }
+  &.btn-info {
+    @include color-button($color-blue);
   }
 }
 
@@ -167,17 +186,17 @@ input[type='text'], input[type='email'], input[type='password'] {
   }
 }
 
-input[type="checkbox"] {
-    display:none;
-}
-input[type="checkbox"] + label {
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-  padding-left: 25px;
-}
-@include style-checkbox('checkbox-clear.png', 'checkbox-checked.png', center, left, 20px);
-
+// input[type="checkbox"] {
+//     display:none;
+// }
+// input[type="checkbox"] + label {
+//   display: inline-block;
+//   vertical-align: middle;
+//   cursor: pointer;
+//   padding-left: 25px;
+//   content: '';
+// }
+// @include style-checkbox('checkbox-clear.png', 'checkbox-checked.png', center, left, 20px);
 
 /* Search Form */
 
@@ -191,8 +210,4 @@ input[type="checkbox"] + label {
 
 hr {
   border-top: 1px solid $color-border;
-}
-
-.hand{
-  cursor: pointer;
 }

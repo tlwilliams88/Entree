@@ -26,7 +26,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/{branchId}")]
         public List<UserList> List(string branchId, bool header = false)
         {
-			var model = listLogic.ReadAllLists(this.AuthenticatedUser.UserId, branchId, header);
+			var model = listLogic.ReadAllLists(this.AuthenticatedUser, branchId, header);
             return model;
         }
 
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Route("list/{branchId}/{listId}")]
 		public UserList List(Guid listId)
         {
-			return listLogic.ReadList(this.AuthenticatedUser.UserId, listId);
+			return listLogic.ReadList(this.AuthenticatedUser, listId);
         }
 
         [HttpGet]

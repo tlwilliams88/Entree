@@ -1,7 +1,7 @@
-USE FSE;
+USE [FSE];
 GO
 
-CREATE PROCEDURE dbo.usp_ECOM_SelectProductNutrition AS
+CREATE PROCEDURE [dbo].[usp_ECOM_SelectProductNutrition] AS
 
 /*******************************************************************
 * PROCEDURE: usp_ECOM_SelectProductNutrition
@@ -12,6 +12,7 @@ CREATE PROCEDURE dbo.usp_ECOM_SelectProductNutrition AS
 * DATE		AUTHOR			DESCRIPTION
 *-------------------------------------------------------------------
 * {date}	{developer}	{brief modification description}
+2014-08-21	jmmcmillan	Changed MeasurementValue to decimal(20,3) per Phil B. and Mark P.
 *******************************************************************/
 
 SELECT
@@ -20,7 +21,7 @@ SELECT
 	, ni.NutrientTypeCode
 	, ntc.Description 'NutrientTypeDesc'
 	, ni.MeasurementTypeId
-	, ni.MeasurementValue
+	, CONVERT(decimal(20,3), ni.MeasurementValue) 'MeasurementValue'
 	, ni.DailyValue
 FROM
 	Item i

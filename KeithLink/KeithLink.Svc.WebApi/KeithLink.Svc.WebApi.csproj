@@ -171,6 +171,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\ApiKeyedRoute.cs" />
+    <Compile Include="App_Start\ApiKeyedRouteConstraint.cs" />
     <Compile Include="App_Start\DependencyMap.cs" />
     <Compile Include="App_Start\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="App_Start\Startup.cs" />
@@ -180,6 +182,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
@@ -187,7 +190,6 @@
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
     <Compile Include="Models\LoginModel.cs" />
-    <Compile Include="Models\SearchInputModel.cs" />
     <Compile Include="Models\OperationReturnModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
