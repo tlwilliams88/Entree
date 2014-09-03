@@ -16,23 +16,19 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	//[Authorize]
+	[Authorize]
     public class CatalogController : BaseController
     {
         #region attributes
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic _catalogLogic;
-        KeithLink.Svc.Core.Interface.SiteCatalog.IProductImageRepository _imgRepository;
-		private readonly IListLogic _listLogic;
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic, IListLogic listLogic,
-                                 IUserProfileRepository userProfileRepo, IProductImageRepository imgRepository)
+        public CatalogController(ICatalogLogic catalogLogic,
+                                 IUserProfileRepository userProfileRepo)
             : base(userProfileRepo)
         {
             _catalogLogic = catalogLogic;
-            _imgRepository = imgRepository;
-            _listLogic = listLogic;
         }
         #endregion
 
@@ -56,12 +52,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("catalog/search/category/{branchId}/{categoryId}/products")]
         public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId, [FromUri] SearchInputModel searchModel)
         {
-
 			ProductsReturn prods = _catalogLogic.GetProductsByCategory(branchId, categoryId, searchModel, this.AuthenticatedUser);
-			
-			if(this.AuthenticatedUser != null)
-				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
-
             return prods;
         }
 
@@ -81,18 +72,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             Product prod = _catalogLogic.GetProductById(branchId, id, this.AuthenticatedUser);
 
             if (prod == null)
-            {
-                prod = new Product();
-            } 
-            else 
-            {
-                ProductsReturn prods = new ProductsReturn() { Products = new List<Product>() { prod } };
+                return new Product();
 
-                if (this.AuthenticatedUser != null)
-                    _listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
-
-                prod.ProductImages = _imgRepository.GetImageList(prod.ItemNumber).ProductImages;
-            }
             return prod;
         }
 
@@ -101,10 +82,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public ProductsReturn GetProductsSearch(string branchId, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(branchId, searchTerms, searchModel, this.AuthenticatedUser);
-
-			if (this.AuthenticatedUser != null)
-				_listLogic.MarkFavoriteProducts(this.AuthenticatedUser.UserId, branchId, prods);
-
             return prods;
         }
 

@@ -4,8 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -14,12 +17,16 @@ namespace KeithLink.Svc.Impl.Logic
         #region attributes
         private ICatalogRepository _catalogRepository;
         private IPriceLogic _priceLogic;
+        private IProductImageRepository _imgRepository;
+        private IListLogic _listLogic;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
+            _imgRepository = imgRepository;
+            _listLogic = listLogic;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -30,7 +37,14 @@ namespace KeithLink.Svc.Impl.Logic
         public Product GetProductById(string branch, string id, UserProfile profile)
         {
             Product ret = _catalogRepository.GetProductById(branch, id);
+            AddFavoriteProductInfo(branch, profile, ret);
+            AddProductImageInfo(ret);
             return ret;
+        }
+
+        private void AddProductImageInfo(Product ret)
+        {
+            ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids, UserProfile profile)
@@ -45,11 +59,12 @@ namespace KeithLink.Svc.Impl.Logic
             
             // special handling for price sorting
             if (searchModel.SField == "price")
-                ret = _catalogRepository.GetProductsByCategory(branch, category, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = 200 });
+                ret = _catalogRepository.GetProductsByCategory(branch, category, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
                 ret = _catalogRepository.GetProductsByCategory(branch, category, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
+            AddFavoriteProductInfo(branch, profile, ret);
             return ret;
         }
 
@@ -59,11 +74,12 @@ namespace KeithLink.Svc.Impl.Logic
 
             // special handling for price sorting
             if (searchModel.SField == "price")
-                ret = _catalogRepository.GetProductsBySearch(branch, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = 200 });
+                ret = _catalogRepository.GetProductsBySearch(branch, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
                 ret = _catalogRepository.GetProductsBySearch(branch, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
+            AddFavoriteProductInfo(branch, profile, ret);
             return ret;
         }
 
@@ -74,7 +90,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
-            if (searchModel.SField == "price" && prods.TotalCount <= 200) // sort pricing info first
+            if (searchModel.SField == "price" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
                     pricingInfo.Prices.Sort((x, y) => x.PackagePrice.CompareTo(y.PackagePrice));
@@ -88,6 +104,18 @@ namespace KeithLink.Svc.Impl.Logic
                 prod.CasePrice = String.Format("{0:C}", p.CasePrice);
                 prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
             }
+        }
+
+        private void AddFavoriteProductInfo(string branch, UserProfile profile, Product ret)
+        {
+            if (profile != null)
+                _listLogic.MarkFavoriteProducts(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
+        }
+
+        private void AddFavoriteProductInfo(string branch, UserProfile profile, ProductsReturn ret)
+        {
+            if (profile != null)
+                _listLogic.MarkFavoriteProducts(profile.UserId, branch, ret);
         }
     }
 }

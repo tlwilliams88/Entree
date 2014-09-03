@@ -10,7 +10,7 @@ namespace KeithLink.Svc.WebApi
         public ApiKeyedRoute(string template)
             : base(template)
         {
-            AllowedApiKeys = new List<string>() { "gstest", "" };
+            AllowedApiKeys = Svc.Impl.Configuration.AllowedApiKeys;
         }
         public List<string> AllowedApiKeys
         {
