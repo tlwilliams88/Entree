@@ -16,7 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	[Authorize]
+	//[Authorize]
     public class CatalogController : BaseController
     {
         #region attributes
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
         [HttpGet]
-        [Route("catalog/categories")]
+        [ApiKeyedRoute("catalog/categories")]
         public CategoriesReturn GetCategories()
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
@@ -46,14 +46,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("catalog/category/{id}/categories")]
+        [ApiKeyedRoute("catalog/category/{id}/categories")]
         public CategoriesReturn GetSubCategoriesByParentId(string id, [FromUri] SearchInputModel searchModel)
         {
             return _catalogLogic.GetCategories(searchModel.From, searchModel.Size);
         }
 
         [HttpGet]
-        [Route("catalog/search/category/{branchId}/{categoryId}/products")]
+        [ApiKeyedRoute("catalog/search/category/{branchId}/{categoryId}/products")]
         public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId, [FromUri] SearchInputModel searchModel)
         {
 
@@ -66,7 +66,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("catalog/category/{id}")]
+        [ApiKeyedRoute("catalog/category/{id}")]
 		public CategoriesReturn GetCategoriesById(string id, [FromUri] SearchInputModel searchModel)
         {
 			//TODO: This is not actually getting a category by ID (ID is never used).
@@ -74,7 +74,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("catalog/product/{branchId}/{id}")]
+        [ApiKeyedRoute("catalog/product/{branchId}/{id}")]
         public Product GetProductById(string branchId, string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
@@ -97,7 +97,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("catalog/search/{branchId}/{searchTerms}/products")]
+        [ApiKeyedRoute("catalog/search/{branchId}/{searchTerms}/products")]
 		public ProductsReturn GetProductsSearch(string branchId, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(branchId, searchTerms, searchModel, this.AuthenticatedUser);

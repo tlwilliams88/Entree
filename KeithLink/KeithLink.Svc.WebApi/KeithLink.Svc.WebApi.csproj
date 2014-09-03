@@ -171,6 +171,8 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\ApiKeyedRoute.cs" />
+    <Compile Include="App_Start\ApiKeyedRouteConstraint.cs" />
     <Compile Include="App_Start\DependencyMap.cs" />
     <Compile Include="App_Start\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="App_Start\Startup.cs" />
