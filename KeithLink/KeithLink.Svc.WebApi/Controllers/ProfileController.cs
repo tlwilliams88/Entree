@@ -70,7 +70,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Route("profile")]
         public Core.Models.Profile.UserProfileReturn GetUser(string emailAddress)
         {
-            return _profileRepo.GetUserProfile(emailAddress);
+            try
+            {
+                return _profileRepo.GetUserProfile(emailAddress);
+            }
+            catch {
+                return null;
+            }
         }
 
         //[AllowAnonymous]

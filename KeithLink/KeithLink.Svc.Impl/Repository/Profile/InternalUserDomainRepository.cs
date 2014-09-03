@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                             Configuration.ActiveDirectoryInternalPassword))
                 {
                     // if user exists
-                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, userName);
+                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, IdentityType.SamAccountName, userName);
 
                     if (authenticatingUser == null)
                     {
