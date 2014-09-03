@@ -90,19 +90,19 @@ namespace KeithLink.Svc.Impl.Logic
 
             PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
-            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
-            {
-                if (searchModel.SDir == "asc")
-                    pricingInfo.Prices.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
-                else
-                    pricingInfo.Prices.Sort((x, y) => y.CasePrice.CompareTo(x.CasePrice));
-            }
-
             foreach (Price p in pricingInfo.Prices)
             {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
                 prod.CasePrice = String.Format("{0:C}", p.CasePrice);
                 prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
+            }
+
+            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
+            {
+                if (searchModel.SDir == "asc")
+                    prods.Products.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
+                else
+                    prods.Products.Sort((x, y) => y.CasePrice.CompareTo(x.CasePrice));
             }
         }
 
