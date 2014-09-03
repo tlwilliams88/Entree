@@ -4,7 +4,8 @@
     margin: 0;
   }
 
-  .table-row-data [class^='col-'] {
+  .table-row-data [class^='col-'],
+  .filter-row [class^='col-'] {
     padding: 14px 5px;
   }
 
@@ -29,6 +30,7 @@
     
     .table-col-icons {
       padding: 8px 5px;
+      white-space: nowrap;
 
       a,span {
         display: inline-block;
@@ -43,14 +45,17 @@
       input {   
         min-height: 0;
         padding: 5px;
+        width: 100%;
       }
 
       .select-div {
         min-height: 0;
+        width: 100%;
 
         select {
           padding: 5px;
           min-height: 0;
+          width: calc(100% + 40px);
         }
       }  
     }
@@ -59,5 +64,9 @@
       background-color: $background;
     }
 
+    &.filter-row {
+      border-bottom: none;
+      background-color: $color-white;
+    }
   }
 }

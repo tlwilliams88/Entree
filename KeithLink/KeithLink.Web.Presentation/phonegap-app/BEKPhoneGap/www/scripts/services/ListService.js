@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', 'UserProfileService', function ($http, $q, UserProfileService) {
+  .factory('ListService', ['$http', '$q', 'UserProfileService', 'NameGeneratorService', 'List', function ($http, $q, UserProfileService, NameGeneratorService, List) {
 
     function getBranch() {
       return UserProfileService.getCurrentBranchId();
@@ -23,23 +23,26 @@ angular.module('bekApp')
         }
       });
 
-      listFound.isFavoritesList = true;
-      angular.copy(listFound, Service.favoritesList);
+      if (listFound) {
+        listFound.isFavoritesList = true;
+        angular.copy(listFound, Service.favoritesList);
 
-      if (!Service.favoritesList.items) {
-        Service.getList(Service.favoritesList.listid).then(function (response) {
-          Service.favoritesList.items = response.items;
-        });
+        if (!Service.favoritesList.items) {
+          Service.getList(Service.favoritesList.listid).then(function (response) {
+            Service.favoritesList.items = response.items;
+          });
+        }
       }
     }
 
     function addItemToList(listId, item) {
+      delete item.listitemid;
       item.position = 0;
       item.label = null;
       item.parlevel = 0;
 
-      return $http.post('/list/' + listId + '/item', item).then(function(response) {
-        item.listitemid = response.data.listitemid;
+      return List.addItem({ listId: listId }, item).$promise.then(function(response) {
+        item.listitemid = response.listitemid;
         item.editPositioin = 0;
         item.editLabel = null;
         item.editParlevel = 0;
@@ -49,31 +52,8 @@ angular.module('bekApp')
           updatedList.items.push(item);
         }
         
-        return response.data;
+        return response;
       });
-    }
-
-    function isUsedName(listNames, name, number) {
-      return listNames.indexOf(name + ' ' + number) > -1;
-    }
-
-    function generateNewListName() {
-      var name = 'New List',
-        number = 0;
-
-      var listNames = [];
-
-      angular.forEach(Service.lists, function(list, index) {
-        listNames.push(list.name);
-      });
-
-      var isNameUsed = isUsedName(listNames, name, number);
-      while (isNameUsed) {
-        number++;
-        isNameUsed = isUsedName(listNames, name, number);
-      }
-
-      return name + ' ' + number;
     }
 
     // updates favorite status of given itemNumber in all lists
@@ -93,21 +73,18 @@ angular.module('bekApp')
       labels: [],
 
       getAllLists: function(requestParams) {
-        return $http.get('/list/' + getBranch(), {
-          params: requestParams
-        }).then(function(response) {
-
-          var returnedLists = response.data;
-
-          angular.copy(returnedLists, Service.lists);
+        return List.query(requestParams).$promise.then(function(lists) {
+          angular.copy(lists, Service.lists);
           setFavoritesList();
-          return returnedLists;
+          console.log(lists);
+          return lists;
         });
       },
 
       getList: function(listId) {
-        return $http.get('/list/' + getBranch() + '/' + listId).then(function(response) {
-          return response.data;
+        return List.get({ listId: listId }).$promise.then(function(list) {
+          console.log(list);
+          return list;
         });
       },
 
@@ -130,18 +107,19 @@ angular.module('bekApp')
         }
 
         var newList = {
-          name: generateNewListName(),
+          name: NameGeneratorService.generateName('List', Service.lists),
           items: items
         };
 
-        return $http.post('/list/' + getBranch(), newList).then(function(response) {
-          newList.listid = response.data.listitemid;
+        return List.save(null, newList).$promise.then(function(response) {
+          newList.listid = response.listitemid;
           Service.lists.push(newList);
           return newList; // return listId
         });
       },
 
       createListWithItem: function(item) {
+        delete item.listitemid;
         var items = [item];
 
         return $q.all([
@@ -151,13 +129,13 @@ angular.module('bekApp')
       },
 
       deleteList: function(listId) {
-        return $http.delete('/list/' + listId).then(function(response) {
+        return List.delete({ listId: listId }).$promise.then(function(response) {
           var deletedList = Service.findListById(listId);
           var idx = Service.lists.indexOf(deletedList);
           if (idx > -1) {
             Service.lists.splice(idx, 1);
           }
-          return response.data;
+          return response;
         });
       },
 
@@ -181,20 +159,19 @@ angular.module('bekApp')
       },*/
 
       deleteItem: function(listId, listItemId) {
-        // TODO: sometimes reloads all listitemids but this is inconsistent
-        return $http.delete('/list/' + listId + '/item/' + listItemId).then(function(response) {
+        return List.deleteItem({ listId: listId, listItemId: listItemId }).$promise.then(function(response) {
           var updatedList = Service.findListById(listId);
           angular.forEach(updatedList.items, function(item, index) {
             if (item.listitemid === listItemId) {
               updatedList.items.splice(index, 1);
             }
           });
-          return response.data;
+          return response;
         });
       },
 
       updateList: function(list) {
-        return $http.put('/list', list).then(function(response) {
+        return List.update(null, list).$promise.then(function(response) {
 
           angular.forEach(list.items, function(item, index) {
             if (item.label && Service.labels.indexOf(item.label) === -1) {

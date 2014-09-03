@@ -29,6 +29,8 @@ angular.module('bekApp')
 
      responseError: function (rejection) {
       if (rejection.status === 401) {
+        localStorageService.remove(Constants.localStorage.userProfile);
+        localStorageService.remove(Constants.localStorage.userToken);
         $location.path('/register');
       }
       return $q.reject(rejection);
@@ -46,8 +48,7 @@ angular.module('bekApp')
     // do not need to authenticate these urls
     var authorizedApiUrls = [
       '../servicelocator',
-      '/authen',
-      '/catalog'
+      '/authen'
     ];
 
     var isSecure = true;
