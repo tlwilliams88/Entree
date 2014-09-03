@@ -137,7 +137,16 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Logic\SiteCatalogLogicImpl.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
-    <Compile Include="Models\ElasticSearchItemUpdate.cs" />
+    <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
+    <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandUpdate.cs" />
+    <Compile Include="Models\ElasticSearch\BrandControlLabels\RootData.cs" />
+    <Compile Include="Models\ElasticSearch\Item\AdditionalData.cs" />
+    <Compile Include="Models\ElasticSearch\Item\Allergen.cs" />
+    <Compile Include="Models\ElasticSearch\Item\Diet.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemNutrition.cs" />
+    <Compile Include="Models\ElasticSearch\Item\ItemUpdate.cs" />
+    <Compile Include="Models\ElasticSearch\Item\NutritionalInformation.cs" />
+    <Compile Include="Models\ElasticSearch\Item\RootData.cs" />
     <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />

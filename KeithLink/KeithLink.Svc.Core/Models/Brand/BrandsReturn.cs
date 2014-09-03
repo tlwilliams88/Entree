@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
+using Nest;
 
 namespace KeithLink.Svc.Core.Models.Brand
 {
-    public class BrandsReturn : List<Brand>
+    public class BrandsReturn
     {
         #region " attributes "
         #endregion
@@ -21,6 +24,10 @@ namespace KeithLink.Svc.Core.Models.Brand
         #endregion
 
         #region " properties "
+        [DataMember(Name = "brands")]
+        [ElasticProperty(Name = "brands")]
+        [JsonProperty("brands")]
+        public List<Brand> Brands { get; set; }
         #endregion
     }
 }
