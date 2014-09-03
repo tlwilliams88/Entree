@@ -58,8 +58,8 @@ angular.module('bekApp')
         });
       },
 
-      updateCart: function(cart) {
-        return Cart.update(null, cart).$promise.then(function(response) {
+      updateCart: function(cart, params) {
+        return Cart.update(params, cart).$promise.then(function(response) {
           console.log(response.data);
           return response.data;
         });

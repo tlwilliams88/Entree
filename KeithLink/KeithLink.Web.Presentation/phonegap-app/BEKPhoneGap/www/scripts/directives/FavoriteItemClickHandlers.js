@@ -6,7 +6,7 @@ angular.module('bekApp')
     restrict: 'A',
     replace : true,
     scope: true,
-    controller: ['$scope', '$element', 'ListService', function($scope, $element, ListService){
+    controller: ['$scope', 'ListService', function($scope, ListService){
 
       $scope.addItemToFavorites = function(item) {
         // $scope.$emit('processing-start');

@@ -1,5 +1,13 @@
 'use strict';
 
+/**
+ * @ngdoc function
+ * @name bekApp.directive:allowOnePositiveDecimal
+ * @description
+ * form validation where the input can have only one decimal place and must be positive
+ *
+ * used for list parlevel
+ */
 angular.module('bekApp')
 .directive('allowOnePositiveDecimal',function(){
   var directive = {

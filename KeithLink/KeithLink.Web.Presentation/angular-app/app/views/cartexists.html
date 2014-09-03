@@ -9,7 +9,7 @@
           <li>
             <div class="row cart-selection-list">
               <div class="col-xs-12">
-                <a class="text-regular" ng-click="goToCart(cart)" ng-repeat="cart in carts | orderBy: 'name'">
+                <a class="text-regular" ng-click="goToCart(cart)" ng-if="cart !== currentCart" ng-repeat="cart in carts | orderBy: 'name'">
                   <div class="row">
                     <div class="col-xs-6">
                       {{cart.name}}
@@ -76,7 +76,7 @@
         </div>
         <div class="col-sm-6">
           <p class="input-group datepicker-input">
-            <input type="text" class="form-control" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="openedDatepicker" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="openedDatepicker" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="openDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
@@ -241,7 +241,7 @@
                   </ng-form>
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input">
-                  <ng-form name="eachForm">
+                  <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
                       <input type="checkbox" ng-model="item.each" id="each" name="each" />
                       <label for="each"></label>
                   </ng-form>
@@ -262,10 +262,14 @@
               <!-- Mobile Details -->
               <div class="row" ng-show="showDetails">
                 <div class="col-xs-12">
+                  <ng-form class="hidden-print" name="notesForm_mobile">
+                    Notes:
+                    <input clas="form-control" id="notes" name="notes" type="text" ng-model="item.notes" />
+                  </ng-form>
                   <p>Pack/Size: {{item.packsize}}</p>
                   <p>Brand: {{item.brand}}</p>
                   <p item-icons></p>
-                  <p>
+                  <p ng-if="item.packageprice !== '0'">
                     <!-- <div class="checkbox"> -->
                       <label for="each">Each</label>
                       <input type="checkbox" value="" name="each" id="each" ng-model="item.each">

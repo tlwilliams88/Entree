@@ -44,8 +44,6 @@ var app = {
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
 
-        alert("device ready!");
-
         console.log('Received Event: ' + id);
     }
 };

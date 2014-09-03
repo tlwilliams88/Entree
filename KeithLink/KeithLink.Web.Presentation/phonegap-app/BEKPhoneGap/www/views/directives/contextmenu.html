@@ -2,28 +2,27 @@
 <div class="context-menu" ng-show="displayedItems.isContextMenuDisplayed">
   <div class="btn-group-vertical">
 
-    <button favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn text-uppercase">To Favorites</button>
+    <button favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
     
     <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-      <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
-        Add to Order<span class="icon-arrow-right6"></span>
+      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+        Add to Cart<span class="icon-arrow-right6"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button type="button" class="btn">Order 1</button>
-          <button type="button" class="btn">Order 2</button>
-          <button type="button" class="btn">New Order...</button>
+          <button type="button" class="btn btn-default" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)">{{cart.name}}</button>
+          <button type="button" class="btn btn-default" ng-click="createCartWithItem(item)">New Cart...</button>
         </div>
       </ul>
     </div>
     <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-      <button type="button" class="btn btn-primary dropdown-toggle" ng-disabled="disabled">
+      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
         Add to List <span class="icon-arrow-right6"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" type="button" class="btn" ng-click="addItemToList(list.listid, item)">{{list.name}} {{list.isFavoritesList}} </button>
-          <button type="button" class="btn" ng-click="createListWithItem(item)">New List...</button>
+          <button ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+          <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
     </div>

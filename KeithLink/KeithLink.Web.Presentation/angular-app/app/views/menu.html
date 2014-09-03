@@ -19,7 +19,7 @@
     <ul class="list-unstyled" ng-click="$spMenu.hide()">
         
         <div ng-show="displayUserMenu">
-          <a ui-sref="menu.accountdetails" ui-sref-active="is-selected">
+          <a ui-sref="menu.accountdetails">
             <li>Account Settings</li>
           </a>
           <a ng-click="logout()">
@@ -27,7 +27,7 @@
           </a>
         </div>
 
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenMobile" ui-sref="{{item.sref}}" ui-sref-active="is-selected">
+        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenMobile" ui-sref="{{item.sref}}" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
         </a>
     </ul>
@@ -55,7 +55,7 @@
 
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenDesktop" ui-sref="{{item.sref}}" ui-sref-active="is-selected">
+        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenDesktop" ui-sref="{{item.sref}}" ui-sref-active="is-selected" ng-class="{ 'is-selected' :$state.current.name.indexOf(item.sref) > -1 }">
           <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
         </a>
       </ul>

@@ -24,6 +24,17 @@ module.exports = function(grunt) {
           permissions: []
         }
       },
+      clean: [
+      "www/images/{,*/}*",
+      "www/lib/{,*/}*",
+      "www/scripts/app.js",
+      "www/scripts/controllers/{,*/}*",
+      "www/scripts/directives/{,*/}*",
+      "www/scripts/services/{,*/}*",
+      "www/scripts/resources/{,*/}*",
+      "www/scss/{,*/}*",
+      "www/views/{,*/}*"
+      ],
       sass: {
         dist: {
           files: [
@@ -51,60 +62,63 @@ module.exports = function(grunt) {
         }
       },
       copy: {
-        files: [{
-    cwd: '../../angular-app/app/',  // set working folder / root to copy
-    src: 'index.html',           // copy index.html
-    dest: 'www/',    // destination folder
-    expand: true           // required when using cwd
-  },
-  {
-cwd: '../../angular-app/images/',  // set working folder / root to copy
+        all: {
+        files: [
+{
+cwd: '../../angular-app/app/images/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/images/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/lib/',  // set working folder / root to copy
+cwd: '../../angular-app/app/lib/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/lib/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/scripts/app.js/',  // set working folder / root to copy
+cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
     src: 'app.js',           // copy app.js
     dest: 'www/scripts/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/scripts/controllers/',  // set working folder / root to copy
+cwd: '../../angular-app/app/scripts/controllers/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/controllers/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/scripts/directives/',  // set working folder / root to copy
+cwd: '../../angular-app/app/scripts/directives/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/directives/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/scripts/services/',  // set working folder / root to copy
+cwd: '../../angular-app/app/scripts/services/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/services/',    // destination folder
     expand: true           // required when using cwd
   },
+    {
+cwd: '../../angular-app/app/scripts/resources/',  // set working folder / root to copy
+    src: '**/*',           // copy all files and subfolders
+    dest: 'www/scripts/resources/',    // destination folder
+    expand: true           // required when using cwd
+  },
   {
-cwd: '../../angular-app/views/',  // set working folder / root to copy
+cwd: '../../angular-app/app/views/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/views/',    // destination folder
     expand: true           // required when using cwd
   },
   {
-cwd: '../../angular-app/styles/',  // set working folder / root to copy
+cwd: '../../angular-app/app/styles/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scss/',    // destination folder
     expand: true           // required when using cwd
   }]
+}
       },
       watch: {
         css: {
@@ -129,7 +143,7 @@ cwd: '../../angular-app/styles/',  // set working folder / root to copy
      grunt.loadNpmTasks('grunt-contrib-clean'),
      grunt.registerTask('update',[
       'clean',
-      'copy']),
+      'copy:all']),
      grunt.registerTask('server', function() {
       grunt.task.run('connect:server');
       return grunt.task.run('watch');

@@ -12,6 +12,8 @@ angular.module('bekApp')
   .controller('MenuController', ['$scope', '$state', '$modal', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
     function ($scope, $state, $modal, Constants, AuthenticationService, UserProfileService, AccessService) {
 
+    $scope.$state = $state;
+
     $scope.userProfile = UserProfileService.profile();
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
@@ -127,7 +129,7 @@ angular.module('bekApp')
       }, {
         'text': 'Add to Order',
         'icon': 'add-to-list',
-        'sref': 'blank',
+        'sref': 'menu.addtoorder',
         'accessRule': 'canCreateOrders'
       }, {
         'text': 'Notifications',
