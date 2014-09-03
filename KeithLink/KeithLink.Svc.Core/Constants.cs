@@ -39,9 +39,15 @@ namespace KeithLink.Svc.Core
 
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";
+        public const string ES_INDEX_BRANDS = "brands";
 
         // Elastic Search : Types
         public const string ES_TYPE_CATEGORY = "category";
+        public const string ES_TYPE_BRAND = "brand";
+
+
+        // Brand Assets
+        public const string BRAND_IMAGE_URL_FORMAT = "http://{0}/{1}.jpg";
 
     }
 }

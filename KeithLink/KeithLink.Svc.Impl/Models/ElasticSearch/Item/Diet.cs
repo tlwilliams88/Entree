@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 {
     public class Diet
     {
-        [DataMember(Name = "diettype")]
+        [JsonProperty("diettype")]
         public string DietType { get; set; }
     }
 }

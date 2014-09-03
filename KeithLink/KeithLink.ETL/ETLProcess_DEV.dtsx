@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="96"
-  DTS:VersionGUID="{12753075-DA84-47D5-8D54-3266A13230DD}">
+  DTS:VersionBuild="100"
+  DTS:VersionGUID="{CC460ED3-C809-4471-A358-5A0D38343C3D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs0BJv/x9SEGui0p8erVwEgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAA68GALYPYFV83bIdg3ryWAAAAAASAAACgAAAAEAAAAI779I6Gjvuov3v+tdkxrQMIAAAAGBh4rHJCiT4UAAAATLfY4MGQ0yF6131ArnwxFuqSTSA</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs0BJv/x9SEGui0p8erVwEgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADLX9vTN8SjTjkaXcv/9/c1AAAAAASAAACgAAAAEAAAAMzOSZ8PrKiKjOj1KZ9R8HEIAAAAZrOedr2bhboUAAAANTnHYwKxKAN0Ttz3PUXZRhhk4ww</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs0BJv/x9SEGui0p8erVwEgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADdoPGEX+PXDxkgSQuvZ5kWAAAAAASAAACgAAAAEAAAACZapHci25BuujEW+auWvXMIAAAAAPqLLYuD3tcUAAAAuaCmwlqpz6tdKZcV03H3LOYNiS4</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAs0BJv/x9SEGui0p8erVwEgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD/bOAxYvoo8bcKTFPAV9lqAAAAAASAAACgAAAAEAAAAItwt/VT/aWY/FUpGmZbFH4IAAAAIfiXAp9caacUAAAAkYiULd9SenOjMwQQBrItloygucg</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -10262,7 +10262,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -11510,43 +11510,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -11588,7 +11588,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="3" />
+                          scale="10" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -11763,6 +11763,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -12229,14 +12238,35 @@ using System.Runtime.CompilerServices;
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -12435,7 +12465,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="2">
+      DTS:ThreadHint="3">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -12464,6 +12494,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       <DTS:LoggingOptions
         DTS:FilterKind="0" />
       <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Truncate Stage Tables\Truncate Brand Tables"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{f40a2768-5616-4848-b3ca-05d01abd210f}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Brand Tables"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="2">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{9FBDC47F-B288-4ECE-983A-DD837053A574}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Brands];&#xA;TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Truncate Stage Tables\Truncate Catalog Stage Tables"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
@@ -12616,7 +12665,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         <NodeLayout
           Size="193,42"
           Id="Package\Archive Mainframe Files"
-          TopLeft="1039.5,903.25" />
+          TopLeft="1039.5,916.25" />
         <NodeLayout
           Size="151,42"
           Id="Package\Catalog Import Tasks\Stage Branches"
@@ -12647,7 +12696,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           PanelSize="689,206"
           Size="689,249"
           Id="Package\Catalog Import Tasks"
-          TopLeft="60,332.25" />
+          TopLeft="60,345.25" />
         <NodeLayout
           Size="158,42"
           Id="Package\GS1 Import Tasks\Product Allergen"
@@ -12670,19 +12719,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           PanelSize="694,66"
           Size="694,109"
           Id="Package\GS1 Import Tasks"
-          TopLeft="174.75,704.75" />
+          TopLeft="174.75,717.75" />
         <NodeLayout
           Size="178,42"
           Id="Package\Process Staged Data"
-          TopLeft="817.25,901.25" />
+          TopLeft="817.25,914.25" />
         <NodeLayout
           Size="187,42"
           Id="Package\Rename Customer File"
-          TopLeft="639.5,0.75" />
+          TopLeft="639.5,13.75" />
         <NodeLayout
           Size="168,42"
           Id="Package\Send Fail Message"
-          TopLeft="923,289.5" />
+          TopLeft="923,302.5" />
         <NodeLayout
           Size="225,42"
           Id="Package\Truncate Stage Tables\Truncate Catalog Stage Tables"
@@ -12691,39 +12740,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="209,42"
           Id="Package\Truncate Stage Tables\Truncate GS1 Stage Tables"
           TopLeft="264,5" />
+        <NodeLayout
+          Size="225,42"
+          Id="Package\Truncate Stage Tables\Truncate Brand Tables"
+          TopLeft="134,63" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="518,67"
-          Size="518,110"
+          PanelSize="518,114"
+          Size="518,157"
           Id="Package\Truncate Stage Tables"
           TopLeft="63,54.5" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="237,164.5">
+          TopLeft="237,211.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="167.5,167.75"
+              EndConnector="167.5,133.75"
               Start="0,0"
-              End="167.5,160.25">
+              End="167.5,126.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,63.4099307159353" />
+                    End="0,49.7471131639723" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,63.4099307159353"
-                    Point2="0,67.4099307159353"
-                    Point3="4,67.4099307159353" />
+                    Point1="0,49.7471131639723"
+                    Point2="0,53.7471131639723"
+                    Point3="4,53.7471131639723" />
                   <mssgle:LineSegment
-                    End="163.5,67.4099307159353" />
+                    End="163.5,53.7471131639723" />
                   <mssgle:CubicBezierSegment
-                    Point1="163.5,67.4099307159353"
-                    Point2="167.5,67.4099307159353"
-                    Point3="167.5,71.4099307159353" />
+                    Point1="163.5,53.7471131639723"
+                    Point2="167.5,53.7471131639723"
+                    Point3="167.5,57.7471131639723" />
                   <mssgle:LineSegment
-                    End="167.5,160.25" />
+                    End="167.5,126.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12734,7 +12787,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="405.958333333333,581.25">
+          TopLeft="405.958333333333,594.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12756,7 +12809,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="1136,903.25">
+          TopLeft="1136,916.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12792,7 +12845,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="521.75,813.75">
+          TopLeft="521.75,826.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12826,43 +12879,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="407,164.5">
+          TopLeft="407,211.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="573.333333333333,125"
+              EndConnector="573.333333333333,91"
               Start="0,0"
-              End="573.333333333333,117.5">
+              End="573.333333333333,83.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,58.0050681026291" />
+                    End="0,41.139689578714" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,58.0050681026291"
-                    Point2="0,62.0050681026291"
-                    Point3="4,62.0050681026291" />
+                    Point1="0,41.139689578714"
+                    Point2="0,45.139689578714"
+                    Point3="4,45.139689578714" />
                   <mssgle:LineSegment
-                    End="569.333333333333,62.0050681026291" />
+                    End="569.333333333333,45.139689578714" />
                   <mssgle:CubicBezierSegment
-                    Point1="569.333333333333,62.0050681026291"
-                    Point2="573.333333333333,62.0050681026291"
-                    Point3="573.333333333333,66.0050681026291" />
+                    Point1="569.333333333333,45.139689578714"
+                    Point2="573.333333333333,45.139689578714"
+                    Point3="573.333333333333,49.139689578714" />
                   <mssgle:LineSegment
-                    End="573.333333333333,117.5" />
+                    End="573.333333333333,83.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="271.425319010417,67.0050681026291,30.4826953125,9.7490234375"
+              BoundingBox="271.425319010417,50.139689578714,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="749,456.75">
+          TopLeft="749,469.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12898,7 +12951,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="636.083333333333,704.75">
+          TopLeft="636.083333333333,717.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12934,7 +12987,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 6]"
-          TopLeft="906.25,901.25">
+          TopLeft="906.25,914.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12970,13 +13023,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="639.5,21.75">
+          TopLeft="639.5,34.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-58.5,87.75"
+              EndConnector="-58.5,98.25"
               Start="0,0"
-              End="-51,87.75">
+              End="-51,98.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -12987,13 +13040,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                     Point2="-29.25,0"
                     Point3="-29.25,4" />
                   <mssgle:LineSegment
-                    End="-29.25,83.75" />
+                    End="-29.25,94.25" />
                   <mssgle:CubicBezierSegment
-                    Point1="-29.25,83.75"
-                    Point2="-29.25,87.75"
-                    Point3="-33.25,87.75" />
+                    Point1="-29.25,94.25"
+                    Point2="-29.25,98.25"
+                    Point3="-33.25,98.25" />
                   <mssgle:LineSegment
-                    End="-51,87.75" />
+                    End="-51,98.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -13004,7 +13057,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="733,42.75">
+          TopLeft="733,55.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -13040,7 +13093,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="995.25,923.25">
+          TopLeft="995.25,936.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"

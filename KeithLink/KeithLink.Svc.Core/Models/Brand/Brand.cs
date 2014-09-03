@@ -26,12 +26,14 @@ namespace KeithLink.Svc.Core.Models.Brand
 
         #region " properties "
 
-        [DataMember(Name="id")]
-        [ElasticProperty(Name="id")]
-        public string Id {get;set;}
-        [DataMember(Name="name")]
-        [ElasticProperty(Name="name")]
-		public string Name { get; set; }
+        [DataMember(Name="brand_control_label")]
+        [ElasticProperty(Name="brand_control_label")]
+        public string BrandControlLabel {get;set;}
+
+        [DataMember(Name="extended_description")]
+        [ElasticProperty(Name="extended_description")]
+		public string ExtendedDescription { get; set; }
+
         [DataMember(Name="imageurl")]
         [ElasticProperty(Name="imageurl")]
 		public string ImageURL { get; set; }

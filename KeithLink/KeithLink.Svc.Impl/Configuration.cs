@@ -41,6 +41,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
+        private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
 
         #endregion
 
@@ -254,6 +255,11 @@ namespace KeithLink.Svc.Impl
         public static string MultiDocsUrl
         {
             get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
+        }
+
+        public static string BrandAssetsUrl
+        {
+            get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
         }
         #endregion
     }
