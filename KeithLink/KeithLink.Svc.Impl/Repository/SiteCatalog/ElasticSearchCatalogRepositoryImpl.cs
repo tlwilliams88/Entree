@@ -183,7 +183,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
             if (matchOnlyDigits.IsMatch(search))
             { // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
-                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + search))).ToList();
+                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + search + "*"))).ToList();
                 digitSearchTerms.Insert(0, search);
                 termSearch = String.Join(" OR ", digitSearchTerms);
             }
