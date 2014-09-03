@@ -13,6 +13,10 @@ angular.module('bekApp')
     $scope.item = item;
     $scope.item.quantity = 1;
     
+    ProductService.getProductDetails(item.itemnumber).then(function(item) {
+      $scope.item.productimages = item.productimages;
+    });
+
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({

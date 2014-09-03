@@ -2,7 +2,7 @@
   <div class="col-md-7 page-header-bar__message">
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
-        <button type="button" class="btn btn-default cart-selection-button dropdown-toggle">
+        <button type="button" class="btn btn-default cart-selection-button dropdown-toggle" ng-disabled="carts.length === 1">
           {{currentCart.name}} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu cart-selection">
@@ -57,6 +57,12 @@
   </div>
 </div>
 
+<div class="row">
+  <div class="col-xs-12">
+    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+  </div>
+</div>
+
 <form unsaved-warning-form novalidate name="cartForm" class="style-validation-errors">
 <div class="row">
   <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
@@ -76,7 +82,7 @@
         </div>
         <div class="col-sm-6">
           <p class="input-group datepicker-input">
-            <input type="text" class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="openedDatepicker" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="openDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
@@ -108,6 +114,7 @@
     </div>
   </div>
 </div>
+</form>
 
 <div class="row">
   <div class="col-md-12">
@@ -207,6 +214,7 @@
           </div> <!-- end Filter row -->
 
           <!-- Data rows -->
+          <form unsaved-warning-form novalidate name="cartItemsForm" class="style-validation-errors">
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
@@ -235,9 +243,7 @@
                 </div>
                 <div class="col-md-1 table-col-input col-xs-2">
                   <ng-form class="hidden-print" name="quantityForm">
-                    <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
-                        <option value=""></option>
-                      </select>
+                    <div quantity-input="item.quantity"></div>
                   </ng-form>
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input">
@@ -281,6 +287,7 @@
               </div> <!-- end Mobile details -->
             </div>
           </div> <!-- end Data rows -->
+          </form>
         </div>
       </div>
 
@@ -297,4 +304,3 @@
     <div class="text-center sub-content" loading-spinner="loadingResults"></div>
   </div>
 </div>
-</form> 
