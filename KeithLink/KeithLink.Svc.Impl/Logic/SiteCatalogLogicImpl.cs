@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Logic
             ProductsReturn ret;
             
             // special handling for price sorting
-            if (searchModel.SField == "price")
+            if (searchModel.SField == "caseprice")
                 ret = _catalogRepository.GetProductsByCategory(branch, category, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
                 ret = _catalogRepository.GetProductsByCategory(branch, category, searchModel);
@@ -73,7 +73,7 @@ namespace KeithLink.Svc.Impl.Logic
             ProductsReturn ret;
 
             // special handling for price sorting
-            if (searchModel.SField == "price")
+            if (searchModel.SField == "caseprice")
                 ret = _catalogRepository.GetProductsBySearch(branch, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
                 ret = _catalogRepository.GetProductsBySearch(branch, search, searchModel);
@@ -90,12 +90,12 @@ namespace KeithLink.Svc.Impl.Logic
 
             PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
-            if (searchModel.SField == "price" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
+            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
-                    pricingInfo.Prices.Sort((x, y) => x.PackagePrice.CompareTo(y.PackagePrice));
+                    pricingInfo.Prices.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
                 else
-                    pricingInfo.Prices.Sort((x, y) => y.PackagePrice.CompareTo(x.PackagePrice));
+                    pricingInfo.Prices.Sort((x, y) => y.CasePrice.CompareTo(x.CasePrice));
             }
 
             foreach (Price p in pricingInfo.Prices)
