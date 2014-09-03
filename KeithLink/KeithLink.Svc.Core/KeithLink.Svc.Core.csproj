@@ -107,7 +107,9 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Models\SiteCatalog\Price.cs" />
     <Compile Include="Interface\InternalCatalog\IElasticSearchRepository.cs" />
     <Compile Include="Models\SiteCatalog\Product.cs" />
+    <Compile Include="Models\SiteCatalog\SearchInputModel.cs" />
     <Compile Include="Models\SiteCatalog\SubCategory.cs" />
     <Compile Include="Models\Profile\CustomerContainer.cs" />
     <Compile Include="Models\Profile\CustomerContainerReturn.cs" />

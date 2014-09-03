@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     new SubCategory() { Id = "PS941", Name="Pork, Chops", Description="Pork Chops"}}},
         };
 
-		public ProductsReturn GetProductsByCategory(string branch, string category, int from, int size, string facetFilters, string sortField, string sortDir)
+		public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel)
         {
             if (String.IsNullOrEmpty(category))
             {
@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         }
 
 
-		public ProductsReturn GetProductsBySearch(string branch, string search, int from, int size, string facetFilters, string sortField, string sortDir)
+		public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel)
         {
             throw new NotImplementedException();
         }

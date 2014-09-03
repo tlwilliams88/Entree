@@ -169,7 +169,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
+				var price = pricing.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
 				
 				if (prod != null)
 				{

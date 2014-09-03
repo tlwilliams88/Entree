@@ -19,15 +19,15 @@ namespace KeithLink.Svc.Impl.Logic
 	{
 		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
-		private readonly IPriceRepository priceRepository;
+		private readonly IPriceLogic priceLogic;
 
 		private readonly string BasketStatus = "ShoppingCart";
 
-		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
-			this.priceRepository = priceRepository;
+			this.priceLogic = priceLogic;
 		}
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
@@ -159,7 +159,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerId, DateTime.Now.AddDays(1), products.Products); 
+			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerId, DateTime.Now.AddDays(1), products.Products); 
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
