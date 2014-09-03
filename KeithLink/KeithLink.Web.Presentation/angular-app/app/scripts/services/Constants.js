@@ -20,5 +20,5 @@ angular.module('bekApp')
       USER: 'User'
     },
 
-    infiniteScrollPageSize: 30
+    infiniteScrollPageSize: 50
   });

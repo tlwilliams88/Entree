@@ -32,12 +32,15 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
 
             // Register other dependencies.
-            builder.Register(p => new PriceRepositoryImpl()).As<IPriceRepository>().InstancePerRequest();
-            builder.Register(c => new CatalogElasticSearchRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+            builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
-			
+
+            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            builder.RegisterType<PriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
+            builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 			builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();

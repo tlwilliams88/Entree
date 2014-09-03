@@ -135,35 +135,67 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   padding-top: 50px;
 }
 
+/* line 82, ../scss/_global-setup.scss */
+.hand {
+  cursor: pointer;
+}
+
+/* line 86, ../scss/_global-setup.scss */
+.nowrap {
+  white-space: nowrap;
+}
+
 /* BUTTONS */
-/* line 10, ../scss/_component.scss */
+/* line 16, ../scss/_component.scss */
 .btn {
   font-weight: 300;
   letter-spacing: 1px;
   border: 1px solid #c3bc9c;
   min-height: 40px;
-  background-color: white;
   white-space: inherit;
   padding: 9px 12px;
 }
-/* line 18, ../scss/_component.scss */
-.btn.cta-btn {
+/* line 24, ../scss/_component.scss */
+.btn.btn-default:hover, .btn.btn-default:active, .btn.btn-default:focus {
+  background-color: #EBE7D9;
+  border-color: #c3bc9c;
+}
+/* line 30, ../scss/_component.scss */
+.btn.btn-primary {
+  color: white;
+  background-color: #489ecf;
+  border: none;
+}
+/* line 33, ../scss/_component.scss */
+.btn.btn-danger {
+  color: white;
+  background-color: #dc6a6a;
+  border: none;
+}
+/* line 36, ../scss/_component.scss */
+.btn.btn-success {
+  color: white;
+  background-color: #04a773;
+  border: none;
+}
+/* line 39, ../scss/_component.scss */
+.btn.btn-info {
   color: white;
   background-color: #489ecf;
   border: none;
 }
 
-/* line 25, ../scss/_component.scss */
+/* line 44, ../scss/_component.scss */
 .btn-no-style {
   background: transparent;
   border: none;
 }
-/* line 29, ../scss/_component.scss */
+/* line 48, ../scss/_component.scss */
 .btn-no-style:focus {
   outline: none;
 }
 
-/* line 34, ../scss/_component.scss */
+/* line 53, ../scss/_component.scss */
 .btn-icon {
   font-size: 20px;
   color: #a0947f;
@@ -171,13 +203,13 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   padding: 5px 9px;
 }
 
-/* line 42, ../scss/_component.scss */
+/* line 61, ../scss/_component.scss */
 .btn-group-vertical .btn {
   text-align: left;
 }
 
 /* SELECT DROPDOWNS */
-/* line 49, ../scss/_component.scss */
+/* line 68, ../scss/_component.scss */
 .select-div select {
   background: transparent;
   width: 300px;
@@ -188,7 +220,7 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   border: 0;
 }
 
-/* line 59, ../scss/_component.scss */
+/* line 78, ../scss/_component.scss */
 .select-div {
   display: inline-block;
   width: 260px;
@@ -200,33 +232,33 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
 }
 
 /* TEXT INPUTS */
-/* line 72, ../scss/_component.scss */
+/* line 91, ../scss/_component.scss */
 ::-webkit-input-placeholder {
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 76, ../scss/_component.scss */
+/* line 95, ../scss/_component.scss */
 :-moz-placeholder {
   /* Firefox 18- */
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 80, ../scss/_component.scss */
+/* line 99, ../scss/_component.scss */
 ::-moz-placeholder {
   /* Firefox 19+ */
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 84, ../scss/_component.scss */
+/* line 103, ../scss/_component.scss */
 :-ms-input-placeholder {
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 91, ../scss/_component.scss */
+/* line 110, ../scss/_component.scss */
 input[type='text'], input[type='email'], input[type='password'] {
   font-weight: 300;
   letter-spacing: 1px;
@@ -236,11 +268,11 @@ input[type='text'], input[type='email'], input[type='password'] {
 }
 
 /* TABS */
-/* line 99, ../scss/_component.scss */
+/* line 118, ../scss/_component.scss */
 .nav-tabs {
   border-bottom: 1px solid #c3bc9c;
 }
-/* line 103, ../scss/_component.scss */
+/* line 122, ../scss/_component.scss */
 .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   margin-right: 5px;
   color: #504938;
@@ -248,7 +280,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   border: 1px solid #c3bc9c;
   padding: 12px 40px;
 }
-/* line 114, ../scss/_component.scss */
+/* line 133, ../scss/_component.scss */
 .nav-tabs li.active a, .nav-tabs li.active a:hover {
   border: 1px solid #c3bc9c;
   border-bottom-color: transparent;
@@ -257,7 +289,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   font-weight: normal;
 }
 
-/* line 129, ../scss/_component.scss */
+/* line 148, ../scss/_component.scss */
 .tab-content .tab-pane {
   background-color: white;
   border-left: 1px solid #c3bc9c;
@@ -266,65 +298,35 @@ input[type='text'], input[type='email'], input[type='password'] {
 }
 
 @media (max-width: 768px) {
-  /* line 140, ../scss/_component.scss */
+  /* line 159, ../scss/_component.scss */
   .nav-tabs li {
     width: 100%;
   }
-  /* line 143, ../scss/_component.scss */
+  /* line 162, ../scss/_component.scss */
   .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
     margin-right: 0px;
     border-radius: 8px;
     margin-bottom: 5px;
   }
-  /* line 150, ../scss/_component.scss */
+  /* line 169, ../scss/_component.scss */
   .nav-tabs li.active a, .nav-tabs li.active a:hover {
     border-bottom-color: #c3bc9c;
   }
 }
 /* Checkboxes */
-/* line 170, ../scss/_component.scss */
-input[type="checkbox"] {
-  display: none;
-}
-
-/* line 173, ../scss/_component.scss */
-input[type="checkbox"] + label {
-  display: inline-block;
-  vertical-align: middle;
-  cursor: pointer;
-  padding-left: 25px;
-}
-
-/* line 160, ../scss/_component.scss */
-input[type="checkbox"] + label {
-  background: url("../images/checkbox-clear.png") center left no-repeat;
-  background-size: 20px;
-}
-
-/* line 164, ../scss/_component.scss */
-input[type="checkbox"]:checked + label {
-  background: url("../images/checkbox-checked.png") center left no-repeat;
-  background-size: 20px;
-}
-
 /* Search Form */
-/* line 184, ../scss/_component.scss */
+/* line 203, ../scss/_component.scss */
 .search-form {
   padding-bottom: 15px;
 }
-/* line 187, ../scss/_component.scss */
+/* line 206, ../scss/_component.scss */
 .search-form input {
   border-right: none;
 }
 
-/* line 192, ../scss/_component.scss */
+/* line 211, ../scss/_component.scss */
 hr {
   border-top: 1px solid #c3bc9c;
-}
-
-/* line 196, ../scss/_component.scss */
-.hand {
-  cursor: pointer;
 }
 
 /* TABLES */
@@ -668,53 +670,63 @@ ng-class="{ odd : $odd, even: $even }"
   margin: 0;
 }
 /* line 7, ../scss/_bootstrap-table.scss */
-.bootstrap-table .table-row-data [class^='col-'] {
+.bootstrap-table .table-row-data [class^='col-'],
+.bootstrap-table .filter-row [class^='col-'] {
   padding: 14px 5px;
 }
-/* line 12, ../scss/_bootstrap-table.scss */
+/* line 13, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-header .table-row {
   font-weight: 600;
   border: 1px solid #c3bc9c;
   background-color: #f3f1eb;
 }
-/* line 20, ../scss/_bootstrap-table.scss */
+/* line 21, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-body .table-row, .bootstrap-table .table-footer .table-row {
   border-bottom: 1px solid #c3bc9c;
   border-left: 1px solid #c3bc9c;
   border-right: 1px solid #c3bc9c;
   background-color: white;
 }
-/* line 30, ../scss/_bootstrap-table.scss */
+/* line 31, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row .table-col-icons {
   padding: 8px 5px;
+  white-space: nowrap;
 }
-/* line 33, ../scss/_bootstrap-table.scss */
+/* line 35, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row .table-col-icons a, .bootstrap-table .table-row .table-col-icons .nav-tabs li.active a:hover, .nav-tabs li.active .bootstrap-table .table-row .table-col-icons a:hover, .bootstrap-table .table-row .table-col-icons span {
   display: inline-block;
   font-size: 18px;
 }
-/* line 39, ../scss/_bootstrap-table.scss */
+/* line 41, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row .table-col-input {
   padding-top: 6px;
   padding-bottom: 4px;
 }
-/* line 43, ../scss/_bootstrap-table.scss */
+/* line 45, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row .table-col-input input {
   min-height: 0;
   padding: 5px;
-}
-/* line 48, ../scss/_bootstrap-table.scss */
-.bootstrap-table .table-row .table-col-input .select-div {
-  min-height: 0;
+  width: 100%;
 }
 /* line 51, ../scss/_bootstrap-table.scss */
+.bootstrap-table .table-row .table-col-input .select-div {
+  min-height: 0;
+  width: 100%;
+}
+/* line 55, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row .table-col-input .select-div select {
   padding: 5px;
   min-height: 0;
+  width: calc(100% + 40px);
 }
-/* line 58, ../scss/_bootstrap-table.scss */
+/* line 63, ../scss/_bootstrap-table.scss */
 .bootstrap-table .table-row.odd {
   background-color: #f3f1eb;
+}
+/* line 67, ../scss/_bootstrap-table.scss */
+.bootstrap-table .table-row.filter-row {
+  border-bottom: none;
+  background-color: white;
 }
 
 /* line 1, ../scss/_forms.scss */
@@ -727,9 +739,14 @@ ng-class="{ odd : $odd, even: $even }"
   vertical-align: middle;
 }
 
-/* line 10, ../scss/_forms.scss */
+/* line 12, ../scss/_forms.scss */
 form.style-validation-errors input.ng-dirty.ng-invalid {
   border: 1px solid #dc6a6a !important;
+}
+/* line 16, ../scss/_forms.scss */
+form.style-validation-errors .form-error-message {
+  color: #dc6a6a;
+  font-size: 12px;
 }
 
 /* line 9, ../scss/_sidebar.scss */
@@ -944,8 +961,8 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 .page-header-bar {
   background-color: white;
   border-bottom: 1px solid #c3bc9c;
-  padding-top: 5px;
-  padding-bottom: 5px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   margin-bottom: 30px;
   position: relative;
   -webkit-box-shadow: 0px 1px 10px #c3bc9c;
@@ -980,7 +997,6 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 .page-header-bar .page-header-bar__message {
   font-size: 25px;
   font-weight: 300;
-  line-height: 50px;
   letter-spacing: 1px;
   float: none;
   display: inline-block;
@@ -1008,15 +1024,12 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 }
 /* line 41, ../scss/_page-header-bar.scss */
 .page-header-bar .page-header__orders {
-  color: #489ecf;
-  font-size: 16px;
   margin-left: 10px;
-  line-height: 50px;
   vertical-align: middle;
   display: inline-block;
 }
 
-/* line 51, ../scss/_page-header-bar.scss */
+/* line 48, ../scss/_page-header-bar.scss */
 .page-subheader-bar {
   background-color: white;
   border-bottom: 1px solid #c3bc9c;
@@ -1025,21 +1038,21 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   margin-bottom: 30px;
   margin-top: -30px;
 }
-/* line 59, ../scss/_page-header-bar.scss */
+/* line 56, ../scss/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div, .page-subheader-bar .order-summary__order .page-subheader-bar__message > .order-col, .order-summary__order .page-subheader-bar .page-subheader-bar__message > .order-col {
   display: inline-block;
 }
-/* line 61, ../scss/_page-header-bar.scss */
+/* line 58, ../scss/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div:last-child span, .page-subheader-bar .order-summary__order .page-subheader-bar__message > .order-col:last-child span, .order-summary__order .page-subheader-bar .page-subheader-bar__message > .order-col:last-child span {
   display: none;
 }
-/* line 67, ../scss/_page-header-bar.scss */
+/* line 64, ../scss/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container {
   padding-left: 15px;
   padding-right: 0px;
   color: #A1A1A1;
 }
-/* line 72, ../scss/_page-header-bar.scss */
+/* line 69, ../scss/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container a, .page-subheader-bar .page-subheader-bar__container .nav-tabs li a:hover, .nav-tabs li .page-subheader-bar .page-subheader-bar__container a:hover {
   font-weight: 600;
   padding-left: 10px;
@@ -1047,23 +1060,22 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 }
 
 @media (max-width: 991px) {
-  /* line 81, ../scss/_page-header-bar.scss */
+  /* line 78, ../scss/_page-header-bar.scss */
   .page-subheader-bar {
     background-color: white;
     border-bottom: 1px solid #c3bc9c;
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  /* line 84, ../scss/_page-header-bar.scss */
+  /* line 81, ../scss/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__message {
     padding-top: 10px;
     padding-bottom: 4px;
     display: inline-block;
-    width: 75%;
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  /* line 92, ../scss/_page-header-bar.scss */
+  /* line 89, ../scss/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__filter {
     border-left: 1px solid #c3bc9c;
     float: right;
@@ -1644,39 +1656,43 @@ ul.horizontal-slide .item-holder:first-child {
 .custom-lists__table .table-body .table-row.bek-reordered-item {
   background-color: #f3f3d1 !important;
 }
-/* line 66, ../scss/_lists.scss */
-.custom-lists__table .table-body .edit-parlevel {
+/* line 63, ../scss/_lists.scss */
+.custom-lists__table .table-body .table-row .edit-parlevel {
   width: calc(100% - 15px);
 }
-/* line 69, ../scss/_lists.scss */
-.custom-lists__table .table-body .edit-label {
+/* line 66, ../scss/_lists.scss */
+.custom-lists__table .table-body .table-row .edit-label {
   width: calc(100% - 25px);
+}
+/* line 69, ../scss/_lists.scss */
+.custom-lists__table .table-body .table-row .edit-label select {
+  width: 110%;
 }
 
 /* DRAG AND DROP */
-/* line 76, ../scss/_lists.scss */
+/* line 78, ../scss/_lists.scss */
 .ui-draggable-handle {
   cursor: move;
 }
 
-/* line 79, ../scss/_lists.scss */
+/* line 81, ../scss/_lists.scss */
 .ui-draggable-dragging {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
   background-color: white !important;
 }
-/* line 84, ../scss/_lists.scss */
+/* line 86, ../scss/_lists.scss */
 .ui-draggable-dragging [class^='col-'] {
   width: inherit;
   float: none;
   display: inline-block;
 }
-/* line 90, ../scss/_lists.scss */
+/* line 92, ../scss/_lists.scss */
 .ui-draggable-dragging .hidden-drag {
   display: none;
 }
 
-/* line 94, ../scss/_lists.scss */
+/* line 96, ../scss/_lists.scss */
 .ui-sortable-helper {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
@@ -1684,19 +1700,19 @@ ul.horizontal-slide .item-holder:first-child {
   background-color: #EBE7D9 !important;
 }
 
-/* line 101, ../scss/_lists.scss */
+/* line 103, ../scss/_lists.scss */
 .bek-reorder-overflow {
   overflow: auto;
 }
 
 @media (min-width: 991px) {
-  /* line 107, ../scss/_lists.scss */
+  /* line 109, ../scss/_lists.scss */
   .custom-lists__table .table-body .table-row:hover {
     background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 113, ../scss/_lists.scss */
+  /* line 115, ../scss/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;
@@ -1704,12 +1720,12 @@ ul.horizontal-slide .item-holder:first-child {
     top: 155px;
   }
 
-  /* line 121, ../scss/_lists.scss */
+  /* line 123, ../scss/_lists.scss */
   .custom-lists__table .edit-label {
     display: inline-block;
   }
 
-  /* line 126, ../scss/_lists.scss */
+  /* line 128, ../scss/_lists.scss */
   .custom-lists__save {
     min-height: 0;
     font-size: 10px;
@@ -1765,40 +1781,146 @@ ul.horizontal-slide .item-holder:first-child {
   font-size: 14px;
   font-weight: 400;
 }
-/* line 53, ../scss/_register.scss */
-.register-form .checkbox label {
-  padding-left: 45px;
-  padding-top: 5px;
-  padding-bottom: 5px;
+/* line 61, ../scss/_register.scss */
+.register-form .select-div {
+  display: block;
+  width: 100%;
+  border-radius: 4px;
 }
-/* line 160, ../scss/_component.scss */
-.register-form .checkbox input[type="checkbox"] + label {
-  background: url("../images/graycheckbox-clear.png") center left no-repeat;
-  background-size: 30px;
-}
-/* line 164, ../scss/_component.scss */
-.register-form .checkbox input[type="checkbox"]:checked + label {
-  background: url("../images/graycheckbox-checked.png") center left no-repeat;
-  background-size: 30px;
+/* line 66, ../scss/_register.scss */
+.register-form .select-div select {
+  width: 105%;
+  min-height: 60px;
+  padding: 20px 10px;
 }
 
 @media (max-width: 991px) {
-  /* line 64, ../scss/_register.scss */
+  /* line 76, ../scss/_register.scss */
   .register-header .login-form {
     padding-top: 15px;
   }
-  /* line 67, ../scss/_register.scss */
+  /* line 79, ../scss/_register.scss */
   .register-header .login-form .form-group {
     padding-left: 15px;
   }
-  /* line 71, ../scss/_register.scss */
+  /* line 83, ../scss/_register.scss */
   .register-header .login-form button {
     margin-top: 0;
   }
 
-  /* line 77, ../scss/_register.scss */
+  /* line 89, ../scss/_register.scss */
   .register-form input[type='text'], .register-form input[type='email'], .register-form input[type='password'] {
     min-height: 40px;
+  }
+  /* line 94, ../scss/_register.scss */
+  .register-form .select-div select {
+    min-height: 40px;
+    padding: 9px 5px;
+  }
+}
+/* line 2, ../scss/_account-details.scss */
+.avatar-info img {
+  height: 75px;
+  width: 75px;
+  border: 1px solid #c3bc9c;
+}
+/* line 9, ../scss/_account-details.scss */
+.avatar-info .person-info__details span {
+  display: inline;
+}
+
+/* line 1, ../scss/_cart.scss */
+.cart-selection-button {
+  font-size: 15px;
+  padding: 8px 12px;
+}
+
+/* line 5, ../scss/_cart.scss */
+.cart-selection {
+  border: 1px solid #c3bc9c;
+  padding: 0;
+}
+/* line 9, ../scss/_cart.scss */
+.cart-selection .cart-selection-list {
+  width: 400px;
+  margin: 0;
+}
+/* line 13, ../scss/_cart.scss */
+.cart-selection .cart-selection-list a > .row, .cart-selection .cart-selection-list .nav-tabs li.active a:hover > .row, .nav-tabs li.active .cart-selection .cart-selection-list a:hover > .row {
+  border-bottom: 1px solid #c3bc9c;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+/* line 18, ../scss/_cart.scss */
+.cart-selection .cart-selection-list a > .row:hover {
+  background-color: #f3f1eb;
+}
+/* line 22, ../scss/_cart.scss */
+.cart-selection .cart-selection-list a:last-child > .row {
+  border-bottom: none;
+}
+
+/* line 28, ../scss/_cart.scss */
+.input-group.datepicker-input {
+  margin: 0;
+  width: 200px;
+}
+/* line 32, ../scss/_cart.scss */
+.input-group.datepicker-input > input.form-control {
+  border-radius: 0;
+  min-height: 0;
+  height: 30px;
+  background-color: white;
+}
+/* line 38, ../scss/_cart.scss */
+.input-group.datepicker-input > span > button {
+  border-radius: 0;
+  min-height: 0;
+  padding: 4px 10px;
+}
+/* line 44, ../scss/_cart.scss */
+.input-group.datepicker-input table tbody button, .input-group.datepicker-input table thead button {
+  border: none !important;
+}
+
+/* line 49, ../scss/_cart.scss */
+.cart-info {
+  background-color: white;
+  border: 1px solid #c3bc9c;
+  padding: 15px;
+}
+/* line 54, ../scss/_cart.scss */
+.cart-info .cart-info-item {
+  margin-bottom: 5px;
+}
+/* line 57, ../scss/_cart.scss */
+.cart-info .cart-info-item:last-child {
+  margin-bottom: 0;
+}
+/* line 61, ../scss/_cart.scss */
+.cart-info .cart-info-item.cart-info-item__ship-date {
+  line-height: 21px;
+}
+/* line 66, ../scss/_cart.scss */
+.cart-info .cart-info-item .cart-info-buttons button:first-child {
+  margin-right: 5px;
+}
+/* line 71, ../scss/_cart.scss */
+.cart-info .cart-info-item .cart-info-subtotal {
+  font-size: 26px;
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  /* line 80, ../scss/_cart.scss */
+  .cart-selection .cart-selection-list {
+    width: 320px;
+  }
+}
+@media (min-width: 768px) {
+  /* line 90, ../scss/_cart.scss */
+  .cart-info .cart-info-item .cart-info-buttons {
+    text-align: right;
   }
 }
 

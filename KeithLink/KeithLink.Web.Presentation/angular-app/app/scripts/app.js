@@ -146,6 +146,30 @@ angular
       //     return CartService.getAllCarts();
       //   }]
       // }
+    })
+    .state('menu.addtoorder', {
+      url: '/add-to-order/',
+      templateUrl: 'views/addtoorder.html',
+      controller: 'AddToOrderController',
+      data: {
+        authorize: 'canCreateOrders'
+      },
+      resolve: {
+        lists: ['ListService', function (ListService){
+          return ListService.getAllLists();
+        }],
+        carts: ['CartService', function(CartService) {
+          return CartService.getAllCarts();
+        }]
+      }
+    })
+    .state('menu.addtoorder.items', {
+      url: ':listId',
+      templateUrl: 'views/addtoorder.html',
+      controller: 'AddToOrderController',
+      data: {
+        authorize: 'canCreateOrders'
+      }
     });
 
   $stateProvider

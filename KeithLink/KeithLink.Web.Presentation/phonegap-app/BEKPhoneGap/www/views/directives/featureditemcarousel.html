@@ -3,8 +3,8 @@
 
         <slide ng-repeat="item in itemList track by $index | limitTo:5" active="item.active">
             
-            <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
-                <img ng-src="{{item.imageUrl}}">
+            <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
+                <img ng-src="{{item.imageurl}}">
             </div>
             <div class="col-xs-8 no-padding featured-item-mobile__detail">
                 {{item.name}}<br />

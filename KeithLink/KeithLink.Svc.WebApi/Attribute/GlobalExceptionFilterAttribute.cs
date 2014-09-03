@@ -21,7 +21,7 @@ namespace KeithLink.Svc.WebApi.Attribute
 				as KeithLink.Common.Core.Logging.IEventLogRepository;
 			
 			eventLogRepository.WriteErrorLog("Unhandled API Exception", actionExecutedContext.Exception);
-			throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("And unhandled exception has occured") });
+			throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
 		}
 	}
 }

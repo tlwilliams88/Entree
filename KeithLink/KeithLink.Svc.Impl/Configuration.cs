@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
+        private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
@@ -43,8 +44,10 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_SITE_NAME = "CS_SiteName";
-        private const string CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
+        private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
+        private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
+        private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
 
         #endregion
 
@@ -220,9 +223,7 @@ namespace KeithLink.Svc.Impl
             get 
             {
                 string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
-                if (!String.IsNullOrEmpty(val))
-                    return (val.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)).ToList();
-                return new List<string>();
+                return GetCommaSeparatedValues(val);
             }
         }
         public static List<string> ElasticSearchDigitSearchFields
@@ -230,12 +231,10 @@ namespace KeithLink.Svc.Impl
             get 
             { 
                 string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
-                if (!String.IsNullOrEmpty(val))
-                    return (val.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries)).ToList();
-                return new List<string>();
+                return GetCommaSeparatedValues(val);
             }
         }
-        
+
         public static int ElasticSearchBatchSize
         {
             get
@@ -252,7 +251,7 @@ namespace KeithLink.Svc.Impl
 
         public static string CategoryPrefixesToExclude
         {
-            get { return GetValue(CATEGORY_PREFIXES, string.Empty); }
+            get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
 
         public static string MainframeIPAddress
@@ -287,6 +286,31 @@ namespace KeithLink.Svc.Impl
         public static string BrandAssetsUrl
         {
             get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
+        }
+
+        public static List<string> AllowedApiKeys
+        {
+            get
+            {
+                string val = GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static int MaxSortByPriceItemCount
+        {
+            get
+            {
+                string value = GetValue(KEY_MAX_SORT_BY_PRICE_ITEM_COUNT, DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT);
+                return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
+            }
+        }
+
+        private static List<string> GetCommaSeparatedValues(string val)
+        {
+            if (!String.IsNullOrEmpty(val))
+                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
+            return new List<string>();
         }
         #endregion
     }

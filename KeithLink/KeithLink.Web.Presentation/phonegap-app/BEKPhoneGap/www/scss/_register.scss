@@ -49,13 +49,25 @@
     font-weight: 400;
   }
 
-  .checkbox {
-    label {
-      padding-left: 45px;
-      padding-top: 5px;
-      padding-bottom: 5px;
+  // .checkbox {
+  //   label {
+  //     padding-left: 45px;
+  //     padding-top: 5px;
+  //     padding-bottom: 5px;
+  //   }
+  //   @include style-checkbox('graycheckbox-clear.png', 'graycheckbox-checked.png', center, left, 30px);
+  // }
+
+  .select-div {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+
+    select {
+      width: 105%;
+      min-height: 60px;
+      padding: 20px 10px;
     }
-    @include style-checkbox('graycheckbox-clear.png', 'graycheckbox-checked.png', center, left, 30px);
   }
 }
 
@@ -76,6 +88,13 @@
   .register-form {
     input[type='text'], input[type='email'], input[type='password'] {
       min-height: 40px;
+    }
+
+    .select-div {
+      select {
+        min-height: 40px;
+        padding: 9px 5px;
+      }
     }
   }
 }

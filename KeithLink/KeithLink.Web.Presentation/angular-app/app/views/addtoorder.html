@@ -1,0 +1,235 @@
+<div page-header-bar>
+  <div header-message>
+    Add To Order
+    <button class="btn btn-primary" ng-click="addItemsToCart(selectedList)">Add Items</button>
+  </div>
+  <div header-buttons>
+    <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+    <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="row select-nav-bar">
+      <div class="col-md-3 col-sm-12 col-xs-12 select-nav btn-group" dropdown is-open="showLists">
+        <div class="dropdown-toggle select-area">
+          <span class="nav-description text-light">Select a List</span>
+          <span class="nav-title">{{selectedList.name}}</span>
+          <span class="pull-right icon-arrow-down7 text-light"></span>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-list" role="menu">
+          <li ng-click="selectList(list)" ng-if="list !== selectedList" ng-repeat="list in lists | orderBy:'name'">{{list.name}}</li>
+        </ul>
+      </div>
+      
+      <div class="col-md-3 col-sm-12 col-xs-12 select-nav btn-group" dropdown is-open="showCarts">
+        <div class="dropdown-toggle select-area">
+          <span class="nav-description text-light">Select a Cart</span>
+          <span class="nav-title">{{selectedCart.name || 'New Cart'}}</span>
+          <span class="pull-right icon-arrow-down7 text-light"></span>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-list" role="menu">
+          <li ng-click="selectCart(cart)" ng-if="cart !== selectedCart" ng-repeat="cart in carts | orderBy:'name'">{{cart.name}}</li>
+          <li ng-click="selectCart(cart)">Create a Cart...</li>
+        </ul>
+      </div>
+      
+      <div class="col-md-3 col-sm-12 col-xs-12 btn-group select-nav">
+        <div class="select-area" ng-click="openDatepicker($event)">
+          <span class="nav-description text-light">Requested Ship Date</span>
+          <span class="nav-title">
+            {{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}
+            <input type="text" style="display:none;" class="datepicker form-control" datepicker-popup="" ng-disabled="true" ng-model="selectedCart.requestedshipdate" is-open="openedDatepicker" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+          </span>
+          <span class="pull-right icon-arrow-down7 text-light"></span>
+        </div>
+      </div>
+
+      <div class="col-md-3 select-nav select-area">
+        <span class="nav-description text-light">Cart Info</span>
+        <span class="nav-title">{{(selectedCart.items.length + getListItemsWithQuantity(selectedList.items).length) || '0'}} Items</span>
+        <span style="font-size:16px; font-weight:600;" class="pull-right text-green">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="bootstrap-table">
+  <div class="row table-header">
+    <div class="col-xs-12">
+      <div class="row table-row table-row-data">
+        <div class="col-md-1 col-xs-2 hand" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
+          Item #
+          <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-xs-1 hidden-sm hidden-xs hand" ng-click="sortBy='notes';sortOrder=!sortOrder;">
+          Notes
+          <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-xs-1 hand hidden-sm hidden-xs" ng-click="sortBy='label';sortOrder=!sortOrder;">
+          Label
+          <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-md-3 col-xs-7 hand" ng-click="sortBy='name';sortOrder=!sortOrder;">
+          Name
+          <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-xs-1 hidden-sm hidden-xs">
+          Pack/Size
+        </div>
+        <div class="col-xs-1 hidden-sm hidden-xs hand" ng-click="sortBy='brand';sortOrder=!sortOrder;">
+          Brand
+          <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-md-1 col-xs-2 hand" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
+          Qty
+          <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-md-1 hand hidden-sm hidden-xs" ng-click="sortBy='each';sortOrder=!sortOrder;">
+          Each
+          <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-md-1 hidden-sm hidden-xs">
+          Price
+        </div>
+        <div class="col-md-1 hidden-sm hidden-xs">
+          Ext Price
+        </div>
+        <div class="col-xs-1 table-col-icons">
+          <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-body row" ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+    <div class="col-xs-12">
+      <form unsaved-warning-form novalidate name="addToOrderForm" class="style-validation-errors">
+
+        <!-- Filter row -->
+        <div class="row table-row filter-row" ng-show="showFilter">
+          <div class="col-md-1 col-xs-2">
+            
+          </div>
+          <div class="col-xs-1 table-col-input hidden-xs hidden-sm">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+          </div>
+          <div class="col-xs-1 hidden-xs hidden-sm table-col-input">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.label">
+          </div>
+          <div class="col-md-3 col-xs-7 table-col-input">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.name">
+          </div>
+          <div class="col-xs-1 hidden-xs hidden-sm">
+
+          </div>
+          <div class="col-xs-1 table-col-input hidden-xs hidden-sm">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
+          </div>
+          <div class="col-md-1 col-xs-2">
+          </div>
+          <div class="col-md-1 hidden-xs hidden-sm">
+          </div>
+          <div class="col-md-1 hidden-xs hidden-sm">
+            
+          </div>
+          <div class="col-xs-1 hidden-xs hidden-sm">
+            
+          </div>
+          <div class="col-xs-1 table-col-icons">
+            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+          </div>
+        </div> <!-- end Filter row -->
+
+        <!-- Data rows -->
+        <div 
+          class="row table-row"  
+          ng-class="{ odd : $odd, even: $even }" 
+          ng-repeat="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder)) track by item.listitemid"
+         >
+          <div class="col-xs-12">
+            <div class="row table-row-data">
+              <div class="col-md-1 col-xs-2">
+                <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+              </div>
+              <div class="col-md-1 table-col-input hidden-xs hidden-sm">
+                <ng-form class="hidden-print" name="notesForm">
+                  <input id="notes" name="notes" type="text" ng-model="item.notes" />
+                </ng-form>
+              </div>
+              <div class="col-md-1 hidden-xs hidden-sm">
+                {{item.label}}
+              </div>
+              <div class="col-md-3 col-xs-7">
+                {{item.name}}
+                <span class="pull-right" item-icons></span>
+              </div>
+              <div class="col-md-1 hidden-sm hidden-xs">
+                {{item.packsize}}
+              </div>
+              <div class="col-md-1 hidden-sm hidden-xs">
+                {{item.brand}}
+              </div>
+              <div class="col-md-1 table-col-input col-xs-2">
+                <ng-form class="hidden-print" name="quantityForm">
+                  <select name="" id="" ng-model="item.quantity" ng-options="qty for qty in [1,2,3,4,5,6,7,8,9,10]">
+                      <option value=""></option>
+                    </select>
+                </ng-form>
+              </div>
+              <div class="col-md-1 hidden-sm hidden-xs table-col-input">
+                <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
+                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                    <label for="each"></label>
+                </ng-form>
+              </div>
+              <div class="col-md-1 hidden-sm hidden-xs">
+                {{item.each ? item.packageprice : item.caseprice | currency}}
+              </div>
+              <div class="col-md-1 hidden-sm hidden-xs">
+                {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
+              </div>
+              <div class="col-xs-1 table-col-icons visible-xs-inline visible-sm-inline">
+                <a><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+              </div>              
+            </div>
+
+            <!-- Mobile Details -->
+            <div class="row" ng-show="showDetails">
+              <div class="col-xs-12">
+                <ng-form class="hidden-print" name="notesForm_mobile">
+                  Notes:
+                  <input clas="form-control" id="notes" name="notes" type="text" ng-model="item.notes" />
+                </ng-form>
+                <p>Label: {{item.label}}</p>
+                <p>Pack/Size: {{item.packsize}}</p>
+                <p>Brand: {{item.brand}}</p>
+                <p item-icons></p>
+                <p ng-if="item.packageprice !== '0'">
+                  <!-- <div class="checkbox"> -->
+                    <label for="each">Each</label>
+                    <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
+                  <!-- </div> -->
+                </p>
+                <p>Price: {{item.each ? item.packageprice : item.caseprice | currency}}</p>
+                <p>Ext Price: {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</p>
+              </div>  
+            </div> <!-- end Mobile details -->
+          </div>
+        </div> <!-- end Data rows -->
+      </form>
+    </div>
+  </div>
+
+  <div class="row table-footer">
+    <div class="col-xs-12">
+      <div class="row table-row table-row-data" ng-show="(selectedList.items.length === 0 || !selectedList.items || filteredItems.length === 0) && selectedList">
+        <div class="col-xs-12">
+          There are no products to display.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

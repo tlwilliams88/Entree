@@ -8,68 +8,37 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'ListService', function($scope, $filter, $timeout, $state, $stateParams, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 
+    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService) {
+    
     var orderBy = $filter('orderBy');
 
     $scope.alerts = [];
-    $scope.loadingResults = true;
-
+    
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
-    // load data
-    ListService.getAllLists().then(function(data) {
-      
-      // switch to specific list or default to Favorites list
-      if ($stateParams.listId) {
-        $scope.selectedList = ListService.findListById($stateParams.listId, data);
-      }
-      if (!$scope.selectedList) {
-        $scope.selectedList = ListService.favoritesList;
-        $state.transitionTo('menu.lists', {}, {notify: false});
-      }
-
-      // set placeholders for editable item fields
-      angular.forEach(ListService.lists, function(list, listIndex) {
-        angular.forEach(list.items, function(item, itemIndex) {
-          item.editLabel = item.label;
-          item.editParlevel = item.parlevel;
-          item.editPosition = item.position;
-        });
-      });
-
-      // set initial sort fields
-      $scope.sortList('position', false);
-
-      // set focus to rename list if it is a new list
-      if ($stateParams.renameList === 'true') {
-        $scope.startEditListName($scope.selectedList.name);
-        $state.transitionTo('menu.listitems', {listId: $scope.selectedList.listid}, {notify: false});
-      }
-
-      $scope.loadingResults = false;
-    });
-
-    ListService.getAllLabels();
+    function goToListUrl(listId) {
+      return $state.go('menu.lists.items', {listId: listId});
+    }
 
     // INFINITE SCROLL
-    var itemsPerPage = 30;
+    var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      $scope.itemsToDisplay += itemsPerPage;
+      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
     };
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      $scope.selectedList = list;
-      $scope.itemsToDisplay = itemsPerPage;
-      $scope.sortList('position', false);
-      $state.transitionTo('menu.listitems', {listId: list.listid}, {notify: false});
+      goToListUrl(list.listid);
     };
 
-    $scope.createList = function() { //DONE
+    $scope.createList = function() {
       ListService.createList().then(function(data) {
-        $state.transitionTo('menu.listitems', {listId: data.listid}, {notify: false});
+        goToListUrl(data.listid);
         $scope.selectedList = data;
         $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list.');
@@ -78,12 +47,12 @@ angular.module('bekApp')
       });
     };
 
-    $scope.createListWithItem = function(event, helper) { //DONE
+    $scope.createListWithItem = function(event, helper) {
       var selectedItem = helper.draggable.data('product');
       
       ListService.createListWithItem(selectedItem).then(function(data) {
         var newList = data[0];
-        $state.transitionTo('menu.listitems', {listId: newList.listid}, {notify: false});
+        goToListUrl(newList.listid);
         $scope.selectedList = newList;
         $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
@@ -92,7 +61,7 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteList = function(listId) { //DONE
+    $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
         $scope.selectedList = ListService.favoritesList;
         addSuccessAlert('Successfully deleted list.');
@@ -110,6 +79,7 @@ angular.module('bekApp')
         item.parlevel = item.editParlevel;
         item.position = item.editPosition;
         item.isEditing = false;
+        $scope.listForm.$setPristine();
       });
 
       ListService.updateList(updatedList).then(function(data) {
@@ -129,18 +99,9 @@ angular.module('bekApp')
       });
     };
 
-    $scope.renameList = function (listId, listName) { //DONE
+    $scope.renameList = function (listId, listName) {
       var list = angular.copy($scope.selectedList);
       list.name = listName;
-
-      // check for duplicate list names
-      // TODO: move into directive
-      angular.forEach($scope.lists, function(list, index) {
-        if (list.name === listName && list.listid !== listId) {
-          addErrorAlert('Error creating list. Duplicate names.');
-          return;
-        }
-      });
 
       ListService.updateList(list).then(function(data) {
         $scope.selectedList.isRenaming = false;
@@ -149,11 +110,7 @@ angular.module('bekApp')
       });
     };
 
-    $scope.cancelEditListName = function() { //DONE
-      $scope.selectedList.isRenaming = false;
-    };
-
-    $scope.startEditListName = function(listName) { //DONE
+    $scope.startEditListName = function(listName) {
       $scope.editList = {};
       $scope.editList.name = angular.copy(listName);
       $scope.selectedList.isRenaming = true;
@@ -303,5 +260,40 @@ angular.module('bekApp')
 
       return !!(itemnumberMatch || nameMatch || labelMatch);
     };
+
+    function initPage() {  
+      // switch to specific list or default to Favorites list
+      if ($state.params.listId) {
+        $scope.selectedList = ListService.findListById($state.params.listId, $scope.lists);
+      } 
+      if (!$scope.selectedList) {
+        $scope.selectedList = ListService.favoritesList;
+        $state.go('menu.lists.items', { listId: ListService.favoritesList.listid });
+      }
+
+      // set placeholders for editable item fields
+      angular.forEach(ListService.lists, function(list, listIndex) {
+        angular.forEach(list.items, function(item, itemIndex) {
+          item.editLabel = item.label === '' ? null : item.label;
+          item.editParlevel = item.parlevel;
+          item.editPosition = item.position;
+        });
+      });
+
+      // set initial sort fields
+      $scope.sortList('position', false);
+
+      // set focus to rename list if it is a new list
+      if ($stateParams.renameList === 'true') {
+        if (!$scope.selectedList.isFavoritesList) {
+          $scope.startEditListName($scope.selectedList.name);
+        }
+        goToListUrl($scope.selectedList.listid);
+      }
+
+      $scope.itemsToDisplay = itemsPerPage;
+      $scope.loadingResults = false;
+    }
+    initPage();
 
   }]);
