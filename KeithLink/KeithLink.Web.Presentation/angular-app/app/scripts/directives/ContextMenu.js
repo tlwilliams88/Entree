@@ -5,7 +5,7 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     scope: true,
-    controller: ['$scope', '$state', 'ListService', 'OrderService', function($scope, $state, ListService, OrderService){
+    controller: ['$scope', '$state', 'ListService', 'CartService', function($scope, $state, ListService, CartService){
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
@@ -21,19 +21,20 @@ angular.module('bekApp')
       $scope.createListWithItem = function(item) {
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.listitems', { listId: data[0].listid, renameList: true });
+          $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
         });
       };
 
-      $scope.addItemToOrder = function(orderId, item) {
-        OrderService.addItemToOrder(orderId, item).then(function(data) {
-          debugger;
+      $scope.addItemToCart = function(cartId, item) {
+        CartService.addItemToCart(cartId, item).then(function(data) {
+          
         });
       };
 
-      $scope.createOrderWithItem = function(item) {
-        OrderService.createOrderWithItem(item).then(function(data) {
-          debugger;
+      $scope.createCartWithItem = function(item) {
+        var items = [item];
+        CartService.createCart(items).then(function(data) {
+          $state.go('menu.cartitems', { cartId: data.listitemid, renameCart: true });
         });
       };
 

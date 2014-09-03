@@ -10,7 +10,7 @@
  * message: title or message displayed at the top of the page
  * this directive will also tranclude whatever is included within the directive tags
  */
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .directive('pageHeaderBar', function() {
     return {
       restrict: 'A',

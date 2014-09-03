@@ -5,13 +5,14 @@ using System.DirectoryServices.AccountManagement;
 using System.Text;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class InternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
     {
         #region attributes
         IEventLogRepository _logger;
         #endregion
+
         #region methods
 
         #region ctor
@@ -181,6 +182,20 @@ namespace KeithLink.Svc.Impl.Profile
 
                 return null;
             }
+        }
+
+        /// <summary>
+        /// get the user from AD
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/29/2014 - new method
+        /// </remarks>
+        public UserPrincipal GetUserByEmailAddress(string emailAddress)
+        {
+            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
+            if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "userName is null"); }
+
+            return GetUser(emailAddress.Split('@')[0]);
         }
 
         /// <summary>

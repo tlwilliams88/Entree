@@ -8,23 +8,23 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$stateParams', 'ProductService', 'ListService', 'OrderService', function ($scope, $stateParams, ProductService, ListService, OrderService) {
+  .controller('ItemDetailsController', ['$scope', 'item', 'ProductService', 'ListService', 'CartService', function ($scope, item, ProductService, ListService, CartService) {
     
-    var itemNumber = $stateParams.itemNumber;
-    $scope.loadingDetails = true;
-    ProductService.getProductDetails(itemNumber).then(function(response) {
-      $scope.item = response.data;
-      $scope.loadingDetails = false;
-    });
-
+    $scope.item = item;
+    $scope.item.quantity = 1;
+    
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({
       'header': true
     });
 
-    $scope.orders = OrderService.orders;
-    OrderService.getAllOrders({
+    $scope.carts = CartService.carts;
+    CartService.getAllCarts({
       'header': true
     });
+
+    $scope.canOrderProduct = function(item) {
+      return ProductService.canOrderProduct(item);
+    };
   }]);

@@ -1,5 +1,5 @@
 .page-header-bar {
-  @include header-bar($color-white, 5px);
+  @include header-bar($color-white, 10px);
   margin-bottom: 30px;
   position: relative;
   -webkit-box-shadow: 0px 1px 10px $color-border;
@@ -11,7 +11,7 @@
   .page-header-bar__message {
     font-size: 25px;
     font-weight: 300;
-    line-height: 50px;
+    // line-height: 50px;
     letter-spacing: 1px;
     float: none;
     display: inline-block;
@@ -39,10 +39,7 @@
   }
 
   .page-header__orders {
-    color: #489ecf;
-    font-size: 16px;
     margin-left: 10px;
-    line-height: 50px;
     vertical-align: middle;
     display: inline-block;
   }

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .factory('AccessService', ['localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 
     function (localStorageService, Constants, AuthenticationService, UserProfileService) {
 

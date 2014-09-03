@@ -34,6 +34,10 @@ angular.module('bekApp')
       UserProfileService.setCurrentLocation($scope.currentLocation);
     };
 
+    $scope.search = function(searchTerm) {
+      $state.go('menu.catalog.products.list', { type: 'search', id: searchTerm }, { reload: true });
+    };
+
     $scope.print = function () {
       window.print(); 
     };
@@ -84,4 +88,54 @@ angular.module('bekApp')
       $scope.canManageeMenu = AccessService.canManageeMenu();
     }
     
+    $scope.menuItems = [
+      {
+        'text': 'Home',
+        'icon': 'house',
+        'sref': 'menu.home',
+        'accessRule': 'isOrderEntryCustomer'
+      }, {
+        'text': 'Order History',
+        'icon': 'clipboard',
+        'sref': 'blank',
+        'accessRule': 'canCreateOrders'
+      }, {
+        'text': 'Product Catalog',
+        'icon': 'book2',
+        'sref': 'menu.catalog.home',
+        'accessRule': 'canBrowseCatalog'
+      }, {
+        'text': 'Reports',
+        'icon': 'pie',
+        'sref': 'blank',
+        'accessRule': 'canPayInvoices'
+      }, {
+        'text': 'Invoices',
+        'icon': 'dollar',
+        'sref': 'blank',
+        'accessRule': 'canPayInvoices'
+      }, {
+        'text': 'eMenuManage',
+        'icon': 'food',
+        'sref': 'blank',
+        'accessRule': 'canManageeMenu'
+      }, {
+        'text': 'My Lists',
+        'icon': 'text',
+        'sref': 'menu.lists',
+        'accessRule': 'canManageLists'
+      }, {
+        'text': 'Add to Order',
+        'icon': 'add-to-list',
+        'sref': 'blank',
+        'accessRule': 'canCreateOrders'
+      }, {
+        'text': 'Notifications',
+        'icon': 'bell',
+        'sref': 'blank',
+        'accessRule': 'isOrderEntryCustomer',
+        'isHiddenDesktop': true
+      }
+    ];
+
   }]);

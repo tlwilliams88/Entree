@@ -4,7 +4,7 @@ using System.DirectoryServices;
 using System.Text;
 using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class CustomerContainerRepository : KeithLink.Svc.Core.Interface.Profile.ICustomerContainerRepository
     {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.WebApi.Attribute;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -8,6 +9,7 @@ using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	[GlobalExceptionFilterAttribute]
 	public class BaseController : ApiController
     {
         #region attributes

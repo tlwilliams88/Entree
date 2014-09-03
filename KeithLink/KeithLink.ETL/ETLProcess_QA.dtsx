@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
-  DTS:VersionBuild="101"
-  DTS:VersionGUID="{5CF3B502-1B67-459C-8F5B-40A55ECC78C9}">
+  DTS:VersionBuild="109"
+  DTS:VersionGUID="{AE862855-8268-4030-95BC-9D2F8266E2E7}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -474,33 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAsYlrJNGjebT0A1MoN+VbGAAAAAASAAACgAAAAEAAAABwhwY6NWANBJdt4oWe8M/8IAAAA7AQzHRcvsx8UAAAAQjZ122wTEtIDrU/D868y2K5Ms0I</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACFezByrYl0yc8OXBwSxugUAAAAAASAAACgAAAAEAAAADx/gCLUrSgBkw5f/gfjp0gIAAAAyQNREud7T3YUAAAANk/lpFaTW/RfvnKy4cFRdRIuKp8</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADtIdWFu2Jv1CFsaWEZKsnGAAAAAASAAACgAAAAEAAAAJ4AsliN/eKDslFWxNDDS5wIAAAA+nhnRLO6kEkUAAAAtUCSTBX201poXDIHUXX9C/Ln5xA</DTS:Property>
-          </DTS:HttpConnection>
-        </DTS:ConnectionManager>
-      </DTS:ObjectData>
-    </DTS:ConnectionManager>
-    <DTS:ConnectionManager
-      DTS:refId="Package.ConnectionManagers[HTTP_ETLWebService_App_2]"
-      DTS:CreationName="HTTP"
-      DTS:DTSID="{b1e6675f-0bff-43aa-b421-270c78ef7fa5}"
-      DTS:ObjectName="HTTP_ETLWebService_App_2">
-      <DTS:ObjectData>
-        <DTS:ConnectionManager
-          DTS:ConnectionString="http://corpkecqas2:9876/ETLService.svc?wsdl">
-          <DTS:HttpConnection
-            DTS:ServerURL="http://corpkecqas2:9876/ETLService.svc?wsdl">
-            <DTS:Property
-              DTS:Name="ServerPassword"
-              Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD70J5D567JHfM9jyIJM8uhAAAAAASAAACgAAAAEAAAAN9WCTNPZmfudLOJqG3vXLIIAAAADt+hS7iAu/UUAAAArbBAW/fZQ0SkgqU4+g9Ul9vk4do</DTS:Property>
-            <DTS:Property
-              DTS:Name="ProxyPassword"
-              Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAM4/+6Ppuu9bNNO3t5IitKAAAAAASAAACgAAAAEAAAAAbnR5H9pomKPSynnnec1E4IAAAA4Flr6ZZ6uPUUAAAAKQpxCRUqn9ycUU31JYsMBEiFX1A</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABVZFJ17IRXp4j/5OC6s/g6AAAAAASAAACgAAAAEAAAADLK+Od+b4EqP1vWg/+jkhsIAAAAbpaCFAH5z/AUAAAAV90DdTcjCTH60qtIOD1rzH4zMBg</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -516,7 +494,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB6TKhbabW/5+e+ztw66IW5AAAAAASAAACgAAAAEAAAAJdevqZYDNP8+LUVHaf/GdkYAAAAiDP3w3yUyNaiu7nmH+fBM+/43TU01yS1FAAAAP0lNLdWKvIMQXSLM8Ry4pI8XPO2</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAe2KrV7a5bP3dFiH9AODNJAAAAAASAAACgAAAAEAAAAGXTF0QE+Jwjt3auSARUtZQYAAAADI+50X/WuVhZVG69K6vP2f/V9NSAD37qFAAAADXAY5QJ/6SEpdc5KU9qjxWEEBwU</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -531,7 +509,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAiV2d9xgzzgIRJpu17MOQcAAAAAASAAACgAAAAEAAAAO/aSZNyIVHeCcLjlnp3vh0YAAAA0o+RuqjSok6mqHHehTMKOTkRh1VBglLAFAAAALp3Vt/5/AjzLNVtcXGBnDhVp6hP</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABUMS1qEMocYN/eJH9Q9qNcAAAAAASAAACgAAAAEAAAAEqmNoLHSiisg7QBnXj4oTUYAAAAgXbQXszRkOsSiszdF9LWiFoh0yJ8jEVBFAAAAGy7xHheR5Ef+bPiLErSax6kOgGj</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -556,7 +534,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAr584EFWpQGA0LgRgXnPPjAAAAAASAAACgAAAAEAAAAIMBUSFaYkGKw9BGWtN5E+cYAAAA4uYL9iP2osLV3PxjEnYHzRIa/QgaVoG4FAAAACI4lSD66rPAv9E0rCf0dHmQL+Vv</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACJjUlsvIVvs10M3Gy4oKp5AAAAAASAAACgAAAAEAAAAFWQ3Xj5p+lpW8k+F76CMvgYAAAA0lr7xJCHydxhH9bIV4YuesziX9W9PVMpFAAAACmVAeHuHkcIMJBcRKExeofrt+Ed</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -812,35 +790,14 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -961,34 +918,105 @@ using System.Runtime.CompilerServices;
   </resheader>
 </root>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
+    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -1241,114 +1269,64 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
-    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-         <Generator>ResXFileCodeGenerator</Generator>
-         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-             <AutoGen>True</AutoGen>
-         <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-         <Generator>SettingsSingleFileGenerator</Generator>
-         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-         <AutoGen>True</AutoGen>
-         <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptMain.cs">
-         <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptTask"
-                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
-                           ApplicationType="usd"
-                           Language="cs"
-                           TemplatesPath=""
-                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
-                           DebugInfoCommandLine=""
-                           DebugInfoWorkingDir=""
-                           IconImageList=""/>
-        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
-        </Host>
-        <ProjectClient>
-            <HostIdentifier>SSIS_ST110</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></ProjectItem>
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -9513,7 +9491,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[MeasurementValue]"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[DailyValue]"
@@ -9558,7 +9536,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -9606,7 +9584,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Error Output].Columns[MeasurementValue]"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Error Output].Columns[DailyValue]"
                           codePage="1252"
@@ -9740,7 +9718,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="MeasurementValue"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MeasurementValue]"
                           lineageId="Package\GS1 Import Tasks\Product Nutrition\FSE.Outputs[OLE DB Source Output].Columns[MeasurementValue]" />
                         <inputColumn
@@ -9783,7 +9761,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -9955,7 +9933,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasure]"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]"
@@ -9966,7 +9944,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]"
                           name="Length"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]"
@@ -9977,7 +9955,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]"
                           name="Width"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]"
@@ -9988,7 +9966,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]"
                           name="Height"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]"
@@ -9999,7 +9977,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]"
                           name="Volume"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Shelf]"
@@ -10070,7 +10048,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSize]"
                           name="ServingSize"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSizeUOM]"
@@ -10198,7 +10176,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[GrossWeight]"
                           name="GrossWeight"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]"
@@ -10209,7 +10187,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]"
                           name="NetWeight"
                           precision="20"
-                          scale="10"
+                          scale="3"
                           truncationRowDisposition="FailComponent" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[TiHi]"
@@ -10281,31 +10259,31 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[Shelf]"
                           dataType="i4"
@@ -10341,7 +10319,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -10409,13 +10387,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -10507,7 +10485,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[UnitMeasure]"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[UnitMeasureUOM]"
                           codePage="1252"
@@ -10521,42 +10499,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[GrossWeight]"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[NetWeight]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[NetWeight]"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Length]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Length]"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Width]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Width]"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Height]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Height]"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Volume]"
                           dataType="numeric"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[Volume]"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[TiHi]"
                           codePage="1252"
@@ -10606,7 +10584,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[ServingSize]"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <outputColumn
                           refId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Error Output].Columns[ServingSizeUOM]"
                           codePage="1252"
@@ -10782,7 +10760,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="UnitMeasure"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasure]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[UnitMeasure]" />
                         <inputColumn
@@ -10790,7 +10768,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Length"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Length]" />
                         <inputColumn
@@ -10798,7 +10776,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Width"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Width]" />
                         <inputColumn
@@ -10806,7 +10784,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Height"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Height]" />
                         <inputColumn
@@ -10814,7 +10792,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="Volume"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[Volume]" />
                         <inputColumn
@@ -10864,7 +10842,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="ServingSize"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSize]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[ServingSize]" />
                         <inputColumn
@@ -10911,7 +10889,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="GrossWeight"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[GrossWeight]" />
                         <inputColumn
@@ -10919,7 +10897,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="numeric"
                           cachedName="NetWeight"
                           cachedPrecision="20"
-                          cachedScale="10"
+                          cachedScale="3"
                           externalMetadataColumnId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           lineageId="Package\GS1 Import Tasks\Product Spec\FSE.Outputs[OLE DB Source Output].Columns[NetWeight]" />
                         <inputColumn
@@ -11031,43 +11009,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -11109,7 +11087,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -11235,50 +11213,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
-          DTS:refId="Package\Process Staged Data to App Tier\Process Staged Data App2"
-          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
-          DTS:Description="Web Service Task"
-          DTS:Disabled="True"
-          DTS:DTSID="{66d52fd4-5004-4c60-852d-26979aa76689}"
-          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
-          DTS:LocaleID="-1"
-          DTS:ObjectName="Process Staged Data App2"
-          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
-          <DTS:Variables />
-          <DTS:LoggingOptions
-            DTS:FilterKind="0" />
-          <DTS:ObjectData>
-            <WSTask:WebServiceTaskData
-              WSTask:ConnectionName="{b1e6675f-0bff-43aa-b421-270c78ef7fa5}"
-              WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ECOM\WSDL\ETLProcess_QA_App2.wsdl"
-              WSTask:OverwriteWSDLFile="True"
-              WSTask:OutputType="Variable"
-              WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result_App_2" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
-              <WSTask:MethodInfo
-                WSTask:MethodName="ProcessStagedData"
-                WSTask:MessageName="">
-                <WSTask:Documentation></WSTask:Documentation>
-                <WSTask:ParamInfo
-                  WSTask:Name="ProcessStagedDataResult"
-                  WSTask:Datatype="Boolean&amp;"
-                  WSTask:ParamType="Variable"
-                  WSTask:SeqNumber="0">
-                  <WSTask:VariableValue></WSTask:VariableValue>
-                </WSTask:ParamInfo>
-                <WSTask:ParamInfo
-                  WSTask:Name="ProcessStagedDataResultSpecified"
-                  WSTask:Datatype="Boolean&amp;"
-                  WSTask:ParamType="Variable"
-                  WSTask:SeqNumber="1">
-                  <WSTask:VariableValue></WSTask:VariableValue>
-                </WSTask:ParamInfo>
-              </WSTask:MethodInfo>
-            </WSTask:WebServiceTaskData>
-          </DTS:ObjectData>
-        </DTS:Executable>
-        <DTS:Executable
           DTS:refId="Package\Process Staged Data to App Tier\Process Staged Data Master Node"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Web Service Task"
@@ -11340,15 +11274,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -11468,6 +11393,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -11756,35 +11710,6 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
-          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -11814,6 +11739,15 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -12193,7 +12127,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         <NodeLayout
           Size="193,42"
           Id="Package\Archive Mainframe Files"
-          TopLeft="333,688" />
+          TopLeft="516,688" />
         <NodeLayout
           Size="151,42"
           Id="Package\Catalog Import Tasks\Stage Branches"
@@ -12216,7 +12150,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           PanelSize="689,88"
           Size="689,131"
           Id="Package\Catalog Import Tasks"
-          TopLeft="78,211" />
+          TopLeft="261,211" />
         <NodeLayout
           Size="158,42"
           Id="Package\GS1 Import Tasks\Product Allergen"
@@ -12239,30 +12173,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           PanelSize="694,66"
           Size="694,109"
           Id="Package\GS1 Import Tasks"
-          TopLeft="77,373.5" />
+          TopLeft="260,373.5" />
         <NodeLayout
           Size="240,42"
           Id="Package\Process Staged Data to App Tier\Process Staged Data Master Node"
           TopLeft="11,16" />
-        <NodeLayout
-          Size="205,42"
-          Id="Package\Process Staged Data to App Tier\Process Staged Data App2"
-          TopLeft="287,15" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="518,113"
-          Size="518,156"
+          PanelSize="362,93"
+          Size="362,136"
           Id="Package\Process Staged Data to App Tier"
-          TopLeft="80,524" />
+          TopLeft="259,527" />
         <NodeLayout
           Size="187,42"
           Id="Package\Rename Customer File"
-          TopLeft="288,7" />
+          TopLeft="471,7" />
         <NodeLayout
           Size="168,42"
           Id="Package\Send Fail Message"
-          TopLeft="923,271" />
+          TopLeft="1106,271" />
         <NodeLayout
           Size="225,42"
           Id="Package\Truncate Stage Tables\Truncate Catalog Stage Tables"
@@ -12277,10 +12207,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           PanelSize="518,67"
           Size="518,110"
           Id="Package\Truncate Stage Tables"
-          TopLeft="85,76" />
+          TopLeft="268,76" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="259,186">
+          TopLeft="442,186">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12314,7 +12244,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="422.5,342">
+          TopLeft="605.5,342">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12348,7 +12278,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="429.5,688">
+          TopLeft="612.5,688">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12384,30 +12314,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="424,482.5">
+          TopLeft="607,482.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-170,41.5"
+              EndConnector="-226,44.5"
               Start="0,0"
-              End="-170,34">
+              End="-226,37">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,20.8233256351039" />
+                    End="0,22.5825082508251" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,20.8233256351039"
-                    Point2="0,24.8233256351039"
-                    Point3="-4,24.8233256351039" />
+                    Point1="0,22.5825082508251"
+                    Point2="0,26.5825082508251"
+                    Point3="-4,26.5825082508251" />
                   <mssgle:LineSegment
-                    End="-166,24.8233256351039" />
+                    End="-222,26.5825082508251" />
                   <mssgle:CubicBezierSegment
-                    Point1="-166,24.8233256351039"
-                    Point2="-170,24.8233256351039"
-                    Point3="-170,28.8233256351039" />
+                    Point1="-222,26.5825082508251"
+                    Point2="-226,26.5825082508251"
+                    Point3="-226,30.5825082508251" />
                   <mssgle:LineSegment
-                    End="-170,34" />
+                    End="-226,37" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12418,7 +12348,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="429,186">
+          TopLeft="612,186">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12454,7 +12384,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="767,276.5">
+          TopLeft="950,276.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12490,7 +12420,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="538.333333333333,373.5">
+          TopLeft="721.333333333333,373.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12526,24 +12456,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 6]"
-          TopLeft="339,680">
+          TopLeft="440,663">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="187,29"
+              EndConnector="141.666666666667,25"
               Start="0,0"
-              End="179.5,29">
+              End="141.666666666667,17.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,25" />
+                    End="0,10.8766700924974" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,25"
-                    Point2="0,29"
-                    Point3="4,29" />
+                    Point1="0,10.8766700924974"
+                    Point2="0,14.8766700924974"
+                    Point3="4,14.8766700924974" />
                   <mssgle:LineSegment
-                    End="179.5,29" />
+                    End="137.666666666667,14.8766700924974" />
+                  <mssgle:CubicBezierSegment
+                    Point1="137.666666666667,14.8766700924974"
+                    Point2="141.666666666667,14.8766700924974"
+                    Point3="141.666666666667,18.8766700924974" />
+                  <mssgle:LineSegment
+                    End="141.666666666667,17.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -12554,7 +12490,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="381.5,49">
+          TopLeft="564.5,49">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12588,7 +12524,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="411.333333333333,49">
+          TopLeft="594.333333333333,49">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
@@ -12624,37 +12560,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 9]"
-          TopLeft="424,524">
+          TopLeft="499,527">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="543,-211"
+              EndConnector="651,-214"
               Start="0,0"
-              End="543,-203.5">
+              End="651,-206.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,-114.559741657696" />
+                    End="0,-116.419064353174" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,-114.559741657696"
-                    Point2="0,-118.559741657696"
-                    Point3="4,-118.559741657696" />
+                    Point1="0,-116.419064353174"
+                    Point2="0,-120.419064353174"
+                    Point3="4,-120.419064353174" />
                   <mssgle:LineSegment
-                    End="539,-118.559741657696" />
+                    End="647,-120.419064353174" />
                   <mssgle:CubicBezierSegment
-                    Point1="539,-118.559741657696"
-                    Point2="543,-118.559741657696"
-                    Point3="543,-122.559741657696" />
+                    Point1="647,-120.419064353174"
+                    Point2="651,-120.419064353174"
+                    Point3="651,-124.419064353174" />
                   <mssgle:LineSegment
-                    End="543,-203.5" />
+                    End="651,-206.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="256.25865234375,-113.559741657696,30.4826953125,9.7490234375"
+              BoundingBox="310.25865234375,-115.419064353174,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -12887,15 +12823,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="127,42"
-          Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
-          TopLeft="365,68" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="161,42"
           Id="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData"
           TopLeft="430,353" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
+          TopLeft="365,68" />
         <EdgeLayout
           Id="Package\Catalog Import Tasks\Stage Items.Paths[OLE DB Source Output]"
           TopLeft="428.5,110">
@@ -12927,7 +12863,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -12963,7 +12901,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Allergen">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="98,42"
           Id="Package\GS1 Import Tasks\Product Allergen\FSE"
@@ -13003,7 +12941,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

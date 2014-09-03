@@ -31,6 +31,8 @@ angular.module('bekApp')
       }
 
       var Service = {
+        selectedProduct: {}, 
+
         getProducts: function(searchTerm, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
@@ -123,7 +125,20 @@ angular.module('bekApp')
         },
 
         getProductDetails: function(id) {
-          return $http.get('/catalog/product/' + getBranch() + '/' + id);
+          var returnProduct;
+          if (!Service.selectedProduct.name) {
+            returnProduct = $http.get('/catalog/product/' + getBranch() + '/' + id).then(function(response) {
+              return response.data;
+            });
+          } else {
+            returnProduct = Service.selectedProduct;
+            Service.selectedProduct = {};
+          }
+          return returnProduct;
+        },
+
+        canOrderProduct: function(item) {
+          return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
         }
       };
 

@@ -180,11 +180,13 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\SearchInputModel.cs" />
     <Compile Include="Models\OperationReturnModel.cs" />

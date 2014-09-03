@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'OrderService',
-    function($scope, $stateParams, ProductService, CategoryService, ListService, OrderService) {
+  .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService',
+    function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService) {
       // clear keyword search term at top of the page
       if ($scope.userBar) {
         $scope.userBar.universalSearchTerm = '';
@@ -175,6 +175,11 @@ angular.module('bekApp')
       loadProducts().then(function(facets) {
         refreshScopeFacets(facets);
       });
+
+      $scope.goToItemDetails = function(item) {
+        ProductService.selectedProduct = item;
+        $state.go('menu.catalog.products.details', { itemNumber : item.itemnumber });
+      };
 
       $scope.infiniteScrollLoadMore = function() {
 
@@ -365,6 +370,10 @@ angular.module('bekApp')
         }
       };
 
+      $scope.canOrderProduct = function(item) {
+        return ProductService.canOrderProduct(item);
+      };
+
       function refreshScopeFacets(facets) {
         $scope.categories = facets.categories;
         $scope.brands = facets.brands;
@@ -491,8 +500,8 @@ angular.module('bekApp')
         'header': true
       });
 
-      $scope.orders = OrderService.orders;
-      OrderService.getAllOrders({
+      $scope.carts = CartService.carts;
+      CartService.getAllCarts({
         'header': true
       });
     }

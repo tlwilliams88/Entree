@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('BEKPhoneGap')
+angular.module('bekApp')
   .directive('itemIcons', [function() {
     return {
       restrict: 'A',

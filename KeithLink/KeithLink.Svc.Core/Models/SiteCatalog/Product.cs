@@ -9,23 +9,23 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "product")]
     [Serializable]
-    public class Product
+    public class Product: BaseProductInfo
     {
-        [DataMember(Name = "name")]
-        public string Name { get; set; }
+        #region ctor
+        public Product()
+        {
+            ProductImages = new List<ProductImage>();
+        }
+        #endregion
 
-        [DataMember(Name = "itemnumber")]
-        public string ItemNumber { get; set; }
-
+        #region properties
+        
         [DataMember(Name = "description")]
         public string Description { get; set; }
 
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
-
-        [DataMember(Name = "brand")]
-        public string Brand { get; set; }
-
+		       
         [DataMember(Name = "size")]
         public string Size { get; set; }
 
@@ -50,21 +50,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "kosher")]
         public string Kosher { get; set; }
 
-        [DataMember(Name = "caseprice")]
-        public string CasePrice { get; set; }
-
-        [DataMember(Name = "packageprice")]
-        public string PackagePrice { get; set; }
-
-        [DataMember(Name = "replacementitem")]
-        public string ReplacementItem { get; set; }
-
-        [DataMember(Name = "replaceditem")]
-        public string ReplacedItem {get;set;}
-
-        [DataMember(Name = "cndoc")]
-        public string CNDoc { get; set; }
-
         [DataMember(Name= "vendor_num")]
         public string VendorItemNumber {get;set;}
 
@@ -74,13 +59,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 
-		[DataMember(Name ="favorite")]
-		public bool Favorite { get; set; }
-
-		[DataMember(Name = "nonstock")]
-		public string NonStock { get; set; }
-
-        [DataMember(Name = "gs1")]
+		[DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
+
+        [DataMember(Name = "productimages")]
+        public List<ProductImage> ProductImages { get; set; }
+        #endregion
     }
 }
