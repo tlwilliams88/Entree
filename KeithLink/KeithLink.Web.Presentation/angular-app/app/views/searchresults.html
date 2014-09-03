@@ -3,8 +3,8 @@
 		Product Catalog
 	</div>
 	<div header-buttons>
-		<button class="btn btn-icon"><span class="icon-printer"></span></button>
-		<button class="btn btn-icon"><span class="icon-export"></span></button>
+		<button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
+		<button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
 	</div>
 </div>
 <div class="row page-subheader-bar">
@@ -236,7 +236,7 @@
 							<span favorite-item-click-handlers><span favorite-icons></span></span>
 						</td>
 						<td>
-							<a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+							<a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
 							{{item.brand}}
@@ -250,10 +250,10 @@
 						<td class="hidden-sm hidden-xs icons" item-icons>
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{item.caseprice}}
+							<span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
 						</td>
 						<td class="table-icon table-actions">
-							<a class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
+							<a ng-if="canOrderProduct(item)" class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
 							<a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
 						</td>
 					</tr>
@@ -263,7 +263,7 @@
 								<p>Pack / Size: {{item.cases}} / {{item.size}}</p>
 								<p>Brand: {{item.brand}}</p>
 								<p item-icons>
-								<p>Price: {{item.caseprice}}</p>
+								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
 								</p>
 							</div>
 						</td>

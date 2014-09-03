@@ -290,6 +290,38 @@ CREATE TABLE [ETL].[Staging_ItemData](
 ) ON [PRIMARY]
 
 GO
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Brands](
+	[Brand] [varchar](20) NULL,
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_BrandControlLabels](
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/********************************************************************************************/
 
 
 SET ANSI_NULLS ON
@@ -339,14 +371,14 @@ CREATE TABLE ETL.Staging_FSE_ProductSpec (
 	, ProductAdditionalDesc varchar(max)
 	, ManufacturerItemNumber varchar(30)
 	, UnitsPerCase int
-	, UnitMeasure decimal(20,10)
+	, UnitMeasure decimal(20,3)
 	, UnitMeasureUOM varchar(3)
-	, GrossWeight decimal(20,10)
-	, NetWeight decimal(20,10)
-	, Length decimal(20,10)
-	, Width decimal(20,10)
-	, Height decimal(20,10)
-	, Volume decimal(20,10)
+	, GrossWeight decimal(20,3)
+	, NetWeight decimal(20,3)
+	, Length decimal(20,3)
+	, Width decimal(20,3)
+	, Height decimal(20,3)
+	, Volume decimal(20,3)
 	, TiHi varchar(250)
 	, Shelf int
 	, StorageTemp varchar(35)
@@ -354,7 +386,7 @@ CREATE TABLE ETL.Staging_FSE_ProductSpec (
 	, ServingSuggestion varchar(max)
 	, MoreInformation varchar(35)
 	, MarketingMessage varchar(max)
-	, ServingSize decimal(20,10)
+	, ServingSize decimal(20,3)
 	, ServingSizeUOM varchar(3)
 	, Ingredients varchar(max)
 	, Brand varchar(35)
@@ -371,7 +403,7 @@ CREATE TABLE ETL.Staging_FSE_ProductNutrition (
 	, NutrientTypeCode varchar(100)
 	, NutrientTypeDesc varchar(150)
 	, MeasurmentTypeId varchar(5)
-	, MeasurementValue decimal(20,10)
+	, MeasurementValue decimal(20,3)
 	, DailyValue varchar(100)
 );
 GO
@@ -435,6 +467,7 @@ BEGIN
 		UPC, 
 		MfrNumber, 
 		MfrName, 
+		(SELECT b.ExtendedDescription FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription,
 		Cases, 
 		Package, 
 		PreferredItemCode, 
@@ -645,6 +678,32 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadBrandControlLabels]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT DISTINCT
+		b.ControlLabel,
+		b.ExtendedDescription
+	FROM
+		ETL.Staging_BrandControlLabels b
+END
+
+GO
 
 SET ANSI_PADDING OFF
 GO

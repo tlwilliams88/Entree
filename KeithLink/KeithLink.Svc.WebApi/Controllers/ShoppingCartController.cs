@@ -31,9 +31,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		[HttpPut]
 		[Route("cart/")]
-		public void Put(ShoppingCart updatedCart)
+		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
-			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart);
+			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart, deleteomitted);
 		}
 
 

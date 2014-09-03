@@ -25,6 +25,7 @@ module.exports = function(config) {
       'app/lib/angular-dragdrop/angular-dragdrop.js',
       'app/lib/angular-ui-sortable/sortable.js',
       'app/lib/ng-infinite-scroll/ng-infinite-scroll.js',
+      'app/lib/angular-unsavedChanges/unsavedChanges.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

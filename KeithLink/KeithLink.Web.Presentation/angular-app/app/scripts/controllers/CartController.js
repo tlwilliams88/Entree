@@ -8,26 +8,19 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartController', ['$scope', '$state', 'CartService', function($scope, $state,  CartService) {
+  .controller('CartController', ['$scope', '$state', '$stateParams', 'Constants', 'CartService', 
+    function($scope, $state, $stateParams, Constants, CartService) {
     
-    $scope.loadingResults = true;
-
+    $scope.loadingResults = false;
+    $scope.sortBy = null;
+    $scope.sortOrder = false;
+    
     $scope.carts = CartService.carts;
-    
-    CartService.getAllCarts().then(function(data) {
-      $scope.currentCart = CartService.carts[0];
-      $scope.goToCart();
-      $scope.sortBy = null;
-      $scope.sortOrder = false;
-      $scope.loadingResults = false;
-    });
 
-    $scope.goToCart = function() {
-      angular.forEach($scope.currentCart.items, function(item, index) {
-        item.packageprice = 4;
-        item.caseprice = 16;
+    $scope.goToCart = function(cart) {
+      $state.go('menu.cartitems', {cartId: cart.id}).then(function() {
+        $scope.currentCart = cart;
       });
-      $state.transitionTo('menu.cartitems', {cartId: $scope.currentCart.id}, {notify: false});
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -42,6 +35,7 @@ angular.module('bekApp')
         $scope.sortBy = null;
         $scope.sortOrder = false;
         $scope.currentCart = cart;
+        $scope.$$childTail.$$childTail.cartForm.$setPristine();
         console.log('Successfully saved cart ' + cart.name);
       }, function() {
         console.log('Error saving cart ' + cart.name);
@@ -61,8 +55,9 @@ angular.module('bekApp')
       });
     };
 
-    $scope.deleteCart = function(cartId) {
-      CartService.deleteCart(cartId).then(function() {
+    $scope.deleteCart = function(cart) {
+      CartService.deleteCart(cart).then(function() {
+        setCurrentCart();
         console.log('Successfully deleted cart.');
       }, function() {
         console.log('Error deleting cart.');
@@ -76,5 +71,60 @@ angular.module('bekApp')
       });
       return subtotal;
     };
+
+    $scope.deleteItem = function(item) {
+      var idx = $scope.currentCart.items.indexOf(item);
+      $scope.currentCart.items.splice(idx, 1);
+    };
+
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      startingDay: 1,
+      showWeeks: false
+    };
+
+    $scope.openDatepicker = function($event) {
+      $event.preventDefault();
+      $event.stopPropagation();
+
+      $scope.openedDatepicker = true;
+    };
+
+    function setCurrentCart() {
+      if ($stateParams.cartId) {
+        $scope.currentCart = CartService.findCartById($stateParams.cartId);
+      } 
+      if (!$scope.currentCart) {
+
+        // go to active cart
+
+        // go to first cart in list
+        if (CartService.carts && CartService.carts.length > 0) {
+          $scope.goToCart(CartService.carts[0]);
+        } else { // display default message
+          $scope.currentCart = null;
+          $state.go('menu.cart');
+        }
+      }
+    }
+
+    // INFINITE SCROLL
+    var itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      if ($scope.itemsToDisplay < $scope.currentCart.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
+    };
+
+    function renameRedirect() {
+      if ($stateParams.renameCart === 'true') {
+        $scope.startEditCartName($scope.currentCart.name);
+        $state.go('menu.cartitems', {cartId: $scope.currentCart.id});
+      }
+    }
+    
+    setCurrentCart();
+    renameRedirect();
 
   }]);

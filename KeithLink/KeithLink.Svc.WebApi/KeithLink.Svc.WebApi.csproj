@@ -180,6 +180,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
     <Compile Include="Global.asax.cs">
