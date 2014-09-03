@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.WebApi.Attribute;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -27,24 +28,50 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         protected override void Initialize(System.Web.Http.Controllers.HttpControllerContext controllerContext)
         {
-            base.Initialize(controllerContext);
-
-            if (controllerContext.RequestContext.Principal.Identity.IsAuthenticated && 
-                string.Compare(controllerContext.RequestContext.Principal.Identity.AuthenticationType, "bearer", true) == 0)
+            try
             {
-                Core.Models.Profile.UserProfileReturn retVal = _userRepo.GetUserProfile(
-                                                                ((System.Security.Claims.ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value
-                                                            );
+                base.Initialize(controllerContext);
 
-                _user = retVal.UserProfiles[0];
-                _user.IsAuthenticated = true;
+                if (controllerContext.RequestContext.Principal.Identity.IsAuthenticated &&
+                    string.Compare(controllerContext.RequestContext.Principal.Identity.AuthenticationType, "bearer", true) == 0)
+                {
+                    Core.Models.Profile.UserProfileReturn retVal = _userRepo.GetUserProfile(
+                                                                    ((System.Security.Claims.ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value
+                                                                );
 
-                System.Security.Principal.GenericPrincipal genPrincipal = new System.Security.Principal.GenericPrincipal(_user, new string[] { "Owner" });
-                controllerContext.RequestContext.Principal = genPrincipal;
+                    _user = retVal.UserProfiles[0];
+                    _user.IsAuthenticated = true;
+
+                    System.Security.Principal.GenericPrincipal genPrincipal = new System.Security.Principal.GenericPrincipal(_user, new string[] { "Owner" });
+                    controllerContext.RequestContext.Principal = genPrincipal;
+                }
+                else
+                {
+                    _user = null;
+                }
             }
-            else
+            catch (Exception ex)
             {
-                _user = null;
+                string sEvent = "BEK Exception - BaseController:Initialize - " + ex.Message + ": " + ex.StackTrace;
+
+                try
+                {
+                    KeithLink.Common.Core.Logging.IEventLogRepository eventLogRepository = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(KeithLink.Common.Core.Logging.IEventLogRepository))
+                        as KeithLink.Common.Core.Logging.IEventLogRepository;
+
+                    eventLogRepository.WriteErrorLog("Unhandled API Exception", ex);
+                }
+                catch (Exception)
+                {
+                    string sSource = "BEK_Shop";
+                    string sLog = "Application";
+
+                    if (!EventLog.SourceExists(sSource))
+                        EventLog.CreateEventSource(sSource, sLog);
+                    EventLog.WriteEntry(sSource, sEvent, EventLogEntryType.Warning, 234);
+                }
+
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
             }
         }
         #endregion
