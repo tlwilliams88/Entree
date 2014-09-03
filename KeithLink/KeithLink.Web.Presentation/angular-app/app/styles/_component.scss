@@ -211,3 +211,11 @@ input[type='text'], input[type='email'], input[type='password'] {
 hr {
   border-top: 1px solid $color-border;
 }
+
+/* DATEPICKER */ 
+
+.datepicker + .dropdown-menu {
+  table tbody button, table thead button {
+    border: none !important;
+  }
+}
