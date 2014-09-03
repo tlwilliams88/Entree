@@ -100,9 +100,9 @@ namespace KeithLink.Svc.Impl.Logic
             if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
-                    prods.Products.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
-                else
                     prods.Products.Sort((x, y) => y.CasePrice.CompareTo(x.CasePrice));
+                else
+                    prods.Products.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
             }
         }
 
