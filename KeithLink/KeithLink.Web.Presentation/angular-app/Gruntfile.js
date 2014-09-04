@@ -218,10 +218,22 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on filerev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/{,*/}*.html'],
+      html: ['<%= yeoman.dist %>/*.html', '<%= yeoman.dist %>/views/{,*/}*.html'],
       css: ['<%= yeoman.dist %>/styles/{,*/}*.css'],
+      js: '<%= yeoman.dist %>/scripts/*.js',
       options: {
-        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images']
+        assetsDirs: ['<%= yeoman.dist %>','<%= yeoman.dist %>/images'],
+         patterns: {
+          // FIXME While usemin won't have full support for revved files we have to put all references manually here
+          js: [
+            [/(demoimage1\.jpg)/g, 'Replacing reference to demoimage1.jpg'],
+            [/(demoimage2\.jpg)/g, 'Replacing reference to demoimage2.jpg'],
+            [/(demoimage3\.jpg)/g, 'Replacing reference to demoimage3.jpg'],
+            [/(demoimage4\.jpg)/g, 'Replacing reference to demoimage4.jpg'],
+            [/(placeholder-dsr\.jpg)/g, 'Replacing reference to placeholder-dsr.jpg'],
+            [/(placeholder-user\.png)/g, 'Replacing reference to placeholder-user.png']
+          ]
+        }
       }
     },
 

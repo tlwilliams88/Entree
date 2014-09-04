@@ -15,6 +15,8 @@ angular.module('bekApp')
     $scope.sortBy = null;
     $scope.sortOrder = false;
     
+    $scope.alerts = [];
+
     $scope.carts = CartService.carts;
 
     $scope.goToCart = function(cart) {
@@ -36,9 +38,10 @@ angular.module('bekApp')
         $scope.sortOrder = false;
         $scope.currentCart = cart;
         $scope.$$childTail.$$childTail.cartForm.$setPristine();
-        console.log('Successfully saved cart ' + cart.name);
+        $scope.$$childTail.$$childTail.cartItemsForm.$setPristine();
+        addSuccessAlert('Successfully saved cart ' + cart.name);
       }, function() {
-        console.log('Error saving cart ' + cart.name);
+        addErrorAlert('Error saving cart ' + cart.name);
       });
     };
 
@@ -49,18 +52,18 @@ angular.module('bekApp')
       CartService.updateCart(cart).then(function(data) {
         $scope.currentCart.isRenaming = false;
         $scope.currentCart.name = cartName;
-        console.log('Successfully renamed cart to ' + cartName + '.');
+        addSuccessAlert('Successfully renamed cart to ' + cartName + '.');
       }, function() {
-        console.log('Error renaming cart.');
+        addErrorAlert('Error renaming cart.');
       });
     };
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart).then(function() {
         setCurrentCart();
-        console.log('Successfully deleted cart.');
+        addSuccessAlert('Successfully deleted cart.');
       }, function() {
-        console.log('Error deleting cart.');
+        addErrorAlert('Error deleting cart.');
       });
     };
 
@@ -82,12 +85,13 @@ angular.module('bekApp')
       startingDay: 1,
       showWeeks: false
     };
+    $scope.datepicker = {};
 
     $scope.openDatepicker = function($event) {
       $event.preventDefault();
       $event.stopPropagation();
 
-      $scope.openedDatepicker = true;
+      $scope.datepicker.opened = true;
     };
 
     function setCurrentCart() {
@@ -115,6 +119,20 @@ angular.module('bekApp')
       if ($scope.itemsToDisplay < $scope.currentCart.items.length) {
         $scope.itemsToDisplay += itemsPerPage;
       }
+    };
+
+    // ALERTS
+    function addSuccessAlert(message) {
+      addAlert('success', message);
+    }
+    function addErrorAlert(message) {
+      addAlert('danger', message);
+    }
+    function addAlert(alertType, message) {
+      $scope.alerts[0] = { type: alertType, msg: message };
+    }
+    $scope.closeAlert = function(index) {
+      $scope.alerts.splice(index, 1);
     };
 
     function renameRedirect() {

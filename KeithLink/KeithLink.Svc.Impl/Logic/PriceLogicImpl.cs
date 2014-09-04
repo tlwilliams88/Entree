@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Logic
                 {
                     _priceCacheRepository.AddItem(p);
                 }
-                retVal.Prices.AddRange(cachedPriceList);
+                retVal.Prices.AddRange(uncachedPrices);
             }
             return retVal;
         }

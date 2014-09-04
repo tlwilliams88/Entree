@@ -1,0 +1,49 @@
+.select-nav-bar {
+  margin: 0;
+  background-color: white;
+  border-top: 1px solid $color-border;
+  // border-bottom: 1px solid $color-border;
+  
+  
+  .select-nav {
+    border-right: 1px solid $color-border;
+    padding: 0;
+
+    &:first-child {
+      border-left: 1px solid $color-border;
+    }
+  }
+
+  .select-area {
+    padding: 10px $gutter-size;
+    cursor: pointer;
+    
+    div {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .nav-description {
+      font-size: 14px;
+      display: block;
+    }
+    .nav-title {
+      font-size: 16px;
+    }
+  }
+
+  .dropdown-menu-list {
+    width: 100%;
+    border-radius: 0;
+    padding: 0;
+
+    li {
+      padding: 10px;
+      border-bottom: 1px solid $color-border;
+
+      &:hover {
+        background-color: $background;
+      }
+    }
+  }
+}

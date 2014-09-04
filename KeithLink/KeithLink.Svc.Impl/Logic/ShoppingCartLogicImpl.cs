@@ -50,8 +50,19 @@ namespace KeithLink.Svc.Impl.Logic
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+
 			if (basket == null)
 				return null;
+
+			//Does item already exist? If so, just update the quantity
+			var existingItem = basket.LineItems.Where(l => l.ProductId.Equals(newItem.ItemNumber));
+			if (existingItem.Any())
+			{
+				existingItem.First().Quantity += newItem.Quantity;
+				basketRepository.UpdateItem(user.UserId, cartId, existingItem.First());
+				return existingItem.First().Id.ToGuid();
+			}
+
 						
 			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId));
 		}
@@ -89,7 +100,18 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items != null)
 			{
 				itemsToRemove = updateCart.LineItems.Where(b => !cart.Items.Any(c => c.CartItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
-				lineItems = cart.Items.Select(s => s.ToLineItem(updateCart.BranchId)).ToList();
+				foreach (var item in cart.Items)
+				{
+					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
+					if (existingItem.Any())
+					{
+						existingItem.First().Quantity += item.Quantity;
+						lineItems.Add(existingItem.First());
+					}	
+					else
+						lineItems.Add(item.ToLineItem(updateCart.BranchId));
+				}
+				
 			}
 			
 			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
