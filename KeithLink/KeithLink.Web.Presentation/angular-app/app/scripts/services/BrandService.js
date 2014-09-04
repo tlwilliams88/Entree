@@ -16,7 +16,8 @@ angular.module('bekApp')
       getHouseBrands: function() {
           if (!brands) {
              brands = $http.get('/brands/house').then(function (response) {
-                return response.data;
+                var data = response.data;
+                return data.brands;
             });
           }
       return brands;
