@@ -52,5 +52,9 @@ namespace KeithLink.Svc.Core
 
         // mainframe stuff
         public const int MAINFRAME_ORDER_RECORD_LENGTH = 250;
+        public const string MAINFRAME_RECEIVE_STATUS_CANCELLED = "CC";
+        public const string MAINFRAME_RECEIVE_STATUS_GO = "GO";
+        public const string MAINFRAME_RECEIVE_STATUS_GOOD_RETURN = "YY";
+        public const string MAINFRAME_RECEIVE_STATUS_WAITING = "WW";
     }
 }
