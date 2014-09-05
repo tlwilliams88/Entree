@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface;
 using System;
 using System.IO;
@@ -65,7 +66,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Could not open socket", ex);
+                    throw new EarlySocketException("Could not open socket", ex);
                 }
 
                 _connected = true;
@@ -95,7 +96,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
             catch (Exception ex)
             {
-                throw new Exception("Error reading from host socket connection", ex);
+                throw new SocketResponseException("Error reading from host socket connection", ex);
             }
 
             return ASCIIEncoding.ASCII.GetString(bytes, 0, bytes.Length);
@@ -113,7 +114,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             try { _writingStream.Write(bytes); }
             catch (Exception ex)
             {
-                throw new Exception("Error sending record to host socket connection", ex);
+                throw new SocketSendException("Error sending record to host socket connection", ex);
             }
         }
 
@@ -132,7 +133,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             try { _writingStream.Write(bytes); }
             catch (Exception ex)
             {
-                throw new Exception("Error creating transaction", ex);
+                throw new EarlySocketException("Error creating transaction", ex);
             }
         }
 
