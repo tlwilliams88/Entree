@@ -262,11 +262,11 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string MainframeListeningPort
+        public static int MainframeListeningPort
         {
             get
             {
-                return GetValue(KEY_MF_PORT, string.Empty);
+                return int.Parse(GetValue(KEY_MF_PORT, "0"));
             }
         }
 
