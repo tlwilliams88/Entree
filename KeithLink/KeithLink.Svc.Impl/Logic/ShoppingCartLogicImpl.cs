@@ -191,7 +191,7 @@ namespace KeithLink.Svc.Impl.Logic
 				if (prod != null)
 				{
 					item.Name = prod.Name;
-					item.PackSize = string.Format("{0} / {1}", prod.Cases, prod.Size);
+					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Gs1.StorageTemp;
 					item.Brand = prod.Brand;
 					item.ReplacedItem = prod.ReplacedItem;
