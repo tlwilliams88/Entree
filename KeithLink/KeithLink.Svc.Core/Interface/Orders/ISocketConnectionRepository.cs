@@ -2,7 +2,7 @@
 
 namespace KeithLink.Svc.Core.Interface.Orders
 {
-    public interface ISocketConnection
+    public interface ISocketConnectionRepository
     {
         void Connect();
 
