@@ -438,12 +438,31 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             //con.AuthType = System.DirectoryServices.Protocols.AuthType.Basic;
             //con.Bind();
 
-            
+            //try
+            //{
+            //    using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+            //                                                             Configuration.ActiveDirectoryExternalServerName,
+            //                                                             Configuration.ActiveDirectoryExternalRootNode,
+            //                                                             ContextOptions.Negotiate | ContextOptions.SecureSocketLayer,
+            //                                                             GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+            //                                                             Configuration.ActiveDirectoryExternalPassword))
+            //    {
+            //        UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.UserPrincipalName, emailAddress);
+
+            //        user.SetPassword(newPassword);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.WriteErrorLog("Could not get user", ex);
+
+            //    return null;
+            //}
         }
 
-        private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
-            return true;
-        }
+        //private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
+        //    return true;
+        //}
 
         /// <summary>
         /// check the benekeith.com domain for the username
