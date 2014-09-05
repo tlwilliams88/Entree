@@ -43,6 +43,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _header.OrderType = OrderType.NormalOrder;
             _header.OrderingSystem = OrderSource.KeithCom;
             _header.OrderSendDateTime = DateTime.Now;
+            _header.PONumber = string.Empty;
+            _header.Specialinstructions = string.Empty;
+            _header.InvoiceNumber = string.Empty;
+            _header.UserId = "KeithLink.Svc.Tests";
+
 
             _details.Add(new OrderDetail() { 
                                              LineNumber = 1,
@@ -51,7 +56,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                              OrderedQuantity = 1,
                                              SellPrice = 1.50,
                                              Catchweight = false,
-                                             ItemChange = LineType.Add
+                                             ItemChange = LineType.Add,
+                                             ReplacedOriginalItemNumber = string.Empty,
+                                             SubOriginalItemNumber = string.Empty,
+                                             ItemStatus = string.Empty
                                             });
             _details.Add(new OrderDetail()
                                             {
@@ -61,7 +69,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                 OrderedQuantity = 1,
                                                 SellPrice = 2.37,
                                                 Catchweight = false,
-                                                ItemChange = LineType.Add
+                                                ItemChange = LineType.Add,
+                                                ReplacedOriginalItemNumber = string.Empty,
+                                                SubOriginalItemNumber = string.Empty,
+                                                ItemStatus = string.Empty
                                             });
 
             _fileRead = true;
