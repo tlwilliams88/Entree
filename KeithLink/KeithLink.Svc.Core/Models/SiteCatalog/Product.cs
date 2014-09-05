@@ -8,7 +8,6 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using System.ComponentModel.DataAnnotations;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
