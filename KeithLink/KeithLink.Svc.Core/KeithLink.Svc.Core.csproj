@@ -114,6 +114,7 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />

@@ -7,6 +7,15 @@ namespace KeithLink.Svc.Core.Models.Orders
     [DataContract(Name="OrderHeader")]
     public class OrderHeader
     {
+        #region methods
+        public string ToString()
+        {
+            StringBuilder output = new StringBuilder("H");
+
+            return output.ToString();
+        }
+        #endregion
+
         #region properties
         [DataMember(Name="OrderingSystem")]
         public OrderSource OrderingSystem { get; set; }
