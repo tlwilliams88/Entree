@@ -32,6 +32,7 @@ angular.module('bekApp')
     };
 
     $scope.saveCart = function(cart) {
+      addWaitAlert('Waiting for cart to save...');
       CartService.updateCart(cart).then(function() {
         $scope.currentCart.isRenaming = false;
         $scope.sortBy = null;
@@ -78,6 +79,8 @@ angular.module('bekApp')
     $scope.deleteItem = function(item) {
       var idx = $scope.currentCart.items.indexOf(item);
       $scope.currentCart.items.splice(idx, 1);
+      $scope.$$childTail.$$childTail.cartForm.$setDirty();
+      $scope.$$childTail.$$childTail.cartItemsForm.$setDirty();
     };
 
     $scope.dateOptions = {
@@ -123,13 +126,19 @@ angular.module('bekApp')
 
     // ALERTS
     function addSuccessAlert(message) {
-      addAlert('success', message);
+      growl.addSuccessMessage(message);
+      // addAlert('success', message);
     }
     function addErrorAlert(message) {
-      addAlert('danger', message);
+      growl.addErrorMessage(message);
+      // addAlert('error', message);
+    }
+    function addWaitAlert(message) {
+      growl.addInfoMessage(message, {ttl: -1});
+      // addAlert('wait', message);
     }
     function addAlert(alertType, message) {
-      $scope.alerts[0] = { type: alertType, msg: message };
+      toaster.pop(alertType, null, message);
     }
     $scope.closeAlert = function(index) {
       $scope.alerts.splice(index, 1);

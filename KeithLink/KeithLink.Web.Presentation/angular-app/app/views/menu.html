@@ -46,7 +46,8 @@
 </div>
 
 <div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="desktop-wrapper">
-  
+  <!-- <toaster-container></toaster-container> -->
+  <div growl></div>
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
@@ -90,7 +91,7 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
-          <div class="select-div" ng-show="canBrowseCatalog">
+          <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
             <select ng-change="changeLocation()" ng-options="location.name for location in locations track by location.name" ng-model="currentLocation"></select>
           </div>
         </div>
@@ -104,7 +105,7 @@
             </div>
           </form>
         </div>
-        <div class="col-md-4 hidden-sm hidden-xs text-right">
+        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap">
           <div ng-if="isLoggedIn">
             <span ng-if="isOrderEntryCustomer" class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">

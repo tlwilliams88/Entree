@@ -19,9 +19,12 @@ angular.module('bekApp')
             ctrl.$setValidity('integer', true);
             return viewValue;
           } else {
-            var digits = viewValue.split('').filter(function (s) { return (!isNaN(s) && s !== ' '); }).join('');
-            ctrl.$viewValue = digits;
-            ctrl.$render();
+            var digits;
+            if (viewValue) {
+              digits = viewValue.split('').filter(function (s) { return (!isNaN(s) && s !== ' '); }).join('');
+              ctrl.$viewValue = digits;
+              ctrl.$render();
+            }
             
             // it is invalid, return undefined (no model update)
             ctrl.$setValidity('integer', false);

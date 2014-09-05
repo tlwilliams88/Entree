@@ -199,11 +199,16 @@ angular.module('bekApp')
 
     };
     
-    $scope.work = function(event, ui) {  // fix for chrome position:relative issue
+    $scope.chromeFix = function(event, ui) {  // fix for chrome position:relative issue
         // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 
-    // Dragging, used to enable DOM elements
+    // disable drag on mobile
+    $scope.isDragEnabled = function() {
+      return window.innerWidth > 991;
+    };
+
+    // Check if element is being dragged, used to enable DOM elements
     $scope.setIsDragging = function(event, helper, isDragging) {
       $scope.isDragging = isDragging;
     };
