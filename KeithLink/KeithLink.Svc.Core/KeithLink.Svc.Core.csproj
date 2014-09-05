@@ -109,6 +109,7 @@
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Models\SiteCatalog\BaseProductInfo.cs" />
+    <Compile Include="Models\SiteCatalog\Division.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
     <Compile Include="Models\Lists\NewItem.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
