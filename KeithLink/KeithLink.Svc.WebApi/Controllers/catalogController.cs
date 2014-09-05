@@ -86,6 +86,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
 		[HttpGet]
+		[AllowAnonymous]
 		[ApiKeyedRoute("catalog/divisions")]
 		public List<Division> GetDivisions()
 		{
