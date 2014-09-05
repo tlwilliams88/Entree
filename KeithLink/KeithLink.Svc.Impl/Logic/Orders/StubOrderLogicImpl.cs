@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         public void ParseFile(string FileName)
         {
             _header.Branch = "FDF";
-            _header.ControlNumber = "0000001";
+            _header.ControlNumber = 1;
             _header.CustomerNumber = "001001";
             _header.DeliveryDate = DateTime.Now.AddDays(1);
             _header.OrderCreateDateTime = DateTime.Now;
@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // open connection and call program
             _mfConnection.Connect();
-            _mfConnection.StartTransaction(_header.ControlNumber);
+            _mfConnection.StartTransaction(_header.ControlNumber.ToString().PadLeft(7, '0'));
 
             string startCode = _mfConnection.Receive();
             if (startCode.Length > 0 && startCode == Constants.MAINFRAME_RECEIVE_STATUS_GO)
