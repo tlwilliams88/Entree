@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Test
         {
             OrderSocketConnectionRepositoryImpl mf = new OrderSocketConnectionRepositoryImpl();
             mf.Connect();
-            mf.Close()
+            mf.Close();
         }
     }
 }
