@@ -376,14 +376,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public void UpdatePassword(string emailAddress, string newPassword)
         {
-            string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+            string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
             try
             {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-                //boundServer.AuthenticationType = AuthenticationTypes.Secure;
+                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
                 boundServer.RefreshCache();
             }
             catch (Exception ex)
@@ -406,12 +406,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 throw;
             }
-            
+
             // set the user's password
             try
             {
                 //currentUser.AuthenticationType = AuthenticationTypes.Secure;
-                currentUser.Invoke("SetPassword", new object[] { newPassword});
+                currentUser.Invoke("SetPassword", new object[] { newPassword });
                 currentUser.CommitChanges();
             }
             catch (Exception ex)
@@ -420,6 +420,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 throw;
             }
+
+            ////string ldapServer = string.Concat("ldap://", Configuration.ActiveDirectoryExternalServerName);
+            //string ldapServer = string.Format("{0}:{1}", Configuration.ActiveDirectoryExternalServerName, 636);
+
+            ////System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(
+            ////                                                            new System.DirectoryServices.Protocols.LdapDirectoryIdentifier(
+            ////                                                                    ldapServer, 389
+            ////                                                                )
+            ////                                                            );
+            //System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(ldapServer);
+
+            //con.SessionOptions.SecureSocketLayer = true;
+            ////con.SessionOptions.VerifyServerCertificate = new System.DirectoryServices.Protocols.VerifyServerCertificateCallback(ServerCallback);
+            //con.Credential = new System.Net.NetworkCredential(Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+            ////con.AuthType = System.DirectoryServices.Protocols.AuthType.Negotiate;
+            //con.AuthType = System.DirectoryServices.Protocols.AuthType.Basic;
+            //con.Bind();
+
+            
+        }
+
+        private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
+            return true;
         }
 
         /// <summary>
