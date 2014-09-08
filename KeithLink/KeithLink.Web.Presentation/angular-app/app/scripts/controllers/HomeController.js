@@ -24,19 +24,22 @@ angular.module('bekApp')
     ];
 
     $scope.myInterval = -1;
-    var items = $scope.items = [];
-    $scope.addItem = function() {
-      var newWidth = 1 + items.length;
-      items.push({
-        id: 1,
-        imageUrl: 'images/demoimage' + newWidth + '.jpg',
-        name: '50% off of apples!'
-      });
-    };
-    for (var i = 0; i < 4; i++) {
-      $scope.addItem();
-    }
-
-
+    var items = $scope.items = [{
+      id: 1,
+      imageUrl: 'images/demoimage1.jpg',
+      name: '50% off of apples!'
+    },{
+      id: 1,
+      imageUrl: 'images/demoimage2.jpg',
+      name: '50% off of apples!'
+    },{
+      id: 1,
+      imageUrl: 'images/demoimage3.jpg',
+      name: '50% off of apples!'
+    },{
+      id: 1,
+      imageUrl: 'images/demoimage4.jpg',
+      name: '50% off of apples!'
+    }];
 
   });

@@ -26,14 +26,18 @@ angular.module('bekApp')
       };
 
       $scope.addItemToCart = function(cartId, item) {
+        $scope.loadingContextMenu = true;
         CartService.addItemToCart(cartId, item).then(function(data) {
-          
+          $scope.loadingContextMenu = false;
+          $scope.displayedItems.isContextMenuDisplayed = false;
         });
       };
 
       $scope.createCartWithItem = function(item) {
         var items = [item];
+        $scope.loadingContextMenu = true;
         CartService.createCart(items).then(function(data) {
+          $scope.loadingContextMenu = false;
           $state.go('menu.cartitems', { cartId: data.listitemid, renameCart: true });
         });
       };
