@@ -154,13 +154,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             const int NORMAL_ACCT = 0x200;
             const int PWD_NOTREQD = 0x20;
 
-            string adPath = string.Format("LDAP://{0}:389/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
+            string adPath = string.Format("LDAP://{0}:636/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
             try
             {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
                 boundServer.RefreshCache();
             } catch (Exception ex){
                 _logger.WriteErrorLog("Could not bind to external AD server.", ex);
