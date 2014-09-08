@@ -6,6 +6,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
     {
         void ConsumeOrders();
 
-        void PublishOrder(string rawOrderFile);
+        void PublishOrder(Models.Orders.OrderFile order);
     }
 }

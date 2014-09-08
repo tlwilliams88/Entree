@@ -1,12 +1,26 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.Orders;
+using RabbitMQ.Client;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
-    class OrderQueueRepositoryImpl
+    public class OrderQueueRepositoryImpl : IOrderQueueRepository
     {
+        #region IOrderQueueRepository Members
+
+        public void ConsumeOrders()
+        {
+            
+        }
+
+        public void PublishOrder(OrderFile order)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

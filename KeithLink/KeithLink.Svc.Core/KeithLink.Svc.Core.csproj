@@ -115,6 +115,7 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderQueueRepository.cs" />
     <Compile Include="Interface\Orders\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
@@ -131,6 +132,7 @@
     </Compile>
     <Compile Include="Models\Orders\LineType.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />
+    <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
     <Compile Include="Models\Orders\OrderSource.cs" />
     <Compile Include="Models\Orders\OrderType.cs" />
