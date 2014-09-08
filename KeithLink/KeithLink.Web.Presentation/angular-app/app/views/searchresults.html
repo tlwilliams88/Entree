@@ -245,7 +245,7 @@
 							{{item.name}}
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{item.cases}} / {{item.size}}
+							{{item.pack | number}} / {{item.size}}
 						</td>
 						<td class="hidden-sm hidden-xs icons text-right" item-icons>
 						</td>
@@ -260,7 +260,7 @@
 					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
 						<td colspan=4>
 							<div>
-								<p>Pack / Size: {{item.cases}} / {{item.size}}</p>
+								<p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
 								<p>Brand: {{item.brand}}</p>
 								<p item-icons>
 								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>

@@ -53,6 +53,8 @@ angular.module('bekApp')
         };
 
         return Cart.save(null, newCart).$promise.then(function(response) {
+          newCart.id = response.listitemid;
+          Service.carts.push(newCart);
           console.log(response);
           return response;
         });

@@ -19,9 +19,9 @@
       </div>
       <div>
         <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-        <span ng-if="item.caseprice !== '$0.00'"><strong>Case:</strong> {{item.caseprice}} |</span>
-        <span ng-if="item.packageprice !== '$0.00'"><strong>Package:</strong> {{item.packageprice}} |</span>
-        <span ng-if="item.size !== null"><strong>Size:</strong> {{item.size}}</span>
+        <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} |</span>
+        <span ng-if="item.packageprice !== '$0.00' && item.packageprice"><strong>Package:</strong> {{item.packageprice}} |</span>
+        <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
       </div>
       <div>
         <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div ng-if="canOrderProduct(item)" class="item-details__actions hidden-print">
-      <div quantity-input="item.quantity"></div>
+      <div quantity-input="item.quantity" form-control="true"></div>
       <a class="btn-primary btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
       
       <span favorite-item-click-handlers>
@@ -90,7 +90,7 @@
                 <td>{{item.manufacturer_name}}</td>
               </tr>
               <tr class="even">
-                <td>Brand</td>
+                <td>Manufacturer Brand</td>
                 <td>{{item.manufacturer_brand}}</td>
               </tr>
               <tr class="odd">
@@ -191,7 +191,7 @@
                 <td>{{nutrition.measurementtypeid}}</td>
                 <td>{{nutrition.measurementvalue}}</td>
               </tr>
-              <tr class="odd" ng-if="item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
+              <tr class="odd" ng-if="!item.gs1.nutrition || item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
             </tbody>
           </table>
         </div>

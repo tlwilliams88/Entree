@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptorService', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings',
+.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings',
   function ($q, $location, localStorageService, Constants, ApiSettings) {
 
   var authInterceptorServiceFactory = {

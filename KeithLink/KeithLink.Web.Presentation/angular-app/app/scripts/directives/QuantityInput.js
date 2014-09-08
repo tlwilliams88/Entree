@@ -6,7 +6,8 @@ angular.module('bekApp')
     replace: true,
     restrict: 'A',
     scope: {
-      quantityValue: '=quantityInput'
+      quantityValue: '=quantityInput',
+      formControlClass: '=formControl'
     },
     link: function(scope, elm, attrs, ctrl) {
       scope.changeQuantity = function(qty) {

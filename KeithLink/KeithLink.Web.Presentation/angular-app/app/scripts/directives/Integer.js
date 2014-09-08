@@ -27,7 +27,7 @@ angular.module('bekApp')
             }
             
             // it is invalid, return undefined (no model update)
-            ctrl.$setValidity('integer', false);
+            // ctrl.$setValidity('integer', false);
             return digits;
           }
         }

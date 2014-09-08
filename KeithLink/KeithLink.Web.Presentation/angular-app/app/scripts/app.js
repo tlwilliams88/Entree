@@ -21,9 +21,16 @@ angular
     'shoppinpal.mobile-menu',
     'ngDragDrop',
     'infinite-scroll',
-    'unsavedChanges'
+    'unsavedChanges',
+    'toaster',
+    'angular-loading-bar'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
+  function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {
+  
+  // configure loading bar
+  cfpLoadingBarProvider.includeBar = false;
+
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     // register
@@ -35,7 +42,12 @@ angular
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
-      controller: 'MenuController'
+      controller: 'MenuController',
+      resolve: {
+        branches: ['BranchService', function(BranchService) {
+          return BranchService.getBranches();
+        }]
+      }
     })
     // /home
     .state('menu.home', {
@@ -133,19 +145,13 @@ angular
         }]
       }
     })
-    .state('menu.cartitems', {
-      url: '/cart/:cartId/?renameCart',
-      templateUrl: 'views/cart.html',
-      controller: 'CartController',
+    .state('menu.cart.items', {
+      url: ':cartId/?renameCart',
+      templateUrl: 'views/cartitems.html',
+      controller: 'CartItemsController',
       data: {
         authorize: 'canCreateOrders'
       }
-      // ,
-      // resolve: {
-      //   carts: ['CartService', function (CartService){
-      //     return CartService.getAllCarts();
-      //   }]
-      // }
     })
     .state('menu.addtoorder', {
       url: '/add-to-order/',
@@ -198,7 +204,7 @@ angular
   });
 
   // add authentication headers and Api Url
-  $httpProvider.interceptors.push('AuthenticationInterceptorService');
+  $httpProvider.interceptors.push('AuthenticationInterceptor');
 
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');

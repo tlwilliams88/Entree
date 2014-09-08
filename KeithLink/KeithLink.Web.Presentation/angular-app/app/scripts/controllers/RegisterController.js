@@ -8,13 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'AuthenticationService', 
-    function ($scope, $state, AuthenticationService) {
+  .controller('RegisterController', ['$scope', '$state', 'AuthenticationService', 'BranchService',
+    function ($scope, $state, AuthenticationService, BranchService) {
 
     $scope.loginInfo = {
       username: 'sabroussard@somecompany.com',
       password: 'L1ttleStev1e'
     };
+
+    BranchService.getBranches().then(function(branches) {
+      $scope.branches = branches;
+    });
 
     $scope.login = function(loginInfo) {
       $scope.errorMessage = '';

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 
-    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'toaster', 'Constants', 'ListService', 
+    function($scope, $filter, $timeout, $state, $stateParams, toaster, Constants, ListService) {
     
     var orderBy = $filter('orderBy');
 
@@ -90,8 +90,6 @@ angular.module('bekApp')
         $scope.sortBy = 'editPosition';
         $scope.sortOrder = false;
 
-        $scope.unsavedChanges = false;
-
         $scope.selectedList = updatedList;
         addSuccessAlert('Successfully saved list ' + list.name + '.');
       }, function(error) {
@@ -148,20 +146,12 @@ angular.module('bekApp')
 
       $scope.selectedList.items.splice(deletedIndex, 1);
       updateItemPositions();
-      $scope.unsavedChanges = true;
     };
 
     $scope.deleteItemFromDrag = function(event, helper) {
       var selectedItem = angular.copy(helper.draggable.data('product'));
       $scope.deleteItem(selectedItem);
     };
-
-    // warn user when exiting page without saved changes
-    // window.onbeforeunload = function(){
-    //   if (unsavedChanges) {
-    //     debugger;
-    //   }
-    // };
 
     // ORDERING/SORTING LIST
 
@@ -170,6 +160,9 @@ angular.module('bekApp')
       angular.forEach($scope.selectedList.items, function(item, index) {
         item.editPosition = index + 1;
       });
+      if ($scope.listForm) {
+        $scope.listForm.$setDirty();
+      }
     }
 
     // sort list by column
@@ -192,11 +185,9 @@ angular.module('bekApp')
 
       $timeout(function() {
         ui.item.removeClass('bek-reordered-item');
-        console.log('remove class');
       }, 500);
 
       updateItemPositions();
-
     };
     
     $scope.chromeFix = function(event, ui) {  // fix for chrome position:relative issue
@@ -245,14 +236,11 @@ angular.module('bekApp')
       addAlert('success', message);
     }
     function addErrorAlert(message) {
-      addAlert('danger', message);
+      addAlert('error', message);
     }
     function addAlert(alertType, message) {
-      $scope.alerts[0] = { type: alertType, msg: message };
+      toaster.pop(alertType, null, message);
     }
-    $scope.closeAlert = function(index) {
-      $scope.alerts.splice(index, 1);
-    };
 
     // FILTER LIST
     $scope.listSearchTerm = '';
