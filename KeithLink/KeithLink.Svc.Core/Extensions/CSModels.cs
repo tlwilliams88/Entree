@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,11 @@ namespace KeithLink.Svc.Core.Extensions
 		public static CS.LineItem ToLineItem(this ShoppingCartItem cartItem, string branchId)
 		{
 			return new CS.LineItem() {Id = cartItem.CartItemId.ToString("B"), CatalogName = branchId, Notes = cartItem.Notes, ProductId = cartItem.ItemNumber, Quantity = cartItem.Quantity, Each = cartItem.Each };
+		}
+
+		public static Division ToDivision(this CS.Catalog catalog)
+		{
+			return new Division() { Id = catalog.Id, Name = catalog.DisplayName };
 		}
 	}
 }

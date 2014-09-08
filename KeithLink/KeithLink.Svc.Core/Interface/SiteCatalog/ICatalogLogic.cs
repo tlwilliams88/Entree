@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         ProductsReturn GetProductsByIds(string branch, List<string> ids, UserProfile profile);
         Product GetProductById(string branch, string id, UserProfile profile);
         CategoriesReturn GetCategories(int from, int size);
+		List<Division> GetDivisions();
 
     }
 }

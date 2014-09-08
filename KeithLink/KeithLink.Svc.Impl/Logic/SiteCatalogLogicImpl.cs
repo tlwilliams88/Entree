@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -19,14 +20,16 @@ namespace KeithLink.Svc.Impl.Logic
         private IPriceLogic _priceLogic;
         private IProductImageRepository _imgRepository;
         private IListLogic _listLogic;
+		private IDivisionRepository _divisionRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
             _listLogic = listLogic;
+			_divisionRepository = divisionRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -117,5 +120,13 @@ namespace KeithLink.Svc.Impl.Logic
             if (profile != null)
                 _listLogic.MarkFavoriteProducts(profile.UserId, branch, ret);
         }
-    }
+
+
+		public List<Division> GetDivisions()
+		{
+			var catalogs = _divisionRepository.GetDivisions();
+
+			return catalogs.Select(c => c.ToDivision()).ToList();
+		}
+	}
 }

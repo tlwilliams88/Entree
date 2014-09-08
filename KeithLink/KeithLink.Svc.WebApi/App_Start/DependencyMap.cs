@@ -46,6 +46,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
 			builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
+			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
 

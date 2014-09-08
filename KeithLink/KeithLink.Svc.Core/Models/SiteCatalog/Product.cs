@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using Newtonsoft.Json.Serialization;
+using System.Reflection;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -30,7 +34,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string Size { get; set; }
 
         [DataMember(Name = "upc")]
-        public string UPC { get; set; }
+		public string UPC { get; set; }
 
         [DataMember(Name = "manufacturer_number")]
         public string ManufacturerNumber { get; set; }
@@ -59,11 +63,24 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 
+		[DataMember(Name="pack")]
+		public string Pack { get; set; }
+
 		[DataMember(Name = "gs1")]
         public Gs1 Gs1 { get; set; }
 
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }
         #endregion
+
+		[OnSerializing]
+		void OnSerializing(StreamingContext context)
+		{
+			//Do not output a "blank" upc
+			if (this.UPC.Equals("00000000000000"))
+				this.UPC = string.Empty;
+		}
     }
+
+	
 }
