@@ -1,13 +1,14 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using System;
 
 namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IOrderLogic
     {
-        void ParseFile(string FileName);
+        //void ParseFile(string FileName);
 
-        void SendToHistory();
+        void SendToHistory(OrderFile order);
 
-        void SendToHost();
+        void SendToHost(OrderFile order);
     }
 }

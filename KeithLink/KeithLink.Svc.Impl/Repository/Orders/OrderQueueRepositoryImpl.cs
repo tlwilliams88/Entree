@@ -6,21 +6,23 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
     public class OrderQueueRepositoryImpl : IOrderQueueRepository {
 
         #region attributes
-        private ISocketConnectionRepository _mfCon;
+        private IOrderLogic _orderLogic;
         private IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public OrderQueueRepositoryImpl(IEventLogRepository EventLog, ISocketConnectionRepository MainframeConnection) {
+        public OrderQueueRepositoryImpl(IEventLogRepository EventLog, IOrderLogic OrderLogic) {
             _log = EventLog;
-            _mfCon = MainframeConnection;
+            _orderLogic = OrderLogic;
         }
         #endregion
 
@@ -43,6 +45,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                             BasicDeliverEventArgs eventArgs = (BasicDeliverEventArgs)consumer.Queue.Dequeue();
 
                             // order processing logic
+                            StringReader xmlReader = new StringReader(Encoding.UTF8.GetString(eventArgs.Body));
+                            OrderFile queuedOrder = new OrderFile();
+
+                            XmlSerializer xml = new XmlSerializer(queuedOrder.GetType());
+                            queuedOrder = (OrderFile) xml.Deserialize(xmlReader);
+                            xmlReader.Close();
+
+                            _orderLogic.SendToHost(queuedOrder);
 
                             model.BasicAck(eventArgs.DeliveryTag, false);
                         } catch (OperationInterruptedException operationEx) {
@@ -83,7 +93,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(Configuration.RabbitMQExchangeName, string.Empty, false, props, Encoding.UTF8.GetBytes(order.ToString()));
+                    XmlSerializer xml = new XmlSerializer(order.GetType());
+                    StringWriter xmlWriter = new StringWriter();
+
+                    xml.Serialize(xmlWriter, order);
+
+                    model.BasicPublish(Configuration.RabbitMQExchangeName, string.Empty, false, props, Encoding.UTF8.GetBytes(xmlWriter.ToString()));
                 }
             }
         }

@@ -14,18 +14,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
     {
         #region attributes
         private bool _fileRead;
-        private List<OrderDetail> _details;
-        private OrderHeader _header;
+        //private List<OrderDetail> _details;
+        //private OrderHeader _header;
         private ISocketConnectionRepository _mfConnection;
         #endregion
 
         #region ctor
         public StubOrderLogicImpl(ISocketConnectionRepository mfCon)
         {
-            _fileRead = false;
+            //_fileRead = false;
 
-            _details = new List<OrderDetail>();
-            _header = new OrderHeader();
+            //_details = new List<OrderDetail>();
+            //_header = new OrderHeader();
 
             _mfConnection = mfCon;
         }
@@ -33,63 +33,63 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region methods
 
-        public void ParseFile(string FileName)
-        {
-            _header.Branch = "FDF";
-            _header.ControlNumber = 1;
-            _header.CustomerNumber = "001001";
-            _header.DeliveryDate = DateTime.Now.AddDays(1);
-            _header.OrderCreateDateTime = DateTime.Now;
-            _header.OrderType = OrderType.NormalOrder;
-            _header.OrderingSystem = OrderSource.KeithCom;
-            _header.OrderSendDateTime = DateTime.Now;
-            _header.PONumber = string.Empty;
-            _header.Specialinstructions = string.Empty;
-            _header.InvoiceNumber = string.Empty;
-            _header.UserId = "KeithLink.Svc.Tests";
+        //public void ParseFile(string FileName)
+        //{
+        //    _header.Branch = "FDF";
+        //    _header.ControlNumber = 1;
+        //    _header.CustomerNumber = "001001";
+        //    _header.DeliveryDate = DateTime.Now.AddDays(1);
+        //    _header.OrderCreateDateTime = DateTime.Now;
+        //    _header.OrderType = OrderType.NormalOrder;
+        //    _header.OrderingSystem = OrderSource.KeithCom;
+        //    _header.OrderSendDateTime = DateTime.Now;
+        //    _header.PONumber = string.Empty;
+        //    _header.Specialinstructions = string.Empty;
+        //    _header.InvoiceNumber = string.Empty;
+        //    _header.UserId = "KeithLink.Svc.Tests";
 
 
-            _details.Add(new OrderDetail() { 
-                                             LineNumber = 1,
-                                             ItemNumber = "000001",
-                                             UnitOfMeasure = UnitOfMeasure.Case,
-                                             OrderedQuantity = 1,
-                                             SellPrice = 1.50,
-                                             Catchweight = false,
-                                             ItemChange = LineType.Add,
-                                             ReplacedOriginalItemNumber = string.Empty,
-                                             SubOriginalItemNumber = string.Empty,
-                                             ItemStatus = string.Empty
-                                            });
-            _details.Add(new OrderDetail()
-                                            {
-                                                LineNumber = 2,
-                                                ItemNumber = "000002",
-                                                UnitOfMeasure = UnitOfMeasure.Case,
-                                                OrderedQuantity = 1,
-                                                SellPrice = 2.37,
-                                                Catchweight = false,
-                                                ItemChange = LineType.Add,
-                                                ReplacedOriginalItemNumber = string.Empty,
-                                                SubOriginalItemNumber = string.Empty,
-                                                ItemStatus = string.Empty
-                                            });
+        //    _details.Add(new OrderDetail() { 
+        //                                     LineNumber = 1,
+        //                                     ItemNumber = "000001",
+        //                                     UnitOfMeasure = UnitOfMeasure.Case,
+        //                                     OrderedQuantity = 1,
+        //                                     SellPrice = 1.50,
+        //                                     Catchweight = false,
+        //                                     ItemChange = LineType.Add,
+        //                                     ReplacedOriginalItemNumber = string.Empty,
+        //                                     SubOriginalItemNumber = string.Empty,
+        //                                     ItemStatus = string.Empty
+        //                                    });
+        //    _details.Add(new OrderDetail()
+        //                                    {
+        //                                        LineNumber = 2,
+        //                                        ItemNumber = "000002",
+        //                                        UnitOfMeasure = UnitOfMeasure.Case,
+        //                                        OrderedQuantity = 1,
+        //                                        SellPrice = 2.37,
+        //                                        Catchweight = false,
+        //                                        ItemChange = LineType.Add,
+        //                                        ReplacedOriginalItemNumber = string.Empty,
+        //                                        SubOriginalItemNumber = string.Empty,
+        //                                        ItemStatus = string.Empty
+        //                                    });
 
-            _fileRead = true;
-        }
+        //    _fileRead = true;
+        //}
 
-        public void SendToHistory()
+        public void SendToHistory(OrderFile order)
         {
             throw new NotImplementedException();
         }
 
-        public void SendToHost()
+        public void SendToHost(OrderFile order)
         {
-            if (!_fileRead) { throw new ApplicationException("Cannot send file to the host because it has not been read."); }
+            //if (!_fileRead) { throw new ApplicationException("Cannot send file to the host because it has not been read."); }
 
             // open connection and call program
             _mfConnection.Connect();
-            _mfConnection.StartTransaction(_header.ControlNumber.ToString().PadLeft(7, '0'));
+            _mfConnection.StartTransaction(order.Header.ControlNumber.ToString().PadLeft(7, '0'));
 
             string startCode = _mfConnection.Receive();
             if (startCode.Length > 0 && startCode == Constants.MAINFRAME_RECEIVE_STATUS_GO)
@@ -101,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // start the transaction on the mainframe and send the header
             _mfConnection.Send("OTX");
-            _mfConnection.Send(_header.ToString());
+            _mfConnection.Send(order.Header.ToString());
 
             // wait for a response from the mainframe
             bool waitingForHeaderResponse = true;
@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 
             // send the order details
-            foreach (OrderDetail detail in _details)
+            foreach (OrderDetail detail in order.Details)
             {
                 _mfConnection.Send(detail.ToString());
 
