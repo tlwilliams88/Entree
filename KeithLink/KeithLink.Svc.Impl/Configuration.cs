@@ -27,8 +27,11 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_INVALIDATTEMPTS = "ADBadPwdCount";
         private const string KEY_AD_LOCKOUTDURATION = "ADLockoutDuration";
         private const string KEY_APP_NAME = "AppName";
+        private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
         private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
+        private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
+        private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
         private const string KEY_CORS_ENABLED_DOMAINS = "CorsEnabledDomains";
         private const string KEY_CORS_ENABLED_HEADERS = "CorsEnabledHeaders";
         private const string KEY_CORS_ENABLED_METHODS = "CorsEnabledMethods";
@@ -39,16 +42,29 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS = "ElasticSearchDigitSearchFields";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+        private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
         private const string KEY_MF_ADDRESS = "MfAddress";
         private const string KEY_MF_PORT = "MfPort";
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
-        private const string KEY_SITE_NAME = "CS_SiteName";
-        private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
-        private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
-        private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
-        private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
+        private const string KEY_RABBITMQ_ORDER_ADDRESS = "RabbitMQOrderServer";
+        private const string KEY_RABBITMQ_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
+        private const string KEY_RABBITMQ_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
+        private const string KEY_RABBITMQ_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
+        private const string KEY_RABBITMQ_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
+        private const string KEY_RABBITMQ_ORDER_VHOST = "RabbitMQOrderVHost";
 
+        private const string KEY_SITE_NAME = "CS_SiteName";
+
+        #endregion
+
+        #region methods
+        private static List<string> GetCommaSeparatedValues(string val)
+        {
+            if (!String.IsNullOrEmpty(val))
+                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
+            return new List<string>();
+        }
         #endregion
 
         #region properties
@@ -157,6 +173,15 @@ namespace KeithLink.Svc.Impl
             } 
         }
 
+        public static List<string> AllowedApiKeys
+        {
+            get
+            {
+                string val = GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        
         public static string AppDataConnectionString
         {
             get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
@@ -173,6 +198,16 @@ namespace KeithLink.Svc.Impl
         public static string BaseCatalog
         {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
+        }
+
+        public static string BrandAssetsUrl
+        {
+            get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
+        }
+
+        public static string CategoryPrefixesToExclude
+        {
+            get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
         
         public static string CSSiteName
@@ -218,23 +253,6 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
         }
 
-        public static List<string> ElasticSearchTermSearchFields
-        {
-            get 
-            {
-                string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
-                return GetCommaSeparatedValues(val);
-            }
-        }
-        public static List<string> ElasticSearchDigitSearchFields
-        {
-            get 
-            { 
-                string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
-                return GetCommaSeparatedValues(val);
-            }
-        }
-
         public static int ElasticSearchBatchSize
         {
             get
@@ -243,15 +261,28 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
+        
+        public static List<string> ElasticSearchDigitSearchFields
+        {
+            get 
+            { 
+                string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        
+        public static List<string> ElasticSearchTermSearchFields
+        {
+            get 
+            {
+                string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
 
         public static string ElasticSearchURL
         {
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
-        }
-
-        public static string CategoryPrefixesToExclude
-        {
-            get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
 
         public static string MainframeIPAddress
@@ -278,25 +309,6 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string MultiDocsUrl
-        {
-            get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
-        }
-
-        public static string BrandAssetsUrl
-        {
-            get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
-        }
-
-        public static List<string> AllowedApiKeys
-        {
-            get
-            {
-                string val = GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
-                return GetCommaSeparatedValues(val);
-            }
-        }
-
         public static int MaxSortByPriceItemCount
         {
             get
@@ -305,13 +317,60 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
-
-        private static List<string> GetCommaSeparatedValues(string val)
+        
+        public static string MultiDocsUrl
         {
-            if (!String.IsNullOrEmpty(val))
-                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
-            return new List<string>();
+            get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
         }
+
+        public static string RabbitMQOrderServer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_ADDRESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderConsumerUserPassword
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_CONSUMEPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderConsumerUserName
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_CONSUMEUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderPublisherUserPassword
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_PUBLISHPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderPublisherUserName
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_PUBLISHUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderVHost
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_VHOST, string.Empty);
+            }
+        }
+
         #endregion
     }
 }
