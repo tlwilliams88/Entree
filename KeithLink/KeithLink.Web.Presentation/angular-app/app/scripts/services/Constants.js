@@ -17,7 +17,7 @@ angular.module('bekApp')
       ACCOUNTING: 'Accounting',
       APPROVER: 'Approver',
       SHOPPER: 'Shopper',
-      USER: 'User'
+      GUEST: 'Guest'
     },
 
     infiniteScrollPageSize: 50

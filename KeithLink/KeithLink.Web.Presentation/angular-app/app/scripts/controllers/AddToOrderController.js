@@ -7,8 +7,8 @@ angular.module('bekApp')
     $scope.carts = carts;
     $scope.lists = lists;
 
-    $scope.selectedList = lists[0];
-    $scope.selectedCart = carts[0];
+    $scope.selectedList = angular.copy(lists[0]);
+    $scope.selectedCart = CartService.getSelectedCart();
 
     $scope.sortBy = null;
     $scope.sortOrder = false;
@@ -21,7 +21,9 @@ angular.module('bekApp')
     };
 
     $scope.selectList = function(list) {
-      $scope.selectedList = list;
+      $scope.selectedList = angular.copy(list);
+      $state.go('menu.addtoorder.items', { listId: list.listid });
+      $scope.addToOrderForm.$setPristine();
     };
 
     $scope.selectCart = function(cart) {
