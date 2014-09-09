@@ -12,13 +12,20 @@ angular.module('bekApp')
     
     var Service = {
       getEndpointUrl: function() {
-        return $http.get('../servicelocator').then(function(response) {
-        	ApiSettings.url = location.protocol + '//' + response.data.ClientApiEndpoint;
-        });
+        if (ApiSettings.url) {
+          return ApiSettings.url;
+        } else {
+          return $http.get('../servicelocator').then(function(response) {
+          	ApiSettings.url = location.protocol + '//' + response.data.ClientApiEndpoint;
+          }, function() {
+            // running locally, use dev
+            ApiSettings.url = 'http://devapi.bekco.com';
+          });
+        }
       }
     };
 
     return Service;
 
   }])
-.value('ApiSettings', { url: 'http://devapi.bekco.com' } );
+.value('ApiSettings', { });

@@ -5,7 +5,8 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     scope: true,
-    controller: ['$scope', '$state', 'ListService', 'CartService', function($scope, $state, ListService, CartService){
+    controller: ['$scope', '$state', 'toaster', 'ListService', 'CartService', 
+    function($scope, $state, toaster, ListService, CartService){
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
@@ -15,6 +16,9 @@ angular.module('bekApp')
           item.favorite = true;
           $scope.loadingContextMenu = false;
           $scope.displayedItems.isContextMenuDisplayed = false;
+          addSuccessAlert('Successfully added item to list.');
+        }, function() {
+          addErrorAlert('Error adding item to list.');
         });
       };
 
@@ -22,6 +26,9 @@ angular.module('bekApp')
         ListService.createListWithItem(item).then(function(data) {
           $scope.loadingContextMenu = false;
           $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
+          addSuccessAlert('Successfully created new list.');
+        }, function() {
+          addErrorAlert('Error creating new list.');
         });
       };
 
@@ -30,6 +37,9 @@ angular.module('bekApp')
         CartService.addItemToCart(cartId, item).then(function(data) {
           $scope.loadingContextMenu = false;
           $scope.displayedItems.isContextMenuDisplayed = false;
+          addSuccessAlert('Successfully added item to cart.');
+        }, function() {
+          addErrorAlert('Error adding item to cart.');
         });
       };
 
@@ -38,9 +48,23 @@ angular.module('bekApp')
         $scope.loadingContextMenu = true;
         CartService.createCart(items).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.cartitems', { cartId: data.listitemid, renameCart: true });
+          $state.go('menu.cart.items', { cartId: data.listitemid, renameCart: true });
+          addSuccessAlert('Successfully created new cart.');
+        }, function() {
+          addErrorAlert('Error creating new cart.');
         });
       };
+
+      // ALERTS
+      function addSuccessAlert(message) {
+        addAlert('success', message);
+      }
+      function addErrorAlert(message) {
+        addAlert('error', message);
+      }
+      function addAlert(alertType, message) {
+        toaster.pop(alertType, null, message);
+      }
 
     }],
     templateUrl: 'views/directives/contextmenu.html'

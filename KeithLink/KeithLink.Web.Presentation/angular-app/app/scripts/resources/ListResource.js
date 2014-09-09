@@ -3,14 +3,7 @@
 angular.module('bekApp')
   .factory('List', [ '$resource', 'UserProfileService', 
   function ($resource, UserProfileService) {
-    
-    function getBranch() {
-      return UserProfileService.getCurrentBranchId();
-    }
-
-    return $resource('/list/:branchId/:listId', {
-      branchId: getBranch()
-    }, {
+    return $resource('/list/:branchId/:listId', { }, {
 
       // defaults: GET, QUERY, SAVE
 

@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
     <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
+    <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
+    <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" href="lib/icomoon/css/style.css" />
     <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
     <!-- endbuild -->
@@ -71,6 +73,8 @@
     <script src="lib/angular-ui-sortable/sortable.js"></script>
     <script src="lib/ng-infinite-scroll/ng-infinite-scroll.js"></script>
     <script src="lib/angular-unsavedChanges/unsavedChanges.js"></script>
+    <script src="lib/angular-toaster/toaster.js"></script>
+    <script src="lib/angular-loading-bar/loading-bar.js"></script>
     <!-- endbuild -->
 
      <script id="template/carousel/carousel.html" type="text/ng-template">
@@ -96,6 +100,7 @@
     <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AccountDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CartController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/CartItemsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AddToOrderController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
@@ -112,12 +117,13 @@
     <script type="text/javascript" src="scripts/directives/MatchInput.js"></script>
     <script type="text/javascript" src="scripts/directives/SortIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/Integer.js"></script>
-    <script type="text/javascript" src="scripts/directives/QuantityInput.js"></script>
+    <script type="text/javascript" src="scripts/directives/NoDirtyCheck.js"></script>
+    <script type="text/javascript" src="scripts/directives/UpdateQuantityFromParlevel.js"></script>
     <script type="text/javascript" src="scripts/services/Constants.js"></script>
     <script type="text/javascript" src="scripts/services/ApiService.js"></script>
     <script type="text/javascript" src="scripts/services/AccessService.js"></script>
     <script type="text/javascript" src="scripts/services/AuthenticationService.js"></script>
-    <script type="text/javascript" src="scripts/services/AuthenticationInterceptorService.js"></script>
+    <script type="text/javascript" src="scripts/services/AuthenticationInterceptor.js"></script>
     <script type="text/javascript" src="scripts/services/BrandService.js"></script>
     <script type="text/javascript" src="scripts/services/CategoryService.js"></script>
     <script type="text/javascript" src="scripts/services/ListService.js"></script>
@@ -125,6 +131,7 @@
     <script type="text/javascript" src="scripts/services/ProductService.js"></script>
     <script type="text/javascript" src="scripts/services/UserProfileService.js"></script>
     <script type="text/javascript" src="scripts/services/NameGeneratorService.js"></script>
+    <script type="text/javascript" src="scripts/services/BranchService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
     <!-- endbuild -->

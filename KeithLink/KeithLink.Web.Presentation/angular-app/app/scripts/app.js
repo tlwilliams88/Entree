@@ -21,21 +21,41 @@ angular
     'shoppinpal.mobile-menu',
     'ngDragDrop',
     'infinite-scroll',
-    'unsavedChanges'
+    'unsavedChanges',
+    'toaster',
+    'angular-loading-bar'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
+  function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {
+  
+  // configure loading bar
+  cfpLoadingBarProvider.includeBar = false;
+
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
     // register
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
-      controller: 'RegisterController'
+      controller: 'RegisterController',
+      resolve: {
+        api: ['ApiService', function(ApiService) {
+          return ApiService.getEndpointUrl();
+        }]
+      }
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
-      controller: 'MenuController'
+      controller: 'MenuController',
+      resolve: {
+        api: ['ApiService', function(ApiService) {
+          return ApiService.getEndpointUrl();
+        }],
+        branches: ['api', 'BranchService', function(api, BranchService) {
+          return BranchService.getBranches();
+        }]
+      }
     })
     // /home
     .state('menu.home', {
@@ -91,7 +111,7 @@ angular
         authorize: 'canBrowseCatalog'
       },
       resolve: {
-        item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
+        item: ['$stateParams', 'api', 'ProductService', function($stateParams, api, ProductService) {
           return ProductService.getProductDetails($stateParams.itemNumber);
         }]
       }
@@ -104,7 +124,7 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService){
+        lists: ['$q', 'api', 'ListService', function ($q, api, ListService){
           return $q.all([
             ListService.getAllLists(),
             ListService.getAllLabels()
@@ -128,24 +148,18 @@ angular
         authorize: 'canCreateOrders'
       },
       resolve: {
-        carts: ['CartService', function (CartService){
+        carts: ['api', 'CartService', function (api, CartService){
           return CartService.getAllCarts();
         }]
       }
     })
-    .state('menu.cartitems', {
-      url: '/cart/:cartId/?renameCart',
-      templateUrl: 'views/cart.html',
-      controller: 'CartController',
+    .state('menu.cart.items', {
+      url: ':cartId/?renameCart',
+      templateUrl: 'views/cartitems.html',
+      controller: 'CartItemsController',
       data: {
         authorize: 'canCreateOrders'
       }
-      // ,
-      // resolve: {
-      //   carts: ['CartService', function (CartService){
-      //     return CartService.getAllCarts();
-      //   }]
-      // }
     })
     .state('menu.addtoorder', {
       url: '/add-to-order/',
@@ -155,10 +169,10 @@ angular
         authorize: 'canCreateOrders'
       },
       resolve: {
-        lists: ['ListService', function (ListService){
+        lists: ['api', 'ListService', function (api, ListService){
           return ListService.getAllLists();
         }],
-        carts: ['CartService', function(CartService) {
+        carts: ['api', 'CartService', function(api, CartService) {
           return CartService.getAllCarts();
         }]
       }
@@ -198,15 +212,13 @@ angular
   });
 
   // add authentication headers and Api Url
-  $httpProvider.interceptors.push('AuthenticationInterceptorService');
+  $httpProvider.interceptors.push('AuthenticationInterceptor');
 
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');
 
 }])
 .run(['$rootScope', '$state', 'ApiService', 'AccessService', 'AuthenticationService', function($rootScope, $state, ApiService, AccessService, AuthenticationService) {
-
-  ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     console.log(toState.name);

@@ -62,8 +62,7 @@
   <div class="col-md-10 col-xs-12">
     
     <div class="hidden-print">
-      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
-      <alert ng-show="listForm.$invalid && listForm.$dirty" type="danger">List has some errors. Please fix these before saving.</alert>
+      <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
     </div>
     
     <div style="display: inline-block;width: calc(100% - 110px);vertical-align: middle;">

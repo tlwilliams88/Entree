@@ -18,7 +18,9 @@ angular.module('bekApp')
       carts: [],
 
       getAllCarts: function(requestParams) {
-        return Cart.query(requestParams).$promise.then(function(response) {
+        return Cart.query({
+          branchId: getBranch()
+        }).$promise.then(function(response) {
           var allCarts = response;
           angular.copy(allCarts, Service.carts);
 
@@ -29,12 +31,14 @@ angular.module('bekApp')
       },
 
       getCart: function(cartId) {
-        return Cart.get({ cartId: cartId }).$promise.then(function(response) {
+        return Cart.get({ 
+          cartId: cartId,
+          branchId: getBranch()
+        }).$promise.then(function(response) {
           console.log(response);
           return response;
         });
       },
-
 
       createCart: function(items) {
         if (!items) {
@@ -52,7 +56,11 @@ angular.module('bekApp')
           items: items
         };
 
-        return Cart.save(null, newCart).$promise.then(function(response) {
+        return Cart.save({
+          branchId: getBranch()
+        }, newCart).$promise.then(function(response) {
+          newCart.id = response.listitemid;
+          Service.carts.push(newCart);
           console.log(response);
           return response;
         });
@@ -68,7 +76,8 @@ angular.module('bekApp')
       deleteCart: function(cart) {
         var deletedCart = cart;
         return Cart.delete({ cartId: cart.id }).$promise.then(function(response) {
-          var idx = Service.carts.indexOf(deletedCart);
+          var cartDeleted = Service.findCartById(deletedCart.id);
+          var idx = Service.carts.indexOf(cartDeleted);
           Service.carts.splice(idx, 1);
           console.log(response);
           return response;

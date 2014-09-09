@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
-    function ($scope, $state, $modal, Constants, AuthenticationService, UserProfileService, AccessService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
+    function ($scope, $state, $modal, branches, Constants, AuthenticationService, UserProfileService, AccessService) {
 
     $scope.$state = $state;
 
@@ -19,10 +19,7 @@ angular.module('bekApp')
     $scope.userBar.universalSearchTerm = '';
 
     refreshAccessPermissions();
-
-    if (AccessService.isLoggedIn()) {
-      setLocations(UserProfileService.profile());
-    }
+    setLocations(UserProfileService.profile());
 
     $scope.logout = function() {
       AuthenticationService.logout();
