@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (basket == null)
 				return null;
 
-			return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId));
+            return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
 		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem)

@@ -62,9 +62,8 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.UpdateItem(user.UserId, cartId, existingItem.First());
 				return existingItem.First().Id.ToGuid();
 			}
-
 						
-			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId));
+			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
