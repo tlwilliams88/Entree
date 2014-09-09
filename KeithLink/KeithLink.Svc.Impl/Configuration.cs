@@ -47,11 +47,13 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_PORT = "MfPort";
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
+        private const string KEY_RABBITMQ_EXCHANGE = "RabbitMQExchange";
         private const string KEY_RABBITMQ_ORDER_ADDRESS = "RabbitMQOrderServer";
         private const string KEY_RABBITMQ_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
+        private const string KEY_RABBITMQ_ORDER_QUEUE = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_ORDER_VHOST = "RabbitMQOrderVHost";
 
         private const string KEY_SITE_NAME = "CS_SiteName";
@@ -323,19 +325,9 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
         }
 
-        public static string RabbitMQOrderServer
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_ORDER_ADDRESS, string.Empty);
-            }
-        }
-
-        public static string RabbitMQOrderConsumerUserPassword
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_ORDER_CONSUMEPASS, string.Empty);
+        public static string RabbitMQExchangeName {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE, string.Empty);
             }
         }
 
@@ -347,11 +339,11 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderPublisherUserPassword
+        public static string RabbitMQOrderConsumerUserPassword
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_ORDER_PUBLISHPASS, string.Empty);
+                return GetValue(KEY_RABBITMQ_ORDER_CONSUMEPASS, string.Empty);
             }
         }
 
@@ -363,6 +355,28 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQOrderPublisherUserPassword
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_PUBLISHPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderQueue {
+            get {
+                return GetValue(KEY_RABBITMQ_ORDER_QUEUE, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderServer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_ORDER_ADDRESS, string.Empty);
+            }
+        }
+        
         public static string RabbitMQOrderVHost
         {
             get
