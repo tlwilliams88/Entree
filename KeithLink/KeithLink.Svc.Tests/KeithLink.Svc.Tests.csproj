@@ -82,6 +82,8 @@
     <Compile Include="Impl_Profile_CustomerContainerRepository.cs" />
     <Compile Include="Impl_Profile_UserProfileRepository.cs" />
     <Compile Include="Impl_SiteCatalog_ProductImageRepository.cs" />
+    <Compile Include="Impl_Orders_OrderSocketConnectionRepository.cs" />
+    <Compile Include="Impl_Orders_OrderLogicImpl.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -39,6 +39,9 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS = "ElasticSearchDigitSearchFields";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
+        private const string KEY_MF_ADDRESS = "MfAddress";
+        private const string KEY_MF_PORT = "MfPort";
+        private const string KEY_MF_TRANSACTIONID = "MfTrans";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
@@ -249,6 +252,30 @@ namespace KeithLink.Svc.Impl
         public static string CategoryPrefixesToExclude
         {
             get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
+        }
+
+        public static string MainframeIPAddress
+        {
+            get
+            {
+                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
+            }
+        }
+
+        public static int MainframeListeningPort
+        {
+            get
+            {
+                return int.Parse(GetValue(KEY_MF_PORT, "0"));
+            }
+        }
+
+        public static string MainframeOrderTransactionId
+        {
+            get
+            {
+                return GetValue(KEY_MF_TRANSACTIONID, string.Empty);
+            }
         }
 
         public static string MultiDocsUrl

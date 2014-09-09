@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                             Configuration.ActiveDirectoryInternalPassword))
                 {
                     // if user exists
-                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, userName);
+                    UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, IdentityType.SamAccountName, userName);
 
                     if (authenticatingUser == null)
                     {
@@ -171,7 +171,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                                          GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
                                                                          Configuration.ActiveDirectoryInternalPassword))
                 {
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName);
 
                     return user;
                 }
@@ -224,7 +224,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                                          GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
                                                                          Configuration.ActiveDirectoryInternalPassword))
                 {
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, GetDomainUserName(userName));
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, GetDomainUserName(userName));
 
                     if (user == null)
                         return false;

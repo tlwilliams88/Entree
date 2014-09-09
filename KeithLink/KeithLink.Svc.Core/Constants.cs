@@ -49,5 +49,12 @@ namespace KeithLink.Svc.Core
         // Brand Assets
         public const string BRAND_IMAGE_URL_FORMAT = "http://{0}/{1}.jpg";
 
+
+        // mainframe stuff
+        public const int MAINFRAME_ORDER_RECORD_LENGTH = 250;
+        public const string MAINFRAME_RECEIVE_STATUS_CANCELLED = "CC";
+        public const string MAINFRAME_RECEIVE_STATUS_GO = "GO";
+        public const string MAINFRAME_RECEIVE_STATUS_GOOD_RETURN = "YY";
+        public const string MAINFRAME_RECEIVE_STATUS_WAITING = "WW";
     }
 }

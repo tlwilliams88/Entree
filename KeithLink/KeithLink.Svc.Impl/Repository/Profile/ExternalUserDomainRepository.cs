@@ -154,13 +154,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             const int NORMAL_ACCT = 0x200;
             const int PWD_NOTREQD = 0x20;
 
-            string adPath = string.Format("LDAP://{0}:389/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
+            string adPath = string.Format("LDAP://{0}:636/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
             try
             {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
                 boundServer.RefreshCache();
             } catch (Exception ex){
                 _logger.WriteErrorLog("Could not bind to external AD server.", ex);
@@ -376,13 +377,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public void UpdatePassword(string emailAddress, string newPassword)
         {
-            string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+            string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
             try
             {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
                 boundServer.RefreshCache();
             }
             catch (Exception ex)
@@ -405,11 +407,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 throw;
             }
-            
+
             // set the user's password
             try
             {
-                currentUser.Invoke("SetPassword", new object[] { newPassword});
+                //currentUser.AuthenticationType = AuthenticationTypes.Secure;
+                currentUser.Invoke("SetPassword", new object[] { newPassword });
                 currentUser.CommitChanges();
             }
             catch (Exception ex)
@@ -418,7 +421,49 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 throw;
             }
+
+            ////string ldapServer = string.Concat("ldap://", Configuration.ActiveDirectoryExternalServerName);
+            //string ldapServer = string.Format("{0}:{1}", Configuration.ActiveDirectoryExternalServerName, 636);
+
+            ////System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(
+            ////                                                            new System.DirectoryServices.Protocols.LdapDirectoryIdentifier(
+            ////                                                                    ldapServer, 389
+            ////                                                                )
+            ////                                                            );
+            //System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(ldapServer);
+
+            //con.SessionOptions.SecureSocketLayer = true;
+            ////con.SessionOptions.VerifyServerCertificate = new System.DirectoryServices.Protocols.VerifyServerCertificateCallback(ServerCallback);
+            //con.Credential = new System.Net.NetworkCredential(Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+            ////con.AuthType = System.DirectoryServices.Protocols.AuthType.Negotiate;
+            //con.AuthType = System.DirectoryServices.Protocols.AuthType.Basic;
+            //con.Bind();
+
+            //try
+            //{
+            //    using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+            //                                                             Configuration.ActiveDirectoryExternalServerName,
+            //                                                             Configuration.ActiveDirectoryExternalRootNode,
+            //                                                             ContextOptions.Negotiate | ContextOptions.SecureSocketLayer,
+            //                                                             GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+            //                                                             Configuration.ActiveDirectoryExternalPassword))
+            //    {
+            //        UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.UserPrincipalName, emailAddress);
+
+            //        user.SetPassword(newPassword);
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _logger.WriteErrorLog("Could not get user", ex);
+
+            //    return null;
+            //}
         }
+
+        //private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
+        //    return true;
+        //}
 
         /// <summary>
         /// check the benekeith.com domain for the username
