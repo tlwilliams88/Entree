@@ -34,11 +34,19 @@ angular.module('bekApp')
     };
 
     $scope.saveCart = function(cart) {
-      CartService.updateCart(cart).then(function() {
+      var updatedCart = angular.copy(cart);
+      // delete items if quantity is 0
+      angular.forEach(updatedCart.items, function(item, index) {
+        if (item.quantity && item.quantity === '0') {
+          updatedCart.items.splice(index, 1);
+        }
+      });
+
+      CartService.updateCart(updatedCart).then(function() {
         $scope.currentCart.isRenaming = false;
         $scope.sortBy = null;
         $scope.sortOrder = false;
-        $scope.currentCart = cart;
+        $scope.currentCart = updatedCart;
         $scope.cartForm.$setPristine();
         addSuccessAlert('Successfully saved cart ' + cart.name);
       }, function() {
@@ -109,7 +117,7 @@ angular.module('bekApp')
     var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      if ($scope.itemsToDisplay < $scope.currentCart.items.length) {
+      if ($scope.currentCart && $scope.itemsToDisplay < $scope.currentCart.items.length) {
         $scope.itemsToDisplay += itemsPerPage;
       }
     };
@@ -128,12 +136,20 @@ angular.module('bekApp')
 
     function setCurrentCart() {
       if ($stateParams.cartId) {
-        $scope.currentCart = CartService.findCartById($stateParams.cartId);
+        $scope.currentCart = angular.copy(CartService.findCartById($stateParams.cartId));
       } 
+      // navigate to correct cart if the cart id can't be found
+      var cartFound = false;
       if (!$scope.currentCart) {
-
         // go to active cart
-
+        angular.forEach($scope.carts, function(cart, index) {
+          if (cart.active) {
+            cartFound = true;
+            $scope.goToCart(cart);
+          }
+        });
+      }
+      if (!$scope.currentCart && !cartFound) {
         // go to first cart in list
         if (CartService.carts && CartService.carts.length > 0) {
           $scope.goToCart(CartService.carts[0]);
@@ -144,6 +160,7 @@ angular.module('bekApp')
       
       if ($scope.currentCart && $stateParams.renameCart === 'true') {
         $scope.startEditCartName($scope.currentCart.name);
+        $scope.goToCart($scope.currentCart);
       }
     }
     

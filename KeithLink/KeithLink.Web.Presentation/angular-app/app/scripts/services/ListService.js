@@ -75,7 +75,9 @@ angular.module('bekApp')
                 },
 
                 getAllLists: function(requestParams) {
-                    return List.query(requestParams).$promise.then(function(lists) {
+                    return List.query({
+                        branchId: getBranch()
+                    }).$promise.then(function(lists) {
                         angular.copy(lists, Service.lists);
                         Service.setFavoritesList();
                         console.log(lists);
@@ -85,7 +87,8 @@ angular.module('bekApp')
 
                 getList: function(listId) {
                     return List.get({
-                        listId: listId
+                        listId: listId,
+                        branchId: getBranch()
                     }).$promise.then(function(list) {
                         console.log(list);
                         return list;
@@ -115,7 +118,9 @@ angular.module('bekApp')
                         items: items
                     };
 
-                    return List.save(null, newList).$promise.then(function(response) {
+                    return List.save({
+                        branchId: getBranch()
+                    }, newList).$promise.then(function(response) {
                         newList.listid = response.listitemid;
                         Service.lists.push(newList);
                         return newList; // return listId

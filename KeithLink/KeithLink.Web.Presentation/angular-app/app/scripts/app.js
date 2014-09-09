@@ -37,14 +37,22 @@ angular
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
-      controller: 'RegisterController'
+      controller: 'RegisterController',
+      resolve: {
+        api: ['ApiService', function(ApiService) {
+          return ApiService.getEndpointUrl();
+        }]
+      }
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
-        branches: ['BranchService', function(BranchService) {
+        api: ['ApiService', function(ApiService) {
+          return ApiService.getEndpointUrl();
+        }],
+        branches: ['api', 'BranchService', function(api, BranchService) {
           return BranchService.getBranches();
         }]
       }
@@ -103,7 +111,7 @@ angular
         authorize: 'canBrowseCatalog'
       },
       resolve: {
-        item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
+        item: ['$stateParams', 'api', 'ProductService', function($stateParams, api, ProductService) {
           return ProductService.getProductDetails($stateParams.itemNumber);
         }]
       }
@@ -116,7 +124,7 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService){
+        lists: ['$q', 'api', 'ListService', function ($q, api, ListService){
           return $q.all([
             ListService.getAllLists(),
             ListService.getAllLabels()
@@ -140,7 +148,7 @@ angular
         authorize: 'canCreateOrders'
       },
       resolve: {
-        carts: ['CartService', function (CartService){
+        carts: ['api', 'CartService', function (api, CartService){
           return CartService.getAllCarts();
         }]
       }
@@ -161,10 +169,10 @@ angular
         authorize: 'canCreateOrders'
       },
       resolve: {
-        lists: ['ListService', function (ListService){
+        lists: ['api', 'ListService', function (api, ListService){
           return ListService.getAllLists();
         }],
-        carts: ['CartService', function(CartService) {
+        carts: ['api', 'CartService', function(api, CartService) {
           return CartService.getAllCarts();
         }]
       }
@@ -211,8 +219,6 @@ angular
 
 }])
 .run(['$rootScope', '$state', 'ApiService', 'AccessService', 'AuthenticationService', function($rootScope, $state, ApiService, AccessService, AuthenticationService) {
-
-  ApiService.getEndpointUrl();
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     console.log(toState.name);

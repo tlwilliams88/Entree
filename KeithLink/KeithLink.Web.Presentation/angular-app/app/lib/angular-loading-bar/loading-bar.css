@@ -62,10 +62,8 @@
   display: block;
   position: fixed;
   z-index: 10002;
-  /*top: 10px;
-  left: 10px;*/
-  top: 12px;
-  right: 12px;
+  top: 10px;
+  left: 10px;
   background-color: white;
   padding: 5px;
   border-radius: 5px;
