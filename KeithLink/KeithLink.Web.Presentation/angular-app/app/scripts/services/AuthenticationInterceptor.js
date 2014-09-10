@@ -15,11 +15,11 @@ angular.module('bekApp')
         var authData = localStorageService.get(Constants.localStorage.userToken);
         if (authData) {
           if (endpointRequiresToken(config.url)) {
-            config.headers.Authorization = 'Bearer ' + authData.access_token;
+              config.headers.Authorization = 'Bearer ' + authData.access_token;
+              // add api key to request headers
+              config.headers['api-key'] = ENV.apiKey;
           }
         }
-        // add api key to request headers
-        config.headers['api-key'] = ENV.apiKey;
 
         // add api url to request url
         config.url = ApiSettings.url + config.url;
