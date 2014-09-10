@@ -55,6 +55,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
         private const string KEY_RABBITMQ_ORDER_QUEUE = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_ORDER_VHOST = "RabbitMQOrderVHost";
+        private const string KEY_RABBITMQ_ORDERHISTORY_QUEUE = "RabbitMQOrderHistoryQueue";
 
         private const string KEY_SITE_NAME = "CS_SiteName";
 
@@ -344,6 +345,12 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_RABBITMQ_ORDER_CONSUMEPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQOrderHistoryQueue {
+            get {
+                return GetValue(KEY_RABBITMQ_ORDERHISTORY_QUEUE, string.Empty);
             }
         }
 

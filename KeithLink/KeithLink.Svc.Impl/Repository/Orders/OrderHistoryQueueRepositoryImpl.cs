@@ -7,9 +7,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KeithLink.Svc.Impl.Repository.Orders
-{
-    public class OrderQueueRepositoryImpl : IQueueRepository {
+namespace KeithLink.Svc.Impl.Repository.Orders {
+    public class OrderHistoryQueueRepositoryImpl : IQueueRepository {
         #region methods
         public void AcknowledgeReceipt(ulong DeliveryTag) {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
@@ -36,7 +35,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    BasicGetResult result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
+                    BasicGetResult result = model.BasicGet(Configuration.RabbitMQOrderHistoryQueue, false);
 
                     if (result == null) {
                         return null;
@@ -76,7 +75,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
+                    model.QueueBind(Configuration.RabbitMQOrderHistoryQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
