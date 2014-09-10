@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Common;
+using KeithLink.Svc.Core.Models.Orders;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
@@ -7,9 +8,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace KeithLink.Svc.Impl.Repository.Orders
-{
+namespace KeithLink.Svc.Impl.Repository.Orders {
     public class OrderQueueRepositoryImpl : IQueueRepository {
+        #region ctor
+        public OrderQueueRepositoryImpl() {
+            QueuePath = OrderQueueLocation.Normal;
+        }
+        #endregion
+
         #region methods
         public void AcknowledgeReceipt(ulong DeliveryTag) {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
@@ -36,7 +42,19 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    BasicGetResult result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
+                    BasicGetResult result = null;
+
+                    switch (QueuePath) {
+                        case OrderQueueLocation.Normal:
+                            result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
+                            break;
+                        case OrderQueueLocation.History:
+                            result = model.BasicGet(Configuration.RabbitMQOrderHistoryQueue, false);
+                            break;
+                        default:
+                            result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
+                            break;
+                    }
 
                     if (result == null) {
                         return null;
@@ -76,7 +94,17 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
+                    switch (QueuePath) {
+                        case OrderQueueLocation.Normal:
+                            model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
+                            break;
+                        case OrderQueueLocation.History:
+                            model.QueueBind(Configuration.RabbitMQOrderHistoryQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
+                            break;
+                        default:
+                            model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
+                            break;
+                    }
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
@@ -86,6 +114,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
+        #endregion
+
+        #region properties
+        public OrderQueueLocation QueuePath { get; set; }
         #endregion
     }
 }
