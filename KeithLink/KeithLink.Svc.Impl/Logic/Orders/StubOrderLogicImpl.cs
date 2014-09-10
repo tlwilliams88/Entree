@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Exceptions.Orders;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Orders;
 using System;

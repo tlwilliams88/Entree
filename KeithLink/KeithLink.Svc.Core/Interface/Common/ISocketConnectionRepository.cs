@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace KeithLink.Svc.Core.Interface.Orders
+﻿namespace KeithLink.Svc.Core.Interface.Common
 {
     public interface ISocketConnectionRepository
     {

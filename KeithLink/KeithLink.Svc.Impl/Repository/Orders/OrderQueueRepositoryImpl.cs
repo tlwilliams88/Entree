@@ -86,8 +86,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    model.ExchangeDeclare(Configuration.RabbitMQExchangeName, "fanout", true);
-                    model.QueueDeclare(Configuration.RabbitMQOrderQueue, true, false, false, new Dictionary<string, object>());
+                    //model.ExchangeDeclare(Configuration.RabbitMQExchangeName, "fanout", true);
+                    //model.QueueDeclare(Configuration.RabbitMQOrderQueue, true, false, false, new Dictionary<string, object>());
                     model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
