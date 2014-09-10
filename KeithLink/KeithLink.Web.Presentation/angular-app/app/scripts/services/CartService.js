@@ -23,8 +23,6 @@ angular.module('bekApp')
         }).$promise.then(function(response) {
           var allCarts = response;
           angular.copy(allCarts, Service.carts);
-
-          console.log(allCarts);
           return allCarts;
 
         });
@@ -35,12 +33,11 @@ angular.module('bekApp')
           cartId: cartId,
           branchId: getBranch()
         }).$promise.then(function(response) {
-          console.log(response);
           return response;
         });
       },
 
-      createCart: function(items) {
+      createCart: function(items, shipDate) {
         if (!items) {
           items = [];
         } else {
@@ -53,7 +50,8 @@ angular.module('bekApp')
 
         var newCart = {
           name: NameGeneratorService.generateName('Cart', Service.carts),
-          items: items
+          items: items,
+          requestedshipdate: shipDate
         };
 
         return Cart.save({
@@ -61,14 +59,12 @@ angular.module('bekApp')
         }, newCart).$promise.then(function(response) {
           newCart.id = response.listitemid;
           Service.carts.push(newCart);
-          console.log(response);
-          return response;
+          return newCart;
         });
       },
 
       updateCart: function(cart, params) {
         return Cart.update(params, cart).$promise.then(function(response) {
-          console.log(response.data);
           return response.data;
         });
       },
@@ -79,7 +75,6 @@ angular.module('bekApp')
           var cartDeleted = Service.findCartById(deletedCart.id);
           var idx = Service.carts.indexOf(cartDeleted);
           Service.carts.splice(idx, 1);
-          console.log(response);
           return response;
         });
       },
@@ -90,21 +85,18 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
-          console.log(response);
           return response;
         });
       },
 
       updateItem: function(cartId, item) {
         return Cart.updateItem({ cartId: cartId }).$promise.then(function(response) {
-          console.log(response);
           return response;
         });
       },
 
       deleteItem: function(cartId, itemId) {
         return Cart.deleteItem({ cartId: cartId }).$promise.then(function(response) {
-          console.log(response);
           return response;
         });
       },

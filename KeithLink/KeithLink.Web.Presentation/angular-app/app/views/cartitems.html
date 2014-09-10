@@ -5,9 +5,9 @@
         <button type="button" class="btn btn-default cart-selection-button dropdown-toggle">
           {{currentCart.name}} <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu cart-selection">
+        <ul class="dropdown-menu dropdown-menu-list-multi-columns ">
           <li>
-            <div class="row cart-selection-list">
+            <div class="row">
               <div class="col-xs-12">
                 <a class="text-regular" ng-click="goToCart(cart)" ng-if="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
                   <div class="row">

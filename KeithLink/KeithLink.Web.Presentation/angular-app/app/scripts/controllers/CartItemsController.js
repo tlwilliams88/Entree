@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', 'toaster', 'Constants', 'CartService', 
-    function($scope, $state, $stateParams, toaster, Constants, CartService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'Constants', 'CartService', 
+    function($scope, $state, $stateParams, $filter, toaster, Constants, CartService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -35,12 +35,9 @@ angular.module('bekApp')
 
     $scope.saveCart = function(cart) {
       var updatedCart = angular.copy(cart);
+
       // delete items if quantity is 0
-      angular.forEach(updatedCart.items, function(item, index) {
-        if (item.quantity && item.quantity === '0') {
-          updatedCart.items.splice(index, 1);
-        }
-      });
+      updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
 
       CartService.updateCart(updatedCart).then(function() {
         $scope.currentCart.isRenaming = false;
