@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings',
-  function ($q, $location, localStorageService, Constants, ApiSettings) {
+.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings', 'ENV',
+  function ($q, $location, localStorageService, Constants, ApiSettings, ENV) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
@@ -18,6 +18,8 @@ angular.module('bekApp')
             config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
+        // add api key to request headers
+        config.headers['api-key'] = ENV.apiKey;
 
         // add api url to request url
         config.url = ApiSettings.url + config.url;
