@@ -1,6 +1,12 @@
-﻿namespace KeithLink.Svc.Core.Interface.Common {
+﻿using KeithLink.Svc.Core.Models.Common;
+
+namespace KeithLink.Svc.Core.Interface.Common {
     public interface IQueueRepository {
-        string ConsumeFromQueue();
+        void AcknowledgeReceipt(ulong DeliveryTag);
+
+        QueueReturn ConsumeFromQueue();
+
+        void DenyReceipt(ulong DeliveryTag);
 
         void PublishToQueue(string item);
     }

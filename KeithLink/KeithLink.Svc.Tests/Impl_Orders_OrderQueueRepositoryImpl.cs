@@ -61,9 +61,9 @@ namespace KeithLink.Svc.Test {
             OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
             StubOrderLogicImpl orderLogic = new StubOrderLogicImpl(mfCon);
 
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log, orderLogic);
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
 
-            queue.ConsumeOrders();
+            //queue.ConsumeOrders();
         }
 
         [TestMethod]
@@ -72,9 +72,9 @@ namespace KeithLink.Svc.Test {
             OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
             StubOrderLogicImpl orderLogic = new StubOrderLogicImpl(mfCon);
 
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log, orderLogic);
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
 
-            queue.PublishOrder(GetStubOrder());
+            //queue.PublishOrder(GetStubOrder());
         }
     }
 }
