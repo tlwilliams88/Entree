@@ -531,7 +531,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build-for-test', [
     'clean:dist',
     // 'includeSource:dist',
-    'ngconstant:prod',
+    'ngconstant:test',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',
