@@ -1,7 +1,7 @@
 <div page-header-bar>
   <div header-message>
     Add To Order
-    <button class="btn btn-primary" ng-click="addItemsToCart(selectedList, selectedCart)">Add Items</button>
+    <button class="btn btn-primary" ng-click="addItemsToCart(selectedList, selectedCart)">Add to Cart</button>
   </div>
   <div header-buttons>
     <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
@@ -122,13 +122,13 @@
             
           </div>
           <div class="col-xs-1 table-col-input hidden-xs hidden-sm">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
           </div>
           <div class="col-xs-1 hidden-xs hidden-sm table-col-input">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.label">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
           </div>
           <div class="col-md-2 col-xs-7 table-col-input">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.name">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.name">
           </div>
           <div class="col-xs-1 hidden-xs hidden-sm">
 
@@ -179,7 +179,7 @@
               </div>
               <div class="col-md-1 table-col-input" ng-show="useParlevel">
                 {{item.parlevel}}
-                <input type="text" class="text-right" integer ng-model="item.onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
               </div>
               <div class="col-md-1 table-col-input col-xs-2">
                 <ng-form class="hidden-print" name="quantityForm">

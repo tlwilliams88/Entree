@@ -117,6 +117,27 @@ angular.module('bekApp')
           }
         });
         return cartFound;
+      },
+
+      getSelectedCart: function(cartId) {
+        var selectedCart;
+        if (cartId) {
+          selectedCart = Service.findCartById(cartId);
+        }
+        // go to active cart
+        if (!selectedCart) {
+          angular.forEach(Service.carts, function(cart, index) {
+            if (cart.active) {
+              selectedCart = cart;
+            }
+          });
+        }
+        // go to first cart in list
+        if (!selectedCart && Service.carts && Service.carts.length > 0) {
+          selectedCart = Service.carts[0];
+        }
+
+        return selectedCart;
       }
 
     };

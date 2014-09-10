@@ -54,6 +54,7 @@ angular.module('bekApp')
           profile.role = 'Owner';
 
           Service.setProfile(profile);
+          Service.setCurrentLocation(profile.stores[0]);
 
           return profile;
         });
@@ -81,17 +82,11 @@ angular.module('bekApp')
         localStorageService.set(Constants.localStorage.currentLocation, location);
       },
 
-      createUser: function() {
-        $http.post('/profile/create');
-        // { 
-        //   "customername" : "Jeremys Chicken Shack", 
-        //   "email" : "jeremy@somecompany.com", 
-        //   "password" : "abcd123", 
-        //   "firstname": "Jeremy", 
-        //   "lastname": "Ames", 
-        //   "phone": "817-877-5700", 
-        //   "rolename" :"Owner" 
-        // }
+      createUser: function(userProfile) {
+        return $http.post('/profile/create', userProfile).then(function(response) {
+          console.log(response);
+          return response;
+        });
       },
 
       updateUser: function() {
