@@ -369,7 +369,6 @@
     <Content Include="angular-app\test\.jshintrc" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
-    <Content Include="angular-app\test\test-results\test-results.xml" />
     <Content Include="angular-app\test\unit\controllers\HomeController.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -382,6 +381,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="angular-app\test\test-results\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="BuildLogs\" />
