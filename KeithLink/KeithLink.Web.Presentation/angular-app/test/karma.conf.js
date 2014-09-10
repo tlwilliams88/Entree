@@ -26,6 +26,8 @@ module.exports = function(config) {
       'app/lib/angular-ui-sortable/sortable.js',
       'app/lib/ng-infinite-scroll/ng-infinite-scroll.js',
       'app/lib/angular-unsavedChanges/unsavedChanges.js',
+      'app/lib/angular-toaster/toaster.js',
+      'app/lib/angular-loading-bar/loading-bar.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

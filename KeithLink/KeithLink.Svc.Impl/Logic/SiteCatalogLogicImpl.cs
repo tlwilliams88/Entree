@@ -97,15 +97,16 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
                 prod.CasePrice = String.Format("{0:C}", p.CasePrice);
+                prod.CasePriceNumeric = p.CasePrice;
                 prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
             }
 
             if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
-                    prods.Products.Sort((x, y) => y.CasePrice.CompareTo(x.CasePrice));
+                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
                 else
-                    prods.Products.Sort((x, y) => x.CasePrice.CompareTo(y.CasePrice));
+                    prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
             }
         }
 

@@ -8,30 +8,43 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Helpers
 {
 	public class FoundationService
-	{
-		public static CommerceRequestContext CreateFoundationServiceContext()
-		{
-			// create the request
-			CommerceServer.Foundation.CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
-			requestContext.Channel = string.Empty;
-			requestContext.RequestId = System.Guid.NewGuid().ToString("B");
-			requestContext.UserLocale = "en-US";
-			requestContext.UserUILocale = "en-US";
-			return requestContext;
-		}
+    {
+        #region attributes
+        static object lockObject = new object();
+        static OperationServiceAgent serviceAgent = null;
+        #endregion
 
-		public static CommerceResponse ExecuteRequest(CommerceRequest request)
-		{
-			CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
-			requestContext.Channel = string.Empty;
-			requestContext.RequestId = System.Guid.NewGuid().ToString("B");
-			requestContext.UserLocale = "en-US";
-			requestContext.UserUILocale = "en-US";
+        #region methods
+        public static CommerceResponse ExecuteRequest(CommerceRequest request)
+        {
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.CommerceResponse response = GetServiceAgent().ProcessRequest(CreateRequestContext(), request);
+            return response;
+        }
 
-			// Execute the operation and get the results back
-			CommerceServer.Foundation.OperationServiceAgent serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
-			CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, request);
-			return response;
-		}
-	}
+		static CommerceRequestContext CreateRequestContext()
+		{
+            return new CommerceServer.Foundation.CommerceRequestContext()
+            {
+			    Channel = string.Empty,
+			    RequestId = System.Guid.NewGuid().ToString("B"),
+			    UserLocale = "en-US",
+			    UserUILocale = "en-US"
+		    };
+        }
+
+        static OperationServiceAgent GetServiceAgent()
+        {
+            if (serviceAgent == null)
+            {
+                lock (lockObject) // ensure object is only created once
+                {
+                    if (serviceAgent == null)
+                        serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
+                }
+            }
+            return serviceAgent;
+        }
+        #endregion
+    }
 }

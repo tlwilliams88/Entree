@@ -2,14 +2,14 @@
   <div class="col-md-7 page-header-bar__message">
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
-        <button type="button" class="btn btn-default cart-selection-button dropdown-toggle" ng-disabled="carts.length === 1">
+        <button type="button" class="btn btn-default cart-selection-button dropdown-toggle">
           {{currentCart.name}} <span class="caret"></span>
         </button>
         <ul class="dropdown-menu cart-selection">
           <li>
             <div class="row cart-selection-list">
               <div class="col-xs-12">
-                <a class="text-regular" ng-click="goToCart(cart)" ng-if="cart !== currentCart" ng-repeat="cart in carts | orderBy: 'name'">
+                <a class="text-regular" ng-click="goToCart(cart)" ng-if="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
                   <div class="row">
                     <div class="col-xs-6">
                       {{cart.name}}
@@ -19,6 +19,13 @@
                     </div>
                     <div class="col-xs-4">
                       {{cart.requestedshipdate | date:shortDate}}
+                    </div>
+                  </div>
+                </a>
+                <a ng-click="createNewCart()">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      Create New Cart...
                     </div>
                   </div>
                 </a>
@@ -50,16 +57,10 @@
         <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-        <a ui-sref="menu.cart"><span class="large-icon icon-truck"></span></a>
+        <a ng-click="goToCart()"><span class="large-icon icon-truck"></span></a>
       </div>
     </div>
 
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-xs-12">
-    <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
   </div>
 </div>
 
@@ -72,8 +73,13 @@
           {{getSubtotal(currentCart.items) | currency}}
         </div>
         <div class="col-sm-7 cart-info-buttons">
-          <button class="btn text-light btn-default" type="submit" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn btn-primary">Place Order</button>
+          <button class="btn text-light btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
+          <button class="btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0">Submit Order</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="text-red no-margin" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
         </div>
       </div>
       <div class="row sub-content cart-info-item cart-info-item__ship-date">
@@ -82,19 +88,11 @@
         </div>
         <div class="col-sm-6">
           <p class="input-group datepicker-input">
-            <input type="text" class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" required class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
             <span class="input-group-btn">
               <button type="button" class="btn btn-default" ng-click="openDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
           </p>
-        </div>
-      </div>
-      <div class="row cart-info-item">
-        <div class="col-sm-6 col-sm-5">
-          <strong>Submit by:</strong>
-        </div>
-        <div class="col-sm-6 text-light">
-          5pm CST 9-27-14
         </div>
       </div>
       <div class="row cart-info-item">
@@ -106,6 +104,14 @@
         </div>
       </div>
       <div class="row cart-info-item">
+        <div class="col-sm-6 col-sm-5">
+          <strong>Submit by:</strong>
+        </div>
+        <div class="col-sm-6 text-light">
+          5pm CST 9-27-14
+        </div>
+      </div>
+      <div class="row cart-info-item">
         <div class="col-xs-12">
           <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart">
           <label for="activeCart" style="font-weight:normal;">Make this my Active Cart</label>
@@ -114,7 +120,6 @@
     </div>
   </div>
 </div>
-</form>
 
 <div class="row">
   <div class="col-md-12">
@@ -183,16 +188,16 @@
               
             </div>
             <div class="col-md-1 table-col-input hidden-xs hidden-sm">
-              <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+              <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
             </div>
             <div class="col-md-1 hidden-xs hidden-sm">
               
             </div>
             <div class="col-md-1 table-col-input hidden-xs hidden-sm">
-              <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
+              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
             </div>
             <div class="col-md-2 col-xs-6 table-col-input">
-              <input type="text" placeholder="Filter..." ng-model="filterFields.name">
+              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
             </div>
             <div class="col-md-1 hidden-xs hidden-sm">
             </div>
@@ -214,7 +219,6 @@
           </div> <!-- end Filter row -->
 
           <!-- Data rows -->
-          <form unsaved-warning-form novalidate name="cartItemsForm" class="style-validation-errors">
           <div 
             class="row table-row"  
             ng-class="{ odd : $odd, even: $even }" 
@@ -243,7 +247,13 @@
                 </div>
                 <div class="col-md-1 table-col-input col-xs-2">
                   <ng-form class="hidden-print" name="quantityForm">
-                    <div quantity-input="item.quantity"></div>
+                    <div class="btn-group" dropdown is-open="isopen">
+                      <input required style="width: 55px;" type="text" ng-model="item.quantity" class="dropdown-toggle text-right" integer>
+                      <ul class="dropdown-menu quantity-dropdown" role="menu">
+                        <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="item.quantity = qty">{{qty}}
+                        </li>
+                      </ul>
+                    </div>
                   </ng-form>
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs table-col-input">
@@ -256,7 +266,7 @@
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                 </div>
                 <div class="col-md-1 hidden-sm hidden-xs">
-                  {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
+                  {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
                 </div>
                 <div class="col-xs-1 table-col-icons">
                   <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -287,7 +297,6 @@
               </div> <!-- end Mobile details -->
             </div>
           </div> <!-- end Data rows -->
-          </form>
         </div>
       </div>
 
@@ -304,3 +313,4 @@
     <div class="text-center sub-content" loading-spinner="loadingResults"></div>
   </div>
 </div>
+</form>

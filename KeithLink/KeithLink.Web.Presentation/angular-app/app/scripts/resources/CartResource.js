@@ -3,14 +3,7 @@
 angular.module('bekApp')
   .factory('Cart', [ '$resource', 'UserProfileService', 
   function ($resource, UserProfileService) {
-    
-    function getBranch() {
-      return UserProfileService.getCurrentBranchId();
-    }
-
-    return $resource('/cart/:branchId/:cartId', {
-      branchId: getBranch()
-    }, {
+    return $resource('/cart/:branchId/:cartId', { }, {
 
       // defaults: GET, QUERY, SAVE
 

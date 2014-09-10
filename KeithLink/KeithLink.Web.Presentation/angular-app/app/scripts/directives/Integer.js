@@ -1,19 +1,19 @@
 'use strict';
 
+// only allows users to enter integer values into textbox
+// also provides dropdown of values
+
 angular.module('bekApp')
 .directive('integer', [function() {
   var directive = {
     require: 'ngModel',
     restrict: 'A',
-    scope:{
-      integer:'='
-    },
     link: function(scope, elm, attrs, ctrl) {
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
 
       function checkValidity(viewValue) {
-        if(scope.integer || scope.integer === undefined){
+        if(scope.$modelValue || scope.$modelValue === undefined){
           if (directive.INTEGER_REGEXP.test(viewValue)) {
             // it is valid
             ctrl.$setValidity('integer', true);
@@ -27,7 +27,7 @@ angular.module('bekApp')
             }
             
             // it is invalid, return undefined (no model update)
-            ctrl.$setValidity('integer', false);
+            // ctrl.$setValidity('integer', false);
             return digits;
           }
         }

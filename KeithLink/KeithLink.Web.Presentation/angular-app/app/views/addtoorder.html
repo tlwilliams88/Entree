@@ -1,7 +1,7 @@
 <div page-header-bar>
   <div header-message>
     Add To Order
-    <button class="btn btn-primary" ng-click="addItemsToCart(selectedList)">Add Items</button>
+    <button class="btn btn-primary" ng-click="addItemsToCart(selectedList, selectedCart)">Add to Cart</button>
   </div>
   <div header-buttons>
     <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
@@ -10,10 +10,17 @@
 </div>
 
 <div class="row">
+  <div class="col-xs-12 text-right">
+    <input type="checkbox" ng-model="useParlevel">
+    <label for="">Use PAR Level</label>
+  </div>
+</div>
+
+<div class="row">
   <div class="col-xs-12">
     <div class="row select-nav-bar">
       <div class="col-md-3 col-sm-12 col-xs-12 select-nav btn-group" dropdown is-open="showLists">
-        <div class="dropdown-toggle select-area" ng-disabled="lists.length === 1">
+        <div class="dropdown-toggle select-area hand" ng-disabled="lists.length === 1">
           <span class="nav-description text-light">Select a List</span>
           <span class="nav-title">{{selectedList.name}}</span>
           <span class="pull-right icon-arrow-down7 text-light"></span>
@@ -24,7 +31,7 @@
       </div>
       
       <div class="col-md-3 col-sm-12 col-xs-12 select-nav btn-group" dropdown is-open="showCarts">
-        <div class="dropdown-toggle select-area">
+        <div class="dropdown-toggle select-area hand">
           <span class="nav-description text-light">Select a Cart</span>
           <span class="nav-title">{{selectedCart.name || 'New Cart'}}</span>
           <span class="pull-right icon-arrow-down7 text-light"></span>
@@ -36,7 +43,7 @@
       </div>
       
       <div class="col-md-3 col-sm-12 col-xs-12 btn-group select-nav">
-        <div class="select-area" ng-click="openDatepicker($event)">
+        <div class="select-area hand" ng-click="openDatepicker($event)">
           <span class="nav-description text-light">Requested Ship Date</span>
           <span class="nav-title">
             {{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}
@@ -48,7 +55,7 @@
 
       <div class="col-md-3 select-nav select-area">
         <span class="nav-description text-light">Cart Info</span>
-        <span class="nav-title">{{(selectedCart.items.length + getListItemsWithQuantity(selectedList.items).length) || '0'}} Items</span>
+        <span class="nav-title">{{getItemCount(selectedCart.items, selectedList.items) || '0'}} Items</span>
         <span style="font-size:16px; font-weight:600;" class="pull-right text-green">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</span>
       </div>
 
@@ -72,7 +79,7 @@
           Label
           <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
         </div>
-        <div class="col-md-3 col-xs-7 hand" ng-click="sortBy='name';sortOrder=!sortOrder;">
+        <div class="col-md-2 col-xs-7 hand" ng-click="sortBy='name';sortOrder=!sortOrder;">
           Name
           <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
         </div>
@@ -82,6 +89,9 @@
         <div class="col-xs-1 hidden-sm hidden-xs hand" ng-click="sortBy='brand';sortOrder=!sortOrder;">
           Brand
           <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+        </div>
+        <div class="col-md-1" ng-show="useParlevel">
+          PAR Level
         </div>
         <div class="col-md-1 col-xs-2 hand" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
           Qty
@@ -96,8 +106,6 @@
         </div>
         <div class="col-md-1 hidden-sm hidden-xs">
           Ext Price
-        </div>
-        <div class="col-xs-1 table-col-icons">
           <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </div>
       </div>
@@ -114,13 +122,13 @@
             
           </div>
           <div class="col-xs-1 table-col-input hidden-xs hidden-sm">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
           </div>
           <div class="col-xs-1 hidden-xs hidden-sm table-col-input">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.label">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
           </div>
-          <div class="col-md-3 col-xs-7 table-col-input">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.name">
+          <div class="col-md-2 col-xs-7 table-col-input">
+            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.name">
           </div>
           <div class="col-xs-1 hidden-xs hidden-sm">
 
@@ -136,9 +144,6 @@
             
           </div>
           <div class="col-xs-1 hidden-xs hidden-sm">
-            
-          </div>
-          <div class="col-xs-1 table-col-icons">
             <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
           </div>
         </div> <!-- end Filter row -->
@@ -162,7 +167,7 @@
               <div class="col-md-1 hidden-xs hidden-sm">
                 {{item.label}}
               </div>
-              <div class="col-md-3 col-xs-7">
+              <div class="col-md-2 col-xs-7">
                 {{item.name}}
                 <span class="pull-right" item-icons></span>
               </div>
@@ -172,9 +177,19 @@
               <div class="col-md-1 hidden-sm hidden-xs">
                 {{item.brand}}
               </div>
+              <div class="col-md-1 table-col-input" ng-show="useParlevel">
+                {{item.parlevel}}
+                <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+              </div>
               <div class="col-md-1 table-col-input col-xs-2">
                 <ng-form class="hidden-print" name="quantityForm">
-                  <div quantity-input="item.quantity"></div>
+                  <div class="btn-group" dropdown is-open="isopen">
+                    <input style="width: 55px;" type="text" ng-model="item.quantity" class="dropdown-toggle text-right" integer>
+                    <ul class="dropdown-menu quantity-dropdown" role="menu">
+                      <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="item.quantity = qty">{{qty}}
+                      </li>
+                    </ul>
+                  </div>
                 </ng-form>
               </div>
               <div class="col-md-1 hidden-sm hidden-xs table-col-input">

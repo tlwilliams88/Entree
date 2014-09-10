@@ -33,7 +33,7 @@ angular.module('bekApp')
       },
 
       isUser: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.USER );
+        return ( UserProfileService.getCurrentRole() === Constants.roles.GUEST );
       },
 
       // PRIVILEDGES

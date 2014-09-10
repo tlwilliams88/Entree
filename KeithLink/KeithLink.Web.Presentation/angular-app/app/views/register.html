@@ -44,7 +44,7 @@
         <div class="col-xs-12">
           <h1>Sign Up Now - It's Free and Easy!</h1>
           <p>
-            Please register by completing the form below. The registration is good for 6 months from today. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
+            Please register by completing the form below. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
           </p>    
         </div>
       </div>
@@ -81,24 +81,24 @@
             <label for="customerStatus">Customer Status</label>
             <div class="radio">
               <label>
-                <input required ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus1" value="'Not a Customer'" ng-checked="true">
+                <input ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus1" value="'Not a Customer'" ng-checked="true">
                 I am NOT a current customer
               </label>
             </div>
              <div class="radio">
               <label>
-                <input required ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus2" value="'Current Customer'">
+                <input ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus2" value="'Current Customer'">
                 I am a current customer
               </label>
             </div>
           </div>
           <div class="col-md-6 form-group">
-            <label for="branch">Default Branch Catalog</label>
-            <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Default catalog is required</span>
+            <label for="branch">Division</label>
+            <a class="pull-right" target="_blank" href="/images/bek-division-map.png">Division Map</a>
+            <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Division is required</span>
             <div class="select-div">
-              <select required name="branch" id="branch" class="form-control" ng-model="register.branch">
-                <option value="">Please select a catalog</option>
-                <option value="fdf">Dallas-Ft. Worth</option>
+              <select required name="branch" id="branch" class="form-control" ng-options="branch.name for branch in branches" ng-model="register.branch">
+                <option value="">Please select a division</option>
               </select>
             </div>
           </div>
@@ -117,7 +117,7 @@
 
         <div class="row sub-content">
           <div class="col-xs-12">
-            <button ng-disabled="registrationForm.$invalid" type="submit" class="btn btn-primary">Submit Registration</button>
+            <button ng-click="registerNewUser(register)" ng-disabled="registrationForm.$invalid" type="submit" class="btn btn-primary">Submit Registration</button>
             <a href="">Cancel</a>
           </div>
         </div>

@@ -146,19 +146,19 @@ button.toast-close-button {
   background-color: #030303;
 }
 .toast-success {
-  background-color: #51a351;
+  background-color: #04a773;
 }
 .toast-error {
-  background-color: #bd362f;
+  background-color: #dc6a6a;
 }
 .toast-info {
-  background-color: #2f96b4;
+  background-color: #f3f1eb;
 }
 .toast-wait {
-  background-color: #2f96b4;
+  background-color: #489ecf;
 }
 .toast-warning {
-  background-color: #f89406;
+  background-color: #e8aa30;
 }
 /*Responsive Design*/
 @media all and (max-width: 240px) {
