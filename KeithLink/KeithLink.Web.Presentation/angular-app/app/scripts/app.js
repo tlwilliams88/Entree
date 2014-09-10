@@ -23,7 +23,8 @@ angular
     'infinite-scroll',
     'unsavedChanges',
     'toaster',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'configenv'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
   function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {

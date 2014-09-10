@@ -116,6 +116,7 @@
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISocketConnectionRepository.cs" />
+    <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
