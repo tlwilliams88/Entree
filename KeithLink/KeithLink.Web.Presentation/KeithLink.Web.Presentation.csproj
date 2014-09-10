@@ -306,9 +306,17 @@
     <Content Include="angular-app\app\scripts\directives\ItemIcons.js" />
     <Content Include="angular-app\app\scripts\directives\LoadingSpinner.js" />
     <Content Include="angular-app\app\scripts\directives\PageHeaderBar.js" />
+    <Content Include="angular-app\app\scripts\services\AccessService.js" />
     <Content Include="angular-app\app\scripts\services\ApiService.js" />
+    <Content Include="angular-app\app\scripts\services\AuthenticationInterceptor.js" />
     <Content Include="angular-app\app\scripts\services\AuthenticationService.js" />
+    <Content Include="angular-app\app\scripts\services\BranchService.js" />
+    <Content Include="angular-app\app\scripts\services\BrandService.js" />
+    <Content Include="angular-app\app\scripts\services\CartService.js" />
     <Content Include="angular-app\app\scripts\services\CategoryService.js" />
+    <Content Include="angular-app\app\scripts\services\Constants.js" />
+    <Content Include="angular-app\app\scripts\services\ListService.js" />
+    <Content Include="angular-app\app\scripts\services\NameGeneratorService.js" />
     <Content Include="angular-app\app\scripts\services\ProductService.js" />
     <Content Include="angular-app\app\scripts\services\UserProfileService.js" />
     <Content Include="angular-app\app\styles\main.scss" />
@@ -369,6 +377,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angular-app\package.json" />
     <None Include="Properties\PublishProfiles\Test.pubxml">
       <SubType>Designer</SubType>
     </None>
