@@ -42,29 +42,29 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
             }
         }
 
-        private string GetRoutingKey() {
+        private string GetSelectedExchange() {
             switch (_queuePath) {
                 case OrderQueueLocation.Normal:
-                    return "normal";
+                    return Configuration.RabbitMQExchangeOrdersCreated;
                 case OrderQueueLocation.History:
-                    return "history";
+                    return Configuration.RabbitMQExchangeOrdersHistory;
                 case OrderQueueLocation.Error:
-                    return "error";
+                    return Configuration.RabbitMQExchangeOrdersError;
                 default:
-                    return "normal";
+                    return Configuration.RabbitMQExchangeOrdersCreated;
             }
         }
 
         private string GetSelectedQueue() {
             switch (_queuePath) {
                 case OrderQueueLocation.Normal:
-                    return Configuration.RabbitMQOrderQueue;
+                    return Configuration.RabbitMQOrderCreatedQueue;
                 case OrderQueueLocation.History:
                     return Configuration.RabbitMQOrderHistoryQueue;
                 case OrderQueueLocation.Error:
                     return Configuration.RabbitMQOrderErrorQueue;
                 default:
-                    return Configuration.RabbitMQOrderQueue;
+                    return Configuration.RabbitMQOrderCreatedQueue;
             }
         }
 
@@ -79,14 +79,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    string route = GetRoutingKey();
+                    string exchange = GetSelectedExchange();
 
-                    model.QueueBind(GetSelectedQueue(), Configuration.RabbitMQExchangeName, route, new Dictionary<string, object>());
+                    model.QueueBind(GetSelectedQueue(), exchange, string.Empty, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(Configuration.RabbitMQExchangeName, route, false, props, Encoding.UTF8.GetBytes(item));
+                    model.BasicPublish(exchange, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
                 }
             }
         }
