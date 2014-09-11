@@ -11,18 +11,18 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	{
 		void DeleteBasket(Guid userId, Guid cartId);
 
-		Guid CreateOrUpdateBasket(Guid userId, string branchId, Basket basket, List<LineItem> items);
+		Guid CreateOrUpdateBasket(Guid userId, string branchId, Basket basket, List<LineItem> items, bool runPipelines = false);
 
-		void DeleteItem(Guid userId, Guid basketId, Guid itemId);
+		void DeleteItem(Guid userId, Guid basketId, Guid itemId, bool runPipelines = false);
 
-		void UpdateItem(Guid userId, Guid basketId, LineItem updatedItem);
+		void UpdateItem(Guid userId, Guid basketId, LineItem updatedItem, bool runPipelines = false);
 
-		Guid? AddItem(Guid userId, Guid basketId, LineItem newItem);
+		Guid? AddItem(Guid userId, Guid basketId, LineItem newItem, Basket basket, bool runPipelines = false);
 
-		List<Basket> ReadAllBaskets(Guid userId);
+		List<Basket> ReadAllBaskets(Guid userId, bool runPipelines = false);
 
-		Basket ReadBasket(Guid userId, Guid basketId);
-		Basket ReadBasket(Guid userId, string basketName);
+		Basket ReadBasket(Guid userId, Guid basketId, bool runPipelines = false);
+		Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false);
 		
 	}
 }

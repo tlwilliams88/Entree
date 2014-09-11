@@ -297,18 +297,33 @@
     <Content Include="angular-app\app\lib\respondjs\respond.src.js" />
     <Content Include="angular-app\app\robots.txt" />
     <Content Include="angular-app\app\scripts\app.js" />
+    <Content Include="angular-app\app\scripts\configenv.js" />
+    <Content Include="angular-app\app\scripts\controllers\AccountDetailsController.js" />
+    <Content Include="angular-app\app\scripts\controllers\AddToOrderController.js" />
+    <Content Include="angular-app\app\scripts\controllers\CartController.js" />
+    <Content Include="angular-app\app\scripts\controllers\CartItemsController.js" />
     <Content Include="angular-app\app\scripts\controllers\CatalogController.js" />
     <Content Include="angular-app\app\scripts\controllers\HomeController.js" />
     <Content Include="angular-app\app\scripts\controllers\ItemDetailsController.js" />
+    <Content Include="angular-app\app\scripts\controllers\ListController.js" />
     <Content Include="angular-app\app\scripts\controllers\MenuController.js" />
+    <Content Include="angular-app\app\scripts\controllers\RegisterController.js" />
     <Content Include="angular-app\app\scripts\controllers\SearchController.js" />
     <Content Include="angular-app\app\scripts\directives\FeaturedItemCarousel.js" />
     <Content Include="angular-app\app\scripts\directives\ItemIcons.js" />
     <Content Include="angular-app\app\scripts\directives\LoadingSpinner.js" />
     <Content Include="angular-app\app\scripts\directives\PageHeaderBar.js" />
+    <Content Include="angular-app\app\scripts\services\AccessService.js" />
     <Content Include="angular-app\app\scripts\services\ApiService.js" />
+    <Content Include="angular-app\app\scripts\services\AuthenticationInterceptor.js" />
     <Content Include="angular-app\app\scripts\services\AuthenticationService.js" />
+    <Content Include="angular-app\app\scripts\services\BranchService.js" />
+    <Content Include="angular-app\app\scripts\services\BrandService.js" />
+    <Content Include="angular-app\app\scripts\services\CartService.js" />
     <Content Include="angular-app\app\scripts\services\CategoryService.js" />
+    <Content Include="angular-app\app\scripts\services\Constants.js" />
+    <Content Include="angular-app\app\scripts\services\ListService.js" />
+    <Content Include="angular-app\app\scripts\services\NameGeneratorService.js" />
     <Content Include="angular-app\app\scripts\services\ProductService.js" />
     <Content Include="angular-app\app\scripts\services\UserProfileService.js" />
     <Content Include="angular-app\app\styles\main.scss" />
@@ -327,17 +342,26 @@
     <Content Include="angular-app\app\styles\_sidebar.scss" />
     <Content Include="angular-app\app\styles\_user-bar.scss" />
     <Content Include="angular-app\app\views\404.html" />
+    <Content Include="angular-app\app\views\accountdetails.html" />
+    <Content Include="angular-app\app\views\addtoorder.html" />
+    <Content Include="angular-app\app\views\cart.html" />
+    <Content Include="angular-app\app\views\cartitems.html" />
     <Content Include="angular-app\app\views\catalog.html" />
+    <Content Include="angular-app\app\views\directives\contextmenu.html" />
+    <Content Include="angular-app\app\views\directives\favoriteicons.html" />
     <Content Include="angular-app\app\views\directives\featureditemcarousel.html" />
     <Content Include="angular-app\app\views\directives\headerBar.html" />
     <Content Include="angular-app\app\views\directives\headerButtons.html" />
     <Content Include="angular-app\app\views\directives\headerMessage.html" />
     <Content Include="angular-app\app\views\directives\itemicons.html" />
     <Content Include="angular-app\app\views\directives\loadingspinner.html" />
+    <Content Include="angular-app\app\views\directives\sorticons.html" />
     <Content Include="angular-app\app\views\home.html" />
     <Content Include="angular-app\app\views\itemdetails.html" />
+    <Content Include="angular-app\app\views\lists.html" />
     <Content Include="angular-app\app\views\login.html" />
     <Content Include="angular-app\app\views\menu.html" />
+    <Content Include="angular-app\app\views\register.html" />
     <Content Include="angular-app\app\views\searchresults.html" />
     <Content Include="angular-app\build.bat" />
     <Content Include="angular-app\Gruntfile.js" />
@@ -345,7 +369,6 @@
     <Content Include="angular-app\test\.jshintrc" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
-    <Content Include="angular-app\test\test-results\test-results.xml" />
     <Content Include="angular-app\test\unit\controllers\HomeController.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -358,6 +381,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="angular-app\test\test-results\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="BuildLogs\" />
@@ -369,6 +393,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="angular-app\package.json" />
     <None Include="Properties\PublishProfiles\Test.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -461,14 +486,19 @@ dir /b /a "node_modules\*" | &gt;nul c:\windows\syswow64\findstr.exe "^" &amp;&a
 dir /b /a "node_modules\*" | &gt;nul c:\windows\SysWOW64\findstr.exe "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt-cli)
 
 if $(ConfigurationName) == Debug goto :debug
+if $(ConfigurationName) == Test goto :test
 if $(ConfigurationName) == Dev goto :debug
 
 call grunt --no-color &gt; $(ProjectDir)grunt_log.txt
-
 goto :done
 
 :debug
 call grunt --no-color dev &gt; $(ProjectDir)grunt_log.txt
+goto:done
+
+:test
+call grunt --no-color build-for-test &gt; $(ProjectDir)grunt_log.txt
+goto:done
 
 :done
 call type $(ProjectDir)grunt_log.txt

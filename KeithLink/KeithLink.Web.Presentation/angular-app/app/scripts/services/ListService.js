@@ -75,7 +75,9 @@ angular.module('bekApp')
                 },
 
                 getAllLists: function(requestParams) {
-                    return List.query(requestParams).$promise.then(function(lists) {
+                    return List.query({
+                        branchId: getBranch()
+                    }).$promise.then(function(lists) {
                         angular.copy(lists, Service.lists);
                         Service.setFavoritesList();
                         console.log(lists);
@@ -85,7 +87,8 @@ angular.module('bekApp')
 
                 getList: function(listId) {
                     return List.get({
-                        listId: listId
+                        listId: listId,
+                        branchId: getBranch()
                     }).$promise.then(function(list) {
                         console.log(list);
                         return list;
@@ -108,6 +111,10 @@ angular.module('bekApp')
                 createList: function(items) {
                     if (!items) {
                         items = [];
+                    } else {
+                        angular.forEach(items, function(item, index) {
+                            delete item.listitemid;
+                        });
                     }
 
                     var newList = {
@@ -115,10 +122,15 @@ angular.module('bekApp')
                         items: items
                     };
 
-                    return List.save(null, newList).$promise.then(function(response) {
-                        newList.listid = response.listitemid;
-                        Service.lists.push(newList);
-                        return newList; // return listId
+                    return List.save({
+                        branchId: getBranch()
+                    }, newList).$promise.then(function(response) {
+                        
+                        return Service.getList(response.listitemid).then(function(list) {
+                            Service.lists.push(list); 
+                            return list;
+                        });
+                        // return newList;
                     });
                 },
 
@@ -190,7 +202,7 @@ angular.module('bekApp')
 
                         var updatedList = Service.findListById(list.listid);
                         var idx = Service.lists.indexOf(updatedList);
-                        Service.lists[idx] = list;
+                        angular.copy(list, Service.lists[idx]);
                     });
                 },
 

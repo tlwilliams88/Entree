@@ -26,12 +26,13 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			FoundationService.ExecuteRequest(deleteBasket.ToRequest());
 		}
 
-		public Basket ReadBasket(Guid userId, Guid cartId)
+		public Basket ReadBasket(Guid userId, Guid cartId, bool runPipelines = false)
 		{
-			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
 			queryBaskets.SearchCriteria.Model.Id = cartId.ToString("B");
+            queryBaskets.QueryOptions.RefreshBasket = runPipelines;
 
 			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
 			queryBaskets.RelatedOperations.Add(queryLineItems);
@@ -45,11 +46,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((Basket)basketResponse.CommerceEntities[0]);
 		}
 
-		public List<Basket> ReadAllBaskets(Guid userId)
+        public List<Basket> ReadAllBaskets(Guid userId, bool runPipelines = false)
 		{
-			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
+            queryBaskets.QueryOptions.RefreshBasket = runPipelines;
 
 			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
 			queryBaskets.RelatedOperations.Add(queryLineItems);
@@ -62,40 +64,46 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(i => (Basket)i).ToList();
 		}
 
-		public Guid? AddItem(Guid userId, Guid cartId, LineItem newItem)
+        public Guid? AddItem(Guid userId, Guid cartId, LineItem newItem, Basket basket, bool runPipelines = false)
 		{
-			var basket = ReadBasket(userId, cartId);
+            var updateOrder = new CommerceUpdate<Basket,
+                        CommerceModelSearch<Basket>,
+                        CommerceBasketUpdateOptionsBuilder>();
+            updateOrder.SearchCriteria.Model.UserId = userId.ToString();
+            updateOrder.SearchCriteria.Model.BasketType = 0;
+            updateOrder.SearchCriteria.Model.Id = cartId.ToString("B");
+            updateOrder.UpdateOptions.RefreshBasket = runPipelines; // disable running of pipelines to optimize save time
+            updateOrder.UpdateOptions.ToOptions().ReturnModel = (new Basket()).ToCommerceEntity();
 
-			var updateOrder = new CommerceUpdate<Basket>();
-			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
-			updateOrder.SearchCriteria.Model.BasketType = 0;
-			updateOrder.SearchCriteria.Model.Id = cartId.ToString("B");
-			updateOrder.UpdateOptions.ReturnModel = new Basket();
+            var lineItemUpdate = new CommerceCreateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
+            lineItemUpdate.Model = newItem;
+            updateOrder.RelatedOperations.Add(lineItemUpdate);
+            updateOrder.UpdateOptions.ToOptions().ReturnModelQueries.Add(
+                new CommerceQueryRelatedItem() { RelationshipName = Basket.RelationshipName.LineItems, Model = (new LineItem()).ToCommerceEntity() });
 
-			var lineItemUpdate = new CommerceCreateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
-			lineItemUpdate.Model = newItem;
-			updateOrder.RelatedOperations.Add(lineItemUpdate);
+            var response = FoundationService.ExecuteRequest(updateOrder.ToRequest());
 
+            CommerceServer.Foundation.CommerceRelationshipList lineItemsFromResponse =
+                (response.OperationResponses[0] as CommerceUpdateOperationResponse)
+                .CommerceEntities[0].Properties[Basket.RelationshipName.LineItems] as CommerceServer.Foundation.CommerceRelationshipList;
 
-			FoundationService.ExecuteRequest(updateOrder.ToRequest());
+            var newId = lineItemsFromResponse.Where(b => !basket.LineItems.Any(i => i.Id.Equals(b.Target.Id.ToGuid()))).FirstOrDefault();
 
-			var newBasket = ReadBasket(userId, cartId);
+            if (newId != null)
+                return newId.Id.ToGuid();
 
-			var newId = newBasket.LineItems.Where(b => !basket.LineItems.Any(i => i.Id.Equals(b.Id.ToGuid()))).FirstOrDefault();
-
-			if (newId != null)
-				return newId.Id.ToGuid();
-
-			return null;
+            return null;
 		}
 
-		public void UpdateItem(Guid userId, Guid cartId, LineItem updatedItem)
+        public void UpdateItem(Guid userId, Guid cartId, LineItem updatedItem, bool runPipelines = false)
 		{
-			var updateOrder = new CommerceUpdate<Basket>();
+            var updateOrder = new CommerceUpdate<Basket,
+                            CommerceModelSearch<Basket>,
+                            CommerceBasketUpdateOptionsBuilder>();
 			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
 			updateOrder.SearchCriteria.Model.BasketType = 0;
 			updateOrder.SearchCriteria.Model.Id = cartId.ToString("B");
-
+            updateOrder.UpdateOptions.RefreshBasket = runPipelines;
 
 			var lineItemUpdate = new CommerceUpdateRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
 			lineItemUpdate.SearchCriteria.Model.Id = updatedItem.Id;
@@ -105,14 +113,16 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			FoundationService.ExecuteRequest(updateOrder.ToRequest());
 		}
 
-		public void DeleteItem(Guid userId, Guid cartId, Guid itemId)
+        public void DeleteItem(Guid userId, Guid cartId, Guid itemId, bool runPipelines = false)
 		{
 
-			var updateOrder = new CommerceUpdate<Basket>();
+			var updateOrder = new CommerceUpdate<Basket,
+                            CommerceModelSearch<Basket>,
+                            CommerceBasketUpdateOptionsBuilder>();
 			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
 			updateOrder.SearchCriteria.Model.BasketType = 0;
 			updateOrder.SearchCriteria.Model.Id = cartId.ToString("B");
-
+            updateOrder.UpdateOptions.RefreshBasket = runPipelines;
 
 			var lineItemUpdate = new CommerceDeleteRelatedItem<LineItem>(Basket.RelationshipName.LineItems);
 			lineItemUpdate.SearchCriteria.Model.Id = itemId.ToString("B");
@@ -121,9 +131,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			FoundationService.ExecuteRequest(updateOrder.ToRequest());
 		}
 
-		public Guid CreateOrUpdateBasket(Guid userId, string branchId, Basket basket, List<LineItem> items)
+        public Guid CreateOrUpdateBasket(Guid userId, string branchId, Basket basket, List<LineItem> items, bool runPipelines = false)
 		{
-			var updateOrder = new CommerceUpdate<Basket>();
+            var updateOrder = new CommerceUpdate<Basket,
+                            CommerceModelSearch<Basket>,
+                            CommerceBasketUpdateOptionsBuilder>();
 			updateOrder.SearchCriteria.Model.UserId = userId.ToString();
 			updateOrder.SearchCriteria.Model.BasketType = 0;
 
@@ -132,7 +144,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			else
 				updateOrder.SearchCriteria.Model.Name = basket.Name;
 			updateOrder.Model = basket;
-			updateOrder.UpdateOptions.ReturnModel = new Basket();
+			updateOrder.UpdateOptions.ToOptions().ReturnModel = (new Basket()).ToCommerceEntity();
+            updateOrder.UpdateOptions.RefreshBasket = runPipelines;
 
 
 			if (items != null)
@@ -163,12 +176,13 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		}
 
 
-		public Basket ReadBasket(Guid userId, string basketName)
+        public Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false)
 		{
-			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>>("Basket");
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
 			queryBaskets.SearchCriteria.Model.Properties["Name"] = basketName;
+            queryBaskets.QueryOptions.RefreshBasket = runPipelines;
 
 			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
 			queryBaskets.RelatedOperations.Add(queryLineItems);

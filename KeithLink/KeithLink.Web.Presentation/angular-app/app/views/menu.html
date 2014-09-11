@@ -18,18 +18,42 @@
   <nav class="sidebar-nav">
     <ul class="list-unstyled" ng-click="$spMenu.hide()">
         
-        <div ng-show="displayUserMenu">
-          <a ui-sref="menu.accountdetails">
-            <li>Account Settings</li>
-          </a>
-          <a ng-click="logout()">
-            <li>Sign Out</li>
-          </a>
-        </div>
-
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenMobile" ui-sref="{{item.sref}}" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
+      <div ng-show="displayUserMenu">
+        <a ui-sref="menu.accountdetails">
+          <li>Account Settings</li>
         </a>
+        <a ng-click="logout()">
+          <li>Sign Out</li>
+        </a>
+      </div>
+
+      <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+      </a>
+      <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
+      </a>
+      <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+      </a>
+      <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+      </a>
+      <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+      </a>
+      <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+      </a>
+      <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+      </a>
+      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
+      </a>
+      <a ng-if="isOrderEntryCustomer" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
+      </a>
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
@@ -43,10 +67,10 @@
   <div ng-if="isOrder" class="sidebar-actions text-center">
     <button class="btn btn-primary">View Your Order</button>
   </div>
-</div>
+</div> <!-- end Mobile Sidebar -->
 
 <div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="desktop-wrapper">
-  <!-- <toaster-container></toaster-container> -->
+  <toaster-container></toaster-container>
   <div growl></div>
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
@@ -56,8 +80,29 @@
 
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenDesktop" ui-sref="{{item.sref}}" ui-sref-active="is-selected" ng-class="{ 'is-selected' :$state.current.name.indexOf(item.sref) > -1 }">
-          <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
+        <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+        </a>
+        <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
+        </a>
+        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+        </a>
+        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+        </a>
+        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+        </a>
+        <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+        </a>
+        <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+        </a>
+        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
       </ul>
     </nav>

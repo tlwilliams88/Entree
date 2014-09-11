@@ -30,37 +30,37 @@ namespace KeithLink.Svc.Test.MockRepository
 			return;
 		}
 
-		public Guid CreateOrUpdateBasket(Guid userId, string branchId, CS.Basket basket, List<CS.LineItem> items)
+        public Guid CreateOrUpdateBasket(Guid userId, string branchId, CS.Basket basket, List<CS.LineItem> items, bool runPipelines = false)
 		{
 			return Guid.NewGuid();
 		}
 
-		public void DeleteItem(Guid userId, Guid basketId, Guid itemId)
+        public void DeleteItem(Guid userId, Guid basketId, Guid itemId, bool runPipelines = false)
 		{
 			return;
 		}
 
-		public void UpdateItem(Guid userId, Guid basketId, CS.LineItem updatedItem)
+        public void UpdateItem(Guid userId, Guid basketId, CS.LineItem updatedItem, bool runPipelines = false)
 		{
 			return;
 		}
 
-		public Guid? AddItem(Guid userId, Guid basketId, CS.LineItem newItem)
+        public Guid? AddItem(Guid userId, Guid basketId, CS.LineItem newItem, CS.Basket basket, bool runPipelines = false)
 		{
 			return Guid.NewGuid();
 		}
 
-		public List<CS.Basket> ReadAllBaskets(Guid userId)
+        public List<CS.Basket> ReadAllBaskets(Guid userId, bool runPipelines = false)
 		{
 			return MockBaskets;
 		}
 
-		public CS.Basket ReadBasket(Guid userId, Guid basketId)
+        public CS.Basket ReadBasket(Guid userId, Guid basketId, bool runPipelines = false)
 		{
 			return MockBaskets[0];
 		}
 
-		public CS.Basket ReadBasket(Guid userId, string basketName)
+        public CS.Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false)
 		{
 			return MockBaskets[1];
 		}
