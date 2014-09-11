@@ -18,8 +18,9 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
-    function goToListUrl(listId) {
-      return $state.go('menu.lists.items', {listId: listId});
+    function goToNewList(newList) {
+      $scope.listForm.$setPristine();
+      $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     // INFINITE SCROLL
@@ -33,29 +34,13 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      goToListUrl(list.listid);
+      return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
 
     $scope.createList = function() {
       ListService.createList().then(function(data) {
-        goToListUrl(data.listid);
-        $scope.selectedList = data;
-        $scope.startEditListName($scope.selectedList.name);
         addSuccessAlert('Successfully created a new list.');
-      }, function(error) {
-        addErrorAlert('Error creating list.');
-      });
-    };
-
-    $scope.createListWithItem = function(event, helper) {
-      var selectedItem = helper.draggable.data('product');
-      
-      ListService.createListWithItem(selectedItem).then(function(data) {
-        var newList = data[0];
-        goToListUrl(newList.listid);
-        $scope.selectedList = newList;
-        $scope.startEditListName($scope.selectedList.name);
-        addSuccessAlert('Successfully created a new list with item ' + selectedItem.itemnumber + '.');
+        goToNewList(data);
       }, function(error) {
         addErrorAlert('Error creating list.');
       });
@@ -91,6 +76,7 @@ angular.module('bekApp')
         $scope.sortOrder = false;
 
         $scope.selectedList = updatedList;
+        $scope.listForm.$setPristine();
         addSuccessAlert('Successfully saved list ' + list.name + '.');
       }, function(error) {
         addErrorAlert('Error saving list ' + list.name + '.');
@@ -114,23 +100,6 @@ angular.module('bekApp')
       $scope.selectedList.isRenaming = true;
     };
 
-    $scope.addItemToList = function (event, helper, list) {
-      var selectedItem = angular.copy(helper.draggable.data('product'));
-
-      var promise;
-      if (list.listid === ListService.favoritesList.listid) {
-        promise = ListService.addItemToFavorites(selectedItem);
-      } else {
-        promise = ListService.addItemToListAndFavorites(list.listid, selectedItem);
-      }
-
-      promise.then(function(data) {
-        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
-      },function(error) {
-        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
-      });
-    };
-
     $scope.deleteItem = function(item) {
 
       var deletedIndex = $scope.selectedList.items.indexOf(item);
@@ -148,12 +117,101 @@ angular.module('bekApp')
       updateItemPositions();
     };
 
+    /********************
+    DRAG EVENTS
+    ********************/
+
+    // determines if user is dragging one or multiple items and returns the selected item(s)
+    // helper object is passed in from the drag event
+    function getSelectedItemsFromDrag(helper) {
+
+      var draggedItems = {};
+
+      var multipleItemsSelectedList = [];
+      angular.forEach($scope.selectedList.items, function(item, index) {
+        if (item.isSelected) {
+          multipleItemsSelectedList.push(item);
+        }
+      });
+
+      // multiple items selected
+      if (multipleItemsSelectedList.length > 0) {
+        draggedItems.isSingle = false;
+        draggedItems.items = multipleItemsSelectedList;
+      
+      // single item selected
+      } else {
+        draggedItems.isSingle = true;
+        draggedItems.items = helper.draggable.data('product');
+      }
+
+      return draggedItems;
+    }
+
     $scope.deleteItemFromDrag = function(event, helper) {
-      var selectedItem = angular.copy(helper.draggable.data('product'));
-      $scope.deleteItem(selectedItem);
+      var dragSelection = getSelectedItemsFromDrag(helper);
+
+      if (dragSelection.isSingle) {
+        $scope.deleteItem(dragSelection.items);
+      } else {
+        angular.forEach(dragSelection.items, function(item, index) {
+          $scope.deleteItem(item);
+        });
+      }
     };
 
-    // ORDERING/SORTING LIST
+    $scope.createListWithItem = function(event, helper) {
+      
+      var dragSelection = getSelectedItemsFromDrag(helper);
+
+      if (dragSelection.isSingle) {
+        ListService.createListWithItem(dragSelection.items).then(function(data) {
+          addSuccessAlert('Successfully created a new list with item ' + dragSelection.items.itemnumber + '.');
+          goToNewList(data[0]);
+        }, function(error) {
+          addErrorAlert('Error creating list.');
+        });
+      
+      } else {
+        ListService.createList(dragSelection.items).then(function(data) {
+          addSuccessAlert('Successfully created list with ' + dragSelection.items.length + ' items.');
+          goToNewList(data);
+        }, function() {
+          addErrorAlert('Error creating list with ' + dragSelection.items.length + ' items.');
+        });
+      }
+    };
+
+    $scope.addItemToList = function (event, helper, list) {
+      var selectedItem = helper.draggable.data('product');
+
+      var promise;
+      if (list.listid === ListService.favoritesList.listid) {
+        promise = ListService.addItemToFavorites(selectedItem);
+      } else {
+        promise = ListService.addItemToListAndFavorites(list.listid, selectedItem);
+      }
+
+      promise.then(function(data) {
+        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
+      },function(error) {
+        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
+      });
+    };
+
+    // disable drag on mobile
+    $scope.isDragEnabled = function() {
+      return window.innerWidth > 991;
+    };
+
+    // Check if element is being dragged, used to enable DOM elements
+    $scope.setIsDragging = function(event, helper, isDragging) {
+      $scope.isDragging = isDragging;
+    };
+
+    /********************
+    ORDERING/SORTING LIST
+    ********************/
 
     // saves new item indexes in cached editPosition field after sorting or ordering the list items
     function updateItemPositions() {
@@ -191,29 +249,7 @@ angular.module('bekApp')
     };
     
     $scope.chromeFix = function(event, ui) {  // fix for chrome position:relative issue
-        // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
-    };
-
-    // disable drag on mobile
-    $scope.isDragEnabled = function() {
-      return window.innerWidth > 991;
-    };
-
-    // Check if element is being dragged, used to enable DOM elements
-    $scope.setIsDragging = function(event, helper, isDragging) {
-      $scope.isDragging = isDragging;
-    };
-
-    // CONTEXT MENU
-    $scope.showContextMenu = function(e) {
-      var openMenuLink = angular.element(e.target.parentElement),
-        contextMenu = angular.element('.context-menu');
-      openMenuLink.append(contextMenu);
-      $scope.isContextMenuDisplayed = true;
-    };
-
-    $scope.hideContextMenu = function() {
-      $scope.isContextMenuDisplayed = false;
+      // ui.helper.css({'top' : ui.position.top + angular.element(window).scrollTop() + 'px'});
     };
 
     // SHOW MORE
@@ -278,10 +314,11 @@ angular.module('bekApp')
 
       // set focus to rename list if it is a new list
       if ($stateParams.renameList === 'true') {
+        // delete $stateParams.renameList;
         if (!$scope.selectedList.isFavoritesList) {
           $scope.startEditListName($scope.selectedList.name);
         }
-        goToListUrl($scope.selectedList.listid);
+        $state.go('menu.lists.items', {listId: $scope.selectedList.listid});
       }
 
       $scope.itemsToDisplay = itemsPerPage;
