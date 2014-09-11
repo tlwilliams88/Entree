@@ -118,7 +118,6 @@
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
-    <Compile Include="Interface\Orders\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
