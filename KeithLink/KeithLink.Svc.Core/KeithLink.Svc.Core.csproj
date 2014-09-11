@@ -115,8 +115,8 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
-    <Compile Include="Interface\Orders\IOrderQueueRepository.cs" />
-    <Compile Include="Interface\Orders\ISocketConnectionRepository.cs" />
+    <Compile Include="Interface\Common\IQueueRepository.cs" />
+    <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
@@ -130,10 +130,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Common\QueueReturn.cs" />
     <Compile Include="Models\Orders\LineType.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Orders\OrderQueueLocation.cs" />
     <Compile Include="Models\Orders\OrderSource.cs" />
     <Compile Include="Models\Orders\OrderType.cs" />
     <Compile Include="Models\Orders\UnitOfMeasure.cs" />

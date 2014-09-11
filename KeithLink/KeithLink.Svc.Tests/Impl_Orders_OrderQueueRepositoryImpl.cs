@@ -57,24 +57,21 @@ namespace KeithLink.Svc.Test {
 
         [TestMethod]
         public void ReceiveOrderFromQueue() {
-            EventLogRepositoryImpl log = new EventLogRepositoryImpl(Configuration.ApplicationName);
-            OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
-            StubOrderLogicImpl orderLogic = new StubOrderLogicImpl(mfCon);
-
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
-
-            //queue.ConsumeOrders();
+            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
+                                                           new OrderQueueRepositoryImpl(),
+                                                           new OrderSocketConnectionRepositoryImpl());
+            orderLogic.ProcessOrders();
         }
 
         [TestMethod]
         public void SendOrderToQueue() {
-            EventLogRepositoryImpl log = new EventLogRepositoryImpl(Configuration.ApplicationName);
-            OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
-            StubOrderLogicImpl orderLogic = new StubOrderLogicImpl(mfCon);
+            //EventLogRepositoryImpl log = new EventLogRepositoryImpl(Configuration.ApplicationName);
+            //OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
+            //OrderLogicImpl orderLogic = new OrderLogicImpl(mfCon);
 
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
+            //OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
 
-            //queue.PublishOrder(GetStubOrder());
+            ////queue.PublishOrder(GetStubOrder());
         }
     }
 }

@@ -10,14 +10,18 @@ using System.Text;
 
 namespace KeithLink.Svc.Impl.Repository.Orders {
     public class OrderQueueRepositoryImpl : IQueueRepository {
+        #region attributes
+        private OrderQueueLocation _queuePath;
+        #endregion
+        
         #region ctor
         public OrderQueueRepositoryImpl() {
-            QueuePath = OrderQueueLocation.Normal;
+            _queuePath = OrderQueueLocation.Normal;
         }
         #endregion
 
         #region methods
-        public void AcknowledgeReceipt(ulong DeliveryTag) {
+        public string ConsumeFromQueue() {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
                 HostName = Configuration.RabbitMQOrderServer,
                 UserName = Configuration.RabbitMQOrderConsumerUserName,
@@ -27,59 +31,40 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    model.BasicAck(DeliveryTag, false);
-                }
-            }
-        }
-
-        public QueueReturn ConsumeFromQueue() {
-            ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderConsumerUserName,
-                Password = Configuration.RabbitMQOrderConsumerUserPassword,
-                VirtualHost = Configuration.RabbitMQOrderVHost
-            };
-
-            using (IConnection connection = connectionFactory.CreateConnection()) {
-                using (IModel model = connection.CreateModel()) {
-                    BasicGetResult result = null;
-
-                    switch (QueuePath) {
-                        case OrderQueueLocation.Normal:
-                            result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
-                            break;
-                        case OrderQueueLocation.History:
-                            result = model.BasicGet(Configuration.RabbitMQOrderHistoryQueue, false);
-                            break;
-                        default:
-                            result = model.BasicGet(Configuration.RabbitMQOrderQueue, false);
-                            break;
-                    }
+                    BasicGetResult result = model.BasicGet(GetSelectedQueue(), true);
 
                     if (result == null) {
                         return null;
                     } else {
-                        return new QueueReturn() {
-                            DeliveryTag = result.DeliveryTag,
-                            Message = Encoding.UTF8.GetString(result.Body)
-                        };
+                        return Encoding.UTF8.GetString(result.Body);
                     }
                 }
             }
         }
 
-        public void DenyReceipt(ulong DeliveryTag) {
-            ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderConsumerUserName,
-                Password = Configuration.RabbitMQOrderConsumerUserPassword,
-                VirtualHost = Configuration.RabbitMQOrderVHost
-            };
+        private string GetRoutingKey() {
+            switch (_queuePath) {
+                case OrderQueueLocation.Normal:
+                    return "normal";
+                case OrderQueueLocation.History:
+                    return "history";
+                case OrderQueueLocation.Error:
+                    return "error";
+                default:
+                    return "normal";
+            }
+        }
 
-            using (IConnection connection = connectionFactory.CreateConnection()) {
-                using (IModel model = connection.CreateModel()) {
-                    model.BasicNack(DeliveryTag, false, true);
-                }
+        private string GetSelectedQueue() {
+            switch (_queuePath) {
+                case OrderQueueLocation.Normal:
+                    return Configuration.RabbitMQOrderQueue;
+                case OrderQueueLocation.History:
+                    return Configuration.RabbitMQOrderHistoryQueue;
+                case OrderQueueLocation.Error:
+                    return Configuration.RabbitMQOrderErrorQueue;
+                default:
+                    return Configuration.RabbitMQOrderQueue;
             }
         }
 
@@ -94,30 +79,22 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    switch (QueuePath) {
-                        case OrderQueueLocation.Normal:
-                            model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
-                            break;
-                        case OrderQueueLocation.History:
-                            model.QueueBind(Configuration.RabbitMQOrderHistoryQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
-                            break;
-                        default:
-                            model.QueueBind(Configuration.RabbitMQOrderQueue, Configuration.RabbitMQExchangeName, string.Empty, new Dictionary<string, object>());
-                            break;
-                    }
+                    string route = GetRoutingKey();
+
+                    model.QueueBind(GetSelectedQueue(), Configuration.RabbitMQExchangeName, route, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(Configuration.RabbitMQExchangeName, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+                    model.BasicPublish(Configuration.RabbitMQExchangeName, route, false, props, Encoding.UTF8.GetBytes(item));
                 }
             }
         }
 
+        public void SetQueuePath(int enumPath) {
+            _queuePath = (OrderQueueLocation) enumPath;
+        }
         #endregion
 
-        #region properties
-        public OrderQueueLocation QueuePath { get; set; }
-        #endregion
     }
 }

@@ -136,7 +136,7 @@
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
-    <Compile Include="Logic\Orders\StubOrderLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />

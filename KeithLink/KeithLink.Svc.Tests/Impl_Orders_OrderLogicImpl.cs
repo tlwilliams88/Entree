@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Models.Orders;
+﻿using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Repository.Orders;
 using System;
@@ -57,43 +59,35 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void SendMockOrder()
         {
-            StubOrderLogicImpl order = new StubOrderLogicImpl(new OrderSocketConnectionRepositoryImpl());
+            // create an order and place it on the queue
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
+            queue.PublishToQueue(SerializeOrder(GetStubOrder()));
 
-            //order.ParseFile("somefilename");
-            order.SendToHost(GetStubOrder());
+
+            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
+                                               queue,
+                                               new OrderSocketConnectionRepositoryImpl());
+
+            orderLogic.ProcessOrders();
         }
 
-        [TestMethod]
-        public void SerializeOrder() {
-            OrderFile order = GetStubOrder();
-
-
+        private string SerializeOrder(OrderFile order) {
             System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
             System.IO.StringWriter xmlWriter = new System.IO.StringWriter();
 
             xml.Serialize(xmlWriter, order);
 
-            string xmlOutput = xmlWriter.ToString();
-            Assert.IsTrue(xmlOutput.Length > 0);
+            return xmlWriter.ToString();
         }
 
 
-        [TestMethod]
-        public void DeserializeOrder() {
-            OrderFile order = GetStubOrder();
+        private OrderFile DeserializeOrder(string rawOrder) {
+            OrderFile order = new OrderFile();
 
+            System.IO.StringReader xmlReader = new System.IO.StringReader(rawOrder);
             System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-            System.IO.StringWriter xmlWriter = new System.IO.StringWriter();
 
-            xml.Serialize(xmlWriter, order);
-
-            string xmlOutput = xmlWriter.ToString();
-
-
-            System.IO.StringReader xmlReader = new System.IO.StringReader(xmlOutput);
-            OrderFile deserializedOrder = (OrderFile)xml.Deserialize(xmlReader);
-
-            Assert.IsTrue(deserializedOrder.Header.ToString().Length > 0 && deserializedOrder.Details.Count == 2);
+            return (OrderFile)xml.Deserialize(xmlReader);
         }
     }
 }
