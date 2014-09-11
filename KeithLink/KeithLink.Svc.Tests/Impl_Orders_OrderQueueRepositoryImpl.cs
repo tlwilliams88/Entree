@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Test {
             OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
                                                            new OrderQueueRepositoryImpl(),
                                                            new OrderSocketConnectionRepositoryImpl());
-            orderLogic.ProcessOrders();
+            //orderLogic.ProcessOrders();
         }
 
         [TestMethod]

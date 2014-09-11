@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Test
                                                queue,
                                                new OrderSocketConnectionRepositoryImpl());
 
-            orderLogic.ProcessOrders();
+            //orderLogic.ProcessOrders();
         }
 
         private string SerializeOrder(OrderFile order) {

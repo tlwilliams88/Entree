@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Exceptions.Orders;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;
@@ -100,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // start the transaction on the mainframe and send the header
             _mfConnection.Send("OTX");
-            _mfConnection.Send(order.Header.ToString());
+            _mfConnection.Send(order.Header.ToMainframeFormat());
 
             // wait for a response from the mainframe
             bool waitingForHeaderResponse = true;
@@ -129,7 +130,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             // send the order details
             foreach (OrderDetail detail in order.Details)
             {
-                _mfConnection.Send(detail.ToString());
+                _mfConnection.Send(detail.ToMainframeFormat());
 
                 bool waitingForDetailResponse = true;
 
