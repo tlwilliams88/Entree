@@ -14,23 +14,9 @@ angular.module('bekApp')
     $scope.$state = $state;
 
     // navigate to appropriate cart if no cart is selected
-    var currentCartId;
-    if (!$state.params.cartId) {
-      // go to active cart
-      angular.forEach(CartService.carts, function(cart, index) {
-        if (cart.active) {
-          currentCartId = cart.id;
-        }
-      });
-
-      // go to first cart in list
-      if (!currentCartId && CartService.carts && CartService.carts.length > 0) {
-        currentCartId = CartService.carts[0].id;
-      }
-
-      if (currentCartId) {
-        $state.go('menu.cart.items', { cartId: currentCartId });
-      }
+    var currentCart = CartService.getSelectedCart($state.params.cartId);
+    if (currentCart.id) {
+      $state.go('menu.cart.items', { cartId: currentCart.id });
     }
     
     $scope.createNewCart = function() {

@@ -306,17 +306,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             createUser.CreateOptions.ReturnModel.Properties.Add("Id");
 
-            CommerceServer.Foundation.CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
-
-            // indicate the default channel
-            requestContext.Channel = string.Empty;
-            requestContext.RequestId = System.Guid.NewGuid().ToString("B");
-            requestContext.UserLocale = "en-US";
-            requestContext.UserUILocale = "en-US";
-
             // Execute the operation and get the results back
-            CommerceServer.Foundation.OperationServiceAgent serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
-            CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, createUser.ToRequest());
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
 
             CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
         }
@@ -353,17 +344,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             createUser.CreateOptions.ReturnModel.Properties.Add("Id");
             
-            CommerceServer.Foundation.CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
-            
-            // indicate the default channel
-            requestContext.Channel = string.Empty;
-            requestContext.RequestId = System.Guid.NewGuid().ToString("B");
-            requestContext.UserLocale = "en-US";
-            requestContext.UserUILocale = "en-US";
-            
             // Execute the operation and get the results back
-            CommerceServer.Foundation.OperationServiceAgent serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
-            CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, createUser.ToRequest());
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
 
             CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
 
@@ -390,24 +372,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress)
         {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
+            UserProfileCacheRepository upcp = new UserProfileCacheRepository();
+            Core.Models.Profile.UserProfile upFromCache = null;
+            upFromCache = upcp.GetProfile(emailAddress);
+            if (upcp.GetProfile(emailAddress) != null)
+            {
+                return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
+            }
+
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
+            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
+
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("Email");
-
-
-            // create the request
-            CommerceServer.Foundation.CommerceRequestContext requestContext = new CommerceServer.Foundation.CommerceRequestContext();
-            requestContext.Channel = string.Empty;
-            requestContext.RequestId = System.Guid.NewGuid().ToString("B");
-            requestContext.UserLocale = "en-US";
-            requestContext.UserUILocale = "en-US";
 
             // Execute the operation and get the results back
-            CommerceServer.Foundation.OperationServiceAgent serviceAgent = new CommerceServer.Foundation.OperationServiceAgent();
-            CommerceServer.Foundation.CommerceResponse response = serviceAgent.ProcessRequest(requestContext, profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
             UserProfileReturn retVal = new UserProfileReturn();
@@ -426,6 +408,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], emailAddress));
             }
 
+            if (retVal != null)
+            {
+                upcp.AddProfile(retVal.UserProfiles.FirstOrDefault());
+            }
             return retVal;
         }
 

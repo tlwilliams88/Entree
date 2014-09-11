@@ -24,29 +24,6 @@
 	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
 		<div class="row">
 			<accordion close-others="oneAtATime">
-				<!-- 				<accordion-group is-open="status.open">
-					<accordion-heading>
-						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.open, 'icon-arrow-down7': !status.open}"></i>
-					</accordion-heading>
-					<accordion close-others="false">
-						<accordion-group is-open="status.subopen[$index]" ng-repeat="category in categories | orderBy : ['name']" class="sub-accordion">
-							<accordion-heading>
-												<div class="panel panel-default">
-																						<div class="panel-body">
-																																<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory}">{{category.name}}</a>
-																						</div>
-												</div>
-							</accordion-heading>
-							<div ng-repeat="subcategory in category.subcategories" class="panel panel-default" style="height: auto;">
-												<div class="panel-body">
-																						<li ng-click="toggleSelection(subcategory, 'subcategory')">
-																																<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-																						</li>
-												</div>
-							</div>
-						</accordion-group>
-					</accordion>
-				</accordion-group> -->
 				<accordion-group is-open="status.openCategories">
 					<accordion-heading>
 						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
@@ -126,11 +103,6 @@
 				<ul class="nav search-results__category">
 					<li ng-repeat="category in categories">
 						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
-						<!-- <ul ng-show="category.show" class="">
-																<li ng-repeat="subcategory in category.subcategories" ng-click="toggleSelection(subcategory, 'subcategory')">
-																										<span ng-class="{active: subcategory.name == selectedSubcategory}">{{subcategory.name}}</span>
-																</li>
-						</ul> -->
 					</li>
 				</ul>
 			</div>
@@ -223,9 +195,9 @@
 							Pack/Size
 						</th>
 						<th class="hidden-sm hidden-xs"></th>
-						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('caseprice')">
+						<th class="hidden-sm hidden-xs" ng-class="{hand: totalItems < 201}" ng-click="sortTable('caseprice')">
 							Price
-							<span sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
+							<span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
 						</th>
 						<th></th>
 					</tr>

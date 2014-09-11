@@ -23,7 +23,8 @@ angular
     'infinite-scroll',
     'unsavedChanges',
     'toaster',
-    'angular-loading-bar'
+    'angular-loading-bar',
+    'configenv'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
   function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {
@@ -163,8 +164,10 @@ angular
     })
     .state('menu.addtoorder', {
       url: '/add-to-order/',
-      templateUrl: 'views/addtoorder.html',
-      controller: 'AddToOrderController',
+      abstract: true,
+      // templateUrl: 'views/addtoorder.html',
+      // controller: 'AddToOrderController',
+      template: '<ui-view/>',
       data: {
         authorize: 'canCreateOrders'
       },
@@ -178,7 +181,7 @@ angular
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':listId',
+      url: ':listId/',
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {

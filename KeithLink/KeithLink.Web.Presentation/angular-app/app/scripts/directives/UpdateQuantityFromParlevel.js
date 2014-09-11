@@ -18,7 +18,7 @@ angular.module('bekApp')
 
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
-          var amountOnHand = parseInt(viewValue);
+          var amountOnHand = viewValue;
           if (scope.parlevel > amountOnHand) {
             scope.quantity = Math.ceil(scope.parlevel) - amountOnHand;
           } else {
