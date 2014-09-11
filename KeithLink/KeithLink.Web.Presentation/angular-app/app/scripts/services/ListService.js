@@ -195,7 +195,7 @@ angular.module('bekApp')
 
                         var updatedList = Service.findListById(list.listid);
                         var idx = Service.lists.indexOf(updatedList);
-                        Service.lists[idx] = list;
+                        angular.copy(list, Service.lists[idx]);
                     });
                 },
 

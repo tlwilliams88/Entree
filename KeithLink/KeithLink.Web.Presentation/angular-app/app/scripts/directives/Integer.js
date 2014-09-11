@@ -22,7 +22,7 @@ angular.module('bekApp')
             var digits;
             if (viewValue) {
               digits = viewValue.split('').filter(function (s) { return (!isNaN(s) && s !== ' '); }).join('');
-              ctrl.$viewValue = digits;
+              ctrl.$viewValue = parseInt(digits);
               ctrl.$render();
             }
             

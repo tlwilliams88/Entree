@@ -369,7 +369,6 @@
     <Content Include="angular-app\test\.jshintrc" />
     <Content Include="angular-app\test\karma-e2e.conf.js" />
     <Content Include="angular-app\test\karma.conf.js" />
-    <Content Include="angular-app\test\test-results\test-results.xml" />
     <Content Include="angular-app\test\unit\controllers\HomeController.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
@@ -382,6 +381,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="angular-app\test\test-results\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="BuildLogs\" />
@@ -486,14 +486,19 @@ dir /b /a "node_modules\*" | &gt;nul c:\windows\syswow64\findstr.exe "^" &amp;&a
 dir /b /a "node_modules\*" | &gt;nul c:\windows\SysWOW64\findstr.exe "^" &amp;&amp; (echo Node dependencies found, no npm install required) || (call npm install &amp; call npm install -g grunt-cli)
 
 if $(ConfigurationName) == Debug goto :debug
+if $(ConfigurationName) == Test goto :test
 if $(ConfigurationName) == Dev goto :debug
 
 call grunt --no-color &gt; $(ProjectDir)grunt_log.txt
-
 goto :done
 
 :debug
 call grunt --no-color dev &gt; $(ProjectDir)grunt_log.txt
+goto:done
+
+:test
+call grunt --no-color build-for-test &gt; $(ProjectDir)grunt_log.txt
+goto:done
 
 :done
 call type $(ProjectDir)grunt_log.txt

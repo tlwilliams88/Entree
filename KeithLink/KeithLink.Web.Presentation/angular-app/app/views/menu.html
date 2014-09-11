@@ -48,7 +48,7 @@
       <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
       </a>
-      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder" ui-sref-active="is-selected" >
+      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
       </a>
       <a ng-if="isOrderEntryCustomer" ui-sref="blank" ui-sref-active="is-selected" >
@@ -101,7 +101,7 @@
         <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
         </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder" ui-sref-active="is-selected" >
+        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
       </ul>
