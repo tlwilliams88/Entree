@@ -74,6 +74,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteInformationLog("No longer watching the order queue");
         }
 
+        private void SendDetailRecordToHost(string record){}
+
         private void SendToError(string errorOrder) {
             _orderQueue.SetQueuePath((int)OrderQueueLocation.Error);
 

@@ -112,9 +112,10 @@
     <Compile Include="Exceptions\Orders\SocketResponseException.cs" />
     <Compile Include="Exceptions\Orders\SocketSendException.cs" />
     <Compile Include="Extensions\CSModels.cs" />
+    <Compile Include="Extensions\OrderDetailExtension.cs" />
+    <Compile Include="Extensions\OrderHeaderExtension.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
-    <Compile Include="Interface\Common\IFlatFileRespoitory.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
