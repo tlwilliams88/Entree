@@ -9,21 +9,23 @@ using System.Web.Http.Cors;
 using System.Dynamic;
 using KeithLink.Svc.Core.Models.Brand;
 using KeithLink.Svc.Core.Interface.Brand;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class BrandController : ApiController
+    public class BrandController : BaseController
     {
         KeithLink.Svc.Core.Interface.Brand.IBrandRepository _brandRepository;
 
-        public BrandController(IBrandRepository brandRepository)
+        public BrandController(IBrandRepository brandRepository, IUserProfileRepository userRepo)
+            : base(userRepo)
         {
             _brandRepository = brandRepository;
         }
 
         // GET api/<controller>
         [HttpGet]
-        [Route("brands/house")]
+        [ApiKeyedRoute("brands/house")]
         public BrandsReturn GetHouseBrands()
         {
             return _brandRepository.GetHouseBrands();

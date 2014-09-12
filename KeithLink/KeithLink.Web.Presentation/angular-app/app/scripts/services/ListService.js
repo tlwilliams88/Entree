@@ -111,6 +111,10 @@ angular.module('bekApp')
                 createList: function(items) {
                     if (!items) {
                         items = [];
+                    } else {
+                        angular.forEach(items, function(item, index) {
+                            delete item.listitemid;
+                        });
                     }
 
                     var newList = {
@@ -121,9 +125,12 @@ angular.module('bekApp')
                     return List.save({
                         branchId: getBranch()
                     }, newList).$promise.then(function(response) {
-                        newList.listid = response.listitemid;
-                        Service.lists.push(newList);
-                        return newList; // return listId
+                        
+                        return Service.getList(response.listitemid).then(function(list) {
+                            Service.lists.push(list); 
+                            return list;
+                        });
+                        // return newList;
                     });
                 },
 
@@ -195,7 +202,7 @@ angular.module('bekApp')
 
                         var updatedList = Service.findListById(list.listid);
                         var idx = Service.lists.indexOf(updatedList);
-                        Service.lists[idx] = list;
+                        angular.copy(list, Service.lists[idx]);
                     });
                 },
 
