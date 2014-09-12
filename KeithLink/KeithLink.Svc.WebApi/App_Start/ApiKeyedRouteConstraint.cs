@@ -29,7 +29,7 @@ namespace KeithLink.Svc.WebApi
                 string version = GetApiKey(request) ?? DefaultApiKey;
                 if (!AllowedHeaderKeys.Contains(version))
                 {
-                    throw new ApplicationException("Incompatible Client"); // create a custom exception type that global handler could marshall back to client
+                    throw new Core.Exceptions.Profile.InvalidApiKeyException("Invalid API Key Detected");
                 }
             }
             return true;
@@ -45,7 +45,7 @@ namespace KeithLink.Svc.WebApi
                 return headerApiKey;
             }
 
-            return string.Empty;
+            throw new Core.Exceptions.Profile.NoApiKeyProvidedException("No API Key Provided");
         }
     }
 }

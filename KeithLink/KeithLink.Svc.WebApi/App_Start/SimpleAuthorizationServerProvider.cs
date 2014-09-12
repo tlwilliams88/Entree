@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Core.Exceptions.Profile;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -22,6 +24,8 @@ namespace KeithLink.Svc.WebApi
         public override async System.Threading.Tasks.Task GrantResourceOwnerCredentials(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
+            if (!ValidateApiKey(context))
+                return;
 
             string errMsg = null;
 
@@ -40,6 +44,32 @@ namespace KeithLink.Svc.WebApi
             identity.AddClaim(new System.Security.Claims.Claim("role", "Owner"));
 
             context.Validated(identity);
+        }
+
+        private static bool ValidateApiKey(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
+        {
+
+            context.Request.Body.Position = 0;
+            byte[] bodyBytes = new byte[context.Request.Body.Length];
+            context.Request.Body.Read(bodyBytes, 0, (int)context.Request.Body.Length);
+            string body = System.Text.Encoding.UTF8.GetString(bodyBytes);
+
+            if (!String.IsNullOrEmpty(body) && body.Contains("api-key"))
+            {
+                NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(body);
+                if (String.IsNullOrEmpty(queryString["api-key"])
+                    || !Svc.Impl.Configuration.AllowedApiKeys.Contains(queryString["api-key"]))
+                {
+                    context.SetError("invalid_invalidkeyprovided", "Invalid Client Version - Please Update");
+                    return false;
+                }
+            }
+            else
+            {
+                context.SetError("invalid_nokeyprovided", "Invalid Client Version - Please Update");
+                return false;
+            }
+            return true;
         }
 
         /// <summary>

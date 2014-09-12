@@ -58,6 +58,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.0\lib\net45\System.Web.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Serialization" />
   </ItemGroup>
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
@@ -84,6 +86,7 @@
     <Compile Include="Impl_SiteCatalog_ProductImageRepository.cs" />
     <Compile Include="Impl_Orders_OrderSocketConnectionRepository.cs" />
     <Compile Include="Impl_Orders_OrderLogicImpl.cs" />
+    <Compile Include="Impl_Orders_OrderQueueRepositoryImpl.cs" />
     <Compile Include="WebApi_CatalogController.cs" />
   </ItemGroup>
   <ItemGroup>

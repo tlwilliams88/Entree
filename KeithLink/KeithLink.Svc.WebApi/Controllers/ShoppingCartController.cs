@@ -23,14 +23,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 		[HttpGet]
-		[Route("cart/{branchId}")]
+		[ApiKeyedRoute("cart/{branchId}")]
 		public List<ShoppingCart> List(string branchId, bool header = false)
 		{
 			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, branchId, header);
 		}
 
 		[HttpPut]
-		[Route("cart/")]
+		[ApiKeyedRoute("cart/")]
 		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
 			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart, deleteomitted);
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
 		[HttpGet]
-		[Route("cart/{branchId}/{cartId}")]
+		[ApiKeyedRoute("cart/{branchId}/{cartId}")]
 		public ShoppingCart Cart(Guid cartId)
 		{
 			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, cartId);
@@ -46,35 +46,35 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		
 		[HttpPost]
-		[Route("cart/{branchId}")]
+		[ApiKeyedRoute("cart/{branchId}")]
 		public NewItem List(string branchId, ShoppingCart cart)
 		{
 			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, branchId, cart) };
 		}
 
 		[HttpDelete]
-		[Route("cart/{cartId}")]
+		[ApiKeyedRoute("cart/{cartId}")]
 		public void DeleteList(Guid cartId)
 		{
 			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, cartId);
 		}
 
 		[HttpPost]
-		[Route("cart/{cartId}/item")]
+		[ApiKeyedRoute("cart/{cartId}/item")]
 		public NewItem AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
 			return  new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, cartId, newItem) };
 		}
 
 		[HttpPut]
-		[Route("cart/{cartId}/item")]
+		[ApiKeyedRoute("cart/{cartId}/item")]
 		public void UpdateItem(Guid cartId, ShoppingCartItem updatedItem)
 		{
 			shoppingCartLogic.UpdateItem(this.AuthenticatedUser, cartId, updatedItem);
 		}
 
 		[HttpDelete]
-		[Route("cart/{cartId}/item/{itemId}")]
+		[ApiKeyedRoute("cart/{cartId}/item/{itemId}")]
 		public void DeleteItem(Guid cartId, Guid itemId)
 		{
 			shoppingCartLogic.DeleteItem(this.AuthenticatedUser, cartId, itemId);

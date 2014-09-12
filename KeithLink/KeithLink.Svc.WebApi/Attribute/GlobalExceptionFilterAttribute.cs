@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Filters;
+using KeithLink.Svc.Core.Exceptions.Profile;
 
 namespace KeithLink.Svc.WebApi.Attribute
 {
@@ -14,14 +15,22 @@ namespace KeithLink.Svc.WebApi.Attribute
 	{
 		private IEventLogRepository eventLogRepository;
 
-		
-		public override void OnException(HttpActionExecutedContext actionExecutedContext)
-		{
-			eventLogRepository = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(KeithLink.Common.Core.Logging.IEventLogRepository))
-				as KeithLink.Common.Core.Logging.IEventLogRepository;
-			
-			eventLogRepository.WriteErrorLog("Unhandled API Exception", actionExecutedContext.Exception);
-			throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
-		}
+
+        public override void OnException(HttpActionExecutedContext actionExecutedContext)
+        {
+            eventLogRepository = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(KeithLink.Common.Core.Logging.IEventLogRepository))
+                as KeithLink.Common.Core.Logging.IEventLogRepository;
+
+            eventLogRepository.WriteErrorLog("Unhandled API Exception", actionExecutedContext.Exception);
+
+            if (actionExecutedContext.Exception.GetType().Name == typeof(InvalidApiKeyException).Name || actionExecutedContext.Exception.GetType().Name == typeof(NoApiKeyProvidedException).Name)
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("API Key Invalid or Missing") });
+            }
+            else
+            {
+                throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
+            }
+        }
 	}
 }
