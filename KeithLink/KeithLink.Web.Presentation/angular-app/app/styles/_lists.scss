@@ -57,7 +57,7 @@
 
     .table-row {
       &.bek-reordered-item  {
-        background-color: #f3f3d1 !important;
+        background-color: #f8f8c4 !important;
       }
 
       .edit-parlevel {
@@ -72,6 +72,10 @@
       } 
     }
   }
+}
+
+.item-selected {
+  background-color: #f8f8c4 !important;
 }
 
 /* DRAG AND DROP */

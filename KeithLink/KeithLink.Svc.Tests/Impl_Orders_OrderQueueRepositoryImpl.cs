@@ -6,11 +6,10 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
-{
+namespace KeithLink.Svc.Test {
     [TestClass]
-    public class Impl_Orders_OrderLogicImpl
-    {
+    public class Impl_Orders_OrderQueueRepositoryImpl {
+
         private OrderFile GetStubOrder() {
             OrderFile order = new OrderFile();
 
@@ -57,37 +56,22 @@ namespace KeithLink.Svc.Test
         }
 
         [TestMethod]
-        public void SendMockOrder()
-        {
-            // create an order and place it on the queue
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
-            queue.PublishToQueue(SerializeOrder(GetStubOrder()));
-
-
+        public void ReceiveOrderFromQueue() {
             OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
-                                               queue,
-                                               new OrderSocketConnectionRepositoryImpl());
-
+                                                           new OrderQueueRepositoryImpl(),
+                                                           new OrderSocketConnectionRepositoryImpl());
             //orderLogic.ProcessOrders();
         }
 
-        private string SerializeOrder(OrderFile order) {
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-            System.IO.StringWriter xmlWriter = new System.IO.StringWriter();
+        [TestMethod]
+        public void SendOrderToQueue() {
+            //EventLogRepositoryImpl log = new EventLogRepositoryImpl(Configuration.ApplicationName);
+            //OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
+            //OrderLogicImpl orderLogic = new OrderLogicImpl(mfCon);
 
-            xml.Serialize(xmlWriter, order);
+            //OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
 
-            return xmlWriter.ToString();
-        }
-
-
-        private OrderFile DeserializeOrder(string rawOrder) {
-            OrderFile order = new OrderFile();
-
-            System.IO.StringReader xmlReader = new System.IO.StringReader(rawOrder);
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-
-            return (OrderFile)xml.Deserialize(xmlReader);
+            ////queue.PublishOrder(GetStubOrder());
         }
     }
 }

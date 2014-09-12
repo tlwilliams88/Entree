@@ -31,7 +31,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [AllowAnonymous]
         [HttpPost]
-        [Route("profile/create")]
+        [ApiKeyedRoute("profile/create")]
         public OperationReturnModel<Core.Models.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
         {
 
@@ -67,7 +67,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        [Route("profile")]
+        [ApiKeyedRoute("profile")]
         public Core.Models.Profile.UserProfileReturn GetUser(string emailAddress)
         {
             if (string.Compare(emailAddress, AuthenticatedUser.EmailAddress, true) == 0)
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("profile/searchcustomer/{searchText}")]
+        [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
         public Core.Models.Profile.CustomerContainerReturn SearchCustomers(string searchText)
         {
             return _custRepo.SearchCustomerContainers(searchText);

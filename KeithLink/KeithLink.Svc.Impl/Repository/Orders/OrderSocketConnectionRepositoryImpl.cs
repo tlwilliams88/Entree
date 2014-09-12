@@ -1,6 +1,6 @@
 ﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Exceptions.Orders;
-using KeithLink.Svc.Core.Interface;
+using KeithLink.Svc.Core.Interface.Common;
 using System;
 using System.IO;
 using System.Net.Sockets;
@@ -9,7 +9,7 @@ using System.Text;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
-    public class OrderSocketConnectionRepositoryImpl : KeithLink.Svc.Core.Interface.Orders.ISocketConnectionRepository, IDisposable
+    public class OrderSocketConnectionRepositoryImpl : ISocketConnectionRepository, IDisposable
     {
         #region attributes
         private TcpClient _clientConnection;
