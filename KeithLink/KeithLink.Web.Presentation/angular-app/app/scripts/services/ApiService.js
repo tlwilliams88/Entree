@@ -19,7 +19,7 @@ angular.module('bekApp')
           	ApiSettings.url = location.protocol + '//' + response.data.ClientApiEndpoint;
           }, function() {
             // running locally, use dev
-            ApiSettings.url = 'http://devapi.bekco.com';
+            ApiSettings.url = 'http://localhost:60606';
           });
         }
       }
