@@ -111,6 +111,8 @@
     <Compile Include="Exceptions\Orders\LateSocketException.cs" />
     <Compile Include="Exceptions\Orders\SocketResponseException.cs" />
     <Compile Include="Exceptions\Orders\SocketSendException.cs" />
+    <Compile Include="Exceptions\Profile\NoApiKeyProvidedException.cs" />
+    <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />

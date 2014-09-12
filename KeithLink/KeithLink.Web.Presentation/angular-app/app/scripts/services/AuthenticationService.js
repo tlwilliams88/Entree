@@ -1,21 +1,21 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService',
-    function ($http, $q, localStorageService, Constants, UserProfileService) {
+  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService', 'ENV',
+    function ($http, $q, localStorageService, Constants, UserProfileService, ENV) {
 
     var Service = {
 
       authenticateUser: function(username, password) {
 
-        var data = 'grant_type=password&username=' + username + '&password=' + password;
+        var data = 'grant_type=password&username=' + username + '&password=' + password + '&api-key=' + ENV.apiKey; // move api-key here!
 
         var headers = { headers : {
             'Content-Type': 'application/x-www-form-urlencoded' 
           }
         };
 
-        return $http.post('/authen' , data, headers).then(function(response){
+        return $http.post('/authen', data, headers).then(function(response){
           var token = response.data;
 
           // set date time when token expires
