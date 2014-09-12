@@ -60,10 +60,6 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
         private const string KEY_SITE_NAME = "CS_SiteName";
-        private const string KEY_CATEGORY_PREFIXES = "CategoryPrefixesToExclude";
-        private const string KEY_BRAND_ASSETS_URL = "BrandAssetsUrl";
-        private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
-        private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
 
