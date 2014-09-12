@@ -235,7 +235,9 @@ namespace KeithLink.Svc.Impl.Logic
 		public string SaveAsOrder(UserProfile user, Guid cartId)
 		{
 			//Save to Commerce Server
-			keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
+			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+			
+			//keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
 			var purchaseOrder = client.SaveCartAsOrder(user.UserId, cartId);
 
 			//TODO: Write order to Rabbit Mq for processing to main frame

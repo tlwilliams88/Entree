@@ -1,0 +1,2068 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.commerceserver.net/2013/01/Foundation/Types" elementFormDefault="qualified" targetNamespace="http://schemas.commerceserver.net/2013/01/Foundation/Types" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="CommerceOptions">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="CommerceOptions" nillable="true" type="tns:CommerceOptions" />
+  <xs:complexType name="ArrayOfCommerceOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceOptions" nillable="true" type="tns:CommerceOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceOptions" nillable="true" type="tns:ArrayOfCommerceOptions" />
+  <xs:complexType name="CommerceUpdateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ReturnModel" nillable="true" type="tns:CommerceEntity" />
+          <xs:element minOccurs="0" name="ReturnModelQueries" nillable="true" type="tns:ArrayOfCommerceQueryRelatedItem" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceUpdateOptions" nillable="true" type="tns:CommerceUpdateOptions" />
+  <xs:complexType name="CommerceEntity">
+    <xs:sequence>
+      <xs:element name="ModelName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCommercePropertyItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceEntity" nillable="true" type="tns:CommerceEntity" />
+  <xs:complexType name="ArrayOfCommercePropertyItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommercePropertyItem" nillable="true" type="tns:CommercePropertyItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommercePropertyItem" nillable="true" type="tns:ArrayOfCommercePropertyItem" />
+  <xs:complexType name="CommercePropertyItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:anyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommercePropertyItem" nillable="true" type="tns:CommercePropertyItem" />
+  <xs:complexType name="ArrayOfCommerceEntity">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceEntity" nillable="true" type="tns:CommerceEntity" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceEntity" nillable="true" type="tns:ArrayOfCommerceEntity" />
+  <xs:complexType name="ArrayOfCommerceQueryRelatedItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceQueryRelatedItem" nillable="true" type="tns:CommerceQueryRelatedItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceQueryRelatedItem" nillable="true" type="tns:ArrayOfCommerceQueryRelatedItem" />
+  <xs:complexType name="CommerceQueryRelatedItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:CommerceQueryOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceQueryRelatedItem" nillable="true" type="tns:CommerceQueryRelatedItem" />
+  <xs:complexType name="CommerceRelatedOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RelationshipName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceRelatedOperation" nillable="true" type="tns:CommerceRelatedOperation" />
+  <xs:complexType name="CommerceOperation">
+    <xs:sequence>
+      <xs:element name="Model" nillable="true" type="tns:CommerceEntity" />
+      <xs:element minOccurs="0" name="RelatedOperations" nillable="true" type="tns:ArrayOfCommerceRelatedOperation" />
+      <xs:element name="OperationName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceOperation" nillable="true" type="tns:CommerceOperation" />
+  <xs:complexType name="ArrayOfCommerceRelatedOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceRelatedOperation" nillable="true" type="tns:CommerceRelatedOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceRelatedOperation" nillable="true" type="tns:ArrayOfCommerceRelatedOperation" />
+  <xs:complexType name="CommerceSearchCriteria">
+    <xs:sequence>
+      <xs:element name="FirstItemIndex" nillable="true" type="xs:int" />
+      <xs:element name="NumberOfItemsToReturn" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="ReturnTotalItemCount" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SortProperties" nillable="true" type="tns:ArrayOfCommerceSortProperty" />
+      <xs:element minOccurs="0" name="WhereClause" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceSearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+  <xs:complexType name="ArrayOfCommerceSortProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSortProperty" nillable="true" type="tns:CommerceSortProperty" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSortProperty" nillable="true" type="tns:ArrayOfCommerceSortProperty" />
+  <xs:complexType name="CommerceSortProperty">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CommerceEntityModelName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Property" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SortDirection" type="tns:SortDirection" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceSortProperty" nillable="true" type="tns:CommerceSortProperty" />
+  <xs:simpleType name="SortDirection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Ascending" />
+      <xs:enumeration value="Descending" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SortDirection" nillable="true" type="tns:SortDirection" />
+  <xs:complexType name="CommerceQueryOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IsRecursive" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceQueryOptions" nillable="true" type="tns:CommerceQueryOptions" />
+  <xs:complexType name="ArrayOfCommerceUpdateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceUpdateOptions" nillable="true" type="tns:CommerceUpdateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceUpdateOptions" nillable="true" type="tns:ArrayOfCommerceUpdateOptions" />
+  <xs:complexType name="GeneralOperationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EventId" type="xs:int" />
+      <xs:element minOccurs="0" name="ExceptionDetails" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeneralOperationFault" nillable="true" type="tns:GeneralOperationFault" />
+  <xs:complexType name="ArrayOfGeneralOperationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="GeneralOperationFault" nillable="true" type="tns:GeneralOperationFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfGeneralOperationFault" nillable="true" type="tns:ArrayOfGeneralOperationFault" />
+  <xs:complexType name="ValidationFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ValidationErrors" nillable="true" type="tns:ArrayOfValidationError" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ValidationFault" nillable="true" type="tns:ValidationFault" />
+  <xs:complexType name="ArrayOfValidationError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationError" nillable="true" type="tns:ValidationError" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValidationError" nillable="true" type="tns:ArrayOfValidationError" />
+  <xs:complexType name="ValidationError">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCommercePropertyItem" />
+      <xs:element minOccurs="0" name="Property" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValidationError" nillable="true" type="tns:ValidationError" />
+  <xs:complexType name="ArrayOfValidationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationFault" nillable="true" type="tns:ValidationFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValidationFault" nillable="true" type="tns:ArrayOfValidationFault" />
+  <xs:complexType name="ArrayOfCommerceSearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSearchCriteria" nillable="true" type="tns:ArrayOfCommerceSearchCriteria" />
+  <xs:complexType name="CommerceClaimsSearchCriteria">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AnonymousUserId" nillable="true" type="xs:string" />
+          <xs:element name="AuthenticationMode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RegisteredUserId" nillable="true" type="xs:string" />
+          <xs:element name="UserName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceClaimsSearchCriteria" nillable="true" type="tns:CommerceClaimsSearchCriteria" />
+  <xs:complexType name="ArrayOfCommerceClaimsSearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceClaimsSearchCriteria" nillable="true" type="tns:CommerceClaimsSearchCriteria" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceClaimsSearchCriteria" nillable="true" type="tns:ArrayOfCommerceClaimsSearchCriteria" />
+  <xs:complexType name="CommerceCreateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ReturnModel" nillable="true" type="tns:CommerceEntity" />
+          <xs:element minOccurs="0" name="ReturnModelQueries" nillable="true" type="tns:ArrayOfCommerceQueryRelatedItem" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCreateOptions" nillable="true" type="tns:CommerceCreateOptions" />
+  <xs:complexType name="ArrayOfCommerceCreateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCreateOptions" nillable="true" type="tns:CommerceCreateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCreateOptions" nillable="true" type="tns:ArrayOfCommerceCreateOptions" />
+  <xs:complexType name="CommerceCatalogCreateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceCreateOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RebuildCatalog" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCatalogCreateOptions" nillable="true" type="tns:CommerceCatalogCreateOptions" />
+  <xs:complexType name="ArrayOfCommerceCatalogCreateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCatalogCreateOptions" nillable="true" type="tns:CommerceCatalogCreateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCatalogCreateOptions" nillable="true" type="tns:ArrayOfCommerceCatalogCreateOptions" />
+  <xs:complexType name="BaseArgument">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BaseArgument" nillable="true" type="tns:BaseArgument" />
+  <xs:complexType name="ArrayOfBaseArgument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BaseArgument" nillable="true" type="tns:BaseArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBaseArgument" nillable="true" type="tns:ArrayOfBaseArgument" />
+  <xs:complexType name="SearchArgument">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseArgument">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchArgument" nillable="true" type="tns:SearchArgument" />
+  <xs:complexType name="ArrayOfSearchArgument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchArgument" nillable="true" type="tns:SearchArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSearchArgument" nillable="true" type="tns:ArrayOfSearchArgument" />
+  <xs:complexType name="CommerceBasketUpdateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceUpdateOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RefreshBasket" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceBasketUpdateOptions" nillable="true" type="tns:CommerceBasketUpdateOptions" />
+  <xs:complexType name="ArrayOfCommerceBasketUpdateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceBasketUpdateOptions" nillable="true" type="tns:CommerceBasketUpdateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceBasketUpdateOptions" nillable="true" type="tns:ArrayOfCommerceBasketUpdateOptions" />
+  <xs:complexType name="RequestTemplateBasketUpdateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceBasketUpdateOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SiteName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateBasketUpdateOptions" nillable="true" type="tns:RequestTemplateBasketUpdateOptions" />
+  <xs:complexType name="ArrayOfRequestTemplateBasketUpdateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateBasketUpdateOptions" nillable="true" type="tns:RequestTemplateBasketUpdateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateBasketUpdateOptions" nillable="true" type="tns:ArrayOfRequestTemplateBasketUpdateOptions" />
+  <xs:complexType name="ArrayOfCommerceOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceOperation" nillable="true" type="tns:CommerceOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceOperation" nillable="true" type="tns:ArrayOfCommerceOperation" />
+  <xs:complexType name="CommerceCreateOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:CommerceCreateOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCreateOperation" nillable="true" type="tns:CommerceCreateOperation" />
+  <xs:complexType name="ArrayOfCommerceCreateOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCreateOperation" nillable="true" type="tns:CommerceCreateOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCreateOperation" nillable="true" type="tns:ArrayOfCommerceCreateOperation" />
+  <xs:complexType name="CommerceNoSessionFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceNoSessionFault" nillable="true" type="tns:CommerceNoSessionFault" />
+  <xs:complexType name="ArrayOfCommerceNoSessionFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceNoSessionFault" nillable="true" type="tns:CommerceNoSessionFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceNoSessionFault" nillable="true" type="tns:ArrayOfCommerceNoSessionFault" />
+  <xs:complexType name="ArrayOfCommerceQueryOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceQueryOptions" nillable="true" type="tns:CommerceQueryOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceQueryOptions" nillable="true" type="tns:ArrayOfCommerceQueryOptions" />
+  <xs:complexType name="QueryCategoryOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceQueryOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MaxChildCategoryDepth" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="QueryCategoryOptions" nillable="true" type="tns:QueryCategoryOptions" />
+  <xs:complexType name="ArrayOfQueryCategoryOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="QueryCategoryOptions" nillable="true" type="tns:QueryCategoryOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfQueryCategoryOptions" nillable="true" type="tns:ArrayOfQueryCategoryOptions" />
+  <xs:complexType name="CommerceValidateUserSearchCriteria">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element name="UserName" nillable="true" type="xs:string" />
+          <xs:element name="UserPassword" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceValidateUserSearchCriteria" nillable="true" type="tns:CommerceValidateUserSearchCriteria" />
+  <xs:complexType name="ArrayOfCommerceValidateUserSearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceValidateUserSearchCriteria" nillable="true" type="tns:CommerceValidateUserSearchCriteria" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceValidateUserSearchCriteria" nillable="true" type="tns:ArrayOfCommerceValidateUserSearchCriteria" />
+  <xs:complexType name="CommerceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Responses" nillable="true" type="tns:ArrayOfCommerceOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceResponse" nillable="true" type="tns:CommerceResponse" />
+  <xs:complexType name="ArrayOfCommerceOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceOperationResponse" nillable="true" type="tns:CommerceOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceOperationResponse" nillable="true" type="tns:ArrayOfCommerceOperationResponse" />
+  <xs:complexType name="CommerceOperationResponse">
+    <xs:sequence>
+      <xs:element name="OperationName" nillable="true" type="xs:string" />
+      <xs:element name="Status" nillable="true" type="tns:CommerceOperationStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceOperationResponse" nillable="true" type="tns:CommerceOperationResponse" />
+  <xs:complexType name="CommerceOperationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FaultDetails" nillable="true" type="tns:GeneralOperationFault" />
+      <xs:element minOccurs="0" name="FaultName" nillable="true" type="xs:string" />
+      <xs:element name="Success" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceOperationStatus" nillable="true" type="tns:CommerceOperationStatus" />
+  <xs:complexType name="AbortOperationFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AbortOperationFault" nillable="true" type="tns:AbortOperationFault" />
+  <xs:complexType name="OptimisticLockFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OptimisticLockFault" nillable="true" type="tns:OptimisticLockFault" />
+  <xs:complexType name="AuthorizationFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AuthorizationFault" nillable="true" type="tns:AuthorizationFault" />
+  <xs:complexType name="CatalogRemoveFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CatalogRemoveFault" nillable="true" type="tns:CatalogRemoveFault" />
+  <xs:complexType name="InvalidSearchQueryFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence>
+          <xs:element name="SearchErrorType" type="tns:InvalidSearchErrorType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="InvalidSearchQueryFault" nillable="true" type="tns:InvalidSearchQueryFault" />
+  <xs:simpleType name="InvalidSearchErrorType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MalformedQuery" />
+      <xs:enumeration value="AllNoiseQuery" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="InvalidSearchErrorType" nillable="true" type="tns:InvalidSearchErrorType" />
+  <xs:complexType name="ItemDoesNotExistFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemDoesNotExistFault" nillable="true" type="tns:ItemDoesNotExistFault" />
+  <xs:complexType name="ArrayOfCommerceResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceResponse" nillable="true" type="tns:CommerceResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceResponse" nillable="true" type="tns:ArrayOfCommerceResponse" />
+  <xs:complexType name="CommerceRequest">
+    <xs:sequence>
+      <xs:element name="RequestContext" nillable="true" type="tns:CommerceRequestContext" />
+      <xs:element name="Operations" nillable="true" type="tns:ArrayOfCommerceOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceRequest" nillable="true" type="tns:CommerceRequest" />
+  <xs:complexType name="CommerceRequestContext">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCommercePropertyItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceRequestContext" nillable="true" type="tns:CommerceRequestContext" />
+  <xs:complexType name="ArrayOfCommerceRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceRequest" nillable="true" type="tns:CommerceRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceRequest" nillable="true" type="tns:ArrayOfCommerceRequest" />
+  <xs:complexType name="ArrayOfSortDirection">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortDirection" type="tns:SortDirection" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSortDirection" nillable="true" type="tns:ArrayOfSortDirection" />
+  <xs:complexType name="CommerceDeleteOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:CommerceDeleteOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceDeleteOperation" nillable="true" type="tns:CommerceDeleteOperation" />
+  <xs:complexType name="CommerceDeleteOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ReturnDeletedCount" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceDeleteOptions" nillable="true" type="tns:CommerceDeleteOptions" />
+  <xs:complexType name="ArrayOfCommerceDeleteOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceDeleteOperation" nillable="true" type="tns:CommerceDeleteOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceDeleteOperation" nillable="true" type="tns:ArrayOfCommerceDeleteOperation" />
+  <xs:complexType name="CommerceCatalogUpdateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceUpdateOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BypassConcurrencyCheck" type="xs:boolean" />
+          <xs:element minOccurs="0" name="DateModified" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="RebuildCatalog" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCatalogUpdateOptions" nillable="true" type="tns:CommerceCatalogUpdateOptions" />
+  <xs:complexType name="ArrayOfCommerceCatalogUpdateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCatalogUpdateOptions" nillable="true" type="tns:CommerceCatalogUpdateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCatalogUpdateOptions" nillable="true" type="tns:ArrayOfCommerceCatalogUpdateOptions" />
+  <xs:complexType name="SortArgumentList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortArgument" nillable="true" type="tns:SortArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SortArgumentList" nillable="true" type="tns:SortArgumentList" />
+  <xs:complexType name="SortArgument">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseArgument">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SortArgument" nillable="true" type="tns:SortArgument" />
+  <xs:complexType name="ConstraintList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConstraintBase" nillable="true" type="tns:ConstraintBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConstraintList" nillable="true" type="tns:ConstraintList" />
+  <xs:complexType name="ConstraintBase">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ConstraintBase" nillable="true" type="tns:ConstraintBase" />
+  <xs:complexType name="ArrayOfConstraintBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConstraintBase" nillable="true" type="tns:ConstraintBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConstraintBase" nillable="true" type="tns:ArrayOfConstraintBase" />
+  <xs:complexType name="ReadOnlyConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ReadOnlyConstraint" nillable="true" type="tns:ReadOnlyConstraint" />
+  <xs:complexType name="ArrayOfReadOnlyConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ReadOnlyConstraint" nillable="true" type="tns:ReadOnlyConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfReadOnlyConstraint" nillable="true" type="tns:ArrayOfReadOnlyConstraint" />
+  <xs:complexType name="DefinitionBase">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DefinitionBase" nillable="true" type="tns:DefinitionBase" />
+  <xs:complexType name="ArrayOfDefinitionBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DefinitionBase" nillable="true" type="tns:DefinitionBase" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDefinitionBase" nillable="true" type="tns:ArrayOfDefinitionBase" />
+  <xs:complexType name="CommerceClaimDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceClaimDefinition" nillable="true" type="tns:CommerceClaimDefinition" />
+  <xs:complexType name="ArrayOfCommerceClaimDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceClaimDefinition" nillable="true" type="tns:CommerceClaimDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceClaimDefinition" nillable="true" type="tns:ArrayOfCommerceClaimDefinition" />
+  <xs:complexType name="RequestTemplateResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Count" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SerializedContent" nillable="true" type="xs:anyType" />
+          <xs:element minOccurs="0" name="FirstItemIndex" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="TotalItemCount" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfRequestTemplateError" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateResponse" nillable="true" type="tns:RequestTemplateResponse" />
+  <xs:complexType name="ArrayOfRequestTemplateError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateError" nillable="true" type="tns:RequestTemplateError" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateError" nillable="true" type="tns:ArrayOfRequestTemplateError" />
+  <xs:complexType name="RequestTemplateError">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateError" nillable="true" type="tns:RequestTemplateError" />
+  <xs:complexType name="ArrayOfRequestTemplateResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateResponse" nillable="true" type="tns:RequestTemplateResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateResponse" nillable="true" type="tns:ArrayOfRequestTemplateResponse" />
+  <xs:complexType name="CommerceCreateRelatedItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCreateRelatedItem" nillable="true" type="tns:CommerceCreateRelatedItem" />
+  <xs:complexType name="ArrayOfCommerceCreateRelatedItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCreateRelatedItem" nillable="true" type="tns:CommerceCreateRelatedItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCreateRelatedItem" nillable="true" type="tns:ArrayOfCommerceCreateRelatedItem" />
+  <xs:complexType name="CommerceRelationshipList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="FirstItemIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalItemCount" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="Relationships" nillable="true" type="tns:ArrayOfCommerceRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CommerceRelationshipList" nillable="true" type="tns:CommerceRelationshipList" />
+  <xs:complexType name="ArrayOfCommerceRelationship">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceRelationship" nillable="true" type="tns:CommerceRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceRelationship" nillable="true" type="tns:ArrayOfCommerceRelationship" />
+  <xs:complexType name="CommerceRelationship">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Target" nillable="true" type="tns:CommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceRelationship" nillable="true" type="tns:CommerceRelationship" />
+  <xs:complexType name="ArrayOfCommerceRelationshipList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceRelationshipList" nillable="true" type="tns:CommerceRelationshipList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceRelationshipList" nillable="true" type="tns:ArrayOfCommerceRelationshipList" />
+  <xs:complexType name="ArrayOfInvalidSearchErrorType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InvalidSearchErrorType" type="tns:InvalidSearchErrorType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInvalidSearchErrorType" nillable="true" type="tns:ArrayOfInvalidSearchErrorType" />
+  <xs:complexType name="ArrayOfInvalidSearchQueryFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InvalidSearchQueryFault" nillable="true" type="tns:InvalidSearchQueryFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInvalidSearchQueryFault" nillable="true" type="tns:ArrayOfInvalidSearchQueryFault" />
+  <xs:complexType name="ArrayOfAbortOperationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AbortOperationFault" nillable="true" type="tns:AbortOperationFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAbortOperationFault" nillable="true" type="tns:ArrayOfAbortOperationFault" />
+  <xs:complexType name="EnumerationEntry">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnumerationEntry" nillable="true" type="tns:EnumerationEntry" />
+  <xs:complexType name="ArrayOfEnumerationEntry">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EnumerationEntry" nillable="true" type="tns:EnumerationEntry" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEnumerationEntry" nillable="true" type="tns:ArrayOfEnumerationEntry" />
+  <xs:complexType name="RequestTemplateParameterCollection">
+    <xs:sequence>
+      <xs:element name="RequestContext" nillable="true" type="tns:ArrayOfRequestTemplateParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestTemplateParameterCollection" nillable="true" type="tns:RequestTemplateParameterCollection" />
+  <xs:complexType name="ArrayOfRequestTemplateParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateParameter" nillable="true" type="tns:RequestTemplateParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateParameter" nillable="true" type="tns:ArrayOfRequestTemplateParameter" />
+  <xs:complexType name="RequestTemplateParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:anyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequestTemplateParameter" nillable="true" type="tns:RequestTemplateParameter" />
+  <xs:complexType name="ArrayOfRequestTemplateParameterCollection">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateParameterCollection" nillable="true" type="tns:RequestTemplateParameterCollection" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateParameterCollection" nillable="true" type="tns:ArrayOfRequestTemplateParameterCollection" />
+  <xs:complexType name="RequestTemplateExecuteOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:RequestTemplateSearchCriteria" />
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:RequestTemplateOptions" />
+          <xs:element minOccurs="0" name="Parameters" nillable="true" type="tns:RequestTemplateParameterCollection" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateExecuteOperation" nillable="true" type="tns:RequestTemplateExecuteOperation" />
+  <xs:complexType name="RequestTemplateSearchCriteria">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Model" nillable="true" type="tns:CommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateSearchCriteria" nillable="true" type="tns:RequestTemplateSearchCriteria" />
+  <xs:complexType name="RequestTemplateOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ResponseFormat" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateOptions" nillable="true" type="tns:RequestTemplateOptions" />
+  <xs:complexType name="ArrayOfRequestTemplateExecuteOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateExecuteOperation" nillable="true" type="tns:RequestTemplateExecuteOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateExecuteOperation" nillable="true" type="tns:ArrayOfRequestTemplateExecuteOperation" />
+  <xs:complexType name="CommerceQueryRelationship">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceQueryRelationship" nillable="true" type="tns:CommerceQueryRelationship" />
+  <xs:complexType name="ArrayOfCommerceQueryRelationship">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceQueryRelationship" nillable="true" type="tns:CommerceQueryRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceQueryRelationship" nillable="true" type="tns:ArrayOfCommerceQueryRelationship" />
+  <xs:simpleType name="CompareOperator">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Equal" />
+      <xs:enumeration value="NotEqual" />
+      <xs:enumeration value="GreaterThan" />
+      <xs:enumeration value="GreaterThanEqual" />
+      <xs:enumeration value="LessThan" />
+      <xs:enumeration value="LessThanEqual" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CompareOperator" nillable="true" type="tns:CompareOperator" />
+  <xs:complexType name="ArrayOfCompareOperator">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CompareOperator" type="tns:CompareOperator" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompareOperator" nillable="true" type="tns:ArrayOfCompareOperator" />
+  <xs:complexType name="CompareConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CompareConstraint" nillable="true" type="tns:CompareConstraint" />
+  <xs:complexType name="ArrayOfCompareConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CompareConstraint" nillable="true" type="tns:CompareConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCompareConstraint" nillable="true" type="tns:ArrayOfCompareConstraint" />
+  <xs:complexType name="ValidationMessage">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ValidationMessage" nillable="true" type="tns:ValidationMessage" />
+  <xs:complexType name="ArrayOfValidationMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationMessage" nillable="true" type="tns:ValidationMessage" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfValidationMessage" nillable="true" type="tns:ArrayOfValidationMessage" />
+  <xs:complexType name="SearchArgumentList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SearchArgument" nillable="true" type="tns:SearchArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchArgumentList" nillable="true" type="tns:SearchArgumentList" />
+  <xs:complexType name="CommerceDeleteRelationship">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceDeleteRelationship" nillable="true" type="tns:CommerceDeleteRelationship" />
+  <xs:complexType name="ArrayOfCommerceDeleteRelationship">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceDeleteRelationship" nillable="true" type="tns:CommerceDeleteRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceDeleteRelationship" nillable="true" type="tns:ArrayOfCommerceDeleteRelationship" />
+  <xs:complexType name="RelationshipDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RelationshipDefinition" nillable="true" type="tns:RelationshipDefinition" />
+  <xs:complexType name="ArrayOfRelationshipDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RelationshipDefinition" nillable="true" type="tns:RelationshipDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRelationshipDefinition" nillable="true" type="tns:ArrayOfRelationshipDefinition" />
+  <xs:complexType name="PropertyDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PropertyDefinition" nillable="true" type="tns:PropertyDefinition" />
+  <xs:complexType name="ArrayOfPropertyDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyDefinition" nillable="true" type="tns:PropertyDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyDefinition" nillable="true" type="tns:ArrayOfPropertyDefinition" />
+  <xs:complexType name="CommerceQueryOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:CommerceQueryOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceQueryOperation" nillable="true" type="tns:CommerceQueryOperation" />
+  <xs:complexType name="ArrayOfCommerceQueryOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceQueryOperation" nillable="true" type="tns:CommerceQueryOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceQueryOperation" nillable="true" type="tns:ArrayOfCommerceQueryOperation" />
+  <xs:complexType name="CommerceDeleteRelatedItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceDeleteRelatedItem" nillable="true" type="tns:CommerceDeleteRelatedItem" />
+  <xs:complexType name="ArrayOfCommerceDeleteRelatedItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceDeleteRelatedItem" nillable="true" type="tns:CommerceDeleteRelatedItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceDeleteRelatedItem" nillable="true" type="tns:ArrayOfCommerceDeleteRelatedItem" />
+  <xs:complexType name="ArrayOfCommerceDeleteOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceDeleteOptions" nillable="true" type="tns:CommerceDeleteOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceDeleteOptions" nillable="true" type="tns:ArrayOfCommerceDeleteOptions" />
+  <xs:complexType name="PropertyToReturnList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyToReturn" nillable="true" type="tns:PropertyToReturn" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PropertyToReturnList" nillable="true" type="tns:PropertyToReturnList" />
+  <xs:complexType name="PropertyToReturn">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PropertyToReturn" nillable="true" type="tns:PropertyToReturn" />
+  <xs:complexType name="CommerceAuthorizationDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceAuthorizationDefinition" nillable="true" type="tns:CommerceAuthorizationDefinition" />
+  <xs:complexType name="ArrayOfCommerceAuthorizationDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceAuthorizationDefinition" nillable="true" type="tns:CommerceAuthorizationDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceAuthorizationDefinition" nillable="true" type="tns:ArrayOfCommerceAuthorizationDefinition" />
+  <xs:complexType name="RequestTemplate">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplate" nillable="true" type="tns:RequestTemplate" />
+  <xs:complexType name="ArrayOfRequestTemplate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplate" nillable="true" type="tns:RequestTemplate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplate" nillable="true" type="tns:ArrayOfRequestTemplate" />
+  <xs:simpleType name="SortOrder">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ascending" />
+      <xs:enumeration value="Default" />
+      <xs:enumeration value="Descending" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SortOrder" nillable="true" type="tns:SortOrder" />
+  <xs:complexType name="ArrayOfSortOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortOrder" type="tns:SortOrder" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSortOrder" nillable="true" type="tns:ArrayOfSortOrder" />
+  <xs:simpleType name="RequestTemplateParameterType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Search" />
+      <xs:enumeration value="Sort" />
+      <xs:enumeration value="Option" />
+      <xs:enumeration value="PropertiesToSet" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RequestTemplateParameterType" nillable="true" type="tns:RequestTemplateParameterType" />
+  <xs:complexType name="ArrayOfRequestTemplateParameterType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateParameterType" type="tns:RequestTemplateParameterType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateParameterType" nillable="true" type="tns:ArrayOfRequestTemplateParameterType" />
+  <xs:complexType name="ArrayOfItemDoesNotExistFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemDoesNotExistFault" nillable="true" type="tns:ItemDoesNotExistFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemDoesNotExistFault" nillable="true" type="tns:ArrayOfItemDoesNotExistFault" />
+  <xs:complexType name="CommerceBasketQueryOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceQueryOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RefreshBasket" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceBasketQueryOptions" nillable="true" type="tns:CommerceBasketQueryOptions" />
+  <xs:complexType name="ArrayOfCommerceBasketQueryOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceBasketQueryOptions" nillable="true" type="tns:CommerceBasketQueryOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceBasketQueryOptions" nillable="true" type="tns:ArrayOfCommerceBasketQueryOptions" />
+  <xs:simpleType name="BoundaryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Ignore" />
+      <xs:enumeration value="Include" />
+      <xs:enumeration value="Exclude" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="BoundaryType" nillable="true" type="tns:BoundaryType" />
+  <xs:complexType name="ArrayOfBoundaryType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BoundaryType" type="tns:BoundaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBoundaryType" nillable="true" type="tns:ArrayOfBoundaryType" />
+  <xs:complexType name="RangeConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RangeConstraint" nillable="true" type="tns:RangeConstraint" />
+  <xs:complexType name="ArrayOfRangeConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RangeConstraint" nillable="true" type="tns:RangeConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRangeConstraint" nillable="true" type="tns:ArrayOfRangeConstraint" />
+  <xs:complexType name="DefinitionMapping">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DefinitionMapping" nillable="true" type="tns:DefinitionMapping" />
+  <xs:complexType name="ArrayOfDefinitionMapping">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DefinitionMapping" nillable="true" type="tns:DefinitionMapping" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDefinitionMapping" nillable="true" type="tns:ArrayOfDefinitionMapping" />
+  <xs:complexType name="Description">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Culture" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Description" nillable="true" type="tns:Description" />
+  <xs:complexType name="ArrayOfDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Description" nillable="true" type="tns:Description" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDescription" nillable="true" type="tns:ArrayOfDescription" />
+  <xs:simpleType name="CommerceSiteContentSearchPredicate">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FreeText" />
+      <xs:enumeration value="Contains" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommerceSiteContentSearchPredicate" nillable="true" type="tns:CommerceSiteContentSearchPredicate" />
+  <xs:complexType name="ArrayOfCommerceSiteContentSearchPredicate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSiteContentSearchPredicate" type="tns:CommerceSiteContentSearchPredicate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSiteContentSearchPredicate" nillable="true" type="tns:ArrayOfCommerceSiteContentSearchPredicate" />
+  <xs:simpleType name="CommerceSiteContentQueryType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Keyword" />
+      <xs:enumeration value="FullTextSql" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommerceSiteContentQueryType" nillable="true" type="tns:CommerceSiteContentQueryType" />
+  <xs:complexType name="ArrayOfCommerceSiteContentQueryType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSiteContentQueryType" type="tns:CommerceSiteContentQueryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSiteContentQueryType" nillable="true" type="tns:ArrayOfCommerceSiteContentQueryType" />
+  <xs:complexType name="CommerceSiteContentSearchCriteria">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="IgnoreAllNoiseQuery" type="xs:boolean" />
+          <xs:element minOccurs="0" name="PassThroughFullTextSqlQuery" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="QueryType" type="tns:CommerceSiteContentQueryType" />
+          <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Scopes" nillable="true" type="q1:ArrayOfstring" />
+          <xs:element name="SearchPhrase" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SearchPredicate" type="tns:CommerceSiteContentSearchPredicate" />
+          <xs:element name="SiteUrl" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TrimDuplicates" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceSiteContentSearchCriteria" nillable="true" type="tns:CommerceSiteContentSearchCriteria" />
+  <xs:complexType name="ArrayOfCommerceSiteContentSearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSiteContentSearchCriteria" nillable="true" type="tns:CommerceSiteContentSearchCriteria" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSiteContentSearchCriteria" nillable="true" type="tns:ArrayOfCommerceSiteContentSearchCriteria" />
+  <xs:complexType name="CommerceCatalogDeleteOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceDeleteOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RebuildCatalog" type="xs:boolean" />
+          <xs:element minOccurs="0" name="UseParentCategory" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCatalogDeleteOptions" nillable="true" type="tns:CommerceCatalogDeleteOptions" />
+  <xs:complexType name="ArrayOfCommerceCatalogDeleteOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCatalogDeleteOptions" nillable="true" type="tns:CommerceCatalogDeleteOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCatalogDeleteOptions" nillable="true" type="tns:ArrayOfCommerceCatalogDeleteOptions" />
+  <xs:complexType name="PropertyToSetArgument">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseArgument">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PropertyToSetArgument" nillable="true" type="tns:PropertyToSetArgument" />
+  <xs:complexType name="ArrayOfPropertyToSetArgument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyToSetArgument" nillable="true" type="tns:PropertyToSetArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyToSetArgument" nillable="true" type="tns:ArrayOfPropertyToSetArgument" />
+  <xs:complexType name="ArrayOfCommerceRequestContext">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceRequestContext" nillable="true" type="tns:CommerceRequestContext" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceRequestContext" nillable="true" type="tns:ArrayOfCommerceRequestContext" />
+  <xs:complexType name="CommerceSecurityAnswerSearch">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element name="UserName" nillable="true" type="xs:string" />
+          <xs:element name="UserPasswordAnswer" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceSecurityAnswerSearch" nillable="true" type="tns:CommerceSecurityAnswerSearch" />
+  <xs:complexType name="ArrayOfCommerceSecurityAnswerSearch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceSecurityAnswerSearch" nillable="true" type="tns:CommerceSecurityAnswerSearch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceSecurityAnswerSearch" nillable="true" type="tns:ArrayOfCommerceSecurityAnswerSearch" />
+  <xs:complexType name="CommerceCreateOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommerceEntity" nillable="true" type="tns:CommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCreateOperationResponse" nillable="true" type="tns:CommerceCreateOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceCreateOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCreateOperationResponse" nillable="true" type="tns:CommerceCreateOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCreateOperationResponse" nillable="true" type="tns:ArrayOfCommerceCreateOperationResponse" />
+  <xs:complexType name="OptionArgumentList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OptionArgument" nillable="true" type="tns:OptionArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OptionArgumentList" nillable="true" type="tns:OptionArgumentList" />
+  <xs:complexType name="OptionArgument">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseArgument">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OptionArgument" nillable="true" type="tns:OptionArgument" />
+  <xs:complexType name="ArrayOfOptionArgument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OptionArgument" nillable="true" type="tns:OptionArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOptionArgument" nillable="true" type="tns:ArrayOfOptionArgument" />
+  <xs:complexType name="RequestTemplateLogonOptions">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOptions">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MergeBaskets" nillable="true" type="xs:boolean" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateLogonOptions" nillable="true" type="tns:RequestTemplateLogonOptions" />
+  <xs:complexType name="ArrayOfRequestTemplateLogonOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateLogonOptions" nillable="true" type="tns:RequestTemplateLogonOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateLogonOptions" nillable="true" type="tns:ArrayOfRequestTemplateLogonOptions" />
+  <xs:complexType name="ArrayOfRequestTemplateSearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateSearchCriteria" nillable="true" type="tns:RequestTemplateSearchCriteria" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateSearchCriteria" nillable="true" type="tns:ArrayOfRequestTemplateSearchCriteria" />
+  <xs:complexType name="ArrayOfRequestTemplateOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateOptions" nillable="true" type="tns:RequestTemplateOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateOptions" nillable="true" type="tns:ArrayOfRequestTemplateOptions" />
+  <xs:complexType name="CommerceValidationError">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ValidationError">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Properties" nillable="true" type="tns:ArrayOfCommercePropertyItem" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceValidationError" nillable="true" type="tns:CommerceValidationError" />
+  <xs:complexType name="ArrayOfCommerceValidationError">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceValidationError" nillable="true" type="tns:CommerceValidationError" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceValidationError" nillable="true" type="tns:ArrayOfCommerceValidationError" />
+  <xs:complexType name="CommerceAuthorizationOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element name="RequestedOperationName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceAuthorizationOperation" nillable="true" type="tns:CommerceAuthorizationOperation" />
+  <xs:complexType name="ArrayOfCommerceAuthorizationOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceAuthorizationOperation" nillable="true" type="tns:CommerceAuthorizationOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceAuthorizationOperation" nillable="true" type="tns:ArrayOfCommerceAuthorizationOperation" />
+  <xs:complexType name="PropertyMetadata">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PropertyMetadata" nillable="true" type="tns:PropertyMetadata" />
+  <xs:complexType name="ArrayOfPropertyMetadata">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyMetadata" nillable="true" type="tns:PropertyMetadata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyMetadata" nillable="true" type="tns:ArrayOfPropertyMetadata" />
+  <xs:complexType name="RelationshipTypeDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RelationshipTypeDefinition" nillable="true" type="tns:RelationshipTypeDefinition" />
+  <xs:complexType name="ArrayOfRelationshipTypeDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RelationshipTypeDefinition" nillable="true" type="tns:RelationshipTypeDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRelationshipTypeDefinition" nillable="true" type="tns:ArrayOfRelationshipTypeDefinition" />
+  <xs:complexType name="StringPair">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StringPair" nillable="true" type="tns:StringPair" />
+  <xs:complexType name="ArrayOfStringPair">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StringPair" nillable="true" type="tns:StringPair" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfStringPair" nillable="true" type="tns:ArrayOfStringPair" />
+  <xs:complexType name="CommerceCreateRelationship">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCreateRelationship" nillable="true" type="tns:CommerceCreateRelationship" />
+  <xs:complexType name="ArrayOfCommerceCreateRelationship">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCreateRelationship" nillable="true" type="tns:CommerceCreateRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCreateRelationship" nillable="true" type="tns:ArrayOfCommerceCreateRelationship" />
+  <xs:complexType name="ArrayOfAuthorizationFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AuthorizationFault" nillable="true" type="tns:AuthorizationFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAuthorizationFault" nillable="true" type="tns:ArrayOfAuthorizationFault" />
+  <xs:complexType name="ArrayOfPropertyToReturn">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyToReturn" nillable="true" type="tns:PropertyToReturn" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyToReturn" nillable="true" type="tns:ArrayOfPropertyToReturn" />
+  <xs:complexType name="RegularExpressionConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RegularExpressionConstraint" nillable="true" type="tns:RegularExpressionConstraint" />
+  <xs:complexType name="ArrayOfRegularExpressionConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RegularExpressionConstraint" nillable="true" type="tns:RegularExpressionConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRegularExpressionConstraint" nillable="true" type="tns:ArrayOfRegularExpressionConstraint" />
+  <xs:complexType name="JoinKeyConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="JoinKeyConstraint" nillable="true" type="tns:JoinKeyConstraint" />
+  <xs:complexType name="ArrayOfJoinKeyConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="JoinKeyConstraint" nillable="true" type="tns:JoinKeyConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfJoinKeyConstraint" nillable="true" type="tns:ArrayOfJoinKeyConstraint" />
+  <xs:complexType name="CommerceClaimSetDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceClaimSetDefinition" nillable="true" type="tns:CommerceClaimSetDefinition" />
+  <xs:complexType name="ArrayOfCommerceClaimSetDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceClaimSetDefinition" nillable="true" type="tns:CommerceClaimSetDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceClaimSetDefinition" nillable="true" type="tns:ArrayOfCommerceClaimSetDefinition" />
+  <xs:complexType name="CommerceUpdateOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommerceEntities" nillable="true" type="tns:ArrayOfCommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceUpdateOperationResponse" nillable="true" type="tns:CommerceUpdateOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceUpdateOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceUpdateOperationResponse" nillable="true" type="tns:CommerceUpdateOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceUpdateOperationResponse" nillable="true" type="tns:ArrayOfCommerceUpdateOperationResponse" />
+  <xs:complexType name="CommerceUpdateOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+          <xs:element minOccurs="0" name="UpdateOptions" nillable="true" type="tns:CommerceUpdateOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceUpdateOperation" nillable="true" type="tns:CommerceUpdateOperation" />
+  <xs:complexType name="ArrayOfCommerceUpdateOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceUpdateOperation" nillable="true" type="tns:CommerceUpdateOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceUpdateOperation" nillable="true" type="tns:ArrayOfCommerceUpdateOperation" />
+  <xs:simpleType name="CommerceCatalogEntityTypes">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Category">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Product">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Variant">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="CommerceCatalogEntityTypes" nillable="true" type="tns:CommerceCatalogEntityTypes" />
+  <xs:complexType name="ArrayOfCommerceCatalogEntityTypes">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCatalogEntityTypes" type="tns:CommerceCatalogEntityTypes" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCatalogEntityTypes" nillable="true" type="tns:ArrayOfCommerceCatalogEntityTypes" />
+  <xs:simpleType name="CommerceInventoryFilters">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="OutOfStock">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="BackOrderable">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="PreOrderable">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="All">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">7</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="CommerceInventoryFilters" nillable="true" type="tns:CommerceInventoryFilters" />
+  <xs:complexType name="ArrayOfCommerceInventoryFilters">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceInventoryFilters" type="tns:CommerceInventoryFilters" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceInventoryFilters" nillable="true" type="tns:ArrayOfCommerceInventoryFilters" />
+  <xs:simpleType name="CommerceFullTextSearchType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FreeText" />
+      <xs:enumeration value="Contains" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommerceFullTextSearchType" nillable="true" type="tns:CommerceFullTextSearchType" />
+  <xs:complexType name="ArrayOfCommerceFullTextSearchType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceFullTextSearchType" type="tns:CommerceFullTextSearchType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceFullTextSearchType" nillable="true" type="tns:ArrayOfCommerceFullTextSearchType" />
+  <xs:complexType name="CommerceCatalogFullTextSearch">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Phrase" nillable="true" type="xs:string" />
+          <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Catalogs" nillable="true" type="q2:ArrayOfstring" />
+          <xs:element minOccurs="0" name="TypesToSearch" type="tns:CommerceCatalogEntityTypes" />
+          <xs:element minOccurs="0" name="FullTextSearchType" type="tns:CommerceFullTextSearchType" />
+          <xs:element minOccurs="0" name="InventoryFilters" type="tns:CommerceInventoryFilters" />
+          <xs:element minOccurs="0" name="CategoriesClause" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCatalogFullTextSearch" nillable="true" type="tns:CommerceCatalogFullTextSearch" />
+  <xs:complexType name="ArrayOfCommerceCatalogFullTextSearch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCatalogFullTextSearch" nillable="true" type="tns:CommerceCatalogFullTextSearch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCatalogFullTextSearch" nillable="true" type="tns:ArrayOfCommerceCatalogFullTextSearch" />
+  <xs:complexType name="CommerceDeleteOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Count" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceDeleteOperationResponse" nillable="true" type="tns:CommerceDeleteOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceDeleteOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceDeleteOperationResponse" nillable="true" type="tns:CommerceDeleteOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceDeleteOperationResponse" nillable="true" type="tns:ArrayOfCommerceDeleteOperationResponse" />
+  <xs:complexType name="ItemAlreadyExistsFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemAlreadyExistsFault" nillable="true" type="tns:ItemAlreadyExistsFault" />
+  <xs:complexType name="ArrayOfItemAlreadyExistsFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemAlreadyExistsFault" nillable="true" type="tns:ItemAlreadyExistsFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemAlreadyExistsFault" nillable="true" type="tns:ArrayOfItemAlreadyExistsFault" />
+  <xs:complexType name="EnumeratedPropertyDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:PropertyDefinition">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EnumeratedPropertyDefinition" nillable="true" type="tns:EnumeratedPropertyDefinition" />
+  <xs:complexType name="ArrayOfEnumeratedPropertyDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EnumeratedPropertyDefinition" nillable="true" type="tns:EnumeratedPropertyDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEnumeratedPropertyDefinition" nillable="true" type="tns:ArrayOfEnumeratedPropertyDefinition" />
+  <xs:simpleType name="PropertyDataType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Array" />
+      <xs:enumeration value="BigInteger" />
+      <xs:enumeration value="Binary" />
+      <xs:enumeration value="Boolean" />
+      <xs:enumeration value="Decimal" />
+      <xs:enumeration value="Date" />
+      <xs:enumeration value="DateTime" />
+      <xs:enumeration value="Double" />
+      <xs:enumeration value="Email" />
+      <xs:enumeration value="Float" />
+      <xs:enumeration value="Integer" />
+      <xs:enumeration value="Password" />
+      <xs:enumeration value="RichText" />
+      <xs:enumeration value="String" />
+      <xs:enumeration value="Time" />
+      <xs:enumeration value="UniqueIdentifier" />
+      <xs:enumeration value="Url" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="PropertyDataType" nillable="true" type="tns:PropertyDataType" />
+  <xs:complexType name="ArrayOfPropertyDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyDataType" type="tns:PropertyDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPropertyDataType" nillable="true" type="tns:ArrayOfPropertyDataType" />
+  <xs:complexType name="CommerceExpiredSessionFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:GeneralOperationFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceExpiredSessionFault" nillable="true" type="tns:CommerceExpiredSessionFault" />
+  <xs:complexType name="ArrayOfCommerceExpiredSessionFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceExpiredSessionFault" nillable="true" type="tns:CommerceExpiredSessionFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceExpiredSessionFault" nillable="true" type="tns:ArrayOfCommerceExpiredSessionFault" />
+  <xs:complexType name="ArrayOfSortArgument">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortArgument" nillable="true" type="tns:SortArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSortArgument" nillable="true" type="tns:ArrayOfSortArgument" />
+  <xs:complexType name="RequestTemplateLogonOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Options" nillable="true" type="tns:RequestTemplateLogonOptions" />
+          <xs:element minOccurs="0" name="SearchCriteria" nillable="true" type="tns:RequestTemplateLogonSearch" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateLogonOperation" nillable="true" type="tns:RequestTemplateLogonOperation" />
+  <xs:complexType name="RequestTemplateLogonSearch">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequestTemplateLogonSearch" nillable="true" type="tns:RequestTemplateLogonSearch" />
+  <xs:complexType name="ArrayOfRequestTemplateLogonOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateLogonOperation" nillable="true" type="tns:RequestTemplateLogonOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateLogonOperation" nillable="true" type="tns:ArrayOfRequestTemplateLogonOperation" />
+  <xs:complexType name="CommerceQueryOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FirstItemIndex" type="xs:int" />
+          <xs:element minOccurs="0" name="TotalItemCount" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CommerceEntities" nillable="true" type="tns:ArrayOfCommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceQueryOperationResponse" nillable="true" type="tns:CommerceQueryOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceQueryOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceQueryOperationResponse" nillable="true" type="tns:CommerceQueryOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceQueryOperationResponse" nillable="true" type="tns:ArrayOfCommerceQueryOperationResponse" />
+  <xs:simpleType name="DistanceUnitType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Mile" />
+      <xs:enumeration value="Kilometer" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DistanceUnitType" nillable="true" type="tns:DistanceUnitType" />
+  <xs:complexType name="ArrayOfDistanceUnitType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DistanceUnitType" type="tns:DistanceUnitType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDistanceUnitType" nillable="true" type="tns:ArrayOfDistanceUnitType" />
+  <xs:complexType name="CommerceNearbyStoreSearch">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Latitude" type="xs:double" />
+          <xs:element minOccurs="0" name="Distance" type="xs:double" />
+          <xs:element minOccurs="0" name="DistanceUnit" type="tns:DistanceUnitType" />
+          <xs:element minOccurs="0" name="Longitude" type="xs:double" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceNearbyStoreSearch" nillable="true" type="tns:CommerceNearbyStoreSearch" />
+  <xs:complexType name="ArrayOfCommerceNearbyStoreSearch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceNearbyStoreSearch" nillable="true" type="tns:CommerceNearbyStoreSearch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceNearbyStoreSearch" nillable="true" type="tns:ArrayOfCommerceNearbyStoreSearch" />
+  <xs:complexType name="CommerceCopyRelatedItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ParentSearchCriteria" nillable="true" type="tns:CommerceSearchCriteria" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceCopyRelatedItem" nillable="true" type="tns:CommerceCopyRelatedItem" />
+  <xs:complexType name="ArrayOfCommerceCopyRelatedItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceCopyRelatedItem" nillable="true" type="tns:CommerceCopyRelatedItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceCopyRelatedItem" nillable="true" type="tns:ArrayOfCommerceCopyRelatedItem" />
+  <xs:complexType name="CommerceUpdateRelationship">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceUpdateRelationship" nillable="true" type="tns:CommerceUpdateRelationship" />
+  <xs:complexType name="ArrayOfCommerceUpdateRelationship">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceUpdateRelationship" nillable="true" type="tns:CommerceUpdateRelationship" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceUpdateRelationship" nillable="true" type="tns:ArrayOfCommerceUpdateRelationship" />
+  <xs:complexType name="CommerceAuthorizationOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommerceEntity" nillable="true" type="tns:CommerceEntity" />
+          <xs:element minOccurs="0" name="RequestedOperationName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceAuthorizationOperationResponse" nillable="true" type="tns:CommerceAuthorizationOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceAuthorizationOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceAuthorizationOperationResponse" nillable="true" type="tns:CommerceAuthorizationOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceAuthorizationOperationResponse" nillable="true" type="tns:ArrayOfCommerceAuthorizationOperationResponse" />
+  <xs:complexType name="RequiredPropertyConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="RequiredPropertyConstraint" nillable="true" type="tns:RequiredPropertyConstraint" />
+  <xs:complexType name="ArrayOfRequiredPropertyConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequiredPropertyConstraint" nillable="true" type="tns:RequiredPropertyConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequiredPropertyConstraint" nillable="true" type="tns:ArrayOfRequiredPropertyConstraint" />
+  <xs:complexType name="PrimaryKeyConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PrimaryKeyConstraint" nillable="true" type="tns:PrimaryKeyConstraint" />
+  <xs:complexType name="ArrayOfPrimaryKeyConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PrimaryKeyConstraint" nillable="true" type="tns:PrimaryKeyConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfPrimaryKeyConstraint" nillable="true" type="tns:ArrayOfPrimaryKeyConstraint" />
+  <xs:complexType name="StringPairCollection">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="StringPair" nillable="true" type="tns:StringPair" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StringPairCollection" nillable="true" type="tns:StringPairCollection" />
+  <xs:simpleType name="CommerceAuthorizationScope">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PropertyScope" />
+      <xs:enumeration value="LanguageScope" />
+      <xs:enumeration value="CatalogScope" />
+      <xs:enumeration value="UserScope" />
+      <xs:enumeration value="RelationshipScope" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommerceAuthorizationScope" nillable="true" type="tns:CommerceAuthorizationScope" />
+  <xs:complexType name="ArrayOfCommerceAuthorizationScope">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceAuthorizationScope" type="tns:CommerceAuthorizationScope" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceAuthorizationScope" nillable="true" type="tns:ArrayOfCommerceAuthorizationScope" />
+  <xs:complexType name="CommerceAuthorizationItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceAuthorizationItem" nillable="true" type="tns:CommerceAuthorizationItem" />
+  <xs:complexType name="ArrayOfCommerceAuthorizationItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceAuthorizationItem" nillable="true" type="tns:CommerceAuthorizationItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceAuthorizationItem" nillable="true" type="tns:ArrayOfCommerceAuthorizationItem" />
+  <xs:complexType name="ArrayOfRequestTemplateLogonSearch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestTemplateLogonSearch" nillable="true" type="tns:RequestTemplateLogonSearch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfRequestTemplateLogonSearch" nillable="true" type="tns:ArrayOfRequestTemplateLogonSearch" />
+  <xs:simpleType name="CommerceServerArea">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Catalog" />
+      <xs:enumeration value="Profiles" />
+      <xs:enumeration value="Orders" />
+      <xs:enumeration value="Marketing" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CommerceServerArea" nillable="true" type="tns:CommerceServerArea" />
+  <xs:complexType name="ArrayOfCommerceServerArea">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceServerArea" type="tns:CommerceServerArea" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceServerArea" nillable="true" type="tns:ArrayOfCommerceServerArea" />
+  <xs:complexType name="EntityMapping">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="EntityMapping" nillable="true" type="tns:EntityMapping" />
+  <xs:complexType name="ArrayOfEntityMapping">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="EntityMapping" nillable="true" type="tns:EntityMapping" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfEntityMapping" nillable="true" type="tns:ArrayOfEntityMapping" />
+  <xs:complexType name="ArrayOfCommerceOperationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceOperationStatus" nillable="true" type="tns:CommerceOperationStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceOperationStatus" nillable="true" type="tns:ArrayOfCommerceOperationStatus" />
+  <xs:complexType name="ArrayOfOptimisticLockFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OptimisticLockFault" nillable="true" type="tns:OptimisticLockFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOptimisticLockFault" nillable="true" type="tns:ArrayOfOptimisticLockFault" />
+  <xs:complexType name="Operation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceEntity">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Operation" nillable="true" type="tns:Operation" />
+  <xs:complexType name="ArrayOfOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Operation" nillable="true" type="tns:Operation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOperation" nillable="true" type="tns:ArrayOfOperation" />
+  <xs:complexType name="UniqueKeyConstraint">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ConstraintBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="UniqueKeyConstraint" nillable="true" type="tns:UniqueKeyConstraint" />
+  <xs:complexType name="ArrayOfUniqueKeyConstraint">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UniqueKeyConstraint" nillable="true" type="tns:UniqueKeyConstraint" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUniqueKeyConstraint" nillable="true" type="tns:ArrayOfUniqueKeyConstraint" />
+  <xs:complexType name="CommerceUpdateRelatedItem">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceRelatedOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="UpdateOptions" nillable="true" type="tns:CommerceUpdateOptions" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceUpdateRelatedItem" nillable="true" type="tns:CommerceUpdateRelatedItem" />
+  <xs:complexType name="ArrayOfCommerceUpdateRelatedItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceUpdateRelatedItem" nillable="true" type="tns:CommerceUpdateRelatedItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceUpdateRelatedItem" nillable="true" type="tns:ArrayOfCommerceUpdateRelatedItem" />
+  <xs:complexType name="CommerceModelSearch">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceSearchCriteria">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Model" nillable="true" type="tns:CommerceEntity" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceModelSearch" nillable="true" type="tns:CommerceModelSearch" />
+  <xs:complexType name="ArrayOfCommerceModelSearch">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceModelSearch" nillable="true" type="tns:CommerceModelSearch" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceModelSearch" nillable="true" type="tns:ArrayOfCommerceModelSearch" />
+  <xs:complexType name="CommerceEntityDefinition">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:DefinitionBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceEntityDefinition" nillable="true" type="tns:CommerceEntityDefinition" />
+  <xs:complexType name="ArrayOfCommerceEntityDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceEntityDefinition" nillable="true" type="tns:CommerceEntityDefinition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceEntityDefinition" nillable="true" type="tns:ArrayOfCommerceEntityDefinition" />
+  <xs:complexType name="ArrayOfCatalogRemoveFault">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CatalogRemoveFault" nillable="true" type="tns:CatalogRemoveFault" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCatalogRemoveFault" nillable="true" type="tns:ArrayOfCatalogRemoveFault" />
+  <xs:complexType name="PropertyToSetArgumentList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyToSetArgument" nillable="true" type="tns:PropertyToSetArgument" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PropertyToSetArgumentList" nillable="true" type="tns:PropertyToSetArgumentList" />
+  <xs:complexType name="CommerceValidateOperationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ValidationErrors" nillable="true" type="tns:ArrayOfValidationError" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceValidateOperationResponse" nillable="true" type="tns:CommerceValidateOperationResponse" />
+  <xs:complexType name="ArrayOfCommerceValidateOperationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceValidateOperationResponse" nillable="true" type="tns:CommerceValidateOperationResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceValidateOperationResponse" nillable="true" type="tns:ArrayOfCommerceValidateOperationResponse" />
+  <xs:complexType name="CommerceValidateOperation">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:CommerceOperation">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CommerceArea" nillable="true" type="tns:CommerceServerArea" />
+          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ConstraintsToValidate" nillable="true" type="q3:ArrayOfstring" />
+          <xs:element name="OperationToValidate" nillable="true" type="tns:CommerceOperation" />
+          <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="PropertiesToValidate" nillable="true" type="q4:ArrayOfstring" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CommerceValidateOperation" nillable="true" type="tns:CommerceValidateOperation" />
+  <xs:complexType name="ArrayOfCommerceValidateOperation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="CommerceValidateOperation" nillable="true" type="tns:CommerceValidateOperation" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCommerceValidateOperation" nillable="true" type="tns:ArrayOfCommerceValidateOperation" />
+  <xs:complexType name="ArrayOfMultilingualValue.LanguageValuePairOfanyTypek9wYX3t0">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" nillable="true" type="tns:MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" nillable="true" type="tns:ArrayOfMultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" />
+  <xs:complexType name="MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="MultilingualValue.LanguageValuePairOf{0}{#}" Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types" NestedLevel="2" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="anyType" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:anyType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" nillable="true" type="tns:MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0" />
+  <xs:complexType name="ArrayOfMultilingualValue.LanguageValuePairOfstringk9wYX3t0">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MultilingualValue.LanguageValuePairOfstringk9wYX3t0" nillable="true" type="tns:MultilingualValue.LanguageValuePairOfstringk9wYX3t0" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMultilingualValue.LanguageValuePairOfstringk9wYX3t0" nillable="true" type="tns:ArrayOfMultilingualValue.LanguageValuePairOfstringk9wYX3t0" />
+  <xs:complexType name="MultilingualValue.LanguageValuePairOfstringk9wYX3t0">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="MultilingualValue.LanguageValuePairOf{0}{#}" Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types" NestedLevel="2" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Language" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MultilingualValue.LanguageValuePairOfstringk9wYX3t0" nillable="true" type="tns:MultilingualValue.LanguageValuePairOfstringk9wYX3t0" />
+  <xs:element name="ProcessRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:CommerceRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ProcessRequestResult" nillable="true" type="tns:CommerceResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthorizeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:CommerceRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthorizeRequestResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AuthorizeRequestResult" nillable="true" type="tns:CommerceResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

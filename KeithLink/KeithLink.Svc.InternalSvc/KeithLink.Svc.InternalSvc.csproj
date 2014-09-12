@@ -84,7 +84,7 @@
   <ItemGroup>
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
-    <Content Include="OrderService.svc" />
+    <Content Include="PipelineService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -101,9 +101,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IETLService.cs" />
-    <Compile Include="Interfaces\IOrderService.cs" />
-    <Compile Include="OrderService.svc.cs">
-      <DependentUpon>OrderService.svc</DependentUpon>
+    <Compile Include="Interfaces\IPipelineService.cs" />
+    <Compile Include="PipelineService.svc.cs">
+      <DependentUpon>PipelineService.svc</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
