@@ -106,6 +106,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RabbitMQ.Client">
+      <HintPath>..\packages\RabbitMQ.Client.3.3.5\lib\net30\RabbitMQ.Client.dll</HintPath>
+    </Reference>
     <Reference Include="RestSharp, Version=104.4.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
@@ -133,7 +136,7 @@
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
-    <Compile Include="Logic\Orders\StubOrderLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
@@ -154,6 +157,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
+    <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
