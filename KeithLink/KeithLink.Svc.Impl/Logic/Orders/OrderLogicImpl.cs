@@ -74,7 +74,83 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteInformationLog("No longer watching the order queue");
         }
 
-        private void SendDetailRecordToHost(string record){}
+        private void SendDetailRecordsToHost(List<OrderDetail> details) {
+            foreach (OrderDetail detail in details) {
+                _mfConnection.Send(detail.ToMainframeFormat());
+
+                bool waiting = true;
+
+                do {
+                    string detailReturnCode = _mfConnection.Receive();
+
+                    if (detailReturnCode.Length == 0) {
+                        throw new InvalidResponseException();
+                    } else {
+                        switch (detailReturnCode) {
+                            case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
+                                throw new CancelledTransactionException();
+                            case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
+                                waiting = false;
+                                break;
+                            case Constants.MAINFRAME_RECEIVE_STATUS_WAITING:
+                                waiting = true;
+                                break;
+                            default:
+                                throw new InvalidResponseException();
+                        }
+                    }
+                } while (waiting);
+            }
+        }
+
+        private void SendEndOfRecordToHost() {
+            // send end of records line
+            _mfConnection.Send("*EOR");
+
+            string eorReturnCode = _mfConnection.Receive();
+
+            if (eorReturnCode.Length > 0 && eorReturnCode == Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN) {
+            } else {
+                throw new InvalidResponseException();
+            }
+        }
+
+        private void SendHeaderRecordToHost(OrderHeader header) {
+            _mfConnection.Send(header.ToMainframeFormat());
+
+            // wait for a response from the mainframe
+            bool waiting = true;
+            do {
+                string headerReturnCode = _mfConnection.Receive();
+
+                if (headerReturnCode.Length == 0) {
+                    throw new InvalidResponseException();
+                } else {
+                    switch (headerReturnCode) {
+                        case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
+                            throw new CancelledTransactionException();
+                        case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
+                            waiting = false;
+                            break;
+                        case Constants.MAINFRAME_RECEIVE_STATUS_WAITING:
+                            waiting = true;
+                            break;
+                        default:
+                            throw new CancelledTransactionException();
+                    }
+                }
+            } while (waiting);
+        }
+
+        private void SendStartTransaction(string ConfirmationNumber) {
+            _mfConnection.StartTransaction(ConfirmationNumber.PadLeft(7, '0'));
+
+            string startCode = _mfConnection.Receive();
+            if (startCode.Length > 0 && startCode == Constants.MAINFRAME_RECEIVE_STATUS_GO) {
+            } else {
+                throw new ApplicationException("Invalid response received while starting the CICS transaction");
+            }
+        }
 
         private void SendToError(string errorOrder) {
             _orderQueue.SetQueuePath((int)OrderQueueLocation.Error);
@@ -93,86 +169,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             // open connection and call program
             _mfConnection.Connect();
-            _mfConnection.StartTransaction(order.Header.ControlNumber.ToString().PadLeft(7, '0'));
 
-            string startCode = _mfConnection.Receive();
-            if (startCode.Length > 0 && startCode == Constants.MAINFRAME_RECEIVE_STATUS_GO) { 
-            } else {
-                throw new ApplicationException("Invalid response received while starting the CICS transaction");
-            }
+            SendStartTransaction(order.Header.ControlNumber.ToString());
 
-            // start the transaction on the mainframe and send the header
+            // start the order transmission to the mainframe
             _mfConnection.Send("OTX");
-            _mfConnection.Send(order.Header.ToMainframeFormat());
 
-            // wait for a response from the mainframe
-            bool waitingForHeaderResponse = true;
-            do {
-                string headerReturnCode = _mfConnection.Receive();
-
-                if (headerReturnCode.Length == 0) {
-                    throw new InvalidResponseException();
-                } else {
-                    switch (headerReturnCode) {
-                        case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
-                            throw new CancelledTransactionException();
-                        case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
-                            waitingForHeaderResponse = false;
-                            break;
-                        case Constants.MAINFRAME_RECEIVE_STATUS_WAITING:
-                            waitingForHeaderResponse = true;
-                            break;
-                        default:
-                            throw new CancelledTransactionException();
-                    }
-                }
-            } while (waitingForHeaderResponse);
-
-
-            // send the order details
-            foreach (OrderDetail detail in order.Details)
-            {
-                _mfConnection.Send(detail.ToMainframeFormat());
-
-                bool waitingForDetailResponse = true;
-
-                do
-                {
-                    string detailReturnCode = _mfConnection.Receive();
-
-                    if (detailReturnCode.Length == 0)
-                    {
-                        throw new InvalidResponseException();
-                    }
-                    else
-                    {
-                        switch (detailReturnCode)
-                        {
-                            case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
-                                throw new CancelledTransactionException();
-                            case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
-                                waitingForDetailResponse = false;
-                                break;
-                            case Constants.MAINFRAME_RECEIVE_STATUS_WAITING:
-                                waitingForDetailResponse = true;
-                                break;
-                            default:
-                                throw new InvalidResponseException();
-                        }
-                    }
-                } while (waitingForDetailResponse);
-            }
-
-            // send end of records line
-            _mfConnection.Send("*EOR");
-            string eorReturnCode = _mfConnection.Receive();
-            if (eorReturnCode.Length > 0 && eorReturnCode == Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN)
-            { }
-            else
-            {
-                throw new InvalidResponseException();
-            }
-
+            SendHeaderRecordToHost(order.Header);
+            SendDetailRecordsToHost(order.Details);
+            SendEndOfRecordToHost();
+            
+            // stop order transmission to the mainframe
             _mfConnection.Send("STOP");
 
             _mfConnection.Close();
