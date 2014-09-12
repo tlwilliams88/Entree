@@ -60,6 +60,9 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
         private const string KEY_SITE_NAME = "CS_SiteName";
+        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
+        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
+
 
         #endregion
 
@@ -402,6 +405,11 @@ namespace KeithLink.Svc.Impl
             {
                 return GetValue(KEY_RABBITMQ_SERVER, string.Empty);
             }
+        }
+
+        public static string ElasticSearchItemExcludeValues
+        {
+            get { return GetValue(KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES, string.Empty); }
         }
         
         public static string RabbitMQOrderVHost
