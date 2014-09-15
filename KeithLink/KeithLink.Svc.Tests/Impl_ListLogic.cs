@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void ReadAllList()
         {
-			var lists = listLogic.ReadAllLists(new UserProfile() { UserId = Guid.NewGuid() }, "fdf", true);
+			//var lists = listLogic.ReadAllLists(new UserProfile() { UserId = Guid.NewGuid() }, "fdf", true);
 
 			//Assert.IsNotNull(lists);
         }
@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Test
 		[TestMethod]
 		public void ReadList()
 		{
-			var list = listLogic.ReadList(new UserProfile() { UserId = Guid.NewGuid() }, Guid.NewGuid());
+			//var list = listLogic.ReadList(new UserProfile() { UserId = Guid.NewGuid() }, Guid.NewGuid());
 
 			//Assert.IsNotNull(list);
 		}
