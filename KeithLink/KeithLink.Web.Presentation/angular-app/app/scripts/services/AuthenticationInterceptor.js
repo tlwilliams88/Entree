@@ -18,8 +18,10 @@ angular.module('bekApp')
               config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
-        // add api key to request headers
-        config.headers['api-key'] = ENV.apiKey;
+        // add api key to request headers, do not add to /authen request
+        if (config.url.indexOf('/authen') === -1) {
+          config.headers['api-key'] = ENV.apiKey;
+        }
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;
@@ -49,8 +51,8 @@ angular.module('bekApp')
 
     // do not need to authenticate these urls
     var authorizedApiUrls = [
-      '../servicelocator',
-      '/authen'
+      '/authen',
+      '/catalog/divisions'
     ];
 
     var isSecure = true;
