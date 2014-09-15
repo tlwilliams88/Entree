@@ -24,16 +24,17 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public string PhoneNumber { get; set; }
         [DataMember(Name="CustomerName")]
 		public string CustomerName { get; set; }
+
         public string AuthenticationType
         {
             get { return "Active Directory"; }
         }
 
-		//TODO: These values should be retrieved for the logged in user
-		[DataMember(Name="CustomerId")]
-		public string CustomerId { get { return "011807"; } }
-		[DataMember(Name = "BranchId")]
-		public string BranchId { get { return "fam"; } }
+        [DataMember(Name = "CustomerNumber")]
+        public string CustomerNumber { get; set; }
+
+        [DataMember(Name = "BranchId")]
+		public string BranchId { get; set; }
 
 		public bool IsAuthenticated { get; set; }
         public string Name

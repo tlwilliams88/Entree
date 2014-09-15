@@ -282,7 +282,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = adProfile.VoiceTelephoneNumber
+                PhoneNumber = adProfile.VoiceTelephoneNumber,
+                CustomerNumber = csProfile.SelectedCustomer,
+                BranchId = csProfile.SelectedBranch
             };
         }
 
@@ -387,6 +389,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
