@@ -452,11 +452,21 @@ module.exports = function (grunt) {
               dest: '<%= yeoman.app %>/scripts/configenv.js'
           },
           // Environment targets
+          debug: {
+              constants: {
+                  ENV: {
+                      name: 'debug',
+                      apiKey: 'web_dev_v1',
+                      apiEndpoint: 'http://localhost:8080/api'
+                  }
+              }
+          },
           dev: {
               constants: {
                   ENV: {
                       name: 'dev',
-                      apiKey: 'web_dev_V1'
+                      apiKey: 'web_dev_v1',
+                      apiEndpoint: 'http://devkeithlink.benekeith.com/api'
                   }
               }
           },
@@ -464,7 +474,8 @@ module.exports = function (grunt) {
               constants: {
                   ENV: {
                       name: 'test',
-                      apiKey: 'web_test_V1'
+                      apiKey: 'web_test_v1',
+                      apiEndpoint: 'http://shopqa.benekeith.com/api'
                   }
               }
           },
@@ -472,7 +483,8 @@ module.exports = function (grunt) {
               constants: {
                   ENV: {
                       name: 'prod',
-                      apiKey: 'web_prod_V1'
+                      apiKey: 'web_prod_v1',
+                      apiEndpoint: 'http://shop.benekeith.com/api'
                   }
               }
           }
@@ -487,6 +499,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:dev',
       // 'includeSource:server',
       'concurrent:server',
       'autoprefixer',
@@ -505,6 +518,16 @@ module.exports = function (grunt) {
     // 'npm-install',
     'clean:dev',
     'ngconstant:dev',
+    // 'includeSource:dev',
+    'compass:server',
+    'copy:dev',
+    'karma'
+  ]);
+
+  grunt.registerTask('build-for-debug', [
+    // 'npm-install',
+    'clean:dev',
+    'ngconstant:debug',
     // 'includeSource:dev',
     'compass:server',
     'copy:dev',
