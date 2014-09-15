@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic
 				foreach (var item in cart.Items)
 				{
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
-					if (existingItem.Any())
+					if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
 						lineItems.Add(existingItem.First());
