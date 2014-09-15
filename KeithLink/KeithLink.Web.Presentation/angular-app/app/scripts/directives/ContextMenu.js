@@ -48,7 +48,7 @@ angular.module('bekApp')
         $scope.loadingContextMenu = true;
         CartService.createCart(items).then(function(data) {
           $scope.loadingContextMenu = false;
-          $state.go('menu.cart.items', { cartId: data.listitemid, renameCart: true });
+          $state.go('menu.cart.items', { cartId: data.id, renameCart: true });
           addSuccessAlert('Successfully created new cart.');
         }, function() {
           addErrorAlert('Error creating new cart.');
