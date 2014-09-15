@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="111"
-  DTS:VersionGUID="{E3B22B00-B063-4BBF-A6C9-BA9D8551B9AC}">
+  DTS:VersionBuild="114"
+  DTS:VersionGUID="{3C32D651-07AB-46B9-8321-0BC0A60496EA}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekmain\Corporate_MIS\eBusiness Systems\ecommerce project\TestCustomerFile\customerFile.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -468,17 +468,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADmPU+jMCT0jd8xPX+F0vp2AAAAAASAAACgAAAAEAAAAPtjIsDHqB/59NxuvNXAV6wIAAAAb8Y6a4pnyDQUAAAAr/yUMlI//jzPiZXlgWEUImrmPQ4</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACM0mMh/cyGZvdnPiRwBP75AAAAAASAAACgAAAAEAAAAMstmJxqBJIfbveOPHX56LwIAAAAH02vS7rT7N4UAAAARkKF5/ix+Djb9T/aX70h9s7jhuE</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACivMQ9TVe4xR02LrH3t4bbAAAAAASAAACgAAAAEAAAAJlFwddNAND1Qo75DOvoQUYIAAAAsTX0mquG3Q8UAAAAeHoFSFEhsya+Cb7yPjE6VLsTx28</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB4Nzy+q3wzs3ExxrAJo3gnAAAAAASAAACgAAAAEAAAAHjtsr3yIqRsBmfOR5QBvEYIAAAAYGmEe/Kkxg4UAAAAbYVWVy2592kpJ+VIfDVzrPH2gJk</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -490,7 +490,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -510,7 +510,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -10351,7 +10351,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -11599,43 +11599,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -11677,7 +11677,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -11854,6 +11854,36 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -11972,35 +12002,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -12289,35 +12290,34 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
 
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -13789,7 +13789,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Nutrition">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="98,42"
           Id="Package\GS1 Import Tasks\Product Nutrition\FSE"
@@ -13829,9 +13829,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -13862,7 +13860,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -13902,9 +13900,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
