@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3AC0D4E3-7692-46DD-852D-CDB6E35DDAC8}</ProjectGuid>
+    <ProjectGuid>{BE41C4EC-AA99-4E94-9698-E0690A24212A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KeithLink.Svc.Windows.OrderService</RootNamespace>
@@ -35,7 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -44,17 +46,50 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Service1.cs">
+    <Compile Include="OrderService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service1.Designer.cs">
-      <DependentUpon>Service1.cs</DependentUpon>
+    <Compile Include="OrderService.Designer.cs">
+      <DependentUpon>OrderService.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
+      <Project>{a5061d47-ad81-4c9d-b171-8d92f38db60d}</Project>
+      <Name>KeithLink.Common.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Common.Impl\KeithLink.Common.Impl.csproj">
+      <Project>{562e7a83-563d-4848-af64-7dcb432935e8}</Project>
+      <Name>KeithLink.Common.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Core\KeithLink.Svc.Core.csproj">
+      <Project>{e272da17-c7f8-4f35-a4b0-e97d03d35754}</Project>
+      <Name>KeithLink.Svc.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj">
+      <Project>{878aa2e7-769b-409c-8285-3a7faca750f9}</Project>
+      <Name>KeithLink.Svc.Impl</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="OrderService.resx">
+      <DependentUpon>OrderService.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

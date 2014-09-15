@@ -39,6 +39,7 @@ namespace KeithLink.Svc.Core.Extensions {
             output.Append(value.ItemNumber);
             output.Append(value.OrderedQuantity.ToString().PadLeft(3, '0'));
             output.Append(GetUOM(value.UnitOfMeasure));
+            output.Append(value.SellPrice.ToString("0000000.00"));
             output.Append(value.Catchweight ? "Y" : " ");
             output.Append(value.LineNumber.ToString().PadLeft(5, '0'));
             output.Append(GetLineType(value.ItemChange));

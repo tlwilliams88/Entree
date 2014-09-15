@@ -44,34 +44,28 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public void ProcessOrders() {
-            _log.WriteInformationLog("Start monitoring the order queue");
+            _orderQueue.SetQueuePath((int)OrderQueueLocation.Normal);
+            string rawOrder = _orderQueue.ConsumeFromQueue();
 
-            while (AllowOrderProcessing) {
-                _orderQueue.SetQueuePath((int)OrderQueueLocation.Normal);
+            while (rawOrder != null) {
+                OrderFile order = DeserializeOrder(rawOrder);
 
-                string rawOrder = _orderQueue.ConsumeFromQueue();
+                try {
+                    _log.WriteInformationLog(string.Format("Sending order to mainframe({0})", order.Header.ControlNumber));
 
-                if (rawOrder == null) {
-                    System.Threading.Thread.Sleep(2000);
-                } else {
-                    OrderFile order = DeserializeOrder(rawOrder);
+                    SendToHost(order);
+                    SendToHistory(rawOrder);
 
-                    try {
-                        _log.WriteInformationLog(string.Format("Sending order to mainframe({0})", order.Header.ControlNumber));
+                    _log.WriteInformationLog(string.Format("Order sent to mainframe({0})", order.Header.ControlNumber));
+                } catch (Exception ex) {
+                    _log.WriteErrorLog(string.Format("Error while sending order({0})", order.Header.ControlNumber), ex);
 
-                        SendToHost(order);
-                        SendToHistory(rawOrder);
-
-                        _log.WriteInformationLog(string.Format("Order sent to mainframe({0})", order.Header.ControlNumber));
-                    } catch (Exception ex) {
-                        _log.WriteErrorLog(string.Format("Error while sending order({0})", order.Header.ControlNumber), ex);
-
-                        SendToError(rawOrder);
-                    }
+                    SendToError(rawOrder);
                 }
-            }
 
-            _log.WriteInformationLog("No longer watching the order queue");
+                _orderQueue.SetQueuePath((int)OrderQueueLocation.Normal);
+                rawOrder = _orderQueue.ConsumeFromQueue();
+            } 
         }
 
         private void SendDetailRecordsToHost(List<OrderDetail> details) {
