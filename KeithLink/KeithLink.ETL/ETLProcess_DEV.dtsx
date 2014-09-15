@@ -5,22 +5,22 @@
   DTS:CreationName="SSIS.Package.3"
   DTS:CreatorComputerName="CORPMIS7708"
   DTS:CreatorName="BEKCO\jmmcmillan"
-  DTS:DTSID="{554BAC4F-E965-4D91-A1B9-E8BD26834EA8}"
+  DTS:DTSID="{C01635BB-E8CB-4128-B331-28D7E5E4DA81}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="SSIS.Package.3"
   DTS:LastModifiedProductVersion="11.0.3436.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="101"
-  DTS:VersionGUID="{0E8784D6-D492-46B8-A9C1-E191DD8B0B08}">
+  DTS:VersionBuild="111"
+  DTS:VersionGUID="{E3B22B00-B063-4BBF-A6C9-BA9D8551B9AC}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[FF_Customer]"
       DTS:CreationName="FLATFILE"
-      DTS:DTSID="{524A8925-8542-4540-B01F-6DF513AE007B}"
+      DTS:DTSID="{52F40107-FBE7-4DB9-ADAC-7D81375EAC58}"
       DTS:ObjectName="FF_Customer">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerFile.SSIS">
+          DTS:ConnectionString="\\bekmain\Corporate_MIS\eBusiness Systems\ecommerce project\TestCustomerFile\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -39,7 +39,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{79B77496-EB3D-47DE-868E-5E2F5A89EB2A}"
+              DTS:DTSID="{551E1A90-CBD2-4FF3-9F0D-82AADC38937A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -47,7 +47,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{5996AD0E-8846-4B78-8EB8-BD28D9770E90}"
+              DTS:DTSID="{A23DCB76-77E8-4DF0-8064-E49402FE5D7D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -55,7 +55,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{6EEF967A-808B-48CB-86AF-E04F43F267C8}"
+              DTS:DTSID="{D9EBD970-1E02-4CD5-986A-368995B917F7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -63,7 +63,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{AF05DEB2-92F1-46F1-8D85-008F6A83F0D7}"
+              DTS:DTSID="{286F675F-11E7-442C-B4B2-C26D36E1D541}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -71,7 +71,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{277AC247-7E0D-4CD0-83C7-774965E631A7}"
+              DTS:DTSID="{8A34ADF6-26FE-40F4-B350-EC0F5CC4DDD7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -79,7 +79,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{FDAB7807-5A51-4A09-99E5-D5EA4DA5F1BF}"
+              DTS:DTSID="{5D47295C-9370-449C-9523-29237DB4CC6B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -87,7 +87,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{DF0AD9B1-EB08-43A7-BE3C-A11224747470}"
+              DTS:DTSID="{782E58B5-C44F-419F-8FEB-937FF2356371}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -95,7 +95,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{E232C55E-9A24-4EDA-BBCD-1C5AC88A3021}"
+              DTS:DTSID="{6CAB1B1E-B449-4E13-B6E6-6C9ADC3BF747}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -103,7 +103,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{22F90DC2-F691-4E0C-A6A1-0FAE280CD393}"
+              DTS:DTSID="{015C03E5-D69B-4C8F-BA22-4715E963F3EE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -111,7 +111,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{C2BDE67F-3D64-4522-9F33-611904005363}"
+              DTS:DTSID="{1C294639-2689-49A6-8E53-50A2F9D2FF78}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -119,7 +119,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{F313880D-BD70-4792-852F-1492CBF3426E}"
+              DTS:DTSID="{5563C5AA-2121-4C10-90A7-6B19D3CB84B9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -127,7 +127,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{AA6DCDB0-2F86-4015-8290-8BF2E7FA8947}"
+              DTS:DTSID="{4B6A5388-4BDD-49CD-9139-046D7C46828F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -135,7 +135,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{10291183-E1D9-4C95-A653-934484DAD3F9}"
+              DTS:DTSID="{7F6F6909-14BC-4116-9B82-B6A55FD0542A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -143,7 +143,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{07DF6C9E-0D8C-424B-961C-58962D3614DD}"
+              DTS:DTSID="{437B35DF-4593-4947-A19C-D91EE1F32AC3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -151,7 +151,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{96030DDB-85BF-449B-9F79-FD37A881E55D}"
+              DTS:DTSID="{A8328C4B-CA1D-4C0C-B55F-AE17B9030BB9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -159,7 +159,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{A2E381E3-09EF-4CA1-A3BB-553D66406769}"
+              DTS:DTSID="{2755AED2-12EB-4C3B-BF71-F2E710C9765F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -167,7 +167,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{0ADB0563-32AE-4204-9207-79696A2B183B}"
+              DTS:DTSID="{F10344BD-C988-4FBE-B9E1-30C81175C5D3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -175,7 +175,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{FECDB5E4-CE4B-480C-8FC7-6C0FD854D58F}"
+              DTS:DTSID="{329271B5-B28E-4FB2-9C24-4C25A22D023C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -183,7 +183,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{D0E91D7C-6AD1-4D38-B0DE-32695E9E9408}"
+              DTS:DTSID="{15384D0C-7FCB-4A27-8A83-006B65873D2C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -191,7 +191,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{4F6EE9E8-98A4-415C-B06E-5C70A7315D16}"
+              DTS:DTSID="{1D61EFD2-F20A-4368-9A9B-90283A307EB6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -199,7 +199,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{DCA58DEC-E654-457F-B31C-7007520760B6}"
+              DTS:DTSID="{FD28D799-6360-41FC-9F3A-6890ECD1FC70}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -207,7 +207,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{9FCD7BE3-ED50-40E4-9BA2-45965C797DC7}"
+              DTS:DTSID="{7F549EFE-E56B-46DB-82AD-2442419A517E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{22B8238D-7EE4-4544-BCFA-456DD997F789}"
+              DTS:DTSID="{371C87D1-CAEE-4D78-BB93-7F7FED56404B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{22519BF2-3F55-434E-8590-8C5FF3E1267B}"
+              DTS:DTSID="{5E581518-C664-4E6C-A992-FEB7325E562A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{E10FE86E-0949-48FA-9F05-0024BC2B6A02}"
+              DTS:DTSID="{D470613A-CAE9-4C2A-8680-8D6EE03E9BC5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{88393C4B-706C-4D64-A900-F7EF49C2792D}"
+              DTS:DTSID="{A14AD6FE-B9C5-4E7D-B7AC-312CC87D4FEA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{4DBC5D0D-AB67-4A5C-9A89-97A9C8B66413}"
+              DTS:DTSID="{21C38DA5-B111-437E-BEC0-39AEC12D7EF9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{140668FB-6DDC-4B82-B945-DA34624834A6}"
+              DTS:DTSID="{FF83BCCC-D534-4853-ADBB-97B43BCAF64B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{40ABDDCB-1E3D-4632-9551-6E8154B582FF}"
+              DTS:DTSID="{E03699CD-0F12-4B59-8A08-5462D2086B04}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{F867BD5D-7C25-4E63-A586-C32688C80341}"
+              DTS:DTSID="{D9763F45-72DE-4178-95B2-749854BE9BAD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{D8A1B211-FE41-470E-B692-68B509EE8E73}"
+              DTS:DTSID="{04AA4992-7691-4538-B86F-B12E225B498F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{207EADEB-4B59-44EC-AC82-4F139F1AF6D3}"
+              DTS:DTSID="{504C4CED-42D7-4DC4-A5F8-876E00C91125}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{AC3D83D7-24B4-4809-88AA-A81C059F36F1}"
+              DTS:DTSID="{5D9978B0-5E27-456D-A3CF-794C7E0A2876}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{9C518B2C-8412-47F6-9A9A-09DE00C358F7}"
+              DTS:DTSID="{65F7438D-79F1-416B-9523-B612945EFFA9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{DD18ACC8-6C58-4DA3-B980-42B13F1866CE}"
+              DTS:DTSID="{66B0237A-8818-4EBD-A909-9551C8BDBF0A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{EB6880CF-9687-425D-BF91-4A728D1FF49F}"
+              DTS:DTSID="{DBBF795A-EFFC-4C03-BCFE-86702BF7A80C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{48FCCE76-9910-4E27-BEE1-315B48FEE8DC}"
+              DTS:DTSID="{1A1965B7-B43B-4C78-B722-C2AD8308F54D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{72B9EEDA-9273-49E2-B150-33C34DB1D3A2}"
+              DTS:DTSID="{50894700-4CD9-4E01-AA91-0371BFA8432B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{BEB29A17-B817-4F50-876B-7DE7E93B74AF}"
+              DTS:DTSID="{34A8CF5E-155D-488C-9F2F-C1C32C937CBD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{359A9ED3-8703-4503-A278-8C1D95A4A147}"
+              DTS:DTSID="{F9DB3744-7300-432A-B724-71BC55C0E7B4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{6C052431-FAC3-49F9-B592-10224C1A9CF8}"
+              DTS:DTSID="{071D8FA5-8AF7-4217-ADB7-E4B0FAF7BB19}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{E49CDF0B-A104-4EE1-81F6-71BA8E85BFEC}"
+              DTS:DTSID="{100891E9-D61D-428A-8ED6-285AA41A2426}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{5C7E7E0E-7A69-4158-B9FE-A73376ED96A8}"
+              DTS:DTSID="{F5EE15BE-8242-429C-8A3D-F07C797BFFC7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{5EF8635C-2ABB-472F-8875-56B678A91F6F}"
+              DTS:DTSID="{17D9444A-C7AF-4CAC-B1AD-725352412A3B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,7 +391,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{93F899BF-25FB-47FA-8F7A-49DE67B2C23B}"
+              DTS:DTSID="{4B0E48E8-4D05-4BD3-83A4-E92821C8AD33}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -399,7 +399,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{12FF8D04-E099-4008-88E1-6E617593EC27}"
+              DTS:DTSID="{63330EC7-EC05-43EE-8164-4FE7BAE106EA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{57D814D6-4D09-4540-9B6A-54B44E700736}"
+              DTS:DTSID="{E692EBC8-B3A9-4011-8E71-CF6A3ABAE7F4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{CA6481DA-1545-4755-9729-B57D89A4D569}"
+              DTS:DTSID="{F4795F76-0C63-44F3-81AF-95C4C9036E90}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{E8593A02-5321-4C35-9E75-AB834F257B61}"
+              DTS:DTSID="{A143A4C9-B24F-4C5A-8236-2CD50BC5E642}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{C2CA7FF3-9689-438D-AC8D-A47A09B05E88}"
+              DTS:DTSID="{389194C0-D6BC-4DA3-9B6D-D705804889C0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{A217DBC0-AB96-4732-B897-DCC48ABCB94D}"
+              DTS:DTSID="{71EE8726-592A-46FA-9874-C6E83044AFA6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{9F2EDC07-0276-497A-839A-C2798F753FDD}"
+              DTS:DTSID="{FC0DB32C-5634-40D5-9E66-9C227197DCDD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="Column 0"
-              DTS:DTSID="{7E5427D8-79B1-4E16-98AE-95200FA6F2EF}"
+              DTS:DTSID="{E2326EF0-C705-4B7D-92F8-16AA6B7FED23}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -464,7 +464,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[HTTP_ETLWebService]"
       DTS:CreationName="HTTP"
-      DTS:DTSID="{D7A60410-9A55-487A-8DA8-AD2AFF1D4D49}"
+      DTS:DTSID="{4BB88A81-8888-496B-A098-F127240AFCB1}"
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -474,11 +474,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB84I3NRZfvHqo8mIqLoXvdAAAAAASAAACgAAAAEAAAACKxzAFcnbkzPrUkWVb5cLEIAAAAHDmOxLWNHpYUAAAAKclcOfTOuCl6XrqU4XQP496Rlys</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADmPU+jMCT0jd8xPX+F0vp2AAAAAASAAACgAAAAEAAAAPtjIsDHqB/59NxuvNXAV6wIAAAAb8Y6a4pnyDQUAAAAr/yUMlI//jzPiZXlgWEUImrmPQ4</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD8X9jxtk/B72cE7Y7zrU31AAAAAASAAACgAAAAEAAAADTdiaFlvHFM8X4zKt4resQIAAAAmxpfUGJk2cUUAAAAJoaTBoPm5c886fv71CxSVb8HWAI</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACivMQ9TVe4xR02LrH3t4bbAAAAAASAAACgAAAAEAAAAJlFwddNAND1Qo75DOvoQUYIAAAAsTX0mquG3Q8UAAAAeHoFSFEhsya+Cb7yPjE6VLsTx28</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -486,7 +486,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{9FBDC47F-B288-4ECE-983A-DD837053A574}"
+      DTS:DTSID="{84951720-C6D3-4D2D-A75A-66D64367B533}"
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -496,7 +496,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[OLE_FSE]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{D5F08DC2-F3F8-4C18-A222-9E265D4DC5B3}"
+      DTS:DTSID="{55D8EAB2-FC39-421A-9F57-151D182CFDE5}"
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -506,7 +506,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[OLE_Log]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{BA10683A-23A1-4212-ABE3-8AA819B75205}"
+      DTS:DTSID="{6B20D03B-CF1A-40EA-B3C2-02F6BBD53BA2}"
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -516,7 +516,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[OLE_PRODCAT]"
       DTS:CreationName="OLEDB"
-      DTS:DTSID="{5A4ED15F-D5DF-4B13-9727-6C4025713489}"
+      DTS:DTSID="{24454543-1E10-4B2A-8368-B02D441BD0C8}"
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
@@ -526,7 +526,7 @@
     <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[SMTP]"
       DTS:CreationName="SMTP"
-      DTS:DTSID="{DC49DF88-F19E-4240-A6AB-220C0C537E9B}"
+      DTS:DTSID="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
       DTS:ObjectName="SMTP">
       <DTS:ObjectData>
         <SmtpConnectionManager
@@ -539,7 +539,7 @@
       DTS:ConfigurationString="C:\SSIS_XML\ECOM\ETLProcess_DEV.dtsConfig"
       DTS:ConfigurationType="1"
       DTS:CreationName=""
-      DTS:DTSID="{EDED6D78-AD9B-4518-B9DF-40AC1E87EB06}"
+      DTS:DTSID="{F374CBAA-9369-4ACD-A51D-0BBA0B0BB85F}"
       DTS:ObjectName="ETLProcess" />
   </DTS:Configurations>
   <DTS:LogProviders>
@@ -547,7 +547,7 @@
       DTS:ConfigString="OLE_Log"
       DTS:CreationName="DTS.LogProviderSQLServer.3"
       DTS:Description="Writes log entries for events to a SQL Server database"
-      DTS:DTSID="{4A58CF9D-F624-41BF-B453-668E51D149A2}"
+      DTS:DTSID="{1B9F69FB-23E9-441F-951D-FDA770EBA5B3}"
       DTS:ObjectName="SSIS log provider for SQL Server">
       <DTS:ObjectData>
         <InnerObject />
@@ -557,7 +557,7 @@
   <DTS:Variables>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{DC0FA9AF-6BAC-4F18-B4BD-78CF60C6D10A}"
+      DTS:DTSID="{2FAD403E-3AB3-4C8F-AF69-5141A69C27BB}"
       DTS:IncludeInDebugDump="2345"
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
@@ -566,7 +566,7 @@
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
-      DTS:DTSID="{6D8D82F2-A998-4E02-AEB6-190316C1BE17}"
+      DTS:DTSID="{A350A91D-4FEE-4A98-A8B9-E7F7C8706AC8}"
       DTS:IncludeInDebugDump="6789"
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_ProcessStagedData_Result">
@@ -735,7 +735,7 @@
     </DTS:Property>
     <DTS:SelectedLogProviders>
       <DTS:SelectedLogProvider
-        DTS:InstanceID="{4A58CF9D-F624-41BF-B453-668E51D149A2}" />
+        DTS:InstanceID="{1B9F69FB-23E9-441F-951D-FDA770EBA5B3}" />
     </DTS:SelectedLogProviders>
   </DTS:LoggingOptions>
   <DTS:Executables>
@@ -743,7 +743,8 @@
       DTS:refId="Package\Archive Mainframe Files"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Script Task"
-      DTS:DTSID="{952E477E-0FED-43E1-B058-5298F070774C}"
+      DTS:Disabled="True"
+      DTS:DTSID="{4DCD3E48-A7FC-4A37-814D-25B03B763024}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Archive Mainframe Files"
@@ -1505,7 +1506,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:refId="Package\Catalog Import Tasks"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{C347B7C5-0C66-4DA2-A998-74F5B571BDFD}"
+      DTS:DTSID="{232C10DD-8E0B-4641-A829-E19B025BE17F}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Catalog Import Tasks">
@@ -1517,7 +1518,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Stage Branches"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{87F74E35-A0CA-4F6C-8E09-F4C765A0C348}"
+          DTS:DTSID="{C9FD1069-C268-43F5-930A-80DB87FF42DB}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Stage Branches"
@@ -1839,7 +1840,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Stage Brand Control Labels"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{5B02F0BA-5EBF-4332-89F5-039935A9F1A3}"
+          DTS:DTSID="{B31ED646-0E65-40C6-8B0B-45B126F8671D}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Stage Brand Control Labels"
@@ -2131,7 +2132,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Stage Categories"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{716354D3-701C-49BF-95FF-F15C0245CC06}"
+          DTS:DTSID="{29B4972B-070D-4601-B73A-EFF1B1579164}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Stage Categories"
@@ -2487,7 +2488,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Stage Customers"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{DC4836AB-1A48-46EB-8CA1-F3BBE5A10560}"
+          DTS:DTSID="{5E5876DE-36C8-4449-A2DA-BFDCAE406332}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Stage Customers"
@@ -6612,7 +6613,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Stage Items"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{8F2C32A5-316A-4D5E-A0E4-4C3B263FF07A}"
+          DTS:DTSID="{CF513C21-7DF0-4B98-82DB-02A362C75906}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Stage Items"
@@ -7527,7 +7528,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       dataType="System.Int32"
                       description="Specifies the mode used to access the database."
                       name="AccessMode"
-                      typeConverter="AccessMode">2</property>
+                      typeConverter="AccessMode">0</property>
                     <property
                       dataType="System.String"
                       description="The mappings between the parameters in the SQL command and variables."
@@ -8908,7 +8909,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\Catalog Import Tasks\Staging Brands"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{24FA4200-D40D-48D3-A7A5-79F24F6F1CE5}"
+          DTS:DTSID="{AD7B3095-62DA-4D96-8D9B-084AFBDC5485}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Staging Brands"
@@ -9240,7 +9241,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:refId="Package\GS1 Import Tasks"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{31A467EC-E6D0-4A37-85D2-42274B92E505}"
+      DTS:DTSID="{1DC7B8C9-8D57-4DF9-9B50-397D443EBC7E}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="GS1 Import Tasks">
@@ -9252,7 +9253,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\GS1 Import Tasks\Product Allergen"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{63881CD8-9E6A-4F59-8A09-7E2FF4590777}"
+          DTS:DTSID="{2A3408B8-A6FC-4111-B4C6-DED7F227CA55}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Product Allergen"
@@ -9622,7 +9623,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\GS1 Import Tasks\Product Diet"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{7558339F-6CB8-43A3-B2B1-E760C0568C56}"
+          DTS:DTSID="{CD6C5E9B-DF14-4F3B-A948-066D2349A2DD}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Product Diet"
@@ -9954,7 +9955,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\GS1 Import Tasks\Product Nutrition"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{301F90E4-FB29-43D0-A428-4D429639FC5D}"
+          DTS:DTSID="{15646099-78E5-4E53-A015-64CEDED98AB0}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Product Nutrition"
@@ -10400,7 +10401,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:refId="Package\GS1 Import Tasks\Product Spec"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
-          DTS:DTSID="{C4647F10-BF4E-40CD-8F74-15BC612D4907}"
+          DTS:DTSID="{55ACAC9C-DA56-4B30-930D-D3C1127F3312}"
           DTS:ExecutableType="SSIS.Pipeline.3"
           DTS:LocaleID="-1"
           DTS:ObjectName="Product Spec"
@@ -11795,7 +11796,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:refId="Package\Process Staged Data"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Web Service Task"
-      DTS:DTSID="{DE2AC34A-5729-46BC-B2DC-7422028EB72F}"
+      DTS:DTSID="{DF72B00D-EEF2-43C8-A94B-FCE5D29F2EDB}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Process Staged Data"
@@ -11806,7 +11807,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         DTS:FilterKind="0" />
       <DTS:ObjectData>
         <WSTask:WebServiceTaskData
-          WSTask:ConnectionName="{D7A60410-9A55-487A-8DA8-AD2AFF1D4D49}"
+          WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
           WSTask:Service="ETLService"
           WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
           WSTask:OverwriteWSDLFile="True"
@@ -11838,7 +11839,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:refId="Package\Rename Customer File"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Script Task"
-      DTS:DTSID="{9069D437-8FA0-4A06-83EA-5D23D4E81598}"
+      DTS:Disabled="True"
+      DTS:DTSID="{B71DF61D-D192-4318-AF16-27B6281FCC41}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Customer File"
@@ -11851,36 +11853,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
-          <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -12000,6 +11972,35 @@ using System.Runtime.CompilerServices;
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -12288,34 +12289,35 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
 //
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -12518,7 +12520,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       DTS:refId="Package\Send Fail Message"
       DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:Description="Send Mail Task"
-      DTS:DTSID="{6F96D673-BBD5-4878-8AC1-B9F7B8DF67DB}"
+      DTS:DTSID="{ED317B19-61EE-4B43-AC6E-3AED6D464A46}"
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
@@ -12533,7 +12535,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         DTS:Name="Subject">"SSIS Package " + @[System::PackageName] + " has failed on " +  @[System::MachineName]</DTS:PropertyExpression>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
-          SendMailTask:SMTPServer="{DC49DF88-F19E-4240-A6AB-220C0C537E9B}"
+          SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
           SendMailTask:From="CORPMIS7708@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
           SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMIS7708"
@@ -12544,7 +12546,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       DTS:refId="Package\Truncate Stage Tables"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
-      DTS:DTSID="{1A6B55BA-2578-43A3-9A28-561B08D8981B}"
+      DTS:DTSID="{702105CC-171E-480F-9DBE-42D397EC03D8}"
       DTS:ExecutableType="STOCK:SEQUENCE"
       DTS:LocaleID="-1"
       DTS:ObjectName="Truncate Stage Tables">
@@ -12556,7 +12558,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:refId="Package\Truncate Stage Tables\Truncate Brand Tables"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{f40a2768-5616-4848-b3ca-05d01abd210f}"
+          DTS:DTSID="{39E115EE-B9B4-4EE8-80E6-B139A4263A92}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Brand Tables"
@@ -12567,7 +12569,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             DTS:FilterKind="0" />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{9FBDC47F-B288-4ECE-983A-DD837053A574}"
+              SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
               SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Brands];&#xA;TRUNCATE TABLE [ETL].[Staging_BrandControlLabels];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
@@ -12575,7 +12577,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:refId="Package\Truncate Stage Tables\Truncate Catalog Stage Tables"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{F44EB908-AB15-4778-A3A0-743FB0BC6F4B}"
+          DTS:DTSID="{6CF1F6E4-6277-4CAB-9A08-050A8BD75A23}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Catalog Stage Tables"
@@ -12586,7 +12588,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             DTS:FilterKind="0" />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{9FBDC47F-B288-4ECE-983A-DD837053A574}"
+              SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
               SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_Branch];&#xA;TRUNCATE TABLE [ETL].[Staging_Category];&#xA;TRUNCATE TABLE [ETL].[Staging_ItemData];&#xA;TRUNCATE TABLE [ETL].[Staging_Customer];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
@@ -12594,7 +12596,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:refId="Package\Truncate Stage Tables\Truncate GS1 Stage Tables"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Execute SQL Task"
-          DTS:DTSID="{C9CFEE57-58D4-400D-AFBC-6F1A82334668}"
+          DTS:DTSID="{C13624F5-2D21-40A3-99FE-BA69F25F1A05}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate GS1 Stage Tables"
@@ -12605,7 +12607,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             DTS:FilterKind="0" />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
-              SQLTask:Connection="{9FBDC47F-B288-4ECE-983A-DD837053A574}"
+              SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
               SQLTask:SqlStatementSource="TRUNCATE TABLE ETL.Staging_FSE_ProductSpec&#xA;TRUNCATE TABLE ETL.Staging_FSE_ProductNutrition&#xA;TRUNCATE TABLE ETL.Staging_FSE_ProductAllergens&#xA;TRUNCATE TABLE ETL.Staging_FSE_ProductDiet" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
@@ -12616,7 +12618,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{96C27009-3DF1-4957-B0BE-15B14AE9574F}"
+      DTS:DTSID="{4BC78F9D-F9A0-407D-8107-38156C3CDDB9}"
       DTS:From="Package\Truncate Stage Tables"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
@@ -12624,7 +12626,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
-      DTS:DTSID="{7F61986E-14D7-4069-A6F9-3AE8CDCC23E1}"
+      DTS:DTSID="{947C38D5-AC03-4604-80DF-934E4187431C}"
       DTS:From="Package\Catalog Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 1"
@@ -12632,7 +12634,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 10]"
       DTS:CreationName=""
-      DTS:DTSID="{D43045D2-8CFD-45A1-904B-1B375B47BB05}"
+      DTS:DTSID="{82EE9E65-E9E7-445B-AADE-C44D794B8179}"
       DTS:From="Package\Archive Mainframe Files"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 10"
@@ -12641,7 +12643,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{DFF3332C-6EC4-469F-A8FA-D75889B03B65}"
+      DTS:DTSID="{7AB1CD0A-70FA-4542-87FA-1D780B1D2E90}"
       DTS:From="Package\GS1 Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
@@ -12649,7 +12651,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
       DTS:CreationName=""
-      DTS:DTSID="{0CA70963-C9E0-4EE8-BAC2-4F5FABE78560}"
+      DTS:DTSID="{C8391C6D-9DFD-494E-AA2D-5CAA68C3CBA7}"
       DTS:From="Package\Truncate Stage Tables"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 3"
@@ -12658,7 +12660,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 4]"
       DTS:CreationName=""
-      DTS:DTSID="{0ECFE449-D815-45FA-824A-D4C8A23BEFFF}"
+      DTS:DTSID="{C64069C1-0ECC-47F0-A90C-37A1388F947D}"
       DTS:From="Package\Catalog Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 4"
@@ -12667,7 +12669,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 5]"
       DTS:CreationName=""
-      DTS:DTSID="{9F84AF8D-004F-4728-8576-07938BC5E940}"
+      DTS:DTSID="{6E7D63D8-EE11-4D42-9005-C7B3705499B2}"
       DTS:From="Package\GS1 Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 5"
@@ -12676,7 +12678,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 6]"
       DTS:CreationName=""
-      DTS:DTSID="{B785F4B1-9387-4FDD-9826-2B990702F1D5}"
+      DTS:DTSID="{F820971F-736A-40F9-8A1F-3F6DC09B5976}"
       DTS:From="Package\Process Staged Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 6"
@@ -12685,7 +12687,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 7]"
       DTS:CreationName=""
-      DTS:DTSID="{3ED4CDAE-04FC-458E-9EFB-65E7627B46A5}"
+      DTS:DTSID="{095D0D47-43A5-4618-8486-299E52FAAE5D}"
       DTS:From="Package\Rename Customer File"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 7"
@@ -12693,7 +12695,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 8]"
       DTS:CreationName=""
-      DTS:DTSID="{6FDF26E7-3C26-4F93-BDE7-9FB74D59E315}"
+      DTS:DTSID="{55A4C426-AB54-4A43-932A-472152DA4356}"
       DTS:From="Package\Rename Customer File"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 8"
@@ -12702,7 +12704,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 9]"
       DTS:CreationName=""
-      DTS:DTSID="{23857145-7216-4542-9D2D-D35DBBE86525}"
+      DTS:DTSID="{96B7AF31-3E24-4DB6-A069-B8FDE4B24473}"
       DTS:From="Package\Process Staged Data"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 9"
@@ -13485,47 +13487,49 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Items">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="127,42"
-          Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
-          TopLeft="365,68" />
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="161,42"
           Id="Package\Catalog Import Tasks\Stage Items\KeithlinkAppData"
           TopLeft="430,353" />
+        <NodeLayout
+          Size="127,42"
+          Id="Package\Catalog Import Tasks\Stage Items\PRODCAT"
+          TopLeft="364,69" />
         <EdgeLayout
           Id="Package\Catalog Import Tasks\Stage Items.Paths[OLE DB Source Output]"
-          TopLeft="428.5,110">
+          TopLeft="427.5,111">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="82,243"
+              EndConnector="83,242"
               Start="0,0"
-              End="82,235.5">
+              End="83,234.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,117.5" />
+                    End="0,117" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,117.5"
-                    Point2="0,121.5"
-                    Point3="4,121.5" />
+                    Point1="0,117"
+                    Point2="0,121"
+                    Point3="4,121" />
                   <mssgle:LineSegment
-                    End="78,121.5" />
+                    End="79,121" />
                   <mssgle:CubicBezierSegment
-                    Point1="78,121.5"
-                    Point2="82,121.5"
-                    Point3="82,125.5" />
+                    Point1="79,121"
+                    Point2="83,121"
+                    Point3="83,125" />
                   <mssgle:LineSegment
-                    End="82,235.5" />
+                    End="83,234.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -13561,7 +13565,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Staging Brands">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="163,42"
           Id="Package\Catalog Import Tasks\Staging Brands\PRODCAT Brands"
@@ -13601,7 +13605,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -13783,7 +13789,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Nutrition">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="98,42"
           Id="Package\GS1 Import Tasks\Product Nutrition\FSE"
@@ -13823,7 +13829,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -13854,7 +13862,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\GS1 Import Tasks\Product Spec">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="161,42"
           Id="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData"
@@ -13894,7 +13902,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
