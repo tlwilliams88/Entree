@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             var newId = lineItemsFromResponse.Where(b => !basket.LineItems.Any(i => i.Id.Equals(b.Target.Id.ToGuid()))).FirstOrDefault();
 
             if (newId != null)
-                return newId.Id.ToGuid();
+                return newId.Target.Id.ToGuid();
 
             return null;
 		}
