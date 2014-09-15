@@ -499,6 +499,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:dev',
       // 'includeSource:server',
       'concurrent:server',
       'autoprefixer',
