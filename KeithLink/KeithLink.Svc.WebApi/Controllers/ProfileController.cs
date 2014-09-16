@@ -65,6 +65,33 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        [ApiKeyedRoute("profile/register")]
+        public OperationReturnModel<Core.Models.Profile.UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
+
+            OperationReturnModel<Core.Models.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Models.Profile.UserProfileReturn>();
+
+            try {
+                Core.Models.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
+
+                // create the customer container if it does not exist
+                if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER); }
+
+                retVal.SuccessResponse = _profileRepo.CreateGuestProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+            } catch (ApplicationException axe) {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]

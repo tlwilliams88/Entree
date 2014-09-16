@@ -102,6 +102,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         /// <summary>
+        /// validate the values needed to create a guest profile
+        /// </summary>
+        /// <remarks>
+        /// jwames - 9/15/2014 - original code
+        /// </remarks>
+        private void AssertGuestProfile(string emailAddress, string password) {
+            AssertEmailAddress(emailAddress);
+            AssertEmailAddressLength(emailAddress);
+            AssertPasswordComplexity(password);
+            AssertPasswordLength(password);
+        }
+
+        /// <summary>
         /// make sure that the last name is longer than 0 characters
         /// </summary>
         /// <remarks>
@@ -282,7 +295,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = adProfile.VoiceTelephoneNumber
+                PhoneNumber = adProfile.VoiceTelephoneNumber,
+                CustomerNumber = csProfile.SelectedCustomer,
+                BranchId = csProfile.SelectedBranch
             };
         }
 
@@ -352,6 +367,39 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return (GetUserProfile(emailAddres));
         }
 
+        public UserProfileReturn CreateGuestProfile(string emailAddress, string password, string branchId) {
+            AssertGuestProfile(emailAddress, password);
+        
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS)) {
+                throw new ApplicationException("Cannot create a guest profile for a BEK address");
+            } else {
+                AssertEmailAddressUnique(emailAddress);
+
+                _externalAD.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
+                                       emailAddress, 
+                                       password, 
+                                       Core.Constants.AD_GUEST_FIRSTNAME, 
+                                       Core.Constants.AD_GUEST_LASTNAME, 
+                                       Core.Constants.ROLE_EXTERNAL_GUEST);
+            }
+
+
+            var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
+
+            createUser.Model.FirstName = Core.Constants.AD_GUEST_FIRSTNAME;
+            createUser.Model.LastName = Core.Constants.AD_GUEST_LASTNAME;
+            createUser.Model.Email = emailAddress;
+            createUser.Model.SelectedBranch = branchId;
+
+            createUser.CreateOptions.ReturnModel.Properties.Add("Id");
+
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
+            CommerceServer.Foundation.CommerceCreateOperationResponse createResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceCreateOperationResponse;
+
+            return (GetUserProfile(emailAddress));
+        }
+
         /// <summary>
         /// delete the user from Commerce Server (not implemented)
         /// </summary>
@@ -387,6 +435,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());

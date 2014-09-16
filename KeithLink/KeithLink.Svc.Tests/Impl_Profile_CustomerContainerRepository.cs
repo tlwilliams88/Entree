@@ -9,17 +9,14 @@ namespace KeithLink.Svc.Test
         [TestMethod]
         public void CreateGoodContainer()
         {
-            //try
-            //{
-            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
-            //    custCont.CreateCustomerContainer("Jeremys Chicken Shack");
+        //    try {
+        //        KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+        //        custCont.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
 
-            //    Assert.IsTrue(true);
-            //}
-            //catch
-            //{
-            //    Assert.IsTrue(false);
-            //}
+        //        Assert.IsTrue(true);
+        //    } catch {
+        //        Assert.IsTrue(false);
+        //    }
             Assert.IsTrue(true);
         }
 

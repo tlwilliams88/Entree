@@ -68,6 +68,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "nutritional")]
         public Nutritional Nutritional { get; set; }
+        
+        [DataMember(Name = "temp_zone")]
+        public string TempZone { get; set; }
 
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }

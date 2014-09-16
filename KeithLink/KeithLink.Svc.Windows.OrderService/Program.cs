@@ -5,19 +5,16 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Windows.OrderService
-{
-    static class Program
-    {
+namespace KeithLink.Svc.Windows.OrderService {
+    static class Program {
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        static void Main()
-        {
+        static void Main() {
             ServiceBase[] ServicesToRun;
             ServicesToRun = new ServiceBase[] 
             { 
-                new Service1() 
+                new OrderService() 
             };
             ServiceBase.Run(ServicesToRun);
         }

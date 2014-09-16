@@ -366,6 +366,7 @@ namespace KeithLink.Svc.Impl.ETL
                         ChildNutrition = row.GetString("CNDoc"),
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
+                        TempZone = row.GetString("TempZone"),
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),

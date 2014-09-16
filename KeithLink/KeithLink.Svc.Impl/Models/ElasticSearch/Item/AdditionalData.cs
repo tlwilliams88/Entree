@@ -132,5 +132,8 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 
         [JsonProperty("itemspecification")]
 		public List<string> ItemSpecification { get; set; }
+
+        [JsonProperty("temp_zone")]
+        public string TempZone { get; set; }
     }
 }
