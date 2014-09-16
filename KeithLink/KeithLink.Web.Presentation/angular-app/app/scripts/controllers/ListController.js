@@ -48,7 +48,7 @@ angular.module('bekApp')
 
     $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
-        $scope.selectedList = ListService.favoritesList;
+        $scope.selectedList = angular.copy(ListService.favoritesList);
         addSuccessAlert('Successfully deleted list.');
       },function(error) {
         addErrorAlert('Error deleting list.');
@@ -60,8 +60,6 @@ angular.module('bekApp')
       var updatedList = angular.copy(list);
 
       angular.forEach(updatedList.items, function(item, itemIndex) {
-        item.label = item.editLabel;
-        item.parlevel = item.editParlevel;
         item.position = item.editPosition;
         item.isEditing = false;
         $scope.listForm.$setPristine();
@@ -121,31 +119,42 @@ angular.module('bekApp')
     DRAG EVENTS
     ********************/
 
-    // determines if user is dragging one or multiple items and returns the selected item(s)
-    // helper object is passed in from the drag event
-    function getSelectedItemsFromDrag(helper) {
-
-      var draggedItems = {};
-
+    function getMultipleSelectedItems() {
       var multipleItemsSelectedList = [];
-      angular.forEach($scope.selectedList.items, function(item, index) {
+      angular.forEach($scope.filteredItems, function(item, index) {
         if (item.isSelected) {
           multipleItemsSelectedList.push(item);
         }
       });
+      return multipleItemsSelectedList;
+    }
+
+    // determines if user is dragging one or multiple items and returns the selected item(s)
+    // helper object is passed in from the drag event
+    function getSelectedItemsFromDrag(helper) {
+
+      var draggedItems = {},
+        selectedItem = helper.draggable,
+        multipleItemsSelectedList = getMultipleSelectedItems();
 
       // multiple items selected
-      if (multipleItemsSelectedList.length > 0) {
+      if (multipleItemsSelectedList.length > 0 && selectedItem.hasClass('item-selected')) {
         draggedItems.isSingle = false;
         draggedItems.items = multipleItemsSelectedList;
       
       // single item selected
       } else {
         draggedItems.isSingle = true;
-        draggedItems.items = helper.draggable.data('product');
+        draggedItems.items = selectedItem.data('product');
       }
 
       return draggedItems;
+    }
+
+    function unselectedDraggedItems() {
+      angular.forEach($scope.filteredItems, function(item, index) {
+        item.isSelected = false;
+      });
     }
 
     $scope.deleteItemFromDrag = function(event, helper) {
@@ -161,7 +170,6 @@ angular.module('bekApp')
     };
 
     $scope.createListWithItem = function(event, helper) {
-      
       var dragSelection = getSelectedItemsFromDrag(helper);
 
       if (dragSelection.isSingle) {
@@ -183,19 +191,45 @@ angular.module('bekApp')
     };
 
     $scope.addItemToList = function (event, helper, list) {
-      var selectedItem = helper.draggable.data('product');
+      var dragSelection = getSelectedItemsFromDrag(helper);
 
-      var promise;
-      if (list.listid === ListService.favoritesList.listid) {
-        promise = ListService.addItemToFavorites(selectedItem);
+      if (dragSelection.isSingle) {
+        var promise;
+        if (list.listid === ListService.favoritesList.listid) {
+          promise = ListService.addItemToFavorites(dragSelection.items);
+        } else {
+          promise = ListService.addItemToListAndFavorites(list.listid, dragSelection.items);
+        }
+
+        promise.then(function(data) {
+          addSuccessAlert('Successfully added item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+        },function(error) {
+          addErrorAlert('Error adding item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+        });
+
       } else {
-        promise = ListService.addItemToListAndFavorites(list.listid, selectedItem);
+        
+        angular.forEach(dragSelection.items, function(item, index) {
+          delete item.listitemid;
+        });
+        // delete label, position, parlevel
+
+        var updatedList = angular.copy(list);
+        updatedList.items = updatedList.items.concat(dragSelection.items);
+
+        ListService.updateList(updatedList).then(function(data) {
+          unselectedDraggedItems();
+          addSuccessAlert('Successfully added ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
+        },function(error) {
+          addErrorAlert('Error adding ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
+        });
       }
 
-      promise.then(function(data) {
-        addSuccessAlert('Successfully added item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
-      },function(error) {
-        addErrorAlert('Error adding item ' + selectedItem.itemnumber + ' to list ' + list.name + '.');
+    };
+
+    $scope.changeAll = function() {
+      angular.forEach($scope.filteredItems, function(item, index) {
+        item.isSelected = $scope.allSelected;
       });
     };
 
@@ -207,6 +241,19 @@ angular.module('bekApp')
     // Check if element is being dragged, used to enable DOM elements
     $scope.setIsDragging = function(event, helper, isDragging) {
       $scope.isDragging = isDragging;
+    };
+
+    $scope.generateDragHelper = function(event) {
+      var draggedItem = angular.element(event.target.parentElement.parentElement.parentElement),
+        multipleSelectedItems = getMultipleSelectedItems();
+
+      var helperElement;
+      if (multipleSelectedItems.length > 0 && draggedItem.hasClass('item-selected')) {
+        helperElement = angular.element('<div style="padding:10px;">' + multipleSelectedItems.length + ' Items</div>');
+      } else {
+        helperElement = angular.element(draggedItem).clone();
+      }
+      return helperElement;
     };
 
     /********************
@@ -293,18 +340,16 @@ angular.module('bekApp')
     function initPage() {  
       // switch to specific list or default to Favorites list
       if ($state.params.listId) {
-        $scope.selectedList = ListService.findListById($state.params.listId, $scope.lists);
+        $scope.selectedList = angular.copy(ListService.findListById($state.params.listId, $scope.lists));
       } 
       if (!$scope.selectedList) {
-        $scope.selectedList = ListService.favoritesList;
+        $scope.selectedList = angular.copy(ListService.favoritesList);
         $state.go('menu.lists.items', { listId: ListService.favoritesList.listid });
       }
 
       // set placeholders for editable item fields
       angular.forEach(ListService.lists, function(list, listIndex) {
         angular.forEach(list.items, function(item, itemIndex) {
-          item.editLabel = item.label === '' ? null : item.label;
-          item.editParlevel = item.parlevel;
           item.editPosition = item.position;
         });
       });

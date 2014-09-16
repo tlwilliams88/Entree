@@ -25,14 +25,15 @@ angular.module('bekApp')
                     listId: listId
                 }, item).$promise.then(function(response) {
                     item.listitemid = response.listitemid;
-                    item.editPositioin = 0;
-                    item.editLabel = null;
-                    item.editParlevel = 0;
-
+                    item.editPosition = 0;
+                    
                     var updatedList = Service.findListById(listId);
                     if (updatedList && updatedList.items) {
                         updatedList.items.push(item);
                     }
+
+                    console.log('adding item ' + item.itemnumber);
+                    console.log(response);
 
                     return response;
                 });
@@ -194,15 +195,19 @@ angular.module('bekApp')
                 updateList: function(list) {
                     return List.update(null, list).$promise.then(function(response) {
 
+                        // update labels
                         angular.forEach(list.items, function(item, index) {
                             if (item.label && Service.labels.indexOf(item.label) === -1) {
                                 Service.labels.push(item.label);
                             }
                         });
 
-                        var updatedList = Service.findListById(list.listid);
-                        var idx = Service.lists.indexOf(updatedList);
-                        angular.copy(list, Service.lists[idx]);
+                        return Service.getList(response.listid).then(function(response) {
+                            var updatedList = Service.findListById(response.listid);
+                            var idx = Service.lists.indexOf(updatedList);
+                            angular.copy(response, Service.lists[idx]);
+                            return response;
+                        });
                     });
                 },
 

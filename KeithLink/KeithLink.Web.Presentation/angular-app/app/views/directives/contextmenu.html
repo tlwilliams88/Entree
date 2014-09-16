@@ -4,7 +4,7 @@
 
     <button favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
     
-    <div ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+    <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
       <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
         Add to Cart<span class="icon-arrow-right6"></span>
       </button>

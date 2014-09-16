@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c9ca345d-0eaa-47e5-bbc5-e42c06f3d303" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://win2012bek:1000/Foundation/FoundationService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FoundationService.xsd" MetadataType="Schema" ID="762c7531-ad37-4b6d-bdcf-f60121cae19d" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd3" />
+    <MetadataFile FileName="FoundationService.disco" MetadataType="Disco" ID="3c9fb348-22ec-4689-ac4c-b2ae01bd33ca" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?disco" />
+    <MetadataFile FileName="FoundationService1.xsd" MetadataType="Schema" ID="accb7678-80e7-4e09-9097-5ef3d38fdb49" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd4" />
+    <MetadataFile FileName="BEKFoundationService.wsdl" MetadataType="Wsdl" ID="3f99d896-f41b-4403-aa3e-e0345823cf11" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?wsdl" />
+    <MetadataFile FileName="FoundationService2.xsd" MetadataType="Schema" ID="52bf4e7b-0c11-4682-8db7-20bd881cf3c5" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FoundationService3.xsd" MetadataType="Schema" ID="90bd233c-7af7-4d95-baf6-164cc65c7d73" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd0" />
+    <MetadataFile FileName="FoundationService4.xsd" MetadataType="Schema" ID="8b665a9f-5f06-4094-8ca7-fbb88adc8623" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

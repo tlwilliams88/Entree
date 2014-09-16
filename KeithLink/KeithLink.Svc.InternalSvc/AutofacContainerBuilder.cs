@@ -13,6 +13,9 @@ using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -23,13 +26,17 @@ namespace KeithLink.Svc.InternalSvc
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ETLService>();
-			builder.RegisterType<OrderService>();
+			builder.RegisterType<PipelineService>();
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
-            builder.RegisterType<CatalogLogicImpl>().As<ICatalogLogic>();
+            builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 			builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
 			builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
+			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+			builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+			builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
+           
 
             return builder.Build();
         }

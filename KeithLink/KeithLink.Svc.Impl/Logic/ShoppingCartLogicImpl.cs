@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic
 				foreach (var item in cart.Items)
 				{
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
-					if (existingItem.Any())
+					if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
 						lineItems.Add(existingItem.First());
@@ -235,7 +235,9 @@ namespace KeithLink.Svc.Impl.Logic
 		public string SaveAsOrder(UserProfile user, Guid cartId)
 		{
 			//Save to Commerce Server
-			keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
+			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+			
+			//keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
 			var purchaseOrder = client.SaveCartAsOrder(user.UserId, cartId);
 
 			//TODO: Write order to Rabbit Mq for processing to main frame
