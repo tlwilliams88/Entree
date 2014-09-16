@@ -18,3 +18,13 @@
   <span tooltip="Contact your DSR to order this item" class="text-regular icon-user"></span>
 </a>
 <!-- MSDS -->
+<!--TEMP ZONE-->
+<a ng-if="item.temp_zone === 'F'">
+  <span tooltip="Frozen Storage" class="text-regular icon-snowflake"></span>
+</a>
+<a ng-if="item.temp_zone === 'C'">
+  <span tooltip="Cooler Storage" class="text-regular icon-fan"></span>
+</a>
+<a ng-if="item.temp_zone === 'D'">
+  <span tooltip="Dry Storage" class="text-regular icon-umbrella"></span>
+</a>
