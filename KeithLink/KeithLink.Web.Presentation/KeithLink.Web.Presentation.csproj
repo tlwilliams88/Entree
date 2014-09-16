@@ -215,7 +215,6 @@
     <Content Include="angular-app\app\scripts\directives\LoadingSpinner.js" />
     <Content Include="angular-app\app\scripts\directives\PageHeaderBar.js" />
     <Content Include="angular-app\app\scripts\services\AccessService.js" />
-    <Content Include="angular-app\app\scripts\services\ApiService.js" />
     <Content Include="angular-app\app\scripts\services\AuthenticationInterceptor.js" />
     <Content Include="angular-app\app\scripts\services\AuthenticationService.js" />
     <Content Include="angular-app\app\scripts\services\BranchService.js" />

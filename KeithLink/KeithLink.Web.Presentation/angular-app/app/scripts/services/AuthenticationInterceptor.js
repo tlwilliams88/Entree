@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ApiSettings', 'ENV',
-  function ($q, $location, localStorageService, Constants, ApiSettings, ENV) {
+.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ENV',
+  function ($q, $location, localStorageService, Constants, ENV) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
@@ -16,13 +16,15 @@ angular.module('bekApp')
         if (authData) {
           if (endpointRequiresToken(config.url)) {
               config.headers.Authorization = 'Bearer ' + authData.access_token;
-              // add api key to request headers
-              config.headers['api-key'] = ENV.apiKey;
           }
+        }
+        // add api key to request headers, do not add to /authen request
+        if (config.url.indexOf('/authen') === -1) {
+          config.headers['api-key'] = ENV.apiKey;
         }
 
         // add api url to request url
-        config.url = ApiSettings.url + config.url;
+        config.url = ENV.apiEndpoint + config.url;
         console.log(config.url);
       }
 
@@ -49,8 +51,8 @@ angular.module('bekApp')
 
     // do not need to authenticate these urls
     var authorizedApiUrls = [
-      '../servicelocator',
-      '/authen'
+      '/authen',
+      '/catalog/divisions'
     ];
 
     var isSecure = true;

@@ -15,8 +15,8 @@ namespace KeithLink.Svc.Test
             OrderFile order = new OrderFile();
 
             order.Header.Branch = "FDF";
-            order.Header.ControlNumber = 1;
-            order.Header.CustomerNumber = "001001";
+            order.Header.ControlNumber = 3;
+            order.Header.CustomerNumber = "010166";
             order.Header.DeliveryDate = DateTime.Now.AddDays(1);
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test
 
             order.Details.Add(new OrderDetail() {
                 LineNumber = 1,
-                ItemNumber = "000001",
+                ItemNumber = "001003",
                 UnitOfMeasure = UnitOfMeasure.Case,
                 OrderedQuantity = 1,
                 SellPrice = 1.50,
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Test
             });
             order.Details.Add(new OrderDetail() {
                 LineNumber = 2,
-                ItemNumber = "000002",
+                ItemNumber = "002100",
                 UnitOfMeasure = UnitOfMeasure.Case,
                 OrderedQuantity = 1,
                 SellPrice = 2.37,
@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Test
                                                queue,
                                                new OrderSocketConnectionRepositoryImpl());
 
-            //orderLogic.ProcessOrders();
+            orderLogic.ProcessOrders();
         }
 
         private string SerializeOrder(OrderFile order) {
@@ -79,7 +79,6 @@ namespace KeithLink.Svc.Test
 
             return xmlWriter.ToString();
         }
-
 
         private OrderFile DeserializeOrder(string rawOrder) {
             OrderFile order = new OrderFile();

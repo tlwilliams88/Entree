@@ -466,7 +466,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://devkeithlink.benekeith.com/api'
+                      apiEndpoint: 'http://devkeithlink.bekco.com/api'
                   }
               }
           },
@@ -499,6 +499,7 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
+      'ngconstant:dev',
       // 'includeSource:server',
       'concurrent:server',
       'autoprefixer',

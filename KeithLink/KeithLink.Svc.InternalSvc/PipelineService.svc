@@ -1,7 +1,7 @@
 ﻿<%@ ServiceHost 
 	Language="C#" 
 	Debug="true" 
-	Service="KeithLink.Svc.InternalSvc.OrderService, KeithLink.Svc.InternalSvc" 
-	CodeBehind="OrderService.svc.cs"	 
+	Service="KeithLink.Svc.InternalSvc.PipelineService, KeithLink.Svc.InternalSvc" 
+	CodeBehind="PipelineService.svc.cs"	 
     Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf" 
 	%>
