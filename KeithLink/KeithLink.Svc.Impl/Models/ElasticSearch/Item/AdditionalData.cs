@@ -46,6 +46,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("brand_description_not_analyzed")]
         public string BrandDescriptionNotAnalyzed { get; set; }
 
+        [JsonProperty("brand_control_label")]
+        public string BrandControlLabel { get; set; }
+
         [JsonProperty("pack")]
         public string Pack { get; set; }
 

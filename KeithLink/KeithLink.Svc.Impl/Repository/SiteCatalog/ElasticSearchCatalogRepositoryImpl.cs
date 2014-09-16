@@ -235,7 +235,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ManufacturerNumber = oProd._source.mfrnumber;
             p.Size = oProd._source.size;
             p.Brand = oProd._source.brand;
-            p.BrandExtendedDescription = oProd._source.brand_extended_description;
+            p.BrandExtendedDescription = oProd._source.brand_description;
             p.UPC = oProd._source.upc;
             p.Description = oProd._source.description;
             p.Cases = oProd._source.cases;
