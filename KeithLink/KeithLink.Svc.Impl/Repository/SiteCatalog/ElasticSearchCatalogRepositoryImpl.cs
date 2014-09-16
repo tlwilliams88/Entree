@@ -266,6 +266,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.CaseCube = oProd._source.icube;
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
+            p.TempZone = oProd._source.temp_zone;
 			// TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Gs1 gs1 = new Gs1();
             if (oProd._source.gs1 != null)
