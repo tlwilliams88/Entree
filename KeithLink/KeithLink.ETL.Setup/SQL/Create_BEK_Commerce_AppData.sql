@@ -468,6 +468,7 @@ BEGIN
 		MfrNumber, 
 		MfrName, 
 		(SELECT b.ExtendedDescription FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription,
+		MaxSmrt,
 		Cases, 
 		Package, 
 		PreferredItemCode, 
