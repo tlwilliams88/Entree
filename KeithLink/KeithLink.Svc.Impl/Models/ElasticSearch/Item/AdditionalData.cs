@@ -79,6 +79,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("status1")]
         public string Status1 { get; set; }
 
+        [JsonProperty("status1_not_analyzed")]
+        public string Status1NotAnalyzed { get; set; }
+
         [JsonProperty("status2")]
         public string Status2 { get; set; }
 

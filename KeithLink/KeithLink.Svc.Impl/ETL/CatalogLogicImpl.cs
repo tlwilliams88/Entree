@@ -56,6 +56,10 @@ namespace KeithLink.Svc.Impl.ETL
          				""preferreditemcode"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
+         				},
+                        ""status1_not_analyzed"" : {
+           					""type"" : ""string"",
+							""index"" : ""not_analyzed""
          				}
 				   }
 				}
@@ -351,6 +355,7 @@ namespace KeithLink.Svc.Impl.ETL
                         Size = row.GetString("Size"),
                         SpecialOrderItem = row.GetString("SpecialOrderItem"),
                         Status1 = row.GetString("Status1"),
+                        Status1NotAnalyzed = row.GetString("Status1"),
                         Status2 = row.GetString("Status2"),
                         Upc = row.GetString("UPC"),
                         Vendor1 = row.GetString("Vendor1"),

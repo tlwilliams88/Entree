@@ -87,10 +87,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 (response.OperationResponses[0] as CommerceUpdateOperationResponse)
                 .CommerceEntities[0].Properties[Basket.RelationshipName.LineItems] as CommerceServer.Foundation.CommerceRelationshipList;
 
-            var newId = lineItemsFromResponse.Where(b => !basket.LineItems.Any(i => i.Id.Equals(b.Target.Id.ToGuid()))).FirstOrDefault();
+            var newId = lineItemsFromResponse.Where(b => !basket.LineItems.Any(i => i.Id.Equals(b.Target.Id))).FirstOrDefault();
 
             if (newId != null)
-                return newId.Id.ToGuid();
+                return newId.Target.Id.ToGuid();
 
             return null;
 		}

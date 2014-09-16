@@ -1,0 +1,8 @@
+Pipeline install instructions
+-----------------------------
+
+1.	Build the project – KeithLink.Ext.Pipeline.ItemPrice
+2.	Copy contents of bin directory to "C:\Program Files (x86)\Commerce Server 10\Pipeline Components". You can use another directory if you wish
+3.	Open up the Visual Studio Command Prompt. NOTE: If you are on 64bit Windows, you must run the 64bit version of the Visual Studio Command Prompt.
+4.	Register the ItemPrice dlls using Regasm.exe and the /codebase option:     regasm KeithLink.Ext.Pipeline.ItemPrice.dll /codebase
+5.	Run the file PipelinRegistration.reg, which is found in the project directory

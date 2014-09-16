@@ -1,0 +1,707 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="BEKFoundationService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="WsHttpOperationService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:ProtectionToken>
+              <wsp:Policy>
+                <sp:SecureConversationToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                  <wsp:Policy>
+                    <sp:RequireDerivedKeys />
+                    <sp:BootstrapPolicy>
+                      <wsp:Policy>
+                        <sp:SignedParts>
+                          <sp:Body />
+                          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+                          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+                        </sp:SignedParts>
+                        <sp:EncryptedParts>
+                          <sp:Body />
+                        </sp:EncryptedParts>
+                        <sp:SymmetricBinding>
+                          <wsp:Policy>
+                            <sp:ProtectionToken>
+                              <wsp:Policy>
+                                <sp:SpnegoContextToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                                  <wsp:Policy>
+                                    <sp:RequireDerivedKeys />
+                                  </wsp:Policy>
+                                </sp:SpnegoContextToken>
+                              </wsp:Policy>
+                            </sp:ProtectionToken>
+                            <sp:AlgorithmSuite>
+                              <wsp:Policy>
+                                <sp:Basic256 />
+                              </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                              <wsp:Policy>
+                                <sp:Strict />
+                              </wsp:Policy>
+                            </sp:Layout>
+                            <sp:IncludeTimestamp />
+                            <sp:EncryptSignature />
+                            <sp:OnlySignEntireHeadersAndBody />
+                          </wsp:Policy>
+                        </sp:SymmetricBinding>
+                        <sp:Wss11>
+                          <wsp:Policy />
+                        </sp:Wss11>
+                        <sp:Trust10>
+                          <wsp:Policy>
+                            <sp:MustSupportIssuedTokens />
+                            <sp:RequireClientEntropy />
+                            <sp:RequireServerEntropy />
+                          </wsp:Policy>
+                        </sp:Trust10>
+                      </wsp:Policy>
+                    </sp:BootstrapPolicy>
+                  </wsp:Policy>
+                </sp:SecureConversationToken>
+              </wsp:Policy>
+            </sp:ProtectionToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+            <sp:EncryptSignature />
+            <sp:OnlySignEntireHeadersAndBody />
+          </wsp:Policy>
+        </sp:SymmetricBinding>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_ValidationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_OptimisticLockFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_CatalogRemoveFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_ItemAlreadyExistsFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_CommerceNoSessionFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_CommerceExpiredSessionFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_AuthorizationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_GeneralOperationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_ItemDoesNotExistFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_ProcessRequest_InvalidSearchQueryFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_ValidationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_GeneralOperationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_CommerceNoSessionFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_CommerceExpiredSessionFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_AuthorizeRequest_AuthorizationFault_Fault">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_SaveCartAsOrder_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WsHttpOperationService_SaveCartAsOrder_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd1" namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types" />
+      <xsd:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd4" namespace="http://tempuri.org/" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_InputMessage">
+    <wsdl:part xmlns:q1="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="parameters" element="q1:ProcessRequest" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_OutputMessage">
+    <wsdl:part xmlns:q2="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="parameters" element="q2:ProcessRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_OptimisticLockFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q4:OptimisticLockFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_CatalogRemoveFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q5:CatalogRemoveFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_ItemAlreadyExistsFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q6:ItemAlreadyExistsFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_CommerceNoSessionFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q7:CommerceNoSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_CommerceExpiredSessionFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q8:CommerceExpiredSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q9:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_GeneralOperationFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q10:GeneralOperationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_ItemDoesNotExistFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q11:ItemDoesNotExistFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_ProcessRequest_InvalidSearchQueryFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q12:InvalidSearchQueryFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_InputMessage">
+    <wsdl:part xmlns:q13="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="parameters" element="q13:AuthorizeRequest" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_OutputMessage">
+    <wsdl:part xmlns:q14="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="parameters" element="q14:AuthorizeRequestResponse" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_ValidationFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q15:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_GeneralOperationFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q16:GeneralOperationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_CommerceNoSessionFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q17:CommerceNoSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_CommerceExpiredSessionFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q18:CommerceExpiredSessionFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_AuthorizeRequest_AuthorizationFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://schemas.commerceserver.net/2013/01/Foundation/Types" name="detail" element="q19:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_SaveCartAsOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCartAsOrder" />
+  </wsdl:message>
+  <wsdl:message name="IBEKFoundationService_SaveCartAsOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCartAsOrderResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IBEKFoundationService">
+    <wsdl:operation name="ProcessRequest">
+      <wsdl:input wsaw:Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/ProcessRequest" message="tns:IBEKFoundationService_ProcessRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/ProcessRequestResponse" message="tns:IBEKFoundationService_ProcessRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault" name="ValidationFault" message="tns:IBEKFoundationService_ProcessRequest_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/OptimisticLockFault" name="OptimisticLockFault" message="tns:IBEKFoundationService_ProcessRequest_OptimisticLockFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/CatalogRemoveFault" name="CatalogRemoveFault" message="tns:IBEKFoundationService_ProcessRequest_CatalogRemoveFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/ItemAlreadyExistsFault" name="ItemAlreadyExistsFault" message="tns:IBEKFoundationService_ProcessRequest_ItemAlreadyExistsFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault" name="CommerceNoSessionFault" message="tns:IBEKFoundationService_ProcessRequest_CommerceNoSessionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault" name="CommerceExpiredSessionFault" message="tns:IBEKFoundationService_ProcessRequest_CommerceExpiredSessionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault" name="AuthorizationFault" message="tns:IBEKFoundationService_ProcessRequest_AuthorizationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault" name="GeneralOperationFault" message="tns:IBEKFoundationService_ProcessRequest_GeneralOperationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/ItemDoesNotExistFault" name="ItemDoesNotExistFault" message="tns:IBEKFoundationService_ProcessRequest_ItemDoesNotExistFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/InvalidSearchQueryFault" name="InvalidSearchQueryFault" message="tns:IBEKFoundationService_ProcessRequest_InvalidSearchQueryFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeRequest">
+      <wsdl:input wsaw:Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/AuthorizeRequest" message="tns:IBEKFoundationService_AuthorizeRequest_InputMessage" />
+      <wsdl:output wsaw:Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/AuthorizeRequestResponse" message="tns:IBEKFoundationService_AuthorizeRequest_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault" name="ValidationFault" message="tns:IBEKFoundationService_AuthorizeRequest_ValidationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault" name="GeneralOperationFault" message="tns:IBEKFoundationService_AuthorizeRequest_GeneralOperationFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault" name="CommerceNoSessionFault" message="tns:IBEKFoundationService_AuthorizeRequest_CommerceNoSessionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault" name="CommerceExpiredSessionFault" message="tns:IBEKFoundationService_AuthorizeRequest_CommerceExpiredSessionFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault" name="AuthorizationFault" message="tns:IBEKFoundationService_AuthorizeRequest_AuthorizationFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCartAsOrder">
+      <wsdl:input wsaw:Action="http://tempuri.org/IBEKFoundationService/SaveCartAsOrder" message="tns:IBEKFoundationService_SaveCartAsOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IBEKFoundationService/SaveCartAsOrderResponse" message="tns:IBEKFoundationService_SaveCartAsOrder_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsHttpOperationService" type="tns:IBEKFoundationService">
+    <wsp:PolicyReference URI="#WsHttpOperationService_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessRequest">
+      <soap12:operation soapAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/ProcessRequest" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_ValidationFault_Fault" />
+        <soap12:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="OptimisticLockFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_OptimisticLockFault_Fault" />
+        <soap12:fault use="literal" name="OptimisticLockFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CatalogRemoveFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_CatalogRemoveFault_Fault" />
+        <soap12:fault use="literal" name="CatalogRemoveFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ItemAlreadyExistsFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_ItemAlreadyExistsFault_Fault" />
+        <soap12:fault use="literal" name="ItemAlreadyExistsFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommerceNoSessionFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_CommerceNoSessionFault_Fault" />
+        <soap12:fault use="literal" name="CommerceNoSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommerceExpiredSessionFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_CommerceExpiredSessionFault_Fault" />
+        <soap12:fault use="literal" name="CommerceExpiredSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_AuthorizationFault_Fault" />
+        <soap12:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralOperationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_GeneralOperationFault_Fault" />
+        <soap12:fault use="literal" name="GeneralOperationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ItemDoesNotExistFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_ItemDoesNotExistFault_Fault" />
+        <soap12:fault use="literal" name="ItemDoesNotExistFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidSearchQueryFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_ProcessRequest_InvalidSearchQueryFault_Fault" />
+        <soap12:fault use="literal" name="InvalidSearchQueryFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AuthorizeRequest">
+      <soap12:operation soapAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/AuthorizeRequest" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_ValidationFault_Fault" />
+        <soap12:fault use="literal" name="ValidationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="GeneralOperationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_GeneralOperationFault_Fault" />
+        <soap12:fault use="literal" name="GeneralOperationFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommerceNoSessionFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_CommerceNoSessionFault_Fault" />
+        <soap12:fault use="literal" name="CommerceNoSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommerceExpiredSessionFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_CommerceExpiredSessionFault_Fault" />
+        <soap12:fault use="literal" name="CommerceExpiredSessionFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFault">
+        <wsp:PolicyReference URI="#WsHttpOperationService_AuthorizeRequest_AuthorizationFault_Fault" />
+        <soap12:fault use="literal" name="AuthorizationFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SaveCartAsOrder">
+      <soap12:operation soapAction="http://tempuri.org/IBEKFoundationService/SaveCartAsOrder" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WsHttpOperationService_SaveCartAsOrder_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WsHttpOperationService_SaveCartAsOrder_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BEKFoundationService">
+    <wsdl:port name="WsHttpOperationService" binding="tns:WsHttpOperationService">
+      <soap12:address location="http://win2012bek:1000/Foundation/FoundationService.svc" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>http://win2012bek:1000/Foundation/FoundationService.svc</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>WIN2012BEK\Administrator</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -103,11 +103,26 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 (keyValueSelectedValues as IDictionary<string, object>).Add(keyValue, values);
                 facetTerms.Add(new { terms = keyValueSelectedValues });
             }
-            
+
+            List<dynamic> fieldFilterTerms = BuildStatusFilter();
+
             ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms });
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms, must_not = fieldFilterTerms });
 
             return filterTerms;
+        }
+
+        private static List<dynamic> BuildStatusFilter() //filter out items with unwanted statuses
+        {
+            string[] valuesToFilter = Configuration.ElasticSearchItemExcludeValues.Split(',');
+            List<dynamic> fieldFilterTerms = new List<dynamic>();
+            
+            foreach (string s in valuesToFilter)
+            {
+                fieldFilterTerms.Add(new { query = new { match = new { status1_not_analyzed = s } } });
+            }
+
+            return fieldFilterTerms;
         }
 
         private static dynamic BuildSort(string sortField, string sortDir)
