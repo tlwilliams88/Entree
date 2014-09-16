@@ -22,6 +22,17 @@ namespace KeithLink.Svc.Test
         }
 
         [TestMethod]
+        public void CreateGuest() {
+            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
+                new Impl.Repository.Profile.UserProfileRepository(
+                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
+                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
+                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")));
+
+            userProfile.CreateGuestProfile("one@two.com", "Ab12345", "FDF");
+        }
+
+        [TestMethod]
         public void GetUserByEmailAddress()
         {
             KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =

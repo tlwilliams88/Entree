@@ -57,21 +57,23 @@ namespace KeithLink.Svc.Test {
 
         [TestMethod]
         public void ReceiveOrderFromQueue() {
-            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
-                                                           new OrderQueueRepositoryImpl(),
-                                                           new OrderSocketConnectionRepositoryImpl());
-            //orderLogic.ProcessOrders();
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
+
+            string output = queue.ConsumeFromQueue();
         }
 
         [TestMethod]
         public void SendOrderToQueue() {
-            //EventLogRepositoryImpl log = new EventLogRepositoryImpl(Configuration.ApplicationName);
-            //OrderSocketConnectionRepositoryImpl mfCon = new OrderSocketConnectionRepositoryImpl();
-            //OrderLogicImpl orderLogic = new OrderLogicImpl(mfCon);
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
 
-            //OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl(log);
+            OrderFile order = GetStubOrder();
 
-            ////queue.PublishOrder(GetStubOrder());
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(order.GetType());
+
+            xs.Serialize(sw, order);
+
+            queue.PublishToQueue(sw.ToString());
         }
     }
 }

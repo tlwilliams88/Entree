@@ -1901,6 +1901,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the Rating property.
+	    /// </summary>
+	    /// <value>
+	    /// The Rating property from the property collection.
+	    /// </value>
+		public virtual string Rating
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Rating) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Rating, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ImageHeight property.
 	    /// </summary>
 	    /// <value>
@@ -1977,25 +1996,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the Rating property.
-	    /// </summary>
-	    /// <value>
-	    /// The Rating property from the property collection.
-	    /// </value>
-		public virtual string Rating
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Rating) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Rating, value);
-			}
-		}
-	
-		/// <summary>
 	    /// Gets or sets the ProductSize property.
 	    /// </summary>
 	    /// <value>
@@ -2068,101 +2068,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.TargetVariantId, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the UPC property.
-	    /// </summary>
-	    /// <value>
-	    /// The UPC property from the property collection.
-	    /// </value>
-		public virtual string UPC
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.UPC) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.UPC, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the MfrName property.
-	    /// </summary>
-	    /// <value>
-	    /// The MfrName property from the property collection.
-	    /// </value>
-		public virtual string MfrName
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.MfrName) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.MfrName, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the MfrNumber property.
-	    /// </summary>
-	    /// <value>
-	    /// The MfrNumber property from the property collection.
-	    /// </value>
-		public virtual string MfrNumber
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.MfrNumber) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.MfrNumber, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Pack property.
-	    /// </summary>
-	    /// <value>
-	    /// The Pack property from the property collection.
-	    /// </value>
-		public virtual string Pack
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Pack) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Pack, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Size property.
-	    /// </summary>
-	    /// <value>
-	    /// The Size property from the property collection.
-	    /// </value>
-		public virtual string Size
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Size) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Size, value);
 			}
 		}
 	
@@ -2261,6 +2166,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ProductCode = "ProductCode";
 	
 			/// <summary>
+	        /// Constant for accessing Rating property.
+	        /// </summary>
+			public const string Rating = "Rating";
+	
+			/// <summary>
 	        /// Constant for accessing Image_height property.
 	        /// </summary>
 			public const string ImageHeight = "Image_height";
@@ -2281,11 +2191,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string Brand = "Brand";
 	
 			/// <summary>
-	        /// Constant for accessing Rating property.
-	        /// </summary>
-			public const string Rating = "Rating";
-	
-			/// <summary>
 	        /// Constant for accessing ProductSize property.
 	        /// </summary>
 			public const string ProductSize = "ProductSize";
@@ -2304,31 +2209,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing TargetVariantId property.
 	        /// </summary>
 			public const string TargetVariantId = "TargetVariantId";
-	
-			/// <summary>
-	        /// Constant for accessing UPC property.
-	        /// </summary>
-			public const string UPC = "UPC";
-	
-			/// <summary>
-	        /// Constant for accessing MfrName property.
-	        /// </summary>
-			public const string MfrName = "MfrName";
-	
-			/// <summary>
-	        /// Constant for accessing MfrNumber property.
-	        /// </summary>
-			public const string MfrNumber = "MfrNumber";
-	
-			/// <summary>
-	        /// Constant for accessing Pack property.
-	        /// </summary>
-			public const string Pack = "Pack";
-	
-			/// <summary>
-	        /// Constant for accessing Size property.
-	        /// </summary>
-			public const string Size = "Size";
 	
 		}
 	#endregion
@@ -4578,6 +4458,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the Description property.
+	    /// </summary>
+	    /// <value>
+	    /// The Description property from the property collection.
+	    /// </value>
+		public virtual string Description
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Description) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Description, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ImageHeight property.
 	    /// </summary>
 	    /// <value>
@@ -4616,25 +4515,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the Description property.
-	    /// </summary>
-	    /// <value>
-	    /// The Description property from the property collection.
-	    /// </value>
-		public virtual string Description
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Description) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Description, value);
-			}
-		}
-	
-		/// <summary>
 	    /// Gets or sets the Brand property.
 	    /// </summary>
 	    /// <value>
@@ -4669,44 +4549,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.CategoryPage, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the CategoryId property.
-	    /// </summary>
-	    /// <value>
-	    /// The CategoryId property from the property collection.
-	    /// </value>
-		public virtual string CategoryId
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.CategoryId) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.CategoryId, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the PPICode property.
-	    /// </summary>
-	    /// <value>
-	    /// The PPICode property from the property collection.
-	    /// </value>
-		public virtual string PPICode
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.PPICode) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.PPICode, value);
 			}
 		}
 	
@@ -4785,6 +4627,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ImageFilename = "Image_filename";
 	
 			/// <summary>
+	        /// Constant for accessing Description property.
+	        /// </summary>
+			public const string Description = "Description";
+	
+			/// <summary>
 	        /// Constant for accessing Image_height property.
 	        /// </summary>
 			public const string ImageHeight = "Image_height";
@@ -4795,11 +4642,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ImageWidth = "Image_width";
 	
 			/// <summary>
-	        /// Constant for accessing Description property.
-	        /// </summary>
-			public const string Description = "Description";
-	
-			/// <summary>
 	        /// Constant for accessing Brand property.
 	        /// </summary>
 			public const string Brand = "Brand";
@@ -4808,16 +4650,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing CategoryPage property.
 	        /// </summary>
 			public const string CategoryPage = "CategoryPage";
-	
-			/// <summary>
-	        /// Constant for accessing CategoryId property.
-	        /// </summary>
-			public const string CategoryId = "CategoryId";
-	
-			/// <summary>
-	        /// Constant for accessing PPICode property.
-	        /// </summary>
-			public const string PPICode = "PPICode";
 	
 		}
 	#endregion
@@ -5640,6 +5472,44 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the SelectedBranch property.
+	    /// </summary>
+	    /// <value>
+	    /// The SelectedBranch property from the property collection.
+	    /// </value>
+		public virtual string SelectedBranch
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedBranch) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.SelectedBranch, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the SelectedCustomer property.
+	    /// </summary>
+	    /// <value>
+	    /// The SelectedCustomer property from the property collection.
+	    /// </value>
+		public virtual string SelectedCustomer
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedCustomer) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.SelectedCustomer, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the Email property.
 	    /// </summary>
 	    /// <value>
@@ -6260,6 +6130,16 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing Password property.
 	        /// </summary>
 			public const string Password = "Password";
+	
+			/// <summary>
+	        /// Constant for accessing SelectedBranch property.
+	        /// </summary>
+			public const string SelectedBranch = "SelectedBranch";
+	
+			/// <summary>
+	        /// Constant for accessing SelectedCustomer property.
+	        /// </summary>
+			public const string SelectedCustomer = "SelectedCustomer";
 	
 			/// <summary>
 	        /// Constant for accessing Email property.

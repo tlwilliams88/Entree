@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Logic
             if (profile == null)
                 return;
 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerNumber, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices)
             {
