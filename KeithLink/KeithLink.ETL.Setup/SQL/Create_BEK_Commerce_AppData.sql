@@ -511,7 +511,8 @@ BEGIN
 		ps.Volume,
 		ps.Width,
 		i.NonStock,
-		FDAProductFlag	 
+		FDAProductFlag,
+		TempZone	 
 	FROM  
 		ETL.Staging_ItemData i inner join 
 		ETL.Staging_Category c on i.CategoryId = c.CategoryId left outer join
@@ -519,7 +520,6 @@ BEGIN
 	WHERE 
 		  i.ItemId NOT LIKE '999%'  AND SpecialOrderItem <>'Y'
 END
-
 
 GO
 /****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
