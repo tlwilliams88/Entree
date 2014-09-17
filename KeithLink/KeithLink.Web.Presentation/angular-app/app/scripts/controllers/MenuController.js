@@ -19,7 +19,15 @@ angular.module('bekApp')
     $scope.userBar.universalSearchTerm = '';
 
     refreshAccessPermissions();
-    setLocations(UserProfileService.profile());
+    // setLocations(UserProfileService.profile());
+
+    $scope.changeLocation = function() {
+      UserProfileService.setCurrentLocation($scope.currentLocation);
+    };
+
+    $scope.branches = branches;
+    $scope.currentLocation = UserProfileService.profile().branchId;
+    $scope.changeLocation();
 
     $scope.logout = function() {
       AuthenticationService.logout();
@@ -29,24 +37,22 @@ angular.module('bekApp')
       $scope.displayUserMenu = false;
     };
 
-    $scope.changeLocation = function() {
-      UserProfileService.setCurrentLocation($scope.currentLocation);
-    };
-
-    $scope.search = function(searchTerm) {
-      $state.go('menu.catalog.products.list', { type: 'search', id: searchTerm }, { reload: true });
-    };
-
     $scope.print = function () {
       window.print(); 
     };
 
-    function setLocations(profile) {
-      $scope.locations = profile.stores;
-      $scope.currentLocation = UserProfileService.getCurrentLocation();
+    // function setLocations(profile) {
+    //   if ($scope.isOrderEntryCustomer) {
+    //     $scope.locations = profile.stores;
+    //   } else {
+    //     $scope.locations = branches;
+    //   }
 
-      UserProfileService.setCurrentLocation($scope.currentLocation);
-    }
+    //   $scope.currentLocation = UserProfileService.profile().branchId;
+    //   if (!$scope.currentLocation) {
+    //     $scope.currentLocation = $scope.locations[0];
+    //   }
+    // }
 
     function refreshAccessPermissions() {
       $scope.isLoggedIn = AccessService.isLoggedIn();
