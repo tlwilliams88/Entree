@@ -367,6 +367,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return (GetUserProfile(emailAddres));
         }
 
+        /// <summary>
+        /// creates a guest user account in AD and the user profile in CS
+        /// </summary>
+        /// <returns>UserProfileReturn</returns>
+        /// <remarks>
+        /// jwames - 9/16/2014 - original code
+        /// </remarks>
         public UserProfileReturn CreateGuestProfile(string emailAddress, string password, string branchId) {
             AssertGuestProfile(emailAddress, password);
         

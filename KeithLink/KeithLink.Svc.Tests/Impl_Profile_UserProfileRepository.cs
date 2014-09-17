@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Test
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")));
 
-            userProfile.CreateGuestProfile("one@two.com", "Ab12345", "FDF");
+            //userProfile.CreateGuestProfile("one@two.com", "Ab12345", "FDF");
         }
 
         [TestMethod]

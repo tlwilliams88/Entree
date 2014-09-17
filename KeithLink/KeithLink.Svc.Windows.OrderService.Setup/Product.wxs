@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+  <?define AppName="KeithLink Order Service"?>
+  <?define MfgName="Ben E. Keith Company"?>
+  <?define SourcePath="..\KeithLink.Svc.Windows.OrderService\bin\$(var.Configuration)"?>
+  <?define AppDescription="Polls KeithOnline for a list of items that we have child nutrition labels for and sends the list of items to the mainframe" ?>
+
+  <Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.0.0.0" Manufacturer="$(var.MfgName)" UpgradeCode="DC9BE621-078E-40C8-8CDB-584E133476AA">
+
+    <Package Id="*" Keywords="Installer" Description="$(var.AppName) Installer"
+            Manufacturer="$(var.MfgName)" Comments="$(var.AppDescription)"
+            InstallerVersion="200" Compressed="yes" InstallScope="perMachine" SummaryCodepage="1252" />
+
+    <!--
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+    -->
+    <Property Id="PREVIOUSVERSIONSINSTALLED" Secure="yes"/>
+    <Upgrade Id="799ABAC1-C6B2-45EE-A48D-82FAA9E5D73E">
+      <UpgradeVersion Minimum="1.0.0.0" Maximum="99.0.0.0" Property="PREVIOUSVERSIONSINSTALLED" IncludeMinimum="yes" IncludeMaximum="no"/>
+    </Upgrade>
+
+    <InstallExecuteSequence>
+      <RemoveExistingProducts After="InstallInitialize"/>
+      <InstallExecute After="RemoveExistingProducts"/>
+    </InstallExecuteSequence>
+
+    <Media Id="1" Cabinet="setup.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1"/>
+    <Property Id="DiskPrompt" Value="$(var.AppName) Installer [1]"/>
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder" Name="PFiles">
+        <Directory Id="CompanyFolder" Name="$(var.MfgName)">
+          <Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
+            <Component Id="ServiceFile" Guid="A61B19C7-F371-4765-A02A-0F9BA6D132F1">
+              <File Id="ServiceEXE" Name="Child Nutrition Service.exe" DiskId="1" Source="$(var.SourcePath)\Child Nutrition Service.exe" KeyPath="yes" Vital="yes" />
+              <File Id="ServicePDB" Name="Child Nutrition Service.pdb" DiskId="1" Source="$(var.SourcePath)\Child Nutrition Service.pdb" KeyPath="no" Vital="yes"/>
+              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+              <File Id="BekLibraryPDB" Name="BEKlibrary.pdb" DiskId="1" Source="$(var.SourcePath)\BEKlibrary.pdb" KeyPath="no" Vital="yes"/>
+              <File Id="Config" Name="Child Nutrition Service.exe.config" DiskId="1" Source="$(var.SourcePath)\Child Nutrition Service.exe.config" KeyPath="no" Vital="yes"/>
+
+              <ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
+                              DisplayName="$(var.AppName)" Description="$(var.AppDescription)">
+                <ServiceConfig OnInstall="yes" DelayedAutoStart="yes" />
+              </ServiceInstall>
+              <ServiceControl Id="ControlService" Name="MyService" Remove="both" Stop="both" Wait="no"/>
+            </Component>
+          </Directory>
+        </Directory>
+      </Directory>
+    </Directory>
+
+    <Feature Id="MainFeature" Title="$(var.AppName) Setup" Level="1">
+      <ComponentRef Id="ServiceFile"/>
+    </Feature>
+
+  </Product>
+
+</Wix>

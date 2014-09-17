@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         #region attributes
         private EventLogRepositoryImpl _log;
+        private static bool _processing;
         private Timer _queueTimer;
 
         const int TIMER_DURATION_TICK = 2000;
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.Windows.OrderService {
             InitializeComponent();
 
             _log = new EventLogRepositoryImpl(this.ServiceName);
+            _processing = false;
         }
         #endregion
 
@@ -36,6 +38,8 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         protected override void OnStart(string[] args) {
+            Debugger.Launch();
+
             _log.WriteInformationLog("Service starting");
 
             InitializeQueueTimer();
@@ -48,14 +52,21 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         private void ProcessQueueTick(object state) {
-            try {
-                OrderLogicImpl orderQueue = new OrderLogicImpl(_log,
-                                                               new KeithLink.Svc.Impl.Repository.Orders.OrderQueueRepositoryImpl(),
-                                                               new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
+            if (!_processing) {
 
-                orderQueue.ProcessOrders();
-            } catch (Exception ex) {
-                _log.WriteErrorLog("Error processing orders", ex);
+                _processing = true;
+
+                try {
+                    OrderLogicImpl orderQueue = new OrderLogicImpl(_log,
+                                                                   new KeithLink.Svc.Impl.Repository.Orders.OrderQueueRepositoryImpl(),
+                                                                   new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
+
+                    orderQueue.ProcessOrders();
+                } catch (Exception ex) {
+                    _log.WriteErrorLog("Error processing orders", ex);
+                }
+
+                _processing = false;
             }
         }
 
