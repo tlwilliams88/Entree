@@ -15,7 +15,7 @@ angular.module('bekApp')
 
     // navigate to appropriate cart if no cart is selected
     var currentCart = CartService.getSelectedCart($state.params.cartId);
-    if (currentCart.id) {
+    if (currentCart && currentCart.id) {
       $state.go('menu.cart.items', { cartId: currentCart.id });
     }
     

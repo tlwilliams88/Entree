@@ -11,10 +11,14 @@
 angular.module('bekApp')
 .directive('ngConfirmClick', [ function(){
     return {
+        restrict: 'A',
+        scope: {
+            msg: '=ngConfirmClick'
+        },
         link: function (scope, element, attr) {
-            var msg = attr.ngConfirmClick || 'Are you sure?';
             var clickAction = attr.confirmedClick;
             element.bind('click',function (event) {
+                var msg = scope.msg || 'Are you sure?';
                 if ( window.confirm(msg) ) {
                     scope.$eval(clickAction);
                 }

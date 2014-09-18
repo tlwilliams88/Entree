@@ -1,3 +1,7 @@
+.item-details__top-info {
+  vertical-align: middle;
+  padding-left: $gutter-size;
+}
 .item-details__icons {
   margin-left: $gutter-size;
   font-size: 15px;
@@ -20,6 +24,13 @@
 
   tr:last-child {
     border-bottom: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .item-details__top-info {
+    padding-top: $gutter-size;
+    padding-left: 0;
   }
 }
 

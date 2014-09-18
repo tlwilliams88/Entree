@@ -49,6 +49,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
+            builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 
             // Build the container.
             var container = builder.Build();

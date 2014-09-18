@@ -11,5 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
     {
         UserProfile GetProfile(string emailAddress);
         void AddProfile(UserProfile userProfile);
+        void ResetAllItems();
+        void RemoveItem(string emailAddress);
     }
 }

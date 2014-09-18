@@ -216,8 +216,6 @@ angular
 .run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', function($rootScope, $state, AccessService, AuthenticationService) {
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    console.log(toState.name);
-    console.log(toParams);
     // check if route is protected
     if (toState.data && toState.data.authorize) {
       // check if user's token is expired
