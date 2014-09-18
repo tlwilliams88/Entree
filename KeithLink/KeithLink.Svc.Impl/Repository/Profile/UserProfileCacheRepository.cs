@@ -128,19 +128,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         /// <summary>
-        /// remove all of the cache for a specific customer (NOT IMPLEMENTED YET)
-        /// </summary>
-        /// <param name="branchId">the branch's unique identifier</param>
-        /// <param name="customerNumber">the customer's unique identifier</param>
-        /// <remarks>
-        /// jwames - 7/28/2014 - original code
-        /// </remarks>
-        public void ResetItemsByCustomer(string branchId, string customerNumber)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
         /// remove a price from the cache
         /// </summary>
         /// <param name="branchId">the branch's unique identifier</param>

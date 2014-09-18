@@ -235,9 +235,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             ElasticsearchResponse<DynamicDictionary> res = null;
 
             if (searchBodyD == null)
-                res = client.Search(branch, "product", searchBody);
+                res = client.Search(branch.ToLower(), "product", searchBody);
             else
-                res = client.Search(branch, "product", searchBodyD);
+				res = client.Search(branch.ToLower(), "product", searchBodyD);
 
             List<Product> products = new List<Product>();
             foreach (var oProd in res.Response["hits"]["hits"])
