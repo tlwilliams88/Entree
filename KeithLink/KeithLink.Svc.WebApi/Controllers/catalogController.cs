@@ -57,6 +57,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
+        [ApiKeyedRoute("catalog/search/{branchId}/brands/house/{brandControlLabel}")]
+        public ProductsReturn GetProductsByHouseBrand(string branchId, string brandControlLabel, [FromUri] SearchInputModel searchModel)
+        {
+            return _catalogLogic.GetHouseProductsByBranch(branchId, brandControlLabel, searchModel, this.AuthenticatedUser);
+        }
+
+        [HttpGet]
         [ApiKeyedRoute("catalog/category/{id}")]
 		public CategoriesReturn GetCategoriesById(string id, [FromUri] SearchInputModel searchModel)
         {

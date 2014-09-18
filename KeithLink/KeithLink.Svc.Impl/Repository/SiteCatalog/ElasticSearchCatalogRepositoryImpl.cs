@@ -50,6 +50,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
         }
 
+        public ProductsReturn GetHouseProductsByBranch(string branchId, string brandControlLabel, SearchInputModel searchModel)
+        {
+            int size = GetProductPagingSize(searchModel.Size);
+
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
+
+            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
+
+            return GetProductsFromElasticSearch(branchId.ToLower(), "", categorySearchExpression);
+        }
+
         private dynamic BuildFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression)
         {
             return new {
