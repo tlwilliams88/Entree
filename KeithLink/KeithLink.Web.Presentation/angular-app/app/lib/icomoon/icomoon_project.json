@@ -1,19 +1,37 @@
 {
 	"metadata": {
 		"name": "Untitled Project 1 1",
-		"lastOpened": 1410893981621,
+		"lastOpened": 1410894065540,
 		"created": 1381083457739
 	},
 	"iconSets": [
 		{
 			"selection": [
 				{
+					"order": 247,
+					"id": 10,
+					"prevSize": 32,
+					"code": 59123,
+					"name": "thermo",
+					"tempChar": "",
+					"ligatures": ""
+				},
+				{
+					"order": 0,
+					"id": 9,
+					"prevSize": 32,
+					"code": 59123,
+					"name": "",
+					"tempChar": "",
+					"ligatures": ""
+				},
+				{
 					"order": 244,
 					"id": 8,
 					"prevSize": 32,
 					"code": 59121,
-					"name": "SnowFlake",
-					"tempChar": "",
+					"name": "snowflake",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22,7 +40,7 @@
 					"prevSize": 32,
 					"code": 59120,
 					"name": "fan",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -31,7 +49,7 @@
 					"prevSize": 32,
 					"code": 59122,
 					"name": "umbrella",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -40,7 +58,7 @@
 					"prevSize": 32,
 					"code": 59116,
 					"name": "apple",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -49,7 +67,7 @@
 					"prevSize": 32,
 					"code": 59117,
 					"name": "safety",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -58,7 +76,7 @@
 					"prevSize": 32,
 					"code": 59118,
 					"name": "sellsheet",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -67,7 +85,7 @@
 					"prevSize": 32,
 					"code": 59119,
 					"name": "truck",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				}
 			],
@@ -79,6 +97,40 @@
 			"prevSize": 32,
 			"icons": [
 				{
+					"id": 10,
+					"paths": [
+						"M167.918 2.399c-14.843 3.148-23.688 6.297-35.982 12.894-10.645 5.697-27.886 18.591-33.134 24.738-20.24 24.138-30.285 46.028-33.734 73.164-0.6 4.948-1.199 136.433-1.199 292.057l-0.15 283.212-8.546 9.146c-4.648 5.098-10.045 10.945-11.844 13.044-5.847 6.897-17.392 24.588-22.789 35.383-5.997 11.844-15.293 38.681-16.642 47.827-0.45 3.298-1.499 9.595-2.249 14.093-1.199 8.096-1.049 44.528 0.3 50.375 0.3 1.649 1.199 6.297 1.799 10.495 1.499 11.245 10.645 37.332 17.691 50.825 20.69 40.030 56.672 73.014 97.602 89.656 12.144 4.948 28.786 9.895 37.632 11.095 3.298 0.45 8.546 1.349 11.544 2.099 6.147 1.349 47.077 0.9 50.675-0.45 1.199-0.45 4.948-1.199 8.246-1.649 11.394-1.499 33.134-8.546 47.977-15.742 56.522-27.437 95.953-80.511 106.448-143.33 2.099-11.844 1.949-45.278-0.15-58.621-6.297-40.18-27.437-81.11-55.323-107.498l-5.997-5.697-0.15-285.161c-0.15-156.823-0.6-287.859-1.049-291.158-2.999-22.639-13.194-47.227-26.537-64.019-16.942-21.29-42.729-38.231-68.217-44.828-15.143-3.898-42.429-4.798-56.223-1.949zM210.797 67.317c16.792 5.697 28.336 14.993 36.432 29.386 8.696 15.442 8.246-3.748 8.546 322.343 0.15 165.669 0.45 301.803 0.45 302.252 0.15 0.45 2.999 2.399 6.297 4.198 7.646 4.348 27.886 24.138 34.033 33.134 13.044 19.64 19.041 35.233 22.189 58.471 0.9 5.847 0.75 29.086 0 31.635-0.45 1.199-1.199 4.798-1.649 8.096-1.499 10.795-9.146 30.435-16.342 41.83-43.629 69.866-137.183 82.010-197.154 25.787-14.843-14.093-25.937-31.934-33.434-53.674-4.198-12.594-4.798-16.042-5.098-34.933-0.45-18.291 0-22.789 3.148-35.083 1.949-7.646 5.098-17.092 6.897-20.99 10.045-20.84 28.786-43.179 45.128-53.374 4.048-2.549 7.196-5.547 7.346-6.747 0-1.199 0.3-137.183 0.45-302.102 0.3-324.891-0.3-304.651 8.396-320.394 7.646-13.943 21.889-25.637 36.882-30.135 9.895-2.999 28.486-2.849 37.482 0.3z",
+						"M181.711 385.912c-7.646 2.699-15.442 9.745-18.741 17.242-2.999 6.747-2.999 8.996-3.148 172.566v165.669l-11.694 5.847c-19.64 9.595-38.081 30.135-45.578 50.525-7.047 19.49-7.946 45.428-2.099 62.819 9.445 28.036 29.236 49.326 55.923 60.271 12.144 4.948 20.39 6.447 35.533 6.447 27.437 0 47.677-8.246 67.167-27.437 19.79-19.341 29.236-43.329 28.186-71.815-0.3-7.496-0.9-14.243-1.349-14.993-0.6-0.75-1.349-3.748-1.799-6.597-1.499-8.396-10.795-26.237-18.891-35.833-7.946-9.595-24.438-22.039-34.783-26.387l-6.447-2.699v-164.17c0.15-180.662 0.45-173.315-8.846-183.061-8.246-8.546-22.489-12.144-33.434-8.396z"
+					],
+					"attrs": [
+						{},
+						{}
+					],
+					"width": 384,
+					"grid": 0,
+					"tags": [
+						"svg"
+					]
+				},
+				{
+					"id": 9,
+					"paths": [
+						"M262.741 35.254c-42.043 11.074-73.765 45.61-82.023 89.155-1.314 7.32-1.314 730.322 0 737.643 4.881 25.339 13.514 41.482 31.909 60.25 11.074 11.074 18.395 16.705 28.155 21.398 12.575 6.006 13.139 6.569 12.951 12.388-0.562 9.76 6.945 23.462 16.141 29.843 7.883 5.443 8.634 5.631 34.912 6.195 29.093 0.751 36.411-0.564 45.985-8.447 6.569-5.631 12.951-17.268 12.951-23.649v-4.317l295.433 0.189 1.127 5.631c3.003 14.077 13.326 25.714 26.465 29.093 4.129 1.127 18.395 1.877 31.721 1.689 20.27-0.187 25.339-0.751 31.345-3.942 13.889-7.32 19.708-17.457 21.022-35.663 0.189-1.877 4.693-5.443 11.45-8.634 32.472-16.329 54.056-45.421 61.001-82.023 1.314-7.883 1.314-728.446-0.189-737.643-6.757-42.795-42.795-80.896-85.213-89.906-10.135-2.252-53.118-2.627-246.819-2.815-224.859 0-235.182 0.189-248.321 3.566zM747.557 108.268c6.945 2.815 15.392 10.699 19.332 18.020 2.815 5.068 3.191 18.77 3.566 140.209l0.375 134.766h-517.664v-132.888c0.189-145.464-0.189-139.833 11.637-152.034 3.191-3.378 9.572-7.132 14.077-8.634 12.012-3.378 460.417-3.003 468.674 0.564zM770.457 662.156c0.189 128.572-0.189 188.822-1.69 193.514-2.44 8.447-11.45 18.77-20.27 22.898-6.006 2.815-25.715 3.003-235.932 3.191-174.557 0-230.678-0.564-234.62-2.252-7.883-3.378-13.891-8.447-19.144-16.141l-4.881-6.945-0.375-190.698-0.564-190.51 517.1 0.189 0.376 186.757z",
+						"M359.967 216.755c-13.139 1.877-22.711 8.634-28.718 20.273-3.566 6.945-3.754 11.074-4.129 48.8 0 22.711 0.562 44.672 1.314 48.8 6.945 31.721 47.487 39.417 66.257 12.575l5.631-8.259 0.564-44.297c0.375-29.468 0-46.924-1.502-51.616-4.881-16.517-23.086-28.53-39.416-26.276z",
+						"M353.585 513.877c-9.385 3.003-17.644 9.948-22.149 18.77-4.129 8.259-4.129 9.385-4.129 72.263 0 58.187 0.375 64.379 3.566 70.385 9.197 17.643 27.779 25.151 46.548 18.957 8.633-3.003 19.332-14.828 21.961-24.401 1.127-4.693 1.877-30.219 1.877-68.133-0.189-58.561-0.375-60.812-4.317-68.884-7.883-15.391-27.403-24.025-43.357-18.957z"
+					],
+					"attrs": [
+						{},
+						{},
+						{}
+					],
+					"grid": 0,
+					"tags": [
+						"fridge"
+					],
+					"matchesSearch": false
+				},
+				{
 					"id": 8,
 					"paths": [
 						"M999.208 512c0-23.714-19.402-43.116-43.116-43.116h-43.116l38.804-54.973c14.013-19.402 8.623-46.349-10.779-60.362s-46.349-8.623-60.362 10.779l-72.219 104.556h-222.046l111.023-191.865 127.192-10.779c23.714-2.156 40.96-22.636 38.804-46.349s-22.636-40.96-46.349-38.804l-66.829 5.389 21.558-36.648c11.857-20.48 4.312-47.427-16.168-59.284s-47.427-4.312-59.284 16.168l-21.558 36.648-28.025-61.44c-9.701-21.558-35.571-31.259-57.128-20.48-21.558 9.701-31.259 35.571-20.48 57.128l53.895 115.335-111.023 191.865-111.023-191.865 53.895-115.335c9.701-21.558 1.078-47.427-20.48-57.128s-47.427-1.078-57.128 20.48l-28.025 60.362-21.558-36.648c-11.857-20.48-38.804-28.025-59.284-16.168s-28.025 38.804-16.168 59.284l21.558 36.648-66.829-5.389c-23.714-2.156-44.194 15.091-46.349 38.804s15.091 44.194 38.804 46.349l127.192 10.779 111.023 191.865h-222.046l-73.297-104.556c-14.013-19.402-40.96-23.714-60.362-10.779-19.402 14.013-23.714 40.96-10.779 60.362l38.804 54.973h-43.116c-23.714 0-43.116 19.402-43.116 43.116s19.402 43.116 43.116 43.116h43.116l-38.804 54.973c-14.013 19.402-8.623 46.349 10.779 60.362 7.545 5.389 16.168 7.545 24.792 7.545 14.013 0 26.947-6.467 35.571-18.324l73.297-104.556h220.968l-109.945 192.943-127.192 10.779c-23.714 2.156-40.96 22.636-38.804 46.349s22.636 40.96 46.349 38.804l66.829-5.389-21.558 36.648c-11.857 20.48-4.312 47.427 16.168 59.284 6.467 4.312 14.013 5.389 21.558 5.389 15.091 0 29.103-7.545 37.726-21.558l21.558-36.648 28.025 60.362c7.545 16.168 22.636 24.792 38.804 24.792 6.467 0 11.857-1.078 18.324-4.312 21.558-9.701 31.259-35.571 20.48-57.128l-53.895-115.335 111.023-191.865 111.023 191.865-53.895 115.335c-9.701 21.558-1.078 47.427 20.48 57.128 5.389 3.234 11.857 4.312 18.324 4.312 16.168 0 32.337-9.701 38.804-24.792l28.025-60.362 21.558 36.648c7.545 14.013 22.636 21.558 37.726 21.558 7.545 0 15.091-2.156 21.558-5.389 20.48-11.857 28.025-38.804 16.168-59.284l-21.558-36.648 66.829 5.389c23.714 2.156 44.194-15.091 46.349-38.804s-15.091-44.194-38.804-46.349l-127.192-10.779-111.023-191.865h222.046l73.297 104.556c8.623 11.857 21.558 18.324 35.571 18.324 8.623 0 17.246-2.156 24.792-7.545 19.402-14.013 23.714-40.96 10.779-60.362l-38.804-54.973h43.116c22.636 0 42.038-19.402 42.038-43.116z"
@@ -89,7 +141,8 @@
 					"grid": 0,
 					"tags": [
 						"SnowFlake"
-					]
+					],
+					"matchesSearch": false
 				},
 				{
 					"id": 6,
@@ -134,7 +187,7 @@
 					"tags": [
 						"Umbrella"
 					],
-					"matchesSearch": true
+					"matchesSearch": false
 				},
 				{
 					"id": 3,
@@ -1456,7 +1509,7 @@
 					"prevSize": 28,
 					"code": 61781,
 					"name": "dollar",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -4607,7 +4660,7 @@
 					],
 					"defaultCode": 61673,
 					"grid": 14,
-					"matchesSearch": true
+					"matchesSearch": false
 				},
 				{
 					"id": 208,
@@ -14381,7 +14434,7 @@
 					"prevSize": 32,
 					"code": 58880,
 					"name": "food",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -15038,7 +15091,7 @@
 					"prevSize": 32,
 					"code": 58881,
 					"name": "filter",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -19294,7 +19347,7 @@
 						"rain"
 					],
 					"grid": 20,
-					"matchesSearch": true
+					"matchesSearch": false
 				},
 				{
 					"id": 110,
@@ -21508,7 +21561,7 @@
 					"prevSize": 20,
 					"code": 58882,
 					"name": "phone",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21517,7 +21570,7 @@
 					"prevSize": 20,
 					"code": 58883,
 					"name": "mobile",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21526,7 +21579,7 @@
 					"prevSize": 20,
 					"code": 58884,
 					"name": "mouse",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21535,7 +21588,7 @@
 					"prevSize": 20,
 					"code": 58885,
 					"name": "directions",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21544,7 +21597,7 @@
 					"prevSize": 20,
 					"code": 58886,
 					"name": "mail",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21553,7 +21606,7 @@
 					"prevSize": 20,
 					"code": 58887,
 					"name": "paperplane",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21562,7 +21615,7 @@
 					"prevSize": 20,
 					"code": 58888,
 					"name": "pencil",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21571,7 +21624,7 @@
 					"prevSize": 20,
 					"code": 58889,
 					"name": "feather",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21580,7 +21633,7 @@
 					"prevSize": 20,
 					"code": 58890,
 					"name": "paperclip",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21589,7 +21642,7 @@
 					"prevSize": 20,
 					"code": 58891,
 					"name": "drawer",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21598,7 +21651,7 @@
 					"prevSize": 20,
 					"code": 58892,
 					"name": "reply",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21607,7 +21660,7 @@
 					"prevSize": 20,
 					"code": 58893,
 					"name": "reply-all",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21616,7 +21669,7 @@
 					"prevSize": 20,
 					"code": 58894,
 					"name": "forward",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21625,7 +21678,7 @@
 					"prevSize": 20,
 					"code": 58895,
 					"name": "user",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21634,7 +21687,7 @@
 					"prevSize": 20,
 					"code": 58896,
 					"name": "users",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21643,7 +21696,7 @@
 					"prevSize": 20,
 					"code": 58897,
 					"name": "user-add",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21652,7 +21705,7 @@
 					"prevSize": 20,
 					"code": 58898,
 					"name": "vcard",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21661,7 +21714,7 @@
 					"prevSize": 20,
 					"code": 58899,
 					"name": "export",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21670,7 +21723,7 @@
 					"prevSize": 20,
 					"code": 58900,
 					"name": "location",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21679,7 +21732,7 @@
 					"prevSize": 20,
 					"code": 58901,
 					"name": "map",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21688,7 +21741,7 @@
 					"prevSize": 20,
 					"code": 58902,
 					"name": "compass",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21697,7 +21750,7 @@
 					"prevSize": 20,
 					"code": 58903,
 					"name": "location2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21706,7 +21759,7 @@
 					"prevSize": 20,
 					"code": 58904,
 					"name": "target",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21715,7 +21768,7 @@
 					"prevSize": 20,
 					"code": 58905,
 					"name": "share",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21724,7 +21777,7 @@
 					"prevSize": 20,
 					"code": 58906,
 					"name": "sharable",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21733,7 +21786,7 @@
 					"prevSize": 20,
 					"code": 58907,
 					"name": "heart",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21742,7 +21795,7 @@
 					"prevSize": 20,
 					"code": 58908,
 					"name": "heart2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21751,7 +21804,7 @@
 					"prevSize": 20,
 					"code": 58909,
 					"name": "star",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21760,7 +21813,7 @@
 					"prevSize": 20,
 					"code": 58910,
 					"name": "star2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21769,7 +21822,7 @@
 					"prevSize": 20,
 					"code": 58911,
 					"name": "thumbsup",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21778,7 +21831,7 @@
 					"prevSize": 20,
 					"code": 58912,
 					"name": "thumbsdown",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21787,7 +21840,7 @@
 					"prevSize": 20,
 					"code": 58913,
 					"name": "chat",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21796,7 +21849,7 @@
 					"prevSize": 20,
 					"code": 58914,
 					"name": "comment",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21805,7 +21858,7 @@
 					"prevSize": 20,
 					"code": 58915,
 					"name": "quote",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21814,7 +21867,7 @@
 					"prevSize": 20,
 					"code": 58916,
 					"name": "house",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21823,7 +21876,7 @@
 					"prevSize": 20,
 					"code": 58917,
 					"name": "popup",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21832,7 +21885,7 @@
 					"prevSize": 20,
 					"code": 58918,
 					"name": "search",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21841,7 +21894,7 @@
 					"prevSize": 20,
 					"code": 58919,
 					"name": "flashlight",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21850,7 +21903,7 @@
 					"prevSize": 20,
 					"code": 58920,
 					"name": "printer",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21859,7 +21912,7 @@
 					"prevSize": 20,
 					"code": 58921,
 					"name": "bell",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21868,7 +21921,7 @@
 					"prevSize": 20,
 					"code": 58922,
 					"name": "link",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21877,7 +21930,7 @@
 					"prevSize": 20,
 					"code": 58923,
 					"name": "flag",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21886,7 +21939,7 @@
 					"prevSize": 20,
 					"code": 58924,
 					"name": "cog",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21895,7 +21948,7 @@
 					"prevSize": 20,
 					"code": 58925,
 					"name": "tools",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21904,7 +21957,7 @@
 					"prevSize": 20,
 					"code": 58926,
 					"name": "trophy",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21913,7 +21966,7 @@
 					"prevSize": 20,
 					"code": 58927,
 					"name": "tag",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21922,7 +21975,7 @@
 					"prevSize": 20,
 					"code": 58928,
 					"name": "camera",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21931,7 +21984,7 @@
 					"prevSize": 20,
 					"code": 58929,
 					"name": "megaphone",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21940,7 +21993,7 @@
 					"prevSize": 20,
 					"code": 58930,
 					"name": "moon",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21949,7 +22002,7 @@
 					"prevSize": 20,
 					"code": 58931,
 					"name": "palette",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21958,7 +22011,7 @@
 					"prevSize": 20,
 					"code": 58932,
 					"name": "leaf",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21967,7 +22020,7 @@
 					"prevSize": 20,
 					"code": 58933,
 					"name": "music",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21976,7 +22029,7 @@
 					"prevSize": 20,
 					"code": 58934,
 					"name": "music2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21985,7 +22038,7 @@
 					"prevSize": 20,
 					"code": 58935,
 					"name": "new",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -21994,7 +22047,7 @@
 					"prevSize": 20,
 					"code": 58936,
 					"name": "graduation",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22003,7 +22056,7 @@
 					"prevSize": 20,
 					"code": 58937,
 					"name": "book",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22012,7 +22065,7 @@
 					"prevSize": 20,
 					"code": 58938,
 					"name": "newspaper",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22021,7 +22074,7 @@
 					"prevSize": 20,
 					"code": 58939,
 					"name": "bag",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22030,7 +22083,7 @@
 					"prevSize": 20,
 					"code": 58940,
 					"name": "airplane",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22039,7 +22092,7 @@
 					"prevSize": 20,
 					"code": 58941,
 					"name": "lifebuoy",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22048,7 +22101,7 @@
 					"prevSize": 20,
 					"code": 58942,
 					"name": "eye",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22057,7 +22110,7 @@
 					"prevSize": 20,
 					"code": 58943,
 					"name": "clock",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22066,7 +22119,7 @@
 					"prevSize": 20,
 					"code": 58944,
 					"name": "microphone",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22075,7 +22128,7 @@
 					"prevSize": 20,
 					"code": 58945,
 					"name": "calendar",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22084,7 +22137,7 @@
 					"prevSize": 20,
 					"code": 58946,
 					"name": "bolt",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22093,7 +22146,7 @@
 					"prevSize": 20,
 					"code": 58947,
 					"name": "thunder",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22102,7 +22155,7 @@
 					"prevSize": 20,
 					"code": 58948,
 					"name": "droplet",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22111,7 +22164,7 @@
 					"prevSize": 20,
 					"code": 58949,
 					"name": "cd",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22120,7 +22173,7 @@
 					"prevSize": 20,
 					"code": 58950,
 					"name": "briefcase",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22129,7 +22182,7 @@
 					"prevSize": 20,
 					"code": 58951,
 					"name": "air",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22138,7 +22191,7 @@
 					"prevSize": 20,
 					"code": 58952,
 					"name": "hourglass",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22147,7 +22200,7 @@
 					"prevSize": 20,
 					"code": 58953,
 					"name": "gauge",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22156,7 +22209,7 @@
 					"prevSize": 20,
 					"code": 58954,
 					"name": "language",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22165,7 +22218,7 @@
 					"prevSize": 20,
 					"code": 58955,
 					"name": "network",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22174,7 +22227,7 @@
 					"prevSize": 20,
 					"code": 58956,
 					"name": "key",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22183,7 +22236,7 @@
 					"prevSize": 20,
 					"code": 58957,
 					"name": "battery",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22192,7 +22245,7 @@
 					"prevSize": 20,
 					"code": 58958,
 					"name": "bucket",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22201,7 +22254,7 @@
 					"prevSize": 20,
 					"code": 58959,
 					"name": "magnet",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22210,7 +22263,7 @@
 					"prevSize": 20,
 					"code": 58960,
 					"name": "drive",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22219,7 +22272,7 @@
 					"prevSize": 20,
 					"code": 58961,
 					"name": "cup",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22228,7 +22281,7 @@
 					"prevSize": 20,
 					"code": 58962,
 					"name": "rocket",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22237,7 +22290,7 @@
 					"prevSize": 20,
 					"code": 58963,
 					"name": "brush",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22246,7 +22299,7 @@
 					"prevSize": 20,
 					"code": 58964,
 					"name": "suitcase",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22255,7 +22308,7 @@
 					"prevSize": 20,
 					"code": 58965,
 					"name": "cone",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22264,7 +22317,7 @@
 					"prevSize": 20,
 					"code": 58966,
 					"name": "earth",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22273,7 +22326,7 @@
 					"prevSize": 20,
 					"code": 58967,
 					"name": "keyboard",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22282,7 +22335,7 @@
 					"prevSize": 20,
 					"code": 58968,
 					"name": "browser",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22291,7 +22344,7 @@
 					"prevSize": 20,
 					"code": 58969,
 					"name": "publish",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22300,7 +22353,7 @@
 					"prevSize": 20,
 					"code": 58970,
 					"name": "progress-3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22309,7 +22362,7 @@
 					"prevSize": 20,
 					"code": 58971,
 					"name": "progress-2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22318,7 +22371,7 @@
 					"prevSize": 20,
 					"code": 58972,
 					"name": "brogress-1",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22327,7 +22380,7 @@
 					"prevSize": 20,
 					"code": 58973,
 					"name": "progress-0",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22336,7 +22389,7 @@
 					"prevSize": 20,
 					"code": 58974,
 					"name": "sun",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22345,7 +22398,7 @@
 					"prevSize": 20,
 					"code": 58975,
 					"name": "sun2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22354,7 +22407,7 @@
 					"prevSize": 20,
 					"code": 58976,
 					"name": "adjust",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22363,7 +22416,7 @@
 					"prevSize": 20,
 					"code": 58977,
 					"name": "code",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22372,7 +22425,7 @@
 					"prevSize": 20,
 					"code": 58978,
 					"name": "screen",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22381,7 +22434,7 @@
 					"prevSize": 20,
 					"code": 58979,
 					"name": "infinity",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22390,7 +22443,7 @@
 					"prevSize": 20,
 					"code": 58980,
 					"name": "light-bulb",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22399,7 +22452,7 @@
 					"prevSize": 20,
 					"code": 58981,
 					"name": "creditcard",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22408,7 +22461,7 @@
 					"prevSize": 20,
 					"code": 58982,
 					"name": "database",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22417,7 +22470,7 @@
 					"prevSize": 20,
 					"code": 58983,
 					"name": "voicemail",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22426,7 +22479,7 @@
 					"prevSize": 20,
 					"code": 58984,
 					"name": "clipboard",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22435,7 +22488,7 @@
 					"prevSize": 20,
 					"code": 58985,
 					"name": "cart",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22444,7 +22497,7 @@
 					"prevSize": 20,
 					"code": 58986,
 					"name": "box",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22453,7 +22506,7 @@
 					"prevSize": 20,
 					"code": 58987,
 					"name": "ticket",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22462,7 +22515,7 @@
 					"prevSize": 20,
 					"code": 58988,
 					"name": "rss",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22471,7 +22524,7 @@
 					"prevSize": 20,
 					"code": 58989,
 					"name": "signal",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22480,7 +22533,7 @@
 					"prevSize": 20,
 					"code": 58990,
 					"name": "thermometer",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22489,7 +22542,7 @@
 					"prevSize": 20,
 					"code": 58991,
 					"name": "droplets",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22498,7 +22551,7 @@
 					"prevSize": 20,
 					"code": 58992,
 					"name": "uniE670",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22507,7 +22560,7 @@
 					"prevSize": 20,
 					"code": 58993,
 					"name": "statistics",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22516,7 +22569,7 @@
 					"prevSize": 20,
 					"code": 58994,
 					"name": "pie",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22525,7 +22578,7 @@
 					"prevSize": 20,
 					"code": 58995,
 					"name": "bars",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22534,7 +22587,7 @@
 					"prevSize": 20,
 					"code": 58996,
 					"name": "graph",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22543,7 +22596,7 @@
 					"prevSize": 20,
 					"code": 58997,
 					"name": "lock",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22552,7 +22605,7 @@
 					"prevSize": 20,
 					"code": 58998,
 					"name": "lock-open",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22561,7 +22614,7 @@
 					"prevSize": 20,
 					"code": 58999,
 					"name": "logout",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22570,7 +22623,7 @@
 					"prevSize": 20,
 					"code": 59000,
 					"name": "login",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22579,7 +22632,7 @@
 					"prevSize": 20,
 					"code": 59001,
 					"name": "checkmark",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22588,7 +22641,7 @@
 					"prevSize": 20,
 					"code": 59002,
 					"name": "cross",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22597,7 +22650,7 @@
 					"prevSize": 20,
 					"code": 59003,
 					"name": "minus",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22606,7 +22659,7 @@
 					"prevSize": 20,
 					"code": 59004,
 					"name": "plus",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22615,7 +22668,7 @@
 					"prevSize": 20,
 					"code": 59005,
 					"name": "cross2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22624,7 +22677,7 @@
 					"prevSize": 20,
 					"code": 59006,
 					"name": "minus2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22633,7 +22686,7 @@
 					"prevSize": 20,
 					"code": 59007,
 					"name": "plus2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22642,7 +22695,7 @@
 					"prevSize": 20,
 					"code": 59008,
 					"name": "cross3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22651,7 +22704,7 @@
 					"prevSize": 20,
 					"code": 59009,
 					"name": "minus3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22660,7 +22713,7 @@
 					"prevSize": 20,
 					"code": 59010,
 					"name": "plus3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22669,7 +22722,7 @@
 					"prevSize": 20,
 					"code": 59011,
 					"name": "erase",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22678,7 +22731,7 @@
 					"prevSize": 20,
 					"code": 59012,
 					"name": "blocked",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22687,7 +22740,7 @@
 					"prevSize": 20,
 					"code": 59013,
 					"name": "info",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22696,7 +22749,7 @@
 					"prevSize": 20,
 					"code": 59014,
 					"name": "info2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22705,7 +22758,7 @@
 					"prevSize": 20,
 					"code": 59015,
 					"name": "question",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22714,7 +22767,7 @@
 					"prevSize": 20,
 					"code": 59016,
 					"name": "help",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22723,7 +22776,7 @@
 					"prevSize": 20,
 					"code": 59017,
 					"name": "warning",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22732,7 +22785,7 @@
 					"prevSize": 20,
 					"code": 59018,
 					"name": "cycle",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22741,7 +22794,7 @@
 					"prevSize": 20,
 					"code": 59019,
 					"name": "cw",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22750,7 +22803,7 @@
 					"prevSize": 20,
 					"code": 59020,
 					"name": "ccw",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22759,7 +22812,7 @@
 					"prevSize": 20,
 					"code": 59021,
 					"name": "shuffle",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22768,7 +22821,7 @@
 					"prevSize": 20,
 					"code": 59022,
 					"name": "arrow",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22777,7 +22830,7 @@
 					"prevSize": 20,
 					"code": 59023,
 					"name": "arrow2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22786,7 +22839,7 @@
 					"prevSize": 20,
 					"code": 59024,
 					"name": "retweet",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22795,7 +22848,7 @@
 					"prevSize": 20,
 					"code": 59025,
 					"name": "loop",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22804,7 +22857,7 @@
 					"prevSize": 20,
 					"code": 59026,
 					"name": "history",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22813,7 +22866,7 @@
 					"prevSize": 20,
 					"code": 59027,
 					"name": "back",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22822,7 +22875,7 @@
 					"prevSize": 20,
 					"code": 59028,
 					"name": "switch",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22831,7 +22884,7 @@
 					"prevSize": 20,
 					"code": 59029,
 					"name": "list",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22840,7 +22893,7 @@
 					"prevSize": 20,
 					"code": 59030,
 					"name": "add-to-list",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22849,7 +22902,7 @@
 					"prevSize": 20,
 					"code": 59031,
 					"name": "layout",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22858,7 +22911,7 @@
 					"prevSize": 20,
 					"code": 59032,
 					"name": "list2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22867,7 +22920,7 @@
 					"prevSize": 20,
 					"code": 59033,
 					"name": "text",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22876,7 +22929,7 @@
 					"prevSize": 20,
 					"code": 59034,
 					"name": "text2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22885,7 +22938,7 @@
 					"prevSize": 20,
 					"code": 59035,
 					"name": "document",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22894,7 +22947,7 @@
 					"prevSize": 20,
 					"code": 59036,
 					"name": "docs",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22903,7 +22956,7 @@
 					"prevSize": 20,
 					"code": 59037,
 					"name": "landscape",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22912,7 +22965,7 @@
 					"prevSize": 20,
 					"code": 59038,
 					"name": "pictures",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22921,7 +22974,7 @@
 					"prevSize": 20,
 					"code": 59039,
 					"name": "video",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22930,7 +22983,7 @@
 					"prevSize": 20,
 					"code": 59040,
 					"name": "music3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22939,7 +22992,7 @@
 					"prevSize": 20,
 					"code": 59041,
 					"name": "folder",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22948,7 +23001,7 @@
 					"prevSize": 20,
 					"code": 59042,
 					"name": "archive",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22957,7 +23010,7 @@
 					"prevSize": 20,
 					"code": 59043,
 					"name": "trash",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22966,7 +23019,7 @@
 					"prevSize": 20,
 					"code": 59044,
 					"name": "upload",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22975,7 +23028,7 @@
 					"prevSize": 20,
 					"code": 59045,
 					"name": "download",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22984,7 +23037,7 @@
 					"prevSize": 20,
 					"code": 59046,
 					"name": "disk",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -22993,7 +23046,7 @@
 					"prevSize": 20,
 					"code": 59047,
 					"name": "install",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23002,7 +23055,7 @@
 					"prevSize": 20,
 					"code": 59048,
 					"name": "cloud",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23011,7 +23064,7 @@
 					"prevSize": 20,
 					"code": 59049,
 					"name": "upload2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23020,7 +23073,7 @@
 					"prevSize": 20,
 					"code": 59050,
 					"name": "bookmark",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23029,7 +23082,7 @@
 					"prevSize": 20,
 					"code": 59051,
 					"name": "bookmarks",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23038,7 +23091,7 @@
 					"prevSize": 20,
 					"code": 59052,
 					"name": "book2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23047,7 +23100,7 @@
 					"prevSize": 20,
 					"code": 59053,
 					"name": "play",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23056,7 +23109,7 @@
 					"prevSize": 20,
 					"code": 59054,
 					"name": "pause",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23065,7 +23118,7 @@
 					"prevSize": 20,
 					"code": 59055,
 					"name": "record",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23074,7 +23127,7 @@
 					"prevSize": 20,
 					"code": 59056,
 					"name": "stop",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23083,7 +23136,7 @@
 					"prevSize": 20,
 					"code": 59057,
 					"name": "next",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23092,7 +23145,7 @@
 					"prevSize": 20,
 					"code": 59058,
 					"name": "previous",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23101,7 +23154,7 @@
 					"prevSize": 20,
 					"code": 59059,
 					"name": "first",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23110,7 +23163,7 @@
 					"prevSize": 20,
 					"code": 59060,
 					"name": "last",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23119,7 +23172,7 @@
 					"prevSize": 20,
 					"code": 59061,
 					"name": "resize-enlarge",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23128,7 +23181,7 @@
 					"prevSize": 20,
 					"code": 59062,
 					"name": "resize-shrink",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23137,7 +23190,7 @@
 					"prevSize": 20,
 					"code": 59063,
 					"name": "volume",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23146,7 +23199,7 @@
 					"prevSize": 20,
 					"code": 59064,
 					"name": "sound",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23155,7 +23208,7 @@
 					"prevSize": 20,
 					"code": 59065,
 					"name": "mute",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23164,7 +23217,7 @@
 					"prevSize": 20,
 					"code": 59066,
 					"name": "flow-cascade",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23173,7 +23226,7 @@
 					"prevSize": 20,
 					"code": 59067,
 					"name": "flow-branch",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23182,7 +23235,7 @@
 					"prevSize": 20,
 					"code": 59068,
 					"name": "flow-tree",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23191,7 +23244,7 @@
 					"prevSize": 20,
 					"code": 59069,
 					"name": "flow-line",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23200,7 +23253,7 @@
 					"prevSize": 20,
 					"code": 59070,
 					"name": "flow-parallel",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23209,7 +23262,7 @@
 					"prevSize": 20,
 					"code": 59071,
 					"name": "arrow-left",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23218,7 +23271,7 @@
 					"prevSize": 20,
 					"code": 59072,
 					"name": "arrow-down",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23227,7 +23280,7 @@
 					"prevSize": 20,
 					"code": 59073,
 					"name": "arrow-up-upload",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23236,7 +23289,7 @@
 					"prevSize": 20,
 					"code": 59074,
 					"name": "arrow-right",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23245,7 +23298,7 @@
 					"prevSize": 20,
 					"code": 59075,
 					"name": "arrow-left2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23254,7 +23307,7 @@
 					"prevSize": 20,
 					"code": 59076,
 					"name": "arrow-down2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23263,7 +23316,7 @@
 					"prevSize": 20,
 					"code": 59077,
 					"name": "arrow-up",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23272,7 +23325,7 @@
 					"prevSize": 20,
 					"code": 59078,
 					"name": "arrow-right2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23281,7 +23334,7 @@
 					"prevSize": 20,
 					"code": 59079,
 					"name": "arrow-left3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23290,7 +23343,7 @@
 					"prevSize": 20,
 					"code": 59080,
 					"name": "arrow-down3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23299,7 +23352,7 @@
 					"prevSize": 20,
 					"code": 59081,
 					"name": "arrow-up2",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23308,7 +23361,7 @@
 					"prevSize": 20,
 					"code": 59082,
 					"name": "arrow-right3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23317,7 +23370,7 @@
 					"prevSize": 20,
 					"code": 59083,
 					"name": "arrow-left4",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23326,7 +23379,7 @@
 					"prevSize": 20,
 					"code": 59084,
 					"name": "arrow-down4",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23335,7 +23388,7 @@
 					"prevSize": 20,
 					"code": 59085,
 					"name": "arrow-up3",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23344,7 +23397,7 @@
 					"prevSize": 20,
 					"code": 59086,
 					"name": "arrow-right4",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23353,7 +23406,7 @@
 					"prevSize": 20,
 					"code": 59087,
 					"name": "arrow-left5",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23362,7 +23415,7 @@
 					"prevSize": 20,
 					"code": 59088,
 					"name": "arrow-down5",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23371,7 +23424,7 @@
 					"prevSize": 20,
 					"code": 59089,
 					"name": "arrow-up4",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23380,7 +23433,7 @@
 					"prevSize": 20,
 					"code": 59090,
 					"name": "arrow-right5",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23389,7 +23442,7 @@
 					"prevSize": 20,
 					"code": 59091,
 					"name": "arrow-left6",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23398,7 +23451,7 @@
 					"prevSize": 20,
 					"code": 59092,
 					"name": "arrow-down6",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23407,7 +23460,7 @@
 					"prevSize": 20,
 					"code": 59093,
 					"name": "arrow-up5",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23416,7 +23469,7 @@
 					"prevSize": 20,
 					"code": 59094,
 					"name": "arrow-right6",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23425,7 +23478,7 @@
 					"prevSize": 20,
 					"code": 59095,
 					"name": "arrow-left7",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23434,7 +23487,7 @@
 					"prevSize": 20,
 					"code": 59096,
 					"name": "arrow-down7",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23443,7 +23496,7 @@
 					"prevSize": 20,
 					"code": 59097,
 					"name": "arrow-up6",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23452,7 +23505,7 @@
 					"prevSize": 20,
 					"code": 59098,
 					"name": "uniE6DA",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23461,7 +23514,7 @@
 					"prevSize": 20,
 					"code": 59099,
 					"name": "arrow-left8",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23470,7 +23523,7 @@
 					"prevSize": 20,
 					"code": 59100,
 					"name": "arrow-down8",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23479,7 +23532,7 @@
 					"prevSize": 20,
 					"code": 59101,
 					"name": "arrow-up7",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23488,7 +23541,7 @@
 					"prevSize": 20,
 					"code": 59102,
 					"name": "arrow-right7",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23497,7 +23550,7 @@
 					"prevSize": 20,
 					"code": 59103,
 					"name": "menu",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23506,7 +23559,7 @@
 					"prevSize": 20,
 					"code": 59104,
 					"name": "ellipsis",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23515,7 +23568,7 @@
 					"prevSize": 20,
 					"code": 59105,
 					"name": "dots",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23524,7 +23577,7 @@
 					"prevSize": 20,
 					"code": 59106,
 					"name": "dot",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23533,7 +23586,7 @@
 					"prevSize": 20,
 					"code": 59107,
 					"name": "cc",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23542,7 +23595,7 @@
 					"prevSize": 20,
 					"code": 59108,
 					"name": "cc-by",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23551,7 +23604,7 @@
 					"prevSize": 20,
 					"code": 59109,
 					"name": "cc-nc",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23560,7 +23613,7 @@
 					"prevSize": 20,
 					"code": 59110,
 					"name": "cc-nc-eu",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23569,7 +23622,7 @@
 					"prevSize": 20,
 					"code": 59111,
 					"name": "cc-nc-jp",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23578,7 +23631,7 @@
 					"prevSize": 20,
 					"code": 59112,
 					"name": "cc-sa",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23587,7 +23640,7 @@
 					"prevSize": 20,
 					"code": 59113,
 					"name": "cc-nd",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23596,7 +23649,7 @@
 					"prevSize": 20,
 					"code": 59114,
 					"name": "cc-pd",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{
@@ -23605,7 +23658,7 @@
 					"prevSize": 20,
 					"code": 59115,
 					"name": "cc-zero",
-					"tempChar": "",
+					"tempChar": "",
 					"ligatures": ""
 				},
 				{

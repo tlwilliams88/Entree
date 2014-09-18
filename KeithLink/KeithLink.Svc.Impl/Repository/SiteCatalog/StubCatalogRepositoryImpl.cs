@@ -48,6 +48,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
         }
 
+        public ProductsReturn GetHouseProductsByBranch(string branch, string controlLabel, SearchInputModel searchModel)
+        {
+            return new ProductsReturn();
+        }
+
         public CategoriesReturn GetCategories()
         {
             return new CategoriesReturn() { Categories = categories.ToList() };

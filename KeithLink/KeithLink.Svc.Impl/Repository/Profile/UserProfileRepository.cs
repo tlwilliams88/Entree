@@ -14,14 +14,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         IEventLogRepository _logger;
         InternalUserDomainRepository _internalAD;
         ExternalUserDomainRepository _externalAD;
+        IUserProfileCacheRepository _userProfileCacheRepository;
         #endregion
 
         #region ctor
-        public UserProfileRepository(IEventLogRepository logger, ExternalUserDomainRepository externalAD, InternalUserDomainRepository internalAD)
+        public UserProfileRepository(IEventLogRepository logger, ExternalUserDomainRepository externalAD, InternalUserDomainRepository internalAD, IUserProfileCacheRepository userProfileCacheRepository)
         {
             _logger = logger;
             _internalAD = internalAD;
             _externalAD = externalAD;
+            _userProfileCacheRepository = userProfileCacheRepository;
         }
         #endregion
 
@@ -427,10 +429,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress)
         {
-            UserProfileCacheRepository upcp = new UserProfileCacheRepository();
             Core.Models.Profile.UserProfile upFromCache = null;
-            upFromCache = upcp.GetProfile(emailAddress);
-            if (upcp.GetProfile(emailAddress) != null)
+            upFromCache = _userProfileCacheRepository.GetProfile(emailAddress);
+            if (_userProfileCacheRepository.GetProfile(emailAddress) != null)
             {
                 return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
             }
@@ -467,7 +468,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             if (retVal != null)
             {
-                upcp.AddProfile(retVal.UserProfiles.FirstOrDefault());
+                _userProfileCacheRepository.AddProfile(retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;
         }

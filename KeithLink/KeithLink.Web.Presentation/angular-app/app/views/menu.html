@@ -4,7 +4,7 @@
     <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
-        <span class="text-white user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span>  
+        <span class="text-white user-info__name">{{userProfile.displayName}}</span>  
       </div>
       <div>
         <span class="user-info__job-title">{{userProfile.role}}</span>
@@ -71,7 +71,6 @@
 
 <div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="desktop-wrapper">
   <toaster-container></toaster-container>
-  <div growl></div>
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
@@ -124,7 +123,6 @@
 
   <div class="row page-content">
     <div class="col-sm-12">
-      
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
@@ -137,7 +135,7 @@
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
           <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
-            <select ng-change="changeLocation()" ng-options="location.name for location in locations track by location.name" ng-model="currentLocation"></select>
+            <select ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeLocation()"></select>
           </div>
         </div>
         <div class="col-md-4">
@@ -145,7 +143,7 @@
             <div class="input-group">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ng-click="search(userBar.universalSearchTerm)" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
               </span>
             </div>
           </form>
@@ -155,7 +153,7 @@
             <span ng-if="isOrderEntryCustomer" class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
-                <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
+                <span class="user-info__name">{{userProfile.displayName}}</span> 
                 <span class="user-info__job-title">{{userProfile.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-default" ui-sref="menu.accountdetails">Account Settings</button>

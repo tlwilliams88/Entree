@@ -11,7 +11,7 @@ angular.module('bekApp')
   .factory('CartService', ['$http', 'UserProfileService', 'NameGeneratorService', 'Cart', function ($http, UserProfileService, NameGeneratorService, Cart) {
 
     function getBranch() {
-      return UserProfileService.getCurrentBranchId();
+      return UserProfileService.getCurrentBranchId().toLowerCase();
     }
 
     var Service = {
@@ -65,7 +65,10 @@ angular.module('bekApp')
 
       updateCart: function(cart, params) {
         return Cart.update(params, cart).$promise.then(function(response) {
-          return response.data;
+          var updatedCart = Service.findCartById(response.id);
+          var idx = Service.carts.indexOf(updatedCart);
+          angular.copy(response, Service.carts[idx]);
+          return response;
         });
       },
 

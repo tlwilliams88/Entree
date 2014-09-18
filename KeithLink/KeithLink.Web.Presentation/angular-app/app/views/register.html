@@ -8,7 +8,6 @@
 
       <div class="col-md-6">
         <form novalidate name="loginForm" class="login-form style-validation-errors">
-            
             <div class="row">
               <div class="col-md-5 form-group">
                 <label for="username">Email Address</label>
@@ -18,7 +17,7 @@
               <div class="col-md-5 form-group">
                 <label for="password">Password</label>
                 <span ng-show="loginForm.password.$error.required && loginForm.password.$dirty" class="text-red">Password is required</span>
-                <input id="password" ng-trim required  name="password" type="password" class="form-control" ng-model="loginInfo.password">
+                <input id="password" required name="password" type="password" class="form-control" ng-model="loginInfo.password">
               </div>
               <div class="col-md-2 form-group">
                 <button ng-disabled="loginForm.$invalid" class="btn-primary btn" type="submit" ng-click="login(loginInfo)">Login</button>
@@ -26,7 +25,7 @@
             </div>
             <div class="row">
               <div class="col-md-5 no-padding text-red">
-                {{errorMessage}}
+                {{loginErrorMessage}}
               </div>
               <div class="col-md-5">
                 <a href=""><strong>Forgot your password?</strong></a>
@@ -49,31 +48,38 @@
         </div>
       </div>
 
+      <div class="row">
+        <div class="col-xs-12 text-red">
+          <p>{{registrationErrorMessage}}</p>
+        </div>
+      </div>
+
       <form name="registrationForm" novalidate class="register-form sub-content style-validation-errors">
         <div class="row">
           <div class="col-md-6 form-group">
             <label for="username">Email Address</label>
             <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
-            <input required ng-trim class="form-control" type="text" id="username" name="username" ng-model="register.email">
+            <input required ng-trim class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmUsername">Confirm Email</label>
             <span ng-show="registrationForm.confirmUsername.$error.matchInput && registrationForm.confirmUsername.$dirty" class="text-red">Emails do not match</span>
             <span ng-show="registrationForm.confirmUsername.$error.required && registrationForm.confirmUsername.$dirty" class="text-red">Email confirmation is required</span>
-            <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="register.confirmEmail" match-input="register.email">
+            <input required ng-trim class="form-control" type="text" id="confirmUsername" name="confirmUsername" ng-model="registerUser.confirmEmail" match-input="registerUser.email">
           </div>
         </div>
         <div class="row">
           <div class="col-md-6 form-group">
             <label for="password">Password</label>
             <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
-            <input required class="form-control" id="password" type="password" name="password" ng-model="register.password">
+            <span ng-show="registrationForm.password.$error.validatePassword && registrationForm.password.$dirty" class="text-red">Must contain one uppercase letter, lowercase letter, and number.</span>
+            <input validate-password required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmPassword">Confirm Password</label>
             <span ng-show="registrationForm.confirmPassword.$error.matchInput && registrationForm.confirmPassword.$dirty" class="text-red">Passwords do not match</span>
             <span ng-show="registrationForm.confirmPassword.$error.required && registrationForm.confirmPassword.$dirty" class="text-red">Password confirmation is required</span>
-            <input required class="form-control" id="confirmPassword" type="password" name="confirmPassword" ng-model="register.confirmPassword" match-input="register.password">
+            <input required class="form-control" id="confirmPassword" type="password" name="confirmPassword" ng-model="registerUser.confirmPassword" match-input="registerUser.password">
           </div>
         </div>
         <div class="row">
@@ -81,13 +87,13 @@
             <label for="customerStatus">Customer Status</label>
             <div class="radio">
               <label>
-                <input ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus1" value="'Not a Customer'" ng-checked="true">
+                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-checked="true">
                 I am NOT a current customer
               </label>
             </div>
              <div class="radio">
               <label>
-                <input ng-model="register.customerStatus" type="radio" name="customerStatus" id="customerStatus2" value="'Current Customer'">
+                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus2" ng-value="true">
                 I am a current customer
               </label>
             </div>
@@ -97,7 +103,7 @@
             <a class="pull-right" target="_blank" href="/images/bek-division-map.png">Division Map</a>
             <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Division is required</span>
             <div class="select-div">
-              <select required name="branch" id="branch" class="form-control" ng-options="branch.name for branch in branches" ng-model="register.branch">
+              <select required name="branch" id="branch" class="form-control" ng-options="branch.name for branch in branches" ng-model="registerUser.branch">
                 <option value="">Please select a division</option>
               </select>
             </div>
@@ -109,7 +115,7 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="checkbox">
-              <input type="checkbox" value="" name="discounts" id="discounts" ng-checked="true">
+              <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-checked="true">
               <label for="discounts">Select checkbox to learn more about Ben E. Keith</label>
             </div>
           </div>
@@ -117,8 +123,8 @@
 
         <div class="row sub-content">
           <div class="col-xs-12">
-            <button ng-click="registerNewUser(register)" ng-disabled="registrationForm.$invalid" type="submit" class="btn btn-primary">Submit Registration</button>
-            <a href="">Cancel</a>
+            <button ng-click="registerNewUser(registerUser)" ng-disabled="registrationForm.$invalid || registrationFormSubmitted" type="submit" class="btn btn-primary">Submit Registration</button>
+            <a ng-click="clearForm()">Cancel</a>
           </div>
         </div>
 

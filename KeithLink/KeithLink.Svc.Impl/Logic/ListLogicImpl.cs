@@ -36,12 +36,12 @@ namespace KeithLink.Svc.Impl.Logic
 		public Guid CreateList(Guid userId, string branchId, UserList list)
         {
 			var newBasket = new CS.Basket();
-			newBasket.BranchId = branchId;
+			newBasket.BranchId = branchId.ToLower();
 			newBasket.DisplayName = list.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = list.FormattedName(branchId);
 
-			return basketRepository.CreateOrUpdateBasket(userId, branchId, newBasket, list.Items.Select(l => l.ToLineItem(branchId)).ToList());
+			return basketRepository.CreateOrUpdateBasket(userId, branchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(branchId)).ToList());
         }
 
 		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
@@ -107,14 +107,14 @@ namespace KeithLink.Svc.Impl.Logic
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
 
-			if (!lists.Where(l => l.Name.Equals(FAVORITESLIST)).Any())
+			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", branchId.ToLower(),FAVORITESLIST))).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, branchId, new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId, FAVORITESLIST)  }, null);
+				basketRepository.CreateOrUpdateBasket(user.UserId, branchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId.ToLower(), FAVORITESLIST) }, null);
 				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
-			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -153,7 +153,7 @@ namespace KeithLink.Svc.Impl.Logic
 		public List<string> ReadListLabels(Guid userId, string branchId)
         {
 			var lists = basketRepository.ReadAllBaskets(userId);
-			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(branchId)).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(branchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
 		private void LookupProductDetails(UserProfile user, UserList list)
@@ -175,7 +175,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					listItem.StorageTemp = prod.Gs1.StorageTemp;
+					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.Brand;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
@@ -204,7 +204,7 @@ namespace KeithLink.Svc.Impl.Logic
 		/// <param name="products">List of products</param>
 		public void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products)
 		{
-			var list = basketRepository.ReadBasket(userId, string.Format("l{0}_{1}", branchId, FAVORITESLIST));
+			var list = basketRepository.ReadBasket(userId, string.Format("l{0}_{1}", branchId.ToLower(), FAVORITESLIST));
 
 			if (list == null || list.LineItems == null)
 				return;
