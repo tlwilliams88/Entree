@@ -45,9 +45,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public List<string> contains { get; set; }
     }
 
-    [DataContract(Name = "gs1")]
+    [DataContract(Name = "nutritional")]
     [Serializable]
-    public class Gs1
+    public class Nutritional
     {
         [DataMember(Name = "brandowner")]
         public string BrandOwner { get; set; }

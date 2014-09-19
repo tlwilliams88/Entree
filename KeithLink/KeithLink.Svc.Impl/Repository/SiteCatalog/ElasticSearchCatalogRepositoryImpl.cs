@@ -50,6 +50,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
         }
 
+        public ProductsReturn GetHouseProductsByBranch(string branchId, string brandControlLabel, SearchInputModel searchModel)
+        {
+            int size = GetProductPagingSize(searchModel.Size);
+
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
+
+            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
+
+            return GetProductsFromElasticSearch(branchId.ToLower(), "", categorySearchExpression);
+        }
+
         private dynamic BuildFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression)
         {
             return new {
@@ -157,6 +168,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         {
                             facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
                         }
+                        else if (oFacet.Key == "brands")
+                        {
+                            if (oFacetValue["brand_meta"]["buckets"].Count > 0)
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
+                            }
+                            else
+                            {
+                                facetValue.Add(new KeyValuePair<string, object>("brand_control_label", null));
+                            }
+                        }
                         facet.Add(facetValue as ExpandoObject);
                     }
 
@@ -250,7 +272,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ManufacturerNumber = oProd._source.mfrnumber;
             p.Size = oProd._source.size;
             p.Brand = oProd._source.brand;
-            p.BrandExtendedDescription = oProd._source.brand_extended_description;
+            p.BrandExtendedDescription = oProd._source.brand_description;
+            p.BrandControlLabel = oProd._source.brand_control_label;
             p.UPC = oProd._source.upc;
             p.Description = oProd._source.description;
             p.Cases = oProd._source.cases;
@@ -268,52 +291,52 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
 			// TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
-            Gs1 gs1 = new Gs1();
-            if (oProd._source.gs1 != null)
+            Nutritional nutritional = new Nutritional();
+            if (oProd._source.nutritional != null)
             {
-                gs1.BrandOwner = oProd._source.gs1.brandowner;
-                gs1.CountryOfOrigin = oProd._source.gs1.countryoforigin;
-                gs1.GrossWeight = oProd._source.gs1.grossweight;
-                gs1.HandlingInstructions = oProd._source.gs1.handlinginstructions;
-                gs1.Ingredients = oProd._source.gs1.ingredients;
-                gs1.MarketingMessage = oProd._source.gs1.marketingmessage;
-                gs1.MoreInformation = oProd._source.gs1.moreinformation;
-                gs1.ServingSize = oProd._source.gs1.servingsize;
-                gs1.ServingSizeUOM = oProd._source.gs1.servingsizeuom;
-                gs1.ServingsPerPack = oProd._source.gs1.servingsperpack;
-                gs1.ServingSugestion = oProd._source.gs1.servingsuggestions;
-                gs1.Shelf = oProd._source.gs1.shelf;
-                gs1.StorageTemp = oProd._source.gs1.storagetemp;
-                gs1.UnitMeasure = oProd._source.gs1.unitmeasure;
-                gs1.UnitsPerCase = oProd._source.gs1.unitspercase;
-                gs1.Volume = oProd._source.gs1.volume;
-                gs1.Height = oProd._source.gs1.height;
-                gs1.Length = oProd._source.gs1.length;
-				gs1.Width = oProd._source.gs1.width;
-                gs1.Allergens = new Allergen();
-                gs1.NutritionInfo = new List<Nutrition>();
-                gs1.DietInfo = new List<Diet>();
-				if (oProd._source.gs1.allergen != null)
+                nutritional.BrandOwner = oProd._source.nutritional.brandowner;
+                nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
+                nutritional.GrossWeight = oProd._source.nutritional.grossweight;
+                nutritional.HandlingInstructions = oProd._source.nutritional.handlinginstructions;
+                nutritional.Ingredients = oProd._source.nutritional.ingredients;
+                nutritional.MarketingMessage = oProd._source.nutritional.marketingmessage;
+                nutritional.MoreInformation = oProd._source.nutritional.moreinformation;
+                nutritional.ServingSize = oProd._source.nutritional.servingsize;
+                nutritional.ServingSizeUOM = oProd._source.nutritional.servingsizeuom;
+                nutritional.ServingsPerPack = oProd._source.nutritional.servingsperpack;
+                nutritional.ServingSugestion = oProd._source.nutritional.servingsuggestions;
+                nutritional.Shelf = oProd._source.nutritional.shelf;
+                nutritional.StorageTemp = oProd._source.nutritional.storagetemp;
+                nutritional.UnitMeasure = oProd._source.nutritional.unitmeasure;
+                nutritional.UnitsPerCase = oProd._source.nutritional.unitspercase;
+                nutritional.Volume = oProd._source.nutritional.volume;
+                nutritional.Height = oProd._source.nutritional.height;
+                nutritional.Length = oProd._source.nutritional.length;
+                nutritional.Width = oProd._source.nutritional.width;
+                nutritional.Allergens = new Allergen();
+                nutritional.NutritionInfo = new List<Nutrition>();
+                nutritional.DietInfo = new List<Diet>();
+                if (oProd._source.nutritional.allergen != null)
 				{
-					if (oProd._source.gs1.allergen.freefrom != null)
+                    if (oProd._source.nutritional.allergen.freefrom != null)
 					{
-						gs1.Allergens.freefrom = new List<string>();
-						foreach (var ff in oProd._source.gs1.allergen.freefrom)
-							gs1.Allergens.freefrom.Add(ff);
+                        nutritional.Allergens.freefrom = new List<string>();
+                        foreach (var ff in oProd._source.nutritional.allergen.freefrom)
+                            nutritional.Allergens.freefrom.Add(ff);
 					}
 
-					if (oProd._source.gs1.allergen.contains != null)
+					if (oProd._source.nutritional.allergen.contains != null)
 					{
-						gs1.Allergens.contains = new List<string>();
-						foreach (var ff in oProd._source.gs1.allergen.contains)
-							gs1.Allergens.contains.Add(ff);
+                        nutritional.Allergens.contains = new List<string>();
+                        foreach (var ff in oProd._source.nutritional.allergen.contains)
+                            nutritional.Allergens.contains.Add(ff);
 					}
 
-					if (oProd._source.gs1.allergen.maycontain != null)
+                    if (oProd._source.nutritional.allergen.maycontain != null)
 					{
-						gs1.Allergens.maycontain = new List<string>();
-						foreach (var ff in oProd._source.gs1.allergen.maycontain)
-							gs1.Allergens.maycontain.Add(ff);
+                        nutritional.Allergens.maycontain = new List<string>();
+                        foreach (var ff in oProd._source.nutritional.allergen.maycontain)
+                            nutritional.Allergens.maycontain.Add(ff);
 					}
 
 					//foreach (var allergen in oProd._source.gs1.allergen)
@@ -322,9 +345,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					//	gs1.Allergens.Add(a);
 					//}
 				}
-                if (oProd._source.gs1.nutrition != null)
+                if (oProd._source.nutritional.nutrition != null)
                 {
-                    foreach (var nutrition in oProd._source.gs1.nutrition)
+                    foreach (var nutrition in oProd._source.nutritional.nutrition)
                     {
                         Nutrition n = new Nutrition()
                         {
@@ -334,19 +357,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                             NutrientType = nutrition.nutrienttype,
                             NutrientTypeCode = nutrition.nutrienttypecode
                         };
-                        gs1.NutritionInfo.Add(n);
+                        nutritional.NutritionInfo.Add(n);
                     }
                 }
-                if (oProd._source.gs1.diet != null)
+                if (oProd._source.nutritional.diet != null)
                 {
-                    foreach (var diet in oProd._source.gs1.diet)
+                    foreach (var diet in oProd._source.nutritional.diet)
                     {
                         Diet d = new Diet() { DietType = diet.diettype, Value = diet.value };
-                        gs1.DietInfo.Add(d);
+                        nutritional.DietInfo.Add(d);
                     }
                 }
             }
-            p.Gs1 = gs1;
+            p.Nutritional = nutritional;
             return p;
         }
 
@@ -393,6 +416,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         if (aggregationParams[0] == "categories")
                         {
                             (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname", size = 500 } } } });
+                        }
+                        else if (aggregationParams[0] == "brands")
+                        {
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { brand_meta = new { terms = new { field = "brand_control_label", size = 500 } } } });
                         }
                         else
                         {

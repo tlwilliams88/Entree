@@ -475,7 +475,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'test',
                       apiKey: 'web_test_v1',
-                      apiEndpoint: 'http://shopqa.benekeith.com/api'
+                      apiEndpoint: 'https://shopqa.benekeith.com/api'
                   }
               }
           },
@@ -484,7 +484,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'prod',
                       apiKey: 'web_prod_v1',
-                      apiEndpoint: 'http://shop.benekeith.com/api'
+                      apiEndpoint: 'https://shop.benekeith.com/api'
                   }
               }
           }

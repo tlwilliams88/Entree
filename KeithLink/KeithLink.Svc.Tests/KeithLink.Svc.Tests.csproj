@@ -76,18 +76,19 @@
   <ItemGroup>
     <Compile Include="MockRepository\BasketRepositoryMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Impl_ListLogic.cs" />
-    <Compile Include="Impl_PriceRepositoryImpl.cs" />
-    <Compile Include="Impl_PriceCacheRepositoryImpl.cs" />
-    <Compile Include="Impl_Profile_ExternalUserDomainRepository.cs" />
-    <Compile Include="Impl_Profile_InternalUserDomainRepository.cs" />
-    <Compile Include="Impl_Profile_CustomerContainerRepository.cs" />
-    <Compile Include="Impl_Profile_UserProfileRepository.cs" />
-    <Compile Include="Impl_SiteCatalog_ProductImageRepository.cs" />
-    <Compile Include="Impl_Orders_OrderSocketConnectionRepository.cs" />
-    <Compile Include="Impl_Orders_OrderLogicImpl.cs" />
-    <Compile Include="Impl_Orders_OrderQueueRepositoryImpl.cs" />
-    <Compile Include="WebApi_CatalogController.cs" />
+    <Compile Include="Logic\ListLogicTests.cs" />
+    <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
+    <Compile Include="Repositories\Price\PriceRepositoryImplTests.cs" />
+    <Compile Include="Repositories\Price\PriceCacheRepositoryImplTests.cs" />
+    <Compile Include="Repositories\Profile\ExternalUserDomainRepositoryTests.cs" />
+    <Compile Include="Repositories\Profile\InternalUserDomainRepositoryTests.cs" />
+    <Compile Include="Repositories\Profile\CustomerContainerRepositoryTests.cs" />
+    <Compile Include="Repositories\Profile\UserProfileRepositoryTests.cs" />
+    <Compile Include="Repositories\Catalog\ProductImageRepositoryTests.cs" />
+    <Compile Include="Repositories\Order\OrderSocketConnectionRepositoryTests.cs" />
+    <Compile Include="Logic\OrderLogicImplTests.cs" />
+    <Compile Include="Repositories\Order\OrderQueueRepositoryImplTests.cs" />
+    <Compile Include="Controllers\CatalogControllerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -118,6 +119,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

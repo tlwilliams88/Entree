@@ -71,6 +71,22 @@ namespace KeithLink.Svc.Impl.Logic
             return ret;
         }
 
+        public ProductsReturn GetHouseProductsByBranch(string branch, string brandControlLabel, SearchInputModel searchModel, UserProfile profile)
+        {
+            ProductsReturn returnValue;
+
+            // special handling for price sorting
+            if (searchModel.SField == "caseprice")
+                returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+            else
+                returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, searchModel);
+
+            AddPricingInfo(returnValue, profile, searchModel);
+            AddFavoriteProductInfo(branch, profile, returnValue);
+
+            return returnValue;
+        }
+
         public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;

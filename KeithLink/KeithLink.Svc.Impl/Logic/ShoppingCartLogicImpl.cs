@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Models.Orders;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -20,31 +22,36 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceLogic priceLogic;
+		private readonly IPurchaseOrderRepository purchaseOrderRepository;
+		private readonly IQueueRepository queueRepository;
 
 		private readonly string BasketStatus = "ShoppingCart";
 
-		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic)
+		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
+			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceLogic = priceLogic;
+			this.purchaseOrderRepository = purchaseOrderRepository;
+			this.queueRepository = queueRepository;
 		}
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
 		{
 			var newBasket = new CS.Basket();
-			newBasket.BranchId = branchId;
+			newBasket.BranchId = branchId.ToLower();
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = cart.FormattedName(branchId);
 
 			if(cart.Active)
-				MarkCurrentActiveCartAsInactive(user,branchId);
+				MarkCurrentActiveCartAsInactive(user, branchId.ToLower());
 
 			newBasket.Active = cart.Active;
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
-			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId, newBasket, cart.Items.Select(l => l.ToLineItem(branchId)).ToList());
+			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(branchId.ToLower())).ToList());
 		}
 
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
@@ -135,7 +142,7 @@ namespace KeithLink.Svc.Impl.Logic
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
-			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId.ToLower()) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -191,7 +198,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					item.StorageTemp = prod.Gs1.StorageTemp;
+					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
@@ -234,15 +241,60 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public string SaveAsOrder(UserProfile user, Guid cartId)
 		{
+			//Check that RequestedShipDate
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
+
+			if (basket.RequestedShipDate == null)
+				throw new ApplicationException("Requested Ship Date is required before submitting an order");
+
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+			var orderNumber = client.SaveCartAsOrder(user.UserId, cartId);
+
+			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(user.UserId, orderNumber);
+
+			var newOrderFile = new OrderFile()
+			{
+				Header = new OrderHeader()
+				{
+					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
+					ControlNumber = 1, //TODO: Handle ControlNumber
+					CustomerNumber = user.CustomerNumber,
+					UserId = user.UserId.ToString(),
+					OrderType = OrderType.NormalOrder,
+					OrderFilled = false,
+					OrderingSystem = OrderSource.KeithCom,
+					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+					PONumber = orderNumber,
+					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+					OrderSendDateTime = DateTime.Now
+				},
+				Details = new List<OrderDetail>()
+			};
+
+			foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+			{
+				var item = (CS.LineItem)lineItem.Target;
+
+				newOrderFile.Details.Add(new OrderDetail()
+				{
+					ItemNumber = item.ProductId,
+					ItemChange = LineType.Add,
+					LineNumber = (short)(newOrderFile.Details.Count + 1),
+					OrderedQuantity = (short)item.Quantity,
+					SellPrice = (double)item.PlacedPrice
+				});
+			}	
+
 			
-			//keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
-			var purchaseOrder = client.SaveCartAsOrder(user.UserId, cartId);
+			System.IO.StringWriter sw = new System.IO.StringWriter();
+			System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
 
-			//TODO: Write order to Rabbit Mq for processing to main frame
-
-			return purchaseOrder; //Return actual order number
+			xs.Serialize(sw, newOrderFile);
+			
+			queueRepository.PublishToQueue(new KeithLink.Svc.Core.Models.Orders.OrderFile().ToString());
+						
+			return orderNumber; //Return actual order number
 		}
 	}
 }

@@ -23,6 +23,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		Basket ReadBasket(Guid userId, Guid basketId, bool runPipelines = false);
 		Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false);
+
 		
 	}
 }

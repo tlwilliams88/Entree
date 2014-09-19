@@ -6,17 +6,17 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
-{
-    [TestClass]
-    public class Impl_Orders_OrderLogicImpl
+namespace KeithLink.Svc.Test.Repositories.Order
     {
+    [TestClass]
+    public class OrderQueueRepositoryImplTests {
+
         private OrderFile GetStubOrder() {
             OrderFile order = new OrderFile();
 
             order.Header.Branch = "FDF";
-            order.Header.ControlNumber = 3;
-            order.Header.CustomerNumber = "010166";
+            order.Header.ControlNumber = 1;
+            order.Header.CustomerNumber = "001001";
             order.Header.DeliveryDate = DateTime.Now.AddDays(1);
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test
 
             order.Details.Add(new OrderDetail() {
                 LineNumber = 1,
-                ItemNumber = "001003",
+                ItemNumber = "000001",
                 UnitOfMeasure = UnitOfMeasure.Case,
                 OrderedQuantity = 1,
                 SellPrice = 1.50,
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Test
             });
             order.Details.Add(new OrderDetail() {
                 LineNumber = 2,
-                ItemNumber = "002100",
+                ItemNumber = "000002",
                 UnitOfMeasure = UnitOfMeasure.Case,
                 OrderedQuantity = 1,
                 SellPrice = 2.37,
@@ -57,36 +57,24 @@ namespace KeithLink.Svc.Test
         }
 
         [TestMethod]
-        public void SendMockOrder()
-        {
-            // create an order and place it on the queue
+        public void ReceiveOrderFromQueue() {
             OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
-            queue.PublishToQueue(SerializeOrder(GetStubOrder()));
 
-
-            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
-                                               queue,
-                                               new OrderSocketConnectionRepositoryImpl());
-
-            orderLogic.ProcessOrders();
+            string output = queue.ConsumeFromQueue();
         }
 
-        private string SerializeOrder(OrderFile order) {
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-            System.IO.StringWriter xmlWriter = new System.IO.StringWriter();
+        [TestMethod]
+        public void SendOrderToQueue() {
+            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
 
-            xml.Serialize(xmlWriter, order);
+            OrderFile order = GetStubOrder();
 
-            return xmlWriter.ToString();
-        }
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(order.GetType());
 
-        private OrderFile DeserializeOrder(string rawOrder) {
-            OrderFile order = new OrderFile();
+            xs.Serialize(sw, order);
 
-            System.IO.StringReader xmlReader = new System.IO.StringReader(rawOrder);
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-
-            return (OrderFile)xml.Deserialize(xmlReader);
+            queue.PublishToQueue(sw.ToString());
         }
     }
 }

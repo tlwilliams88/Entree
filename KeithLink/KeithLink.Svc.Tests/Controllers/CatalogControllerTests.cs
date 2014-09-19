@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Controllers
 {
     [TestClass]
-    public class WebApi_CatalogController
+    public class CatalogControllerTests
     {
         [TestMethod]
         public void GetMultipleProducts()

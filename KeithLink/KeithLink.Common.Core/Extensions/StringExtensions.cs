@@ -17,5 +17,25 @@ namespace KeithLink.Common.Core.Extensions
 
 			return parsedValue;
 		}
+
+		public static DateTime? ToDateTime(this string value)
+		{
+			var parsedDate = new DateTime();
+
+			if (!DateTime.TryParse(value, out parsedDate))
+				return null;
+
+			return parsedDate;
+		}
+
+		public static short? ToShort(this string value)
+		{
+			short parsedShort;
+
+			if (!short.TryParse(value, out parsedShort))
+				return null;
+
+			return parsedShort;
+		}
 	}
 }

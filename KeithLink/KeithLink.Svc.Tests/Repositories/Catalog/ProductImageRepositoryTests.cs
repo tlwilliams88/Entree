@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Repositories.Catalog
 {
     [TestClass]
-    public class Impl_SiteCatalog_ProductImageRepository
+    public class ProductImageRepositoryTests
     {
         [TestMethod]
         public void GetListOfImages()

@@ -44,31 +44,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public void ProcessOrders() {
-            _orderQueue.SetQueuePath((int)OrderQueueLocation.Normal);
-            string rawOrder = _orderQueue.ConsumeFromQueue();
-
-            while (rawOrder != null) {
-                OrderFile order = DeserializeOrder(rawOrder);
-
-                try {
-                    _log.WriteInformationLog(string.Format("Sending order to mainframe({0})", order.Header.ControlNumber));
-
-                    SendToHost(order);
-                    SendToHistory(rawOrder);
-
-                    _log.WriteInformationLog(string.Format("Order sent to mainframe({0})", order.Header.ControlNumber));
-                } catch (Exception ex) {
-                    _log.WriteErrorLog(string.Format("Error while sending order({0})", order.Header.ControlNumber), ex);
-
-                    SendToError(rawOrder);
-                }
-
-                _orderQueue.SetQueuePath((int)OrderQueueLocation.Normal);
-                rawOrder = _orderQueue.ConsumeFromQueue();
-            } 
+            WorkOrderQueue(OrderQueueLocation.Normal);
+            WorkOrderQueue(OrderQueueLocation.Reprocess);            
         }
 
-        private void SendDetailRecordsToHost(List<OrderDetail> details) {
+        private void SendDetailRecordsToHost(List<OrderDetail> details, int ConfirmationNumber) {
             foreach (OrderDetail detail in details) {
                 _mfConnection.Send(detail.ToMainframeFormat());
 
@@ -82,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     } else {
                         switch (detailReturnCode) {
                             case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
-                                throw new CancelledTransactionException();
+                                throw new CancelledTransactionException(ConfirmationNumber);
                             case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
                                 waiting = false;
                                 break;
@@ -122,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 } else {
                     switch (headerReturnCode) {
                         case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
-                            throw new CancelledTransactionException();
+                            throw new CancelledTransactionException(header.ControlNumber);
                         case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
                             waiting = false;
                             break;
@@ -130,7 +110,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             waiting = true;
                             break;
                         default:
-                            throw new CancelledTransactionException();
+                            throw new CancelledTransactionException(header.ControlNumber);
                     }
                 }
             } while (waiting);
@@ -159,6 +139,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _orderQueue.PublishToQueue(historyOrder);
         }
 
+        private void SendToReprocess(string errorOrder) {
+            _orderQueue.SetQueuePath((int)OrderQueueLocation.Reprocess);
+
+            _orderQueue.PublishToQueue(errorOrder);
+        }
+
         private void SendToHost(OrderFile order)
         {
             // open connection and call program
@@ -170,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _mfConnection.Send("OTX");
 
             SendHeaderRecordToHost(order.Header);
-            SendDetailRecordsToHost(order.Details);
+            SendDetailRecordsToHost(order.Details, order.Header.ControlNumber);
             SendEndOfRecordToHost();
             
             // stop order transmission to the mainframe
@@ -186,6 +172,37 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             xs.Serialize(xmlWriter, order);
 
             return xmlWriter.ToString();
+        }
+
+        private void WorkOrderQueue(OrderQueueLocation queue) {
+            _orderQueue.SetQueuePath((int)queue);
+            string rawOrder = _orderQueue.ConsumeFromQueue();
+
+            while (rawOrder != null) {
+                OrderFile order = DeserializeOrder(rawOrder);
+
+                try {
+                    _log.WriteInformationLog(string.Format("Sending order to mainframe({0})", order.Header.ControlNumber));
+
+                    SendToHost(order);
+                    SendToHistory(rawOrder);
+
+                    _log.WriteInformationLog(string.Format("Order sent to mainframe({0})", order.Header.ControlNumber));
+                } catch (Exception ex) {
+                    _log.WriteErrorLog(string.Format("Error while sending order({0})", order.Header.ControlNumber), ex);
+
+                    if (ex is EarlySocketException || ex is CancelledTransactionException) {
+                        SendToReprocess(rawOrder);
+                    } else {
+                        SendToError(rawOrder);
+                    }
+
+                    throw;
+                }
+
+                _orderQueue.SetQueuePath((int)queue);
+                rawOrder = _orderQueue.ConsumeFromQueue();
+            } 
         }
         #endregion
 

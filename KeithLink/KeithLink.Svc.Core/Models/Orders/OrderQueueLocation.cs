@@ -2,6 +2,7 @@
     public enum OrderQueueLocation {
         Normal,
         History,
-        Error
+        Error,
+        Reprocess
     }
 }

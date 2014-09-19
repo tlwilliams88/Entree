@@ -468,6 +468,7 @@ BEGIN
 		MfrNumber, 
 		MfrName, 
 		(SELECT b.ExtendedDescription FROM ETL.Staging_Brands b WHERE b.Brand = i.Brand) As BrandDescription,
+		MaxSmrt,
 		Cases, 
 		Package, 
 		PreferredItemCode, 
@@ -511,8 +512,8 @@ BEGIN
 		ps.Volume,
 		ps.Width,
 		i.NonStock,
-		FDAProductFlag,
-		TempZone	 
+		i.FDAProductFlag,
+		i.TempZone	 
 	FROM  
 		ETL.Staging_ItemData i inner join 
 		ETL.Staging_Category c on i.CategoryId = c.CategoryId left outer join

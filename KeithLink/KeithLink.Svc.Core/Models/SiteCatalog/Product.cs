@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Product: BaseProductInfo
     {
+		private string pack;
+
         #region ctor
         public Product()
         {
@@ -63,14 +65,18 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 
-		[DataMember(Name="pack")]
-		public string Pack { get; set; }
+		[DataMember(Name = "pack")]
+		public string Pack
+		{
+			get { return pack.TrimStart(new char[] { '0' }); }
+			set { pack = value; }
+		}
+
+		[DataMember(Name = "nutritional")]
+        public Nutritional Nutritional { get; set; }
         
         [DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
-        
-		[DataMember(Name = "gs1")]
-        public Gs1 Gs1 { get; set; }
 
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }

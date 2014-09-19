@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 
  angular.module('configenv', [])
 
-.constant('ENV', {name:'dev',apiKey:'web_dev_v1',apiEndpoint:'http://devkeithlink.bekco.com/api'})
+.constant('ENV', {name:'debug',apiKey:'web_dev_v1',apiEndpoint:'http://localhost:8080/api'})
 
 ;
