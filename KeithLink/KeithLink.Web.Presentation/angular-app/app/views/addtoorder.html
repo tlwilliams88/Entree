@@ -79,7 +79,7 @@
   </div>
 </div>
 
-<div class="bootstrap-table">
+<div class="bootstrap-table" navigate-table>
   <div class="row table-header">
     <div class="col-xs-12">
       <div class="row table-row table-row-data">
@@ -172,55 +172,49 @@
          >
           <div class="col-xs-12">
             <div class="row table-row-data">
-              <div class="col-md-1 col-xs-2">
+              <div class="table-cell col-md-1 col-xs-2">
                 <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
               </div>
-              <div class="col-md-1 table-col-input hidden-xs hidden-sm">
+              <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm">
                 <ng-form class="hidden-print" name="notesForm">
                   <input id="notes" name="notes" type="text" ng-model="item.notes" />
                 </ng-form>
               </div>
-              <div class="col-md-1 hidden-xs hidden-sm">
+              <div class="table-cell col-md-1 hidden-xs hidden-sm">
                 {{item.label}}
               </div>
-              <div class="col-md-2 col-xs-7">
+              <div class="table-cell col-md-2 col-xs-7">
                 {{item.name}}
                 <span class="pull-right" item-icons></span>
               </div>
-              <div class="col-md-1 hidden-sm hidden-xs">
+              <div class="table-cell col-md-1 hidden-sm hidden-xs">
                 {{item.packsize}}
               </div>
-              <div class="col-md-1 hidden-sm hidden-xs">
+              <div class="table-cell col-md-1 hidden-sm hidden-xs">
                 {{item.brand}}
               </div>
-              <div class="col-md-1 table-col-input" ng-show="useParlevel">
+              <div class="table-cell col-md-1 table-col-input" ng-show="useParlevel">
                 {{item.parlevel}}
-                <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
               </div>
-              <div class="col-md-1 table-col-input col-xs-2">
+              <div class="table-cell col-md-1 table-col-input col-xs-2">
                 <ng-form class="hidden-print" name="quantityForm">
-                  <div class="btn-group" dropdown is-open="isopen">
-                    <input type="text" name="quantity" ng-model="item.quantity" class="dropdown-toggle text-right" integer>
-                    <ul class="dropdown-menu quantity-dropdown" role="menu">
-                      <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="setQuantityValueFromDropdown(item, qty)">{{qty}}
-                      </li>
-                    </ul>
-                  </div>
+                    <input type="text" name="quantity" ng-model="item.quantity" class="text-right" integer>
                 </ng-form>
               </div>
-              <div class="col-md-1 hidden-sm hidden-xs table-col-input">
+              <div class="table-cell col-md-1 hidden-sm hidden-xs table-col-input">
                 <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
                     <input type="checkbox" ng-model="item.each" id="each" name="each" />
                     <label for="each"></label>
                 </ng-form>
               </div>
-              <div class="col-md-1 hidden-sm hidden-xs">
+              <div class="table-cell col-md-1 hidden-sm hidden-xs">
                 {{item.each ? item.packageprice : item.caseprice | currency}}
               </div>
-              <div class="col-md-1 hidden-sm hidden-xs">
+              <div class="table-cell col-md-1 hidden-sm hidden-xs">
                 {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
               </div>
-              <div class="col-xs-1 table-col-icons visible-xs-inline visible-sm-inline">
+              <div class="table-cell col-xs-1 table-col-icons visible-xs-inline visible-sm-inline">
                 <a><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
               </div>              
             </div>

@@ -45,7 +45,7 @@
       <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
       </a>
-      <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
+      <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
       </a>
       <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
@@ -70,7 +70,6 @@
 </div> <!-- end Mobile Sidebar -->
 
 <div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="desktop-wrapper">
-  <toaster-container></toaster-container>
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
@@ -97,7 +96,7 @@
         <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
-        <a ng-if="canManageLists" ui-sref="menu.lists" ui-sref-active="is-selected" >
+        <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
         </a>
         <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
@@ -127,7 +126,7 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
-          <a ui-sref="menu.cart"><li><span class="icon-truck"></span></li></a>
+          <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
       </div>

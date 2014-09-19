@@ -37,13 +37,13 @@
 
       <div style="display:inline-block;">
         <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-        <a confirmed-click="deleteCart(currentCart)" class="hidden-print" ng-confirm-click="'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'"><span class="large-icon text-light icon-trash"></span></a>
+        <a confirmed-click="deleteCart(currentCart)" class="hidden-print" ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming">
       <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" required ng-model="editCart.name" name="cartName" id="cartName" />
-      <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name)"><span class="large-icon text-green icon-checkmark"></span></button>
+      <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
@@ -57,7 +57,7 @@
         <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-        <a ng-click="goToCart()"><span class="large-icon icon-truck"></span></a>
+        <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
       </div>
     </div>
 
@@ -125,7 +125,7 @@
   <div class="col-md-12">
     
 
-    <div class="bootstrap-table cart__table sub-content">
+    <div class="bootstrap-table cart__table sub-content" navigate-table>
       <div class="text-right">
       Showing {{filteredItems.length}} of {{currentCart.items.length}} Items in Cart
       </div>
@@ -226,49 +226,43 @@
            >
             <div class="col-xs-12">
               <div class="row table-row-data">
-                <div class="col-md-1 col-xs-2">
+                <div class="table-cell col-md-1 col-xs-2">
                   <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
                 </div>
-                <div class="col-md-1 table-col-input hidden-xs hidden-sm">
+                <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm">
                   <ng-form class="hidden-print" name="notesForm">
                     <input id="notes" name="notes" type="text" ng-model="item.notes" />
                   </ng-form>
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs">
+                <div class="table-cell col-md-1 hidden-sm hidden-xs">
                   {{item.packsize}}
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs">
+                <div class="table-cell col-md-1 hidden-sm hidden-xs">
                   {{item.brand}}
                 </div>
-                <div class="col-md-2 col-xs-6">
+                <div class="table-cell col-md-2 col-xs-6">
                   {{item.name}}
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs" item-icons>
+                <div class="table-cell col-md-1 hidden-sm hidden-xs" item-icons>
                 </div>
-                <div class="col-md-1 table-col-input col-xs-2">
+                <div class="table-cell col-md-1 table-col-input col-xs-2">
                   <ng-form class="hidden-print" name="quantityForm">
-                    <div class="btn-group" dropdown is-open="isopen">
-                      <input required style="width: 55px;" type="text" ng-model="item.quantity" class="dropdown-toggle text-right" integer>
-                      <ul class="dropdown-menu quantity-dropdown" role="menu">
-                        <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="item.quantity = qty">{{qty}}
-                        </li>
-                      </ul>
-                    </div>
+                    <input name="quantity" required style="width: 55px;" type="text" ng-model="item.quantity" class="text-right" integer>
                   </ng-form>
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs table-col-input">
+                <div class="table-cell col-md-1 hidden-sm hidden-xs table-col-input">
                   <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
                       <input type="checkbox" ng-model="item.each" id="each" name="each" />
                       <label for="each"></label>
                   </ng-form>
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs">
+                <div class="table-cell col-md-1 hidden-sm hidden-xs">
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                 </div>
-                <div class="col-md-1 hidden-sm hidden-xs">
+                <div class="table-cell col-md-1 hidden-sm hidden-xs">
                   {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
                 </div>
-                <div class="col-xs-1 table-col-icons">
+                <div class="table-cell col-xs-1 table-col-icons">
                   <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
                   <a ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 </div>
