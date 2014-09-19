@@ -34,8 +34,8 @@
         <Directory Id="CompanyFolder" Name="$(var.MfgName)">
           <Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
             <Component Id="ServiceFile" Guid="A61B19C7-F371-4765-A02A-0F9BA6D132F1">
-              <File Id="CS_Core_Internal_ContentListHelper_Resources" Name="CommerceServer.Core.Internal.ContentListHelper.resources.dll" DiskId="1" Source="$(var.SourcePath)\EN\CommerceServer.Core.Internal.ContentListHelper.resources.dll" KeyPath="no" Vital="yes"/>
-              <File Id="CS_Core_Internal_ContentListHelper" Name="CommerceServer.Core.Internal.ContentListHelper.dll" DiskId="1" Source="$(var.SourcePath)\CommerceServer.Core.Internal.ContentListHelper.dll" KeyPath="no" Vital="yes"/>
+              <!--<File Id="CS_Core_Internal_ContentListHelper_Resources" Name="CommerceServer.Core.Internal.ContentListHelper.resources.dll" DiskId="1" Source="$(var.SourcePath)\EN\CommerceServer.Core.Internal.ContentListHelper.resources.dll" KeyPath="no" Vital="yes"/> -->
+              <!--<File Id="CS_Core_Internal_ContentListHelper" Name="CommerceServer.Core.Internal.ContentListHelper.dll" DiskId="1" Source="$(var.SourcePath)\CommerceServer.Core.Internal.ContentListHelper.dll" KeyPath="no" Vital="yes"/>-->
               <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>

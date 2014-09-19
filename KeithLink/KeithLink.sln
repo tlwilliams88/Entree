@@ -88,6 +88,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Windows.OrderService", "KeithLink.Svc.Windows.OrderService\KeithLink.Svc.Windows.OrderService.csproj", "{BE41C4EC-AA99-4E94-9698-E0690A24212A}"
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "KeithLink.Svc.Windows.OrderService.Setup", "KeithLink.Svc.Windows.OrderService.Setup\KeithLink.Svc.Windows.OrderService.Setup.wixproj", "{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{BE41C4EC-AA99-4E94-9698-E0690A24212A} = {BE41C4EC-AA99-4E94-9698-E0690A24212A}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
