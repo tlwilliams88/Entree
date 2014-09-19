@@ -457,7 +457,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'debug',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://localhost:60606'
+                      apiEndpoint: 'http://localhost:8080/api'
                   }
               }
           },
@@ -466,7 +466,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://devapi.bekco.com'
+                      apiEndpoint: 'http://devkeithlink.bekco.com/api'
                   }
               }
           },
@@ -475,7 +475,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'test',
                       apiKey: 'web_test_v1',
-                      apiEndpoint: 'https://shopapiqa.benekeith.com/'
+                      apiEndpoint: 'https://shopqa.benekeith.com/api'
                   }
               }
           },
@@ -484,7 +484,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'prod',
                       apiKey: 'web_prod_v1',
-                      apiEndpoint: 'https://shopapi.benekeith.com/'
+                      apiEndpoint: 'https://shop.benekeith.com/api'
                   }
               }
           }
