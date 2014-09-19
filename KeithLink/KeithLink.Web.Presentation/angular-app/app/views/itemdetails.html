@@ -13,7 +13,11 @@
       <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
     </div>
     <div class="item-details__top-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
-      <h2>{{item.name}}<span class="item-details__icons" item-icons="item"></span></h2>
+      <h2>
+        <span favorite-item-click-handlers favorite-icons></span>
+        {{item.name}}
+        <span class="item-details__icons" item-icons="item"></span>
+      </h2>
       <div>
         <div ng-if="item.description">
           <strong>Description:</strong> {{item.description}}
@@ -38,11 +42,6 @@
             </li>
           </ul>
         </div>
-        
-        <span favorite-item-click-handlers>
-          <button class="btn btn-default" ng-hide="item.favorite" ng-click="addItemToFavorites(item)"><span class="icon-star2"></span> Favorite Item</button>
-          <button class="btn btn-default" ng-show="item.favorite" ng-click="removeItemFromFavorites(item)"><span class="text-gold icon-star"></span> Remove Item</button>
-        </span>
       </div>
     </div>
   </div>

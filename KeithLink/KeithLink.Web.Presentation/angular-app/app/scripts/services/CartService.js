@@ -65,10 +65,12 @@ angular.module('bekApp')
 
       updateCart: function(cart, params) {
         return Cart.update(params, cart).$promise.then(function(response) {
-          var updatedCart = Service.findCartById(response.id);
-          var idx = Service.carts.indexOf(updatedCart);
-          angular.copy(response, Service.carts[idx]);
-          return response;
+          return Service.getCart(response.id).then(function(cart) {
+              var updatedCart = Service.findCartById(cart.id);
+              // var idx = Service.carts.indexOf(updatedCart);
+              angular.copy(cart, updatedCart);
+              return cart;
+          });
         });
       },
 

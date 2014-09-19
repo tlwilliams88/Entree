@@ -55,7 +55,7 @@ angular.module('bekApp')
                 setFavoritesList: function() {
                     var listFound;
                     angular.forEach(Service.lists, function(list, index) {
-                        if (list.name === 'Favorites') {
+                        if (Service.isFavoritesList(list.name)) {
                             listFound = list;
                         }
                     });
@@ -70,6 +70,10 @@ angular.module('bekApp')
                             });
                         }
                     }
+                },
+
+                isFavoritesList: function(listName) {
+                    return listName === 'Favorites';
                 },
 
                 getAllLists: function(requestParams) {
@@ -199,11 +203,16 @@ angular.module('bekApp')
                             }
                         });
 
-                        return Service.getList(response.listid).then(function(response) {
-                            var updatedList = Service.findListById(response.listid);
+                        return Service.getList(response.listid).then(function(list) {
+
+                            if (Service.isFavoritesList(list.name)) {
+                                list.isFavoritesList = true;
+                            }
+
+                            var updatedList = Service.findListById(list.listid);
                             var idx = Service.lists.indexOf(updatedList);
-                            angular.copy(response, Service.lists[idx]);
-                            return response;
+                            angular.copy(list, Service.lists[idx]);
+                            return list;
                         });
                     });
                 },
@@ -268,6 +277,16 @@ angular.module('bekApp')
                         // unfavorite the item in all other lists
                         updateListFavorites(removedItem.itemnumber, false);
                     });
+                },
+
+                addMultipleItemsToFavorites: function() {
+                    // check which items already exist in favorites list
+                    // updateList with correct items, deleteomitted=false
+                    // get the entire list again and set it in Service.lists
+                },
+
+                removeMultipleItemsFromFavorites: function() {
+                    
                 },
 
                 findListById: function(listId) {

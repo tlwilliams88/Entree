@@ -37,6 +37,13 @@ angular.module('bekApp')
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
 
+    $scope.revertChanges = function(selectedList) {
+      $scope.selectedList = ListService.findListById(selectedList.listid);
+      $scope.selectedList.isRenaming = false;
+      $scope.allSelected = false;
+      $scope.listForm.$setPristine();
+    };
+
     $scope.createList = function() {
       ListService.createList().then(function(data) {
         addSuccessAlert('Successfully created a new list.');
@@ -116,16 +123,27 @@ angular.module('bekApp')
     };
 
     /********************
+    Multi-Select events
+    ********************/
+
+    $scope.favoriteAll = function() {
+
+    };
+
+    $scope.unfavoriteAll = function() {
+
+    };
+
+    $scope.updateAll = function() {
+
+    };
+
+    /********************
     DRAG EVENTS
     ********************/
 
     function getMultipleSelectedItems() {
-      var multipleItemsSelectedList = [];
-      angular.forEach($scope.filteredItems, function(item, index) {
-        if (item.isSelected) {
-          multipleItemsSelectedList.push(item);
-        }
-      });
+      var multipleItemsSelectedList = $filter('filter')($scope.filteredItems, {isSelected: 'true'});
       return multipleItemsSelectedList;
     }
 
@@ -151,10 +169,11 @@ angular.module('bekApp')
       return draggedItems;
     }
 
-    function unselectedDraggedItems() {
+    function unselectAllDraggedItems() {
       angular.forEach($scope.filteredItems, function(item, index) {
         item.isSelected = false;
       });
+      $scope.allSelected = false;
     }
 
     $scope.deleteItemFromDrag = function(event, helper) {
@@ -218,7 +237,7 @@ angular.module('bekApp')
         updatedList.items = updatedList.items.concat(dragSelection.items);
 
         ListService.updateList(updatedList).then(function(data) {
-          unselectedDraggedItems();
+          unselectAllDraggedItems();
           addSuccessAlert('Successfully added ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
         },function(error) {
           addErrorAlert('Error adding ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
