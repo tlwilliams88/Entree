@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 } else {
                     switch (headerReturnCode) {
                         case Constants.MAINFRAME_RECEIVE_STATUS_CANCELLED:
-                            throw new CancelledTransactionException();
+                            throw new CancelledTransactionException(header.ControlNumber);
                         case Constants.MAINFRAME_RECEIVE_STATUS_GOOD_RETURN:
                             waiting = false;
                             break;
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             waiting = true;
                             break;
                         default:
-                            throw new CancelledTransactionException();
+                            throw new CancelledTransactionException(header.ControlNumber);
                     }
                 }
             } while (waiting);
