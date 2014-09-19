@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Repositories.Price
 {
     [TestClass]
-    public class Impl_PriceRepositoryImpl
+    public class PriceRepositoryImplTests
     {
         [TestMethod]
         public void GetMultipleItemPrices_Success()

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
-    function ($scope, $state, AuthenticationService, AccessService, BranchService, UserProfileService) {
+  .controller('RegisterController', ['$scope', '$state', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
+    function ($scope, $state, toaster, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
     $scope.loginInfo = {
       username: 'sabroussard@somecompany.com',
@@ -30,16 +30,44 @@ angular.module('bekApp')
           $state.transitionTo('menu.catalog.home');
         }
       }, function(error) {
-        $scope.errorMessage = error.data.error_description;
+        $scope.loginErrorMessage = error.data.error_description;
       });
 
     };
 
     $scope.registerNewUser = function(userProfile) {
-      var profile = {};
-      profile.email = userProfile.email;
-      profile.password = userProfile.password;
-      UserProfileService.createUser(profile);
+      var profile = userProfile;
+      profile.branchid = userProfile.branch.id;
+      
+      // $scope.registrationFormSubmitted = true;
+      $scope.registrationErrorMessage = null;
+      
+      UserProfileService.createUser(profile).then(function(data) {
+
+        if (data.successResponse) {
+          $scope.loginInfo = {};
+          $scope.clearForm();
+          // $scope.registrationFormSubmitted = false;
+
+          toaster.pop('success', null, 'Successfully registered! Please log in.');
+        } else {
+          $scope.registrationErrorMessage = data.errorMessage;
+        }
+      }, function(error) {
+      });
+    };
+
+    $scope.clearForm = function() {
+      $scope.registerUser = {
+        email: null,
+        confirmEmail: null,
+        password: null,
+        confirmPassword: null,
+        existingcustomer: false,
+        marketingflag: true,
+        branch: null
+      };
+      $scope.registrationForm.$setPristine();
     };
 
 }]);

@@ -40,6 +40,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "brand_extended_description")]
         public string BrandExtendedDescription { get; set; }
 
+        [DataMember(Name = "brand_control_label")]
+        public string BrandControlLabel { get; set; }
+
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
 

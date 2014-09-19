@@ -2,10 +2,10 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Repositories.Order
 {
     [TestClass]
-    public class Impl_Orders_OrderSocketConnectionRepository
+    public class OrderSocketConnectionRepositoryTests
     {
         [TestMethod]
         public void Connect()

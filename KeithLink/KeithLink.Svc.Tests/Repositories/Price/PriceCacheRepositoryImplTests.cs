@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Repositories.Price
 {
     [TestClass]
-    public class Impl_PriceCacheRepositoryImpl
+    public class PriceCacheRepositoryImplTests
     {
 
         [TestMethod]

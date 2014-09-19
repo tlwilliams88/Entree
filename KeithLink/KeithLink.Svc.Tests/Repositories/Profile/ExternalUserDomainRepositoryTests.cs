@@ -1,10 +1,10 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Repositories.Profile
 {
     [TestClass]
-    public class Impl_Profile_ExternalUserDomainRepository
+    public class ExternalUserDomainRepositoryTests
     {
         [TestMethod]
         public void AuthenticateBadUserName()

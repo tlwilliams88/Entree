@@ -14,14 +14,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         IEventLogRepository _logger;
         InternalUserDomainRepository _internalAD;
         ExternalUserDomainRepository _externalAD;
+        IUserProfileCacheRepository _userProfileCacheRepository;
         #endregion
 
         #region ctor
-        public UserProfileRepository(IEventLogRepository logger, ExternalUserDomainRepository externalAD, InternalUserDomainRepository internalAD)
+        public UserProfileRepository(IEventLogRepository logger, ExternalUserDomainRepository externalAD, InternalUserDomainRepository internalAD, IUserProfileCacheRepository userProfileCacheRepository)
         {
             _logger = logger;
             _internalAD = internalAD;
             _externalAD = externalAD;
+            _userProfileCacheRepository = userProfileCacheRepository;
         }
         #endregion
 
@@ -367,6 +369,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return (GetUserProfile(emailAddres));
         }
 
+        /// <summary>
+        /// creates a guest user account in AD and the user profile in CS
+        /// </summary>
+        /// <returns>UserProfileReturn</returns>
+        /// <remarks>
+        /// jwames - 9/16/2014 - original code
+        /// </remarks>
         public UserProfileReturn CreateGuestProfile(string emailAddress, string password, string branchId) {
             AssertGuestProfile(emailAddress, password);
         
@@ -420,10 +429,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress)
         {
-            UserProfileCacheRepository upcp = new UserProfileCacheRepository();
             Core.Models.Profile.UserProfile upFromCache = null;
-            upFromCache = upcp.GetProfile(emailAddress);
-            if (upcp.GetProfile(emailAddress) != null)
+            upFromCache = _userProfileCacheRepository.GetProfile(emailAddress);
+            if (_userProfileCacheRepository.GetProfile(emailAddress) != null)
             {
                 return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
             }
@@ -460,7 +468,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             if (retVal != null)
             {
-                upcp.AddProfile(retVal.UserProfiles.FirstOrDefault());
+                _userProfileCacheRepository.AddProfile(retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;
         }

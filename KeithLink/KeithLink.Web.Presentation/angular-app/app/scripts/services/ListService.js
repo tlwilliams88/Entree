@@ -12,7 +12,7 @@ angular.module('bekApp')
         function($http, $q, UserProfileService, NameGeneratorService, List) {
 
             function getBranch() {
-                return UserProfileService.getCurrentBranchId();
+                return UserProfileService.getCurrentBranchId().toLowerCase();
             }
 
             function addItemToList(listId, item) {
@@ -31,9 +31,6 @@ angular.module('bekApp')
                     if (updatedList && updatedList.items) {
                         updatedList.items.push(item);
                     }
-
-                    console.log('adding item ' + item.itemnumber);
-                    console.log(response);
 
                     return response;
                 });

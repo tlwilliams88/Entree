@@ -71,12 +71,12 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			get { return pack.TrimStart(new char[] { '0' }); }
 			set { pack = value; }
 		}
+
+		[DataMember(Name = "nutritional")]
+        public Nutritional Nutritional { get; set; }
         
         [DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
-        
-		[DataMember(Name = "gs1")]
-        public Gs1 Gs1 { get; set; }
 
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }

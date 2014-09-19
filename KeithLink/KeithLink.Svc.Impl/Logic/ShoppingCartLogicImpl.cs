@@ -198,7 +198,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					item.StorageTemp = prod.Gs1.StorageTemp;
+					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
@@ -249,8 +249,6 @@ namespace KeithLink.Svc.Impl.Logic
 
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-			
-			//keithlink.svc.internalsvc.orderservice.OrderServiceClient client = new keithlink.svc.internalsvc.orderservice.OrderServiceClient();
 			var orderNumber = client.SaveCartAsOrder(user.UserId, cartId);
 
 			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(user.UserId, orderNumber);

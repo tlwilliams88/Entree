@@ -37,19 +37,19 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly string ProductMapping = @"{
 			  ""product"" : {
 				   ""properties"" : {
-					   ""categoryname"" : {
+					   ""categoryname_not_analyzed"" : {
 							  ""type"" : ""string"",
 							  ""index"" : ""not_analyzed""
 						},
-						""brand"" : {
+						""brand_not_analyzed"" : {
 							""type"" : ""string"",
 							""index"" : ""not_analyzed""
 						},
-                        ""brand_extended_description"" : {
+                        ""brand_description_not_analyzed"" : {
                             ""type"" : ""string"",
                             ""index"" : ""not_analyzed""
                         },
-         				""name"" : {
+         				""name_not_analyzed"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
          				},
@@ -331,6 +331,7 @@ namespace KeithLink.Svc.Impl.ETL
                         BrandNotAnalyzed = row.GetString("Brand"),
                         BrandDescription = row.GetString("BrandDescription"),
                         BrandDescriptionNotAnalyzed = row.GetString("BrandDescription"),
+                        BrandControlLabel = row.GetString("MaxSmrt"),
                         Buyer = row.GetString("Buyer"),
                         Cases = row.GetString("Cases"),
                         CategoryId = row.GetString("CategoryId"),

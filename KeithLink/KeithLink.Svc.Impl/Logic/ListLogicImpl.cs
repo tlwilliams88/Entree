@@ -175,7 +175,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					listItem.StorageTemp = prod.Gs1.StorageTemp;
+					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.Brand;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;

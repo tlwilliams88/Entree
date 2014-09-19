@@ -7,10 +7,10 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Test.MockRepository;
 using KeithLink.Svc.Core.Models.Profile;
 
-namespace KeithLink.Svc.Test
+namespace KeithLink.Svc.Test.Logic
 {
     [TestClass]
-    public class Impl_ListLogic
+    public class ListLogicTests
     {
 		private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), new StubCatalogRepositoryImpl(), new PriceRepositoryImpl());
 

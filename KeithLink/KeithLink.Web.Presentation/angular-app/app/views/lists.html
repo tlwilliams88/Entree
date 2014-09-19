@@ -4,7 +4,7 @@
       <span>{{selectedList.name}}</span>
       <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.isFavoritesList">
         <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-        <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="This will delete the list {{selectedList.name}} and all items within. Are you sure you want to delete this list?"><span class="large-icon text-light icon-trash"></span></a>
+        <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="'This will delete the list ' + selectedList.name + ' and all items within. Are you sure you want to delete this list?'"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div style="display: inline-block; float: right;">
-      <button class="btn btn-primary" ng-disabled="listForm.$invalid && listForm.$dirty" ng-click="saveList(selectedList)">Save List</button>
+      <button class="btn btn-primary" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save List</button>
     </div>
   
     <div class="text-right sub-content">

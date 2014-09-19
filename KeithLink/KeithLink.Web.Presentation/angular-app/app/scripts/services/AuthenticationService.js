@@ -41,6 +41,7 @@ angular.module('bekApp')
       logout: function() {
         localStorageService.remove(Constants.localStorage.userProfile);
         localStorageService.remove(Constants.localStorage.userToken);
+        localStorageService.remove(Constants.localStorage.currentLocation);
       },
 
       getToken: function() {
