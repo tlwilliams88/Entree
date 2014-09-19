@@ -45,7 +45,7 @@
               <File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="yes" Vital="yes"/>
+              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="no" Vital="yes"/>
               <File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.pdb" KeyPath="no" Vital="yes"/>
               <File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="MS_Practices_EnterpriseLibrary_Caching" Name="Microsoft.Practices.EnterpriseLibrary.Caching.dll" DiskId="1" Source="$(var.SourcePath)\Microsoft.Practices.EnterpriseLibrary.Caching.dll" KeyPath="no" Vital="yes"/>

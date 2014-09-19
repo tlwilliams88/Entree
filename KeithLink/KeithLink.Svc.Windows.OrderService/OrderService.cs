@@ -100,7 +100,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         protected override void OnStart(string[] args) {
-            Debugger.Launch();
+            //Debugger.Launch();
 
             _log.WriteInformationLog("Service starting");
 
