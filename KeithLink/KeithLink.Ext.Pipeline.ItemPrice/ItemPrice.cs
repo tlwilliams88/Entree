@@ -38,8 +38,8 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 
 				if (lineItems != null && lineItems.Count > 0)
 				{
-					var prices = PipelineServiceHelper.CreateWebServiceInstance(url).GetPrices("fam", //TODO: Use real branch: order["BranchId"].ToString(),
-						"011807", //TODO: Remove hardcoded customerId
+					var prices = PipelineServiceHelper.CreateWebServiceInstance(url).GetPrices("fdf", //TODO: Use real branch: order["BranchId"].ToString(),
+						"709333", //TODO: Remove hardcoded customerId
 						DateTime.Now.AddDays(1), //TODO: Store and grab shipping date from Order
 						lineItems.Cast<IDictionary>().Select(p => new product() { itemnumber = p["product_id"].ToString() }).ToArray());
 					

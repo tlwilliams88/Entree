@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.Common;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -49,6 +50,8 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
+			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
+			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
 
             // Build the container.
             var container = builder.Build();

@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="AuthorizeRequestResponse" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse</TypeInfo>
+   <TypeInfo>KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse, Service References.com.benekeith.FoundationService.Reference.cs, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>
