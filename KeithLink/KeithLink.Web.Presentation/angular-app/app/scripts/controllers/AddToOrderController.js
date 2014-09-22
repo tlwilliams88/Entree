@@ -7,7 +7,7 @@ angular.module('bekApp')
     $scope.carts = carts;
     $scope.lists = lists;
 
-    $scope.sortBy = null;
+    $scope.sortBy = 'position';
     $scope.sortOrder = false;
     var itemsPerPage = Constants.infiniteScrollPageSize;
 
@@ -74,17 +74,19 @@ angular.module('bekApp')
     }
 
     function updateCart(cart) {
-      CartService.updateCart(cart, {deleteomitted: false}).then(function() {
+      CartService.updateCart(cart, {deleteomitted: false}).then(function(cart) {
         
-        // add quantities to existing item numbers
-        angular.forEach(cart.items, function(item, index) {
-          var matchingCartItems = $filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber});
-          if (matchingCartItems.length === 0) {
-            $scope.selectedCart.items.push(item);
-          } else {
-            matchingCartItems[0].quantity += item.quantity;
-          }
-        });
+        // // add quantities to existing item numbers
+        // angular.forEach(cart.items, function(item, index) {
+        //   var matchingCartItems = $filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber});
+        //   if (matchingCartItems.length === 0) {
+        //     $scope.selectedCart.items.push(item);
+        //   } else {
+        //     matchingCartItems[0].quantity += item.quantity;
+        //   }
+        // });
+
+        $scope.selectedCart = cart;
 
         // reset quantities
         $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
@@ -114,7 +116,7 @@ angular.module('bekApp')
 
       if (itemsToAdd && itemsToAdd.length > 0) {
         // remove cart item ids
-        itemsToAdd = deleteFieldInList(itemsToAdd, 'cartitemid');
+        itemsToAdd = deleteFieldInList(itemsToAdd, 'listitemid');
 
         // add items to existing cart
         if (cart && cart.id) {
