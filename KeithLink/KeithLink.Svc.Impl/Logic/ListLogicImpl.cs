@@ -161,6 +161,8 @@ namespace KeithLink.Svc.Impl.Logic
 			if (list.Items == null)
 				return;
 
+			var activeCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.Status.Equals("ShoppingCart") && b.Active.Equals(true));
+
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
 			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products); 
@@ -192,6 +194,12 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.CasePrice = price.CasePrice.ToString();
 
 				}
+
+				if (activeCart.Any()) //Is there an active cart? If so get item counts
+				{
+					listItem.QuantityInCart = activeCart.First().LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
+				}
+
 			});
 			
 		}
@@ -234,5 +242,35 @@ namespace KeithLink.Svc.Impl.Logic
 
 		}
 		
+		public void DeleteItems(Guid userId, Guid listId, List<Guid> itemIds)
+		{
+			foreach(var itemId in itemIds)
+				basketRepository.DeleteItem(userId, listId, itemId);
+		}
+
+
+		public UserList AddItems(UserProfile user, Guid listId, List<ListItem> newItems, bool allowDuplicates)
+		{
+			var basket = basketRepository.ReadBasket(user.UserId, listId);
+
+			if (basket == null)
+				return null;
+
+			var lineItems = new List<CS.LineItem>();
+
+			foreach (var item in newItems)
+			{
+				if (allowDuplicates || !basket.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber)).Any())
+					lineItems.Add(item.ToLineItem(basket.BranchId));
+			}
+
+			basketRepository.CreateOrUpdateBasket(user.UserId, basket.BranchId, basket, lineItems);
+
+			var updatedList = ToUserList(basketRepository.ReadBasket(user.UserId, listId));
+
+			LookupProductDetails(user, updatedList);
+
+			return updatedList;
+		}
 	}
 }

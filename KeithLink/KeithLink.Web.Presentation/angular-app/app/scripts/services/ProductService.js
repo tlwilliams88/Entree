@@ -124,6 +124,52 @@ angular.module('bekApp')
           });
         },
 
+        getProductsByHouseBrand: function(houseBrandId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+          pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
+          index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+          
+          var facets = '';
+          if (brands && brands.length > 0) {
+            facets += concatenateNestedParameters('brands', brands);
+            facets += ',';
+          }
+          if (facetCategory) {
+            facets += 'categories:' + facetCategory.name;
+            facets += ',';
+          }
+          if (dietary && dietary.length > 0) {
+            facets += concatenateNestedParameters('dietary', dietary);
+            facets += ',';
+          }
+          if (itemspecs && itemspecs.length > 0) {
+            facets += concatenateNestedParameters('itemspecs', itemspecs);
+            facets += ',';
+          }
+          if (nonstock && nonstock.length > 0) {
+            facets += concatenateNestedParameters('nonstock', nonstock);
+            facets += ',';
+          }
+
+          if (facets === '') {
+            facets = null;
+          }
+          else {
+            facets = facets.substr(0, facets.length - 1);
+          }
+
+          return $http.get('/catalog/search/' + getBranch() + '/brands/house/' + houseBrandId, {
+            params: {
+              size: pageSize,
+              from: index,
+              facets: facets,
+              sfield: sortfield,
+              sdir: sortdirection
+            }
+          }).then(function(response) {
+            return response.data;
+          });
+        },
+
         getProductDetails: function(id) {
           var returnProduct;
           if (!Service.selectedProduct.name) {

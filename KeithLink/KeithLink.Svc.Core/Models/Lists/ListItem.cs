@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public string PackSize { get; set; }
 		[DataMember(Name = "storagetemp")]
 		public string StorageTemp { get; set; }
+		[DataMember(Name = "quantityincart")]
+		public decimal? QuantityInCart { get; set; }
 		
 		public int CompareTo(object obj)
 		{

@@ -82,6 +82,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return newGuid;
         }
 
+		[HttpPost]
+		[ApiKeyedRoute("list/{listId}/items")]
+		public UserList AddItems(Guid listId, List<ListItem> newItems, bool allowDuplicates = false)
+		{
+			return listLogic.AddItems(AuthenticatedUser, listId, newItems, false);
+		}
+		
+
         [HttpPut]
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void UpdateItem(Guid listId, ListItem updatedItem)
@@ -89,11 +97,19 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem);
         }
 
-        [HttpDelete]
+		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}/item/{itemId}")]
 		public void DeleteItem(Guid listId, Guid itemId)
-        {
+		{
 			listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
-        }
+		}
+
+		[HttpDelete]
+		[ApiKeyedRoute("list/{listId}/item")]
+		public void DeleteItem(Guid listId, List<Guid> itemIds)
+		{
+			var t = itemIds;
+			//listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
+		}
     }
 }
