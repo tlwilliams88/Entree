@@ -490,9 +490,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void UpdateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber)
+        public void UpdateUserProfile(string customerName, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId)
         {
-            throw new NotImplementedException();
+            var updateQuery = new CommerceServer.Foundation.CommerceUpdate < CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
+
+            updateQuery.Model.Properties["FirstName"] = firstName;
+            updateQuery.Model.Properties["LastName"] = lastName;
+            updateQuery.Model.Properties["PhoneNumber"] = phoneNumber;
         }
         #endregion
     }

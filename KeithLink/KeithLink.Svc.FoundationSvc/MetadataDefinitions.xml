@@ -1493,8 +1493,9 @@ This file contains the Metadata Repository
               <PropertyMapping property="LastName"				csProperty="GeneralInfo.last_name" />
               <PropertyMapping property="PreferredCreditCard"				csProperty="GeneralInfo.preferred_credit_card" />
               <PropertyMapping property="DirectMailOptOut"          csProperty="GeneralInfo.direct_mail_opt_out" />
-              <PropertyMapping property="SelectedBranch"          csProperty="GeneralInfo.SelectedBranch" />
+              <PropertyMapping property="SelectedBranch"            csProperty="GeneralInfo.SelectedBranch" />
               <PropertyMapping property="SelectedCustomer"          csProperty="GeneralInfo.SelectedCustomer" />
+              <PropertyMapping property="PhoneNumber"               csProperty="GeneralInfo.u_tel_number" />
             </PropertyMappings>
 
           </EntityMapping>
