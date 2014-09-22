@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'Constants', 'CartService', 
-    function($scope, $state, $stateParams, $filter, toaster, Constants, CartService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'Constants', 'CartService', 'OrderService',
+    function($scope, $state, $stateParams, $filter, toaster, Constants, CartService, OrderService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -39,15 +39,24 @@ angular.module('bekApp')
       // delete items if quantity is 0
       updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
 
-      CartService.updateCart(updatedCart).then(function() {
+      return CartService.updateCart(updatedCart).then(function() {
         $scope.currentCart.isRenaming = false;
         $scope.sortBy = null;
         $scope.sortOrder = false;
         $scope.currentCart = updatedCart;
         $scope.cartForm.$setPristine();
         addSuccessAlert('Successfully saved cart ' + cart.name);
+        return updatedCart.id;
       }, function() {
         addErrorAlert('Error saving cart ' + cart.name);
+      });
+    };
+
+    $scope.submitOrder = function(cart) {
+      $scope.saveCart(cart).then(OrderService.submitOrder).then(function(data) {
+        addSuccessAlert('Successfully submitted order.');
+      }, function(error) {
+        addErrorAlert('Error submitting order.');
       });
     };
 
@@ -94,20 +103,6 @@ angular.module('bekApp')
       var idx = $scope.currentCart.items.indexOf(item);
       $scope.currentCart.items.splice(idx, 1);
       $scope.cartForm.$setDirty();
-    };
-
-    $scope.dateOptions = {
-      formatYear: 'yy',
-      startingDay: 1,
-      showWeeks: false
-    };
-    $scope.datepicker = {};
-
-    $scope.openDatepicker = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-
-      $scope.datepicker.opened = true;
     };
 
     // INFINITE SCROLL

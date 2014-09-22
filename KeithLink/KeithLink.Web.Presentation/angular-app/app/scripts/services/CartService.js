@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', 'UserProfileService', 'NameGeneratorService', 'Cart', function ($http, UserProfileService, NameGeneratorService, Cart) {
+  .factory('CartService', ['$http', 'UserProfileService', 'UtilityService', 'Cart', function ($http, UserProfileService, UtilityService, Cart) {
 
     function getBranch() {
       return UserProfileService.getCurrentBranchId().toLowerCase();
@@ -49,7 +49,7 @@ angular.module('bekApp')
         }
 
         var newCart = {
-          name: NameGeneratorService.generateName('Cart', Service.carts),
+          name: UtilityService.generateName('Cart', Service.carts),
           items: items,
           requestedshipdate: shipDate
         };

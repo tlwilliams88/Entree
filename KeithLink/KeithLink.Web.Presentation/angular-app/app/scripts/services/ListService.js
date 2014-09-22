@@ -8,311 +8,347 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-    .factory('ListService', ['$http', '$q', 'UserProfileService', 'NameGeneratorService', 'List',
-        function($http, $q, UserProfileService, NameGeneratorService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, UserProfileService, UtilityService, List) {
 
-            function getBranch() {
-                return UserProfileService.getCurrentBranchId().toLowerCase();
+      var filter = $filter('filter');
+
+      function getBranch() {
+        return 'fdf';
+      }
+
+      function updateItemPositions(list) {
+        angular.forEach(list.items, function(item, index) {
+          item.position = index+1;
+        });
+      }
+
+      function isFavoritesList(listName) {
+        return listName === 'Favorites';
+      }
+
+      function doFlagFavoritesList(list) {
+        if (isFavoritesList(list.name)) {
+          list.isFavoritesList = true;
+        }
+      }
+
+      function flagFavoritesList() {
+        angular.forEach(Service.lists, function(list, index) {
+          doFlagFavoritesList(list);
+        });
+      }
+
+      // updates favorite status of given itemNumber in all lists
+      function updateListFavorites(itemNumber, isFavorite) {
+        angular.forEach(Service.lists, function(list, listIndex) {
+          angular.forEach(list.items, function(item, itemIndex) {
+            if (item.itemnumber === itemNumber) {
+              item.favorite = isFavorite;
             }
+          });
+        });
+      }
 
-            function addItemToList(listId, item) {
-                delete item.listitemid;
-                item.position = 0;
-                item.label = null;
-                item.parlevel = 0;
+      var Service = {
 
-                return List.addItem({
-                    listId: listId
-                }, item).$promise.then(function(response) {
-                    item.listitemid = response.listitemid;
-                    item.editPosition = 0;
-                    
-                    var updatedList = Service.findListById(listId);
-                    if (updatedList && updatedList.items) {
-                        updatedList.items.push(item);
-                    }
+        lists: [],
+        labels: [],
 
-                    return response;
-                });
+        // accepts "header: true" params to get only list names
+        // return array of list objects
+        getAllLists: function(params) {
+          return List.query({
+            branchId: getBranch()
+          }, params).$promise.then(function(lists) {
+            angular.copy(lists, Service.lists);
+            flagFavoritesList();
+
+            // TODO: get favorites list items if header param is true
+            return lists;
+          });
+        },
+
+        // accepts listId (guid)
+        // returns list object
+        getList: function(listId) {
+          return List.get({
+            listId: listId,
+            branchId: getBranch()
+          }).$promise.then(function(list) {
+            
+            // update new list in cache object
+            var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
+
+            // flag list if it is the Favorites List, used for display purposes            
+            doFlagFavoritesList(list);
+            
+            if (existingList) {
+              var idx = Service.lists.indexOf(existingList);
+              angular.copy(list, Service.lists[idx]);
+            } else {
+              Service.lists.push(list);
             }
+  
+            return list;
+          });
+        },
 
-            // updates favorite status of given itemNumber in all lists
-            function updateListFavorites(itemNumber, isFavorite) {
-                angular.forEach(Service.lists, function(list, listIndex) {
-                    angular.forEach(list.items, function(item, itemIndex) {
-                        if (item.itemnumber === itemNumber) {
-                            item.favorite = isFavorite;
-                        }
-                    });
-                });
-            }
+        findListById: function(listId) {
+          var itemsFound = filter(Service.lists, {listid: listId});
+          if (itemsFound.length === 1) {
+            return itemsFound[0];
+          }
+        },
 
-            var Service = {
-                lists: [],
-                favoritesList: {},
-                labels: [],
+        /********************
+        EDIT LIST
+        ********************/
 
-                setFavoritesList: function() {
-                    var listFound;
-                    angular.forEach(Service.lists, function(list, index) {
-                        if (Service.isFavoritesList(list.name)) {
-                            listFound = list;
-                        }
-                    });
+        // accepts null, item object, or array of item objects
+        // returns promise and new list object
+        createList: function(items) {
 
-                    if (listFound) {
-                        listFound.isFavoritesList = true;
-                        angular.copy(listFound, Service.favoritesList);
+          var newList = {};
 
-                        if (!Service.favoritesList.items) {
-                            Service.getList(Service.favoritesList.listid).then(function(response) {
-                                Service.favoritesList.items = response.items;
-                            });
-                        }
-                    }
-                },
-
-                isFavoritesList: function(listName) {
-                    return listName === 'Favorites';
-                },
-
-                getAllLists: function(requestParams) {
-                    return List.query({
-                        branchId: getBranch()
-                    }).$promise.then(function(lists) {
-                        angular.copy(lists, Service.lists);
-                        Service.setFavoritesList();
-                        console.log(lists);
-                        return lists;
-                    });
-                },
-
-                getList: function(listId) {
-                    return List.get({
-                        listId: listId,
-                        branchId: getBranch()
-                    }).$promise.then(function(list) {
-                        console.log(list);
-                        return list;
-                    });
-                },
-
-                getAllLabels: function() {
-                    return $http.get('/list/' + getBranch() + '/labels').then(function(response) {
-                        angular.copy(response.data, Service.labels);
-                        return response.data;
-                    });
-                },
-
-                getLabelsForList: function(listId) {
-                    return $http.get('/list/' + getBranch() + '/' + listId + '/labels').then(function(response) {
-                        return response.data;
-                    });
-                },
-
-                createList: function(items) {
-                    if (!items) {
-                        items = [];
-                    } else {
-                        angular.forEach(items, function(item, index) {
-                            delete item.listitemid;
-                        });
-                    }
-
-                    var newList = {
-                        name: NameGeneratorService.generateName('List', Service.lists),
-                        items: items
-                    };
-
-                    return List.save({
-                        branchId: getBranch()
-                    }, newList).$promise.then(function(response) {
-                        
-                        return Service.getList(response.listitemid).then(function(list) {
-                            Service.lists.push(list); 
-                            return list;
-                        });
-                        // return newList;
-                    });
-                },
-
-                createListWithItem: function(item) {
-                    delete item.listitemid;
-                    var items = [item];
-
-                    return $q.all([
-                        Service.createList(items),
-                        Service.addItemToFavorites(item)
-                    ]);
-                },
-
-                deleteList: function(listId) {
-                    return List.delete({
-                        listId: listId
-                    }).$promise.then(function(response) {
-                        var deletedList = Service.findListById(listId);
-                        var idx = Service.lists.indexOf(deletedList);
-                        if (idx > -1) {
-                            Service.lists.splice(idx, 1);
-                        }
-                        return response;
-                    });
-                },
-
-                addItemToListAndFavorites: function(listId, item) {
-                    return $q.all([
-                        this.addItemToFavorites(item),
-                        addItemToList(listId, item)
-                    ]);
-                },
-
-                /*updateItem: function(listId, item) {
-        return $http.put('/list/' + listId + '/item', item).then(function(response) {
-
-          // add label to list of labels if it is new
-          if (item.label && Service.labels.indexOf(item.label) === -1) {
-            Service.labels.push(item.label);
+          if (!items) { // if null
+            newList.items = [];
+          } else if (Array.isArray(items)) { // if multiple items
+            newList.items = items;
+          } else if (typeof items === 'object') { // if one item
+            newList.items = [items];
           }
 
-          return response.data;
-        });
-      },*/
+          // remove irrelevant properties from items
+          UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
 
-                deleteItem: function(listId, listItemId) {
-                    return List.deleteItem({
-                        listId: listId,
-                        listItemId: listItemId
-                    }).$promise.then(function(response) {
-                        var updatedList = Service.findListById(listId);
-                        angular.forEach(updatedList.items, function(item, index) {
-                            if (item.listitemid === listItemId) {
-                                updatedList.items.splice(index, 1);
-                            }
-                        });
-                        return response;
-                    });
-                },
+          newList.name = UtilityService.generateName('List', Service.lists);
 
-                updateList: function(list) {
-                    return List.update(null, list).$promise.then(function(response) {
+          return List.save({
+            branchId: getBranch()
+          }, newList).$promise.then(function(response) {
+            return Service.getList(response.listitemid);
+          });
+        },
 
-                        // update labels
-                        angular.forEach(list.items, function(item, index) {
-                            if (item.label && Service.labels.indexOf(item.label) === -1) {
-                                Service.labels.push(item.label);
-                            }
-                        });
+        // accepts list object
+        // returns promise and updated list object
+        updateList: function(list) {
+          return List.update(null, list).$promise.then(function(response) {
+            
+            // update labels
+            angular.forEach(list.items, function(item, index) {
+              if (item.label && Service.labels.indexOf(item.label) === -1) {
+                Service.labels.push(item.label);
+              }
+            });
 
-                        return Service.getList(response.listid).then(function(list) {
+            return Service.getList(response.listid);
+          });
+        },
 
-                            if (Service.isFavoritesList(list.name)) {
-                                list.isFavoritesList = true;
-                            }
+        // accepts listId (guid)
+        deleteList: function(listId) {
+          return List.delete({
+            listId: listId
+          }).$promise.then(function(response) {
+            // TODO: can I clean this up?
+            var deletedList = Service.findListById(listId);
+            var idx = Service.lists.indexOf(deletedList);
+            if (idx > -1) {
+              Service.lists.splice(idx, 1);
+            }
+            return;
+          });
+        },
 
-                            var updatedList = Service.findListById(list.listid);
-                            var idx = Service.lists.indexOf(updatedList);
-                            angular.copy(list, Service.lists[idx]);
-                            return list;
-                        });
-                    });
-                },
+        /********************
+        EDIT SINGLE ITEM
+        ********************/
 
-                addItemToFavorites: function(item) {
-                    var newItem = item;
+        // accepts listId (guid) and item object
+        // returns promise and listitemid
+        addItem: function (listId, item) {
+          delete item.listitemid;
+          item.position = 0;
+          item.label = null;
+          item.parlevel = null;
 
-                    // check if item number already exists in favorites list
-                    var existingItem;
-                    angular.forEach(Service.favoritesList.items, function(item, index) {
-                        if (item.itemnumber === newItem.itemnumber) {
-                            existingItem = item;
-                        }
-                    });
+          return List.addItem({
+            listId: listId
+          }, item).$promise.then(function(response) {
+            item.listitemid = response.listitemid;
+            item.editPosition = 0;
+            
+            var updatedList = Service.findListById(listId);
+            if (updatedList && updatedList.items) {
+              updatedList.items.push(item);
+            }
 
-                    // return existing item or add new item to favorites list
-                    var newFavoritesListItemId;
-                    if (!existingItem) {
-                        newFavoritesListItemId = addItemToList(Service.favoritesList.listid, item).then(function(response) {
-                            var newListItemId = response.listitemid;
+            return response.listitemid;
+          });
+        },
 
-                            newItem.listitemid = newListItemId;
-                            newItem.favorite = true;
-                            if (Service.favoritesList.items) {
-                                Service.favoritesList.items.push(newItem);
-                            }
+        // accepts listId (guid) and item object
+        updateItem: function(listId, item) {
+          return List.updateItem({
+            listId: listId
+          }, item).$promise.then(function(response) {
+            // TODO: add label to Service.labels if it does not exist
+            // TODO: replace item in Service.lists
+            return response.data;
+          });
+        },
 
-                            // favorite the item in all other lists
-                            updateListFavorites(newItem.itemnumber, true);
+        // accepts listId and listItemId for item to be deleted
+        deleteItem: function(listId, listItemId) {
+          return List.deleteItem({
+            listId: listId,
+            listItemId: listItemId
+          }).$promise.then(function(response) {
+            var updatedList = Service.findListById(listId);
+            // TODO: clean this up
+            angular.forEach(updatedList.items, function(item, index) {
+              if (item.listitemid === listItemId) {
+                updatedList.items.splice(index, 1);
+              }
+            });
 
-                            return newListItemId;
-                        });
-                    } else {
-                        newFavoritesListItemId = existingItem.listitemid;
-                    }
-                    return newFavoritesListItemId;
-                },
+            updateItemPositions(updatedList);
+            return;
+          });
+        },
 
-                removeItemFromFavorites: function(itemNumber) {
+        /********************
+        EDIT MULTIPLE ITEMS
+        ********************/
 
-                    var removedItem, removedIndex;
+        // accepts listId (guid) and an array of items to add
+        addMultipleItems: function(listId, items) {
+          
+          UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
 
-                    var updatedFavoritesList = angular.copy(Service.favoritesList);
+          return List.addMultipleItems({
+            listId: listId
+          }, items).$promise.then(function() {
+            return Service.getList(listId);
+          });
+        },
 
-                    var newPosition = 1;
-                    angular.forEach(updatedFavoritesList.items, function(item, index) {
-                        if (item.itemnumber === itemNumber) {
-                            // find deleted item in the list
-                            removedItem = item;
-                            removedIndex = index;
-                        } else {
-                            // update positions of remaining items
-                            item.position = newPosition;
-                            newPosition++;
-                        }
-                    });
-                    updatedFavoritesList.items.splice(removedIndex, 1);
+        // accepts listId (guid) and an array of items
+        deleteMultipleItems: function(listId, items) {
 
-                    return this.updateList(updatedFavoritesList).then(function(response) {
-                        angular.copy(updatedFavoritesList, Service.favoritesList);
+          // create array of list item ids
+          var listItemIds = [];
+          angular.forEach(items, function(item, index) {
+            listItemIds.push(item.listitemid);
+          });
 
-                        // unfavorite the item in all other lists
-                        updateListFavorites(removedItem.itemnumber, false);
-                    });
-                },
+          console.log(listItemIds);
 
-                addMultipleItemsToFavorites: function() {
-                    // check which items already exist in favorites list
-                    // updateList with correct items, deleteomitted=false
-                    // get the entire list again and set it in Service.lists
-                },
+          return List.deleteMultipleItems({
+            listId: listId
+          }, listItemIds).$promise;
+        },
 
-                removeMultipleItemsFromFavorites: function() {
-                    
-                },
+        /********************
+        LABELS
+        ********************/
 
-                findListById: function(listId) {
-                    var listFound;
-                    angular.forEach(Service.lists, function(list, index) {
-                        if (list.listid === listId) {
-                            listFound = list;
-                        }
-                    });
+        // returns array of labels are strings that are found in all lists for the user
+        getAllLabels: function() {
+          return $http.get('/list/' + getBranch() + '/labels').then(function(response) {
+            angular.copy(response.data, Service.labels);
+            return response.data;
+          });
+        },
 
-                    return listFound;
-                },
+        // accepts listId (guid)
+        // returns array of labels as strings that are found in the given list
+        getLabelsForList: function(listId) {
+          return $http.get('/list/' + getBranch() + '/' + listId + '/labels').then(function(response) {
+            // TODO: add new labels to Service.labels
+            return response.data;
+          });
+        },
 
-                findItemInList: function(listItemId, items) {
-                    var itemFound;
-                    angular.forEach(items, function(item, index) {
-                        if (item.listitemid === listItemId) {
-                            itemFound = item;
-                        }
-                    });
-                    return itemFound;
-                }
+        /********************
+        FAVORITES LIST
+        ********************/
 
-            };
+        getFavoritesList: function() {
+          return filter(Service.lists, {isFavoritesList: true})[0];
+        },
 
-            return Service;
+        // accepts item object
+        // returns new item list id
+        addItemToFavorites: function(item) {
+          var newItem = item,
+            favoritesList = Service.getFavoritesList();
+          
+          // check if item number already exists in favorites list
+          var existingItem = filter(favoritesList.items, {itemnumber: item.itemnumber});
+          
+          // return existing item or add new item to favorites list
+          var newListItemId;
+          if (existingItem.length === 0) {
+            newListItemId = Service.addItem(favoritesList.listid, item).then(function(listitemid) {
+              newItem.favorite = true;
+              
+              // favorite the item in all other lists
+              updateListFavorites(newItem.itemnumber, true);
 
+              return listitemid;
+            });
+          } else {
+            newListItemId = existingItem.listitemid;
+          }
+          return newListItemId;
+        },
+
+        // accepts item number to remove from favorites list
+        removeItemFromFavorites: function(itemNumber) {
+          var favoritesList = Service.getFavoritesList();
+          var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
+
+          return Service.deleteItem(favoritesList.listid, itemToDelete.listitemid).then(function() {
+            updateListFavorites(itemToDelete.itemnumber, false);
+            return;
+          });
+        },
+
+        addMultipleItemsToFavorites: function(items) {
+          var favoritesList = Service.getFavoritesList();
+          return Service.addMultipleItems(favoritesList.listid, items).then(function() {
+            angular.forEach(items, function(item, index) {
+              updateListFavorites(item.itemnumber, true);
+            });
+          });
+        },
+
+        removeMultipleItemsFromFavorites: function(items) {
+          var favoritesList = Service.getFavoritesList();
+
+          // find listitemids of items in the Favorites List
+          var itemsToRemove = [];
+          angular.forEach(items, function(item, index) {
+            var itemsFound = $filter('filter')(favoritesList.items, {itemnumber: item.itemnumber});
+            if (itemsFound.length > 0) {
+              itemsToRemove = itemsToRemove.concat(itemsFound);
+            }
+          });
+
+          return Service.deleteMultipleItems(favoritesList.listid, itemsToRemove).then(function() {
+            angular.forEach(items, function(item, index) {
+              updateListFavorites(item.itemnumber, false);
+            });
+          });
         }
-    ]);
+
+
+      };
+
+      return Service;
+
+    }
+  ]);
