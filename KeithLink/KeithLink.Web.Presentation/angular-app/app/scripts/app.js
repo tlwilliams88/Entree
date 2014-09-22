@@ -111,7 +111,8 @@ angular
     })
     .state('menu.lists', {
       url: '/lists/',
-      controller: 'ListController',
+      // controller: 'ListController',
+      abstract: true,
       template: '<ui-view/>',
       data: {
         authorize: 'canManageLists'
