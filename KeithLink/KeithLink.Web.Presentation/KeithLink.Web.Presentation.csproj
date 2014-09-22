@@ -223,7 +223,6 @@
     <Content Include="angular-app\app\scripts\services\CategoryService.js" />
     <Content Include="angular-app\app\scripts\services\Constants.js" />
     <Content Include="angular-app\app\scripts\services\ListService.js" />
-    <Content Include="angular-app\app\scripts\services\NameGeneratorService.js" />
     <Content Include="angular-app\app\scripts\services\ProductService.js" />
     <Content Include="angular-app\app\scripts\services\UserProfileService.js" />
     <Content Include="angular-app\app\styles\main.scss" />
