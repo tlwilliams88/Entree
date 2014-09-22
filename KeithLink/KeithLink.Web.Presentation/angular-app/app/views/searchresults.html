@@ -43,7 +43,8 @@
 							<input type="checkbox"
 							value="brandValue_{{brand.name}}"
 							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1"
+							ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
+							ng-disabled="brand.name === houseBrand"
 							ng-click="toggleSelection(brand.name,'brand')">
 							<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 						</div>
@@ -114,7 +115,8 @@
 					<input type="checkbox"
 					value="brandValue_{{brand.name}}"
 					id="brandId_{{brand.name}}"
-					ng-checked="selectedBrands.indexOf(brand.name) > -1"
+					ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
+					ng-disabled="brand.name === houseBrand"
 					ng-click="toggleSelection(brand.name,'brand')">
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
