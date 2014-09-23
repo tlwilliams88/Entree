@@ -74,7 +74,7 @@
         </div>
         <div class="col-sm-7 cart-info-buttons">
           <button class="btn text-light btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0">Submit Order</button>
+          <button class="btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)">Submit Order</button>
         </div>
       </div>
       <div class="row">
@@ -88,9 +88,9 @@
         </div>
         <div class="col-sm-6">
           <p class="input-group datepicker-input">
-            <input type="text" required class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+            <input type="text" ng-model="currentCart.requestedshipdate" required class="form-control"/>
             <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="openDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              <button type="button" class="btn btn-default"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
           </p>
         </div>

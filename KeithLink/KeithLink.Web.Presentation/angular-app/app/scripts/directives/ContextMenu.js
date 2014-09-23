@@ -5,14 +5,17 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     scope: true,
-    controller: ['$scope', '$state', 'toaster', 'ListService', 'CartService', 
-    function($scope, $state, toaster, ListService, CartService){
+    controller: ['$scope', '$state', '$q', 'toaster', 'ListService', 'CartService', 
+    function($scope, $state, $q, toaster, ListService, CartService){
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
         $scope.loadingContextMenu = true;
 
-        ListService.addItemToListAndFavorites(listId, newItem).then(function(data) {
+        $q.all([
+          ListService.addItem(listId, item),
+          ListService.addItemToFavorites(item)
+        ]).then(function(data) {
           item.favorite = true;
           $scope.loadingContextMenu = false;
           $scope.displayedItems.isContextMenuDisplayed = false;
@@ -23,7 +26,10 @@ angular.module('bekApp')
       };
 
       $scope.createListWithItem = function(item) {
-        ListService.createListWithItem(item).then(function(data) {
+        $q.all([
+          ListService.createList(item),
+          ListService.addItemToFavorites(item)
+        ]).then(function(data) {
           $scope.loadingContextMenu = false;
           $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
           addSuccessAlert('Successfully created new list.');

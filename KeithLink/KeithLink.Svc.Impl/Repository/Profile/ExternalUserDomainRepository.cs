@@ -252,8 +252,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
-            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
 
             try
             {
@@ -461,9 +461,34 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             //}
         }
 
-        //private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
-        //    return true;
-        //}
+        public void UpdateUserAttributes(string oldEmailAddress, string newEmailAdress, string firstName, string lastName) {
+            if (oldEmailAddress == null) { throw new ArgumentNullException("oldEmailAddress", "oldEmailAddress is null"); }
+            if (oldEmailAddress.Length == 0) { throw new ArgumentException("oldEmailAddress is required", "oldEmailAddress"); }
+
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, oldEmailAddress);
+
+                    if (newEmailAdress.Length > 0 && string.Compare(oldEmailAddress, newEmailAdress, true) != 0) {
+                        user.UserPrincipalName = newEmailAdress;
+                    }
+
+                    user.GivenName = firstName;
+                    user.Surname = lastName;
+                    user.DisplayName = string.Format("{0} {1}", firstName, lastName);
+
+                    user.Save();
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not update user", ex);
+                throw;
+            }
+        }
 
         /// <summary>
         /// check the benekeith.com domain for the username

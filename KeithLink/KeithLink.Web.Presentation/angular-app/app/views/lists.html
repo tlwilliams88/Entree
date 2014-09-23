@@ -81,27 +81,52 @@
       </button>
     </div>
   
+    <!-- Multi-select menu -->
     <div class="row sub-content" ng-show="(filteredItems | filter:{isSelected:'true'}).length > 0">
-      <div class="col-xs-12 btn-group">
-        <button type="button" class="btn btn-default text-light" ng-click="deleteItemFromDrag()">
-          <span class="icon-trash large-icon"></span>
-        </button>
-        <button type="button" class="btn btn-default text-light">
-          <span class="icon-folder large-icon"></span>
-          <span class="icon-arrow-down6"></span>
-        </button>
-        <button type="button" class="btn btn-default text-light">
-          <span class="icon-tag large-icon"></span>
-          <span class="icon-arrow-down6"></span>
-        </button>
-        <!-- <button class="btn btn-default btn-sm" ng-click="favoriteAll()">Favorite All</button>
-        <button class="btn btn-default btn-sm" ng-click="unfavoriteAll()">Unfavorite All</button>
-        <select name="" id="" ng-options="label for label in labels" ng-hide="selectedList.isFavoritesList">
-          <option value="">Select a Label...</option>
-        </select>
-        <button ng-hide="selectedList.isFavoritesList" class="btn btn-default btn-sm" ng-click="updateAll()">Apply Label to All</button> -->
+      <div class="col-xs-12 col-sm-6">
+        <div class="btn-group">
+          <div class="btn-group" dropdown is-open="showLists">
+            <button type="button" class="btn btn-default dropdown-toggle">
+              <span class="icon-folder large-icon text-light"></span>
+              <span class="icon-arrow-down6 text-light"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-click="addItemsToList(list)" ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList && selectedList.listid !== list.listid"><a href="">{{list.name}}</a></li>
+              <li ng-click="createListWithItems()"><a>Create New List...</a></li>
+            </ul>
+          </div>
+          <div class="btn-group" dropdown is-open="showLabels" ng-show="!selectedList.isFavoritesList">
+            <button type="button" class="btn btn-default dropdown-toggle">
+              <span class="icon-tag large-icon text-light"></span>
+              <span class="icon-arrow-down6 text-light"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+              <li ng-repeat="label in labels" ng-click="addLabels(label)"><a>{{label}}</a></li>
+              <li ng-click="addingNewLabel=true; showLabels=false;"><a>Add New Label...</a></li>
+            </ul>
+          </div>
+          <button type="button" class="btn btn-default" ng-click="deleteMultipleItems(selectedList)">
+            <span class="icon-trash large-icon text-light"></span>
+          </button>
+        </div>
+        <div class="btn-group" dropdown is-open="showMoreMenu">
+          <button type="button" class="btn btn-default dropdown-toggle text-light">
+            More
+            <span class="icon-arrow-down6 text-light"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li ng-click="favoriteAll()"><a>Star All</a></li>
+            <li ng-click="unfavoriteAll()"><a>Unstar All</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
+      <div class="col-xs-8 col-sm-4" ng-show="addingNewLabel">
+        <input type="text" class="form-control" ng-model="newLabel" focus-me="addingNewLabel" placeholder="Add New Label...">
+      </div>
+      <div class="col-xs-4 col-sm-2" ng-show="addingNewLabel">
+        <button class="btn btn-primary" ng-disabled="!newLabel" ng-click="applyNewLabel(newLabel)">Apply</button>
+      </div>
+    </div><!-- end Multi-select menu -->
 
     <div class="row sub-content">
       <div class="col-xs-6">
@@ -134,7 +159,10 @@
             <div class="col-md-2 hidden-sm hidden-xs">
               Pack/Size
             </div>
-            <div class="col-md-3 hidden-sm hidden-xs hand nowrap" ng-hide="selectedList.isFavoritesList" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
+            <div class="col-md-1 hidden-xs hidden-sm">
+              # in Cart
+            </div>
+            <div class="col-md-2 hidden-sm hidden-xs hand nowrap" ng-hide="selectedList.isFavoritesList" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
               Label
               <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
             </div>
@@ -176,7 +204,10 @@
                 <div class="table-cell col-md-2 hidden-sm hidden-xs bek-drag-handle">
                   {{item.packsize}}
                 </div>
-                <div class="table-cell col-md-3 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
+                <div class="table-cell col-md-1 hidden-drag hidden-xs hidden-sm">
+                  {{item.quantityincart}}
+                </div>
+                <div class="table-cell col-md-2 hidden-sm hidden-xs table-col-input hidden-drag" ng-hide="selectedList.isFavoritesList">
                   <div ng-hide="item.isEditing">
                     <div class="select-div bek-no-drag edit-label hidden-print">
                       <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
