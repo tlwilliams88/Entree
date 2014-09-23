@@ -290,6 +290,78 @@ CREATE TABLE [ETL].[Staging_ItemData](
 ) ON [PRIMARY]
 
 GO
+
+
+/****** Contract Item Tables ******/
+USE Bek_Commerce_AppData
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE ETL.Staging_CustomerBid (
+	[Action] varchar(1)
+	, CompanyNumber varchar(3)
+	, DivisionNumber varchar(3)
+	, DepartmentNumber varchar(3)
+	, CustomerNumber varchar(10)
+	, PriorityNumber varchar(3)
+	, BidNumber varchar(10)
+);
+GO
+
+CREATE TABLE ETL.Staging_BidContractHeader (
+	[Action] varchar(1)
+	, CompanyNumber varchar(3)
+	, DivisionNumber varchar(3)
+	, DepartmentNumber varchar(3)
+	, BidNumber varchar(10)
+	, BidDescription varchar(40)
+);
+GO
+
+CREATE TABLE ETL.Staging_BidContractDetail (
+	[Action] varchar(1)
+	, CompanyNumber varchar(3)
+	, DivisionNumber varchar(3)
+	, DepartmentNumber varchar(3)
+	, BidNumber varchar(10)
+	, ItemNumber varchar(10)
+	, BidLineNumber varchar(5)
+	, CategoryNumber varchar(5)
+	, CategoryDescription varchar(40)
+	, ForceEachOrCaseOnly varchar(1)
+);
+GO
+
+CREATE TABLE ETL.Staging_ProprietaryCustomer (
+	[Action] varchar(1)
+	, CompanyNumber varchar(3)
+	, DivisionNumber varchar(3)
+	, DepartmentNumber varchar(3)
+	, ProprietaryNumber varchar(10)
+	, CustomerNumber varchar(10)
+);
+GO
+
+CREATE TABLE ETL.Staging_ProprietaryItem (
+	[Action] varchar(1)
+	, CompanyNumber varchar(3)
+	, DivisionNumber varchar(3)
+	, DepartmentNumber varchar(3)
+	, ProprietaryNumber varchar(10)
+	, ItemNumber varchar(10)
+
+);
+GO
+
+
+
+
 /****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
 SET ANSI_NULLS ON
 GO
