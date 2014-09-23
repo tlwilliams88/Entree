@@ -521,6 +521,30 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             throw new NotImplementedException();
         }
 
+        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            string retVal = null;
+
+            try {
+                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+
+                AssertPasswordLength(newPassword);
+                AssertPasswordComplexity(newPassword);
+                AssertPasswordVsAttributes(newPassword, existingUser.CustomerName, existingUser.FirstName, existingUser.LastName);
+
+                if (_externalAD.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                    retVal = "Password update successful";
+                } else {
+                    retVal = "Invalid password";
+                }
+            } catch (ApplicationException appEx) {
+                retVal = appEx.Message;
+            } catch (Exception ex) {
+                retVal = string.Concat("Could not process request: ", ex.Message);
+            }
+
+            return retVal;
+        }
+
         /// <summary>
         /// update the user profile in Commerce Server (not implemented)
         /// </summary>
