@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Interface.Lists;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -24,17 +25,19 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPriceLogic priceLogic;
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IQueueRepository queueRepository;
+		private readonly IItemNoteLogic itemNoteLogic;
 
 		private readonly string BasketStatus = "ShoppingCart";
 
 		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
-			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository)
+			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IItemNoteLogic itemNoteLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceLogic = priceLogic;
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
+			this.itemNoteLogic = itemNoteLogic;
 		}
 		
 		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
@@ -187,13 +190,15 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products); 
+			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user.UserId);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
 				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
 					item.Name = prod.Name;
@@ -211,6 +216,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 					
 				}
+				if (note.Any())
+					item.Notes = note.First().Note;
 			});
 
 		}
@@ -284,6 +291,7 @@ namespace KeithLink.Svc.Impl.Logic
 					OrderedQuantity = (short)item.Quantity,
 					SellPrice = (double)item.PlacedPrice
 				});
+							
 			}	
 
 			
@@ -292,7 +300,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			xs.Serialize(sw, newOrderFile);
 			
-			queueRepository.PublishToQueue(new KeithLink.Svc.Core.Models.Orders.OrderFile().ToString());
+			queueRepository.PublishToQueue(sw.ToString());
 						
 			return orderNumber; //Return actual order number
 		}

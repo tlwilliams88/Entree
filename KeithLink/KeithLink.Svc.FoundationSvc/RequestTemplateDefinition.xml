@@ -1121,4 +1121,39 @@
 		</Operation>
 	</RequestTemplate>
 
+
+	<RequestTemplate id="GetNotes" group="Orders" cached="false" containsSensitiveData="false">
+		<Descriptions>
+			<Description value="Get User Notes" />
+		</Descriptions>
+		<Operation id="1" builder="QueryOperationBuilder" entity="Basket" commerceArea="Orders">
+			<Search builder="ModelSearchCriteriaBuilder">
+				<Argument name="Name" value="Default" />
+				<Argument name="UserId" />
+				<Argument name="BasketType" value="0" />
+			</Search>
+			<Options builder="BasketQueryOptionsBuilder">
+				<Argument name="RefreshBasket" value="true" />
+			</Options>
+			<PropertiesToReturn>
+				<Property name="Name"/>
+				<Property name="UserId"/>
+				<Property name="BasketType"/>
+				<Property name="OrderGroupId"/>
+			</PropertiesToReturn>
+			<Operation id="1-1" builder="QueryRelatedOperationBuilder" entity="LineItem" relationshipName="LineItems" commerceArea="Orders">
+				<Search builder="ModelSearchCriteriaBuilder">
+					<Argument name="ReturnTotalItemCount" />
+				</Search>
+				<PropertiesToReturn>
+					<Property name="Id" />
+					<Property name="CatalogName" />
+					<Property name="ProductId" />
+					<Property name="Notes" />
+				</PropertiesToReturn>
+			</Operation>			
+		</Operation>
+	</RequestTemplate>
+
+
 </RequestTemplates>

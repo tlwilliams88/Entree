@@ -48,6 +48,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "favorite")]
 		public bool Favorite { get; set; }
+
+		[DataMember(Name = "notes")]
+		public string Notes { get; set; }
 		
 	}
 }
