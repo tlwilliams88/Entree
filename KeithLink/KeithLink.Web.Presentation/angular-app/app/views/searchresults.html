@@ -43,8 +43,7 @@
 							<input type="checkbox"
 							value="brandValue_{{brand.name}}"
 							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
-							ng-disabled="brand.name === houseBrand"
+							ng-checked="selectedBrands.indexOf(brand.name) > -1"
 							ng-click="toggleSelection(brand.name,'brand')">
 							<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 						</div>
@@ -115,8 +114,7 @@
 					<input type="checkbox"
 					value="brandValue_{{brand.name}}"
 					id="brandId_{{brand.name}}"
-					ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
-					ng-disabled="brand.name === houseBrand"
+					ng-checked="selectedBrands.indexOf(brand.name) > -1"
 					ng-click="toggleSelection(brand.name,'brand')">
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
@@ -185,9 +183,9 @@
 							Item
 							<span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
 						</th>
-						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand')">
+						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
 							Brand
-							<span sort-icons field="'brand'" sortorder="asc" sortby="sortField"></span>
+							<span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
 						</th>
 						<th class="hand" ng-click="sortTable('name')">
 							Name
@@ -213,7 +211,7 @@
 							<a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{item.brand}}
+							{{item.brand_extended_description}}
 						</td>
 						<td>
 							{{item.name}}
@@ -235,7 +233,7 @@
 						<td colspan=4>
 							<div>
 								<p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
-								<p>Brand: {{item.brand}}</p>
+								<p>Brand: {{item.brand_extended_description}}</p>
 								<p item-icons>
 								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
 								</p>

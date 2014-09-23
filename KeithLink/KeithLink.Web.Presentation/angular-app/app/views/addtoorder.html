@@ -102,9 +102,9 @@
         <div class="col-xs-1 hidden-sm hidden-xs">
           Pack/Size
         </div>
-        <div class="col-xs-1 hidden-sm hidden-xs hand" ng-click="sortBy='brand';sortOrder=!sortOrder;">
+        <div class="col-xs-1 hidden-sm hidden-xs hand" ng-click="sortBy='brand_extended_description';sortOrder=!sortOrder;">
           Brand
-          <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span sort-icons field="'brand_extended_description'" sortorder="sortOrder" sortby="sortBy"></span>
         </div>
         <div class="col-md-1" ng-show="useParlevel">
           PAR Level
@@ -191,7 +191,7 @@
                 {{item.packsize}}
               </div>
               <div class="table-cell col-md-1 hidden-sm hidden-xs">
-                {{item.brand}}
+                {{item.brand_extended_description}}
               </div>
               <div class="table-cell col-md-1 table-col-input" ng-show="useParlevel">
                 {{item.parlevel}}
@@ -228,7 +228,7 @@
                 </ng-form>
                 <p>Label: {{item.label}}</p>
                 <p>Pack/Size: {{item.packsize}}</p>
-                <p>Brand: {{item.brand}}</p>
+                <p>Brand: {{item.brand_extended_description}}</p>
                 <p>PAR Level: {{item.parlevel}}</p>
                 <p>
                   Quantity On-Hand:
