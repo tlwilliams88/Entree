@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Test.Logic
     [TestClass]
     public class ListLogicTests
     {
-		private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), new StubCatalogRepositoryImpl(), new PriceRepositoryImpl());
+		private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), new StubCatalogRepositoryImpl(), new PriceRepositoryImpl(), new ItemNoteLogicImpl(new MockRepository.BasketRepositoryMock()));
 
         [TestMethod]
         public void ReadAllList()

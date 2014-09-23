@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<string> ReadListLabels(Guid userId, Guid listId);
 		List<string> ReadListLabels(Guid userId, string branchId);
 
-		void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products);
+		void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products);
+
     }
 }
