@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Profile
 {
-    [DataContract(Name="UserProfile")]
+    [DataContract(Name="userprofile")]
     public class UserProfile : System.Security.Principal.IIdentity
     {
-        [DataMember(Name="UserId")]
+        [DataMember(Name="userid")]
         public Guid UserId {get;set;}
-        [DataMember(Name = "UserName")]
-		public string UserName { get; set; }
-        [DataMember(Name="FirstName")]
+        //[DataMember(Name = "username")]
+        //public string UserName { get; set; }
+        [DataMember(Name="firstname")]
 		public string FirstName { get; set; }
-        [DataMember(Name="LastName")]
+        [DataMember(Name="lastname")]
 		public string LastName { get; set; }
-        [DataMember(Name="EmailAddress")]
+        [DataMember(Name="emailaddress")]
 		public string EmailAddress { get; set; }
-        [DataMember(Name="PhoneNumber")]
+        [DataMember(Name="phonenumber")]
 		public string PhoneNumber { get; set; }
-        [DataMember(Name="CustomerName")]
+        [DataMember(Name="customername")]
 		public string CustomerName { get; set; }
 
         public string AuthenticationType
@@ -30,10 +30,10 @@ namespace KeithLink.Svc.Core.Models.Profile
             get { return "Active Directory"; }
         }
 
-        [DataMember(Name = "CustomerNumber")]
+        [DataMember(Name = "customernumber")]
         public string CustomerNumber { get; set; }
 
-        [DataMember(Name = "BranchId")]
+        [DataMember(Name = "branchid")]
 		public string BranchId { get; set; }
 
 		public bool IsAuthenticated { get; set; }

@@ -10,7 +10,7 @@ namespace KeithLink.Svc.WebApi.Models
 		public string FirstName { get; set; }
 		public string LastName { get; set; }
 		public string CustomerName { get; set; }
-		public string Phone { get; set; }
+		public string PhoneNumber { get; set; }
 		public string Password { get; set; }
 		public string RoleName { get; set; }
         public string BranchId { get; set; }

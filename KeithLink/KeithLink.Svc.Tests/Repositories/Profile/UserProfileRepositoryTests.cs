@@ -83,10 +83,10 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
             
-             UserProfileReturn userReturn = userProfile.GetUserProfile("sabroussard@somecompany.com");
+             UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@somecompany.com");
 
              userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
-                                           userReturn.UserProfiles[0].EmailAddress,
+                                           "jeremy@jeremyschickenshack.com",
                                            "John",
                                            "Lennon",
                                            "817-877-5700",

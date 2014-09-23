@@ -47,7 +47,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
 
                 retVal.SuccessResponse =_profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, 
-                                                                       userInfo.FirstName, userInfo.LastName, userInfo.Phone, 
+                                                                       userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber, 
                                                                        userInfo.RoleName);
             }
             catch (ApplicationException axe)
@@ -130,7 +130,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
                 _profileRepo.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
-                                               userInfo.LastName, userInfo.Phone, userInfo.BranchId);
+                                               userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
 
                 retVal.SuccessResponse = _profileRepo.GetUserProfile(userInfo.Email);
             } catch (ApplicationException axe) {
