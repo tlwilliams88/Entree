@@ -42,10 +42,10 @@ angular.module('bekApp')
       },
 
       // postData is an array of listitemids as strings
-      deleteMultipleItems: {
-        url: '/list/:listId/item',
-        method: 'DELETE'
-      }
+      // deleteMultipleItems: {
+      //   url: '/list/:listId/item',
+      //   method: 'DELETE'
+      // }
 
     });
   

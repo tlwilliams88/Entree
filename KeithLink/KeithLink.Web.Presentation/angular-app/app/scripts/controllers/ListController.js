@@ -202,7 +202,11 @@ angular.module('bekApp')
       var items = getMultipleSelectedItems();
 
       ListService.removeMultipleItemsFromFavorites(items).then(function() {
-        addErrorAlert('Successfully removed ' + items.length + ' items from Favorites.');
+        angular.forEach(items, function(item) {
+          item.favorite = false;
+        });
+        unselectAllDraggedItems();
+        addSuccessAlert('Successfully removed ' + items.length + ' items from Favorites.');
       }, function(error) {
         addErrorAlert('Error removing ' + items.length + ' items from Favorites.');
       });
