@@ -127,7 +127,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                if (userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
+                if (userInfo.UserId == null || userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
                 _profileRepo.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
                                                userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
