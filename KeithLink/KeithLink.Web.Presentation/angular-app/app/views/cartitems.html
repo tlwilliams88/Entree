@@ -229,10 +229,8 @@
                 <div class="table-cell col-md-1 col-xs-2">
                   <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
                 </div>
-                <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm">
-                  <ng-form class="hidden-print" name="notesForm">
-                    <input id="notes" name="notes" type="text" ng-model="item.notes" />
-                  </ng-form>
+                <div class="table-cell col-md-1 hidden-xs hidden-sm">
+                  {{item.notes}}
                 </div>
                 <div class="table-cell col-md-1 hidden-sm hidden-xs">
                   {{item.packsize}}
@@ -272,10 +270,7 @@
               <!-- Mobile Details -->
               <div class="row" ng-show="showDetails">
                 <div class="col-xs-12">
-                  <ng-form class="hidden-print" name="notesForm_mobile">
-                    Notes:
-                    <input clas="form-control" id="notes" name="notes" type="text" ng-model="item.notes" />
-                  </ng-form>
+                  <p>Notes: {{item.notes}}</p>
                   <p>Pack/Size: {{item.packsize}}</p>
                   <p>Brand: {{item.brand}}</p>
                   <p item-icons></p>
