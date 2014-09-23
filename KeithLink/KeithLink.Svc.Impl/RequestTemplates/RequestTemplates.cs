@@ -2617,6 +2617,99 @@ public static BaseController<IRequestTemplateController> DeleteItemFromListQueue
 
 }
 
+
+
+
+
+
+
+
+
+
+
+
+/// <summary>
+/// Get User Notes
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="returnTotalItemCount">The search argument for ReturnTotalItemCount</param>
+
+/// <returns>A CommerceEntity from the response when there is one, null otherwise.</returns>
+public static List<CommerceEntity> GetNotes(string name, string userId, string basketType, string refreshBasket, string returnTotalItemCount)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("ReturnTotalItemCount", returnTotalItemCount, RequestTemplateParameterType.Search));
+
+	var controller = ControllerFactory.GetController("Orders");
+	var serviceAdapterResponse = controller.ProcessRequest("GetNotes", parameters, "POCO");
+
+	if (serviceAdapterResponse.Succeeded)
+	{
+		var response = serviceAdapterResponse.Value as List<CommerceEntity>;
+		if(response !=null && response.Count >0)
+		{
+			return response;
+		}
+		//	It's possible that request template doesn't return anything so it's not an error if it returns nothing
+	}
+	else
+	{
+		// It is an issue if Succeeded == false
+		throw new RequestTemplateException() { Errors = serviceAdapterResponse.Errors };
+	}
+
+	return null;
+
+}
+
+/// <summary>
+/// Get User Notes
+/// </summary>
+
+/// <param name="name">The search argument for Name</param>
+		/// <param name="userId">The search argument for UserId</param>
+		/// <param name="basketType">The search argument for BasketType</param>
+		/// <param name="refreshBasket">The option argument for RefreshBasket</param>
+		/// <param name="returnTotalItemCount">The search argument for ReturnTotalItemCount</param>
+
+/// <returns>Commerce Server Contrib controller which can be used to get the response.</returns>
+public static BaseController<IRequestTemplateController> GetNotesQueued(string name, string userId, string basketType, string refreshBasket, string returnTotalItemCount)
+{
+
+	var parameters = new RequestTemplateParameterCollection();
+
+
+	parameters.Add(new RequestTemplateParameter("Name", name, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("UserId", userId, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("BasketType", basketType, RequestTemplateParameterType.Search));
+
+	parameters.Add(new RequestTemplateParameter("RefreshBasket", refreshBasket, RequestTemplateParameterType.Option));
+
+	parameters.Add(new RequestTemplateParameter("ReturnTotalItemCount", returnTotalItemCount, RequestTemplateParameterType.Search));
+
+	var controller = ControllerFactory.GetController("Orders");
+	controller.QueueRequest("GetNotes", parameters, "POCO");
+	return controller;
+
+}
+
 	}
 
 

@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.WebApi.Models;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +10,6 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	
-
     public class ProfileController : BaseController
     {
         #region attributes
@@ -32,20 +32,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ApiKeyedRoute("profile/create")]
-        public OperationReturnModel<Core.Models.Profile.UserProfileReturn> CreateUser(UserProfileModel userInfo)
+        public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo)
         {
 
-            OperationReturnModel<Core.Models.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Models.Profile.UserProfileReturn>();
+            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try
             {
-                Core.Models.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
+                CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
 
                 // create the customer container if it does not exist
                 if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
 
                 retVal.SuccessResponse =_profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, 
-                                                                       userInfo.FirstName, userInfo.LastName, userInfo.Phone, 
+                                                                       userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber, 
                                                                        userInfo.RoleName);
             }
             catch (ApplicationException axe)
@@ -68,12 +68,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ApiKeyedRoute("profile/register")]
-        public OperationReturnModel<Core.Models.Profile.UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
+        public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
 
-            OperationReturnModel<Core.Models.Profile.UserProfileReturn> retVal = new OperationReturnModel<Core.Models.Profile.UserProfileReturn>();
+            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                Core.Models.Profile.CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
+                CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
 
                 // create the customer container if it does not exist
                 if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER); }
@@ -95,27 +95,63 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public Core.Models.Profile.UserProfileReturn GetUser(string emailAddress)
+        public UserProfileReturn GetUser(string email)
         {
-            if (string.Compare(emailAddress, AuthenticatedUser.EmailAddress, true) == 0)
+            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
             {
-                Core.Models.Profile.UserProfileReturn retVal = new Core.Models.Profile.UserProfileReturn();
+                UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
 
                 return retVal;
             }
             else
             {
-                return _profileRepo.GetUserProfile(emailAddress);
+                return _profileRepo.GetUserProfile(email);
             }
         }
 
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
-        public Core.Models.Profile.CustomerContainerReturn SearchCustomers(string searchText)
+        public CustomerContainerReturn SearchCustomers(string searchText)
         {
             return _custRepo.SearchCustomerContainers(searchText);
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ApiKeyedRoute("profile/password")]
+        public OperationReturnModel<string> UpdatePassword(UpdatePasswordModel pwInfo) {
+            return new OperationReturnModel<string> {
+                SuccessResponse = _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword)
+            };
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ApiKeyedRoute("profile")]
+        public OperationReturnModel<UserProfileReturn> UpdateUser(UserProfileModel userInfo) {
+            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+
+            try {
+                if (userInfo.UserId == null || userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
+
+                _profileRepo.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
+                                               userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
+
+                retVal.SuccessResponse = _profileRepo.GetUserProfile(userInfo.Email);
+            } catch (ApplicationException axe) {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+
+            return retVal;
         }
         #endregion
     }

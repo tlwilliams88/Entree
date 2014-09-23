@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic
                 ret = _catalogRepository.GetProductsByCategory(branch, category, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, ret);
+            AddFavoriteProductInfoAndNotes(branch, profile, ret);
             return ret;
         }
 
@@ -82,7 +82,7 @@ namespace KeithLink.Svc.Impl.Logic
                 returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, returnValue);
+            AddFavoriteProductInfoAndNotes(branch, profile, returnValue);
 
             return returnValue;
         }
@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Impl.Logic
                 ret = _catalogRepository.GetProductsBySearch(branch, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, ret);
+            AddFavoriteProductInfoAndNotes(branch, profile, ret);
             return ret;
         }
 
@@ -129,13 +129,13 @@ namespace KeithLink.Svc.Impl.Logic
         private void AddFavoriteProductInfo(string branch, UserProfile profile, Product ret)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProducts(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
         }
 
-        private void AddFavoriteProductInfo(string branch, UserProfile profile, ProductsReturn ret)
+        private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProducts(profile.UserId, branch, ret);
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret);
         }
 
 
