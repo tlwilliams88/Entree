@@ -1,10 +1,12 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using CommerceServer.Foundation;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -490,14 +492,23 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void UpdateUserProfile(string customerName, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId)
+        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId)
         {
-            var updateQuery = new CommerceServer.Foundation.CommerceUpdate < CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            updateQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
+            AssertEmailAddressLength(emailAddress);
+            AssertEmailAddress(emailAddress);
+            AssertFirstNameLength(firstName);
+            AssertLastNameLength(lastName);
 
+            var updateQuery = new CommerceUpdate <CommerceEntity>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToString("B");
+
+            updateQuery.Model.Properties["Email"] = emailAddress;
             updateQuery.Model.Properties["FirstName"] = firstName;
             updateQuery.Model.Properties["LastName"] = lastName;
             updateQuery.Model.Properties["PhoneNumber"] = phoneNumber;
+            updateQuery.Model.Properties["SelectedBranch"] = branchId;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
         }
         #endregion
     }

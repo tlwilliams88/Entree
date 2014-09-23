@@ -260,7 +260,7 @@ namespace KeithLink.Svc.Impl.Logic
 					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
 					ControlNumber = 1, //TODO: Handle ControlNumber
 					CustomerNumber = user.CustomerNumber,
-					UserId = user.UserId.ToString(),
+					UserId = user.EmailAddress,
 					OrderType = OrderType.NormalOrder,
 					OrderFilled = false,
 					OrderingSystem = OrderSource.KeithCom,
@@ -292,7 +292,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			xs.Serialize(sw, newOrderFile);
 			
-			queueRepository.PublishToQueue(new KeithLink.Svc.Core.Models.Orders.OrderFile().ToString());
+			queueRepository.PublishToQueue(sw.ToString());
 						
 			return orderNumber; //Return actual order number
 		}
