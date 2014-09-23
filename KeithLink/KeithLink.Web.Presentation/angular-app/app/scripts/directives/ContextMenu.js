@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-.directive('contextMenu', ['ListService', function(ListService){
+.directive('contextMenu', [ function(){
   return {
     restrict: 'A',
     scope: true,
@@ -19,9 +19,9 @@ angular.module('bekApp')
           item.favorite = true;
           $scope.loadingContextMenu = false;
           $scope.displayedItems.isContextMenuDisplayed = false;
-          addSuccessAlert('Successfully added item to list.');
+          $scope.displayMessage('success', 'Successfully added item to list.');
         }, function() {
-          addErrorAlert('Error adding item to list.');
+          $scope.displayMessage('error', 'Error adding item to list.');
         });
       };
 
@@ -32,9 +32,9 @@ angular.module('bekApp')
         ]).then(function(data) {
           $scope.loadingContextMenu = false;
           $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
-          addSuccessAlert('Successfully created new list.');
+          $scope.displayMessage('success', 'Successfully created new list.');
         }, function() {
-          addErrorAlert('Error creating new list.');
+          $scope.displayMessage('error', 'Error creating new list.');
         });
       };
 
@@ -43,9 +43,9 @@ angular.module('bekApp')
         CartService.addItemToCart(cartId, item).then(function(data) {
           $scope.loadingContextMenu = false;
           $scope.displayedItems.isContextMenuDisplayed = false;
-          addSuccessAlert('Successfully added item to cart.');
+          $scope.displayMessage('success', 'Successfully added item to cart.');
         }, function() {
-          addErrorAlert('Error adding item to cart.');
+          $scope.displayMessage('error', 'Error adding item to cart.');
         });
       };
 
@@ -55,23 +55,11 @@ angular.module('bekApp')
         CartService.createCart(items).then(function(data) {
           $scope.loadingContextMenu = false;
           $state.go('menu.cart.items', { cartId: data.id, renameCart: true });
-          addSuccessAlert('Successfully created new cart.');
+          $scope.displayMessage('success', 'Successfully created new cart.');
         }, function() {
-          addErrorAlert('Error creating new cart.');
+          $scope.displayMessage('error', 'Error creating new cart.');
         });
       };
-
-      // ALERTS
-      function addSuccessAlert(message) {
-        addAlert('success', message);
-      }
-      function addErrorAlert(message) {
-        addAlert('error', message);
-      }
-      function addAlert(alertType, message) {
-        toaster.pop(alertType, null, message);
-      }
-
     }],
     templateUrl: 'views/directives/contextmenu.html'
   };
