@@ -152,9 +152,15 @@
               Item #
               <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
             </div>
-            <div class="col-md-3 col-xs-5 hand nowrap" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
+            <div class="col-md-1 hidden-xs hidden-sm">
+              Notes
+            </div>
+            <div class="col-md-1 col-xs-5 hand nowrap" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
               Name
               <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+            </div>
+            <div class="col-md-1 hidden-xs hidden-sm">
+              Brand
             </div>
             <div class="col-md-2 hidden-sm hidden-xs">
               Pack/Size
@@ -198,8 +204,14 @@
                 <div class="table-cell col-md-1 col-xs-2 bek-drag-handle">
                   <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
                 </div>
-                <div class="table-cell col-md-3 col-xs-5 bek-drag-handle">
+                <div class="table-cell col-md-1 hidden-xs hidden-sm bek-drag-handle">
+                  {{item.notes}}
+                </div>
+                <div class="table-cell col-md-1 col-xs-5 bek-drag-handle">
                   {{item.name}}
+                </div>
+                <div class="table-cell col-md-1 hidden-xs hidden-sm bek-drag-handle">
+                  {{item.brand}}
                 </div>
                 <div class="table-cell col-md-2 hidden-sm hidden-xs bek-drag-handle">
                   {{item.packsize}}
@@ -239,6 +251,8 @@
               <!-- Mobile Details -->
               <div class="row" ng-show="showDetails">
                 <div class="col-xs-12">
+                  <p>Notes: {{item.notes}}</p>
+                  <p>Brand: {{item.brand}}</p>
                   <p>Pack/Size: {{item.packsize}}</p>
                   <div ng-hide="selectedList.isFavoritesList" class="form-control-group">
                     <div class="form-control-group__label">Label: </div>

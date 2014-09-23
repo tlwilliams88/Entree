@@ -10,8 +10,6 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	
-
     public class ProfileController : BaseController
     {
         #region attributes
@@ -97,9 +95,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string emailAddress)
+        public UserProfileReturn GetUser(string email)
         {
-            if (string.Compare(emailAddress, AuthenticatedUser.EmailAddress, true) == 0)
+            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
             {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
@@ -108,7 +106,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             else
             {
-                return _profileRepo.GetUserProfile(emailAddress);
+                return _profileRepo.GetUserProfile(email);
             }
         }
 
@@ -123,8 +121,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
-        public string UpdatePassword(UpdatePasswordModel pwInfo) {
-            return _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+        public OperationReturnModel<string> UpdatePassword(UpdatePasswordModel pwInfo) {
+            return new OperationReturnModel<string> {
+                SuccessResponse = _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword)
+            };
         }
 
         [Authorize]

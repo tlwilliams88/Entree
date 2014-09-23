@@ -43,7 +43,8 @@
 							<input type="checkbox"
 							value="brandValue_{{brand.name}}"
 							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1"
+							ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
+							ng-disabled="brand.name === houseBrand"
 							ng-click="toggleSelection(brand.name,'brand')">
 							<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 						</div>
@@ -114,7 +115,8 @@
 					<input type="checkbox"
 					value="brandValue_{{brand.name}}"
 					id="brandId_{{brand.name}}"
-					ng-checked="selectedBrands.indexOf(brand.name) > -1"
+					ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
+					ng-disabled="brand.name === houseBrand"
 					ng-click="toggleSelection(brand.name,'brand')">
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
@@ -219,7 +221,7 @@
 						<td class="hidden-sm hidden-xs">
 							{{item.pack | number}} / {{item.size}}
 						</td>
-						<td class="hidden-sm hidden-xs table-icon text-right" item-icons>
+						<td class="hidden-sm hidden-xs text-right" item-icons>
 						</td>
 						<td class="hidden-sm hidden-xs">
 							<span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
@@ -234,7 +236,7 @@
 							<div>
 								<p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
 								<p>Brand: {{item.brand_extended_description}}</p>
-								<p item-icons>
+								<p class="large-icon" item-icons>
 								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
 								</p>
 							</div>

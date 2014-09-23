@@ -22,8 +22,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public string EmailAddress { get; set; }
         [DataMember(Name="phonenumber")]
 		public string PhoneNumber { get; set; }
-        [DataMember(Name="customername")]
-		public string CustomerName { get; set; }
+        //[DataMember(Name="customername")]
+        //public string CustomerName { get; set; }
 
         public string AuthenticationType
         {

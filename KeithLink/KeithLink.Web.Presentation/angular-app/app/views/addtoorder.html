@@ -26,7 +26,7 @@
           <span class="pull-right icon-arrow-down7 text-light"></span>
         </div>
         <ul class="dropdown-menu dropdown-menu-list" role="menu">
-          <li ng-click="selectList(list)" ng-if="list !== selectedList" ng-repeat="list in lists | orderBy:'name'" ng-if="list.id !== selectedList.id">{{list.name}}</li>
+          <li ng-click="selectList(list)" ng-repeat="list in lists | orderBy:'name'" ng-show="list.listid !== selectedList.listid">{{list.name}}</li>
         </ul>
       </div>
       
@@ -40,14 +40,14 @@
           <li>
             <div class="row">
               <div class="col-xs-12">
-                <a class="text-regular" ng-click="selectCart(cart)" ng-if="cart.id !== selectedCart.id" ng-repeat="cart in carts | orderBy:'name'">
+                <a class="text-regular" ng-click="selectCart(cart)" ng-show="cart.id !== selectedCart.id" ng-repeat="cart in carts | orderBy:'name'">
                   <div class="row">
                     <div class="col-xs-6">{{cart.name}}</div>
                     <div class="col-xs-2">{{cart.items.length}}</div>
                     <div class="col-xs-4">{{cart.requestedshipdate | date:shortDate}}</div>
                   </div>
                 </a>
-                <a ng-click="createNewCart()" ng-if="selectedCart.id">
+                <a ng-click="createNewCart()" ng-show="selectedCart.id">
                   <div class="row">
                     <div class="col-xs-6">Create a Cart...</div>
                   </div>
@@ -175,10 +175,8 @@
               <div class="table-cell col-md-1 col-xs-2">
                 <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
               </div>
-              <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm">
-                <ng-form class="hidden-print" name="notesForm">
-                  <input id="notes" name="notes" type="text" ng-model="item.notes" />
-                </ng-form>
+              <div class="table-cell col-md-1 hidden-xs hidden-sm">
+                {{item.notes}}
               </div>
               <div class="table-cell col-md-1 hidden-xs hidden-sm">
                 {{item.label}}
@@ -222,10 +220,7 @@
             <!-- Mobile Details -->
             <div class="row" ng-show="showDetails">
               <div class="col-xs-12">
-                <ng-form class="hidden-print" name="notesForm_mobile">
-                  Notes:
-                  <input class="form-control" id="notes" name="notes" type="text" ng-model="item.notes" />
-                </ng-form>
+                <p>Notes: {{item.notes}}</p>
                 <p>Label: {{item.label}}</p>
                 <p>Pack/Size: {{item.packsize}}</p>
                 <p>Brand: {{item.brand_extended_description}}</p>
