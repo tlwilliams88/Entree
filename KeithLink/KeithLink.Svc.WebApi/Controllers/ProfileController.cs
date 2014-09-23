@@ -97,9 +97,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string emailAddress)
+        public UserProfileReturn GetUser(string email)
         {
-            if (string.Compare(emailAddress, AuthenticatedUser.EmailAddress, true) == 0)
+            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
             {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
@@ -108,7 +108,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
             else
             {
-                return _profileRepo.GetUserProfile(emailAddress);
+                return _profileRepo.GetUserProfile(email);
             }
         }
 
