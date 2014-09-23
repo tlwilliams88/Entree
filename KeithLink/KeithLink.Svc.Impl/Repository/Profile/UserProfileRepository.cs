@@ -443,6 +443,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("SelectedBranch");
