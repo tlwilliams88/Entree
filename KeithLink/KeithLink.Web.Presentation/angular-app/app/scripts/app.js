@@ -65,6 +65,11 @@ angular
       controller: 'AccountDetailsController',
       data: {
         authorize: 'isLoggedIn'
+      },
+      resolve: {
+        branches: ['BranchService', function(BranchService) {
+          return BranchService.getBranches();
+        }]
       }
     })
     .state('menu.catalog', {

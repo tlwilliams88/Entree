@@ -12,53 +12,42 @@
       <div class="form-group">
         <label for="firstName" class="col-md-2 control-label">First Name</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="firstName" ng-model="userProfile.firstName">
+          <input type="text" class="form-control" id="firstName" ng-model="userProfile.firstname">
         </div>
         <label for="lastName" class="col-md-2 control-label">Last Name</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="lastName" ng-model="userProfile.lastName">
+          <input type="text" class="form-control" id="lastName" ng-model="userProfile.lastname">
         </div>
       </div>
       <div class="form-group">
         <label for="emailAddress" class="col-md-2 control-label">Email</label>
         <div class="col-md-10">
-          <input type="email" class="form-control" id="emailAddress" ng-model="userProfile.userName">
+          <input type="email" class="form-control" id="emailAddress" ng-model="userProfile.emailaddress">
           <!-- <span class="text-red">If you would like to change your email address, Jeremy will hunt you down and smother you with a pillow in your sleep. Proceed with caution.</span> -->
         </div>
       </div>
       <div class="form-group">
-        <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
+        <label for="phone" class="col-md-2 control-label">Phone</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="phoneNumber" ng-model="userProfile.phoneNumber">
-        </div>
-        <label for="title" class="col-md-1 control-label">Title</label>
-        <div class="col-md-5">
-          <input type="text" class="form-control" id="title">
-        </div>
-      </div>
-
-      <h2 class="col-xs-12">Business Location(s)</h2>
-
-      <div class="form-group">
-        <label for="inputEmail3" class="col-md-2 control-label">Business Name</label>
-        <div class="col-md-10">
-          <input type="email" class="form-control" id="inputEmail3">
+          <input type="text" class="form-control" id="phone" ng-model="userProfile.phonenumber">
         </div>
       </div>
       <div class="form-group">
-        <label for="inputEmail3" class="col-md-2 control-label">Address</label>
-        <div class="col-md-10">
-          <input type="email" class="form-control" id="inputEmail3">
+        <label for="defaultBranch" class="col-md-2 control-label">Division</label>
+        <div class="col-md-6">
+          <div class="select-div">
+            <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.name for branch in branches" ng-model="userProfile.branchid">
+              <option value="">Please select a division</option>
+            </select>
+          </div>
         </div>
       </div>
-
-      <div class="row">
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary">Update Profile</button>
-          <a href="">Cancel</a>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-md-6">
+          <button class="btn btn-primary" ng-click="updateUserProfile(userProfile)">Update Profile</button>
+          <a ng-click="cancelChanges()">Cancel</a>
         </div>
       </div>
-
     </form>
 
   </div>
@@ -79,29 +68,29 @@
     <hr>
     
     <h4><strong>Change Your Password</strong></h4>
-
-    <form class="form-horizontal" role="form">
+    <p ng-if="changePasswordErrorMessage" class="text-red">{{changePasswordErrorMessage}}</p>
+    <form name="changePasswordForm" class="form-horizontal" role="form">
       <div class="form-group">
         <label for="oldPassword" class="col-md-4 control-label">Old Password</label>
         <div class="col-md-8">
-          <input type="password" class="form-control" id="oldPassword">
+          <input type="password" class="form-control" id="oldPassword" ng-model="changePasswordData.originalpassword">
         </div>
       </div>
       <div class="form-group">
         <label for="newPassword" class="col-md-4 control-label">New Password</label>
         <div class="col-md-8">
-          <input type="password" class="form-control" id="newPassword">
+          <input type="password" class="form-control" id="newPassword" ng-model="changePasswordData.newpassword">
         </div>
       </div>
       <div class="form-group">
         <label for="confirmPassword" class="col-md-4 control-label">Confirm Password</label>
         <div class="col-md-8">
-          <input type="password" class="form-control" id="confirmPassword">
+          <input type="password" class="form-control" id="confirmPassword" ng-model="changePasswordData.confirmNewpassword">
         </div>
       </div>
       <div class="form-group">
         <div class="col-md-offset-4 col-md-8">
-          <button type="submit" class="btn btn-primary">Change</button>
+          <button ng-disabled="changePasswordForm.$invalid || changePasswordForm.$pristine" ng-click="changePassword(changePasswordData)" type="submit" class="btn btn-primary">Change Password</button>
         </div>
       </div>
     </form>
