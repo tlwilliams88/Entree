@@ -72,7 +72,7 @@
           <div class="col-md-6 form-group">
             <label for="password">Password</label>
             <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
-            <span ng-show="registrationForm.password.$error.validatePassword && registrationForm.password.$dirty" class="text-red">Must contain one uppercase letter, lowercase letter, and number.</span>
+            <span ng-show="registrationForm.password.$error.validatePassword && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, lowercase letter, and number.</span>
             <input validate-password required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
           </div>
           <div class="col-md-6 form-group">

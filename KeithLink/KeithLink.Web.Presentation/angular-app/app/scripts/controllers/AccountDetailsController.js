@@ -22,6 +22,7 @@ angular.module('bekApp')
 
     $scope.cancelChanges = function() {
       $scope.userProfile = angular.copy(UserProfileService.profile());
+      $scope.updateProfileForm.$setPristine();
     };
 
     $scope.changePassword = function(changePasswordData) {
