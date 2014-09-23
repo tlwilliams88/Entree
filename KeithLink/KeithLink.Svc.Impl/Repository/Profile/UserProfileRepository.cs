@@ -159,11 +159,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertPasswordVsAttributes(string password, string customerName, string firstName, string lastName)
+        private void AssertPasswordVsAttributes(string password, string firstName, string lastName)
         {
             bool matched = false;
 
-            if (string.Compare(password, customerName, true) == 0) { matched = true; }
+            //if (string.Compare(password, customerName, true) == 0) { matched = true; }
             if (string.Compare(password, firstName, true) == 0) { matched = true; }
             if (string.Compare(password, lastName, true) == 0) { matched = true; }
 
@@ -220,7 +220,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             AssertLastNameLength(lastName);
             AssertPasswordComplexity(password);
             AssertPasswordLength(password);
-            AssertPasswordVsAttributes(password, customerName, firstName, lastName);
+            //AssertPasswordVsAttributes(password, customerName, firstName, lastName);
+            AssertPasswordVsAttributes(password, firstName, lastName);
             AssertRoleName(roleName);
             AssertRoleNameLength(roleName);
         }
@@ -299,7 +300,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = adProfile.VoiceTelephoneNumber,
+                PhoneNumber = csProfile.PhoneNumber,
                 CustomerNumber = csProfile.SelectedCustomer,
                 BranchId = csProfile.SelectedBranch
             };
@@ -438,6 +439,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("SelectedBranch");
             profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -482,6 +484,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("SelectedBranch");
             profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -529,7 +532,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 AssertPasswordLength(newPassword);
                 AssertPasswordComplexity(newPassword);
-                AssertPasswordVsAttributes(newPassword, existingUser.CustomerName, existingUser.FirstName, existingUser.LastName);
+                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
 
                 if (_externalAD.UpdatePassword(emailAddress, originalPassword, newPassword)) {
                     retVal = "Password update successful";

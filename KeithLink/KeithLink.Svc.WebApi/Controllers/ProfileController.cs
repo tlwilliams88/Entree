@@ -10,8 +10,6 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	
-
     public class ProfileController : BaseController
     {
         #region attributes
@@ -123,8 +121,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
-        public string UpdatePassword(UpdatePasswordModel pwInfo) {
-            return _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+        public OperationReturnModel<string> UpdatePassword(UpdatePasswordModel pwInfo) {
+            return new OperationReturnModel<string> {
+                SuccessResponse = _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword)
+            };
         }
 
         [Authorize]
