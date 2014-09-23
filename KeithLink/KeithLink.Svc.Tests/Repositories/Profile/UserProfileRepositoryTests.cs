@@ -82,13 +82,13 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
-            
-             UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@somecompany.com");
 
-             userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
+            UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
+
+            userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
                                            "jeremy@jeremyschickenshack.com",
-                                           "John",
-                                           "Lennon",
+                                           "Jeremy",
+                                           "Ames",
                                            "817-877-5700",
                                            "FDF");
         }
