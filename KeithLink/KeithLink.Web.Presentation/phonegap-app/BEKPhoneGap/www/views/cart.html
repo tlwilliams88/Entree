@@ -1,2 +1,15 @@
-<div ng-if="!currentCart" ng-include="'views/cartempty.html'"></div>
-<div ng-if="currentCart" ng-include="'views/cartexists.html'"></div>
+<div page-header-bar ng-hide="$state.current.name === 'menu.cart.items'">
+  <div header-message>
+    My Carts
+  </div>
+  <div header-buttons></div>
+</div>
+
+<div class="row" ng-hide="$state.current.name === 'menu.cart.items'">
+  <div class="col-xs-12">
+    <p>You currently have no open carts.</p>
+    <button class="btn btn-primary" ng-click="createNewCart()">Create New Cart</button>
+  </div>
+</div>
+
+<ui-view ng-show="$state.current.name === 'menu.cart.items'"></ui-view>

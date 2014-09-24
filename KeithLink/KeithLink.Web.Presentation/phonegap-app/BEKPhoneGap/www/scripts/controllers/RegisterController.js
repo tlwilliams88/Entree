@@ -8,20 +8,62 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'AuthenticationService', 
-    function ($scope, $state, AuthenticationService) {
+  .controller('RegisterController', ['$scope', '$state', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
+    function ($scope, $state, toaster, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
     $scope.loginInfo = {
       username: 'sabroussard@somecompany.com',
       password: 'L1ttleStev1e'
     };
 
-    $scope.login = function(loginInfo) {
+    BranchService.getBranches().then(function(branches) {
+      $scope.branches = branches;
+    });
 
+    $scope.login = function(loginInfo) {
+      $scope.errorMessage = '';
+      
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-        $state.transitionTo('menu.home');
+        if ( AccessService.isOrderEntryCustomer() ) {
+          $state.transitionTo('menu.home');  
+        } else {
+          $state.transitionTo('menu.catalog.home');
+        }
+      }, function(error) {
+        $scope.loginErrorMessage = error.data.error_description;
       });
 
+    };
+
+    $scope.registerNewUser = function(userProfile) {
+      $scope.registrationErrorMessage = null;
+      
+      UserProfileService.createUser(userProfile).then(function(data) {
+
+        if (data.successResponse) {
+          $scope.loginInfo = {};
+          $scope.clearForm();
+          // $scope.registrationFormSubmitted = false;
+
+          toaster.pop('success', null, 'Successfully registered! Please log in.');
+        } else {
+          $scope.registrationErrorMessage = data.errorMessage;
+        }
+      }, function(error) {
+      });
+    };
+
+    $scope.clearForm = function() {
+      $scope.registerUser = {
+        email: null,
+        confirmEmail: null,
+        password: null,
+        confirmPassword: null,
+        existingcustomer: false,
+        marketingflag: true,
+        branch: null
+      };
+      $scope.registrationForm.$setPristine();
     };
 
 }]);

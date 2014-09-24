@@ -27,6 +27,8 @@ var app = {
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
         document.addEventListener('deviceready', this.onDeviceReady, false);
+        document.addEventListener('online', this.onOnline, false);
+        document.addEventListener('offline', this.onOffline, false);
     },
     // deviceready Event Handler
     //
@@ -45,5 +47,19 @@ var app = {
         receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
+    },
+    onOnline: function(){
+        debugger;
+        console.log("BACK ONLINE!");
+        var listService = angular.element($('body')).injector().get('ListService');
+        var cartService = angular.element($('body')).injector().get('CartService');
+
+        //merge local with server data
+        listService.updateListsFromLocal();
+
+        //check for pending orders and submit if pending connection
+    },
+    onOffline: function(){
+        console.log("Taken Offline");
     }
 };
