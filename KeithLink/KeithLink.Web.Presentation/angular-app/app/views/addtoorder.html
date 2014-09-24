@@ -106,7 +106,7 @@
           Brand
           <span sort-icons field="'brand_extended_description'" sortorder="sortOrder" sortby="sortBy"></span>
         </div>
-        <div class="col-md-1" ng-show="useParlevel">
+        <div class="col-md-1 hidden-xs hidden-sm" ng-show="useParlevel">
           PAR Level
         </div>
         <div class="col-md-1 col-xs-2 hand" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
@@ -191,7 +191,7 @@
               <div class="table-cell col-md-1 hidden-sm hidden-xs">
                 {{item.brand_extended_description}}
               </div>
-              <div class="table-cell col-md-1 table-col-input" ng-show="useParlevel">
+              <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm" ng-show="useParlevel">
                 {{item.parlevel}}
                 <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
               </div>
