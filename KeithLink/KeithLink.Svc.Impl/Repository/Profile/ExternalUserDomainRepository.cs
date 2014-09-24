@@ -252,8 +252,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public UserPrincipal GetUser(string userName)
         {
-            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
 
             try
             {
@@ -375,9 +375,18 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        public void UpdatePassword(string emailAddress, string newPassword)
+        public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword)
         {
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            string loginErrMsg = null;
+            if (AuthenticateUser(emailAddress, oldPassword, out loginErrMsg) == false) {
+                if (string.Compare(loginErrMsg, "user name or password is invalid", true) == 0) {
+                    return false;
+                } else {
+                    throw new ApplicationException(loginErrMsg);
+                }
+            }
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
@@ -422,48 +431,37 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 throw;
             }
 
-            ////string ldapServer = string.Concat("ldap://", Configuration.ActiveDirectoryExternalServerName);
-            //string ldapServer = string.Format("{0}:{1}", Configuration.ActiveDirectoryExternalServerName, 636);
-
-            ////System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(
-            ////                                                            new System.DirectoryServices.Protocols.LdapDirectoryIdentifier(
-            ////                                                                    ldapServer, 389
-            ////                                                                )
-            ////                                                            );
-            //System.DirectoryServices.Protocols.LdapConnection con = new System.DirectoryServices.Protocols.LdapConnection(ldapServer);
-
-            //con.SessionOptions.SecureSocketLayer = true;
-            ////con.SessionOptions.VerifyServerCertificate = new System.DirectoryServices.Protocols.VerifyServerCertificateCallback(ServerCallback);
-            //con.Credential = new System.Net.NetworkCredential(Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-            ////con.AuthType = System.DirectoryServices.Protocols.AuthType.Negotiate;
-            //con.AuthType = System.DirectoryServices.Protocols.AuthType.Basic;
-            //con.Bind();
-
-            //try
-            //{
-            //    using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-            //                                                             Configuration.ActiveDirectoryExternalServerName,
-            //                                                             Configuration.ActiveDirectoryExternalRootNode,
-            //                                                             ContextOptions.Negotiate | ContextOptions.SecureSocketLayer,
-            //                                                             GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
-            //                                                             Configuration.ActiveDirectoryExternalPassword))
-            //    {
-            //        UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.UserPrincipalName, emailAddress);
-
-            //        user.SetPassword(newPassword);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    _logger.WriteErrorLog("Could not get user", ex);
-
-            //    return null;
-            //}
+            return true;
         }
 
-        //private static bool ServerCallback(System.DirectoryServices.Protocols.LdapConnection con, System.Security.Cryptography.X509Certificates.X509Certificate cert){
-        //    return true;
-        //}
+        public void UpdateUserAttributes(string oldEmailAddress, string newEmailAdress, string firstName, string lastName) {
+            if (oldEmailAddress == null) { throw new ArgumentNullException("oldEmailAddress", "oldEmailAddress is null"); }
+            if (oldEmailAddress.Length == 0) { throw new ArgumentException("oldEmailAddress is required", "oldEmailAddress"); }
+
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, oldEmailAddress);
+
+                    if (newEmailAdress.Length > 0 && string.Compare(oldEmailAddress, newEmailAdress, true) != 0) {
+                        user.UserPrincipalName = newEmailAdress;
+                    }
+
+                    user.GivenName = firstName;
+                    user.Surname = lastName;
+                    user.DisplayName = string.Format("{0} {1}", firstName, lastName);
+
+                    user.Save();
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not update user", ex);
+                throw;
+            }
+        }
 
         /// <summary>
         /// check the benekeith.com domain for the username

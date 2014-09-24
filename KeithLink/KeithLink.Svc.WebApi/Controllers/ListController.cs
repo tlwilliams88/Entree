@@ -109,7 +109,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public void DeleteItem(Guid listId, List<Guid> itemIds)
 		{
 			var t = itemIds;
-			//listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
+			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
 		}
     }
 }

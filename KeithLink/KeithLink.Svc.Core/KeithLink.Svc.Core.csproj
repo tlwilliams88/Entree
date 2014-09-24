@@ -118,6 +118,7 @@
     <Compile Include="Extensions\OrderHeaderExtension.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Models\Lists\ListItem.cs" />
+    <Compile Include="Models\SiteCatalog\ItemNote.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />

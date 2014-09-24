@@ -185,9 +185,9 @@
 							Item
 							<span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
 						</th>
-						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand')">
+						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
 							Brand
-							<span sort-icons field="'brand'" sortorder="asc" sortby="sortField"></span>
+							<span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
 						</th>
 						<th class="hand" ng-click="sortTable('name')">
 							Name
@@ -213,7 +213,7 @@
 							<a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
 						</td>
 						<td class="hidden-sm hidden-xs">
-							{{item.brand}}
+							{{item.brand_extended_description}}
 						</td>
 						<td>
 							{{item.name}}
@@ -221,7 +221,7 @@
 						<td class="hidden-sm hidden-xs">
 							{{item.pack | number}} / {{item.size}}
 						</td>
-						<td class="hidden-sm hidden-xs table-icon text-right" item-icons>
+						<td class="hidden-sm hidden-xs text-right" item-icons>
 						</td>
 						<td class="hidden-sm hidden-xs">
 							<span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
@@ -235,8 +235,8 @@
 						<td colspan=4>
 							<div>
 								<p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
-								<p>Brand: {{item.brand}}</p>
-								<p item-icons>
+								<p>Brand: {{item.brand_extended_description}}</p>
+								<p class="large-icon" item-icons>
 								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
 								</p>
 							</div>

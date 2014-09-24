@@ -54,6 +54,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
+			builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
+
 
             // Build the container.
             var container = builder.Build();

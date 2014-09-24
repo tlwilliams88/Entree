@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Test.Logic
                 new ElasticSearchCatalogRepositoryImpl(),
                 new PriceLogicImpl(new PriceRepositoryImpl(), new NoCachePriceCacheRepositoryImpl()),
                 new ProductImageRepositoryImpl(),
-                new ListLogicImpl(new Impl.Repository.Orders.BasketRepositoryImpl(), new ElasticSearchCatalogRepositoryImpl(), new PriceRepositoryImpl()),
+                new ListLogicImpl(new Impl.Repository.Orders.BasketRepositoryImpl(), new ElasticSearchCatalogRepositoryImpl(), new PriceRepositoryImpl(), new ItemNoteLogicImpl(new KeithLink.Svc.Impl.Repository.Orders.BasketRepositoryImpl())),
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository()
                 );

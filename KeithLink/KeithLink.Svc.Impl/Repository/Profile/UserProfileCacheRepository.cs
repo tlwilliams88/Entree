@@ -39,11 +39,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         {
             lock (cacheLock)
             {
-                if (GetProfile(userProfile.UserName) == null)
-                {
+                //if (GetProfile(userProfile.UserName) == null)
+                //{
+                //    cache.AddData<KeithLink.Svc.Core.Models.Profile.UserProfile>(CACHE_PREFIX,
+                //                                            CACHE_NAME,
+                //                                            GetCacheKey(userProfile.UserName),
+                //                                            userProfile,
+                //                                            GetCacheExpiration()
+                //                                            );
+                //}
+                if (GetProfile(userProfile.EmailAddress) == null) {
                     cache.AddData<KeithLink.Svc.Core.Models.Profile.UserProfile>(CACHE_PREFIX,
                                                             CACHE_NAME,
-                                                            GetCacheKey(userProfile.UserName),
+                                                            GetCacheKey(userProfile.EmailAddress),
                                                             userProfile,
                                                             GetCacheExpiration()
                                                             );

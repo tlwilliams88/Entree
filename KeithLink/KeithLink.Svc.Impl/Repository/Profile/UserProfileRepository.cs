@@ -1,10 +1,12 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using CommerceServer.Foundation;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -157,11 +159,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertPasswordVsAttributes(string password, string customerName, string firstName, string lastName)
+        private void AssertPasswordVsAttributes(string password, string firstName, string lastName)
         {
             bool matched = false;
 
-            if (string.Compare(password, customerName, true) == 0) { matched = true; }
+            //if (string.Compare(password, customerName, true) == 0) { matched = true; }
             if (string.Compare(password, firstName, true) == 0) { matched = true; }
             if (string.Compare(password, lastName, true) == 0) { matched = true; }
 
@@ -218,7 +220,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             AssertLastNameLength(lastName);
             AssertPasswordComplexity(password);
             AssertPasswordLength(password);
-            AssertPasswordVsAttributes(password, customerName, firstName, lastName);
+            //AssertPasswordVsAttributes(password, customerName, firstName, lastName);
+            AssertPasswordVsAttributes(password, firstName, lastName);
             AssertRoleName(roleName);
             AssertRoleNameLength(roleName);
         }
@@ -278,26 +281,26 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private UserProfile CombineProfileFromCSAndAD(Core.Models.Generated.UserProfile csProfile, string emailAddress)
+        private UserProfile CombineProfileFromCSAndAD(Core.Models.Generated.UserProfile csProfile)
         {
             System.DirectoryServices.AccountManagement.UserPrincipal adProfile = null;
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+            if (System.Text.RegularExpressions.Regex.IsMatch(csProfile.Email, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
             {
-                adProfile = _internalAD.GetUserByEmailAddress(emailAddress);
+                adProfile = _internalAD.GetUserByEmailAddress(csProfile.Email);
             }
             else
             {
-                adProfile = _externalAD.GetUser(emailAddress);
+                adProfile = _externalAD.GetUser(csProfile.Email);
             }
 
             return new UserProfile(){
                 UserId = Guid.Parse(csProfile.Id),
-                UserName = adProfile.UserPrincipalName,
+                //UserName = adProfile.UserPrincipalName,
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = adProfile.VoiceTelephoneNumber,
+                PhoneNumber = csProfile.PhoneNumber,
                 CustomerNumber = csProfile.SelectedCustomer,
                 BranchId = csProfile.SelectedBranch
             };
@@ -420,6 +423,41 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             throw new NotImplementedException();
         }
 
+        public UserProfileReturn GetUserProfile(Guid userId) {
+            //Core.Models.Profile.UserProfile upFromCache = null;
+            //upFromCache = _userProfileCacheRepository.GetProfile(emailAddress);
+            //if (_userProfileCacheRepository.GetProfile(emailAddress) != null) {
+            //    return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
+            //}
+
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToString("B");
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0) {
+            } else {
+                retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            if (retVal != null) {
+                _userProfileCacheRepository.AddProfile(retVal.UserProfiles.FirstOrDefault());
+            }
+            return retVal;
+        }
+
         /// <summary>
         /// get the user profile
         /// </summary>
@@ -441,10 +479,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("SelectedBranch");
             profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -463,7 +503,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
             else
             {
-                retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0], emailAddress));
+                retVal.UserProfiles.Add(CombineProfileFromCSAndAD((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
             }
 
             if (retVal != null)
@@ -484,15 +524,69 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             throw new NotImplementedException();
         }
 
+        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            string retVal = null;
+
+            try {
+                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+
+                AssertPasswordLength(newPassword);
+                AssertPasswordComplexity(newPassword);
+                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
+
+                if (_externalAD.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                    retVal = "Password update successful";
+                } else {
+                    retVal = "Invalid password";
+                }
+            } catch (ApplicationException appEx) {
+                retVal = appEx.Message;
+            } catch (Exception ex) {
+                retVal = string.Concat("Could not process request: ", ex.Message);
+            }
+
+            return retVal;
+        }
+
         /// <summary>
         /// update the user profile in Commerce Server (not implemented)
         /// </summary>
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void UpdateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber)
+        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId)
         {
-            throw new NotImplementedException();
+            AssertEmailAddressLength(emailAddress);
+            AssertEmailAddress(emailAddress);
+            AssertFirstNameLength(firstName);
+            AssertLastNameLength(lastName);
+
+
+            UserProfileReturn existingUser = GetUserProfile(id);
+
+            if (string.Compare(existingUser.UserProfiles[0].EmailAddress, emailAddress, true) != 0) { AssertEmailAddressUnique(emailAddress); }
+
+            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS) || 
+                System.Text.RegularExpressions.Regex.IsMatch(existingUser.UserProfiles[0].EmailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS)) {
+                throw new ApplicationException("Cannot update profile information for BEK user.");
+            }
+
+            var updateQuery = new CommerceUpdate <CommerceEntity>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToString("B");
+
+            updateQuery.Model.Properties["Email"] = emailAddress;
+            updateQuery.Model.Properties["FirstName"] = firstName;
+            updateQuery.Model.Properties["LastName"] = lastName;
+            updateQuery.Model.Properties["PhoneNumber"] = phoneNumber;
+            updateQuery.Model.Properties["SelectedBranch"] = branchId;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+
+            _externalAD.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
+
+            // remove the old user profile from cache and then update it with the new profile
+            _userProfileCacheRepository.RemoveItem(existingUser.UserProfiles[0].EmailAddress);
+            _userProfileCacheRepository.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
     }

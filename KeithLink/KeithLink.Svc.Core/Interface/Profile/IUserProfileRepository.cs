@@ -16,6 +16,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
         void DeleteUserProfile(string userName);
         UserProfileReturn GetUserProfile(string userName);
         UserProfileReturn GetUserProfilesByCustomerName(string customerName);
-        void UpdateUserProfile(string userName, string customerName, string emailAddres, string firstName, string lastName, string phoneNumber);
+        string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+        void UpdateUserProfile(Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
     }
 }
