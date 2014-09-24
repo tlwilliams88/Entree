@@ -41,6 +41,10 @@ namespace KeithLink.Svc.Impl.ETL
 							  ""type"" : ""string"",
 							  ""index"" : ""not_analyzed""
 						},
+					   ""parentcategoryname_not_analyzed"" : {
+							  ""type"" : ""string"",
+							  ""index"" : ""not_analyzed""
+						},
 						""brand_not_analyzed"" : {
 							""type"" : ""string"",
 							""index"" : ""not_analyzed""
@@ -351,6 +355,7 @@ namespace KeithLink.Svc.Impl.ETL
                         Package = row.GetString("Package"),
                         ParentCategoryId = row.GetString("ParentCategoryId"),
                         ParentCategoryName = row.GetString("ParentCategoryName"),
+                        ParentCategoryNameNotAnalyzed = row.GetString("ParentCategoryName"),
                         PreferredItemCode = row.GetString("PreferredItemCode"),
                         Size = row.GetString("Size"),
                         SpecialOrderItem = row.GetString("SpecialOrderItem"),

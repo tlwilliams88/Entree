@@ -168,7 +168,6 @@
     <Content Include="angular-app\app\lib\html5shiv\html5shiv.min.js" />
     <Content Include="angular-app\app\lib\html5shiv\MIT and GPL2 licenses.md" />
     <Content Include="angular-app\app\lib\html5shiv\readme.md" />
-    <Content Include="angular-app\app\lib\icomoon\css\style.css" />
     <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.eot" />
     <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.svg" />
     <Content Include="angular-app\app\lib\icomoon\fonts\icomoon.ttf" />
@@ -280,6 +279,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="angular-app\app\lib\icomoon\css\" />
     <Folder Include="angular-app\test\test-results\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />

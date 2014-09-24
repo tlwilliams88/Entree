@@ -12,7 +12,7 @@ angular.module('bekApp')
     function ($http, localStorageService, Constants) {
 
     var Service = {
-      
+
       profile: function() {
         return localStorageService.get(Constants.localStorage.userProfile);
       },
@@ -20,20 +20,17 @@ angular.module('bekApp')
       getProfile: function(email) {
         var data = { 
           params: {
-            emailAddress: email
+            email: email
           }
         };
 
         return $http.get('/profile', data).then(function (response) {
           var profile = response.data.userProfiles[0];
 
-          if (profile.firstName === 'guest' && profile.lastName === 'account') {
-            profile.displayName = profile.userName;
-          } else {
-            profile.displayName = profile.firstName + ' ' + profile.lastName;
-          }
+          console.log(profile);
 
-          if (profile.userName === 'guestuser@gmail.com') {
+          // TEMP: to show different roles
+          if (profile.emailaddress === 'guestuser@gmail.com') {
             profile.role = 'Guest';
           } else {
             profile.role = 'Owner';
@@ -67,12 +64,18 @@ angular.module('bekApp')
           profile.imageUrl = '../images/placeholder-user.png';
 
           Service.setProfile(profile);
-          console.log(profile);
           return profile;
         });
       },
 
       setProfile: function(profile) {
+        // set display name for user
+        if (profile.firstname === 'guest' && profile.lastname === 'account') {
+          profile.displayname = profile.emailaddress;
+        } else {
+          profile.displayname = profile.firstname + ' ' + profile.lastname;
+        }
+
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 
@@ -81,18 +84,6 @@ angular.module('bekApp')
           return Service.profile().role;
         }
       },
-
-      // getCurrentLocation: function() {
-      //   return localStorageService.get(Constants.localStorage.currentLocation);
-      // },
-
-      // setCurrentLocation: function(location) {
-      //   localStorageService.set(Constants.localStorage.currentLocation, location);
-      // },
-
-      // getCurrentBranchId: function() {
-      //   return Service.getCurrentLocation().id;
-      // },
 
       getCurrentLocation: function() {
         return localStorageService.get(Constants.localStorage.currentLocation);
@@ -108,17 +99,19 @@ angular.module('bekApp')
 
       createUser: function(userProfile) {
         return $http.post('/profile/register', userProfile).then(function(response) {
-          console.log(response.data);
           return response.data; //.successResponse.userProfiles[0];
         });
       },
 
-      updateUser: function() {
-
+      updateUser: function(userProfile) {
+        return $http.put('/profile', userProfile).then(function(response) {
+          console.log(response.data);
+          return response.data;
+        });
       },
 
-      searchCustomers: function() {
-        // /profile/searchcustomer/
+      changePassword: function(passwordData) {
+        return $http.put('/profile/password', passwordData);
       }
     };
 
