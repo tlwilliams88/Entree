@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			if (list.Items != null)
 			{
-				itemsToRemove = updateBasket.LineItems.Where(b => !list.Items.Any(c => c.ListItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
+				itemsToRemove = updateBasket.LineItems.Where(b => !list.Items.Any(c => c.ListItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
 				lineItems = list.Items.Select(s => s.ToLineItem(updateBasket.BranchId)).ToList();
 			}
 			else
