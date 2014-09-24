@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<ItemNote> ReadNotes(Guid userId)
 		{
-			var notes = RT.Orders.GetNotes(NotesName, userId.ToString("B"), "0", "false", "false");
+			var notes = RT.Orders.GetNotes(NotesName, userId.ToCommerceServerFormat(), "0", "false", "false");
 
 			return ((CS.Basket)notes.First()).LineItems.Select(l => new ItemNote() { Note = l.Notes, ItemNumber = l.ProductId }).ToList();
 		}
