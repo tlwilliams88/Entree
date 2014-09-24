@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -431,7 +432,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             //}
 
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToString("B");
+			profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
 
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
@@ -572,7 +573,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
 
             var updateQuery = new CommerceUpdate <CommerceEntity>("UserProfile");
-            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToString("B");
+			updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
 
             updateQuery.Model.Properties["Email"] = emailAddress;
             updateQuery.Model.Properties["FirstName"] = firstName;
