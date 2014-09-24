@@ -25,6 +25,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("parentcategoryname")]
         public string ParentCategoryName { get; set; }
 
+        [JsonProperty("parentcategoryname_not_analyzed")]
+        public string ParentCategoryNameNotAnalyzed { get; set; }
+
         [JsonProperty("name")]
         public string Name { get; set; }
 

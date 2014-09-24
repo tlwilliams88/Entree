@@ -181,6 +181,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\ItemNoteController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
@@ -192,6 +193,7 @@
     <Compile Include="Models\GuestProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OperationReturnModel.cs" />
+    <Compile Include="Models\UpdatePasswordModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

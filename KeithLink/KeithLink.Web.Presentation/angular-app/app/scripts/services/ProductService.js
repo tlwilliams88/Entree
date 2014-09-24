@@ -185,6 +185,18 @@ angular.module('bekApp')
 
         canOrderProduct: function(item) {
           return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
+        },
+
+        updateItemNote: function(itemNumber, note) {
+          var itemNote = {
+            itemnumber: itemNumber,
+            note: note
+          };
+          return $http.post('/itemnote', itemNote);
+        },
+
+        deleteItemNote: function(itemNumber) {
+          return $http.delete('/itemnote/' + itemNumber);
         }
       };
 

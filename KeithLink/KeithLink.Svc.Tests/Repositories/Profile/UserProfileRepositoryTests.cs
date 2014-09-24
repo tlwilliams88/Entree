@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Impl.Repository.Profile;
+using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
@@ -71,15 +73,24 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             Assert.IsTrue(userProfile.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
         }
 
-        //[TestMethod]
-        //public void AuthenticateUserAndRetrieveUserProfile()
-        //{
-        //    KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository repo = new Impl.Repository.Profile.UserProfileRepository();
-        //    KeithLink.Svc.Core.Models.Profile.UserProfileReturn profileReturn = null;
+        [TestMethod]
+        public void UpdateUser()
+        {
+            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
+                new Impl.Repository.Profile.UserProfileRepository(
+                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
+                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
+                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
+                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
 
-        //    repo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e", out profileReturn);
+            UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
 
-        //    Assert.IsNotNull(profileReturn);
-        //}
+            userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
+                                           "jeremy@jeremyschickenshack.com",
+                                           "Jeremy",
+                                           "Ames",
+                                           "817-877-5700",
+                                           "FDF");
+        }
     }
 }

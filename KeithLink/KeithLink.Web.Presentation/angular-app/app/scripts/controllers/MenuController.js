@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
-    function ($scope, $state, $modal, branches, Constants, AuthenticationService, UserProfileService, AccessService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
+    function ($scope, $state, $modal, branches, toaster, Constants, AuthenticationService, UserProfileService, AccessService) {
 
     $scope.$state = $state;
 
@@ -19,14 +19,13 @@ angular.module('bekApp')
     $scope.userBar.universalSearchTerm = '';
 
     refreshAccessPermissions();
-    // setLocations(UserProfileService.profile());
-
+    
     $scope.changeLocation = function() {
       UserProfileService.setCurrentLocation($scope.currentLocation);
     };
 
     $scope.branches = branches;
-    $scope.currentLocation = UserProfileService.profile().branchId;
+    $scope.currentLocation = UserProfileService.profile().branchid;
     $scope.changeLocation();
 
     $scope.logout = function() {
@@ -41,19 +40,6 @@ angular.module('bekApp')
       window.print(); 
     };
 
-    // function setLocations(profile) {
-    //   if ($scope.isOrderEntryCustomer) {
-    //     $scope.locations = profile.stores;
-    //   } else {
-    //     $scope.locations = branches;
-    //   }
-
-    //   $scope.currentLocation = UserProfileService.profile().branchId;
-    //   if (!$scope.currentLocation) {
-    //     $scope.currentLocation = $scope.locations[0];
-    //   }
-    // }
-
     function refreshAccessPermissions() {
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
@@ -66,4 +52,8 @@ angular.module('bekApp')
       $scope.canManageAccount = AccessService.canManageAccount();
       $scope.canManageeMenu = AccessService.canManageeMenu();
     }
+
+    $scope.displayMessage = function(type, message) {
+      toaster.pop(type, null, message);
+    };
   }]);
