@@ -20,7 +20,7 @@ angular.module('bekApp')
       getProfile: function(email) {
         var data = { 
           params: {
-            emailAddress: email
+            email: email
           }
         };
 
