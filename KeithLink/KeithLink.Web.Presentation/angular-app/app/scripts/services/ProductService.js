@@ -79,7 +79,7 @@ angular.module('bekApp')
           });
         },
 
-        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+        getProductsByCategory: function(categoryName, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -89,7 +89,7 @@ angular.module('bekApp')
             facets += ',';
           }
           if (facetCategory) {
-            categoryId = facetCategory.name;
+            categoryName = facetCategory.name;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
@@ -111,7 +111,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryId + '/products', {
+          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryName + '/products', {
             params: {
               size: pageSize,
               from: index,
