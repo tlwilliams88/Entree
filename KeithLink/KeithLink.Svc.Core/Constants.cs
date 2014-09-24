@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core
         public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";
 
         public const string ROLE_EXTERNAL_ACCOUNTING = "Accounting";
-        public const string ROLE_EXTERNAL_GUEST = "Accounting";
+        public const string ROLE_EXTERNAL_GUEST = "Guest";
         public const string ROLE_EXTERNAL_OWNER = "Owner";
         public const string ROLE_EXTERNAL_PURCHASING = "Purchasing";
 

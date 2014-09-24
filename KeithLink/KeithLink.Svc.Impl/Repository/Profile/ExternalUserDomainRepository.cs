@@ -377,6 +377,40 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword)
         {
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, emailAddress);
+
+                    if (user == null) {
+                        throw new ApplicationException("Email address not found");
+                    }
+
+                    if (principal.ValidateCredentials(emailAddress, oldPassword)) {
+                        user.ChangePassword(oldPassword, newPassword);
+                        
+                        return true;
+                    } else {
+                        if (user.IsAccountLockedOut()) {
+                            throw new ApplicationException("User account is locked and cannot sign in now");
+                        } else { 
+                            throw new ApplicationException("Invalid password");
+                        }
+                    }
+
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not change user's password", ex);
+
+                throw;
+            }
+        }
+
+        public bool UpdatePassword_Org(string emailAddress, string oldPassword, string newPassword) {
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
             string loginErrMsg = null;
@@ -390,14 +424,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             DirectoryEntry boundServer = null;
             // connect to the external AD server
-            try
-            {
+            try {
                 boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
                 boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
                 boundServer.RefreshCache();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not bind to external AD server.", ex);
 
                 throw;
@@ -405,27 +436,21 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             DirectoryEntry currentUser = null;
 
-            try
-            {
+            try {
                 DirectorySearcher adSearch = new DirectorySearcher(boundServer, string.Concat("userPrincipalName=", emailAddress));
                 currentUser = adSearch.FindOne().GetDirectoryEntry();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not find user on external Ad server.", ex);
 
                 throw;
             }
 
             // set the user's password
-            try
-            {
+            try {
                 //currentUser.AuthenticationType = AuthenticationTypes.Secure;
                 currentUser.Invoke("SetPassword", new object[] { newPassword });
                 currentUser.CommitChanges();
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not change password for user on external AD server.", ex);
 
                 throw;
