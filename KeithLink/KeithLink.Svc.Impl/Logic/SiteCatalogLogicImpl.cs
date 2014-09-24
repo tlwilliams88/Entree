@@ -21,20 +21,25 @@ namespace KeithLink.Svc.Impl.Logic
         private IProductImageRepository _imgRepository;
         private IListLogic _listLogic;
 		private IDivisionRepository _divisionRepository;
+        private ICategoryImageRepository _categoryImageRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
             _listLogic = listLogic;
 			_divisionRepository = divisionRepository;
+            _categoryImageRepository = categoryImageRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            return _catalogRepository.GetCategories(from, size);
+            CategoriesReturn returnValue = _catalogRepository.GetCategories(from, size);
+            returnValue = AddCategoryImages(returnValue);
+
+            return returnValue;
         }
 
         public Product GetProductById(string branch, string id, UserProfile profile)
@@ -43,6 +48,16 @@ namespace KeithLink.Svc.Impl.Logic
             AddFavoriteProductInfo(branch, profile, ret);
             AddProductImageInfo(ret);
             return ret;
+        }
+
+        private CategoriesReturn AddCategoryImages(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
+                c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
+            }
+
+            return returnValue;
         }
 
         private void AddProductImageInfo(Product ret)
