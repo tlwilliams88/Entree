@@ -44,14 +44,14 @@ angular.module('bekApp')
             $scope.paramType = $stateParams.type;
             $scope.categoryName = '';
 
-            function getCategoryById(categoryId) {
+            function getCategoryByName(categoryName) {
                 return CategoryService.getCategories().then(function(data) {
                     angular.forEach(data.categories, function(item, index) {
-                        if (item.id === categoryId) {
+                        if (item.name === categoryName) {
                             $scope.categoryName = item.name;
                         }
                     });
-                    return ProductService.getProductsByCategory(categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+                    return ProductService.getProductsByCategory($scope.categoryName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 });
             }
 
@@ -71,8 +71,8 @@ angular.module('bekApp')
                 var type = $stateParams.type;
 
                 if (type === 'category') {
-                    var categoryId = $stateParams.id;
-                    return getCategoryById(categoryId);
+                    var categoryName = $stateParams.id;
+                    return getCategoryByName(categoryName);
 
                 } else if (type === 'search') {
 
