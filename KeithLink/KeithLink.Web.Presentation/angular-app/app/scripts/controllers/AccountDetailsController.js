@@ -22,16 +22,17 @@ angular.module('bekApp')
 
     $scope.cancelChanges = function() {
       $scope.userProfile = angular.copy(UserProfileService.profile());
+      $scope.updateProfileForm.$setPristine();
     };
 
     $scope.changePassword = function(changePasswordData) {
-      changePasswordData.email = UserProfileService.profile().emailaddress;
+      $scope.changePasswordErrorMessage = null;
+
       UserProfileService.changePassword(changePasswordData).then(function(response) {
         console.log(response);
 
         if (response.data === '"Password update successful"') {
           $scope.changePasswordData = {};
-          $scope.changePasswordErrorMessage = null;
           $scope.displayMessage('success', 'Error updating profile.');
         } else {
           $scope.changePasswordErrorMessage = response.data;

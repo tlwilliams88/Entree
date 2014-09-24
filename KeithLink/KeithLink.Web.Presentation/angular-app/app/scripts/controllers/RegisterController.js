@@ -36,13 +36,9 @@ angular.module('bekApp')
     };
 
     $scope.registerNewUser = function(userProfile) {
-      var profile = userProfile;
-      profile.branchid = userProfile.branch.id;
-      
-      // $scope.registrationFormSubmitted = true;
       $scope.registrationErrorMessage = null;
       
-      UserProfileService.createUser(profile).then(function(data) {
+      UserProfileService.createUser(userProfile).then(function(data) {
 
         if (data.successResponse) {
           $scope.loginInfo = {};

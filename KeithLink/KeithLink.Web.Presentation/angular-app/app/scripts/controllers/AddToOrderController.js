@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
-    function ($scope, $state, $stateParams, $filter, toaster, carts, lists, Constants, CartService, ListSerivce) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
+    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce) {
     
     $scope.carts = carts;
     $scope.lists = lists;
@@ -92,9 +92,9 @@ angular.module('bekApp')
         $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
 
         $scope.addToOrderForm.$setPristine();
-        toaster.pop('success', null, 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
+        $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
       }, function() {
-        toaster.pop('error', null, 'Error adding items to cart.');
+        $scope.displayMessage('error', null, 'Error adding items to cart.');
       });
     }
 
@@ -104,9 +104,9 @@ angular.module('bekApp')
         $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
         $scope.selectCart(cart);
         $scope.addToOrderForm.$setPristine();
-        toaster.pop('success', null, 'Successfully added ' + items.length + ' Items to New Cart.');
+        $scope.displayMessage('success', null, 'Successfully added ' + items.length + ' Items to New Cart.');
       }, function() {
-        toaster.pop('error', null, 'Error adding items to cart.');
+        $scope.displayMessage('error', null, 'Error adding items to cart.');
       });
     }
 

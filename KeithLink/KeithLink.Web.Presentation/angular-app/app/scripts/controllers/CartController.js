@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartController', ['$scope', '$state', 'toaster', 'CartService', 
-    function($scope, $state, toaster, CartService) {
+  .controller('CartController', ['$scope', '$state', 'CartService', 
+    function($scope, $state, CartService) {
     
     $scope.$state = $state;
 
@@ -22,9 +22,9 @@ angular.module('bekApp')
     $scope.createNewCart = function() {
       CartService.createCart().then(function(response) {
         $state.go('menu.cart.items', {cartId: response.listitemid, renameCart: true});
-        toaster.pop('success', null, 'Successfully created new cart.');
+        $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
-        toaster.pop('error', null, 'Error creating new cart.');
+        $scope.displayMessage('error', 'Error creating new cart.');
       });
     };
 

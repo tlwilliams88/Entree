@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'Constants', 'CartService', 'OrderService',
-    function($scope, $state, $stateParams, $filter, toaster, Constants, CartService, OrderService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -45,18 +45,18 @@ angular.module('bekApp')
         $scope.sortOrder = false;
         $scope.currentCart = updatedCart;
         $scope.cartForm.$setPristine();
-        addSuccessAlert('Successfully saved cart ' + cart.name);
+        $scope.displayMessage('success', 'Successfully saved cart ' + cart.name);
         return updatedCart.id;
       }, function() {
-        addErrorAlert('Error saving cart ' + cart.name);
+        $scope.displayMessage('error', 'Error saving cart ' + cart.name);
       });
     };
 
     $scope.submitOrder = function(cart) {
       $scope.saveCart(cart).then(OrderService.submitOrder).then(function(data) {
-        addSuccessAlert('Successfully submitted order.');
+        $scope.displayMessage('success', 'Successfully submitted order.');
       }, function(error) {
-        addErrorAlert('Error submitting order.');
+        $scope.displayMessage('error', 'Error submitting order.');
       });
     };
 
@@ -67,27 +67,27 @@ angular.module('bekApp')
       CartService.updateCart(cart).then(function(data) {
         $scope.currentCart.isRenaming = false;
         $scope.currentCart.name = cartName;
-        addSuccessAlert('Successfully renamed cart to ' + cartName + '.');
+        $scope.displayMessage('success', 'Successfully renamed cart to ' + cartName + '.');
       }, function() {
-        addErrorAlert('Error renaming cart.');
+        $scope.displayMessage('error', 'Error renaming cart.');
       });
     };
 
     $scope.createNewCart = function() {
       CartService.createCart().then(function(response) {
         $state.go('menu.cart.items', {cartId: response.listitemid, renameCart: true});
-        addSuccessAlert('Successfully created new cart.');
+        $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
-        addErrorAlert('Error creating new cart.');
+        $scope.displayMessage('error', 'Error creating new cart.');
       });
     };
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart).then(function() {
         setCurrentCart();
-        addSuccessAlert('Successfully deleted cart.');
+        $scope.displayMessage('success', 'Successfully deleted cart.');
       }, function() {
-        addErrorAlert('Error deleting cart.');
+        $scope.displayMessage('error', 'Error deleting cart.');
       });
     };
 
@@ -113,18 +113,6 @@ angular.module('bekApp')
         $scope.itemsToDisplay += itemsPerPage;
       }
     };
-
-    // ALERTS
-    function addSuccessAlert(message) {
-      addAlert('success', message);
-    }
-    function addErrorAlert(message) {
-      addAlert('error', message);
-    }
-    function addAlert(alertType, message) {
-      toaster.pop(alertType, null, message);
-    }
-
 
     function setCurrentCart() {
       var selectedCart = CartService.getSelectedCart($stateParams.cartId);

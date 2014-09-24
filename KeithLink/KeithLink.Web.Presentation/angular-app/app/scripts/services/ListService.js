@@ -246,9 +246,13 @@ angular.module('bekApp')
 
           console.log(listItemIds);
 
-          return List.deleteMultipleItems({
-            listId: listId
-          }, listItemIds).$promise;
+          return $http.delete('/list/' + listId + '/item', { 
+            headers: {'Content-Type': 'application/json'},
+            data: listItemIds 
+          });
+          // return List.deleteMultipleItems({
+          //   listId: listId
+          // }, listItemIds).$promise;
         },
 
         /********************
