@@ -67,16 +67,16 @@
 			<li loading-spinner="loadingCategories"></li>
 			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" src="images/green-apple.jpg" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.name })" src="images/green-apple.jpg" alt="image">
 					<div class="featured-item__detail">
 						{{category.name}}
-						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.id })" class="text-uppercase">view category</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.name })" class="text-uppercase">view category</a>
 					</div>
 				</div>
 			</li>
 		</ul>
 		<div class="visible-xs visible-sm" loading-spinner="loadingCategories"></div>
-		<div ng-hide="loadingCategories" class="visible-xs visible-sm sub-content" featured-item-carousel items="categories" link="'menu.catalog.products.list({ type: \'category\', id: item.id })'"></div>
+		<div ng-hide="loadingCategories" class="visible-xs visible-sm sub-content" featured-item-carousel items="categories" link="'menu.catalog.products.list({ type: \'category\', id: item.name })'"></div>
 	</div>
 </div>
 
