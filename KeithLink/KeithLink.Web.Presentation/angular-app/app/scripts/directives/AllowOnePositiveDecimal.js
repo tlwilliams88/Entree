@@ -13,21 +13,14 @@ angular.module('bekApp')
   var directive = {
     require: 'ngModel', 
     restrict: 'A', 
-    scope:{
-      number:'='
-    }, 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
-        if(scope.number || scope.number === undefined){
-          if (directive.INTEGER_REGEXP.test(viewValue)) {
-            // it is valid
-            ctrl.$setValidity('allowOnePositiveDecimal', true);
-            return parseFloat(viewValue);
-          } else {
-            // it is invalid, return undefined (no model update)
-            ctrl.$setValidity('allowOnePositiveDecimal', false);
-            return undefined;
-          }
+        if (directive.INTEGER_REGEXP.test(viewValue)) {
+          ctrl.$setValidity('allowOnePositiveDecimal', true);
+          return parseFloat(viewValue);
+        } else {
+          ctrl.$setValidity('allowOnePositiveDecimal', false);
+          return undefined;
         }
       }
 
