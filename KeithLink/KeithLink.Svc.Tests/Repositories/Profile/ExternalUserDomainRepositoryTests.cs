@@ -123,7 +123,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         {
             KeithLink.Svc.Impl.Repository.Profile.ExternalUserDomainRepository ad = new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-            ad.UpdatePassword("jeremy@somecompany.com", "Ab12345");
+            Assert.IsTrue(ad.UpdatePassword("jeremy@somecompany.com", "Ab12345", "Ab12345"));
         }
     }
 }

@@ -265,14 +265,14 @@ namespace KeithLink.Svc.Impl.Logic
 				Header = new OrderHeader()
 				{
 					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
-					ControlNumber = 1, //TODO: Handle ControlNumber
+					ControlNumber = int.Parse(orderNumber),
 					CustomerNumber = user.CustomerNumber,
 					UserId = user.EmailAddress,
 					OrderType = OrderType.NormalOrder,
 					OrderFilled = false,
 					OrderingSystem = OrderSource.KeithCom,
 					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-					PONumber = orderNumber,
+					PONumber = string.Empty,
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
 					OrderSendDateTime = DateTime.Now
 				},

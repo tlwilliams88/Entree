@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'toaster', 'Constants', 'ListService', 'UtilityService', 
-    function($scope, $filter, $timeout, $state, $stateParams, toaster, Constants, ListService, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 'UtilityService', 
+    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService, UtilityService) {
     
     var orderBy = $filter('orderBy');
 
@@ -47,19 +47,19 @@ angular.module('bekApp')
 
     $scope.createList = function() {
       ListService.createList().then(function(data) {
-        addSuccessAlert('Successfully created a new list.');
+        $scope.displayMessage('success', 'Successfully created a new list.');
         goToNewList(data);
       }, function(error) {
-        addErrorAlert('Error creating list.');
+        $scope.displayMessage('error', 'Error creating list.');
       });
     };
 
     $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
         $scope.selectedList = angular.copy(ListService.getFavoritesList());
-        addSuccessAlert('Successfully deleted list.');
+        $scope.displayMessage('success', 'Successfully deleted list.');
       },function(error) {
-        addErrorAlert('Error deleting list.');
+        $scope.displayMessage('error', 'Error deleting list.');
       });
     };
 
@@ -83,9 +83,9 @@ angular.module('bekApp')
 
         $scope.selectedList = updatedList;
         $scope.listForm.$setPristine();
-        addSuccessAlert('Successfully saved list ' + list.name + '.');
+        $scope.displayMessage('success', 'Successfully saved list ' + list.name + '.');
       }, function(error) {
-        addErrorAlert('Error saving list ' + list.name + '.');
+        $scope.displayMessage('error', 'Error saving list ' + list.name + '.');
       });
     };
 
@@ -96,7 +96,7 @@ angular.module('bekApp')
       ListService.updateList(list).then(function(data) {
         $scope.selectedList.isRenaming = false;
         $scope.selectedList.name = listName;
-        addSuccessAlert('Successfully renamed list to ' + listName + '.');
+        $scope.displayMessage('success', 'Successfully renamed list to ' + listName + '.');
       });
     };
 
@@ -157,10 +157,10 @@ angular.module('bekApp')
     $scope.createListWithItems = function() {
       var items = angular.copy(getMultipleSelectedItems());
       ListService.createList(items).then(function(list) {
-        addSuccessAlert('Successfully created list with ' + items.length + ' items.');
+        $scope.displayMessage('success', 'Successfully created list with ' + items.length + ' items.');
         goToNewList(list);
       }, function() {
-        addErrorAlert('Error creating new list with ' + items.length + ' items.');
+        $scope.displayMessage('error', 'Error creating new list with ' + items.length + ' items.');
       });
     };
 
@@ -171,16 +171,16 @@ angular.module('bekApp')
       ListService.updateList(list).then(function(data) {
         $scope.showLists = false;
         unselectAllDraggedItems();
-        addSuccessAlert('Successfully added ' + items.length + ' items to list ' + list.name + '.');
+        $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to list ' + list.name + '.');
       },function(error) {
-        addErrorAlert('Error adding ' + items.length + ' items to list ' + list.name + '.');
+        $scope.displayMessage('error', 'Error adding ' + items.length + ' items to list ' + list.name + '.');
       });
       // ListService.addMultipleItems(list.listid, items).then(function(data) {
       //   $scope.showLists = false;
       //   unselectAllDraggedItems();
-      //   addSuccessAlert('Successfully added ' + items.length + ' items to list ' + list.name + '.');
+      //   $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to list ' + list.name + '.');
       // },function(error) {
-      //   addErrorAlert('Error adding ' + items.length + ' items to list ' + list.name + '.');
+      //   $scope.displayMessage('error', 'Error adding ' + items.length + ' items to list ' + list.name + '.');
       // });
     };
 
@@ -192,9 +192,9 @@ angular.module('bekApp')
           item.favorite = true;
         });
         unselectAllDraggedItems();
-        addSuccessAlert('Successfully added ' + items.length + ' items to Favorites.');
+        $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to Favorites.');
       }, function(error) {
-        addErrorAlert('Error adding ' + items.length + ' items to Favorites.');
+        $scope.displayMessage('error', 'Error adding ' + items.length + ' items to Favorites.');
       });
     };
 
@@ -202,9 +202,13 @@ angular.module('bekApp')
       var items = getMultipleSelectedItems();
 
       ListService.removeMultipleItemsFromFavorites(items).then(function() {
-        addErrorAlert('Successfully removed ' + items.length + ' items from Favorites.');
+        angular.forEach(items, function(item) {
+          item.favorite = false;
+        });
+        unselectAllDraggedItems();
+        $scope.displayMessage('success', 'Successfully removed ' + items.length + ' items from Favorites.');
       }, function(error) {
-        addErrorAlert('Error removing ' + items.length + ' items from Favorites.');
+        $scope.displayMessage('error', 'Error removing ' + items.length + ' items from Favorites.');
       });
     };
 
@@ -261,10 +265,10 @@ angular.module('bekApp')
       var dragSelection = getSelectedItemsFromDrag(helper);
       
       ListService.createList(dragSelection.items).then(function(data) {
-        addSuccessAlert('Successfully created list with ' + dragSelection.items.length + ' items.');
+        $scope.displayMessage('success', 'Successfully created list with ' + dragSelection.items.length + ' items.');
         goToNewList(data);
       }, function() {
-        addErrorAlert('Error creating new list with ' + dragSelection.items.length + ' items.');
+        $scope.displayMessage('error', 'Error creating new list with ' + dragSelection.items.length + ' items.');
       });
     };
 
@@ -280,9 +284,9 @@ angular.module('bekApp')
         }
 
         promise.then(function(data) {
-          addSuccessAlert('Successfully added item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+          $scope.displayMessage('success', 'Successfully added item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
         },function(error) {
-          addErrorAlert('Error adding item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+          $scope.displayMessage('error', 'Error adding item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
         });
 
       } else {
@@ -291,15 +295,15 @@ angular.module('bekApp')
         UtilityService.deleteFieldFromObjects(newItems, ['listitemid', 'position', 'label', 'parlevel']);
         list.items = list.items.concat(newItems);
         ListService.updateList(list).then(function(data) {
-          addSuccessAlert('Successfully added ' + newItems.length + ' items to list ' + list.name + '.');
+          $scope.displayMessage('success', 'Successfully added ' + newItems.length + ' items to list ' + list.name + '.');
         },function(error) {
-          addErrorAlert('Error adding ' + newItems.length + ' items to list ' + list.name + '.');
+          $scope.displayMessage('error', 'Error adding ' + newItems.length + ' items to list ' + list.name + '.');
         });
         // ListService.addMultipleItems(list.listid, newItems).then(function(data) {
         //   unselectAllDraggedItems();
-        //   addSuccessAlert('Successfully added ' + dragSelection.items.length + ' items to list ' + list.name + '.');
+        //   $scope.displayMessage('success', 'Successfully added ' + dragSelection.items.length + ' items to list ' + list.name + '.');
         // },function(error) {
-        //   addErrorAlert('Error adding ' + dragSelection.items.length + ' items to list ' + list.name + '.');
+        //   $scope.displayMessage('error', 'Error adding ' + dragSelection.items.length + ' items to list ' + list.name + '.');
         // });
       }
 
@@ -391,17 +395,6 @@ angular.module('bekApp')
         return showMoreLimit < $scope.lists.length;
       }
     };
-
-    // ALERTS
-    function addSuccessAlert(message) {
-      addAlert('success', message);
-    }
-    function addErrorAlert(message) {
-      addAlert('error', message);
-    }
-    function addAlert(alertType, message) {
-      toaster.pop(alertType, null, message);
-    }
 
     // FILTER LIST
     $scope.listSearchTerm = '';

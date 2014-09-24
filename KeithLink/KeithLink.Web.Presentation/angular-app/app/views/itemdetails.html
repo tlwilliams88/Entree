@@ -8,11 +8,11 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
-    <div ng-show="item.productimages.length > 0" style="display:inline-block;">
-      <img ng-src="{{item.productimages[0].url}}" alt="" style="height:135px;"/>
+  <div class="col-sm-9 col-md-8">
+    <div ng-show="item.productimages.length > 0" class="item-details__main-image">
+      <img ng-src="{{item.productimages[0].url}}" alt=""/>
     </div>
-    <div class="item-details__top-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
+    <div class="item-details__main-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
       <h2>
         <span favorite-item-click-handlers favorite-icons></span>
         {{item.name}}
@@ -29,8 +29,8 @@
           <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
         </div>
         <div>
-          <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}} |</span>
-          <span ng-if="item.upc !== null"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+          <span ng-if="item.brand !== null"><strong>Brand:</strong> {{item.brand}}</span>
+          <span ng-if="item.upc !== null && item.upc !== ''"><strong>| UPC Vendor:</strong> {{item.upc}}</span>
         </div>
       </div>
       <div ng-if="canOrderProduct(item)" class="item-details__actions hidden-print">
@@ -44,6 +44,18 @@
         </div>
       </div>
     </div>
+  </div>
+  <div class="col-sm-3 col-md-4 item-details__notes">
+    <form name="itemNotesForm">
+      <p>
+        <textarea placeholder="Add a note..." name="notes" id="notes" rows="3" class="form-control" ng-model="item.notes"></textarea>
+      </p>
+      <div class="text-right">
+        <button class="pull-left btn btn-default" ng-disabled="!item.notes" ng-click="deleteNote(item.itemnumber)"><span class="icon-trash text-light large-icon"></span></button>
+        <button class="btn btn-primary" type="submit" ng-disabled="itemNotesForm.$pristine" ng-click="saveNote(item.itemnumber, item.notes)">Save</button>
+        <a ng-click="cancelChanges()">Cancel</a>
+      </div>
+    </form>
   </div>
 </div>
 
