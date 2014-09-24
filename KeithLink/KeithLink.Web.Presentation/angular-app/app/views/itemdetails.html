@@ -46,11 +46,15 @@
     </div>
   </div>
   <div class="col-sm-3 col-md-4 item-details__notes">
-    <textarea placeholder="Add a note..." name="notes" id="notes" rows="3" class="form-control" ng-model="item.notes"></textarea>
-    <form class="sub-content">
-      <button class="btn btn-primary" type="submit" ng-click="saveNote(item.itemnumber, item.notes)">Save</button>
-      <a ng-click="cancelChanges()">Cancel</a>
-      <button class="pull-right btn btn-default" ng-click="deleteNote(item.itemnumber)"><span class="icon-trash text-light large-icon"></span></button>
+    <form name="itemNotesForm">
+      <p>
+        <textarea placeholder="Add a note..." name="notes" id="notes" rows="3" class="form-control" ng-model="item.notes"></textarea>
+      </p>
+      <div class="text-right">
+        <button class="pull-left btn btn-default" ng-disabled="!item.notes" ng-click="deleteNote(item.itemnumber)"><span class="icon-trash text-light large-icon"></span></button>
+        <button class="btn btn-primary" type="submit" ng-disabled="itemNotesForm.$pristine" ng-click="saveNote(item.itemnumber, item.notes)">Save</button>
+        <a ng-click="cancelChanges()">Cancel</a>
+      </div>
     </form>
   </div>
 </div>

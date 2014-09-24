@@ -10,9 +10,9 @@
 angular.module('bekApp')
   .controller('ItemDetailsController', ['$scope', 'item', 'ProductService', 'ListService', 'CartService', function ($scope, item, ProductService, ListService, CartService) {
     
+    var originalItemNotes = item.notes;
 
-
-    $scope.item = angular.copy(item);
+    $scope.item = item;
     $scope.item.quantity = 1;
     
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
@@ -36,6 +36,8 @@ angular.module('bekApp')
 
     $scope.saveNote = function(itemNumber, note) {
       ProductService.updateItemNote(itemNumber, note).then(function() {
+        $scope.itemNotesForm.$setPristine();
+        originalItemNotes = note;
         $scope.displayMessage('success', 'Successfully updated note.');
       }, function() {
         $scope.displayMessage('error', 'Error updating note.');
@@ -44,6 +46,7 @@ angular.module('bekApp')
 
     $scope.deleteNote = function(itemNumber) {
       ProductService.deleteItemNote(itemNumber).then(function() {
+        $scope.itemNotesForm.$setPristine();
         item.notes = null;
         $scope.item.notes = null;
         $scope.displayMessage('success', 'Successfully deleted note.');
@@ -53,6 +56,7 @@ angular.module('bekApp')
     };
 
     $scope.cancelChanges = function() {
-      $scope.item = angular.copy(item);
+      $scope.item.notes = originalItemNotes;
+      $scope.itemNotesForm.$setPristine();
     };
   }]);
