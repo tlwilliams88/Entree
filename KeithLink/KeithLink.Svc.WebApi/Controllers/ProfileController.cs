@@ -121,10 +121,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
-        public OperationReturnModel<string> UpdatePassword(UpdatePasswordModel pwInfo) {
-            return new OperationReturnModel<string> {
-                SuccessResponse = _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword)
-            };
+        public string UpdatePassword(UpdatePasswordModel pwInfo) {
+            return _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
         }
 
         [Authorize]
