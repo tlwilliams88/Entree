@@ -218,9 +218,10 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   -webkit-appearance: none;
   font-weight: 300;
   border: 0;
+  font-size: 12px;
 }
 
-/* line 78, ../scss/_component.scss */
+/* line 79, ../scss/_component.scss */
 .select-div {
   display: inline-block;
   width: 260px;
@@ -229,37 +230,38 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   background: url("../images/down-arrow.png") no-repeat 96% white;
   border: 1px solid #c3bc9c;
   vertical-align: middle;
+  border-radius: 5px;
 }
 
 /* TEXT INPUTS */
-/* line 91, ../scss/_component.scss */
+/* line 93, ../scss/_component.scss */
 ::-webkit-input-placeholder {
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 95, ../scss/_component.scss */
+/* line 97, ../scss/_component.scss */
 :-moz-placeholder {
   /* Firefox 18- */
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 99, ../scss/_component.scss */
+/* line 101, ../scss/_component.scss */
 ::-moz-placeholder {
   /* Firefox 19+ */
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 103, ../scss/_component.scss */
+/* line 105, ../scss/_component.scss */
 :-ms-input-placeholder {
   color: #c3bc9c !important;
   font-style: italic;
 }
 
-/* line 110, ../scss/_component.scss */
-input[type='text'], input[type='email'], input[type='password'] {
+/* line 112, ../scss/_component.scss */
+input[type='text'], input[type='email'], input[type='password'], textarea {
   font-weight: 300;
   letter-spacing: 1px;
   border: 1px solid #c3bc9c;
@@ -268,11 +270,11 @@ input[type='text'], input[type='email'], input[type='password'] {
 }
 
 /* TABS */
-/* line 118, ../scss/_component.scss */
+/* line 120, ../scss/_component.scss */
 .nav-tabs {
   border-bottom: 1px solid #c3bc9c;
 }
-/* line 122, ../scss/_component.scss */
+/* line 124, ../scss/_component.scss */
 .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   margin-right: 5px;
   color: #504938;
@@ -280,7 +282,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   border: 1px solid #c3bc9c;
   padding: 12px 40px;
 }
-/* line 133, ../scss/_component.scss */
+/* line 135, ../scss/_component.scss */
 .nav-tabs li.active a, .nav-tabs li.active a:hover {
   border: 1px solid #c3bc9c;
   border-bottom-color: transparent;
@@ -289,7 +291,7 @@ input[type='text'], input[type='email'], input[type='password'] {
   font-weight: normal;
 }
 
-/* line 148, ../scss/_component.scss */
+/* line 150, ../scss/_component.scss */
 .tab-content .tab-pane {
   background-color: white;
   border-left: 1px solid #c3bc9c;
@@ -298,35 +300,57 @@ input[type='text'], input[type='email'], input[type='password'] {
 }
 
 @media (max-width: 768px) {
-  /* line 159, ../scss/_component.scss */
+  /* line 161, ../scss/_component.scss */
   .nav-tabs li {
     width: 100%;
   }
-  /* line 162, ../scss/_component.scss */
+  /* line 164, ../scss/_component.scss */
   .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
     margin-right: 0px;
     border-radius: 8px;
     margin-bottom: 5px;
   }
-  /* line 169, ../scss/_component.scss */
+  /* line 171, ../scss/_component.scss */
   .nav-tabs li.active a, .nav-tabs li.active a:hover {
     border-bottom-color: #c3bc9c;
   }
 }
 /* Checkboxes */
 /* Search Form */
-/* line 203, ../scss/_component.scss */
+/* line 205, ../scss/_component.scss */
 .search-form {
   padding-bottom: 15px;
 }
-/* line 206, ../scss/_component.scss */
+/* line 208, ../scss/_component.scss */
 .search-form input {
   border-right: none;
 }
 
-/* line 211, ../scss/_component.scss */
+/* line 213, ../scss/_component.scss */
 hr {
   border-top: 1px solid #c3bc9c;
+}
+
+/* DATEPICKER */
+/* line 220, ../scss/_component.scss */
+.datepicker + .dropdown-menu table tbody button, .datepicker + .dropdown-menu table thead button {
+  border: none !important;
+}
+
+/* line 225, ../scss/_component.scss */
+.quantity-dropdown {
+  border-radius: 0;
+  padding: 0;
+  min-width: 55px;
+}
+/* line 230, ../scss/_component.scss */
+.quantity-dropdown li {
+  padding: 3px 10px;
+  text-align: right;
+}
+/* line 234, ../scss/_component.scss */
+.quantity-dropdown li:hover {
+  background-color: #f3f1eb;
 }
 
 /* TABLES */
@@ -561,7 +585,7 @@ ng-class="{ odd : $odd, even: $even }"
 }
 /* line 10, ../scss/_component-person-info.scss */
 .person-info div.person-info__section:not(:last-child), .person-info .order-summary__order .person-info__section.order-col:not(:last-child), .order-summary__order .person-info .person-info__section.order-col:not(:last-child) {
-  margin-right: 10px;
+  margin-right: 5px;
 }
 /* line 15, ../scss/_component-person-info.scss */
 .person-info .person-info__details {
@@ -595,6 +619,48 @@ ng-class="{ odd : $odd, even: $even }"
     width: 55px;
   }
 }
+/* line 1, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list {
+  width: 100%;
+  border-radius: 0;
+  padding: 0;
+}
+/* line 6, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list li {
+  padding: 10px;
+  border-bottom: 1px solid #c3bc9c;
+}
+/* line 10, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list li:hover {
+  background-color: #f3f1eb;
+}
+
+/* line 16, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list-multi-columns {
+  border: 1px solid #c3bc9c;
+  padding: 0;
+  border-radius: 0;
+}
+/* line 21, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list-multi-columns > li > .row {
+  width: 400px;
+  margin: 0;
+}
+/* line 25, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list-multi-columns > li > .row a > .row {
+  border-bottom: 1px solid #c3bc9c;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+/* line 30, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list-multi-columns > li > .row a > .row:hover {
+  background-color: #f3f1eb;
+}
+/* line 34, ../scss/_component-dropdown-menu-lists.scss */
+.dropdown-menu-list-multi-columns > li > .row a:last-child > .row {
+  border-bottom: none;
+}
+
 /* line 1, ../scss/_icons.scss */
 .inline-icon {
   display: inline-block;
@@ -670,8 +736,8 @@ ng-class="{ odd : $odd, even: $even }"
   margin: 0;
 }
 /* line 7, ../scss/_bootstrap-table.scss */
-.bootstrap-table .table-row-data [class^='col-'],
-.bootstrap-table .filter-row [class^='col-'] {
+.bootstrap-table .table-row-data [class*='col-'],
+.bootstrap-table .filter-row [class*='col-'] {
   padding: 14px 5px;
 }
 /* line 13, ../scss/_bootstrap-table.scss */
@@ -693,7 +759,7 @@ ng-class="{ odd : $odd, even: $even }"
   white-space: nowrap;
 }
 /* line 35, ../scss/_bootstrap-table.scss */
-.bootstrap-table .table-row .table-col-icons a, .bootstrap-table .table-row .table-col-icons .nav-tabs li.active a:hover, .nav-tabs li.active .bootstrap-table .table-row .table-col-icons a:hover, .bootstrap-table .table-row .table-col-icons span {
+.bootstrap-table .table-row .table-col-icons [class*='icon-'] {
   display: inline-block;
   font-size: 18px;
 }
@@ -889,7 +955,7 @@ form.style-validation-errors .form-error-message {
   font-size: 25px;
   display: inline-block;
   vertical-align: middle;
-  margin-right: 15px;
+  margin-right: 5%;
 }
 /* line 14, ../scss/_user-bar.scss */
 .user-bar .user-info .user-info__name {
@@ -1544,52 +1610,84 @@ ul.horizontal-slide .item-holder:first-child {
   }
 }
 /* line 1, ../scss/_item-details.scss */
-.item-details__icons {
+.item-details__main-info {
+  vertical-align: middle;
+}
+/* line 4, ../scss/_item-details.scss */
+.item-details__main-info .item-details__icons {
   margin-left: 15px;
   font-size: 15px;
 }
-
-/* line 6, ../scss/_item-details.scss */
-.item-details__actions {
+/* line 9, ../scss/_item-details.scss */
+.item-details__main-info .item-details__actions {
   padding-top: 15px;
 }
 
-/* line 10, ../scss/_item-details.scss */
+/* line 13, ../scss/_item-details.scss */
+.item-details__main-image {
+  display: inline-block;
+  padding-right: 15px;
+}
+/* line 17, ../scss/_item-details.scss */
+.item-details__main-image img {
+  height: 135px;
+}
+
+/* line 21, ../scss/_item-details.scss */
+.item-details__notes textarea {
+  width: 100%;
+  border: 1px solid #c3bc9c;
+  font-size: 12px;
+}
+
+/* line 27, ../scss/_item-details.scss */
 .item-details__images {
   padding: 15px;
 }
-/* line 13, ../scss/_item-details.scss */
+/* line 30, ../scss/_item-details.scss */
 .item-details__images img {
   margin: 3px;
 }
 
-/* line 18, ../scss/_item-details.scss */
+/* line 35, ../scss/_item-details.scss */
 .item-details__table {
   border: none;
 }
-/* line 21, ../scss/_item-details.scss */
+/* line 38, ../scss/_item-details.scss */
 .item-details__table tr:last-child {
   border-bottom: none;
 }
 
+@media (max-width: 767px) {
+  /* line 44, ../scss/_item-details.scss */
+  .item-details__main-info {
+    padding-top: 15px;
+    padding-left: 0;
+  }
+
+  /* line 48, ../scss/_item-details.scss */
+  .item-details__notes {
+    padding-top: 15px;
+  }
+}
 @media print {
-  /* line 27, ../scss/_item-details.scss */
+  /* line 54, ../scss/_item-details.scss */
   .page-content {
     margin-left: 0;
   }
 
-  /* line 31, ../scss/_item-details.scss */
+  /* line 58, ../scss/_item-details.scss */
   .nav-tabs {
     display: none;
   }
 
-  /* line 35, ../scss/_item-details.scss */
+  /* line 62, ../scss/_item-details.scss */
   .tab-pane {
     display: block !important;
     margin-top: 15px;
     border-top: 1px solid #c3bc9c;
   }
-  /* line 41, ../scss/_item-details.scss */
+  /* line 68, ../scss/_item-details.scss */
   .tab-pane h3 {
     margin-top: 10px;
     margin-bottom: 0;
@@ -1598,7 +1696,7 @@ ul.horizontal-slide .item-holder:first-child {
     border-bottom: 1px solid #c3bc9c;
   }
 
-  /* line 50, ../scss/_item-details.scss */
+  /* line 77, ../scss/_item-details.scss */
   .item-details__table td, th {
     padding: 10px 5px !important;
   }
@@ -1654,7 +1752,7 @@ ul.horizontal-slide .item-holder:first-child {
 /* LIST TABLE */
 /* line 59, ../scss/_lists.scss */
 .custom-lists__table .table-body .table-row.bek-reordered-item {
-  background-color: #f3f3d1 !important;
+  background-color: #f8f8c4 !important;
 }
 /* line 63, ../scss/_lists.scss */
 .custom-lists__table .table-body .table-row .edit-parlevel {
@@ -1669,30 +1767,35 @@ ul.horizontal-slide .item-holder:first-child {
   width: 110%;
 }
 
+/* line 77, ../scss/_lists.scss */
+.item-selected {
+  background-color: #f8f8c4 !important;
+}
+
 /* DRAG AND DROP */
-/* line 78, ../scss/_lists.scss */
+/* line 82, ../scss/_lists.scss */
 .ui-draggable-handle {
   cursor: move;
 }
 
-/* line 81, ../scss/_lists.scss */
+/* line 85, ../scss/_lists.scss */
 .ui-draggable-dragging {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
   background-color: white !important;
 }
-/* line 86, ../scss/_lists.scss */
+/* line 90, ../scss/_lists.scss */
 .ui-draggable-dragging [class^='col-'] {
   width: inherit;
   float: none;
   display: inline-block;
 }
-/* line 92, ../scss/_lists.scss */
+/* line 96, ../scss/_lists.scss */
 .ui-draggable-dragging .hidden-drag {
   display: none;
 }
 
-/* line 96, ../scss/_lists.scss */
+/* line 100, ../scss/_lists.scss */
 .ui-sortable-helper {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
@@ -1700,19 +1803,19 @@ ul.horizontal-slide .item-holder:first-child {
   background-color: #EBE7D9 !important;
 }
 
-/* line 103, ../scss/_lists.scss */
+/* line 107, ../scss/_lists.scss */
 .bek-reorder-overflow {
   overflow: auto;
 }
 
 @media (min-width: 991px) {
-  /* line 109, ../scss/_lists.scss */
+  /* line 113, ../scss/_lists.scss */
   .custom-lists__table .table-body .table-row:hover {
     background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 115, ../scss/_lists.scss */
+  /* line 119, ../scss/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;
@@ -1720,12 +1823,12 @@ ul.horizontal-slide .item-holder:first-child {
     top: 155px;
   }
 
-  /* line 123, ../scss/_lists.scss */
+  /* line 127, ../scss/_lists.scss */
   .custom-lists__table .edit-label {
     display: inline-block;
   }
 
-  /* line 128, ../scss/_lists.scss */
+  /* line 132, ../scss/_lists.scss */
   .custom-lists__save {
     min-height: 0;
     font-size: 10px;
@@ -1835,92 +1938,105 @@ ul.horizontal-slide .item-holder:first-child {
   padding: 8px 12px;
 }
 
-/* line 5, ../scss/_cart.scss */
-.cart-selection {
-  border: 1px solid #c3bc9c;
-  padding: 0;
-}
-/* line 9, ../scss/_cart.scss */
-.cart-selection .cart-selection-list {
-  width: 400px;
-  margin: 0;
-}
-/* line 13, ../scss/_cart.scss */
-.cart-selection .cart-selection-list a > .row, .cart-selection .cart-selection-list .nav-tabs li.active a:hover > .row, .nav-tabs li.active .cart-selection .cart-selection-list a:hover > .row {
-  border-bottom: 1px solid #c3bc9c;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-/* line 18, ../scss/_cart.scss */
-.cart-selection .cart-selection-list a > .row:hover {
-  background-color: #f3f1eb;
-}
-/* line 22, ../scss/_cart.scss */
-.cart-selection .cart-selection-list a:last-child > .row {
-  border-bottom: none;
-}
-
-/* line 28, ../scss/_cart.scss */
+/* line 6, ../scss/_cart.scss */
 .input-group.datepicker-input {
   margin: 0;
   width: 200px;
 }
-/* line 32, ../scss/_cart.scss */
+/* line 10, ../scss/_cart.scss */
 .input-group.datepicker-input > input.form-control {
   border-radius: 0;
   min-height: 0;
   height: 30px;
   background-color: white;
 }
-/* line 38, ../scss/_cart.scss */
+/* line 16, ../scss/_cart.scss */
 .input-group.datepicker-input > span > button {
   border-radius: 0;
   min-height: 0;
   padding: 4px 10px;
 }
-/* line 44, ../scss/_cart.scss */
-.input-group.datepicker-input table tbody button, .input-group.datepicker-input table thead button {
-  border: none !important;
-}
 
-/* line 49, ../scss/_cart.scss */
+/* line 23, ../scss/_cart.scss */
 .cart-info {
   background-color: white;
   border: 1px solid #c3bc9c;
   padding: 15px;
 }
-/* line 54, ../scss/_cart.scss */
+/* line 28, ../scss/_cart.scss */
 .cart-info .cart-info-item {
   margin-bottom: 5px;
 }
-/* line 57, ../scss/_cart.scss */
+/* line 31, ../scss/_cart.scss */
 .cart-info .cart-info-item:last-child {
   margin-bottom: 0;
 }
-/* line 61, ../scss/_cart.scss */
+/* line 35, ../scss/_cart.scss */
 .cart-info .cart-info-item.cart-info-item__ship-date {
   line-height: 21px;
 }
-/* line 66, ../scss/_cart.scss */
+/* line 40, ../scss/_cart.scss */
 .cart-info .cart-info-item .cart-info-buttons button:first-child {
   margin-right: 5px;
 }
-/* line 71, ../scss/_cart.scss */
+/* line 45, ../scss/_cart.scss */
 .cart-info .cart-info-item .cart-info-subtotal {
   font-size: 26px;
   font-weight: 600;
 }
 
 @media (max-width: 991px) {
-  /* line 80, ../scss/_cart.scss */
+  /* line 54, ../scss/_cart.scss */
   .cart-selection .cart-selection-list {
     width: 320px;
   }
 }
 @media (min-width: 768px) {
-  /* line 90, ../scss/_cart.scss */
+  /* line 64, ../scss/_cart.scss */
   .cart-info .cart-info-item .cart-info-buttons {
     text-align: right;
+  }
+}
+/* line 1, ../scss/_add-to-order.scss */
+.select-nav-bar {
+  margin: 0;
+  background-color: white;
+  border-top: 1px solid #c3bc9c;
+  border-left: 1px solid #c3bc9c;
+}
+/* line 9, ../scss/_add-to-order.scss */
+.select-nav-bar .select-nav {
+  border-right: 1px solid #c3bc9c;
+  padding: 0;
+}
+/* line 14, ../scss/_add-to-order.scss */
+.select-nav-bar .select-area {
+  padding: 10px 15px;
+}
+/* line 17, ../scss/_add-to-order.scss */
+.select-nav-bar .select-area div, .select-nav-bar .select-area .order-summary__order .order-col, .order-summary__order .select-nav-bar .select-area .order-col {
+  display: inline-block;
+  vertical-align: middle;
+}
+/* line 22, ../scss/_add-to-order.scss */
+.select-nav-bar .select-area .nav-description {
+  font-size: 14px;
+  display: block;
+}
+/* line 26, ../scss/_add-to-order.scss */
+.select-nav-bar .select-area .nav-title {
+  font-size: 16px;
+}
+
+@media (max-width: 991px) {
+  /* line 33, ../scss/_add-to-order.scss */
+  .add-items-button {
+    float: right;
+  }
+
+  /* line 38, ../scss/_add-to-order.scss */
+  .select-nav-bar .select-nav:first-child, .select-nav-bar .select-nav:first-child + .select-nav {
+    border-bottom: 1px solid #c3bc9c;
   }
 }
 

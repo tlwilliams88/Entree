@@ -14,7 +14,8 @@ angular.module('bekApp')
         defaultStartingIndex = 0;
 
       function getBranch() {
-        return UserProfileService.getCurrentBranchId();
+        //return UserProfileService.getCurrentBranchId();
+        return 'fdf';
       }
 
       function concatenateNestedParameters(name, list) {
@@ -79,7 +80,7 @@ angular.module('bekApp')
           });
         },
 
-        getProductsByCategory: function(categoryId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+        getProductsByCategory: function(categoryName, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
@@ -89,7 +90,7 @@ angular.module('bekApp')
             facets += ',';
           }
           if (facetCategory) {
-            categoryId = facetCategory.name;
+            categoryName = facetCategory.name;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
@@ -111,7 +112,53 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryId + '/products', {
+          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryName + '/products', {
+            params: {
+              size: pageSize,
+              from: index,
+              facets: facets,
+              sfield: sortfield,
+              sdir: sortdirection
+            }
+          }).then(function(response) {
+            return response.data;
+          });
+        },
+
+        getProductsByHouseBrand: function(houseBrandId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
+          pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
+          index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+          
+          var facets = '';
+          if (brands && brands.length > 0) {
+            facets += concatenateNestedParameters('brands', brands);
+            facets += ',';
+          }
+          if (facetCategory) {
+            facets += 'categories:' + facetCategory.name;
+            facets += ',';
+          }
+          if (dietary && dietary.length > 0) {
+            facets += concatenateNestedParameters('dietary', dietary);
+            facets += ',';
+          }
+          if (itemspecs && itemspecs.length > 0) {
+            facets += concatenateNestedParameters('itemspecs', itemspecs);
+            facets += ',';
+          }
+          if (nonstock && nonstock.length > 0) {
+            facets += concatenateNestedParameters('nonstock', nonstock);
+            facets += ',';
+          }
+
+          if (facets === '') {
+            facets = null;
+          }
+          else {
+            facets = facets.substr(0, facets.length - 1);
+          }
+
+          return $http.get('/catalog/search/' + getBranch() + '/brands/house/' + houseBrandId, {
             params: {
               size: pageSize,
               from: index,
@@ -139,6 +186,18 @@ angular.module('bekApp')
 
         canOrderProduct: function(item) {
           return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
+        },
+
+        updateItemNote: function(itemNumber, note) {
+          var itemNote = {
+            itemnumber: itemNumber,
+            note: note
+          };
+          return $http.post('/itemnote', itemNote);
+        },
+
+        deleteItemNote: function(itemNumber) {
+          return $http.delete('/itemnote/' + itemNumber);
         }
       };
 

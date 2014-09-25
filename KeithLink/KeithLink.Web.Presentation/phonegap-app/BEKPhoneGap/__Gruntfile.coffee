@@ -1,66 +1,34 @@
-module.exports = (grunt) ->
+app.js
 
-  # Project configuration.
-  grunt.initConfig
-    pkg: grunt.file.readJSON 'package.json'
+, 'PhonegapServices'
+, PhonegapServices
 
-    phonegap:
-      config:
-        plugins: []
-        platforms: ['ios','android']
-        config:
-          template: '_config.xml'
-          data:
-            id: 'com.benekeith'
-            version: '<%= pkg.version %>'
-            name: '<%= pkg.name %>'
-            description: '<%= pkg.description %>'
-            author:
-              email: ''
-              href: ''
-              text: 'Credera'
+------------------------------------------------------------
 
-        versionCode: 1
-        permissions: []
-        
-    sass:
-      dist:
-        files:[
-          expand: true
-          cwd: 'www/scss/'
-          src: '**/*.scss'
-          dest: 'www/css'
-          ext: '.css'
-        ]
+index.html
 
-    connect:
-      options:
-        hostname: 'localhost'
-        livereload: 35729
-        port: 3000
-      server:
-        options:
-          base: 'www'
-          open: true
+Change "styles/main.css" to "css/main.css" at top
 
-    watch:
-      css:
-        files:['www/scss/**/*.scss']
-        tasks: ['sass']
-        options:
-          livereload: true
-      options:
-        livereload: '<%= connect.options.livereload %>'
-      all:
-        files: 'www/{,*/}*.{html,js,png}'
-        
-    
+Remove "ng-app=bekapp" from <body>
 
-    grunt.loadNpmTasks 'grunt-contrib-sass'
-    grunt.loadNpmTasks 'grunt-contrib-watch'
-    grunt.loadNpmTasks 'grunt-contrib-connect'
-    grunt.loadNpmTasks 'grunt-phonegap'
+Below lib scripts:
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
 
-    grunt.registerTask 'server', ->
-      grunt.task.run 'connect:server'
-      grunt.task.run 'watch'
+    <script>
+    angular.element(document).ready(function() {
+        app.initialize();
+      angular.bootstrap(document, ['bekApp']);
+    });
+    </script>
+
+Below resources:
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
+
+------------------------------------------------------------
+
+then do:
+compass compile www/scss/main.scss

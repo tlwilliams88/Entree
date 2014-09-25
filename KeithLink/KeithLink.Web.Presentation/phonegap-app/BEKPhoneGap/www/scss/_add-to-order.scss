@@ -1,0 +1,43 @@
+.select-nav-bar {
+  margin: 0;
+  background-color: white;
+  border-top: 1px solid $color-border;
+  border-left: 1px solid $color-border;
+  // border-bottom: 1px solid $color-border;
+  
+  
+  .select-nav {
+    border-right: 1px solid $color-border;
+    padding: 0;
+  }
+
+  .select-area {
+    padding: 10px $gutter-size;
+    
+    div {
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .nav-description {
+      font-size: 14px;
+      display: block;
+    }
+    .nav-title {
+      font-size: 16px;
+    }
+  }
+}
+
+@media (max-width: $mobile-max) {
+  .add-items-button {
+    float: right;
+  }
+  .select-nav-bar {
+    .select-nav {
+      &:first-child, &:first-child + .select-nav {
+        border-bottom: 1px solid $color-border;
+      }
+    }
+  }
+}

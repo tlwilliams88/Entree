@@ -1,28 +1,32 @@
 <!doctype html>
-<html class="no-js">
+<html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>B. Entree</title>
     <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
     <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
-    <link rel="stylesheet" href="lib/icomoon/css/style.css" />
+    <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
+    <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
+    <link rel="stylesheet" href="lib/icomoon/style.css" />
     <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
   </head>
-  <body ng-app="bekApp">
+  <body>
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
+    <toaster-container></toaster-container>
+    
     <div ui-view="" class="container-fluid">
     </div> <!-- end container -->
 
@@ -71,6 +75,18 @@
     <script src="lib/angular-ui-sortable/sortable.js"></script>
     <script src="lib/ng-infinite-scroll/ng-infinite-scroll.js"></script>
     <script src="lib/angular-unsavedChanges/unsavedChanges.js"></script>
+    <script src="lib/angular-toaster/toaster.js"></script>
+    <script src="lib/angular-loading-bar/loading-bar.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+
+    <script>
+    angular.element(document).ready(function() {
+        app.initialize();
+      angular.bootstrap(document, ['bekApp']);
+    });
+    </script>
     <!-- endbuild -->
 
      <script id="template/carousel/carousel.html" type="text/ng-template">
@@ -87,6 +103,7 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/configenv.js"></script>
     <script type="text/javascript" src="scripts/controllers/CatalogController.js"></script>
     <script type="text/javascript" src="scripts/controllers/HomeController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ItemDetailsController.js"></script>
@@ -96,6 +113,8 @@
     <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AccountDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CartController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/CartItemsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/AddToOrderController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -107,25 +126,34 @@
     <script type="text/javascript" src="scripts/directives/AllowOnePositiveDecimal.js"></script>
     <script type="text/javascript" src="scripts/directives/CheckDuplicateField.js"></script>
     <script type="text/javascript" src="scripts/directives/FocusMe.js"></script>
-    <script type="text/javascript" src="scripts/directives/GoToNextParlevel.js"></script>
     <script type="text/javascript" src="scripts/directives/MatchInput.js"></script>
     <script type="text/javascript" src="scripts/directives/SortIcons.js"></script>
+    <script type="text/javascript" src="scripts/directives/Integer.js"></script>
+    <script type="text/javascript" src="scripts/directives/NoDirtyCheck.js"></script>
+    <script type="text/javascript" src="scripts/directives/UpdateQuantityFromParlevel.js"></script>
+    <script type="text/javascript" src="scripts/directives/ValidatePassword.js"></script>
+    <script type="text/javascript" src="scripts/directives/NavigateTable.js"></script>
     <script type="text/javascript" src="scripts/services/Constants.js"></script>
-    <script type="text/javascript" src="scripts/services/ApiService.js"></script>
     <script type="text/javascript" src="scripts/services/AccessService.js"></script>
     <script type="text/javascript" src="scripts/services/AuthenticationService.js"></script>
-    <script type="text/javascript" src="scripts/services/AuthenticationInterceptorService.js"></script>
+    <script type="text/javascript" src="scripts/services/AuthenticationInterceptor.js"></script>
     <script type="text/javascript" src="scripts/services/BrandService.js"></script>
     <script type="text/javascript" src="scripts/services/CategoryService.js"></script>
     <script type="text/javascript" src="scripts/services/ListService.js"></script>
     <script type="text/javascript" src="scripts/services/CartService.js"></script>
     <script type="text/javascript" src="scripts/services/ProductService.js"></script>
     <script type="text/javascript" src="scripts/services/UserProfileService.js"></script>
-    <script type="text/javascript" src="scripts/services/NameGeneratorService.js"></script>
+    <script type="text/javascript" src="scripts/services/UtilityService.js"></script>
+    <script type="text/javascript" src="scripts/services/BranchService.js"></script>
+    <script type="text/javascript" src="scripts/services/OrderService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
 
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
+
     <!-- endbuild -->
 </body>
 </html>
