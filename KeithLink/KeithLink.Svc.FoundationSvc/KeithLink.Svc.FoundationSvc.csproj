@@ -31,6 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -39,6 +40,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommerceMessageManager">
@@ -190,6 +192,7 @@
     <None Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
     <None Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
     <None Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
+    <None Include="lib\bin\en-us\CommerceMessageManager.resources.dll" />
     <Content Include="favicon.ico" />
     <Content Include="FoundationService.svc" />
     <Content Include="Global.asax" />
@@ -229,7 +232,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -238,7 +241,7 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -276,8 +279,14 @@
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
   <PropertyGroup>
-    <PostBuildEvent>cd $(OutDir)
-del CommerceServer.Core.Internal.ContentListHelper.dll</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>echo mkdir $(ProjectDir)bin\en-us\
+if not exist $(ProjectDir)bin\en-us\ mkdir $(ProjectDir)bin\en-us\
+echo copy $(ProjectDir)lib\bin\en-us\CommerceMessageManager.resources.dll $(ProjectDir)bin\en-us\CommerceMessageManager.resouces.dll
+copy $(ProjectDir)lib\bin\en-us\CommerceMessageManager.resources.dll $(ProjectDir)bin\en-us\CommerceMessageManager.resouces.dll</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
