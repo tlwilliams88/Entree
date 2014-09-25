@@ -73,16 +73,18 @@
   -webkit-appearance: none;
   font-weight: 300;
   border: 0;
+  font-size: $font-size;
 } 
 
-.select-div{
-   display: inline-block;
-   width: 260px;
-   min-height: 40px;
-   overflow: hidden;
-   background: url("../images/down-arrow.png") no-repeat 96% $color-white;
-   border: 1px solid #c3bc9c;
-   vertical-align: middle;
+.select-div {
+  display: inline-block;
+  width: 260px;
+  min-height: 40px;
+  overflow: hidden;
+  background: url("../images/down-arrow.png") no-repeat 96% $color-white;
+  border: 1px solid #c3bc9c;
+  vertical-align: middle;
+  border-radius: 5px;
 }
 
 /* TEXT INPUTS */
@@ -107,7 +109,7 @@
 }
 @include text-placeholder ($color-border, italic);
 
-input[type='text'], input[type='email'], input[type='password'] {
+input[type='text'], input[type='email'], input[type='password'], textarea {
   @include component;
   min-height: 40px;
   font-size: $font-size;
@@ -210,4 +212,27 @@ input[type='text'], input[type='email'], input[type='password'] {
 
 hr {
   border-top: 1px solid $color-border;
+}
+
+/* DATEPICKER */ 
+
+.datepicker + .dropdown-menu {
+  table tbody button, table thead button {
+    border: none !important;
+  }
+}
+
+.quantity-dropdown {
+  border-radius: 0;
+  padding: 0;
+  min-width: 55px;
+
+  li {
+    padding: 3px 10px;
+    text-align: right;
+
+    &:hover {
+      background-color: $background;
+    }
+  }
 }

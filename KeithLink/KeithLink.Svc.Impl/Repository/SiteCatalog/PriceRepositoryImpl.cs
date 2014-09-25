@@ -24,40 +24,55 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <returns>PriceReturn with completed prices</returns>
         /// <remarks>
         /// jwames - 7/28/2014 - add pricing cache calls
+        /// jwames - 9/25/2014 - test for empty customer number
         /// </remarks>
         public List<Price> GetPrices(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
 			if (products == null || products.Count == 0)
 				return null;
 
-            // build the request XML
-            KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
-            System.IO.StringWriter requestBody = new System.IO.StringWriter();
-            GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
-
-            // load the pricing service
-            com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
-         
-            // call the pricing service and get the response XML
-            Schemas.PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
-
             List<Price> prices = new List<Price>();
 
-            foreach (Schemas.PricingResponseMain._ItemRow item in pricingResponse._Item) {
-                Price itemPrice = new Price();
+            if (customerNumber == null) {
+                foreach (Product item in products) {
+                    prices.Add(new Price() { 
+                        BranchId = branchId,
+                        CustomerNumber = customerNumber,
+                        ItemNumber = item.ItemNumber,
+                        CasePrice = 0.00,
+                        PackagePrice = 0.00
+                    });
+                }
 
-                itemPrice.BranchId = branchId;
-                itemPrice.CustomerNumber = customerNumber;
-                itemPrice.ItemNumber = item.number;
+            } else {
+                // build the request XML
+                KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
+                System.IO.StringWriter requestBody = new System.IO.StringWriter();
+                GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
 
-                Schemas.PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
+                // load the pricing service
+                com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
 
-                itemPrice.CasePrice = (double)priceRows[0].NetCase;
-                itemPrice.PackagePrice = (double)priceRows[0].NetEach;
+                // call the pricing service and get the response XML
+                Schemas.PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
 
-                prices.Add(itemPrice);
+                foreach (Schemas.PricingResponseMain._ItemRow item in pricingResponse._Item) {
+                    Price itemPrice = new Price();
+
+                    itemPrice.BranchId = branchId;
+                    itemPrice.CustomerNumber = customerNumber;
+                    itemPrice.ItemNumber = item.number;
+
+                    Schemas.PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
+
+                    itemPrice.CasePrice = (double)priceRows[0].NetCase;
+                    itemPrice.PackagePrice = (double)priceRows[0].NetEach;
+
+                    prices.Add(itemPrice);
+                }
+
             }
-            
+
             return prices;
         }
 

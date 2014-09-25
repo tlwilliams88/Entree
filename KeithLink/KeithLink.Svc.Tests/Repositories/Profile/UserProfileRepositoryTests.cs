@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
 
-            //userProfile.CreateGuestProfile("one@two.com", "Ab12345", "FDF");
+            //userProfile.CreateGuestProfile("jeremy@ames.com", "Ab12345", "FDF");
         }
 
         [TestMethod]
@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
-            userProfile.GetUserProfile("sabroussard@somecompany.com");
+            userProfile.GetUserProfile("jeremy@ames.com");
         }
 
         [TestMethod]

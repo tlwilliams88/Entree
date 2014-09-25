@@ -17,23 +17,23 @@ angular.module('bekApp')
       // ROLES
 
       isOwner: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.OWNER );
+        return ( UserProfileService.getUserRole() === Constants.roles.OWNER );
       },
 
       isAccounting: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.ACCOUNTING );
+        return ( UserProfileService.getUserRole() === Constants.roles.ACCOUNTING );
       },
 
       isApprover: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.APPROVER );
+        return ( UserProfileService.getUserRole() === Constants.roles.APPROVER );
       },
 
       isShopper: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.SHOPPER );
+        return ( UserProfileService.getUserRole() === Constants.roles.SHOPPER );
       },
 
       isUser: function() {
-        return ( UserProfileService.getCurrentRole() === Constants.roles.USER );
+        return ( UserProfileService.getUserRole() === Constants.roles.GUEST );
       },
 
       // PRIVILEDGES

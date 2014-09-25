@@ -4,7 +4,7 @@
     <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
-        <span class="text-white user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span>  
+        <span class="text-white user-info__name">{{userProfile.displayName}}</span>  
       </div>
       <div>
         <span class="user-info__job-title">{{userProfile.role}}</span>
@@ -18,18 +18,42 @@
   <nav class="sidebar-nav">
     <ul class="list-unstyled" ng-click="$spMenu.hide()">
         
-        <div ng-show="displayUserMenu">
-          <a ui-sref="menu.accountdetails" ui-sref-active="is-selected">
-            <li>Account Settings</li>
-          </a>
-          <a ng-click="logout()">
-            <li>Sign Out</li>
-          </a>
-        </div>
-
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenMobile" ui-sref="{{item.sref}}" ui-sref-active="is-selected">
-          <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
+      <div ng-show="displayUserMenu">
+        <a ui-sref="menu.accountdetails">
+          <li>Account Settings</li>
         </a>
+        <a ng-click="logout()">
+          <li>Sign Out</li>
+        </a>
+      </div>
+
+      <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+      </a>
+      <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
+      </a>
+      <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+      </a>
+      <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+      </a>
+      <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+      </a>
+      <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+      </a>
+      <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+      </a>
+      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
+      </a>
+      <a ng-if="isOrderEntryCustomer" ui-sref="blank" ui-sref-active="is-selected" >
+        <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
+      </a>
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
@@ -43,10 +67,9 @@
   <div ng-if="isOrder" class="sidebar-actions text-center">
     <button class="btn btn-primary">View Your Order</button>
   </div>
-</div>
+</div> <!-- end Mobile Sidebar -->
 
 <div id="sp-page" ng-swipe-right="$spMenu.hide()" ng-swipe-left="$spMenu.show()" class="desktop-wrapper">
-  
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
@@ -55,8 +78,29 @@
 
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <a ng-repeat="item in menuItems" ng-if="!item.isHiddenDesktop" ui-sref="{{item.sref}}" ui-sref-active="is-selected">
-          <li><div class="sidebar-nav__icon"><span ng-class="'icon-' + item.icon"></span></div>{{item.text}}</li>
+        <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
+        </a>
+        <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
+        </a>
+        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
+        </a>
+        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
+        </a>
+        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
+        </a>
+        <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
+        </a>
+        <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
+        </a>
+        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+          <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
       </ul>
     </nav>
@@ -78,20 +122,19 @@
 
   <div class="row page-content">
     <div class="col-sm-12">
-      
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
         <ul>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
-          <a ui-sref="menu.cart"><li><span class="icon-truck"></span></li></a>
+          <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
       </div>
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
-          <div class="select-div" ng-show="canBrowseCatalog">
-            <select ng-change="changeLocation()" ng-options="location.name for location in locations track by location.name" ng-model="currentLocation"></select>
+          <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
+            <select ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeLocation()"></select>
           </div>
         </div>
         <div class="col-md-4">
@@ -99,17 +142,17 @@
             <div class="input-group">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ng-click="search(userBar.universalSearchTerm)" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
               </span>
             </div>
           </form>
         </div>
-        <div class="col-md-4 hidden-sm hidden-xs text-right">
+        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap">
           <div ng-if="isLoggedIn">
             <span ng-if="isOrderEntryCustomer" class="icon-bell user-bar__notification"></span>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
-                <span class="user-info__name">{{userProfile.firstName}} {{userProfile.lastName}}</span> 
+                <span class="user-info__name">{{userProfile.displayname}}</span> 
                 <span class="user-info__job-title">{{userProfile.role}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-default" ui-sref="menu.accountdetails">Account Settings</button>

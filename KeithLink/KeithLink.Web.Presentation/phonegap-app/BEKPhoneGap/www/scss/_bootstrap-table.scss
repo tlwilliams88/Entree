@@ -4,8 +4,8 @@
     margin: 0;
   }
 
-  .table-row-data [class^='col-'],
-  .filter-row [class^='col-'] {
+  .table-row-data [class*='col-'],
+  .filter-row [class*='col-'] {
     padding: 14px 5px;
   }
 
@@ -32,7 +32,7 @@
       padding: 8px 5px;
       white-space: nowrap;
 
-      a,span {
+      [class*='icon-'] {
         display: inline-block;
         font-size: 18px;
       }
