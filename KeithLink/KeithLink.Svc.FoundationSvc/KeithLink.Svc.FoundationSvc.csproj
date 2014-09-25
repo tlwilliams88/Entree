@@ -282,10 +282,15 @@
     </PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PreBuildEvent>echo mkdir $(ProjectDir)bin\en-us\
+    <PreBuildEvent>if $(ConfigurationName) == Debug goto :enableDebug
+goto :end
+:enableDebug
+echo mkdir $(ProjectDir)bin\en-us\
 if not exist $(ProjectDir)bin\en-us\ mkdir $(ProjectDir)bin\en-us\
 echo copy $(ProjectDir)lib\bin\en-us\CommerceMessageManager.resources.dll $(ProjectDir)bin\en-us\CommerceMessageManager.resouces.dll
-copy $(ProjectDir)lib\bin\en-us\CommerceMessageManager.resources.dll $(ProjectDir)bin\en-us\CommerceMessageManager.resouces.dll</PreBuildEvent>
+copy $(ProjectDir)lib\bin\en-us\CommerceMessageManager.resources.dll $(ProjectDir)bin\en-us\CommerceMessageManager.resouces.dll
+
+:end</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
