@@ -133,7 +133,18 @@ angular.module('bekApp')
       },
 
       changePassword: function(passwordData) {
-        return $http.put('/profile/password', passwordData);
+        var deferred = $q.defer();
+
+        $http.put('/profile/password', passwordData).then(function(response) {
+          console.log(response);
+          if (response.data === '"Password update successful"') {
+            deferred.resolve(response.data);
+          } else {
+            deferred.reject(response.data);
+          }
+        });
+
+        return deferred.promise;
       }
     };
 
