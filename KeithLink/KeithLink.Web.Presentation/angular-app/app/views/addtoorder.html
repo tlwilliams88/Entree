@@ -193,7 +193,7 @@
               </div>
               <div class="table-cell col-md-1 table-col-input hidden-xs hidden-sm" ng-show="useParlevel">
                 {{item.parlevel}}
-                <input style="width: calc(100% - 20px);" type="text" class="text-right" integer ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                <input style="width: calc(100% - 20px);" type="text" class="text-right" allow-one-positive-decimal ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
               </div>
               <div class="table-cell col-md-1 table-col-input col-xs-2">
                 <ng-form class="hidden-print" name="quantityForm">
