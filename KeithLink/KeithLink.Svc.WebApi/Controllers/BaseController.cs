@@ -13,6 +13,7 @@ using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	[RequireHttps]
 	[GlobalExceptionFilterAttribute]
 	public class BaseController : ApiController
     {
@@ -49,7 +50,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     System.Security.Principal.GenericPrincipal genPrincipal = new System.Security.Principal.GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
-					if (Request.Headers.GetValues("cataloginfo").Any())
+					if (Request.Headers.Contains("cataloginfo"))
 					{
 						this.RequestCatalogInfo = JsonConvert.DeserializeObject<CatalogInfo>(Request.Headers.GetValues("cataloginfo").FirstOrDefault().ToString());
 					}
