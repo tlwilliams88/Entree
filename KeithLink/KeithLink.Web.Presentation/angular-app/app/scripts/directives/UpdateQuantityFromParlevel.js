@@ -20,7 +20,7 @@ angular.module('bekApp')
         if(scope.$modelValue || scope.$modelValue === undefined){
           var amountOnHand = viewValue;
           if (scope.parlevel > amountOnHand) {
-            scope.quantity = Math.ceil(scope.parlevel) - amountOnHand;
+            scope.quantity = Math.ceil(scope.parlevel - amountOnHand);
           } else {
             scope.quantity = null;
           }

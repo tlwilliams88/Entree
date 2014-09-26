@@ -22,9 +22,10 @@ namespace KeithLink.Svc.Impl.Logic
         private IListLogic _listLogic;
 		private IDivisionRepository _divisionRepository;
         private ICategoryImageRepository _categoryImageRepository;
+        private ICatalogCacheRepository _catalogCacheRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -32,14 +33,25 @@ namespace KeithLink.Svc.Impl.Logic
             _listLogic = listLogic;
 			_divisionRepository = divisionRepository;
             _categoryImageRepository = categoryImageRepository;
+            _catalogCacheRepository = catalogCacheRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            CategoriesReturn returnValue = _catalogRepository.GetCategories(from, size);
-            returnValue = AddCategoryImages(returnValue);
+            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(GetCategoriesCacheKey(from, size));
+            if (categoriesReturn == null)
+            {
+                categoriesReturn = _catalogRepository.GetCategories(from, size);
+                AddCategoryImages(categoriesReturn);
+                AddCategorySearchName(categoriesReturn);
+                _catalogCacheRepository.AddItem<CategoriesReturn>(GetCategoriesCacheKey(from, size), categoriesReturn);
+            }
+            return categoriesReturn;
+        }
 
-            return returnValue;
+        private static string GetCategoriesCacheKey(int from, int size)
+        {
+            return "CategoriesReturn_" + from + "_" + size;
         }
 
         public Product GetProductById(string branch, string id, UserProfile profile)
@@ -50,14 +62,30 @@ namespace KeithLink.Svc.Impl.Logic
             return ret;
         }
 
-        private CategoriesReturn AddCategoryImages(CategoriesReturn returnValue)
+        private void AddCategoryImages(CategoriesReturn returnValue)
         {
             foreach (Category c in returnValue.Categories)
             {
                 c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
             }
+        }
 
-            return returnValue;
+        private void AddCategorySearchName(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
+                c.SearchName = GetCategorySearchName(c.Name);
+                foreach (SubCategory sc in c.SubCategories)
+                    sc.SearchName = GetCategorySearchName(sc.Name);
+            }
+        }
+
+        private string GetCategorySearchName(string categoryName)
+        {
+            // remove ',' and '.', replace '&' with 'and', replace white space and / with _, lowercase
+            if (!String.IsNullOrEmpty(categoryName))
+                return categoryName.Replace("&", "and").Replace(",", "").Replace(" ", "_").Replace("/","_").Replace(".","").ToLower();
+            return categoryName;
         }
 
         private void AddProductImageInfo(Product ret)
@@ -74,12 +102,18 @@ namespace KeithLink.Svc.Impl.Logic
         public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;
-            
+            string categoryName = category;
+
+            // enable category search on either category id or search name
+            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            if (catFromSearchName != null)
+                categoryName = catFromSearchName.Name;
+
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(branch, category, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                ret = _catalogRepository.GetProductsByCategory(branch, category, searchModel);
+                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
             AddFavoriteProductInfoAndNotes(branch, profile, ret);
