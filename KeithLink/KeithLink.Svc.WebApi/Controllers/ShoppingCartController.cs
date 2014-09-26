@@ -23,10 +23,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 		[HttpGet]
-		[ApiKeyedRoute("cart/{branchId}")]
-		public List<ShoppingCart> List(string branchId, bool header = false)
+		[ApiKeyedRoute("cart/")]
+		public List<ShoppingCart> List(bool header = false)
 		{
-			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, branchId, header);
+			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.RequestCatalogInfo, header);
 		}
 
 		[HttpPut]
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
 		[HttpGet]
-		[ApiKeyedRoute("cart/{branchId}/{cartId}")]
+		[ApiKeyedRoute("cart/{cartId}")]
 		public ShoppingCart Cart(Guid cartId)
 		{
 			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, cartId);
@@ -46,10 +46,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		
 		[HttpPost]
-		[ApiKeyedRoute("cart/{branchId}")]
-		public NewItem List(string branchId, ShoppingCart cart)
+		[ApiKeyedRoute("cart/")]
+		public NewItem List(ShoppingCart cart)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, branchId, cart) };
+			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.RequestCatalogInfo, cart) };
 		}
 
 		[HttpDelete]

@@ -23,10 +23,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
         [HttpGet]
-		[ApiKeyedRoute("list/{branchId}")]
-        public List<UserList> List(string branchId, bool header = false)
+		[ApiKeyedRoute("list/")]
+        public List<UserList> List(bool header = false)
         {
-			var model = listLogic.ReadAllLists(this.AuthenticatedUser, branchId, header);
+			var model = listLogic.ReadAllLists(this.AuthenticatedUser, this.RequestCatalogInfo, header);
             return model;
         }
 
@@ -39,31 +39,31 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
         [HttpGet]
-		[ApiKeyedRoute("list/{branchId}/{listId}")]
+		[ApiKeyedRoute("list/{listId}")]
 		public UserList List(Guid listId)
         {
 			return listLogic.ReadList(this.AuthenticatedUser, listId);
         }
 
         [HttpGet]
-		[ApiKeyedRoute("list/{branchId}/labels")]
-        public List<string> ListLabels(string branchId)
+		[ApiKeyedRoute("list/labels")]
+        public List<string> ListLabels()
         {
-			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, branchId);
+			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, this.RequestCatalogInfo);
         }
 
         [HttpGet]
-		[ApiKeyedRoute("list/{branchId}/{listId}/labels")]
-		public List<string> ListLabels(string branchId, Guid listId)
+		[ApiKeyedRoute("list/{listId}/labels")]
+		public List<string> ListLabels(Guid listId)
         {
 			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, listId);
         }
 
         [HttpPost]
-		[ApiKeyedRoute("list/{branchId}")]
-		public NewItem List(string branchId, UserList list)
+		[ApiKeyedRoute("list/")]
+		public NewItem List(UserList list)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, branchId, list) };
+			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, this.RequestCatalogInfo, list) };
 			return newGuid;
         }
 
@@ -94,7 +94,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void UpdateItem(Guid listId, ListItem updatedItem)
         {
-			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem);
+			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem, this.RequestCatalogInfo);
         }
 
 		[HttpDelete]

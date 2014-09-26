@@ -457,7 +457,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'debug',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://localhost:8080/api'
+                      apiEndpoint: 'http://localhost:60607/api'
                   }
               }
           },
@@ -466,7 +466,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://devkeithlink.bekco.com/api'
+                      apiEndpoint: 'https://devkeithlink.bekco.com/api'
                   }
               }
           },
