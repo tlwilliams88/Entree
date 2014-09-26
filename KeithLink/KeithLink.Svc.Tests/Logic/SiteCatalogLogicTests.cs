@@ -20,7 +20,8 @@ namespace KeithLink.Svc.Test.Logic
                 new ProductImageRepositoryImpl(),
                 new ListLogicImpl(new Impl.Repository.Orders.BasketRepositoryImpl(), new ElasticSearchCatalogRepositoryImpl(), new PriceRepositoryImpl(), new ItemNoteLogicImpl(new KeithLink.Svc.Impl.Repository.Orders.BasketRepositoryImpl())),
                 new DivisionRepositoryImpl(),
-                new CategoryImageRepository()
+                new CategoryImageRepository(),
+                new NoCacheCatalogCacheRepositoryImpl()
                 );
         }
         #endregion

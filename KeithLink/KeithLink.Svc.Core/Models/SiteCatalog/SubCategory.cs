@@ -31,6 +31,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "name")]
 		public string Name { get; set; }
 
+        [ElasticProperty(Name = "search_name")]
+        [DataMember(Name = "search_name")]
+        public string SearchName { get; set; }
+
         [ElasticProperty(Name = "description")]
         [DataMember(Name = "description")]
 		public string Description { get; set; }

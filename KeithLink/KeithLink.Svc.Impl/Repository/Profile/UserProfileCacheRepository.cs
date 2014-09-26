@@ -5,25 +5,24 @@ using System.Linq;
 using System.Text;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
-    public class UserProfileCacheRepository : IUserProfileCacheRepository
+    public class UserProfileCacheRepository : CacheRepositoryBase, IUserProfileCacheRepository
     {
         #region attributes
         private static object cacheLock = new object();
-        private const string CACHE_GROUPNAME = "Profile";
-        private const string CACHE_NAME = "Profile";
-        private const string CACHE_PREFIX = "Default";
 
-        private CommerceServer.Foundation.ICacheProvider cache;
+        //implement required base members
+        protected override string CACHE_GROUPNAME { get { return "Profile"; } }
+        protected override string CACHE_NAME { get { return "Profile"; } }
+        protected override string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
         #region ctor
-        public UserProfileCacheRepository()
+        public UserProfileCacheRepository() : base()
         {
-            var cacheContext = CommerceServer.Foundation.PresentationCacheSettings.GetCacheContext(CACHE_GROUPNAME);
-            cache = CommerceServer.Foundation.PresentationTypeLoader.CacheProvider(cacheContext);
         }
         #endregion
 
