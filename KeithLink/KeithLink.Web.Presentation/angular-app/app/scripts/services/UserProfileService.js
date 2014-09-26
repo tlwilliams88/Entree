@@ -121,7 +121,7 @@ angular.module('bekApp')
 
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
-            // TODO: I'm not given the role
+            profile.role = "Owner";
             console.log(profile);
             Service.setProfile(profile);
             deferred.resolve(profile);  
