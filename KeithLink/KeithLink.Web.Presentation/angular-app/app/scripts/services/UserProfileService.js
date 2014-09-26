@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants',
-    function ($http, localStorageService, Constants) {
+  .factory('UserProfileService', [ '$http', '$q', 'localStorageService', 'Constants',
+    function ($http, $q, localStorageService, Constants) {
 
     var Service = {
 
@@ -98,16 +98,38 @@ angular.module('bekApp')
       },
 
       createUser: function(userProfile) {
-        return $http.post('/profile/register', userProfile).then(function(response) {
-          return response.data; //.successResponse.userProfiles[0];
+        var deferred = $q.defer();
+
+        $http.post('/profile/register', userProfile).then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
         });
+
+        return deferred.promise;
       },
 
       updateUser: function(userProfile) {
-        return $http.put('/profile', userProfile).then(function(response) {
-          console.log(response.data);
-          return response.data;
+        var deferred = $q.defer();
+
+        $http.put('/profile', userProfile).then(function(response) {
+
+          var data = response.data;
+
+          if (data.successResponse) {
+            var profile = data.successResponse.userProfiles[0];
+            // TODO: I'm not given the role
+            console.log(profile);
+            Service.setProfile(profile);
+            deferred.resolve(profile);  
+          } else {
+            deferred.reject(data.errorMessage);
+          }
         });
+        return deferred.promise;
       },
 
       changePassword: function(passwordData) {

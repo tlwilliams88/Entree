@@ -9,14 +9,13 @@ angular.module('bekApp')
 
     $scope.updateUserProfile = function(userProfile) {
       userProfile.email = userProfile.emailaddress;
-      UserProfileService.updateUser(userProfile).then(function(response) {
-        if (response.successResponse) {
-          UserProfileService.setProfile(userProfile);
-          $scope.$parent.userProfile = userProfile;
-          $scope.displayMessage('success', 'Successfully updated profile.');
-        } else {
-          $scope.displayMessage('error', 'Error updating profile.');
-        }
+      $scope.updateProfileErrorMessage = null;
+      
+      UserProfileService.updateUser(userProfile).then(function(profile) {
+        $scope.$parent.userProfile = profile;
+        $scope.displayMessage('success', 'Successfully updated profile.');
+      }, function(errorMessage) {
+        $scope.updateProfileErrorMessage = errorMessage;
       });
     };
 
