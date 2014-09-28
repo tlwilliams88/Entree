@@ -15,7 +15,7 @@ angular.module('bekApp')
     restrict: 'A', 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
-        if (directive.INTEGER_REGEXP.test(viewValue)) {
+        if (directive.REGEXP.test(viewValue)) {
           ctrl.$setValidity('allowOnePositiveDecimal', true);
           return parseFloat(viewValue);
         } else {
@@ -27,7 +27,7 @@ angular.module('bekApp')
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
     }, 
-    INTEGER_REGEXP : /^([1-9]\d*|0)(\.\d)?$/
+    REGEXP : /^([1-9]\d*|0)(\.\d)?$/
   };
 
   return directive;

@@ -172,82 +172,83 @@
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
 		<div class="row">
-			<h2 class="col-md-6 hidden-xs hidden-sm">Search Results <span class="smallspinner" loading-spinner="loadingResults"></span></h2>
-			<span class="col-md-6 pull-right hidden-xs hidden-sm" style="width: inherit;">{{totalItems}} results</span>
+			<h2 class="col-md-6 hidden-xs hidden-sm">Search Results</h2>
+			<span class="col-md-6 text-right hidden-xs hidden-sm">{{totalItems}} results</span>
 		</div>
 		
-		<div>
-			<table class="table table-striped" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
-				<thead>
-					<tr>
-						<th style="width:10px;"></th>
-						<th class="hand" ng-click="sortTable('itemnumber')">
-							Item
-							<span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
-						</th>
-						<th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
-							Brand
-							<span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
-						</th>
-						<th class="hand" ng-click="sortTable('name_not_analyzed')">
-							Name
-							<span sort-icons field="'name_not_analyzed'" sortorder="asc" sortby="sortField"></span>
-						</th>
-						<th class="hidden-sm hidden-xs">
-							Pack/Size
-						</th>
-						<th class="hidden-sm hidden-xs"></th>
-						<th class="hidden-sm hidden-xs" ng-class="{hand: totalItems < 201}" ng-click="sortTable('caseprice')">
-							Price
-							<span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
-						</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }" class="table-striped__desktop-details">
-						<td class="text-light table-icon" style="width:10px;">
-							<span favorite-item-click-handlers><span favorite-icons></span></span>
-						</td>
-						<td>
-							<a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
-						</td>
-						<td class="hidden-sm hidden-xs">
-							{{item.brand_extended_description}}
-						</td>
-						<td>
-							{{item.name}}
-						</td>
-						<td class="hidden-sm hidden-xs">
-							{{item.pack | number}} / {{item.size}}
-						</td>
-						<td class="hidden-sm hidden-xs text-right" item-icons>
-						</td>
-						<td class="hidden-sm hidden-xs">
-							<span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
-						</td>
-						<td class="table-icon table-actions">
-							<a ng-if="canOrderProduct(item)" class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
-							<a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
-						</td>
-					</tr>
-					<tr ng-repeat-end ng-show="showDetails" class="table-striped__mobile-details hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
-						<td colspan=4>
-							<div>
-								<p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
-								<p>Brand: {{item.brand_extended_description}}</p>
-								<p class="large-icon" item-icons>
-								<p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
-								</p>
-							</div>
-						</td>
-					</tr>
-					<tr ng-show="products.length === 0">
-						<td colspan="7">No products found.</td>
-					</tr>
-				</tbody>
-			</table>
-			<div class="text-center sub-content" loading-spinner="loadingResults"></div>
-		</div>
+		<table class="results-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
+			<thead>
+				<tr>
+          <td style="width:10px;"></td>
+          <td class="hand" ng-click="sortTable('itemnumber')">
+            Item
+            <span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
+          </td>
+          <td class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
+            Brand
+            <span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
+          </td>
+          <td class="hand" ng-click="sortTable('name_not_analyzed')">
+            Name
+            <span sort-icons field="'name_not_analyzed'" sortorder="asc" sortby="sortField"></span>
+          </td>
+          <td class="hidden-sm hidden-xs">
+            Pack/Size
+          </td>
+          <td class="hidden-sm hidden-xs"></td>
+          <td class="hidden-sm hidden-xs" ng-class="{hand: totalItems < 201}" ng-click="sortTable('caseprice')">
+            Price
+            <span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
+          </td>
+          <td></td>
+        </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }">
+          <td class="large-icon">
+            <span favorite-item-click-handlers><span favorite-icons></span></span>
+          </td>
+          <td>
+            <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+          </td>
+          <td class="hidden-sm hidden-xs">
+            {{item.brand_extended_description}}
+          </td>
+          <td>
+            {{item.name}}
+          </td>
+          <td class="hidden-sm hidden-xs">
+            {{item.pack | number}} / {{item.size}}
+          </td>
+          <td class="hidden-sm hidden-xs text-right" item-icons>
+          </td>
+          <td class="hidden-sm hidden-xs">
+            <span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
+          </td>
+          <td class="large-icon">
+            <a ng-if="canOrderProduct(item)" class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>
+            <a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
+          </td>
+        </tr>
+        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+          <td colspan="4">
+            <div>
+              <p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
+              <p>Brand: {{item.brand_extended_description}}</p>
+              <p class="large-icon" item-icons>
+              <p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
+              </p>
+            </div>
+          </td>
+        </tr>
+			</tbody>
+			<tfoot>
+				<tr ng-show="products.length === 0">
+					<td colspan="7">No products found.</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<div class="text-center sub-content" loading-spinner="loadingResults"></div>
 	</div>
 </div>

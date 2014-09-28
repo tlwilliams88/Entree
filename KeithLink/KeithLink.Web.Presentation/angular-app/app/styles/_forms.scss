@@ -1,12 +1,3 @@
-.form-control-group {
-  padding-bottom: $gutter-size;
-
-  .form-control-group__label, .form-control-group__input { 
-    display: inline-block;
-    vertical-align: middle;
-  }
-}
-
 form.style-validation-errors {
 
 	input.ng-dirty.ng-invalid {
@@ -17,5 +8,14 @@ form.style-validation-errors {
     color: $color-red;
     font-size: $font-size;
   }
+}
 
+.button-row {
+  button,a {
+    margin-right: 10px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  } 
 }
