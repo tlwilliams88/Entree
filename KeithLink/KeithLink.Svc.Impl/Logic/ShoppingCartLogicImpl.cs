@@ -264,18 +264,20 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				Header = new OrderHeader()
 				{
-					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
-					ControlNumber = int.Parse(orderNumber),
-					CustomerNumber = user.CustomerNumber,
-					UserId = user.EmailAddress,
-					OrderType = OrderType.NormalOrder,
-					OrderFilled = false,
 					OrderingSystem = OrderSource.KeithCom,
-					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
+					CustomerNumber = user.CustomerNumber,
+					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
 					PONumber = string.Empty,
                     Specialinstructions = string.Empty,
-					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-					OrderSendDateTime = DateTime.Now
+					ControlNumber = int.Parse(orderNumber),
+					OrderType = OrderType.NormalOrder,
+                    InvoiceNumber = string.Empty,
+					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+					OrderSendDateTime = DateTime.Now,
+					UserId = user.EmailAddress,
+					OrderFilled = false,
+                    FutureOrder = false
 				},
 				Details = new List<OrderDetail>()
 			};
@@ -287,10 +289,15 @@ namespace KeithLink.Svc.Impl.Logic
 				newOrderFile.Details.Add(new OrderDetail()
 				{
 					ItemNumber = item.ProductId,
-					ItemChange = LineType.Add,
-					LineNumber = (short)(newOrderFile.Details.Count + 1),
 					OrderedQuantity = (short)item.Quantity,
-					SellPrice = (double)item.PlacedPrice
+                    UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
+					SellPrice = (double)item.PlacedPrice,
+                    //Catchweight = 
+					LineNumber = (short)(newOrderFile.Details.Count + 1),
+					ItemChange = LineType.Add,
+                    SubOriginalItemNumber = string.Empty,
+                    ReplacedOriginalItemNumber = string.Empty,
+                    ItemStatus = string.Empty
 				});
 							
 			}	
