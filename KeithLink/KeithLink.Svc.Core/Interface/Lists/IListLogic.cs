@@ -11,21 +11,21 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListLogic
     {
-        Guid CreateList(Guid userId, string branchId, UserList list);
+        Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list);
 		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
 		UserList AddItems(UserProfile user, Guid listId, List<ListItem> newItems, bool allowDuplicates);
 
-		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem);
+		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo);
 		void UpdateList(Guid userId, UserList list);
 
 		void DeleteList(Guid userId, Guid listId);
 		void DeleteItem(Guid userId, Guid listId, Guid itemId);
 		void DeleteItems(Guid userId, Guid listId, List<Guid> itemIds);
 
-		List<UserList> ReadAllLists(UserProfile user, string branchId, bool headerInfoOnly);
+		List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly);
 		UserList ReadList(UserProfile user, Guid listId);
 		List<string> ReadListLabels(Guid userId, Guid listId);
-		List<string> ReadListLabels(Guid userId, string branchId);
+		List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo);
 
 		void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products);
 

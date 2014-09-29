@@ -64,6 +64,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
+		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
 
 
         #endregion
@@ -432,6 +433,15 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_RABBITMQ_ORDER_VHOST, string.Empty);
             }
         }
+
+		public static bool RequireHttps
+		{
+			get
+			{
+				var value = GetValue(KEY_REQUIRE_HTTPS, "false");
+				return ValueParsingUtil.ParseBool(value, "false");
+			}
+		}
 
         #endregion
     }

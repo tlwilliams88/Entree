@@ -35,15 +35,15 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
         }
 
-		public Guid CreateList(Guid userId, string branchId, UserList list)
+		public Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list)
         {
 			var newBasket = new CS.Basket();
-			newBasket.BranchId = branchId.ToLower();
+			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = list.Name;
 			newBasket.Status = BasketStatus;
-			newBasket.Name = list.FormattedName(branchId);
+			newBasket.Name = list.FormattedName(catalogInfo.BranchId);
 
-			return basketRepository.CreateOrUpdateBasket(userId, branchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(branchId)).ToList());
+			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
         }
 
 		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
@@ -56,13 +56,9 @@ namespace KeithLink.Svc.Impl.Logic
             return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
-		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem)
+		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo)
         {
-			var basket = basketRepository.ReadBasket(userId, listId);
-			if (basket == null)
-				return;
-						
-			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(basket.BranchId));
+			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
         }
 
 		public void UpdateList(Guid userId, UserList list)
@@ -104,19 +100,19 @@ namespace KeithLink.Svc.Impl.Logic
         }
 
 
-		public List<UserList> ReadAllLists(UserProfile user, string branchId, bool headerInfoOnly)
+		public List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
         {
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
 
-			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", branchId.ToLower(),FAVORITESLIST))).Any())
+			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST))).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, branchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = branchId, Name = string.Format("l{0}_{1}", branchId.ToLower(), FAVORITESLIST) }, null);
+				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, Name = string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST) }, null);
 				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
-			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -152,10 +148,10 @@ namespace KeithLink.Svc.Impl.Logic
 			return lists.LineItems.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-		public List<string> ReadListLabels(Guid userId, string branchId)
+		public List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo)
         {
 			var lists = basketRepository.ReadAllBaskets(userId);
-			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(branchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
 		private void LookupProductDetails(UserProfile user, UserList list)
@@ -285,5 +281,6 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return updatedList;
 		}
+
 	}
 }
