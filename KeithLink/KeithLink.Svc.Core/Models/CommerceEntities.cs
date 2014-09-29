@@ -11829,6 +11829,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the CatchWeight property.
+	    /// </summary>
+	    /// <value>
+	    /// The CatchWeight property from the property collection.
+	    /// </value>
+		public virtual bool? CatchWeight
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CatchWeight) as bool?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CatchWeight, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProductCategory property.
 	    /// </summary>
 	    /// <value>
@@ -12315,6 +12334,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing Each property.
 	        /// </summary>
 			public const string Each = "Each";
+	
+			/// <summary>
+	        /// Constant for accessing CatchWeight property.
+	        /// </summary>
+			public const string CatchWeight = "CatchWeight";
 	
 			/// <summary>
 	        /// Constant for accessing ProductCategory property.
