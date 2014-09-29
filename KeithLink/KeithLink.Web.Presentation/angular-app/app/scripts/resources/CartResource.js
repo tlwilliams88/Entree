@@ -3,7 +3,7 @@
 angular.module('bekApp')
   .factory('Cart', [ '$resource', 'UserProfileService', 
   function ($resource, UserProfileService) {
-    return $resource('/cart/:branchId/:cartId', { }, {
+    return $resource('/cart/:cartId', { }, {
 
       // defaults: GET, QUERY, SAVE
 
