@@ -7,7 +7,7 @@
         <span class="text-white user-info__name">{{userProfile.displayName}}</span>  
       </div>
       <div>
-        <span class="user-info__job-title">{{userProfile.role}}</span>
+        <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
       </div>
     </div>
     <div class="person-info__section text-white">
@@ -134,7 +134,8 @@
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
           <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
-            <select ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeLocation()"></select>
+            <select ng-if="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeBranch()"></select>
+            <select ng-if="isOrderEntryCustomer" ng-options="customer.customerName for customer in userProfile.user_customers" ng-model="currentLocation" ng-change="changeCustomerLocation()"></select>
           </div>
         </div>
         <div class="col-md-4">
@@ -153,7 +154,7 @@
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span> 
-                <span class="user-info__job-title">{{userProfile.role}}</span>
+                <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-default" ui-sref="menu.accountdetails">Account Settings</button>
                   <button class="btn btn-default" ng-click="logout()">Sign Out</button>
