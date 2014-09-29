@@ -15,6 +15,11 @@ angular.module('bekApp')
     restrict: 'A', 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
+        if (typeof viewValue === 'string' && viewValue.indexOf('.') === 0) {
+          // add a leading zero if value starts with a decimal
+          ctrl.$viewValue = '0' + viewValue;
+          ctrl.$render();
+        }
         if (directive.REGEXP.test(viewValue)) {
           ctrl.$setValidity('allowOnePositiveDecimal', true);
           return parseFloat(viewValue);
