@@ -38,14 +38,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         {
             int size = GetProductPagingSize(searchModel.Size);
 
-            List<string> childCategories = 
-                GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
+            //List<string> childCategories = 
+            //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, category);
 
-            string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
+            //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
-            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "categoryid" }, categorySearch);
+            dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
+                filterTerms);
 
             return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
         }
@@ -77,9 +78,29 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                         use_dis_max = true
                                     }
                                 },
-                                filter = filterTerms
+                                filter = new { query = filterTerms }
                             }
                         },
+                        functions = BuildPreferredItemBoostFunctions(),
+                        score_mode = "max",
+                        boost_mode = "multiply"
+                    }
+                },
+                sort = BuildSort(sortField, sortDir),
+                aggregations = ElasticSearchAggregations
+            };
+        }
+        private dynamic BuildBoolFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject query)
+        {
+            return new
+            {
+                from = from,
+                size = size,
+                query = new
+                {
+                    function_score = new
+                    {
+                        query,
                         functions = BuildPreferredItemBoostFunctions(),
                         score_mode = "max",
                         boost_mode = "multiply"
@@ -100,7 +121,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     };
         }
 
-        private ExpandoObject BuildFilterTerms(string facetFilters)
+        private dynamic BuildFilterTerms(string facetFilters, string category="")
         {
             List<dynamic> facetTerms = new List<dynamic>();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
@@ -116,11 +137,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             List<dynamic> fieldFilterTerms = BuildStatusFilter();
+            List<dynamic> categoryFilterTerms = BuildCategoryFilter(category);
 
             ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms, must_not = fieldFilterTerms });
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms, must_not = fieldFilterTerms, should = categoryFilterTerms });
 
             return filterTerms;
+
         }
 
         private static List<dynamic> BuildStatusFilter() //filter out items with unwanted statuses
@@ -130,10 +153,25 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             
             foreach (string s in valuesToFilter)
             {
-                fieldFilterTerms.Add(new { query = new { match = new { status1_not_analyzed = s } } });
+                fieldFilterTerms.Add(new { match = new { status1_not_analyzed = s } });
             }
 
             return fieldFilterTerms;
+        }
+
+        private static List<dynamic> BuildCategoryFilter(string category) //filter out items with unwanted statuses
+        {
+            List<dynamic> categoryFilterTerms = new List<dynamic>();
+
+            if (String.IsNullOrEmpty(category))
+                return categoryFilterTerms;
+
+            categoryFilterTerms.Add(
+                new { multi_match =
+                    new { query = category, fields = 
+                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } });
+
+            return categoryFilterTerms;
         }
 
         private static dynamic BuildSort(string sortField, string sortDir)
@@ -415,7 +453,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
                         if (aggregationParams[0] == "categories")
                         {
-                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname", size = 500 } } } });
+                            (aggregationsFromConfig as IDictionary<string, object>).Add(aggregationParams[0], new { terms = new { field = aggregationParams[1], size = 500 }, aggregations = new { category_meta = new { terms = new { field = "categoryname_not_analyzed", size = 500 } } } });
                         }
                         else if (aggregationParams[0] == "brands")
                         {

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService) {
+    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService', 'BrandService',
+        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService, BrandService) {
             // clear keyword search term at top of the page
             if ($scope.userBar) {
                 $scope.userBar.universalSearchTerm = '';
@@ -44,14 +44,26 @@ angular.module('bekApp')
             $scope.paramType = $stateParams.type;
             $scope.categoryName = '';
 
-            function getCategoryById(categoryId) {
+            function getCategoryBySearchName(categorySearchName) {
                 return CategoryService.getCategories().then(function(data) {
                     angular.forEach(data.categories, function(item, index) {
-                        if (item.id === categoryId) {
+                        if (item.search_name === categorySearchName) {
                             $scope.categoryName = item.name;
                         }
                     });
-                    return ProductService.getProductsByCategory(categoryId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+                    return ProductService.getProductsByCategory(categorySearchName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+                });
+            }
+
+            function getHouseBrandById(houseBrandId) {
+                return BrandService.getHouseBrands().then(function(brands) {
+                    angular.forEach(brands, function(item, index) {
+                        if (item.brand_control_label === houseBrandId) {
+                            $scope.categoryName = item.extended_description;
+                        }
+
+                    });
+                    return ProductService.getProductsByHouseBrand(houseBrandId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 });
             }
 
@@ -59,8 +71,8 @@ angular.module('bekApp')
                 var type = $stateParams.type;
 
                 if (type === 'category') {
-                    var categoryId = $stateParams.id;
-                    return getCategoryById(categoryId);
+                    var categorySearchName = $stateParams.id;
+                    return getCategoryBySearchName(categorySearchName);
 
                 } else if (type === 'search') {
 
@@ -68,9 +80,11 @@ angular.module('bekApp')
                     $scope.searchTerm = '\"' + searchTerm + '\"';
                     return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 } else if (type === 'brand') {
-                    var brandName = $stateParams.id;
-                    $scope.selectedBrands.push(brandName);
-                    return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+                    var houseBrandId = $stateParams.id;
+                    return getHouseBrandById(houseBrandId);
+
+                    //$scope.selectedBrands.push(brandName);
+                    //return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 }
             }
 
@@ -98,6 +112,7 @@ angular.module('bekApp')
                             name: $scope.categoryName
                         });
                         $scope.filterCount++;
+                        $scope.houseBrand = '';
                     }
                     if ($stateParams.type === 'search') {
                         $scope.breadcrumbs.push({
@@ -105,6 +120,16 @@ angular.module('bekApp')
                             id: $stateParams.id,
                             name: 'All Categories'
                         });
+                        $scope.houseBrand = '';
+                    }
+                    if ($stateParams.type === 'brand') {
+                        $scope.breadcrumbs.push({
+                            type: 'allcategories',
+                            id: $stateParams.id,
+                            name: $scope.categoryName
+                        });
+                        //check and disable selected brand
+                        $scope.houseBrand = $scope.categoryName;
                     }
 
                     //check for selected facets

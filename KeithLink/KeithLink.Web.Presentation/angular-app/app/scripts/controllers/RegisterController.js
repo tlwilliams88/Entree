@@ -36,24 +36,22 @@ angular.module('bekApp')
     };
 
     $scope.registerNewUser = function(userProfile) {
-      var profile = userProfile;
-      profile.branchid = userProfile.branch.id;
-      
-      // $scope.registrationFormSubmitted = true;
       $scope.registrationErrorMessage = null;
       
-      UserProfileService.createUser(profile).then(function(data) {
+      UserProfileService.createUser(userProfile).then(function(data) {
 
-        if (data.successResponse) {
-          $scope.loginInfo = {};
+        // log user in
+        AuthenticationService.login(userProfile.email, userProfile.password).then(function(profile) {
+          // redirect to account details page
+          $state.go('menu.accountdetails');
+        }, function(error) {
+          $scope.loginErrorMessage = error.data.error_description;
           $scope.clearForm();
-          // $scope.registrationFormSubmitted = false;
+          $scope.loginInfo = {};
+        });
 
-          toaster.pop('success', null, 'Successfully registered! Please log in.');
-        } else {
-          $scope.registrationErrorMessage = data.errorMessage;
-        }
       }, function(error) {
+        $scope.registrationErrorMessage = error;
       });
     };
 

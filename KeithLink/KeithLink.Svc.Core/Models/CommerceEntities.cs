@@ -5207,21 +5207,21 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the GeneralInfotelNumber property.
+	    /// Gets or sets the PhoneNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The GeneralInfotelNumber property from the property collection.
+	    /// The PhoneNumber property from the property collection.
 	    /// </value>
-		public virtual string GeneralInfotelNumber
+		public virtual string PhoneNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfotelNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.PhoneNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfotelNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.PhoneNumber, value);
 			}
 		}
 	
@@ -5797,9 +5797,9 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string FirstName = "FirstName";
 	
 			/// <summary>
-	        /// Constant for accessing GeneralInfo.tel_number property.
+	        /// Constant for accessing PhoneNumber property.
 	        /// </summary>
-			public const string GeneralInfotelNumber = "GeneralInfo.tel_number";
+			public const string PhoneNumber = "PhoneNumber";
 	
 			/// <summary>
 	        /// Constant for accessing GeneralInfo.tel_extension property.

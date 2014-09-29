@@ -4,7 +4,7 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       phonegap: {
         config: {
-          plugins: [],
+          plugins: ['https://github.com/apache/cordova-plugin-network-information.git'],
           platforms: ['ios', 'android'],
           config: {
             template: '_config.xml',
@@ -28,6 +28,8 @@ module.exports = function(grunt) {
       "www/images/{,*/}*",
       "www/lib/{,*/}*",
       "www/scripts/app.js",
+      "www/scripts/configenv.js",
+      "www/index.html",
       "www/scripts/controllers/{,*/}*",
       "www/scripts/directives/{,*/}*",
       "www/scripts/services/{,*/}*",
@@ -76,10 +78,22 @@ cwd: '../../angular-app/app/lib/',  // set working folder / root to copy
     dest: 'www/lib/',    // destination folder
     expand: true           // required when using cwd
   },
-  {
+    {
 cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
     src: 'app.js',           // copy app.js
     dest: 'www/scripts/',    // destination folder
+    expand: true           // required when using cwd
+  },
+      {
+cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
+    src: 'configenv.js',           // copy app.js
+    dest: 'www/scripts/',    // destination folder
+    expand: true           // required when using cwd
+  },
+      {
+cwd: '../../angular-app/app/',  // set working folder / root to copy
+    src: 'index.html',           // copy app.js
+    dest: 'www/',    // destination folder
     expand: true           // required when using cwd
   },
   {

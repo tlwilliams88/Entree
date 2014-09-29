@@ -24,13 +24,15 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
+		private readonly IItemNoteLogic itemNoteLogic;
 
 
-		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository)
+		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository, IItemNoteLogic itemNoteLogic)
         {
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceRepository = priceRepository;
+			this.itemNoteLogic = itemNoteLogic;
         }
 
 		public Guid CreateList(Guid userId, string branchId, UserList list)
@@ -77,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			if (list.Items != null)
 			{
-				itemsToRemove = updateBasket.LineItems.Where(b => !list.Items.Any(c => c.ListItemId.ToString("B").Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
+				itemsToRemove = updateBasket.LineItems.Where(b => !list.Items.Any(c => c.ListItemId.ToCommerceServerFormat().Equals(b.Id))).Select(l => l.Id.ToGuid()).ToList();
 				lineItems = list.Items.Select(s => s.ToLineItem(updateBasket.BranchId)).ToList();
 			}
 			else
@@ -165,14 +167,17 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products); 
+			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user.UserId);
+
 
 			list.Items.ForEach(delegate (ListItem listItem)
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
 				var price = pricing.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-				
+				var note = notes.Where(n => n.ItemNumber.Equals(listItem.ItemNumber));
+
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
@@ -200,6 +205,9 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.QuantityInCart = activeCart.First().LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
 				}
 
+				if (note.Any())
+					listItem.Notes = note.First().Note;
+
 			});
 			
 		}
@@ -210,9 +218,10 @@ namespace KeithLink.Svc.Impl.Logic
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProducts(Guid userId, string branchId, ProductsReturn products)
+		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products)
 		{
 			var list = basketRepository.ReadBasket(userId, string.Format("l{0}_{1}", branchId.ToLower(), FAVORITESLIST));
+			var notes = itemNoteLogic.ReadNotes(userId);
 
 			if (list == null || list.LineItems == null)
 				return;
@@ -220,6 +229,10 @@ namespace KeithLink.Svc.Impl.Logic
 			products.Products.ForEach(delegate(Product product)
 			{
 				product.Favorite = list.LineItems.Where(i => i.ProductId.Equals(product.ItemNumber)).Any();
+				var note = notes.Where(n => n.ItemNumber.Equals(product.ItemNumber));
+				if (note.Any())
+					product.Notes = note.First().Note;
+
 			});
 		}
 

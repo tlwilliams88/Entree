@@ -50,28 +50,8 @@
   }
 }
 
-/* LIST TABLE */
-.custom-lists__table {
-
-  .table-body {
-
-    .table-row {
-      &.bek-reordered-item  {
-        background-color: #f8f8c4 !important;
-      }
-
-      .edit-parlevel {
-        width: calc(100% - 15px);
-      }
-      .edit-label {
-        width: calc(100% - 25px);
-
-        select {
-          width: 110%;
-        }
-      } 
-    }
-  }
+.bek-reordered-item  {
+  background-color: #f8f8c4 !important;
 }
 
 .item-selected {
@@ -87,10 +67,8 @@
   box-shadow: 0px 0px 10px $color-border;
   background-color: $color-white !important;
   
-  [class^='col-'] {
-    width: inherit;
-    float: none;
-    display: inline-block;
+  td {
+    padding: 15px 10px !important;
   }
 
   .hidden-drag {
@@ -100,13 +78,15 @@
 .ui-sortable-helper {
   border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
-  width: 95% !important;
   background-color: #EBE7D9 !important;
+  td {
+    border: none !important;
+  }
 }
-// prevents weird page jumping when reordering items that are scrolled down the page
-.bek-reorder-overflow {
-  overflow: auto;
-}
+// // prevents weird page jumping when reordering items that are scrolled down the page
+// .bek-reorder-overflow {
+//   overflow: auto;
+// }
 
 // highlight row when hovering on desktop only
 @media (min-width: $mobile-max) {
@@ -121,12 +101,6 @@
     z-index: 3; 
     right: 10px; 
     top: 155px;
-  }
-
-  .custom-lists__table {
-    .edit-label {
-      display: inline-block;
-    }
   }
 
   .custom-lists__save {

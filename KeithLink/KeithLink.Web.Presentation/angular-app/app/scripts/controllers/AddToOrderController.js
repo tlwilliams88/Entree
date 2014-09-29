@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'toaster', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
-    function ($scope, $state, $stateParams, $filter, toaster, carts, lists, Constants, CartService, ListSerivce) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
+    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce) {
     
     $scope.carts = carts;
     $scope.lists = lists;
@@ -19,7 +19,7 @@ angular.module('bekApp')
 
     $scope.selectList = function(list) {
       $scope.selectedList = angular.copy(list);
-      $state.go('menu.addtoorder.items', { listId: list.listid });
+      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.id, useParlevel: $scope.useParlevel });
       if ($scope.addToOrderForm) {
         $scope.addToOrderForm.$setPristine();
       }
@@ -33,6 +33,7 @@ angular.module('bekApp')
     $scope.createNewCart = function() {
       var cart = {};
       cart.items = [];
+      cart.id = 'New';
       $scope.selectCart(cart);
     };
 
@@ -92,21 +93,20 @@ angular.module('bekApp')
         $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
 
         $scope.addToOrderForm.$setPristine();
-        toaster.pop('success', null, 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
+        $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
       }, function() {
-        toaster.pop('error', null, 'Error adding items to cart.');
+        $scope.displayMessage('error', 'Error adding items to cart.');
       });
     }
 
     function saveNewCart(items, shipDate) {
       CartService.createCart(items, shipDate).then(function(cart) {
-        // reset quantities
-        $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
         $scope.selectCart(cart);
         $scope.addToOrderForm.$setPristine();
-        toaster.pop('success', null, 'Successfully added ' + items.length + ' Items to New Cart.');
+        $scope.selectList($scope.selectedList);
+        $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
       }, function() {
-        toaster.pop('error', null, 'Error adding items to cart.');
+        $scope.displayMessage('error', 'Error adding items to cart.');
       });
     }
 
@@ -119,7 +119,7 @@ angular.module('bekApp')
         itemsToAdd = deleteFieldInList(itemsToAdd, 'listitemid');
 
         // add items to existing cart
-        if (cart && cart.id) {
+        if (cart && cart.id && cart.id !== 'New') {
           var updatedCart = angular.copy(cart);
           updatedCart.items = itemsToAdd;
           updateCart(updatedCart);
@@ -168,7 +168,12 @@ angular.module('bekApp')
     };
 
     // select default cart
-    $scope.selectCart(CartService.getSelectedCart());
+    var cart = CartService.getSelectedCart($stateParams.cartId);
+    if ($stateParams.cartId === 'New' || !cart) {
+      $scope.createNewCart();
+    } else {
+      $scope.selectCart(cart);
+    }
 
     // select list
     if ($stateParams.listId) {
@@ -177,4 +182,6 @@ angular.module('bekApp')
     if (!$scope.selectedList) {
       $scope.selectList(angular.copy(lists[0]));
     }
+
+    $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
   }]);

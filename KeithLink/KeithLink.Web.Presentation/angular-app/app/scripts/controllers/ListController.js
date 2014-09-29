@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'toaster', 'Constants', 'ListService', 
-    function($scope, $filter, $timeout, $state, $stateParams, toaster, Constants, ListService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 'UtilityService', 
+    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService, UtilityService) {
     
     var orderBy = $filter('orderBy');
 
@@ -38,27 +38,28 @@ angular.module('bekApp')
     };
 
     $scope.revertChanges = function(selectedList) {
-      $scope.selectedList = ListService.findListById(selectedList.listid);
+      $scope.selectedList = angular.copy(ListService.findListById(selectedList.listid));
       $scope.selectedList.isRenaming = false;
       $scope.allSelected = false;
+      $scope.sortList('position', false);
       $scope.listForm.$setPristine();
     };
 
     $scope.createList = function() {
       ListService.createList().then(function(data) {
-        addSuccessAlert('Successfully created a new list.');
+        $scope.displayMessage('success', 'Successfully created a new list.');
         goToNewList(data);
       }, function(error) {
-        addErrorAlert('Error creating list.');
+        $scope.displayMessage('error', 'Error creating list.');
       });
     };
 
     $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
-        $scope.selectedList = angular.copy(ListService.favoritesList);
-        addSuccessAlert('Successfully deleted list.');
+        $scope.selectedList = angular.copy(ListService.getFavoritesList());
+        $scope.displayMessage('success', 'Successfully deleted list.');
       },function(error) {
-        addErrorAlert('Error deleting list.');
+        $scope.displayMessage('error', 'Error deleting list.');
       });
     };
 
@@ -82,9 +83,9 @@ angular.module('bekApp')
 
         $scope.selectedList = updatedList;
         $scope.listForm.$setPristine();
-        addSuccessAlert('Successfully saved list ' + list.name + '.');
+        $scope.displayMessage('success', 'Successfully saved list ' + list.name + '.');
       }, function(error) {
-        addErrorAlert('Error saving list ' + list.name + '.');
+        $scope.displayMessage('error', 'Error saving list ' + list.name + '.');
       });
     };
 
@@ -95,7 +96,7 @@ angular.module('bekApp')
       ListService.updateList(list).then(function(data) {
         $scope.selectedList.isRenaming = false;
         $scope.selectedList.name = listName;
-        addSuccessAlert('Successfully renamed list to ' + listName + '.');
+        $scope.displayMessage('success', 'Successfully renamed list to ' + listName + '.');
       });
     };
 
@@ -126,16 +127,89 @@ angular.module('bekApp')
     Multi-Select events
     ********************/
 
-    $scope.favoriteAll = function() {
+    $scope.deleteMultipleItems = function() {
+      $scope.selectedList.items = $filter('filter')($scope.filteredItems, {isSelected: '!true'});
+      $scope.allSelected = false;
+      $scope.listForm.$setDirty();
+    };
 
+    $scope.addLabels = function(label) {
+      var items = getMultipleSelectedItems();
+      angular.forEach(items, function(item, index) {
+        item.label = label;
+      });
+      $scope.listForm.$setDirty();
+      $scope.showLabels = false;
+    };
+
+    $scope.applyNewLabel = function(label) {
+      var items = getMultipleSelectedItems();
+      angular.forEach(items, function(item, index) {
+        item.isEditing = true;
+        item.label = label;
+      });
+      $scope.addingNewLabel = false;
+      $scope.newLabel = null;
+      unselectAllDraggedItems();
+      $scope.listForm.$setDirty();
+    };
+
+    $scope.createListWithItems = function() {
+      var items = angular.copy(getMultipleSelectedItems());
+      ListService.createList(items).then(function(list) {
+        $scope.displayMessage('success', 'Successfully created list with ' + items.length + ' items.');
+        goToNewList(list);
+      }, function() {
+        $scope.displayMessage('error', 'Error creating new list with ' + items.length + ' items.');
+      });
+    };
+
+    $scope.addItemsToList = function(list) {
+      var items = angular.copy(getMultipleSelectedItems());
+      UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
+      list.items = list.items.concat(items);
+      ListService.updateList(list).then(function(data) {
+        $scope.showLists = false;
+        unselectAllDraggedItems();
+        $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to list ' + list.name + '.');
+      },function(error) {
+        $scope.displayMessage('error', 'Error adding ' + items.length + ' items to list ' + list.name + '.');
+      });
+      // ListService.addMultipleItems(list.listid, items).then(function(data) {
+      //   $scope.showLists = false;
+      //   unselectAllDraggedItems();
+      //   $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to list ' + list.name + '.');
+      // },function(error) {
+      //   $scope.displayMessage('error', 'Error adding ' + items.length + ' items to list ' + list.name + '.');
+      // });
+    };
+
+    $scope.favoriteAll = function() {
+      var items = getMultipleSelectedItems();
+
+      ListService.addMultipleItemsToFavorites(angular.copy(items)).then(function() {
+        angular.forEach(items, function(item) {
+          item.favorite = true;
+        });
+        unselectAllDraggedItems();
+        $scope.displayMessage('success', 'Successfully added ' + items.length + ' items to Favorites.');
+      }, function(error) {
+        $scope.displayMessage('error', 'Error adding ' + items.length + ' items to Favorites.');
+      });
     };
 
     $scope.unfavoriteAll = function() {
+      var items = getMultipleSelectedItems();
 
-    };
-
-    $scope.updateAll = function() {
-
+      ListService.removeMultipleItemsFromFavorites(items).then(function() {
+        angular.forEach(items, function(item) {
+          item.favorite = false;
+        });
+        unselectAllDraggedItems();
+        $scope.displayMessage('success', 'Successfully removed ' + items.length + ' items from Favorites.');
+      }, function(error) {
+        $scope.displayMessage('error', 'Error removing ' + items.length + ' items from Favorites.');
+      });
     };
 
     /********************
@@ -143,8 +217,7 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      var multipleItemsSelectedList = $filter('filter')($scope.filteredItems, {isSelected: 'true'});
-      return multipleItemsSelectedList;
+      return $filter('filter')($scope.filteredItems, {isSelected: 'true'});
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -190,23 +263,13 @@ angular.module('bekApp')
 
     $scope.createListWithItem = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
-
-      if (dragSelection.isSingle) {
-        ListService.createListWithItem(dragSelection.items).then(function(data) {
-          addSuccessAlert('Successfully created a new list with item ' + dragSelection.items.itemnumber + '.');
-          goToNewList(data[0]);
-        }, function(error) {
-          addErrorAlert('Error creating list.');
-        });
       
-      } else {
-        ListService.createList(dragSelection.items).then(function(data) {
-          addSuccessAlert('Successfully created list with ' + dragSelection.items.length + ' items.');
-          goToNewList(data);
-        }, function() {
-          addErrorAlert('Error creating list with ' + dragSelection.items.length + ' items.');
-        });
-      }
+      ListService.createList(dragSelection.items).then(function(data) {
+        $scope.displayMessage('success', 'Successfully created list with ' + dragSelection.items.length + ' items.');
+        goToNewList(data);
+      }, function() {
+        $scope.displayMessage('error', 'Error creating new list with ' + dragSelection.items.length + ' items.');
+      });
     };
 
     $scope.addItemToList = function (event, helper, list) {
@@ -214,34 +277,34 @@ angular.module('bekApp')
 
       if (dragSelection.isSingle) {
         var promise;
-        if (list.listid === ListService.favoritesList.listid) {
+        if (list.listid === ListService.getFavoritesList().listid) {
           promise = ListService.addItemToFavorites(dragSelection.items);
         } else {
-          promise = ListService.addItemToListAndFavorites(list.listid, dragSelection.items);
+          promise = ListService.addItem(list.listid, dragSelection.items);
         }
 
         promise.then(function(data) {
-          addSuccessAlert('Successfully added item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+          $scope.displayMessage('success', 'Successfully added item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
         },function(error) {
-          addErrorAlert('Error adding item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
+          $scope.displayMessage('error', 'Error adding item ' + dragSelection.items.itemnumber + ' to list ' + list.name + '.');
         });
 
       } else {
+        var newItems = angular.copy(dragSelection.items);
         
-        angular.forEach(dragSelection.items, function(item, index) {
-          delete item.listitemid;
-        });
-        // delete label, position, parlevel
-
-        var updatedList = angular.copy(list);
-        updatedList.items = updatedList.items.concat(dragSelection.items);
-
-        ListService.updateList(updatedList).then(function(data) {
-          unselectAllDraggedItems();
-          addSuccessAlert('Successfully added ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
+        UtilityService.deleteFieldFromObjects(newItems, ['listitemid', 'position', 'label', 'parlevel']);
+        list.items = list.items.concat(newItems);
+        ListService.updateList(list).then(function(data) {
+          $scope.displayMessage('success', 'Successfully added ' + newItems.length + ' items to list ' + list.name + '.');
         },function(error) {
-          addErrorAlert('Error adding ' + dragSelection.items.length + ' items to list ' + updatedList.name + '.');
+          $scope.displayMessage('error', 'Error adding ' + newItems.length + ' items to list ' + list.name + '.');
         });
+        // ListService.addMultipleItems(list.listid, newItems).then(function(data) {
+        //   unselectAllDraggedItems();
+        //   $scope.displayMessage('success', 'Successfully added ' + dragSelection.items.length + ' items to list ' + list.name + '.');
+        // },function(error) {
+        //   $scope.displayMessage('error', 'Error adding ' + dragSelection.items.length + ' items to list ' + list.name + '.');
+        // });
       }
 
     };
@@ -263,14 +326,14 @@ angular.module('bekApp')
     };
 
     $scope.generateDragHelper = function(event) {
-      var draggedItem = angular.element(event.target.parentElement.parentElement.parentElement),
+      var draggedRow = angular.element(event.target.parentElement),
         multipleSelectedItems = getMultipleSelectedItems();
 
       var helperElement;
-      if (multipleSelectedItems.length > 0 && draggedItem.hasClass('item-selected')) {
+      if (multipleSelectedItems.length > 0 && draggedRow.hasClass('item-selected')) {
         helperElement = angular.element('<div style="padding:10px;">' + multipleSelectedItems.length + ' Items</div>');
       } else {
-        helperElement = angular.element(draggedItem).clone();
+        helperElement = angular.element(draggedRow).clone();
       }
       return helperElement;
     };
@@ -333,17 +396,6 @@ angular.module('bekApp')
       }
     };
 
-    // ALERTS
-    function addSuccessAlert(message) {
-      addAlert('success', message);
-    }
-    function addErrorAlert(message) {
-      addAlert('error', message);
-    }
-    function addAlert(alertType, message) {
-      toaster.pop(alertType, null, message);
-    }
-
     // FILTER LIST
     $scope.listSearchTerm = '';
     $scope.search = function (row) {
@@ -359,11 +411,11 @@ angular.module('bekApp')
     function initPage() {  
       // switch to specific list or default to Favorites list
       if ($state.params.listId) {
-        $scope.selectedList = angular.copy(ListService.findListById($state.params.listId, $scope.lists));
+        $scope.selectedList = angular.copy(ListService.findListById($state.params.listId));
       } 
       if (!$scope.selectedList) {
-        $scope.selectedList = angular.copy(ListService.favoritesList);
-        $state.go('menu.lists.items', { listId: ListService.favoritesList.listid });
+        $scope.selectedList = angular.copy(ListService.getFavoritesList());
+        $state.go('menu.lists.items', { listId: ListService.getFavoritesList().listid });
       }
 
       // set placeholders for editable item fields

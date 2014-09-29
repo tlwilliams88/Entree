@@ -21,20 +21,37 @@ namespace KeithLink.Svc.Impl.Logic
         private IProductImageRepository _imgRepository;
         private IListLogic _listLogic;
 		private IDivisionRepository _divisionRepository;
+        private ICategoryImageRepository _categoryImageRepository;
+        private ICatalogCacheRepository _catalogCacheRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
             _listLogic = listLogic;
 			_divisionRepository = divisionRepository;
+            _categoryImageRepository = categoryImageRepository;
+            _catalogCacheRepository = catalogCacheRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            return _catalogRepository.GetCategories(from, size);
+            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(GetCategoriesCacheKey(from, size));
+            if (categoriesReturn == null)
+            {
+                categoriesReturn = _catalogRepository.GetCategories(from, size);
+                AddCategoryImages(categoriesReturn);
+                AddCategorySearchName(categoriesReturn);
+                _catalogCacheRepository.AddItem<CategoriesReturn>(GetCategoriesCacheKey(from, size), categoriesReturn);
+            }
+            return categoriesReturn;
+        }
+
+        private static string GetCategoriesCacheKey(int from, int size)
+        {
+            return "CategoriesReturn_" + from + "_" + size;
         }
 
         public Product GetProductById(string branch, string id, UserProfile profile)
@@ -43,6 +60,32 @@ namespace KeithLink.Svc.Impl.Logic
             AddFavoriteProductInfo(branch, profile, ret);
             AddProductImageInfo(ret);
             return ret;
+        }
+
+        private void AddCategoryImages(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
+                c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
+            }
+        }
+
+        private void AddCategorySearchName(CategoriesReturn returnValue)
+        {
+            foreach (Category c in returnValue.Categories)
+            {
+                c.SearchName = GetCategorySearchName(c.Name);
+                foreach (SubCategory sc in c.SubCategories)
+                    sc.SearchName = GetCategorySearchName(sc.Name);
+            }
+        }
+
+        private string GetCategorySearchName(string categoryName)
+        {
+            // remove ',' and '.', replace '&' with 'and', replace white space and / with _, lowercase
+            if (!String.IsNullOrEmpty(categoryName))
+                return categoryName.Replace("&", "and").Replace(",", "").Replace(" ", "_").Replace("/","_").Replace(".","").ToLower();
+            return categoryName;
         }
 
         private void AddProductImageInfo(Product ret)
@@ -59,15 +102,21 @@ namespace KeithLink.Svc.Impl.Logic
         public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;
-            
+            string categoryName = category;
+
+            // enable category search on either category id or search name
+            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            if (catFromSearchName != null)
+                categoryName = catFromSearchName.Name;
+
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(branch, category, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                ret = _catalogRepository.GetProductsByCategory(branch, category, searchModel);
+                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, ret);
+            AddFavoriteProductInfoAndNotes(branch, profile, ret);
             return ret;
         }
 
@@ -82,7 +131,7 @@ namespace KeithLink.Svc.Impl.Logic
                 returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, returnValue);
+            AddFavoriteProductInfoAndNotes(branch, profile, returnValue);
 
             return returnValue;
         }
@@ -98,7 +147,7 @@ namespace KeithLink.Svc.Impl.Logic
                 ret = _catalogRepository.GetProductsBySearch(branch, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfo(branch, profile, ret);
+            AddFavoriteProductInfoAndNotes(branch, profile, ret);
             return ret;
         }
 
@@ -129,13 +178,13 @@ namespace KeithLink.Svc.Impl.Logic
         private void AddFavoriteProductInfo(string branch, UserProfile profile, Product ret)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProducts(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
         }
 
-        private void AddFavoriteProductInfo(string branch, UserProfile profile, ProductsReturn ret)
+        private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProducts(profile.UserId, branch, ret);
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret);
         }
 
 
