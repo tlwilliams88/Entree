@@ -134,7 +134,8 @@
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
           <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
-            <select ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeLocation()"></select>
+            <select ng-if="!userProfile.user_customers" ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeBranch()"></select>
+            <select ng-if="userProfile.user_customers" ng-options="customer.customerName for customer in userProfile.user_customers" ng-model="currentLocation" ng-change="changeCustomerLocation()"></select>
           </div>
         </div>
         <div class="col-md-4">

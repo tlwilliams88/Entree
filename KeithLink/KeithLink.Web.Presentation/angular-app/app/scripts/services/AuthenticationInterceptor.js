@@ -15,7 +15,7 @@ angular.module('bekApp')
         var authData = localStorageService.get(Constants.localStorage.userToken);
         if (authData) {
           if (endpointRequiresToken(config.url)) {
-              config.headers.Authorization = 'Bearer ' + authData.access_token;
+            config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
 
@@ -26,9 +26,9 @@ angular.module('bekApp')
           
           // add branch and customer information
           var catalogInfo = {
-            customerid: '709333',
-            branchid: localStorageService.get(Constants.localStorage.currentLocation)
-          }
+            customerid: localStorageService.get(Constants.localStorage.customerNumber),
+            branchid: localStorageService.get(Constants.localStorage.branchId)
+          };
           config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);
         }
 

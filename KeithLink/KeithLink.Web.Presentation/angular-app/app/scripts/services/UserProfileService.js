@@ -89,8 +89,16 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.currentLocation);
       },
 
-      setCurrentLocation: function(locationId) {
-        localStorageService.set(Constants.localStorage.currentLocation, locationId);
+      setCurrentLocation: function(location) {
+        localStorageService.set(Constants.localStorage.currentLocation, location);
+      },
+
+      setBranchId: function(branchId) {
+        localStorageService.set(Constants.localStorage.branchId, branchId);
+      },
+
+      setCustomerNumber: function(customerNumber) {
+        localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
       },
 
       createUser: function(userProfile) {
