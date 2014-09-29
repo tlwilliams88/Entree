@@ -1607,6 +1607,94 @@ This file contains the Metadata Repository
       </CommerceEntity>
       <!-- UserProfile End -->
 
+      <!-- Organization Start -->
+      <CommerceEntity name="Organization">
+        <DisplayName value="Organization Profile" />
+        <Description value="Business Item that defines an organization" />
+        <Authorization>
+          <Operation name="Query" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Create" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Update" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Delete" >
+            <Claimset name="Everyone"/>
+          </Operation>
+        </Authorization>
+
+        <EntityMappings>
+          <EntityMapping
+								  csType="CommerceServer.Core.Runtime.Profiles.Profile"
+								  csAssembly="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a"
+								  csDefinitionName="Organization"
+                  csArea="Profiles" >
+
+            <!-- Examples of the Property Mappings -->
+            <PropertyMappings>
+              <PropertyMapping property="Id"						csProperty="GeneralInfo.org_id" />
+              <PropertyMapping property="CustomerName"						csProperty="GeneralInfo.name" />
+              <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.trading_partner_number" />
+              <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
+              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
+            </PropertyMappings>
+          </EntityMapping>
+        </EntityMappings>
+
+        <Relationships>
+        </Relationships>
+
+      </CommerceEntity>
+      <!-- Organization End -->
+      
+      <!-- UserOrganizations Start -->
+      <CommerceEntity name="UserOrganizations">
+        <DisplayName value="User Organizations Profile" />
+        <Description value="Business Item that defines the Organizations that a user has access to" />
+        <Authorization>
+          <Operation name="Query" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Create" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Update" >
+            <Claimset name="Everyone"/>
+          </Operation>
+          <Operation name="Delete" >
+            <Claimset name="Everyone"/>
+          </Operation>
+        </Authorization>
+
+        <EntityMappings>
+          <EntityMapping
+								  csType="CommerceServer.Core.Runtime.Profiles.Profile"
+								  csAssembly="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a"
+								  csDefinitionName="UserOrganizations"
+                  csArea="Profiles" >
+
+            <!-- Examples of the Property Mappings -->
+            <PropertyMappings>
+              <PropertyMapping property="Id"						csProperty="GeneralInfo.user_org_id" />
+              <PropertyMapping property="UserId"						csProperty="GeneralInfo.user_id" />
+              <PropertyMapping property="OrganizationId"						csProperty="GeneralInfo.org_id" />
+              <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
+              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
+            </PropertyMappings>
+          </EntityMapping>
+        </EntityMappings>
+
+        <Relationships>
+          <Relationship name="OrganizationUser" type="Relationship" modelName="UserProfile" isMultipleItems="true" />
+          <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="false" />
+        </Relationships>
+
+      </CommerceEntity>
+      <!-- UserOrganizations End -->
+
       <!-- Address Start -->
       <CommerceEntity
 				name="Address">

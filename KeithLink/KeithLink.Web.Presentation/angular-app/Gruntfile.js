@@ -42,7 +42,7 @@ module.exports = function (grunt) {
               tasks: ['newer:jshint:test']
           },
           compass: {
-              files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+              files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/styles/**/*.{scss,sass}'],
               tasks: ['compass:server', 'autoprefixer']
           },
           gruntfile: {
@@ -466,7 +466,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://devkeithlink.bekco.com/api'
+                      apiEndpoint: 'https://shopapidev.benekeith.com'
                   }
               }
           },

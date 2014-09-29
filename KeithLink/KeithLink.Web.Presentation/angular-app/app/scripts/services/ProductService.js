@@ -13,10 +13,6 @@ angular.module('bekApp')
       var defaultPageSize = 50,
         defaultStartingIndex = 0;
 
-      function getBranch() {
-        return UserProfileService.getCurrentBranchId();
-      }
-
       function concatenateNestedParameters(name, list) {
         var filters = name + ':';
         angular.forEach(list, function(item, index) {
@@ -66,7 +62,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/' + getBranch() + '/' + searchTerm + '/products', {
+          return $http.get('/catalog/search/' + searchTerm + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -111,7 +107,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryName + '/products', {
+          return $http.get('/catalog/search/category/' + categoryName + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -157,7 +153,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/' + getBranch() + '/brands/house/' + houseBrandId, {
+          return $http.get('/catalog/search/brands/house/' + houseBrandId, {
             params: {
               size: pageSize,
               from: index,
@@ -173,7 +169,7 @@ angular.module('bekApp')
         getProductDetails: function(id) {
           var returnProduct;
           if (!Service.selectedProduct.name) {
-            returnProduct = $http.get('/catalog/product/' + getBranch() + '/' + id).then(function(response) {
+            returnProduct = $http.get('/catalog/product/' + id).then(function(response) {
               return response.data;
             });
           } else {

@@ -168,10 +168,11 @@ angular.module('bekApp')
     };
 
     // select default cart
-    if ($stateParams.cartId === 'New') {
+    var cart = CartService.getSelectedCart($stateParams.cartId);
+    if ($stateParams.cartId === 'New' || !cart) {
       $scope.createNewCart();
     } else {
-      $scope.selectCart(CartService.getSelectedCart($stateParams.cartId)); 
+      $scope.selectCart(cart);
     }
 
     // select list

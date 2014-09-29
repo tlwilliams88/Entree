@@ -1,4 +1,7 @@
-﻿using KeithLink.Svc.WebApi.Attribute;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.WebApi.Attribute;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,12 +13,14 @@ using System.Web.Http.Cors;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	[RequireHttps]
 	[GlobalExceptionFilterAttribute]
 	public class BaseController : ApiController
     {
         #region attributes
         private Core.Interface.Profile.IUserProfileRepository _userRepo;
         private Core.Models.Profile.UserProfile _user;
+		
         #endregion
 
         #region ctor
@@ -44,6 +49,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                     System.Security.Principal.GenericPrincipal genPrincipal = new System.Security.Principal.GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
+
+					if (Request.Headers.Contains("cataloginfo"))
+					{
+						this.RequestCatalogInfo = JsonConvert.DeserializeObject<CatalogInfo>(Request.Headers.GetValues("cataloginfo").FirstOrDefault().ToString());
+					}
+
                 }
                 else
                 {
@@ -87,6 +98,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 					return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity;
 			}
         }
+
+		public CatalogInfo RequestCatalogInfo { get; set; }
 		
         #endregion
     }

@@ -7,7 +7,7 @@ angular.module('bekApp')
   var authInterceptorServiceFactory = {
     request: function (config) {
 
-      // do not alter requests for html templates or the service locator, all api requests start with a '/'
+      // do not alter requests for html templates, all api requests start with a '/'
       if (config.url.indexOf('/') === 0) {
         config.headers = config.headers || {};
 
@@ -18,10 +18,20 @@ angular.module('bekApp')
               config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
-        // add api key to request headers, do not add to /authen request
+
+        // do not add the following headers to /authen request
         if (config.url.indexOf('/authen') === -1) {
+          // add api key to request headers
           config.headers['api-key'] = ENV.apiKey;
+          
+          // add branch and customer information
+          var catalogInfo = {
+            customerid: '709333',
+            branchid: localStorageService.get(Constants.localStorage.currentLocation)
+          }
+          config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);
         }
+
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;

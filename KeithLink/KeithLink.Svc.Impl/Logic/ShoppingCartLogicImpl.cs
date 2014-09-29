@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -39,22 +40,22 @@ namespace KeithLink.Svc.Impl.Logic
 			this.queueRepository = queueRepository;
 			this.itemNoteLogic = itemNoteLogic;
 		}
-		
-		public Guid CreateCart(UserProfile user, string branchId, ShoppingCart cart)
+
+		public Guid CreateCart(UserProfile user, CatalogInfo catalogInfo, ShoppingCart cart)
 		{
 			var newBasket = new CS.Basket();
-			newBasket.BranchId = branchId.ToLower();
+			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
-			newBasket.Name = cart.FormattedName(branchId);
+			newBasket.Name = cart.FormattedName(catalogInfo.BranchId.ToLower());
 
 			if(cart.Active)
-				MarkCurrentActiveCartAsInactive(user, branchId.ToLower());
+				MarkCurrentActiveCartAsInactive(user, catalogInfo.BranchId.ToLower());
 
 			newBasket.Active = cart.Active;
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
-			return basketRepository.CreateOrUpdateBasket(user.UserId, branchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(branchId.ToLower())).ToList());
+			return basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
 		}
 
 		public Guid? AddItem(UserProfile user, Guid cartId, ShoppingCartItem newItem)
@@ -142,10 +143,10 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
-		public List<ShoppingCart> ReadAllCarts(UserProfile user, string branchId, bool headerInfoOnly)
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
-			var listForBranch = lists.Where(b => b.BranchId.Equals(branchId.ToLower()) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && b.Status.Equals(BasketStatus));
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -312,5 +313,7 @@ namespace KeithLink.Svc.Impl.Logic
 						
 			return orderNumber; //Return actual order number
 		}
+
+		
 	}
 }

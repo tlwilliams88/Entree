@@ -1,0 +1,85 @@
+/*
+for IE8 support use add code to tr ng-repeat
+ng-class="{ odd : $odd, even: $even }"
+*/
+table.results-table {
+  font-size: 11px;
+  width: 100%;
+  border-bottom: 1px solid $color-border;
+
+  thead {
+    tr {
+      background-color: $background;
+      td {
+        font-weight: 600;
+      }
+    }
+  }
+  
+  tbody {
+    tr {
+      &.filter-row {
+        background-color: $color-white;
+      }
+      &.odd {
+        background-color: $background;
+      }
+      &.even {
+        background-color: $color-white;
+      }
+    }
+  }
+
+  > thead > tr,
+  > tbody > tr,
+  > tfoot > tr { 
+
+    // this will need to be changed for IE8
+    &:not(.mobile-details-row) {
+      border-top: 1px solid $color-border;
+    }
+
+    > td {
+      padding: 10px 5px;
+
+      // &.table-input {
+      //   padding: 10px 0;
+      // }
+      // &.table-icon {
+
+      // }
+
+      &:first-child {
+        padding-left: 5px;
+        border-left: 1px solid $color-border;
+      }
+      &:last-child {
+        border-right: 1px solid $color-border;
+      }
+
+      input {
+        min-height: 0;
+        padding: 4px;
+        font-size: 11px;
+
+        &.small {
+          width: 40px;
+        }
+      }
+
+      .select-div {
+        border-radius: 0;
+        min-height: 0;
+        width: 125px;
+
+        select {
+          padding: 3px;
+          width: 175px;
+          min-width: 0;
+          min-height: 0;
+          font-size: 11px;
+        }
+      } 
+    }
+  }
+}

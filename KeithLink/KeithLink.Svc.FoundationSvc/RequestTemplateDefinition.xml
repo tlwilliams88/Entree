@@ -434,7 +434,7 @@
       </PropertiesToReturn>
     </Operation>
   </RequestTemplate>
-
+  
   <RequestTemplate id="GetPaymentMethods" group="Profile" cached="true" containsSensitiveData="false">
     <Descriptions>
       <Description culture="en-US" value="Request Template to get all of the payment methods." />

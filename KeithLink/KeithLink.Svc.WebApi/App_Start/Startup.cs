@@ -25,7 +25,7 @@ namespace KeithLink.Svc.WebApi
         public void ConfigureOAuth(IAppBuilder app)
         {
             OAuthAuthorizationServerOptions serverOptions = new OAuthAuthorizationServerOptions(){
-                AllowInsecureHttp = true,
+                AllowInsecureHttp = !KeithLink.Svc.Impl.Configuration.RequireHttps,
                 TokenEndpointPath = new PathString("/authen"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new SimpleAuthorizationServerProvider()

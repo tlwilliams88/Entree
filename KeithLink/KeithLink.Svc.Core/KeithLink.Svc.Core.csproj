@@ -148,6 +148,8 @@
     <Compile Include="Models\Orders\OrderSource.cs" />
     <Compile Include="Models\Orders\OrderType.cs" />
     <Compile Include="Models\Orders\UnitOfMeasure.cs" />
+    <Compile Include="Models\Profile\Customer.cs" />
+    <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
     <Compile Include="Models\SiteCatalog\BaseProductInfo.cs" />

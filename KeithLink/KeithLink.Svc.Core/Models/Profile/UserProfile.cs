@@ -41,5 +41,8 @@ namespace KeithLink.Svc.Core.Models.Profile
         {
             get { return EmailAddress; }
         }
+
+        [DataMember(Name = "user_customers")]
+        public List<Customer> UserCustomers { get; set; }
     }
 }

@@ -1787,25 +1787,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the ImageFilename property.
-	    /// </summary>
-	    /// <value>
-	    /// The ImageFilename property from the property collection.
-	    /// </value>
-		public virtual string ImageFilename
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageFilename) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageFilename, value);
-			}
-		}
-	
-		/// <summary>
 	    /// Gets or sets the InventoryCondition property.
 	    /// </summary>
 	    /// <value>
@@ -1821,158 +1802,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.InventoryCondition, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Description property.
-	    /// </summary>
-	    /// <value>
-	    /// The Description property from the property collection.
-	    /// </value>
-		public virtual string Description
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Description) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Description, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Name property.
-	    /// </summary>
-	    /// <value>
-	    /// The Name property from the property collection.
-	    /// </value>
-		public virtual string Name
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Name) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Name, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the OnSale property.
-	    /// </summary>
-	    /// <value>
-	    /// The OnSale property from the property collection.
-	    /// </value>
-		public virtual bool? OnSale
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.OnSale) as bool?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.OnSale, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ProductCode property.
-	    /// </summary>
-	    /// <value>
-	    /// The ProductCode property from the property collection.
-	    /// </value>
-		public virtual string ProductCode
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ProductCode) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ProductCode, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Rating property.
-	    /// </summary>
-	    /// <value>
-	    /// The Rating property from the property collection.
-	    /// </value>
-		public virtual string Rating
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Rating) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Rating, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ImageHeight property.
-	    /// </summary>
-	    /// <value>
-	    /// The ImageHeight property from the property collection.
-	    /// </value>
-		public virtual int? ImageHeight
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageHeight) as int?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageHeight, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ImageWidth property.
-	    /// </summary>
-	    /// <value>
-	    /// The ImageWidth property from the property collection.
-	    /// </value>
-		public virtual int? ImageWidth
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageWidth) as int?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageWidth, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the IntroductionDate property.
-	    /// </summary>
-	    /// <value>
-	    /// The IntroductionDate property from the property collection.
-	    /// </value>
-		public virtual DateTime? IntroductionDate
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.IntroductionDate) as DateTime?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.IntroductionDate, value);
 			}
 		}
 	
@@ -1996,78 +1825,116 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the ProductSize property.
+	    /// Gets or sets the UPC property.
 	    /// </summary>
 	    /// <value>
-	    /// The ProductSize property from the property collection.
+	    /// The UPC property from the property collection.
 	    /// </value>
-		public virtual string ProductSize
+		public virtual string UPC
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ProductSize) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.UPC) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ProductSize, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.UPC, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the ThumbnailFilename property.
+	    /// Gets or sets the Description property.
 	    /// </summary>
 	    /// <value>
-	    /// The ThumbnailFilename property from the property collection.
+	    /// The Description property from the property collection.
 	    /// </value>
-		public virtual string ThumbnailFilename
+		public virtual string Description
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ThumbnailFilename) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.Description) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ThumbnailFilename, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.Description, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the TargetProductId property.
+	    /// Gets or sets the MfrName property.
 	    /// </summary>
 	    /// <value>
-	    /// The TargetProductId property from the property collection.
+	    /// The MfrName property from the property collection.
 	    /// </value>
-		public virtual string TargetProductId
+		public virtual string MfrName
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.TargetProductId) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.MfrName) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.TargetProductId, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.MfrName, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the TargetVariantId property.
+	    /// Gets or sets the MfrNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The TargetVariantId property from the property collection.
+	    /// The MfrNumber property from the property collection.
 	    /// </value>
-		public virtual string TargetVariantId
+		public virtual string MfrNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.TargetVariantId) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.MfrNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.TargetVariantId, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.MfrNumber, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the Pack property.
+	    /// </summary>
+	    /// <value>
+	    /// The Pack property from the property collection.
+	    /// </value>
+		public virtual string Pack
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Pack) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Pack, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the Size property.
+	    /// </summary>
+	    /// <value>
+	    /// The Size property from the property collection.
+	    /// </value>
+		public virtual string Size
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.Size) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.Size, value);
 			}
 		}
 	
@@ -2136,54 +2003,9 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ParentInternalId = "ParentInternalId";
 	
 			/// <summary>
-	        /// Constant for accessing Image_filename property.
-	        /// </summary>
-			public const string ImageFilename = "Image_filename";
-	
-			/// <summary>
 	        /// Constant for accessing InventoryCondition property.
 	        /// </summary>
 			public const string InventoryCondition = "InventoryCondition";
-	
-			/// <summary>
-	        /// Constant for accessing Description property.
-	        /// </summary>
-			public const string Description = "Description";
-	
-			/// <summary>
-	        /// Constant for accessing Name property.
-	        /// </summary>
-			public const string Name = "Name";
-	
-			/// <summary>
-	        /// Constant for accessing OnSale property.
-	        /// </summary>
-			public const string OnSale = "OnSale";
-	
-			/// <summary>
-	        /// Constant for accessing ProductCode property.
-	        /// </summary>
-			public const string ProductCode = "ProductCode";
-	
-			/// <summary>
-	        /// Constant for accessing Rating property.
-	        /// </summary>
-			public const string Rating = "Rating";
-	
-			/// <summary>
-	        /// Constant for accessing Image_height property.
-	        /// </summary>
-			public const string ImageHeight = "Image_height";
-	
-			/// <summary>
-	        /// Constant for accessing Image_width property.
-	        /// </summary>
-			public const string ImageWidth = "Image_width";
-	
-			/// <summary>
-	        /// Constant for accessing IntroductionDate property.
-	        /// </summary>
-			public const string IntroductionDate = "IntroductionDate";
 	
 			/// <summary>
 	        /// Constant for accessing Brand property.
@@ -2191,24 +2013,34 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string Brand = "Brand";
 	
 			/// <summary>
-	        /// Constant for accessing ProductSize property.
+	        /// Constant for accessing UPC property.
 	        /// </summary>
-			public const string ProductSize = "ProductSize";
+			public const string UPC = "UPC";
 	
 			/// <summary>
-	        /// Constant for accessing Thumbnail_filename property.
+	        /// Constant for accessing Description property.
 	        /// </summary>
-			public const string ThumbnailFilename = "Thumbnail_filename";
+			public const string Description = "Description";
 	
 			/// <summary>
-	        /// Constant for accessing TargetProductId property.
+	        /// Constant for accessing MfrName property.
 	        /// </summary>
-			public const string TargetProductId = "TargetProductId";
+			public const string MfrName = "MfrName";
 	
 			/// <summary>
-	        /// Constant for accessing TargetVariantId property.
+	        /// Constant for accessing MfrNumber property.
 	        /// </summary>
-			public const string TargetVariantId = "TargetVariantId";
+			public const string MfrNumber = "MfrNumber";
+	
+			/// <summary>
+	        /// Constant for accessing Pack property.
+	        /// </summary>
+			public const string Pack = "Pack";
+	
+			/// <summary>
+	        /// Constant for accessing Size property.
+	        /// </summary>
+			public const string Size = "Size";
 	
 		}
 	#endregion
@@ -3201,63 +3033,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			}
 		}
 	
-		/// <summary>
-	    /// Gets or sets the VariantCode property.
-	    /// </summary>
-	    /// <value>
-	    /// The VariantCode property from the property collection.
-	    /// </value>
-		public virtual int? VariantCode
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.VariantCode) as int?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.VariantCode, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ProductColor property.
-	    /// </summary>
-	    /// <value>
-	    /// The ProductColor property from the property collection.
-	    /// </value>
-		public virtual string ProductColor
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ProductColor) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ProductColor, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ProductSize property.
-	    /// </summary>
-	    /// <value>
-	    /// The ProductSize property from the property collection.
-	    /// </value>
-		public virtual string ProductSize
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ProductSize) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ProductSize, value);
-			}
-		}
-	
 		#endregion
 		#region Property Name Projection
 		/// <summary>
@@ -3331,21 +3106,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing InventoryCondition property.
 	        /// </summary>
 			public const string InventoryCondition = "InventoryCondition";
-	
-			/// <summary>
-	        /// Constant for accessing VariantCode property.
-	        /// </summary>
-			public const string VariantCode = "VariantCode";
-	
-			/// <summary>
-	        /// Constant for accessing ProductColor property.
-	        /// </summary>
-			public const string ProductColor = "ProductColor";
-	
-			/// <summary>
-	        /// Constant for accessing ProductSize property.
-	        /// </summary>
-			public const string ProductSize = "ProductSize";
 	
 		}
 	#endregion
@@ -4287,25 +4047,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the Name property.
-	    /// </summary>
-	    /// <value>
-	    /// The Name property from the property collection.
-	    /// </value>
-		public virtual string Name
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Name) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Name, value);
-			}
-		}
-	
-		/// <summary>
 	    /// Gets or sets the IsVirtualCatalog property.
 	    /// </summary>
 	    /// <value>
@@ -4439,116 +4180,40 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the ImageFilename property.
+	    /// Gets or sets the CategoryId property.
 	    /// </summary>
 	    /// <value>
-	    /// The ImageFilename property from the property collection.
+	    /// The CategoryId property from the property collection.
 	    /// </value>
-		public virtual string ImageFilename
+		public virtual string CategoryId
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageFilename) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.CategoryId) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageFilename, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.CategoryId, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the Description property.
+	    /// Gets or sets the PPICode property.
 	    /// </summary>
 	    /// <value>
-	    /// The Description property from the property collection.
+	    /// The PPICode property from the property collection.
 	    /// </value>
-		public virtual string Description
+		public virtual string PPICode
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Description) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.PPICode) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Description, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ImageHeight property.
-	    /// </summary>
-	    /// <value>
-	    /// The ImageHeight property from the property collection.
-	    /// </value>
-		public virtual int? ImageHeight
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageHeight) as int?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageHeight, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the ImageWidth property.
-	    /// </summary>
-	    /// <value>
-	    /// The ImageWidth property from the property collection.
-	    /// </value>
-		public virtual int? ImageWidth
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ImageWidth) as int?;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ImageWidth, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the Brand property.
-	    /// </summary>
-	    /// <value>
-	    /// The Brand property from the property collection.
-	    /// </value>
-		public virtual string Brand
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.Brand) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.Brand, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the CategoryPage property.
-	    /// </summary>
-	    /// <value>
-	    /// The CategoryPage property from the property collection.
-	    /// </value>
-		public virtual string CategoryPage
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.CategoryPage) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.CategoryPage, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.PPICode, value);
 			}
 		}
 	
@@ -4580,11 +4245,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing DisplayName property.
 	        /// </summary>
 			public const string DisplayName = "DisplayName";
-	
-			/// <summary>
-	        /// Constant for accessing Name property.
-	        /// </summary>
-			public const string Name = "Name";
 	
 			/// <summary>
 	        /// Constant for accessing IsVirtualCatalog property.
@@ -4622,34 +4282,14 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ParentInternalId = "ParentInternalId";
 	
 			/// <summary>
-	        /// Constant for accessing Image_filename property.
+	        /// Constant for accessing CategoryId property.
 	        /// </summary>
-			public const string ImageFilename = "Image_filename";
+			public const string CategoryId = "CategoryId";
 	
 			/// <summary>
-	        /// Constant for accessing Description property.
+	        /// Constant for accessing PPICode property.
 	        /// </summary>
-			public const string Description = "Description";
-	
-			/// <summary>
-	        /// Constant for accessing Image_height property.
-	        /// </summary>
-			public const string ImageHeight = "Image_height";
-	
-			/// <summary>
-	        /// Constant for accessing Image_width property.
-	        /// </summary>
-			public const string ImageWidth = "Image_width";
-	
-			/// <summary>
-	        /// Constant for accessing Brand property.
-	        /// </summary>
-			public const string Brand = "Brand";
-	
-			/// <summary>
-	        /// Constant for accessing CategoryPage property.
-	        /// </summary>
-			public const string CategoryPage = "CategoryPage";
+			public const string PPICode = "PPICode";
 	
 		}
 	#endregion
@@ -5472,44 +5112,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the SelectedBranch property.
-	    /// </summary>
-	    /// <value>
-	    /// The SelectedBranch property from the property collection.
-	    /// </value>
-		public virtual string SelectedBranch
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedBranch) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.SelectedBranch, value);
-			}
-		}
-	
-		/// <summary>
-	    /// Gets or sets the SelectedCustomer property.
-	    /// </summary>
-	    /// <value>
-	    /// The SelectedCustomer property from the property collection.
-	    /// </value>
-		public virtual string SelectedCustomer
-		{
-			get
-			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedCustomer) as string;
-			}
-	
-			set
-			{
-				this._commerceEntity.SetPropertyValue(PropertyName.SelectedCustomer, value);
-			}
-		}
-	
-		/// <summary>
 	    /// Gets or sets the Email property.
 	    /// </summary>
 	    /// <value>
@@ -5772,6 +5374,44 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoexpressCheckout, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the SelectedBranch property.
+	    /// </summary>
+	    /// <value>
+	    /// The SelectedBranch property from the property collection.
+	    /// </value>
+		public virtual string SelectedBranch
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedBranch) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.SelectedBranch, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the SelectedCustomer property.
+	    /// </summary>
+	    /// <value>
+	    /// The SelectedCustomer property from the property collection.
+	    /// </value>
+		public virtual string SelectedCustomer
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedCustomer) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.SelectedCustomer, value);
 			}
 		}
 	
@@ -6132,16 +5772,6 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string Password = "Password";
 	
 			/// <summary>
-	        /// Constant for accessing SelectedBranch property.
-	        /// </summary>
-			public const string SelectedBranch = "SelectedBranch";
-	
-			/// <summary>
-	        /// Constant for accessing SelectedCustomer property.
-	        /// </summary>
-			public const string SelectedCustomer = "SelectedCustomer";
-	
-			/// <summary>
 	        /// Constant for accessing Email property.
 	        /// </summary>
 			public const string Email = "Email";
@@ -6210,6 +5840,16 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing GeneralInfo.express_checkout property.
 	        /// </summary>
 			public const string GeneralInfoexpressCheckout = "GeneralInfo.express_checkout";
+	
+			/// <summary>
+	        /// Constant for accessing SelectedBranch property.
+	        /// </summary>
+			public const string SelectedBranch = "SelectedBranch";
+	
+			/// <summary>
+	        /// Constant for accessing SelectedCustomer property.
+	        /// </summary>
+			public const string SelectedCustomer = "SelectedCustomer";
 	
 			/// <summary>
 	        /// Constant for accessing AccountStatus property.
@@ -6518,6 +6158,572 @@ namespace KeithLink.Svc.Core.Models.Generated
 		public static explicit operator UserProfile(CommerceEntity entity)
 		{
 			return new  UserProfile(entity);
+		}
+	}
+	
+	/// <summary>
+	/// A representation of the Organization CommerceEntity in the Metadata system.
+	/// </summary>
+	[GeneratedCode("CommerceServerContrib.CodeGeneration", "1.0.0.0")]
+	[DebuggerNonUserCode]
+	public partial class Organization : ICommerceEntity
+	{
+		private string modelName = "Organization";
+		
+		private CommerceEntity _commerceEntity;
+	
+		/// <summary>
+		/// Get or sets the model name for the profile
+		/// </summary>
+		public string ModelName
+		{ 
+			get
+			{
+				return modelName;
+			}
+	
+			set
+			{
+				modelName = value;
+			}
+		}
+	
+		#region Constructors 
+		/// <summary>
+	    /// Initializes a new instance of the <see cref="Organization"/> class.
+	    /// </summary>
+		public Organization()
+	    {
+			this._commerceEntity = new CommerceEntity(ModelName);
+	    }
+	
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="Organization"/> class.
+	    /// </summary>
+	    /// <param name="entity">An existing CommerceEntity to create a new instance of this class from.</param>
+		public Organization(CommerceEntity entity)
+		{
+			this._commerceEntity = entity;
+		}
+		#endregion
+		#region Entity Properties
+		/// <summary>
+	    /// Gets or sets the CustomerName property.
+	    /// </summary>
+	    /// <value>
+	    /// The CustomerName property from the property collection.
+	    /// </value>
+		public virtual string CustomerName
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CustomerName) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CustomerName, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the CustomerNumber property.
+	    /// </summary>
+	    /// <value>
+	    /// The CustomerNumber property from the property collection.
+	    /// </value>
+		public virtual string CustomerNumber
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CustomerNumber) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CustomerNumber, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the GeneralInfopreferredAddress property.
+	    /// </summary>
+	    /// <value>
+	    /// The GeneralInfopreferredAddress property from the property collection.
+	    /// </value>
+		public virtual string GeneralInfopreferredAddress
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfopreferredAddress) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfopreferredAddress, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the GeneralInfoorgCatalogSet property.
+	    /// </summary>
+	    /// <value>
+	    /// The GeneralInfoorgCatalogSet property from the property collection.
+	    /// </value>
+		public virtual string GeneralInfoorgCatalogSet
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfoorgCatalogSet) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoorgCatalogSet, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the GeneralInfopurchasing property.
+	    /// </summary>
+	    /// <value>
+	    /// The GeneralInfopurchasing property from the property collection.
+	    /// </value>
+		public virtual string GeneralInfopurchasing
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfopurchasing) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfopurchasing, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemuserIdChangedBy property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemuserIdChangedBy property from the property collection.
+	    /// </value>
+		public virtual string ProfileSystemuserIdChangedBy
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemuserIdChangedBy) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemuserIdChangedBy, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemcsadapterDateLastChanged property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemcsadapterDateLastChanged property from the property collection.
+	    /// </value>
+		public virtual DateTime? ProfileSystemcsadapterDateLastChanged
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemcsadapterDateLastChanged) as DateTime?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemcsadapterDateLastChanged, value);
+			}
+		}
+	
+		#endregion
+		#region Property Name Projection
+		/// <summary>
+	    /// Property name constants.
+	    /// </summary>
+		[DebuggerNonUserCode]
+		[GeneratedCode("CommerceServerContrib.CodeGeneration", "1.0.0.0")] 
+		public class PropertyName : CommerceEntity.PropertyName 
+		{
+			/// <summary>
+	        /// Constant for accessing CustomerName property.
+	        /// </summary>
+			public const string CustomerName = "CustomerName";
+	
+			/// <summary>
+	        /// Constant for accessing CustomerNumber property.
+	        /// </summary>
+			public const string CustomerNumber = "CustomerNumber";
+	
+			/// <summary>
+	        /// Constant for accessing GeneralInfo.preferred_address property.
+	        /// </summary>
+			public const string GeneralInfopreferredAddress = "GeneralInfo.preferred_address";
+	
+			/// <summary>
+	        /// Constant for accessing GeneralInfo.org_catalog_set property.
+	        /// </summary>
+			public const string GeneralInfoorgCatalogSet = "GeneralInfo.org_catalog_set";
+	
+			/// <summary>
+	        /// Constant for accessing GeneralInfo.purchasing property.
+	        /// </summary>
+			public const string GeneralInfopurchasing = "GeneralInfo.purchasing";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
+	        /// </summary>
+			public const string ProfileSystemuserIdChangedBy = "ProfileSystem.user_id_changed_by";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.csadapter_date_last_changed property.
+	        /// </summary>
+			public const string ProfileSystemcsadapterDateLastChanged = "ProfileSystem.csadapter_date_last_changed";
+	
+		}
+	#endregion
+		
+	
+		#region CommerceEntity Properties
+		/// <summary>
+	    /// Get or sets the Id Property.
+	    /// </summary>
+		public string Id
+	    {
+			get { return this._commerceEntity.GetPropertyValue(CommerceEntity.PropertyName.Id) as string; }
+	        set { this._commerceEntity.SetPropertyValue(CommerceEntity.PropertyName.Id, value); }
+		}
+	
+		/// <summary>
+	    /// Get or sets the Commerce Entity Property Collection.
+	    /// </summary>
+		public CommercePropertyCollection Properties
+	    {
+			get
+	        {
+				return this._commerceEntity.Properties;
+	        }
+	
+	        set
+	        {
+				this._commerceEntity.Properties = value;
+	        }
+		}
+	
+		/// <summary>
+	    /// Method to return the inner CommerceEntity.
+	    /// </summary>
+	    /// <returns>CommerceEntity representation.</returns>
+		public CommerceEntity ToCommerceEntity()
+	    {
+			return this._commerceEntity;
+	    }
+		#endregion
+	
+		/// <summary>
+	    /// Explict operator to convert a CommerceEntity to the strongly typed Organization
+	    /// </summary>
+	    /// <param name="entity">Base CommerceEntity</param>
+	    /// <returns>Strongly typed Organization</returns>
+		public static explicit operator Organization(CommerceEntity entity)
+		{
+			return new  Organization(entity);
+		}
+	}
+	
+	/// <summary>
+	/// A representation of the UserOrganizations CommerceEntity in the Metadata system.
+	/// </summary>
+	[GeneratedCode("CommerceServerContrib.CodeGeneration", "1.0.0.0")]
+	[DebuggerNonUserCode]
+	public partial class UserOrganizations : ICommerceEntity
+	{
+		private string modelName = "UserOrganizations";
+		
+		private CommerceEntity _commerceEntity;
+	
+		/// <summary>
+		/// Get or sets the model name for the profile
+		/// </summary>
+		public string ModelName
+		{ 
+			get
+			{
+				return modelName;
+			}
+	
+			set
+			{
+				modelName = value;
+			}
+		}
+	
+		#region Constructors 
+		/// <summary>
+	    /// Initializes a new instance of the <see cref="UserOrganizations"/> class.
+	    /// </summary>
+		public UserOrganizations()
+	    {
+			this._commerceEntity = new CommerceEntity(ModelName);
+	    }
+	
+	    /// <summary>
+	    /// Initializes a new instance of the <see cref="UserOrganizations"/> class.
+	    /// </summary>
+	    /// <param name="entity">An existing CommerceEntity to create a new instance of this class from.</param>
+		public UserOrganizations(CommerceEntity entity)
+		{
+			this._commerceEntity = entity;
+		}
+		#endregion
+		#region Entity Properties
+		/// <summary>
+	    /// Gets or sets the UserId property.
+	    /// </summary>
+	    /// <value>
+	    /// The UserId property from the property collection.
+	    /// </value>
+		public virtual string UserId
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.UserId) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.UserId, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the OrganizationId property.
+	    /// </summary>
+	    /// <value>
+	    /// The OrganizationId property from the property collection.
+	    /// </value>
+		public virtual string OrganizationId
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.OrganizationId) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.OrganizationId, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemcsadapterDateLastChanged property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemcsadapterDateLastChanged property from the property collection.
+	    /// </value>
+		public virtual DateTime? ProfileSystemcsadapterDateLastChanged
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemcsadapterDateLastChanged) as DateTime?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemcsadapterDateLastChanged, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemuserIdChangedBy property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemuserIdChangedBy property from the property collection.
+	    /// </value>
+		public virtual string ProfileSystemuserIdChangedBy
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemuserIdChangedBy) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemuserIdChangedBy, value);
+			}
+		}
+	
+		#endregion
+		#region Property Name Projection
+		/// <summary>
+	    /// Property name constants.
+	    /// </summary>
+		[DebuggerNonUserCode]
+		[GeneratedCode("CommerceServerContrib.CodeGeneration", "1.0.0.0")] 
+		public class PropertyName : CommerceEntity.PropertyName 
+		{
+			/// <summary>
+	        /// Constant for accessing UserId property.
+	        /// </summary>
+			public const string UserId = "UserId";
+	
+			/// <summary>
+	        /// Constant for accessing OrganizationId property.
+	        /// </summary>
+			public const string OrganizationId = "OrganizationId";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.csadapter_date_last_changed property.
+	        /// </summary>
+			public const string ProfileSystemcsadapterDateLastChanged = "ProfileSystem.csadapter_date_last_changed";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
+	        /// </summary>
+			public const string ProfileSystemuserIdChangedBy = "ProfileSystem.user_id_changed_by";
+	
+		}
+	#endregion
+	
+		#region Relationship Name Projection
+		/// <summary>
+	    /// Relationship name constants. 
+	    /// </summary>
+		public static class RelationshipName 
+		{
+			/// <summary>
+	        /// Constant for accessing the OrganizationUser relationship.
+	        /// </summary>
+			public const string OrganizationUser = "OrganizationUser";
+			/// <summary>
+	        /// Constant for accessing the UserOrganization relationship.
+	        /// </summary>
+			public const string UserOrganization = "UserOrganization";
+		}
+		#endregion
+	
+		#region Relationships
+		/// <summary>
+	    /// OrganizationUser Relationship.
+	    /// </summary>
+		public List<UserProfile> OrganizationUser
+		{
+			get
+			{
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.OrganizationUser) as CommerceRelationshipList;
+					
+				if(relationship == null)
+				{
+					return null;
+				}
+		
+				return new List<UserProfile>(relationship.Select(c=> (UserProfile)c.Target));
+			}
+		}
+	
+		/// <summary>
+	    /// OrganizationUser Total Item Count.
+	    /// </summary>
+		public int? OrganizationUserTotalItemCount
+	    {
+			get
+	        {
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.OrganizationUser) as CommerceRelationshipList;
+	
+	            if (relationship == null)
+	            {
+					return null;
+	            }
+	
+	            return relationship.TotalItemCount;
+			}
+	    }
+	
+		/// <summary>
+	    /// OrganizationUser First Item Index.
+	    /// </summary>
+	    public int OrganizationUserFirstItemIndex
+	    {
+			get
+	        {
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.OrganizationUser) as CommerceRelationshipList;
+	
+	            if (relationship == null)
+	            {
+					return 0;
+	            }
+	
+	            return relationship.FirstItemIndex;
+			}
+		}
+		/// <summary>
+	    /// UserOrganization Relationship.
+	    /// </summary>
+		public Organization UserOrganization
+		{
+			get
+			{
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.UserOrganization) as CommerceRelationship;
+					
+				if(relationship == null)
+				{
+					return null;
+				}
+		
+				return (Organization)relationship.Target;
+			}
+		}
+	
+		#endregion	
+	
+		#region CommerceEntity Properties
+		/// <summary>
+	    /// Get or sets the Id Property.
+	    /// </summary>
+		public string Id
+	    {
+			get { return this._commerceEntity.GetPropertyValue(CommerceEntity.PropertyName.Id) as string; }
+	        set { this._commerceEntity.SetPropertyValue(CommerceEntity.PropertyName.Id, value); }
+		}
+	
+		/// <summary>
+	    /// Get or sets the Commerce Entity Property Collection.
+	    /// </summary>
+		public CommercePropertyCollection Properties
+	    {
+			get
+	        {
+				return this._commerceEntity.Properties;
+	        }
+	
+	        set
+	        {
+				this._commerceEntity.Properties = value;
+	        }
+		}
+	
+		/// <summary>
+	    /// Method to return the inner CommerceEntity.
+	    /// </summary>
+	    /// <returns>CommerceEntity representation.</returns>
+		public CommerceEntity ToCommerceEntity()
+	    {
+			return this._commerceEntity;
+	    }
+		#endregion
+	
+		/// <summary>
+	    /// Explict operator to convert a CommerceEntity to the strongly typed UserOrganizations
+	    /// </summary>
+	    /// <param name="entity">Base CommerceEntity</param>
+	    /// <returns>Strongly typed UserOrganizations</returns>
+		public static explicit operator UserOrganizations(CommerceEntity entity)
+		{
+			return new  UserOrganizations(entity);
 		}
 	}
 	

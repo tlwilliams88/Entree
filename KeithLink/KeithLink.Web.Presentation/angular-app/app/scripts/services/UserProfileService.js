@@ -93,10 +93,6 @@ angular.module('bekApp')
         localStorageService.set(Constants.localStorage.currentLocation, locationId);
       },
 
-      getCurrentBranchId: function() {
-        return Service.getCurrentLocation();
-      },
-
       createUser: function(userProfile) {
         var deferred = $q.defer();
 
@@ -121,7 +117,7 @@ angular.module('bekApp')
 
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
-            profile.role = "Owner";
+            profile.role = 'Owner';
             console.log(profile);
             Service.setProfile(profile);
             deferred.resolve(profile);  

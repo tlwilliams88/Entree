@@ -326,7 +326,7 @@ angular.module('bekApp')
     };
 
     $scope.generateDragHelper = function(event) {
-      var draggedRow = angular.element(event.target.parentElement.parentElement.parentElement),
+      var draggedRow = angular.element(event.target.parentElement),
         multipleSelectedItems = getMultipleSelectedItems();
 
       var helperElement;

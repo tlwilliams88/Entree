@@ -295,6 +295,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 adProfile = _externalAD.GetUser(csProfile.Email);
             }
 
+            if (false)// TODO - add DB schema and profile changes to dev to fully enable this
+            {
+            // get user organization info
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
+            profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
+
+            var queryOrganizations = new CommerceServer.Foundation.CommerceQueryRelatedItem<CommerceServer.Foundation.CommerceEntity>("UserOrganization", "Organization");
+            profileQuery.RelatedOperations.Add(queryOrganizations);
+
+            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            }
+            // TODO: add user customers from CS
+            
+            //var orgQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("Organization");
+            //orgQuery.SearchCriteria.Model.Properties["Id"] =
+            //    (res.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse).CommerceEntities[0].Properties["OrganizationId"];
+            //CommerceServer.Foundation.CommerceResponse orgRes = Svc.Impl.Helpers.FoundationService.ExecuteRequest(orgQuery.ToRequest());
+
             return new UserProfile(){
                 UserId = Guid.Parse(csProfile.Id),
                 //UserName = adProfile.UserPrincipalName,
@@ -303,7 +321,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 EmailAddress = csProfile.Email,
                 PhoneNumber = csProfile.PhoneNumber,
                 CustomerNumber = csProfile.SelectedCustomer,
-                BranchId = csProfile.SelectedBranch
+                BranchId = csProfile.SelectedBranch,
+                UserCustomers = new List<Customer>() { 
+                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
+                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                }
             };
         }
 
@@ -487,7 +509,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("SelectedCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
-            // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
