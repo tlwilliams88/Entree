@@ -291,6 +291,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 adProfile = _externalAD.GetUser(emailAddress);
             }
 
+            // get user organization info
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
+            profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
+
+            var queryOrganizations = new CommerceServer.Foundation.CommerceQueryRelatedItem<CommerceServer.Foundation.CommerceEntity>("UserOrganization", "Organization");
+            profileQuery.RelatedOperations.Add(queryOrganizations);
+
+            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            
+            //var orgQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("Organization");
+            //orgQuery.SearchCriteria.Model.Properties["Id"] =
+            //    (res.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse).CommerceEntities[0].Properties["OrganizationId"];
+            //CommerceServer.Foundation.CommerceResponse orgRes = Svc.Impl.Helpers.FoundationService.ExecuteRequest(orgQuery.ToRequest());
+
             return new UserProfile(){
                 UserId = Guid.Parse(csProfile.Id),
                 UserName = adProfile.UserPrincipalName,
@@ -446,7 +460,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("SelectedBranch");
             profileQuery.Model.Properties.Add("SelectedCustomer");
 
-            // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
 
