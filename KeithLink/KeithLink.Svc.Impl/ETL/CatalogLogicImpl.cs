@@ -372,6 +372,7 @@ namespace KeithLink.Svc.Impl.ETL
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
+                        CatchWeight = row.GetString("CatchWeight"),
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),

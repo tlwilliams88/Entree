@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public bool Each { get; set; }
 		[DataMember(Name = "storagetemp")]
 		public string StorageTemp { get; set; }
-			
+        [DataMember(Name = "catchweight")]
+        public bool CatchWeight { get; set; }
 	}
 }
