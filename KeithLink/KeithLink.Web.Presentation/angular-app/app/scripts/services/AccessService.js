@@ -11,7 +11,7 @@ angular.module('bekApp')
       },
 
       isOrderEntryCustomer: function() {
-        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() ) );
+        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() ) );
       },
 
       // ROLES
@@ -28,8 +28,8 @@ angular.module('bekApp')
         return ( UserProfileService.getUserRole() === Constants.roles.APPROVER );
       },
 
-      isShopper: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.SHOPPER );
+      isBuyer: function() {
+        return ( UserProfileService.getUserRole() === Constants.roles.BUYER );
       },
 
       isUser: function() {
@@ -39,15 +39,15 @@ angular.module('bekApp')
       // PRIVILEDGES
 
       canBrowseCatalog: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
       },
 
       canManageLists: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
       },
 
       canCreateOrders: function() {
-        return ( Service.isOwner()  || Service.isApprover() || Service.isShopper() );
+        return ( Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
       },
 
       canSubmitOrders: function() {

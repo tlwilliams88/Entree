@@ -31,7 +31,7 @@ angular.module('bekApp')
       UserProfileService.setCustomerNumber($scope.currentLocation.customerNumber);
     };
 
-    if ($scope.userProfile.user_customers) {
+    if ($scope.isOrderEntryCustomer) {
       $scope.currentLocation = $scope.userProfile.user_customers[0];
       $scope.changeCustomerLocation();
     } else {
