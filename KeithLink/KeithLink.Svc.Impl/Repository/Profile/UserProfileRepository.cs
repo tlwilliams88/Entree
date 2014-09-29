@@ -322,6 +322,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 PhoneNumber = csProfile.PhoneNumber,
                 CustomerNumber = csProfile.SelectedCustomer,
                 BranchId = csProfile.SelectedBranch,
+                RoleName = GetUserRole(csProfile.Email),
                 UserCustomers = new List<Customer>() { 
                                         new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                         new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
@@ -544,6 +545,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public UserProfileReturn GetUserProfilesByCustomerName(string customerName)
         {
             throw new NotImplementedException();
+        }
+
+        private string GetUserRole(string email) {
+            string roleName = null;
+
+            if (roleName == null && _externalAD.IsInGroup(email, "owner")) {
+                roleName = "owner";
+            } else if (roleName == null && _externalAD.IsInGroup(email, "approver")) {
+                roleName = "approver";
+            } else if (roleName == null && _externalAD.IsInGroup(email, "buyer")) {
+                roleName = "buyer";
+            } else if (roleName == null && _externalAD.IsInGroup(email, "accounting")) {
+                roleName = "accounting";
+            } else if (roleName == null && _externalAD.IsInGroup(email, "guest")) {
+                roleName = "guest";
+            }
+
+            return roleName;
         }
 
         public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
