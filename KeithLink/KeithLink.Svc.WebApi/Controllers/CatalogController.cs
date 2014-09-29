@@ -49,18 +49,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/category/{branchId}/{categoryId}/products")]
-        public ProductsReturn GetProductsByCategoryId(string branchId, string categoryId, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/search/category/{categoryId}/products")]
+        public ProductsReturn GetProductsByCategoryId(string categoryId, [FromUri] SearchInputModel searchModel)
         {
-			ProductsReturn prods = _catalogLogic.GetProductsByCategory(branchId, categoryId, searchModel, this.AuthenticatedUser);
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.RequestCatalogInfo.BranchId, categoryId, searchModel, this.AuthenticatedUser);
             return prods;
         }
 
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/{branchId}/brands/house/{brandControlLabel}")]
-        public ProductsReturn GetProductsByHouseBrand(string branchId, string brandControlLabel, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/search/brands/house/{brandControlLabel}")]
+        public ProductsReturn GetProductsByHouseBrand(string brandControlLabel, [FromUri] SearchInputModel searchModel)
         {
-            return _catalogLogic.GetHouseProductsByBranch(branchId, brandControlLabel, searchModel, this.AuthenticatedUser);
+            return _catalogLogic.GetHouseProductsByBranch(this.RequestCatalogInfo.BranchId, brandControlLabel, searchModel, this.AuthenticatedUser);
         }
 
         [HttpGet]
@@ -72,11 +72,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [ApiKeyedRoute("catalog/product/{branchId}/{id}")]
-        public Product GetProductById(string branchId, string id)
+        [ApiKeyedRoute("catalog/product/{id}")]
+        public Product GetProductById(string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogLogic.GetProductById(branchId, id, this.AuthenticatedUser);
+            Product prod = _catalogLogic.GetProductById(this.RequestCatalogInfo.BranchId, id, this.AuthenticatedUser);
 
             if (prod == null)
                 return new Product();
@@ -85,10 +85,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/{branchId}/{searchTerms}/products")]
-		public ProductsReturn GetProductsSearch(string branchId, string searchTerms, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
+		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)
         {
-            ProductsReturn prods = _catalogLogic.GetProductsBySearch(branchId, searchTerms, searchModel, this.AuthenticatedUser);
+            ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.RequestCatalogInfo.BranchId, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }
 
