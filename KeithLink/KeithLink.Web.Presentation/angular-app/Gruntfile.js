@@ -466,7 +466,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'https://devkeithlink.bekco.com/api'
+                      apiEndpoint: 'https://shopapidev.benekeith.com'
                   }
               }
           },
