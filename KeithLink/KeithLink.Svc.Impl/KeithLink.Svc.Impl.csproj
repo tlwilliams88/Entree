@@ -157,6 +157,7 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
+    <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
@@ -171,9 +172,11 @@
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\NoCacheCatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoCachePriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />

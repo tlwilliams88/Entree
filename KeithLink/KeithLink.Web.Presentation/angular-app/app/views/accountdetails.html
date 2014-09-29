@@ -9,6 +9,7 @@
   <div class="col-md-7">
 
     <form name="updateProfileForm" class="style-validation-errors form-horizontal" role="form">
+      <p class="text-red">{{updateProfileErrorMessage}}</p>
       <div class="form-group">
         <label for="firstName" class="col-md-2 control-label">First Name</label>
         <div class="col-md-4">
@@ -43,7 +44,7 @@
         </div>
       </div>
       <div class="form-group">
-        <div class="col-md-offset-2 col-md-6">
+        <div class="col-md-offset-2 col-md-6 button-row">
           <button class="btn btn-primary" ng-disabled="updateProfileForm.$invalid || updateProfileForm.$pristine" ng-click="updateUserProfile(userProfile)">Update Profile</button>
           <a ng-click="cancelChanges()">Cancel</a>
         </div>
@@ -74,7 +75,7 @@
         <label for="originalPassword" class="col-md-4 control-label">Old Password</label>
         <div class="col-md-8">
           <span ng-show="changePasswordForm.originalPassword.$error.required && changePasswordForm.originalPassword.$dirty" class="text-red">Password is required</span>
-          <input type="password" class="form-control" required id="originalPassword" name="originalPassword" ng-model="changePasswordData.originalPassword">
+          <input type="password" class="form-control" required id="originalPassword" name="originalPassword" ng-model="changePasswordData.originalpassword">
         </div>
       </div>
       <div class="form-group">

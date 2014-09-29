@@ -67,10 +67,10 @@
 			<li loading-spinner="loadingCategories"></li>
 			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.name })" src="{{category.category_image.url}}" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" src="{{category.category_image.url}}" alt="image">
 					<div class="featured-item__detail">
 						{{category.name}}
-						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.name })" class="text-uppercase">view category</a>
+						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" class="text-uppercase">view category</a>
 					</div>
 				</div>
 			</li>

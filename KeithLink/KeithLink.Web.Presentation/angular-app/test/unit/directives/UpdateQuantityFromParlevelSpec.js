@@ -39,6 +39,12 @@ describe('Directive: UpdateQuantityFromParlevel', function() {
     expect($scope.item.quantity).toBe(3);
   });
 
+  it('should round up quantity when given partial onhand amount', function() {
+    form.onhand.$setViewValue('1.5');
+    $scope.$digest();
+    expect($scope.item.quantity).toBe(2);
+  });
+
   it('should not set quantity when onhand value is above parlevel', function() {
     form.onhand.$setViewValue('5');
     $scope.$digest();
