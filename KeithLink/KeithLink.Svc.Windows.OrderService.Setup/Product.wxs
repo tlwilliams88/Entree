@@ -4,7 +4,7 @@
   <?define AppName="KeithLink Order Service"?>
   <?define MfgName="Ben E. Keith Company"?>
   <?define SourcePath="..\KeithLink.Svc.Windows.OrderService\bin\$(var.Configuration)"?>
-  <?define AppDescription="Polls KeithOnline for a list of items that we have child nutrition labels for and sends the list of items to the mainframe" ?>
+  <?define AppDescription="Polls Rabbit MQ for orders from KeithLink to send to the mainframe" ?>
 
   <Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.0.0.0" Manufacturer="$(var.MfgName)" UpgradeCode="DC9BE621-078E-40C8-8CDB-584E133476AA">
 
@@ -45,7 +45,7 @@
               <File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="no" Vital="yes"/>
+              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="yes" Vital="yes"/>
               <File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.pdb" KeyPath="no" Vital="yes"/>
               <File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="MS_Practices_EnterpriseLibrary_Caching" Name="Microsoft.Practices.EnterpriseLibrary.Caching.dll" DiskId="1" Source="$(var.SourcePath)\Microsoft.Practices.EnterpriseLibrary.Caching.dll" KeyPath="no" Vital="yes"/>

@@ -273,6 +273,7 @@ namespace KeithLink.Svc.Impl.Logic
 					OrderingSystem = OrderSource.KeithCom,
 					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
 					PONumber = string.Empty,
+                    Specialinstructions = string.Empty,
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
 					OrderSendDateTime = DateTime.Now
 				},
