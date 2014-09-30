@@ -18,15 +18,26 @@ angular.module('bekApp')
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
 
+    $scope.branches = branches;
     refreshAccessPermissions();
     
-    $scope.changeLocation = function() {
-      UserProfileService.setCurrentLocation($scope.currentLocation);
+    // for guest users
+    $scope.changeBranch = function() {
+      UserProfileService.setBranchId($scope.currentLocation);
+    }
+    // for order-entry customers
+    $scope.changeCustomerLocation = function() {
+      UserProfileService.setBranchId($scope.currentLocation.customerBranch);
+      UserProfileService.setCustomerNumber($scope.currentLocation.customerNumber);
     };
 
-    $scope.branches = branches;
-    $scope.currentLocation = UserProfileService.profile().branchid;
-    $scope.changeLocation();
+    if ($scope.isOrderEntryCustomer) {
+      $scope.currentLocation = $scope.userProfile.user_customers[0];
+      $scope.changeCustomerLocation();
+    } else {
+      $scope.currentLocation = UserProfileService.profile().branchid;
+      $scope.changeBranch();
+    }
 
     $scope.logout = function() {
       AuthenticationService.logout();

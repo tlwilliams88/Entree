@@ -7,17 +7,19 @@ angular.module('bekApp')
       userProfile: 'userProfile',
       userToken: 'userToken',
       currentLocation: 'currentLocation',
+      branchId: 'branchId',
+      customerNumber: 'customerNumber',
       leadGenInfo: 'leadGenInfo'
     },
 
     servicelocatorUrl: '../servicelocator',
 
     roles: {
-      OWNER: 'Owner',
+      OWNER: 'owner',
       ACCOUNTING: 'Accounting',
       APPROVER: 'Approver',
-      SHOPPER: 'Shopper',
-      GUEST: 'Guest'
+      BUYER: 'Buyer',
+      GUEST: 'guest'
     },
 
     infiniteScrollPageSize: 50
