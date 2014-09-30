@@ -165,8 +165,8 @@
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
-    <Compile Include="Repository\Profile\NoCacheUserProfileCacheRepository.cs" />
-    <Compile Include="Repository\Profile\UserProfileCacheRepository.cs" />
+    <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
+    <Compile Include="Repository\Profile\Cache\UserProfileCacheRepository.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />

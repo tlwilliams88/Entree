@@ -299,7 +299,7 @@ namespace KeithLink.Svc.Impl.Logic
                     UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
 					SellPrice = (double)item.PlacedPrice,
                     //Catchweight = (bool)item.CatchWeight,
-                    Catchweight = (bool)item.CatchWeight,
+                    Catchweight = false,
 					LineNumber = (short)(newOrderFile.Details.Count + 1),
 					ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
