@@ -370,10 +370,11 @@ namespace KeithLink.Svc.Impl.ETL
                         ReplacedItem = row.GetString("ReplacedItem"),
                         ReplacementItem = row.GetString("ReplacementItem"),
                         ChildNutrition = row.GetString(ItemSpec_CNDoc),
+                        Ifda = row.GetString("FDAProductFlag"),
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
-                        CatchWeight = row.GetString("CatchWeight"),
+                        CatchWeight = row.GetString("HowPrice") == "3" ? true : false,
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),
