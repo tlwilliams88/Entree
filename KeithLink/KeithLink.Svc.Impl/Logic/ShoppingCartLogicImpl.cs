@@ -48,6 +48,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = cart.FormattedName(catalogInfo.BranchId.ToLower());
+			newBasket.CustomerId = catalogInfo.CustomerId;
 
 			if(cart.Active)
 				MarkCurrentActiveCartAsInactive(user, catalogInfo.BranchId.ToLower());
@@ -146,7 +147,11 @@ namespace KeithLink.Svc.Impl.Logic
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
-			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && 
+				b.Status.Equals(BasketStatus) && 
+				!string.IsNullOrEmpty(b.CustomerId) && 
+				b.CustomerId.Equals(catalogInfo.CustomerId));
+
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -267,7 +272,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					OrderingSystem = OrderSource.KeithCom,
 					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
-					CustomerNumber = user.CustomerNumber,
+					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
 					PONumber = string.Empty,
                     Specialinstructions = string.Empty,
