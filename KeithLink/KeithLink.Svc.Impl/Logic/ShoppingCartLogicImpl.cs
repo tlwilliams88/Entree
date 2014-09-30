@@ -209,7 +209,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
-					item.CNDoc = prod.CNDoc;
+					item.ChildNutrition = prod.ChildNutrition;
 				}
 				if (price != null)
 				{
