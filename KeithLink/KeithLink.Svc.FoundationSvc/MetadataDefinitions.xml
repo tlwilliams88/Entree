@@ -2099,6 +2099,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
 							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
 							<PropertyMapping property="Active" csProperty="Active"/>
+							<PropertyMapping property="CustomerId" csProperty="CustomerId"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2172,6 +2173,9 @@ This file contains the Metadata Repository
 					</Property>
 					<Property name="Active" dataType="Boolean">
 						<DisplayName value="Active"/>
+					</Property>
+					<Property name="CustomerId" dataType="String">
+						<DisplayName value="CustomerId"/>
 					</Property>
 					
         </Properties>
@@ -2421,7 +2425,8 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Label" csProperty="Label"/>
 							<PropertyMapping property="ParLevel" csProperty="ParLevel" />
 							<PropertyMapping property="Notes" csProperty="Notes"/>
-							<PropertyMapping property="Each" csProperty="Each"/>
+              <PropertyMapping property="Each" csProperty="Each"/>
+              <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2481,6 +2486,9 @@ This file contains the Metadata Repository
 					<Property name="Each" dataType="Boolean">
 						<DisplayName value="Each" />
 					</Property>
+          <Property name="CatchWeight" dataType="Boolean">
+            <DisplayName value="CatchWeight" />
+          </Property>
 
 
 				</Properties>

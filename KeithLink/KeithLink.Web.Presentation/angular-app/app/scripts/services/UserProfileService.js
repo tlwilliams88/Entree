@@ -29,30 +29,6 @@ angular.module('bekApp')
 
           console.log(profile);
 
-          // TEMP: to show different roles
-          if (profile.emailaddress === 'guestuser@gmail.com') {
-            profile.role = 'Guest';
-          } else {
-            profile.role = 'Owner';
-            profile.stores = [{
-              'name': 'Dallas-Ft. Worth',
-              'customerNumber': 453234,
-              'id': 'FDF'
-            }, {
-              'name': 'San Antonio',
-              'customerNumber': 534939,
-              'id': 'FSA'
-            }, {
-              'name': 'Amarillo',
-              'customerNumber': 534939,
-              'id': 'FAM'
-            }, {
-              'name': 'Arkansas',
-              'customerNumber': 534939,
-              'id': 'FAR'
-            }];
-          }
-
           profile.salesRep = {
             'id': 34234,
             'name': 'Heather Hill',
@@ -81,7 +57,7 @@ angular.module('bekApp')
 
       getUserRole: function() {
         if (Service.profile()) {
-          return Service.profile().role;
+          return Service.profile().rolename;
         }
       },
 
@@ -89,8 +65,16 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.currentLocation);
       },
 
-      setCurrentLocation: function(locationId) {
-        localStorageService.set(Constants.localStorage.currentLocation, locationId);
+      setCurrentLocation: function(location) {
+        localStorageService.set(Constants.localStorage.currentLocation, location);
+      },
+
+      setBranchId: function(branchId) {
+        localStorageService.set(Constants.localStorage.branchId, branchId);
+      },
+
+      setCustomerNumber: function(customerNumber) {
+        localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
       },
 
       createUser: function(userProfile) {

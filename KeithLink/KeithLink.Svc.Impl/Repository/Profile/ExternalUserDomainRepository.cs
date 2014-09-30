@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -359,7 +360,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     else
                         try
                         {
-                            return user.IsMemberOf(principal, IdentityType.SamAccountName, groupName);
+                            return user.IsMemberOf(principal, IdentityType.SamAccountName, string.Format("{0} {1}", user.GetCompany(), groupName));
                         }
                         catch
                         {

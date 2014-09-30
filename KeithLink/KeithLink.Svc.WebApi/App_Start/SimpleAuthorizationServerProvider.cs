@@ -38,10 +38,12 @@ namespace KeithLink.Svc.WebApi
                 return;
             }
 
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _userRepo.GetUserProfile(context.UserName);
+
             var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));
             identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
-            identity.AddClaim(new System.Security.Claims.Claim("role", "Owner"));
+            identity.AddClaim(new System.Security.Claims.Claim("role", userReturn.UserProfiles[0].RoleName));
 
             context.Validated(identity);
         }
