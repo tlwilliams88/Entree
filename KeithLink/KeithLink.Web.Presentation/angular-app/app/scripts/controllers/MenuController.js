@@ -9,39 +9,34 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
-    function ($scope, $state, $modal, branches, toaster, Constants, AuthenticationService, UserProfileService, AccessService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'AuthenticationService', 'AccessService', 'LocalStorage',
+    function ($scope, $state, $modal, branches, toaster, AuthenticationService, AccessService, LocalStorage) {
 
     $scope.$state = $state;
 
-    $scope.userProfile = UserProfileService.profile();
+    $scope.userProfile = LocalStorage.getProfile();
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
+    $scope.currentLocation = LocalStorage.getCurrentLocation();
 
     $scope.branches = branches;
     refreshAccessPermissions();
     
     // for guest users
     $scope.changeBranch = function() {
-      UserProfileService.setBranchId($scope.currentLocation);
+      LocalStorage.setBranchId($scope.currentLocation);
+      LocalStorage.setCurrentLocation($scope.currentLocation);
     }
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
-      UserProfileService.setBranchId($scope.currentLocation.customerBranch);
-      UserProfileService.setCustomerNumber($scope.currentLocation.customerNumber);
+      LocalStorage.setBranchId($scope.currentLocation.customerBranch);
+      LocalStorage.setCustomerNumber($scope.currentLocation.customerNumber);
+      LocalStorage.setCurrentLocation($scope.currentLocation);
     };
-
-    if ($scope.isOrderEntryCustomer) {
-      $scope.currentLocation = $scope.userProfile.user_customers[0];
-      $scope.changeCustomerLocation();
-    } else {
-      $scope.currentLocation = UserProfileService.profile().branchid;
-      $scope.changeBranch();
-    }
 
     $scope.logout = function() {
       AuthenticationService.logout();
-      refreshAccessPermissions();
+      // refreshAccessPermissions();
 
       $state.transitionTo('register');
       $scope.displayUserMenu = false;

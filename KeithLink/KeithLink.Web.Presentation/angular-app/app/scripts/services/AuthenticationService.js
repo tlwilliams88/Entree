@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'localStorageService', 'Constants', 'UserProfileService', 'ENV',
-    function ($http, $q, localStorageService, Constants, UserProfileService, ENV) {
+  .factory('AuthenticationService', ['$http', '$q', 'UserProfileService', 'ENV', 'LocalStorage',
+    function ($http, $q, UserProfileService, ENV, LocalStorage) {
 
     var Service = {
 
@@ -23,7 +23,7 @@ angular.module('bekApp')
           expires_at.setSeconds(expires_at.getSeconds() + token.expires_in);
 
           token.expires_at = expires_at;
-          Service.setToken(token);
+          LocalStorage.setToken(token);
           return token;
         });
       },
@@ -39,31 +39,13 @@ angular.module('bekApp')
       },
 
       logout: function() {
-        localStorageService.remove(Constants.localStorage.userProfile);
-        localStorageService.remove(Constants.localStorage.userToken);
-        localStorageService.remove(Constants.localStorage.currentLocation);
-      },
-
-      getToken: function() {
-        return localStorageService.get(Constants.localStorage.userToken);
-      },
-
-      setToken: function(token) {
-        localStorageService.set(Constants.localStorage.userToken, token);
+        LocalStorage.clearAll();
       },
 
       isValidToken: function() {
-        var token = Service.getToken();
+        var token = LocalStorage.getToken();
         var now = new Date();
         return (now < new Date(token.expires_at));
-      },
-
-      getLeadGenInfo: function() {
-        return localStorageService.set(Constants.localStorage.leadGenInfo);
-      },
-
-      setLeadGenInfo: function(leadGenInfo) {
-        localStorageService.set(Constants.localStorage.leadGenInfo, leadGenInfo);
       }
 
     };

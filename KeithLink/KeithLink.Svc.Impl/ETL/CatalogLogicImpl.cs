@@ -33,6 +33,7 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
+        private readonly string ItemSpec_CNDoc_FriendlyName = "childnutrition";
 		
 		private readonly string ProductMapping = @"{
 			  ""product"" : {
@@ -368,11 +369,12 @@ namespace KeithLink.Svc.Impl.ETL
                         BranchId = row.GetString("BranchId"),
                         ReplacedItem = row.GetString("ReplacedItem"),
                         ReplacementItem = row.GetString("ReplacementItem"),
-                        ChildNutrition = row.GetString("CNDoc"),
+                        ChildNutrition = row.GetString(ItemSpec_CNDoc),
+                        Ifda = row.GetString("FDAProductFlag"),
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
-                        CatchWeight = row.GetString("CatchWeight"),
+                        CatchWeight = row.GetString("HowPrice") == "3" ? true : false,
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),
@@ -411,10 +413,9 @@ namespace KeithLink.Svc.Impl.ETL
 			if (item.index.data.ReplacedItem != "000000")
 				item.index.data.ItemSpecification.Add(ItemSpec_Replaced);
 			if (item.index.data.ChildNutrition.Equals("y", StringComparison.CurrentCultureIgnoreCase))
-				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc);
+				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
 			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
 			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
-			
 
             return item;
         }
