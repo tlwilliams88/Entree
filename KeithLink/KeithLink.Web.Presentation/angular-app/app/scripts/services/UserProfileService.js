@@ -8,15 +8,9 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', 'localStorageService', 'Constants',
-    function ($http, $q, localStorageService, Constants) {
+  .factory('UserProfileService', [ '$http', '$q', 'LocalStorage', function ($http, $q, LocalStorage) {
 
     var Service = {
-
-      profile: function() {
-        return localStorageService.get(Constants.localStorage.userProfile);
-      },
-
       getProfile: function(email) {
         var data = { 
           params: {
@@ -39,42 +33,19 @@ angular.module('bekApp')
 
           profile.imageUrl = '../images/placeholder-user.png';
 
-          Service.setProfile(profile);
+          LocalStorage.setProfile(profile);
+          // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
+          if (profile.rolename === 'guest') { 
+            LocalStorage.setBranchId(profile.branchid);
+            LocalStorage.setCurrentLocation(profile.branchid);
+          } else {
+            var currentLocation = profile.user_customers[0];
+            LocalStorage.setCurrentLocation(currentLocation.customerNumber);
+            LocalStorage.setBranchId(currentLocation.customerBranch);
+            LocalStorage.setCustomerNumber(currentLocation.customerNumber);
+          }
           return profile;
         });
-      },
-
-      setProfile: function(profile) {
-        // set display name for user
-        if (profile.firstname === 'guest' && profile.lastname === 'account') {
-          profile.displayname = profile.emailaddress;
-        } else {
-          profile.displayname = profile.firstname + ' ' + profile.lastname;
-        }
-
-        localStorageService.set(Constants.localStorage.userProfile, profile);
-      },
-
-      getUserRole: function() {
-        if (Service.profile()) {
-          return Service.profile().rolename;
-        }
-      },
-
-      getCurrentLocation: function() {
-        return localStorageService.get(Constants.localStorage.currentLocation);
-      },
-
-      setCurrentLocation: function(location) {
-        localStorageService.set(Constants.localStorage.currentLocation, location);
-      },
-
-      setBranchId: function(branchId) {
-        localStorageService.set(Constants.localStorage.branchId, branchId);
-      },
-
-      setCustomerNumber: function(customerNumber) {
-        localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
       },
 
       createUser: function(userProfile) {
@@ -103,7 +74,7 @@ angular.module('bekApp')
             var profile = data.successResponse.userProfiles[0];
             profile.role = 'Owner';
             console.log(profile);
-            Service.setProfile(profile);
+            LocalStorage.setProfile(profile);
             deferred.resolve(profile);  
           } else {
             deferred.reject(data.errorMessage);

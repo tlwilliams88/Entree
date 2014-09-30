@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ENV',
-  function ($q, $location, localStorageService, Constants, ENV) {
+.factory('AuthenticationInterceptor', ['$q', '$location', 'ENV', 'LocalStorage',
+  function ($q, $location, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
@@ -12,7 +12,7 @@ angular.module('bekApp')
         config.headers = config.headers || {};
 
         // add authorization token header if token is present and endpoint requires authorization
-        var authData = localStorageService.get(Constants.localStorage.userToken);
+        var authData = LocalStorage.getToken();
         if (authData) {
           if (endpointRequiresToken(config.url)) {
             config.headers.Authorization = 'Bearer ' + authData.access_token;
@@ -26,8 +26,8 @@ angular.module('bekApp')
           
           // add branch and customer information
           var catalogInfo = {
-            customerid: localStorageService.get(Constants.localStorage.customerNumber),
-            branchid: localStorageService.get(Constants.localStorage.branchId)
+            customerid: LocalStorage.getCustomerNumber(),
+            branchid: LocalStorage.getBranchId()
           };
           config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);
         }
@@ -43,8 +43,7 @@ angular.module('bekApp')
 
      responseError: function (rejection) {
       if (rejection.status === 401) {
-        localStorageService.remove(Constants.localStorage.userProfile);
-        localStorageService.remove(Constants.localStorage.userToken);
+        LocalStorage.clearAll();
         $location.path('/register');
       }
       return $q.reject(rejection);
