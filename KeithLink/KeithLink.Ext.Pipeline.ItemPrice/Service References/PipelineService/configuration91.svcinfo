@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Wais3XjdBRnqoMjrlm+E61Be8Fw=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="73CJa8TecUDCSv0kFUo/LNEbOlU=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IPipelineService">
       <properties>
@@ -112,10 +112,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IPipelineService" contract="PipelineService.IPipelineService" bindingType="basicHttpBinding" address="http://localhost:1317/PipelineService.svc" bindingConfiguration="BasicHttpBinding_IPipelineService">
+    <endpoint name="BasicHttpBinding_IPipelineService" contract="PipelineService.IPipelineService" bindingType="basicHttpBinding" address="http://win2012bek:1317/PipelineService.svc" bindingConfiguration="BasicHttpBinding_IPipelineService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:1317/PipelineService.svc</serializedValue>
+          <serializedValue>http://win2012bek:1317/PipelineService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

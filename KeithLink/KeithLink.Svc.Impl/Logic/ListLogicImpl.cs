@@ -42,6 +42,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.DisplayName = list.Name;
 			newBasket.Status = BasketStatus;
 			newBasket.Name = list.FormattedName(catalogInfo.BranchId);
+			newBasket.CustomerId = catalogInfo.CustomerId;
 
 			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
         }
@@ -112,7 +113,12 @@ namespace KeithLink.Svc.Impl.Logic
 				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
-			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && b.Status.Equals(BasketStatus));
+			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+				b.Status.Equals(BasketStatus) &&
+				!string.IsNullOrEmpty(b.CustomerId) &&
+				b.CustomerId.Equals(catalogInfo.CustomerId));
+
+
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
@@ -183,7 +189,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
-					listItem.CNDoc = prod.CNDoc;
+					listItem.ChildNutrition = prod.ChildNutrition;
 				}
 				if (favorites != null)
 				{

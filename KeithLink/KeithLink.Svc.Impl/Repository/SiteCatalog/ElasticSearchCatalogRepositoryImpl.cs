@@ -320,7 +320,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.CategoryId = oProd._source.categoryid;
             p.ReplacedItem = oProd._source.replaceditem;
             p.ReplacementItem = oProd._source.replacementitem;
-            p.CNDoc = oProd._source.cndoc;
+            p.ChildNutrition = oProd._source.childnutrition;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;
@@ -330,7 +330,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
             //p.Catchweight = oProd._source.catchweight;
-			// TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Nutritional nutritional = new Nutritional();
             if (oProd._source.nutritional != null)
             {
