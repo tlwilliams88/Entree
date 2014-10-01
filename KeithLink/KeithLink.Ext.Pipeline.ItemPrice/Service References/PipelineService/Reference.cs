@@ -41,9 +41,6 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         private string ext_descriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private KeithLink.Ext.Pipeline.ItemPrice.PipelineService.gs1 gs1Field;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string kosherField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -53,6 +50,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         private string manufacturer_numberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private KeithLink.Ext.Pipeline.ItemPrice.PipelineService.nutritional nutritionalField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string packField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -60,6 +60,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string sizeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string temp_zoneField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string upcField;
@@ -159,19 +162,6 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public KeithLink.Ext.Pipeline.ItemPrice.PipelineService.gs1 gs1 {
-            get {
-                return this.gs1Field;
-            }
-            set {
-                if ((object.ReferenceEquals(this.gs1Field, value) != true)) {
-                    this.gs1Field = value;
-                    this.RaisePropertyChanged("gs1");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public string kosher {
             get {
                 return this.kosherField;
@@ -211,6 +201,19 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public KeithLink.Ext.Pipeline.ItemPrice.PipelineService.nutritional nutritional {
+            get {
+                return this.nutritionalField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.nutritionalField, value) != true)) {
+                    this.nutritionalField = value;
+                    this.RaisePropertyChanged("nutritional");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string pack {
             get {
                 return this.packField;
@@ -245,6 +248,19 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
                 if ((object.ReferenceEquals(this.sizeField, value) != true)) {
                     this.sizeField = value;
                     this.RaisePropertyChanged("size");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string temp_zone {
+            get {
+                return this.temp_zoneField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.temp_zoneField, value) != true)) {
+                    this.temp_zoneField = value;
+                    this.RaisePropertyChanged("temp_zone");
                 }
             }
         }
@@ -290,13 +306,16 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         private string brandField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string brand_control_labelField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string brand_extended_descriptionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string casepriceField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string cndocField;
+        private string childnutritionField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private bool favoriteField;
@@ -309,6 +328,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string nonstockField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string notesField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string packagepriceField;
@@ -343,6 +365,19 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string brand_control_label {
+            get {
+                return this.brand_control_labelField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.brand_control_labelField, value) != true)) {
+                    this.brand_control_labelField = value;
+                    this.RaisePropertyChanged("brand_control_label");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string brand_extended_description {
             get {
                 return this.brand_extended_descriptionField;
@@ -369,14 +404,14 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public string cndoc {
+        public string childnutrition {
             get {
-                return this.cndocField;
+                return this.childnutritionField;
             }
             set {
-                if ((object.ReferenceEquals(this.cndocField, value) != true)) {
-                    this.cndocField = value;
-                    this.RaisePropertyChanged("cndoc");
+                if ((object.ReferenceEquals(this.childnutritionField, value) != true)) {
+                    this.childnutritionField = value;
+                    this.RaisePropertyChanged("childnutrition");
                 }
             }
         }
@@ -434,6 +469,19 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public string notes {
+            get {
+                return this.notesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.notesField, value) != true)) {
+                    this.notesField = value;
+                    this.RaisePropertyChanged("notes");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string packageprice {
             get {
                 return this.packagepriceField;
@@ -484,9 +532,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice.PipelineService {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="gs1", Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="nutritional", Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog")]
     [System.SerializableAttribute()]
-    public partial class gs1 : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+    public partial class nutritional : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;

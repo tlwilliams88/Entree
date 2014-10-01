@@ -471,7 +471,7 @@ angular.module('bekApp')
                             count: itemcount
                         });
                     }
-                    if (itemname === 'cndoc') {
+                    if (itemname === 'childnutrition') {
                         itemspecsArray.push({
                             name: itemname,
                             displayname: 'Child Nutrition Sheet',
@@ -515,7 +515,7 @@ angular.module('bekApp')
                 if (name === 'replacementitem') {
                     return 'Replacement Item';
                 }
-                if (name === 'cndoc') {
+                if (name === 'childnutrition') {
                     return 'Child Nutrition Sheet';
                 }
                 if (name === 'nonstock') {

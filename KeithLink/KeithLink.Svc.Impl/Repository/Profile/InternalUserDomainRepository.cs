@@ -127,8 +127,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                         return false;
                     }
-
-
                 }
             }
             catch

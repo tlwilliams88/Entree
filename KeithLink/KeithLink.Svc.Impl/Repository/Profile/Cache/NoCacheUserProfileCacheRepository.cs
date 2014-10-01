@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Profile;
 
-namespace KeithLink.Svc.Impl.Repository.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile.Cache
 {
     public class NoCacheUserProfileCacheRepository : IUserProfileCacheRepository
     {

@@ -22,12 +22,12 @@
     <MetadataSource Address="http://localhost:1317/PipelineService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="PipelineService.xsd" MetadataType="Schema" ID="c4ed72e7-9bb0-4a9c-be97-5be5ba34fa45" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?xsd=xsd2" />
-    <MetadataFile FileName="PipelineService.wsdl" MetadataType="Wsdl" ID="b79cd427-3149-4c26-b981-9f45ac14b89a" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?wsdl" />
-    <MetadataFile FileName="PipelineService1.xsd" MetadataType="Schema" ID="e4a9028a-6b65-4335-8dde-b3aafd4d47e8" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?xsd=xsd1" />
-    <MetadataFile FileName="PipelineService.disco" MetadataType="Disco" ID="ee49e9b9-fc81-4837-b633-e88a3210fcf9" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?disco" />
-    <MetadataFile FileName="PipelineService2.xsd" MetadataType="Schema" ID="e613bd98-3367-4bd4-b369-950545f7dae7" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?xsd=xsd0" />
-    <MetadataFile FileName="PipelineService3.xsd" MetadataType="Schema" ID="7cf8cb0a-61d6-4fde-b16e-7486c2c04abe" SourceId="1" SourceUrl="http://localhost:1317/PipelineService.svc?xsd=xsd3" />
+    <MetadataFile FileName="PipelineService4.xsd" MetadataType="Schema" ID="6087faf7-72ef-4448-9ccf-c4ff74d6f7f9" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?xsd=xsd3" />
+    <MetadataFile FileName="PipelineService41.xsd" MetadataType="Schema" ID="eef01f52-65d5-4a7c-9f25-a72f62054344" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PipelineService42.xsd" MetadataType="Schema" ID="8a5bac0b-f52c-4cfc-9fc5-5b65eed522aa" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PipelineService1.wsdl" MetadataType="Wsdl" ID="ae6d13e8-258d-4727-a55c-479d511dd7e6" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?wsdl" />
+    <MetadataFile FileName="PipelineService43.xsd" MetadataType="Schema" ID="38dc5547-b33a-4fb1-9411-00ed9b5e5b72" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PipelineService1.disco" MetadataType="Disco" ID="e6ef7b93-b126-4313-9e8f-23e75b99de7b" SourceId="1" SourceUrl="http://win2012bek:1317/PipelineService.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

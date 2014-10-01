@@ -22,7 +22,8 @@ namespace KeithLink.Svc.Core
         public const string ROLE_EXTERNAL_ACCOUNTING = "Accounting";
         public const string ROLE_EXTERNAL_GUEST = "Guest";
         public const string ROLE_EXTERNAL_OWNER = "Owner";
-        public const string ROLE_EXTERNAL_PURCHASING = "Purchasing";
+        public const string ROLE_EXTERNAL_PURCHASINGAPPROVER = "Approver";
+        public const string ROLE_EXTERNAL_PURCHASINGBUYER = "Buyer";
 
         public const string ROLE_INTERNAL_DSM_FAQ = "fabq-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FAM = "fama-ls-sys-ac-dsms";

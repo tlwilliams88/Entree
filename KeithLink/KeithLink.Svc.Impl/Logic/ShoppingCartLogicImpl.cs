@@ -214,7 +214,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
-					item.CNDoc = prod.CNDoc;
+					item.ChildNutrition = prod.ChildNutrition;
 				}
 				if (price != null)
 				{
@@ -271,7 +271,7 @@ namespace KeithLink.Svc.Impl.Logic
 				Header = new OrderHeader()
 				{
 					OrderingSystem = OrderSource.KeithCom,
-					Branch = newPurchaseOrder.Properties["BranchId"].ToString(),
+					Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
 					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
 					PONumber = string.Empty,
@@ -281,7 +281,7 @@ namespace KeithLink.Svc.Impl.Logic
                     InvoiceNumber = string.Empty,
 					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
 					OrderSendDateTime = DateTime.Now,
-					UserId = user.EmailAddress,
+					UserId = user.EmailAddress.ToUpper(),
 					OrderFilled = false,
                     FutureOrder = false
 				},
@@ -298,7 +298,8 @@ namespace KeithLink.Svc.Impl.Logic
 					OrderedQuantity = (short)item.Quantity,
                     UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
 					SellPrice = (double)item.PlacedPrice,
-                    Catchweight = (bool)item.CatchWeight,
+                    //Catchweight = (bool)item.CatchWeight,
+                    Catchweight = false,
 					LineNumber = (short)(newOrderFile.Details.Count + 1),
 					ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,

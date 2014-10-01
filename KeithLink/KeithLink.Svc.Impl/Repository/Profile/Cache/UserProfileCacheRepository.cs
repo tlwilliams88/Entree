@@ -7,7 +7,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Repository.Cache;
 
-namespace KeithLink.Svc.Impl.Repository.Profile
+namespace KeithLink.Svc.Impl.Repository.Profile.Cache
 {
     public class UserProfileCacheRepository : CacheRepositoryBase, IUserProfileCacheRepository
     {

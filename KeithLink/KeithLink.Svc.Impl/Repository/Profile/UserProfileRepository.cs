@@ -182,16 +182,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         private void AssertRoleName(string roleName)
         {
-            bool found = false;
+            //bool found = false;
 
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_OWNER, true) == 0) { found = true; }
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_PURCHASING, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_OWNER, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_PURCHASING, true) == 0) { found = true; }
 
-            if (found == false)
-            {
-                throw new ApplicationException("Role name is unknown");
-            }
+            //if (found == false)
+            //{
+            //    throw new ApplicationException("Role name is unknown");
+            //}
         }
 
         /// <summary>
@@ -295,8 +295,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 adProfile = _externalAD.GetUser(csProfile.Email);
             }
 
-            if (false)// TODO - add DB schema and profile changes to dev to fully enable this
-            {
             // get user organization info
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
             profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
@@ -305,13 +303,15 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.RelatedOperations.Add(queryOrganizations);
 
             CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-            }
-            // TODO: add user customers from CS
-            
-            //var orgQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("Organization");
-            //orgQuery.SearchCriteria.Model.Properties["Id"] =
-            //    (res.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse).CommerceEntities[0].Properties["OrganizationId"];
-            //CommerceServer.Foundation.CommerceResponse orgRes = Svc.Impl.Helpers.FoundationService.ExecuteRequest(orgQuery.ToRequest());
+
+            List<Customer> userCustomers = new List<Customer>();
+            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
+                userCustomers.Add(new Customer()
+                {
+                    CustomerName = (string)ent.Properties["GeneralInfo.Name"],
+                    CustomerNumber = (string)ent.Properties["GeneralInfo.TradingPartnerNumber"],
+                    CustomerBranch = "fdf" // TODO: add field to organization for branch
+                });
 
             return new UserProfile(){
                 UserId = Guid.Parse(csProfile.Id),
@@ -323,7 +323,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 CustomerNumber = csProfile.SelectedCustomer,
                 BranchId = csProfile.SelectedBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = new List<Customer>() { 
+                UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
                                         new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                         new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 }

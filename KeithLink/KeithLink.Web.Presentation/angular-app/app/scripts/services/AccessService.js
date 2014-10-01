@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AccessService', ['localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 
-    function (localStorageService, Constants, AuthenticationService, UserProfileService) {
+  .factory('AccessService', ['AuthenticationService', 'LocalStorage', 'Constants',
+    function (AuthenticationService, LocalStorage, Constants) {
 
     var Service = {
 
       isLoggedIn: function() {
-        return !!(AuthenticationService.getToken() && UserProfileService.profile() && AuthenticationService.isValidToken());
+        return !!(LocalStorage.getToken() && LocalStorage.getProfile() && AuthenticationService.isValidToken());
       },
 
       isOrderEntryCustomer: function() {
@@ -17,23 +17,23 @@ angular.module('bekApp')
       // ROLES
 
       isOwner: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.OWNER );
+        return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
       },
 
       isAccounting: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.ACCOUNTING );
+        return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
       },
 
       isApprover: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.APPROVER );
+        return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
       },
 
       isBuyer: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.BUYER );
+        return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
       },
 
       isUser: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.GUEST );
+        return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
       },
 
       // PRIVILEDGES

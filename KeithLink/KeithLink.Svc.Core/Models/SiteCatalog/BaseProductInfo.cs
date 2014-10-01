@@ -31,8 +31,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "replaceditem")]
 		public string ReplacedItem { get; set; }
 
-		[DataMember(Name = "cndoc")]
-		public string CNDoc { get; set; }
+		[DataMember(Name = "childnutrition")]
+		public string ChildNutrition { get; set; }
 
 		[DataMember(Name = "brand")]
 		public string Brand { get; set; }

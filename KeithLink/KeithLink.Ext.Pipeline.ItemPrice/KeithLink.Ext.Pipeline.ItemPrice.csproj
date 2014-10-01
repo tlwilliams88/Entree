@@ -73,19 +73,6 @@
     <None Include="Service References\PipelineService\KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
-    <None Include="Service References\PipelineService\PipelineService.wsdl" />
-    <None Include="Service References\PipelineService\PipelineService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PipelineService\PipelineService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PipelineService\PipelineService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\PipelineService\PipelineService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -94,21 +81,32 @@
     <WCFMetadataStorage Include="Service References\PipelineService\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PipelineService\PipelineService.disco" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\PipelineService\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\PipelineService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\PipelineService\PipelineService1.wsdl" />
+    <None Include="Service References\PipelineService\PipelineService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PipelineService\PipelineService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PipelineService\PipelineService42.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\PipelineService\PipelineService43.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\PipelineService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\PipelineService\PipelineService1.disco" />
     <Content Include="SetupInstructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

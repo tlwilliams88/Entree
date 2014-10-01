@@ -17,6 +17,7 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Common;
 
