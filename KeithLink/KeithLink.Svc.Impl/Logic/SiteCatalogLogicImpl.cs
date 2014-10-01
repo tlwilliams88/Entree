@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic
             return ret;
         }
 
-        public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel, UserProfile profile)
+		public ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;
             string categoryName = category;
@@ -111,43 +111,43 @@ namespace KeithLink.Svc.Impl.Logic
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                ret = _catalogRepository.GetProductsByCategory(branch, categoryName, searchModel);
+                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(branch, profile, ret);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
             return ret;
         }
 
-        public ProductsReturn GetHouseProductsByBranch(string branch, string brandControlLabel, SearchInputModel searchModel, UserProfile profile)
+		public ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string brandControlLabel, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn returnValue;
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                returnValue = _catalogRepository.GetHouseProductsByBranch(branch, brandControlLabel, searchModel);
+                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(branch, profile, returnValue);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue);
 
             return returnValue;
         }
 
-        public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel, UserProfile profile)
+        public ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsBySearch(branch, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                ret = _catalogRepository.GetProductsBySearch(branch, search, searchModel);
+				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(branch, profile, ret);
+			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
             return ret;
         }
 

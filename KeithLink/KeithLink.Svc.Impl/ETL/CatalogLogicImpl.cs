@@ -149,10 +149,11 @@ namespace KeithLink.Svc.Impl.ETL
             var itemNutritions = BuildNutritionDictionary(gsData);
             var itemDiet = BuildDietDictionary(gsData);
             var itemAllergens = BuildAllergenDictionary(gsData);
+			var proprietaryItems = BuildProprietaryItemDictionary(stagingRepository.ReadProprietaryItems());
 
             Parallel.ForEach(dataTable.AsEnumerable(), row =>
             {
-                products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens));
+                products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
             });
 
             int totalProcessed = 0;
@@ -321,7 +322,7 @@ namespace KeithLink.Svc.Impl.ETL
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens)
+        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, Dictionary<string, List<string>> proprietaryItems)
         {
             var item =  new ItemUpdate()
             {
@@ -372,7 +373,9 @@ namespace KeithLink.Svc.Impl.ETL
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
-                        CatchWeight = row.GetString("CatchWeight"),
+						//CatchWeight = row.GetString("CatchWeight"),
+						IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId")),
+						ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems),
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),
@@ -418,6 +421,20 @@ namespace KeithLink.Svc.Impl.ETL
 
             return item;
         }
+
+		private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
+		{
+			if (!proprietaryItems.ContainsKey(itemNumber))
+				return null;
+
+			var sbCustomerList = new StringBuilder();
+
+			foreach (var customer in proprietaryItems[itemNumber])
+				sbCustomerList.AppendFormat("{0} ", customer);
+
+			return sbCustomerList.ToString();
+
+		}
                 
         private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories)
         {
@@ -489,6 +506,23 @@ namespace KeithLink.Svc.Impl.ETL
 
             return itemAllergen;
         }
+
+		private Dictionary<string, List<string>> BuildProprietaryItemDictionary(DataTable propItemData)
+		{
+			var proprietaryItems = new Dictionary<string, List<string>>();
+
+			foreach (DataRow row in propItemData.Rows)
+			{
+				if (proprietaryItems.ContainsKey(row.GetString("ItemNumber")))
+				{
+					proprietaryItems[row.GetString("ItemNumber")].Add(row.GetString("CustomerNumber"));
+				}
+				else
+					proprietaryItems.Add(row.GetString("ItemNumber"), new List<string>() { row.GetString("CustomerNumber") });
+			}
+
+			return proprietaryItems;
+		}
 
 		private static void MapAllergen(Allergen allergen, DataRow row)
 		{

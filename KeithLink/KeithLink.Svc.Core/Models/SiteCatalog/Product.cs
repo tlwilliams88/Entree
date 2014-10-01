@@ -83,6 +83,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }
+
+		[DataMember(Name = "isproprietary")]
+		public bool IsProprietary { get; set; }
         #endregion
 
 		[OnSerializing]

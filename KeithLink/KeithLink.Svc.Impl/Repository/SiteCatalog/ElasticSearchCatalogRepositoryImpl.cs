@@ -34,32 +34,32 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         #region " methods / functions "
 
-		public ProductsReturn GetProductsByCategory(string branch, string category, SearchInputModel searchModel)
+		public ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel)
         {
             int size = GetProductPagingSize(searchModel.Size);
 
             //List<string> childCategories = 
             //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, category);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, category);
 
             //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
-            return GetProductsFromElasticSearch(branch, "", categorySearchExpression);
+            return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
-        public ProductsReturn GetHouseProductsByBranch(string branchId, string brandControlLabel, SearchInputModel searchModel)
+		public ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string brandControlLabel, SearchInputModel searchModel)
         {
             int size = GetProductPagingSize(searchModel.Size);
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
             dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
 
-            return GetProductsFromElasticSearch(branchId.ToLower(), "", categorySearchExpression);
+            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", categorySearchExpression);
         }
 
         private dynamic BuildFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression)
@@ -122,9 +122,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     };
         }
 
-        private dynamic BuildFilterTerms(string facetFilters, string category="")
+        private dynamic BuildFilterTerms(string facetFilters, CatalogInfo catalogInfo, string category="")
         {
-            List<dynamic> facetTerms = new List<dynamic>();
+            List<dynamic> mustClause = new List<dynamic>();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in facets)
             {
@@ -134,14 +134,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 string selectedValues = String.Join("\",\"", values);
                 ExpandoObject keyValueSelectedValues = new ExpandoObject();
                 (keyValueSelectedValues as IDictionary<string, object>).Add(keyValue, values);
-                facetTerms.Add(new { terms = keyValueSelectedValues });
+                mustClause.Add(new { terms = keyValueSelectedValues });
             }
+
+			//Build filter for proprietary items
+			mustClause.Add(new { query_string = new { query = string.Format("(isproprietary:true AND proprietarycustomers: {0}) OR isproprietary:false ", catalogInfo.CustomerId) } });
 
             List<dynamic> fieldFilterTerms = BuildStatusFilter();
             List<dynamic> categoryFilterTerms = BuildCategoryFilter(category);
 
             ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = facetTerms, must_not = fieldFilterTerms, should = categoryFilterTerms });
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms, should = categoryFilterTerms });
 
             return filterTerms;
 
@@ -248,11 +251,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return results;
         }
 
-		public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel)
+		public ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel)
         {
             int size = GetProductPagingSize(searchModel.Size);
-            branch = branch.ToLower();
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
             string termSearch = search;
             List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
@@ -266,7 +268,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
 
-            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
+            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
         }
 
         private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null)
@@ -329,6 +331,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
+			p.IsProprietary = oProd._source.isproprietary;
             //p.Catchweight = oProd._source.catchweight;
 			// TODO: pack, package, preferreditemcode, itemtype, status1, status2, icseonly, specialorderitem, vendor1, vendor2, itemclass, catmgr, buyer, branchid, replacementitem, replaceid, cndoc
             Nutritional nutritional = new Nutritional();

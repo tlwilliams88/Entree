@@ -106,10 +106,10 @@ namespace KeithLink.Svc.Impl.Logic
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
 
-			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST))).Any())
+			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, Name = string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST) }, null);
+				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST) }, null);
 				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
