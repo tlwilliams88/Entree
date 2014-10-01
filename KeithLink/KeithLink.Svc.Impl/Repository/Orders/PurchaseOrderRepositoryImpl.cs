@@ -19,7 +19,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
 			queryBaskets.SearchCriteria.Model.Properties["OrderNumber"] = orderNumber;
 
-			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+            queryBaskets.QueryOptions.RefreshBasket = false;
+
+            var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
 			queryBaskets.RelatedOperations.Add(queryLineItems);
 
 			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());

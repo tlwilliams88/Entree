@@ -17,9 +17,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void AssertRoleNameLength(string roleName);
         void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName);
 
-        bool AuthenticateUser(string emailAddress, string password);
-        bool AuthenticateUser(string emailAddress, string password, out string errorMessage);
-
+        
         UserProfile CombineProfileFromCSAndAD(Core.Models.Generated.UserProfile csProfile);
+
+        bool IsInternalAddress(string emailAddress);
     }
 }
