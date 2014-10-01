@@ -227,51 +227,51 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             AssertRoleNameLength(roleName);
         }
 
-        /// <summary>
-        /// test the user against internal or external AD based on the email address' domain name. Will throw an exception if authentication fails
-        /// </summary>
-        /// <remarks>
-        /// jwames - 8/18/2014 - documented
-        /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password)
-        {
-            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
-            {
-                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+        ///// <summary>
+        ///// test the user against internal or external AD based on the email address' domain name. Will throw an exception if authentication fails
+        ///// </summary>
+        ///// <remarks>
+        ///// jwames - 8/18/2014 - documented
+        ///// </remarks>
+        //public bool AuthenticateUser(string emailAddress, string password)
+        //{
+        //    if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+        //    {
+        //        string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
 
-                return _internalAD.AuthenticateUser(userName, password);
-            }
-            else
-            {
-                return _externalAD.AuthenticateUser(emailAddress, password);
-            }
-        }
+        //        return _internalAD.AuthenticateUser(userName, password);
+        //    }
+        //    else
+        //    {
+        //        return _externalAD.AuthenticateUser(emailAddress, password);
+        //    }
+        //}
 
-        /// <summary>
-        /// authenticate a user against internal or external AD based on the email address' domain. Authentication failure does not throw an exception
-        /// </summary>
-        /// <param name="emailAddress">the user's email address</param>
-        /// <param name="password">the user's password</param>
-        /// <param name="errorMessage">authentication failure messages</param>
-        /// <returns>true/false</returns>
-        /// <remarks>
-        /// jwames - 8/18/2014 - documented
-        /// </remarks>
-        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
-        {
-            errorMessage = null;
+        ///// <summary>
+        ///// authenticate a user against internal or external AD based on the email address' domain. Authentication failure does not throw an exception
+        ///// </summary>
+        ///// <param name="emailAddress">the user's email address</param>
+        ///// <param name="password">the user's password</param>
+        ///// <param name="errorMessage">authentication failure messages</param>
+        ///// <returns>true/false</returns>
+        ///// <remarks>
+        ///// jwames - 8/18/2014 - documented
+        ///// </remarks>
+        //public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
+        //{
+        //    errorMessage = null;
 
-            if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
-            {
-                string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+        //    if (System.Text.RegularExpressions.Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS))
+        //    {
+        //        string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
 
-                return _internalAD.AuthenticateUser(userName, password, out errorMessage);
-            }
-            else
-            {
-                return _externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
-            }
-        }
+        //        return _internalAD.AuthenticateUser(userName, password, out errorMessage);
+        //    }
+        //    else
+        //    {
+        //        return _externalAD.AuthenticateUser(emailAddress, password, out errorMessage);
+        //    }
+        //}
 
         /// <summary>
         /// combines the attributes from AD and Commerce Server into our UserProfile class

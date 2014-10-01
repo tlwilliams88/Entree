@@ -75,9 +75,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/18/2014 - documented
         /// </remarks>
         private void AssertEmailAddressUnique(string emailAddress) {
-            //if (_extAd.GetUser(emailAddress) != null) {
-            //    throw new ApplicationException("Email address is already in use");
-            //}
+            if (_extAd.GetUser(emailAddress) != null) {
+                throw new ApplicationException("Email address is already in use");
+            }
         }
 
         /// <summary>

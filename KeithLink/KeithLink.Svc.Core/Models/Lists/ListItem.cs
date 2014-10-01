@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public string StorageTemp { get; set; }
 		[DataMember(Name = "quantityincart")]
 		public decimal? QuantityInCart { get; set; }
-		
+        
 		public int CompareTo(object obj)
 		{
 			return this.Position.CompareTo(((ListItem)obj).Position);

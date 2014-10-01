@@ -65,6 +65,7 @@
     <Compile Include="ConfigurationFacade.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Email\ExceptionEmail.cs" />
+    <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Logging\IEventLogRepository.cs" />

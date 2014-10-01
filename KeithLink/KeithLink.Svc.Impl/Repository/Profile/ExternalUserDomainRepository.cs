@@ -278,6 +278,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
+        public UserPrincipal GetUserByEmailAddress(string emailAddress) {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// get a unique user name for AD based on the user name in the email address
         /// </summary>

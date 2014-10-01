@@ -61,19 +61,6 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         }
 
         [TestMethod]
-        public void AuthenticateUser()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-
-            Assert.IsTrue(userProfile.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
-        }
-
-        [TestMethod]
         public void UpdateUser()
         {
             KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =

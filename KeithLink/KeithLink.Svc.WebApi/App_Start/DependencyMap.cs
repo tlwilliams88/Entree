@@ -4,22 +4,23 @@ using System.Linq;
 using System.Web;
 using Autofac;
 using Autofac.Integration.WebApi;
-using KeithLink.Svc.Core.Interface.Brand;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Brands;
-using KeithLink.Svc.Impl.Logic;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Interface.Brand;
 using KeithLink.Svc.Core.Interface.Cart;
-using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Repository.Brands;
+using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -51,6 +52,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
+            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();

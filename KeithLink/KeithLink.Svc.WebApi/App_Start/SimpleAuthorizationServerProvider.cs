@@ -29,10 +29,24 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
-            Core.Interface.Profile.IUserProfileRepository _userRepo = 
-                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserProfileRepository))
-                as Core.Interface.Profile.IUserProfileRepository;
-            if (_userRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false)
+            Core.Interface.Profile.IUserProfileLogic _profileLogic =
+                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserProfileLogic))
+                as Core.Interface.Profile.IUserProfileLogic;
+
+            Core.Interface.Profile.IUserDomainRepository ADRepo = null;
+
+            // determine if we are authenticating an internal or external user
+            if (_profileLogic.IsInternalAddress(context.UserName)) {
+                ADRepo = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Impl.Repository.Profile.ExternalUserDomainRepository))
+                    as Impl.Repository.Profile.ExternalUserDomainRepository;
+
+            } else {
+                ADRepo = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Impl.Repository.Profile.InternalUserDomainRepository))
+                    as Impl.Repository.Profile.InternalUserDomainRepository;
+
+            }
+
+            if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false)
             {
                 context.SetError("invalid_grant", errMsg);
                 return;
