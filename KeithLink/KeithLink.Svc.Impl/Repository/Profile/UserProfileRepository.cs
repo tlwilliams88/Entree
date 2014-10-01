@@ -182,16 +182,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         private void AssertRoleName(string roleName)
         {
-            bool found = false;
+            //bool found = false;
 
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_OWNER, true) == 0) { found = true; }
-            if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_PURCHASING, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_OWNER, true) == 0) { found = true; }
+            //if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_PURCHASING, true) == 0) { found = true; }
 
-            if (found == false)
-            {
-                throw new ApplicationException("Role name is unknown");
-            }
+            //if (found == false)
+            //{
+            //    throw new ApplicationException("Role name is unknown");
+            //}
         }
 
         /// <summary>
