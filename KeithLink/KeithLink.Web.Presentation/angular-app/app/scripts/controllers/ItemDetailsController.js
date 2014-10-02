@@ -64,7 +64,7 @@ angular.module('bekApp')
 
     $scope.openContextMenu = function (item) {
 
-      if (window.innerWidth <= 991) {
+      // if (window.innerWidth <= 991) {
         var modalInstance = $modal.open({
           templateUrl: 'views/contextmenumodal.html',
           controller: 'ContextMenuModalController',
@@ -80,10 +80,10 @@ angular.module('bekApp')
             }
           }
         });  
-      } else {
-        $scope.displayedItems = {};
-        $scope.displayedItems.isContextMenuDisplayed = true;
-      }
+      // } else {
+      //   $scope.displayedItems = {};
+      //   $scope.displayedItems.isContextMenuDisplayed = true;
+      // }
 
       
 
