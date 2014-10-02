@@ -13,7 +13,7 @@
   margin-left: $sidebar-width;
 }
 
-@media (max-width: $mobile-max) {
+@media (max-width: $screen-sm-max) {
   .page-content {
     width: inherit;
     margin-left: 0;

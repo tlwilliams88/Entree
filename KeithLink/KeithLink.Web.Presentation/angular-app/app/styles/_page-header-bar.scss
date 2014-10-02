@@ -64,7 +64,7 @@
   }
 }
 
-@media(max-width: $mobile-max) {
+@media(max-width: $screen-sm-max) {
   .page-subheader-bar {
     @include header-bar($color-white, 0px);
 

@@ -219,7 +219,11 @@ angular
   localStorageServiceProvider.setPrefix('bek');
 
 }])
-.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', function($rootScope, $state, AccessService, AuthenticationService) {
+.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', 'toaster', function($rootScope, $state, AccessService, AuthenticationService, toaster) {
+
+  $rootScope.displayMessage = function(type, message) {
+    toaster.pop(type, null, message);
+  };
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     // check if route is protected

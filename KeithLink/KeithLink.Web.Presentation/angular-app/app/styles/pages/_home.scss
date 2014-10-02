@@ -70,13 +70,13 @@ $order-col__background: #f1efe5;
   }
 }
 
-@media(min-width: $mobile-max) {
+@media(min-width: $screen-md-min) {
   .order-col {
     @include arrow('right','center', 10px, $order-col__background, $color-border, 1px);
   }
 }
 
-@media(max-width: $mobile-max) {
+@media(max-width: $screen-sm-max) {
   .order-summary__order {
     padding-bottom: $gutter-size;
     margin-right: 0;

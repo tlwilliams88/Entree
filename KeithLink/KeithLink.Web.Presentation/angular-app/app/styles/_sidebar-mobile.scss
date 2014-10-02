@@ -16,7 +16,7 @@
   }
 }
 
-@media (max-width: $mobile-max) {
+@media (max-width: $screen-sm-max) {
   .sidebar-mobile {
     .user-info {
       background-color: $sidebar__background--dark;
