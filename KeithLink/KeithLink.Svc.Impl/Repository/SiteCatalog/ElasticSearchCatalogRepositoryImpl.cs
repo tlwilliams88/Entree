@@ -138,7 +138,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
 			//Build filter for proprietary items
-			mustClause.Add(new { query_string = new { query = string.Format("(isproprietary:true AND proprietarycustomers: {0}) OR isproprietary:false ", catalogInfo.CustomerId) } });
+			if(!string.IsNullOrEmpty(catalogInfo.CustomerId))
+				mustClause.Add(new { query_string = new { query = string.Format("isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId) } });
+			else
+				mustClause.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
 
             List<dynamic> fieldFilterTerms = BuildStatusFilter();
             List<dynamic> categoryFilterTerms = BuildCategoryFilter(category);
