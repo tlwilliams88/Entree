@@ -101,14 +101,14 @@
 			<div class="col-sm-12">
 				<h3 ng-show="paramType !== 'category'">Categories</h3>
 				<h3 ng-show="paramType === 'category'">{{categoryName}}</h3>
-				<ul class="nav search-results__category">
+				<ul class="nav search-results__category" ng-show="categories">
 					<li ng-repeat="category in categories">
 						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div class="row sub-content">
+		<div class="row" ng-show="brands">
 			<div class="col-sm-12">
 				<h3>Brand</h3>
 				<div ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
@@ -126,7 +126,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row sub-content">
+		<div class="row" ng-show="dietary">
 			<div class="col-sm-12">
 				<h3>Dietary</h3>
 				<div ng-repeat="diet in dietary" ng-class="{hidedietary: $index > dietaryHiddenNumber}">
@@ -135,7 +135,7 @@
 					id="dietId_{{diet.name}}"
 					ng-checked="selectedDietary.indexOf(diet.name) > -1"
 					ng-click="toggleSelection(diet.name,'dietary')">
-					<label for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
+					<label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
 				</div>
 				<div ng-class="{'hidedietary': dietaryCount <= constantHiddenNumber}">
 					<a ng-class="{'hidedietary': isDietaryShowing}" ng-click="showDietary()">+ Show More</a>
@@ -143,7 +143,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="row sub-content">
+		<div class="row" ng-show="itemspecs || hasNonstock">
 			<div class="col-sm-12">
 				<h3>Item Specifications</h3>
 				<div ng-class="{hidenonstock: !hasNonstock}">
@@ -172,35 +172,35 @@
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
 		<div class="row">
-			<h2 class="col-md-6 hidden-xs hidden-sm">Search Results</h2>
-			<span class="col-md-6 text-right hidden-xs hidden-sm">{{totalItems}} results</span>
+			<h2 class="col-xs-6">Search Results</h2>
+      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{totalItems}} results</span>
 		</div>
 		
-		<table class="results-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
+		<table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="1">
 			<thead>
 				<tr>
-          <td style="width:10px;"></td>
-          <td class="hand" ng-click="sortTable('itemnumber')">
+          <th style="width:10px;"></th>
+          <th class="hand" ng-click="sortTable('itemnumber')">
             Item
             <span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
-          </td>
-          <td class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
+          </th>
+          <th class="hand hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
             Brand
             <span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
-          </td>
-          <td class="hand" ng-click="sortTable('name_not_analyzed')">
+          </th>
+          <th class="hand" ng-click="sortTable('name_not_analyzed')">
             Name
             <span sort-icons field="'name_not_analyzed'" sortorder="asc" sortby="sortField"></span>
-          </td>
-          <td class="hidden-sm hidden-xs">
+          </th>
+          <th class="hidden-sm hidden-xs">
             Pack/Size
-          </td>
-          <td class="hidden-sm hidden-xs"></td>
-          <td class="hidden-sm hidden-xs" ng-class="{hand: totalItems < 201}" ng-click="sortTable('caseprice')">
+          </th>
+          <th class="hidden-sm hidden-xs"></th>
+          <th class="hidden-sm hidden-xs" ng-class="{hand: totalItems < 201}" ng-click="sortTable('caseprice')">
             Price
             <span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
-          </td>
-          <td></td>
+          </th>
+          <th></th>
         </tr>
 			</thead>
 			<tbody>
@@ -244,7 +244,7 @@
 			</tbody>
 			<tfoot>
 				<tr ng-show="products.length === 0">
-					<td colspan="7">No products found.</td>
+					<td colspan="8">No products found.</td>
 				</tr>
 			</tfoot>
 		</table>

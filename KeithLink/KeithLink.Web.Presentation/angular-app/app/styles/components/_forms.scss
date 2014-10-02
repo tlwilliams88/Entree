@@ -1,0 +1,5 @@
+form.style-validation-errors {
+	input.ng-dirty.ng-invalid {
+		border: 1px solid $color-red !important;
+  }
+}

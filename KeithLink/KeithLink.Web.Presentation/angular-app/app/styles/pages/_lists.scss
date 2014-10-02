@@ -1,0 +1,155 @@
+/* LEFT SIDE LIST NAVIGATION BUTTONS */
+.custom-lists .btn-list {
+  min-width: 105px;
+  font-size: $font-size;
+
+  &.bek-drag-active {
+    border: 1px dashed $color-border;
+  }
+
+  &.bek-drag-hover {
+    color: $color-blue;
+    border: 2px solid $color-blue;
+    cursor: copy;
+  }
+  
+  // button list of custom list names
+  &.custom-lists__name {
+
+    // currently selected list link
+    &.current-list {
+      background-color: $color-blue;
+      color: $color-white !important;
+      border: 1px solid $color-blue;
+    }
+  }
+}
+
+// trash can button
+.btn-trash {
+  margin-top: 10px;
+  display: block;
+  
+  &.bek-drag-active {
+    border: 1px dashed $color-red;
+    // display: inline-block;
+  }
+
+  &.bek-drag-hover {
+    border: 2px solid $color-red;
+    cursor: copy;
+  }
+}
+
+/* DRAG AND DROP */
+.ui-draggable-handle {
+  cursor: move;
+}
+.ui-draggable-dragging {
+  border: 1px solid $color-border !important;
+  box-shadow: 0px 0px 10px $color-border;
+  background-color: $color-white !important;
+  
+  .table-col {
+    padding: 15px 10px !important;
+    width: 25% !important;
+  }
+
+  .hidden-drag {
+    display: none;
+  } 
+}
+.ui-sortable-helper {
+  border: 1px solid $color-border !important;
+  box-shadow: 0px 0px 10px $color-border;
+  background-color: #EBE7D9 !important;
+  .table-col {
+    border: none !important;
+  }
+}
+.item-selected, .bek-reordered-item  {
+  background-color: #f8f8c4 !important;
+}
+// // prevents weird page jumping when reordering items that are scrolled down the page
+// .bek-reorder-overflow {
+//   overflow: auto;
+// }
+
+// highlight row when hovering on desktop only
+@media (min-width: $mobile-max) {
+  .custom-lists__table .table-body .table-row:hover {
+    background-color: #EBE7D9;
+  }
+}
+
+@media (max-width: $mobile-max) {
+  .custom-lists {
+    position:absolute; 
+    z-index: 3; 
+    right: 10px; 
+    top: 155px;
+  }
+}
+
+.table-col {
+  position: relative;
+  float: left;
+  min-height: 1px;
+  // padding-left: 3px;
+  // padding-right: 3px;
+}
+.col-position   { 
+  width: 56px;
+  padding: 5px 3px;
+}
+.col-itemnumber { 
+  width: 47px;
+  padding: 12px 3px;
+}
+.col-name       { 
+  width: calc((100% - 404px) / 2);
+  padding: 12px 3px;
+}
+.col-brand      { 
+  width: calc((100% - 404px) / 4);
+  padding: 12px 3px;
+}
+.col-packsize   { 
+  width: calc((100% - 404px) / 4);
+  padding: 12px 3px;
+}
+.col-qtyincart  {
+  width: 30px;
+  padding: 12px 3px;
+}
+.col-label      { 
+  width: 135px;
+}
+.col-parlevel   { 
+  input {width: 40px;}
+  width: 53px;
+}
+.col-icons      { 
+  width: 83px;
+  padding: 5px 3px;
+}
+
+.custom-lists__table {
+  .table-header {
+    background-color: $background;
+    font-weight: 600;
+  }
+  .table-row {
+    border: 1px solid $color-border;
+    border-bottom: none;
+    &.odd {
+      background-color: $background;
+    }
+    &.even {
+      background-color: $color-white;
+    }
+  }
+  .table-body, .table-footer {
+    border-bottom: 1px solid $color-border;
+  }
+}

@@ -1,0 +1,25 @@
+.item-details__main-info {
+  vertical-align: middle;
+  display: inline-block;
+  
+  .item-details__icons {
+    margin-left: $gutter-size;
+    font-size: 15px;
+  }
+}
+.item-details__main-image {
+  display: inline-block;
+  padding-right: $gutter-size;
+
+  img {
+    height: 135px;
+  }
+}
+
+.item-details__images {
+  padding: $gutter-size;
+
+  img {
+    margin: 3px;
+  }
+}

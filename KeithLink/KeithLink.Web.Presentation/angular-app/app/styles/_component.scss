@@ -89,89 +89,13 @@
 
 /* TEXT INPUTS */
 
-@mixin text-placeholder($color, $style) {
-  ::-webkit-input-placeholder {
-    color: $color !important;
-    font-style: $style;
-  }  
-  :-moz-placeholder { /* Firefox 18- */
-    color: $color !important;  
-    font-style: $style;
-  }
-  ::-moz-placeholder {  /* Firefox 19+ */
-    color: $color !important;  
-    font-style: $style;
-  }
-  :-ms-input-placeholder {  
-    color: $color !important;  
-    font-style: $style;
-  }
-}
-@include text-placeholder ($color-border, italic);
+
+
 
 input[type='text'], input[type='email'], input[type='password'], textarea {
   @include component;
   min-height: 40px;
   font-size: $font-size;
-}
-
-/* TABS */
-
-.nav-tabs {
-  border-bottom: 1px solid $color-border;
-
-  li {
-    a {
-      margin-right: 5px;
-      color: $color-font;
-      border-radius: 0;
-      border: 1px solid $color-border;
-      padding: 12px 40px;
-
-      &:hover {
-        @extend a;
-      }
-    }
-    &.active a {
-      border: 1px solid $color-border;
-      border-bottom-color: transparent;
-      border-top: 3px solid $color-blue;
-      padding-top: 10px;
-      font-weight: normal;
-
-      &:hover {
-        @extend a;
-      }
-    }
-  }
-}
-
-.tab-content {
-  .tab-pane {
-    background-color: $color-white;
-    border-left: 1px solid $color-border;
-    border-right: 1px solid  $color-border;
-    border-bottom: 1px solid  $color-border;
-  }
-}
-
-
-@media (max-width: 768px) {
-  .nav-tabs {
-    li {
-      width: 100%;
-
-      a {
-        margin-right: 0px;
-        border-radius: 8px;
-        margin-bottom: 5px;
-      }
-    }
-
-    li.active a {
-      border-bottom-color: $color-border;
-    }
-  }
 }
 
 /* Checkboxes */

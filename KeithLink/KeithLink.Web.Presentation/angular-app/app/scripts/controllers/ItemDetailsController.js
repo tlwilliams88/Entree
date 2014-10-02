@@ -8,7 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', 'item', 'ProductService', 'ListService', 'CartService', function ($scope, item, ProductService, ListService, CartService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'ListService', 'CartService', 
+    function ($scope, $modal, item, ProductService, ListService, CartService) {
     
     var originalItemNotes = item.notes;
 
@@ -59,4 +60,49 @@ angular.module('bekApp')
       $scope.item.notes = originalItemNotes;
       $scope.itemNotesForm.$setPristine();
     };
+
+
+    $scope.open = function (item) {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modal.html',
+        controller: 'ModalInstanceCtrl',
+        resolve: {
+          lists: function () {
+            return $scope.lists;
+          },
+          carts: function () {
+            return $scope.carts;
+          },
+          item: function() {
+            return item;
+          }
+        }
+      });
+
+      modalInstance.result.then(function (object) {
+        $scope.selected = object;
+      }, function () {
+        console.log('Modal dismissed at: ' + new Date());
+      });
+    };
   }]);
+
+angular.module('bekApp')
+.controller('ModalInstanceCtrl', function ($scope, $modalInstance, lists, carts) {
+
+  $scope.lists = lists;
+  $scope.carts = carts;
+
+  $scope.selectList = function(list) {
+    $modalInstance.close(list);
+  };
+
+  $scope.selectCart = function(cart) {
+    $modalInstance.close(cart);
+  };
+
+  $scope.cancel = function () {
+    $modalInstance.dismiss('cancel');
+  };
+});

@@ -331,7 +331,7 @@ module.exports = function (grunt) {
                     '*.html',
                     'views/{,*/}*.html',
                     'images/{,*/}*.{webp}',
-                    'styles/fonts/*'
+                    'fonts/{,*/}*'
                   ]
               }, {
                   expand: true,
@@ -366,7 +366,7 @@ module.exports = function (grunt) {
                     'scripts/{,*/}*.js',
                     'images/{,*/}*.{webp}',
                     'lib/**/*.{js,css,eot,svg,ttf,woff}',
-                    'styles/fonts/*'
+                    'fonts/{,*/}*'
                   ]
               }, {
                   expand: true,

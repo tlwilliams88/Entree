@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches',
-    function ($scope, UserProfileService, branches) {
+  .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage',
+    function ($scope, UserProfileService, branches, LocalStorage) {
     
-    $scope.userProfile = angular.copy(UserProfileService.profile());
+    $scope.userProfile = angular.copy(LocalStorage.getProfile());
     $scope.branches = branches;
 
     $scope.updateUserProfile = function(userProfile) {
@@ -20,7 +20,7 @@ angular.module('bekApp')
     };
 
     $scope.cancelChanges = function() {
-      $scope.userProfile = angular.copy(UserProfileService.profile());
+      $scope.userProfile = angular.copy(LocalStorage.getProfile());
       $scope.updateProfileForm.$setPristine();
     };
 

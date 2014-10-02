@@ -1,0 +1,29 @@
+.select-nav-bar {
+  .info-box {
+    @extend .info-box;
+    padding: 10px 15px;
+    border-right: none;
+    border-bottom: none;
+    &:last-child {
+      border-right: 1px solid $color-border;
+    }
+
+    .nav-description {
+      font-size: 14px;
+      display: block;
+    }
+    .nav-title {
+      font-size: 16px;
+    }
+  }
+}
+
+// @media (max-width: $mobile-max) {
+//   .select-nav-bar {
+//     .select-nav {
+//       &:first-child, &:first-child + .select-nav {
+//         border-bottom: 1px solid $color-border;
+//       }
+//     }
+//   }
+// }

@@ -8,7 +8,7 @@
 <!-- Search -->
 <div class="row hidden-sm hidden-xs">
 	<div class="col-sm-12">
-		<form name="catalogSearchForm" novalidate class="search-form catalog-search">
+		<form name="catalogSearchForm" novalidate class="catalog-search">
 			<div class="input-group">
 				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacturer number">
 				<span class="input-group-btn">
@@ -40,7 +40,7 @@
 </div>
 
 <!-- Recommended Items -->
-<div class="row sub-content" ng-if="isOrderEntryCustomer">
+<div class="row" ng-if="isOrderEntryCustomer">
 	<div class="col-sm-12">
 		<h3>Recommended Items</h3>
 		<h4>Coming soon</h4>
@@ -60,11 +60,11 @@
 </div>
 
 <!-- Categories -->
-<div class="row sub-content">
+<div class="row">
 	<div class="col-sm-12">
 		<h3>Select A Category</h3>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
-			<li loading-spinner="loadingCategories"></li>
+			<li loading-spinner="loadingCategories" ng-show="loadingCategories"></li>
 			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
 					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" src="{{category.category_image.url}}" alt="image">
@@ -75,17 +75,17 @@
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm" loading-spinner="loadingCategories"></div>
-		<div ng-hide="loadingCategories" class="visible-xs visible-sm sub-content" featured-item-carousel items="categories" link="'menu.catalog.products.list({ type: \'category\', id: item.name })'"></div>
+		<div class="visible-xs visible-sm" ng-show="loadingCategories" loading-spinner="loadingCategories"></div>
+		<div ng-hide="loadingCategories" class="visible-xs visible-sm" featured-item-carousel items="categories" link="'menu.catalog.products.list({ type: \'category\', id: item.name })'"></div>
 	</div>
 </div>
 
 <!-- Brands -->
-<div class="row sub-content">
+<div class="row">
 	<div class="col-sm-12">
 		<h3>Select A Brand</h3>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
-			<li loading-spinner="loadingBrands"></li>
+			<li ng-show="loadingBrands" loading-spinner="loadingBrands"></li>
 			<li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
 				<div class="featured-item text-center">
 					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" ng-src="{{brand.imageurl}}" alt="image">
@@ -96,7 +96,7 @@
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm" loading-spinner="loadingBrands"></div>
-		<div ng-hide="loadingBrands" class="visible-xs visible-sm sub-content" featured-item-carousel items="brands" link="'menu.catalog.products.list({ type: \'brand\', id: item.brand_control_label })'"></div>
+		<div class="visible-xs visible-sm" ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
+		<div ng-hide="loadingBrands" class="visible-xs visible-sm" featured-item-carousel items="brands" link="'menu.catalog.products.list({ type: \'brand\', id: item.brand_control_label })'"></div>
 	</div>
 </div>

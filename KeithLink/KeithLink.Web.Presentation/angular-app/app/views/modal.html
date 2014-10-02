@@ -1,0 +1,27 @@
+ <div class="modal-header">
+    <h3 class="modal-title">I'm a modal!</h3>
+</div>
+<div class="modal-body">
+
+  <accordion close-others="true">
+    <accordion-group heading="Carts">
+      <ul>
+        <li ng-repeat="cart in carts">
+          <a ng-click="selectCart(cart)">{{ cart.name }}</a>
+        </li>
+      </ul>
+    </accordion-group>
+    <accordion-group heading="Lists">
+      <ul>
+        <li ng-repeat="list in lists">
+          <a ng-click="selectList(list)">{{ list.name }}</a>
+        </li>
+      </ul>
+    </accordion-group>
+  </accordion>
+
+    Selected: <b>{{ selected.item }}</b>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+</div>
