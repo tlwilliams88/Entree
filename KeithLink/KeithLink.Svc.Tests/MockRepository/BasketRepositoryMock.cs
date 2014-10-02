@@ -64,5 +64,11 @@ namespace KeithLink.Svc.Test.MockRepository
 		{
 			return MockBaskets[1];
 		}
+
+
+		public void DeleteBasket(Guid userId, string basketName)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
