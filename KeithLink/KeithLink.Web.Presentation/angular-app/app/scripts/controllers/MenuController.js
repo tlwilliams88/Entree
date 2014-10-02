@@ -26,7 +26,7 @@ angular.module('bekApp')
     $scope.changeBranch = function() {
       LocalStorage.setBranchId($scope.currentLocation);
       LocalStorage.setCurrentLocation($scope.currentLocation);
-    }
+    };
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
       LocalStorage.setBranchId($scope.currentLocation.customerBranch);

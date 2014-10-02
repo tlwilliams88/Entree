@@ -20,6 +20,12 @@
   }
 }
 
+@media (min-width: $screen-md-min) {
+  .no-margin-top {
+    margin-top: 0;
+  }
+}
+
 // Angular ui bootstrap fix for cursor pointers
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 

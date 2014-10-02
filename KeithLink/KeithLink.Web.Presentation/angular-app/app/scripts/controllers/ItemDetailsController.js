@@ -35,33 +35,6 @@ angular.module('bekApp')
       return ProductService.canOrderProduct(item);
     };
 
-    $scope.saveNote = function(itemNumber, note) {
-      ProductService.updateItemNote(itemNumber, note).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        originalItemNotes = note;
-        $scope.displayMessage('success', 'Successfully updated note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error updating note.');
-      });
-    };
-
-    $scope.deleteNote = function(itemNumber) {
-      ProductService.deleteItemNote(itemNumber).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        item.notes = null;
-        $scope.item.notes = null;
-        $scope.displayMessage('success', 'Successfully deleted note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error deleting note.');
-      });
-    };
-
-    $scope.cancelChanges = function() {
-      $scope.item.notes = originalItemNotes;
-      $scope.itemNotesForm.$setPristine();
-    };
-
-
     $scope.openContextMenu = function (item) {
 
       // if (window.innerWidth <= 991) {
@@ -92,5 +65,21 @@ angular.module('bekApp')
       // }, function () {
       //   console.log('Modal dismissed at: ' + new Date());
       // });
+    };
+    $scope.openNotesModal = function (item) {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/itemnotesmodal.html',
+        controller: 'ItemNotesModalController',
+        resolve: {
+          item: function() {
+            return angular.copy(item);
+          }
+        }
+      });
+
+      modalInstance.result.then(function(item) {
+        $scope.item = item;
+      });
     };
   }]);

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bekApp')
 .controller('ContextMenuModalController', ['$scope', '$modalInstance', '$state', '$q', 'ListService', 'CartService', 'lists', 'carts', 'item', 
   function ($scope, $modalInstance, $state, $q, ListService, CartService, lists, carts, item) {
