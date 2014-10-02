@@ -71,10 +71,15 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 ownGroup.Properties["sAmAccountName"].Value = ownGroupName;
                 ownGroup.CommitChanges();
 
-                string purchGroupName = string.Format("{0} {1}", customerName, Core.Constants.ROLE_EXTERNAL_PURCHASING);
-                DirectoryEntry purchGroup = groupOrgUnit.Children.Add(string.Format("CN={0}", purchGroupName), "group");
-                purchGroup.Properties["sAmAccountName"].Value = purchGroupName;
-                purchGroup.CommitChanges();
+                string approverGroupName = string.Format("{0} {1}", customerName, Core.Constants.ROLE_EXTERNAL_PURCHASINGAPPROVER);
+                DirectoryEntry approverGroup = groupOrgUnit.Children.Add(string.Format("CN={0}", approverGroupName), "group");
+                approverGroup.Properties["sAmAccountName"].Value = approverGroupName;
+                approverGroup.CommitChanges();
+
+                string buyerGroupName = string.Format("{0} {1}", customerName, Core.Constants.ROLE_EXTERNAL_PURCHASINGBUYER);
+                DirectoryEntry buyerGroup = groupOrgUnit.Children.Add(string.Format("CN={0}", buyerGroupName), "group");
+                buyerGroup.Properties["sAmAccountName"].Value = buyerGroupName;
+                buyerGroup.CommitChanges();
             }
             catch (Exception ex)
             {

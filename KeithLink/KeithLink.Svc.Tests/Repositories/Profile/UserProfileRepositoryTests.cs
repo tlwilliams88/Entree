@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
 
             //userProfile.CreateUserProfile("mytest", "Test Customer", "joesmith@company.com", "Joe", "Smith", "1234567890");
 			//userProfile.CreateUserProfile("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", "(817)877-5700", "Owner");
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
 
             //userProfile.CreateGuestProfile("jeremy@ames.com", "Ab12345", "FDF");
         }
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
             userProfile.GetUserProfile("jeremy@ames.com");
         }
 
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
             userProfile.GetUserProfile("jwames@benekeith.com");
         }
 
@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
 
             Assert.IsTrue(userProfile.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
         }
@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
                     new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.NoCacheUserProfileCacheRepository());
+                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
 
             UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
 

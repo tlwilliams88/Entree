@@ -140,6 +140,14 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         public string TempZone { get; set; }
 
         [JsonProperty("catchweight")]
-        public string CatchWeight { get; set; }
+        public bool CatchWeight { get; set; }
+
+        [JsonProperty("ifda")]
+        public string Ifda { get; set; }
+		[JsonProperty("isproprietary")]
+		public bool IsProprietary { get; set; }
+
+		[JsonProperty("proprietarycustomers")]
+		public string ProprietaryCustomers { get; set; }
     }
 }
