@@ -288,5 +288,12 @@ namespace KeithLink.Svc.Impl.Logic
 			return updatedList;
 		}
 
+
+
+		public void DeleteLists(Guid userId, List<Guid> listIds)
+		{
+			foreach(var listId in listIds)
+				basketRepository.DeleteBasket(userId, listId);
+		}
 	}
 }
