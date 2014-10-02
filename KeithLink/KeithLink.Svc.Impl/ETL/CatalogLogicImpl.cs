@@ -21,7 +21,9 @@ using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
-
+using KeithLink.Svc.Core.Interface.Lists;
+//using KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo;
+using KeithLink.Svc.Core.Models.Lists;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -75,15 +77,19 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
+        private readonly IListLogic listLogic;
+        
         #endregion
 
         #region " Methods / Functions "
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog, IListLogic listLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
 			this.eventLog = eventLog;
+            this.listLogic = listLogic;
+            
         }
 
         public void ProcessStagedData()
@@ -127,6 +133,52 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportProfiles()
         {   
+        }
+
+        public void ImportContractLists()
+        {
+            var users = stagingRepository.ReadUniqueUsers();
+
+            foreach(DataRow userRow in users.Rows)
+            {
+                Guid userId = new Guid(userRow.GetString("UserId"));
+                var userContracts = stagingRepository.ReadCustomersByUser(userRow.GetString("UserId"));
+
+                foreach (DataRow ucRow in userContracts.Rows)
+                {
+                    string customerNumber = ucRow.GetString("CustomerNumber");
+                    string divisionName = ucRow.GetString("DivisionName");
+
+
+                    var contracts = stagingRepository.ReadContracts(ucRow.GetString("CustomerNumber"), ucRow.GetString("DivisionName"));
+
+                    foreach (DataRow contractRow in contracts.Rows)
+                    {
+
+                        //Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list)
+
+                        KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo ci = new KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo();
+                        ci.CustomerId = customerNumber;
+                        ci.BranchId = divisionName;
+
+                        UserList list = new UserList();
+                        list.Name = contractRow.GetString("ContractNumber");
+                        list.Items = new List<ListItem>();
+                        
+                        listLogic.CreateList(userId, ci, list);
+
+                        /*
+                        var contractItems = stagingRepository.ReadContractItems(contractRow.GetString("CustomerNumber"), contractRow.GetString("DivisionName"), contractRow.GetString("ContractNumber"));
+
+                        foreach (DataRow itemRow in contractItems.Rows)
+                        {
+                            //create list item
+                            //Product currentItem = 
+                        }
+                         * */
+                    }
+                }
+            };
         }
 
         public void ImportItemsToElasticSearch()
