@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	public interface IBasketRepository
 	{
 		void DeleteBasket(Guid userId, Guid cartId);
+		void DeleteBasket(Guid userId, string basketName);
 
 		Guid CreateOrUpdateBasket(Guid userId, string branchId, Basket basket, List<LineItem> items, bool runPipelines = false);
 

@@ -122,6 +122,7 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
+    <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
@@ -144,6 +145,7 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\LineType.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
