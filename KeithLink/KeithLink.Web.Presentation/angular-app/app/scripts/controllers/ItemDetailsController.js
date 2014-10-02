@@ -20,6 +20,8 @@ angular.module('bekApp')
       $scope.item.productimages = item.productimages;
     });
 
+    ProductService.saveRecentlyViewedItem(item.itemnumber);
+
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({
