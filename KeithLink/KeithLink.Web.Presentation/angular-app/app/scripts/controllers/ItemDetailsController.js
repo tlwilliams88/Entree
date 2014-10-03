@@ -37,7 +37,7 @@ angular.module('bekApp')
       return ProductService.canOrderProduct(item);
     };
 
-    $scope.openContextMenu = function (item) {
+    $scope.openContextMenu = function (e, item) {
 
       // if (window.innerWidth <= 991) {
         var modalInstance = $modal.open({
