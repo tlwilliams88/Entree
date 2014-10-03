@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Interface.Profile;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -7,13 +8,11 @@ using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
-    public class InternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
+    public class InternalUserDomainRepository : IUserDomainRepository
     {
         #region attributes
         IEventLogRepository _logger;
         #endregion
-
-        #region methods
 
         #region ctor
         public InternalUserDomainRepository(IEventLogRepository logger)
@@ -21,6 +20,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             _logger = logger;
         }
         #endregion
+
+        #region methods
         /// <summary>
         /// test user credentials
         /// </summary>
@@ -32,17 +33,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/18/2014 - change to throw exceptions when authentication fails
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password)
-        {
+        public bool AuthenticateUser(string emailAddress, string password) {
             string msg = null;
-            bool success = AuthenticateUser(userName, password, out msg);
+            bool success = AuthenticateUser(emailAddress, password, out msg);
 
-            if (success)
-            {
+            if (success) {
                 return true;
-            }
-            else
-            {
+            } else {
                 throw new ApplicationException(msg);
                 //return false;
             }
@@ -58,95 +55,67 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password, out string errorMessage)
+        public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
-            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
-            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
+            if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
             if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
 
             errorMessage = null;
 
+            string userName = emailAddress.Split('@')[0];
+
             // connect to server
-            try
-            {
+            try {
                 using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
                                                             Configuration.ActiveDirectoryInternalServerName,
                                                             Configuration.ActiveDirectoryInternalRootNode,
                                                             ContextOptions.Negotiate,
-                                                            GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
-                                                            Configuration.ActiveDirectoryInternalPassword))
-                {
+                                                            Configuration.ActiveDirectoryInternalDomainUserName,
+                                                            Configuration.ActiveDirectoryInternalPassword)) {
                     // if user exists
                     UserPrincipal authenticatingUser = UserPrincipal.FindByIdentity(boundServer, IdentityType.SamAccountName, userName);
 
-                    if (authenticatingUser == null)
-                    {
+                    if (authenticatingUser == null) {
                         errorMessage = "User name or password is invalid";
                         return false;
                     }
 
                     // if account is enabled 
-                    if (authenticatingUser.Enabled == false)
-                    {
+                    if (authenticatingUser.Enabled == false) {
                         errorMessage = "User account is disabled";
                         return false;
                     }
 
                     // if locked 
-                    if (authenticatingUser.IsAccountLockedOut())
-                    {
-                        if (authenticatingUser.AccountLockoutTime.HasValue)
-                        {
+                    if (authenticatingUser.IsAccountLockedOut()) {
+                        if (authenticatingUser.AccountLockoutTime.HasValue) {
                             DateTime endOfLockout = authenticatingUser.AccountLockoutTime.Value.AddMinutes(Configuration.ActiveDirectoryLockoutDuration);
 
-                            if (DateTime.Now < endOfLockout)
-                            {
+                            if (DateTime.Now < endOfLockout) {
                                 errorMessage = "User account is locked and cannot sign in now";
                                 return false;
                             }
                         }
-
                     }
 
                     // validate password
-                    if (boundServer.ValidateCredentials(userName, password))
-                    {
+                    if (boundServer.ValidateCredentials(userName, password)) {
                         return true;
-                    }
-                    else
-                    {
-                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
-                        {
+                    } else {
+                        if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts) 
                             errorMessage = "User account is locked and cannot sign in now";
-                        }
                         else
-                        {
                             errorMessage = "User name or password is invalid";
-                        }
 
                         return false;
                     }
                 }
-            }
-            catch
-            {
+            } catch {
                 errorMessage = "Could not connect to authentication server for benekeith.com";
                 return false;
             }
-        }
-
-        /// <summary>
-        /// return the domain and username
-        /// </summary>
-        /// <param name="userName">the user name without the domain name</param>
-        /// <returns>string in the form of domain\username</returns>
-        /// <remarks>
-        /// jwames - 8/5/2014 - original code
-        /// </remarks>
-        private string GetDomainUserName(string userName)
-        {
-            return string.Format("{0}\\{1}", Configuration.ActiveDirectoryInternalDomain, userName);
         }
 
         /// <summary>
@@ -155,45 +124,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public UserPrincipal GetUser(string userName)
-        {
-            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
-            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
-
-            try
-            {
-                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-                                                                         Configuration.ActiveDirectoryInternalServerName,
-                                                                         Configuration.ActiveDirectoryInternalRootNode,
-                                                                         ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
-                                                                         Configuration.ActiveDirectoryInternalPassword))
-                {
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName);
-
-                    return user;
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteErrorLog("Could not get user", ex);
-
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// get the user from AD
-        /// </summary>
-        /// <remarks>
-        /// jwames - 8/29/2014 - new method
-        /// </remarks>
-        public UserPrincipal GetUserByEmailAddress(string emailAddress)
+        public UserPrincipal GetUser(string emailAddress)
         {
             if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "userName is null"); }
 
-            return GetUser(emailAddress.Split('@')[0]);
+            string userName = emailAddress.Split('@')[0];
+
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryInternalServerName,
+                                                                         Configuration.ActiveDirectoryInternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryInternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryInternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName);
+
+                    return user;
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not get user", ex);
+
+                return null;
+            }
         }
 
         /// <summary>
@@ -206,45 +159,38 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/4/2014 - original code
         /// jwames - 8/5/2014 - add argument validation
         /// </remarks>
-        public bool IsInGroup(string userName, string groupName)
-        {
+        public bool IsInGroup(string userName, string groupName) {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (groupName.Length == 0) { throw new ArgumentException("groupName is required", "groupName"); }
             if (groupName == null) { throw new ArgumentNullException("groupName", "groupName is required"); }
 
-            try
-            {
+            try {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
                                                                          Configuration.ActiveDirectoryInternalServerName,
                                                                          Configuration.ActiveDirectoryInternalRootNode,
                                                                          ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryInternalUserName),
-                                                                         Configuration.ActiveDirectoryInternalPassword))
-                {
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, GetDomainUserName(userName));
+                                                                         Configuration.ActiveDirectoryInternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryInternalPassword)) {
+                    string domainUserName = string.Format(Configuration.ActiveDirectoryInternalDomain, userName);
+
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, domainUserName);
 
                     if (user == null)
                         return false;
                     else
-                        try
-                        {
+                        try {
                             return user.IsMemberOf(principal, IdentityType.SamAccountName, groupName);
-                        }
-                        catch
-                        {
+                        } catch {
                             return false;
                         }
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
             }
         }
-        
         #endregion
     }
 }

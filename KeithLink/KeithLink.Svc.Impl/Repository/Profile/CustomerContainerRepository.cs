@@ -11,7 +11,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         #region attributes
         IEventLogRepository _logger;
         #endregion
-        #region methods
 
         #region ctor
         public CustomerContainerRepository(IEventLogRepository logger)
@@ -19,6 +18,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             _logger = logger;
         }
         #endregion
+        
+        #region methods
         /// <summary>
         /// create a customer container in active directory with a user and group OU with related groups
         /// </summary>
@@ -95,6 +96,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <param name="customerName">the name of the customer container</param>
         /// <remarks>
         /// jwames - 8/6/2014 - original code
+        /// jwames - 10/1/2014 - added approver/buyer purchasing groups
         /// </remarks>
         public void DeleteCustomerContainer(string customerName)
         {
@@ -252,7 +254,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             return retVal;
         }
-
         #endregion
     }
 }

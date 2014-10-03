@@ -29,16 +29,34 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
-            Core.Interface.Profile.IUserProfileRepository _userRepo = 
-                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserProfileRepository))
-                as Core.Interface.Profile.IUserProfileRepository;
-            if (_userRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false)
-            {
-                context.SetError("invalid_grant", errMsg);
-                return;
+            Core.Interface.Profile.IUserProfileLogic _profileLogic =
+                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserProfileLogic))
+                as Core.Interface.Profile.IUserProfileLogic;
+
+            // determine if we are authenticating an internal or external user
+            if (_profileLogic.IsInternalAddress(context.UserName)) {
+                Core.Interface.Profile.IUserDomainRepository ADRepo;
+                ADRepo = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserDomainRepository))
+                as Core.Interface.Profile.IUserDomainRepository;
+
+                if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
+                    context.SetError("invalid_grant", errMsg);
+                    return;
+                }
+            } else {
+                Core.Interface.Profile.ICustomerDomainRepository ADRepo =
+                    System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.ICustomerDomainRepository))
+                    as Core.Interface.Profile.ICustomerDomainRepository;
+
+                if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
+                    context.SetError("invalid_grant", errMsg);
+                    return;
+                }
             }
 
-            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _userRepo.GetUserProfile(context.UserName);
+
+            //KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _userRepo.GetUserProfile(context.UserName);
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
 
             var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));

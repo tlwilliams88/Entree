@@ -12,15 +12,18 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-    public class ListController : BaseController
-    {
-		private readonly IListLogic listLogic;
+    public class ListController : BaseController {
+        #region attributes
+        private readonly IListLogic listLogic;
+        #endregion
 
-		public ListController(IListLogic listLogic, IUserProfileRepository userProfileRepo): base (userProfileRepo)
-        {
+        #region ctor
+        public ListController(IListLogic listLogic, IUserProfileLogic profileLogic): base (profileLogic) {
             this.listLogic = listLogic;
         }
-		
+        #endregion
+
+        #region methods
         [HttpGet]
 		[ApiKeyedRoute("list/")]
         public List<UserList> List(bool header = false)
@@ -33,7 +36,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}")]
 		public UserList List(Guid listId)
         {
-			return listLogic.ReadList(this.AuthenticatedUser, listId);
+			return listLogic.ReadList(this.AuthenticatedUser, listId, this.RequestCatalogInfo);
         }
 
         [HttpGet]
@@ -70,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/items")]
 		public UserList AddItems(Guid listId, List<ListItem> newItems, bool allowDuplicates = false)
 		{
-			return listLogic.AddItems(AuthenticatedUser, listId, newItems, false);
+			return listLogic.AddItems(AuthenticatedUser, this.RequestCatalogInfo, listId, newItems, false);
 		}
 		
         [HttpPut]
@@ -84,7 +87,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
 		public void Put(UserList updatedList)
 		{
-			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList);
+			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList, this.RequestCatalogInfo);
 		}
 
 		[HttpDelete]
@@ -115,5 +118,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var t = itemIds;
 			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
 		}
+        #endregion
     }
 }
