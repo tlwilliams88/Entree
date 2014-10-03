@@ -76,7 +76,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Product GetProductById(string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogLogic.GetProductById(this.RequestCatalogInfo.BranchId, id, this.AuthenticatedUser);
+            Product prod = _catalogLogic.GetProductById(this.RequestCatalogInfo, id, this.AuthenticatedUser);
 
             if (prod == null)
                 return new Product();
