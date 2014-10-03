@@ -20,6 +20,8 @@ angular.module('bekApp')
       $scope.item.productimages = item.productimages;
     });
 
+    ProductService.saveRecentlyViewedItem(item.itemnumber);
+
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
     ListService.getAllLists({
@@ -35,74 +37,56 @@ angular.module('bekApp')
       return ProductService.canOrderProduct(item);
     };
 
-    $scope.saveNote = function(itemNumber, note) {
-      ProductService.updateItemNote(itemNumber, note).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        originalItemNotes = note;
-        $scope.displayMessage('success', 'Successfully updated note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error updating note.');
-      });
+    $scope.openContextMenu = function (e, item) {
+      var isTouchDevice = false;
+      if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+        isTouchDevice = true;
+      }
+
+      // var isTouchDevice = !!('ontouchstart' in window);
+      if (window.innerWidth <= 991 || isTouchDevice) {
+        var modalInstance = $modal.open({
+          templateUrl: 'views/contextmenumodal.html',
+          controller: 'ContextMenuModalController',
+          resolve: {
+            lists: function () {
+              return $scope.lists;
+            },
+            carts: function () {
+              return $scope.carts;
+            },
+            item: function() {
+              return item;
+            }
+          }
+        });  
+      } else {
+        $scope.displayedItems = {};
+        $scope.displayedItems.isContextMenuDisplayed = true;
+      }
+
+      
+
+      // modalInstance.result.then(function (object) {
+      //   $scope.selected = object;
+      // }, function () {
+      //   console.log('Modal dismissed at: ' + new Date());
+      // });
     };
-
-    $scope.deleteNote = function(itemNumber) {
-      ProductService.deleteItemNote(itemNumber).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        item.notes = null;
-        $scope.item.notes = null;
-        $scope.displayMessage('success', 'Successfully deleted note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error deleting note.');
-      });
-    };
-
-    $scope.cancelChanges = function() {
-      $scope.item.notes = originalItemNotes;
-      $scope.itemNotesForm.$setPristine();
-    };
-
-
-    $scope.open = function (item) {
+    $scope.openNotesModal = function (item) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/modal.html',
-        controller: 'ModalInstanceCtrl',
+        templateUrl: 'views/itemnotesmodal.html',
+        controller: 'ItemNotesModalController',
         resolve: {
-          lists: function () {
-            return $scope.lists;
-          },
-          carts: function () {
-            return $scope.carts;
-          },
           item: function() {
-            return item;
+            return angular.copy(item);
           }
         }
       });
 
-      modalInstance.result.then(function (object) {
-        $scope.selected = object;
-      }, function () {
-        console.log('Modal dismissed at: ' + new Date());
+      modalInstance.result.then(function(item) {
+        $scope.item = item;
       });
     };
   }]);
-
-angular.module('bekApp')
-.controller('ModalInstanceCtrl', function ($scope, $modalInstance, lists, carts) {
-
-  $scope.lists = lists;
-  $scope.carts = carts;
-
-  $scope.selectList = function(list) {
-    $modalInstance.close(list);
-  };
-
-  $scope.selectCart = function(cart) {
-    $modalInstance.close(cart);
-  };
-
-  $scope.cancel = function () {
-    $modalInstance.dismiss('cancel');
-  };
-});

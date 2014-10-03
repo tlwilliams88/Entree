@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'AuthenticationService', 'AccessService', 'LocalStorage',
-    function ($scope, $state, $modal, branches, toaster, AuthenticationService, AccessService, LocalStorage) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
+    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
 
     $scope.$state = $state;
 
@@ -26,7 +26,7 @@ angular.module('bekApp')
     $scope.changeBranch = function() {
       LocalStorage.setBranchId($scope.currentLocation);
       LocalStorage.setCurrentLocation($scope.currentLocation);
-    }
+    };
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
       LocalStorage.setBranchId($scope.currentLocation.customerBranch);
@@ -58,8 +58,4 @@ angular.module('bekApp')
       $scope.canManageAccount = AccessService.canManageAccount();
       $scope.canManageeMenu = AccessService.canManageeMenu();
     }
-
-    $scope.displayMessage = function(type, message) {
-      toaster.pop(type, null, message);
-    };
   }]);

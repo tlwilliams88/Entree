@@ -8,18 +8,18 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8">
-    <div ng-show="item.productimages.length > 0" class="item-details__main-image">
+  <div class="col-xs-12 col-md-8">
+    <div ng-show="item.productimages.length > 0" class="pull-left item-details__main-image">
       <img ng-src="{{item.productimages[0].url}}" alt=""/>
     </div>
-    <div class="item-details__main-info">
-      <h3>
+    <div class="item-details__main-info pull-left">
+      <h3 class="item-name">
         <span favorite-item-click-handlers favorite-icons></span>
         {{item.name}}
         <span class="item-details__icons" item-icons="item"></span>
       </h3>
       <div>
-        <div ng-if="item.description">
+        <div ng-if="item.description" class="main-info__description">
           <strong>Description:</strong> {{item.description}}
         </div>
         <div>
@@ -30,13 +30,13 @@
         </div>
         <div>
           <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{item.brand_extended_description}}</span>
+        </div>
+        <div>
           <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
         </div>
       </div>
       <div ng-if="canOrderProduct(item)" class="hidden-print sub-content">
-        <!-- <button ng-click="open()">open modal</button>
-        {{selected.name}} -->
-        <a class="btn-primary btn btn-lg" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
+        <a class="btn-primary btn btn-lg" ng-click="openContextMenu($event, item)" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
         <div class="btn-group" dropdown is-open="isopen">
           <input required type="text" ng-model="item.quantity" class="dropdown-toggle form-control text-right input-lg input-number" integer>
           <ul class="dropdown-menu quantity-dropdown" role="menu">
@@ -47,17 +47,12 @@
       </div>
     </div>
   </div>
-  <div class="col-md-4 sub-content">
-    <form name="itemNotesForm">
-      <p class="has-feedback">
-        <textarea placeholder="Add a note..." name="notes" id="notes" rows="3" class="form-control" ng-model="item.notes"></textarea>
-        <button class="form-control-feedback btn-no-style" ng-disabled="!item.notes" ng-click="deleteNote(item.itemnumber)"><span class="icon-cross text-red large-icon"></span></button>
-      </p>
-      <div class="text-right button-row">
-        <button class="btn btn-primary" type="submit" ng-disabled="itemNotesForm.$pristine" ng-click="saveNote(item.itemnumber, item.notes)">Save</button>
-        <a ng-click="cancelChanges()">Cancel</a>
-      </div>
-    </form>
+  <div class="col-xs-12 col-md-4">
+    <h4 class="no-margin-top">Item Notes
+      <a ng-click="openNotesModal(item)"><span class="icon-pencil large-icon"></span></a>
+    </h4>
+    <p>{{item.notes}}</p>
+    <!-- <button class="btn btn-primary" ng-click="openNotesModal(item)"><span class="icon-pencil"></span> Edit Notes</button> -->
   </div>
 </div>
 

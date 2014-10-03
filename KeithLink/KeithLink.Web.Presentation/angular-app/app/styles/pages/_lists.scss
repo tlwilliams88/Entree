@@ -1,7 +1,7 @@
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
   min-width: 105px;
-  font-size: $font-size;
+  font-size: $font-size-base;
 
   &.bek-drag-active {
     border: 1px dashed $color-border;
@@ -76,13 +76,13 @@
 // }
 
 // highlight row when hovering on desktop only
-@media (min-width: $mobile-max) {
+@media (min-width: $screen-md-min) {
   .custom-lists__table .table-body .table-row:hover {
     background-color: #EBE7D9;
   }
 }
 
-@media (max-width: $mobile-max) {
+@media (max-width: $screen-sm-max) {
   .custom-lists {
     position:absolute; 
     z-index: 3; 

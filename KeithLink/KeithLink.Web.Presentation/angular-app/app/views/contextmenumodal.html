@@ -1,0 +1,25 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Add Item To...</h3>
+</div>
+<div class="modal-body">
+
+  <ul class="list-group" ng-show="!item.favorite" ng-click="addItemToFavorites(item)">
+    <li class="hand list-group-item"><span class="large-icon" favorite-icons></span>Favorites</li>
+  </ul>
+
+  <h3>Carts</h3>
+  <ul class="list-group">
+    <li ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)" class="hand list-group-item">{{cart.name}}</li>
+    <li class="hand list-group-item" ng-click="createCartWithItem(item)">New Cart...</li>
+  </ul>
+
+  <h3>Lists</h3>
+  <ul class="list-group">
+    <li ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
+    <li class="hand list-group-item" ng-click="createListWithItem(item)">New List...</li>
+  </ul>
+
+</div>
+<div class="modal-footer">
+    <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

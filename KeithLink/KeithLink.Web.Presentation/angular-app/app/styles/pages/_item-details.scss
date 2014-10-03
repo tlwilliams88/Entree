@@ -1,14 +1,18 @@
 .item-details__main-info {
-  vertical-align: middle;
-  display: inline-block;
+  // vertical-align: middle;
+  // display: inline-block;
   
   .item-details__icons {
     margin-left: $gutter-size;
     font-size: 15px;
   }
+
+  .main-info__description {
+    max-width: 250px;
+  }
 }
 .item-details__main-image {
-  display: inline-block;
+  // display: inline-block;
   padding-right: $gutter-size;
 
   img {
@@ -21,5 +25,11 @@
 
   img {
     margin: 3px;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .item-name {
+    margin-top: 0;
   }
 }
