@@ -13,10 +13,10 @@ namespace KeithLink.Svc.Core.Interface.Lists
     {
         Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list);
 		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
-		UserList AddItems(UserProfile user, Guid listId, List<ListItem> newItems, bool allowDuplicates);
+		UserList AddItems(UserProfile user, CatalogInfo catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates);
 
 		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo);
-		void UpdateList(Guid userId, UserList list);
+		void UpdateList(Guid userId, UserList list, CatalogInfo catalogInfo);
 
 		void DeleteList(Guid userId, Guid listId);
 		void DeleteLists(Guid userId, List<Guid> listIds);
@@ -24,11 +24,11 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteItems(Guid userId, Guid listId, List<Guid> itemIds);
 
 		List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly);
-		UserList ReadList(UserProfile user, Guid listId);
+		UserList ReadList(UserProfile user, Guid listId, CatalogInfo catalogInfo);
 		List<string> ReadListLabels(Guid userId, Guid listId);
 		List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo);
 
-		void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products);
+		void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, CatalogInfo catalogInfo);
 
     }
 }

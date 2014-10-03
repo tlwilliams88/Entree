@@ -33,7 +33,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}")]
 		public UserList List(Guid listId)
         {
-			return listLogic.ReadList(this.AuthenticatedUser, listId);
+			return listLogic.ReadList(this.AuthenticatedUser, listId, this.RequestCatalogInfo);
         }
 
         [HttpGet]
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/items")]
 		public UserList AddItems(Guid listId, List<ListItem> newItems, bool allowDuplicates = false)
 		{
-			return listLogic.AddItems(AuthenticatedUser, listId, newItems, false);
+			return listLogic.AddItems(AuthenticatedUser, this.RequestCatalogInfo, listId, newItems, false);
 		}
 		
         [HttpPut]
@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
 		public void Put(UserList updatedList)
 		{
-			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList);
+			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList, this.RequestCatalogInfo);
 		}
 
 		[HttpDelete]

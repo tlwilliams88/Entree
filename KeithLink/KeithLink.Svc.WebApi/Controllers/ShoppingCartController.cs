@@ -61,7 +61,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
-			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart, deleteomitted);
+			shoppingCartLogic.UpdateCart(this.RequestCatalogInfo, this.AuthenticatedUser, updatedCart, deleteomitted);
 		}
 
 		[HttpDelete]

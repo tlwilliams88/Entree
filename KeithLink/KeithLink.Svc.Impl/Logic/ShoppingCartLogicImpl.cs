@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using System.Text.RegularExpressions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -47,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = cart.Name;
 			newBasket.Status = BasketStatus;
-			newBasket.Name = cart.FormattedName(catalogInfo.BranchId.ToLower());
+			newBasket.Name = CartName(cart.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 
 			if(cart.Active)
@@ -87,7 +88,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
+		public void UpdateCart(CatalogInfo catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -95,7 +96,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			updateCart.DisplayName = cart.Name;
-			updateCart.Name = cart.FormattedName(updateCart.BranchId);
+			updateCart.Name = CartName(cart.Name, catalogInfo);
 
 			if (cart.Active && (updateCart.Active.HasValue && !updateCart.Active.Value))
 			{
@@ -251,7 +252,11 @@ namespace KeithLink.Svc.Impl.Logic
 
 		#endregion
 
-
+		private string CartName(string name, CatalogInfo catalogInfo)
+		{
+			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
+		}
+		
 		public string SaveAsOrder(UserProfile user, Guid cartId)
 		{
 			//Check that RequestedShipDate

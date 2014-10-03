@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Impl.Logic
         public Product GetProductById(CatalogInfo catalogInfo, string id, UserProfile profile)
         {
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
-			AddFavoriteProductInfo(catalogInfo.BranchId, profile, ret);
+			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
 
 			PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerNumber, DateTime.Now.AddDays(1), new List<Product>() { ret });
@@ -127,7 +127,7 @@ namespace KeithLink.Svc.Impl.Logic
                 ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
 
@@ -142,7 +142,7 @@ namespace KeithLink.Svc.Impl.Logic
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue, catalogInfo);
 
             return returnValue;
         }
@@ -158,7 +158,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
-			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
+			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
 
@@ -186,16 +186,16 @@ namespace KeithLink.Svc.Impl.Logic
             }
         }
 
-        private void AddFavoriteProductInfo(string branch, UserProfile profile, Product ret)
+		private void AddFavoriteProductInfo(UserProfile profile, Product ret, CatalogInfo catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
         }
 
-        private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret)
+		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, CatalogInfo catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret);
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret, catalogInfo);
         }
 
 
