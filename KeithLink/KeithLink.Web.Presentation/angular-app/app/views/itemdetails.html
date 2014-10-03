@@ -39,6 +39,7 @@
         <a class="btn-primary btn btn-lg" ng-click="openContextMenu($event, item)" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
         <div class="btn-group" dropdown is-open="isopen">
           <input required type="text" ng-model="item.quantity" class="dropdown-toggle form-control text-right input-lg input-number" integer>
+          <div counter ng-model="item.quantity" min="1"></div>
           <ul class="dropdown-menu quantity-dropdown" role="menu">
             <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="item.quantity = qty">{{qty}}
             </li>

@@ -55,14 +55,14 @@ angular.module('bekApp')
                       moveToRow = tr.next('tr').next('tr');
 
                       if (!moveToRow.length) { // go to first row
-                        moveToRow = angular.element('.results-table > tbody > tr:not(.filter-row, .mobile-details-row)').first();
+                        moveToRow = angular.element('.table > tbody > tr:not(.filter-row, .mobile-details-row)').first();
                       }
                   }
                   else if (e.which === key.up) {
                       moveToRow = tr.prev('tr').prev('tr');
 
                       if (!moveToRow.length) { // go to last row
-                        moveToRow = angular.element('.results-table > tbody > tr:not(.filter-row, .mobile-details-row)').last();
+                        moveToRow = angular.element('.table > tbody > tr:not(.filter-row, .mobile-details-row)').last();
                       }
                   }
 

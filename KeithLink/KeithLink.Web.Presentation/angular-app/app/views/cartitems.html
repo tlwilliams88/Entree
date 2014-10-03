@@ -20,7 +20,7 @@
       </div>
     </div>
 
-    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming">
+    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
       <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" required ng-model="editCart.name" name="cartName" id="cartName" />
       <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
@@ -181,7 +181,8 @@
           </td>
           <td>
             <ng-form class="hidden-print" name="quantityForm">
-              <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer>
+              <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
+              <div counter ng-model="item.quantity" min="0"></div>
             </ng-form>
           </td>
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
