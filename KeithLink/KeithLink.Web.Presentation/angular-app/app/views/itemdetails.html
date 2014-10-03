@@ -36,8 +36,7 @@
         </div>
       </div>
       <div ng-if="canOrderProduct(item)" class="hidden-print sub-content">
-        <a ng-click="openContextMenu($event, item)">test modal</a>
-        <a class="btn-primary btn btn-lg" ng-mouseover="openContextMenu($event, item)" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
+        <a class="btn-primary btn btn-lg" ng-click="openContextMenu($event, item)" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
         <div class="btn-group" dropdown is-open="isopen">
           <input required type="text" ng-model="item.quantity" class="dropdown-toggle form-control text-right input-lg input-number" integer>
           <ul class="dropdown-menu quantity-dropdown" role="menu">
