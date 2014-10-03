@@ -12,17 +12,19 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-	public class ShoppingCartController : BaseController
-    {
-		private readonly IShoppingCartLogic shoppingCartLogic;
+	public class ShoppingCartController : BaseController {
+        #region attributes
+        private readonly IShoppingCartLogic shoppingCartLogic;
+        #endregion
 
-		public ShoppingCartController(IUserProfileRepository userProfileRepo, IShoppingCartLogic shoppingCartLogic)
-			: base(userProfileRepo)
-		{
+        #region ctor
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic) : base(profileLogic) {
 			this.shoppingCartLogic = shoppingCartLogic;
 		}
+        #endregion
 
-		[HttpGet]
+        #region methods
+        [HttpGet]
 		[ApiKeyedRoute("cart/")]
 		public List<ShoppingCart> List(bool header = false)
 		{
@@ -79,6 +81,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			shoppingCartLogic.DeleteItem(this.AuthenticatedUser, cartId, itemId);
 		}
-
+        #endregion
     }
 }

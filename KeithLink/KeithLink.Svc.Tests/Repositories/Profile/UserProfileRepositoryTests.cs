@@ -37,30 +37,6 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         }
 
         [TestMethod]
-        public void GetUserByEmailAddress()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-            userProfile.GetUserProfile("jeremy@ames.com");
-        }
-
-        [TestMethod]
-        public void GetBEKUserProfile()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-            userProfile.GetUserProfile("jwames@benekeith.com");
-        }
-
-        [TestMethod]
         public void UpdateUser()
         {
             KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
@@ -70,14 +46,14 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                     new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
                     new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
 
-            UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
+            //UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
 
-            userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
-                                           "jeremy@jeremyschickenshack.com",
-                                           "Jeremy",
-                                           "Ames",
-                                           "817-877-5700",
-                                           "FDF");
+            //userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
+            //                               "jeremy@jeremyschickenshack.com",
+            //                               "Jeremy",
+            //                               "Ames",
+            //                               "817-877-5700",
+            //                               "FDF");
         }
     }
 }

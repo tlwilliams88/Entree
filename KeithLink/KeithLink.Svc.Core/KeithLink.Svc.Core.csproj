@@ -126,6 +126,7 @@
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
+    <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogCacheRepository.cs" />

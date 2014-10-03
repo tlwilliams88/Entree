@@ -24,10 +24,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic,
-                                 IUserProfileRepository userProfileRepo)
-            : base(userProfileRepo)
-        {
+        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic) : base(profileLogic) {
             _catalogLogic = catalogLogic;
         }
         #endregion

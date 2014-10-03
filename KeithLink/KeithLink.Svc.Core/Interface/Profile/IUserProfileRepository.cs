@@ -9,14 +9,12 @@ namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface IUserProfileRepository
     {
-        //bool AuthenticateUser(string emailAddress, string password);
-        //bool AuthenticateUser(string emailAddress, string password, out string errorMessage);
-        UserProfileReturn CreateUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName);
-        UserProfileReturn CreateGuestProfile(string emailAddres, string password, string branchId);
+        void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber);
+
         void DeleteUserProfile(string userName);
-        UserProfileReturn GetUserProfile(string userName);
-        UserProfileReturn GetUserProfilesByCustomerName(string customerName);
-        string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+        
+        Core.Models.Generated.UserProfile GetCSProfile(string emailAddress);
+        
         void UpdateUserProfile(Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
     }
 }

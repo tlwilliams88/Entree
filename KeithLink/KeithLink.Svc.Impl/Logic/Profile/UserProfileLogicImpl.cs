@@ -1,20 +1,27 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
+﻿using CommerceServer.Foundation;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Profile;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
         #region attributes
-        private IUserDomainRepository _extAd;
-        private IUserDomainRepository _intAd;
-        private IUserProfileRepository _csProfile;
+        private IUserProfileCacheRepository _cache;
+        private IUserProfileRepository      _csProfile;
+        private ICustomerDomainRepository   _extAd;
+        private IUserDomainRepository       _intAd;
         #endregion
 
         #region ctor
-        public UserProfileLogicImpl(IUserDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo) {
+        public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
+                                    IUserProfileCacheRepository profileCache) {
+            _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
@@ -207,14 +214,321 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             AssertRoleNameLength(roleName);
         }
 
-        public Core.Models.Profile.UserProfile CombineProfileFromCSAndAD(Core.Models.Generated.UserProfile csProfile) {
-            throw new NotImplementedException();
+        /// <summary>
+        /// create a Commerce Server User Profile for a BEK user
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <remarks>
+        /// jwames - 8/29/2014 - original code
+        /// </remarks>
+        public void CreateBekUserProfile(string emailAddress) {
+            System.DirectoryServices.AccountManagement.UserPrincipal bekUser = _intAd.GetUser(emailAddress);
+            string fName = bekUser.DisplayName.Split(' ')[0];
+
+            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber());
         }
 
+        /// <summary>
+        /// create a guest account in AD and CS
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <param name="password">their password</param>
+        /// <param name="branchId">their selected branch</param>
+        /// <returns>a completed user profile</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        public UserProfileReturn CreateGuestUserAndProfileProfile(string emailAddress, string password, string branchId) { 
+            _extAd.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
+                              emailAddress, 
+                              password, 
+                              Core.Constants.AD_GUEST_FIRSTNAME, 
+                              Core.Constants.AD_GUEST_LASTNAME, 
+                              Core.Constants.ROLE_EXTERNAL_GUEST
+                              );
+
+            _csProfile.CreateUserProfile(emailAddress,
+                                         Core.Constants.AD_GUEST_FIRSTNAME,
+                                         Core.Constants.AD_GUEST_LASTNAME,
+                                         string.Empty
+                                         );
+
+            return GetUserProfile(emailAddress);
+        }
+
+        /// <summary>
+        /// create a user in AD and CS
+        /// </summary>
+        /// <param name="customerName">the company that the user works for</param>
+        /// <param name="emailAddress">the user's email</param>
+        /// <param name="password">their desired password</param>
+        /// <param name="firstName">user's given name</param>
+        /// <param name="lastName">user's surname</param>
+        /// <param name="phone">telephone number</param>
+        /// <param name="roleName">assigned role</param>
+        /// <returns>a completed user profile</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName) {
+            _extAd.CreateUser(customerName,
+                              emailAddress,
+                              password,
+                              firstName,
+                              lastName,
+                              roleName
+                              );
+
+            _csProfile.CreateUserProfile(emailAddress,
+                                         firstName,
+                                         lastName,
+                                         phone
+                                         );
+
+            return GetUserProfile(emailAddress);
+        }
+
+        /// <summary>
+        /// take all of the fields from the commerce server profile and put them into our custom object and load other custom data
+        /// </summary>
+        /// <param name="csProfile">profile data from commerce server</param>
+        /// <returns>a completed user profile object</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
+        /// </remarks>
+        public Core.Models.Profile.UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
+            // get user organization info
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
+            profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
+
+            var queryOrganizations = new CommerceServer.Foundation.CommerceQueryRelatedItem<CommerceServer.Foundation.CommerceEntity>("UserOrganization", "Organization");
+            profileQuery.RelatedOperations.Add(queryOrganizations);
+
+            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+
+            List<Customer> userCustomers = new List<Customer>();
+            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
+                userCustomers.Add(new Customer() {
+                    CustomerName = (string)ent.Properties["GeneralInfo.Name"],
+                    CustomerNumber = (string)ent.Properties["GeneralInfo.TradingPartnerNumber"],
+                    CustomerBranch = "fdf" // TODO: add field to organization for branch
+                });
+
+            return new UserProfile() {
+                UserId = Guid.Parse(csProfile.Id),
+                FirstName = csProfile.FirstName,
+                LastName = csProfile.LastName,
+                EmailAddress = csProfile.Email,
+                PhoneNumber = csProfile.PhoneNumber,
+                CustomerNumber = csProfile.SelectedCustomer,
+                BranchId = csProfile.SelectedBranch,
+                RoleName = GetUserRole(csProfile.Email),
+                UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
+                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
+                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                }
+            };
+        }
+
+        /// <summary>
+        /// get a user profile from commerce server
+        /// </summary>
+        /// <param name="userId">commerce server's user id</param>
+        /// <returns>user profile object</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfile(Guid userId) {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0) {
+            } else {
+                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// get the user profile
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
+        /// </remarks>
+        public UserProfileReturn GetUserProfile(string emailAddress) {
+            Core.Models.Profile.UserProfile upFromCache = null;
+            upFromCache = _cache.GetProfile(emailAddress);
+            //if (_userProfileCacheRepository.GetProfile(emailAddress) != null) {
+            //if (_cache.GetProfile(emailAddress) != null) {
+            if (upFromCache != null) {
+                return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
+            }
+
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
+            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0) {
+                if (IsInternalAddress(emailAddress)) {
+                    CreateBekUserProfile(emailAddress);
+
+                    return GetUserProfile(emailAddress);
+                }
+            } else {
+                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            if (retVal != null) {
+                _cache.AddProfile(retVal.UserProfiles.FirstOrDefault());
+            }
+            return retVal;
+        }
+
+        /// <summary>
+        /// get the role assigned to the specified user
+        /// </summary>
+        /// <param name="email">the user's email address</param>
+        /// <returns>user's role name</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        private string GetUserRole(string email) {
+            string roleName = null;
+
+            if (IsInternalAddress(email)) {
+                roleName = "owner";
+            } else {
+                if (roleName == null && _extAd.IsInGroup(email, "owner")) {
+                    roleName = "owner";
+                } else if (roleName == null && _extAd.IsInGroup(email, "approver")) {
+                    roleName = "approver";
+                } else if (roleName == null && _extAd.IsInGroup(email, "buyer")) {
+                    roleName = "buyer";
+                } else if (roleName == null && _extAd.IsInGroup(email, "accounting")) {
+                    roleName = "accounting";
+                } else if (roleName == null && _extAd.IsInGroup(email, "guest")) {
+                    roleName = "guest";
+                }
+            }
+
+            return roleName;
+        }
+
+        //private string GetUserRole(UserPrincipal user) {
+        //    PrincipalSearchResult<Principal> groups = user.GetGroups();
+
+        //    foreach (GroupPrincipal group in groups) {
+        //        group.Name
+        //    }
+
+        //    return null;
+        //}
+
+        /// <summary>
+        /// looks for a benekeith.com email domain
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <returns>true if found</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
         public bool IsInternalAddress(string emailAddress) {
             return Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS);
         }
 
+        /// <summary>
+        /// make sure that the new password meets our requirements, the old password is correct, and updates saves the new password
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <param name="originalPassword">the user's old password </param>
+        /// <param name="newPassword">the user's new password</param>
+        /// <returns>message detailing the results</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            string retVal = null;
+
+            try {
+                if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
+
+                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+
+                AssertPasswordLength(newPassword);
+                AssertPasswordComplexity(newPassword);
+                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
+
+                if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                    retVal = "Password update successful";
+                } else {
+                    retVal = "Invalid password";
+                }
+            } catch (ApplicationException appEx) {
+                retVal = appEx.Message;
+            } catch (Exception ex) {
+                retVal = string.Concat("Could not process request: ", ex.Message);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// update the user profile in Commerce Server (not implemented)
+        /// </summary>
+        /// <remarks>
+        /// jwames - 8/18/2014 - documented
+        /// </remarks>
+        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
+            AssertEmailAddressLength(emailAddress);
+            AssertEmailAddress(emailAddress);
+            AssertFirstNameLength(firstName);
+            AssertLastNameLength(lastName);
+
+            UserProfileReturn existingUser = GetUserProfile(id);
+
+            if (string.Compare(existingUser.UserProfiles[0].EmailAddress, emailAddress, true) != 0) { AssertEmailAddressUnique(emailAddress); }
+
+            if (IsInternalAddress(emailAddress) || IsInternalAddress(existingUser.UserProfiles[0].EmailAddress)) {
+                throw new ApplicationException("Cannot update profile information for BEK user.");
+            }
+
+            _csProfile.UpdateUserProfile(id, emailAddress, firstName, lastName, phoneNumber, branchId);
+
+            _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
+
+            // remove the old user profile from cache and then update it with the new profile
+            _cache.RemoveItem(existingUser.UserProfiles[0].EmailAddress);
+            _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
+        }
         #endregion
     }
 }

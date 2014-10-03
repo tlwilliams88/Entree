@@ -10,8 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Profile
 
         UserPrincipal GetUser(string userName);
 
-        UserPrincipal GetUserByEmailAddress(string userName);
-
         bool IsInGroup(string userName, string groupName);
     }
 }

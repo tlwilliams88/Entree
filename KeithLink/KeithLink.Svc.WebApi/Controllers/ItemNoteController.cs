@@ -11,17 +11,19 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-    public class ItemNoteController : BaseController
-    {
-		private readonly IItemNoteLogic itemNoteLogic;
+    public class ItemNoteController : BaseController {
+        #region attributes
+        private readonly IItemNoteLogic itemNoteLogic;
+        #endregion
 
-		public ItemNoteController(IItemNoteLogic itemNoteLogic,  IUserProfileRepository userProfileRepo)
-            : base(userProfileRepo)
-        {
+        #region ctor
+        public ItemNoteController(IItemNoteLogic itemNoteLogic,  IUserProfileLogic profileLogic) : base(profileLogic) {
 			this.itemNoteLogic = itemNoteLogic;
         }
+        #endregion
 
-		[HttpPost]
+        #region methods
+        [HttpPost]
 		[ApiKeyedRoute("itemnote/")]
 		public void AddItem(ItemNote newNote)
 		{
@@ -41,6 +43,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			itemNoteLogic.DeleteNote(this.AuthenticatedUser.UserId, itemNumber);
 		}
+        #endregion
     }
 	
 }
