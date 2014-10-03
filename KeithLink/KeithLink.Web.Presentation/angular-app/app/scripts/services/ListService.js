@@ -153,6 +153,14 @@ angular.module('bekApp')
           });
         },
 
+        deleteMultipleLists: function(listGuidArray)
+        {
+          return $http.delete('/list', {
+            headers:{'Content-Type': 'application/json'},
+            data: listGuidArray
+          });
+        },
+
         /********************
         EDIT SINGLE ITEM
         ********************/
