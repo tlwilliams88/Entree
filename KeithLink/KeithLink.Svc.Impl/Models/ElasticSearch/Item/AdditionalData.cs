@@ -144,5 +144,10 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 
         [JsonProperty("ifda")]
         public string Ifda { get; set; }
+		[JsonProperty("isproprietary")]
+		public bool IsProprietary { get; set; }
+
+		[JsonProperty("proprietarycustomers")]
+		public string ProprietaryCustomers { get; set; }
     }
 }

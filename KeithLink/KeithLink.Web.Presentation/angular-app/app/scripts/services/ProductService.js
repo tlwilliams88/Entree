@@ -8,7 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
+  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 
+    function($http, UserProfileService, RecentlyViewedItem, ItemNotes) {
 
       var defaultPageSize = 50,
         defaultStartingIndex = 0;
@@ -183,16 +184,30 @@ angular.module('bekApp')
           return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
         },
 
+        // ITEM NOTES
         updateItemNote: function(itemNumber, note) {
           var itemNote = {
             itemnumber: itemNumber,
             note: note
           };
-          return $http.post('/itemnote', itemNote);
+          return ItemNotes.save(null, itemNote).$promise;
         },
 
         deleteItemNote: function(itemNumber) {
-          return $http.delete('/itemnote/' + itemNumber);
+          return ItemNotes.delete({
+            itemNumber: itemNumber
+          }).$promise;
+        },
+
+        // RECENTLY VIEWED ITEMS
+        saveRecentlyViewedItem: function(itemNumber) {
+          return RecentlyViewedItem.save({
+            itemNumber: itemNumber
+          }, {}).$promise;
+        },
+
+        getRecentlyViewedItems: function() {
+          return RecentlyViewedItem.query({}).$promise;
         }
       };
 

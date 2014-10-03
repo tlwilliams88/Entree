@@ -31,14 +31,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.RequestCatalogInfo, header);
 		}
 
-		[HttpPut]
-		[ApiKeyedRoute("cart/")]
-		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
-		{
-			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart, deleteomitted);
-		}
-
-
 		[HttpGet]
 		[ApiKeyedRoute("cart/{cartId}")]
 		public ShoppingCart Cart(Guid cartId)
@@ -46,7 +38,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, cartId);
 		}
 
-		
 		[HttpPost]
 		[ApiKeyedRoute("cart/")]
 		public NewItem List(ShoppingCart cart)
@@ -54,18 +45,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.RequestCatalogInfo, cart) };
 		}
 
-		[HttpDelete]
-		[ApiKeyedRoute("cart/{cartId}")]
-		public void DeleteList(Guid cartId)
-		{
-			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, cartId);
-		}
-
 		[HttpPost]
 		[ApiKeyedRoute("cart/{cartId}/item")]
 		public NewItem AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
-			return  new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, cartId, newItem) };
+			return new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, cartId, newItem) };
 		}
 
 		[HttpPut]
@@ -73,6 +57,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public void UpdateItem(Guid cartId, ShoppingCartItem updatedItem)
 		{
 			shoppingCartLogic.UpdateItem(this.AuthenticatedUser, cartId, updatedItem);
+		}
+
+		[HttpPut]
+		[ApiKeyedRoute("cart/")]
+		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
+		{
+			shoppingCartLogic.UpdateCart(this.AuthenticatedUser, updatedCart, deleteomitted);
+		}
+
+		[HttpDelete]
+		[ApiKeyedRoute("cart/{cartId}")]
+		public void DeleteList(Guid cartId)
+		{
+			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, cartId);
 		}
 
 		[HttpDelete]

@@ -14,6 +14,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
         private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
+		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
@@ -65,6 +66,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
+		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
 
 
         #endregion
@@ -452,6 +454,16 @@ namespace KeithLink.Svc.Impl
 			{
 				var value = GetValue(KEY_REQUIRE_HTTPS, "false");
 				return ValueParsingUtil.ParseBool(value, "false");
+			}
+		}
+
+
+		public static int RecentItemsToKeep
+		{
+			get
+			{
+				string value = GetValue(KEY_RECENT_ITEMS_TO_KEEP, DEFAULT_RECENT_ITEMS_TO_KEEP);
+				return ValueParsingUtil.ParseInt(value, DEFAULT_RECENT_ITEMS_TO_KEEP);
 			}
 		}
 

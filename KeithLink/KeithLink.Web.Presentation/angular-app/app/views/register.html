@@ -24,7 +24,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-md-5 no-padding text-red">
+              <div class="col-md-5 text-red">
                 {{loginErrorMessage}}
               </div>
               <div class="col-md-5">
@@ -41,7 +41,7 @@
 
       <div class="row">
         <div class="col-xs-12">
-          <h1>Sign Up Now - It's Free and Easy!</h1>
+          <h1 class="text-thin">Sign Up Now - It's Free and Easy!</h1>
           <p>
             Please register by completing the form below. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
           </p>    
@@ -102,11 +102,11 @@
             <label for="branch">Division</label>
             <a class="pull-right" target="_blank" href="/images/bek-division-map.png">Division Map</a>
             <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Division is required</span>
-            <div class="select-div">
+            <!-- <div class="select-div"> -->
               <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.name for branch in branches" ng-model="registerUser.branchid">
                 <option value="">Please select a division</option>
               </select>
-            </div>
+            <!-- </div> -->
           </div>
         </div>
         
@@ -123,7 +123,7 @@
 
         <div class="row sub-content">
           <div class="col-xs-12 button-row">
-            <button ng-click="registerNewUser(registerUser)" ng-disabled="registrationForm.$invalid || registrationFormSubmitted" type="submit" class="btn btn-primary">Submit Registration</button>
+            <button ng-click="registerNewUser(registerUser)" ng-disabled="registrationForm.$invalid || registrationFormSubmitted" type="submit" class="btn-lg btn btn-primary">Submit Registration</button>
             <a ng-click="clearForm()">Cancel</a>
           </div>
         </div>

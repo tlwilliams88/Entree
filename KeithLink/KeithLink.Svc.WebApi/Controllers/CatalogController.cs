@@ -49,7 +49,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("catalog/search/category/{categoryId}/products")]
         public ProductsReturn GetProductsByCategoryId(string categoryId, [FromUri] SearchInputModel searchModel)
         {
-			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.RequestCatalogInfo.BranchId, categoryId, searchModel, this.AuthenticatedUser);
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.RequestCatalogInfo, categoryId, searchModel, this.AuthenticatedUser);
             return prods;
         }
 
@@ -57,7 +57,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("catalog/search/brands/house/{brandControlLabel}")]
         public ProductsReturn GetProductsByHouseBrand(string brandControlLabel, [FromUri] SearchInputModel searchModel)
         {
-            return _catalogLogic.GetHouseProductsByBranch(this.RequestCatalogInfo.BranchId, brandControlLabel, searchModel, this.AuthenticatedUser);
+            return _catalogLogic.GetHouseProductsByBranch(this.RequestCatalogInfo, brandControlLabel, searchModel, this.AuthenticatedUser);
         }
 
         [HttpGet]
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
 		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)
         {
-            ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.RequestCatalogInfo.BranchId, searchTerms, searchModel, this.AuthenticatedUser);
+            ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.RequestCatalogInfo, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }
 

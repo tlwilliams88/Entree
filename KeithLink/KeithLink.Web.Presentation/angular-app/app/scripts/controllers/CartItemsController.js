@@ -83,7 +83,7 @@ angular.module('bekApp')
     };
 
     $scope.deleteCart = function(cart) {
-      CartService.deleteCart(cart).then(function() {
+      CartService.deleteCart(cart.id).then(function() {
         setCurrentCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
       }, function() {

@@ -6,16 +6,16 @@ angular.module('bekApp')
     restrict: 'A',
     replace : true,
     scope: true,
-    controller: ['$scope', 'toaster', 'ListService', function($scope, toaster, ListService){
+    controller: ['$scope', 'ListService', function($scope, ListService){
 
       $scope.addItemToFavorites = function(item) {
         // $scope.$emit('processing-start');
         var newItem = angular.copy(item);
         ListService.addItemToFavorites(newItem).then(function(data) {
           item.favorite = true;
-          toaster.pop('success', null, 'Successfully added item to Favorites List.');
+          $scope.displayMessage('success', 'Successfully added item to Favorites List.');
         }, function() {
-          toaster.pop('error', null, 'Error adding item to Favorites List.');
+          $scope.displayMessage('error', 'Error adding item to Favorites List.');
         });
       };
       $scope.removeItemFromFavorites = function(item) {
@@ -23,9 +23,9 @@ angular.module('bekApp')
         var deletedItem = angular.copy(item);
         ListService.removeItemFromFavorites(deletedItem.itemnumber).then(function(data) {
           item.favorite = false;
-          toaster.pop('success', null, 'Successfully removed item from Favorites List.');
+          $scope.displayMessage('success', 'Successfully removed item from Favorites List.');
         }, function() {
-          toaster.pop('error', null, 'Error removing item from Favorites List.');
+          $scope.displayMessage('error', 'Error removing item from Favorites List.');
         });
       };
     }]
