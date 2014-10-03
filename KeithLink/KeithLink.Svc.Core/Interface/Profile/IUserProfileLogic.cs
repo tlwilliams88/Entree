@@ -24,8 +24,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName);
 
-        void CreateBekUserProfile(string emailAddress);
-
         UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
 
         UserProfileReturn GetUserProfile(string emailAddress);

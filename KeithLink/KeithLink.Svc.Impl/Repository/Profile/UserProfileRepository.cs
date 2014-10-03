@@ -86,7 +86,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             if (profileResponse.Count == 0) {
                 return null;
             } else {
-                return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]);
+                return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0];
             }
         }
 

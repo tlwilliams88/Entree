@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertCustomerNameLength(string customerName) {
+        public void AssertCustomerNameLength(string customerName) {
             if (customerName.Length == 0)
                 throw new ApplicationException("Customer name is blank");
         }
@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertCustomerNameValidCharacters(string customerName) {
+        public void AssertCustomerNameValidCharacters(string customerName) {
             if (System.Text.RegularExpressions.Regex.IsMatch(customerName, Core.Constants.REGEX_AD_ILLEGALCHARACTERS)) { throw new ApplicationException("Invalid characters in customer name"); }
         }
 
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertEmailAddress(string emailAddress) {
+        public void AssertEmailAddress(string emailAddress) {
             try {
                 System.Net.Mail.MailAddress testAddress = new System.Net.Mail.MailAddress(emailAddress);
             } catch {
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertEmailAddressLength(string emailAddress) {
+        public void AssertEmailAddressLength(string emailAddress) {
             if (emailAddress.Length == 0)
                 throw new ApplicationException("Email address is blank");
         }
@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertEmailAddressUnique(string emailAddress) {
+        public void AssertEmailAddressUnique(string emailAddress) {
             if (_extAd.GetUser(emailAddress) != null) {
                 throw new ApplicationException("Email address is already in use");
             }
@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertFirstNameLength(string firstName) {
+        public void AssertFirstNameLength(string firstName) {
             if (firstName.Length == 0)
                 throw new ApplicationException("First name is blank");
         }
@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 9/15/2014 - original code
         /// </remarks>
-        private void AssertGuestProfile(string emailAddress, string password) {
+        public void AssertGuestProfile(string emailAddress, string password) {
             AssertEmailAddress(emailAddress);
             AssertEmailAddressLength(emailAddress);
             AssertPasswordComplexity(password);
@@ -117,7 +117,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertLastNameLength(string lastName) {
+        public void AssertLastNameLength(string lastName) {
             if (lastName.Length == 0)
                 throw new ApplicationException("Last name is blank");
         }
@@ -128,7 +128,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertPasswordComplexity(string password) {
+        public void AssertPasswordComplexity(string password) {
             if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) {
                 throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number");
             }
@@ -140,7 +140,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertPasswordLength(string password) {
+        public void AssertPasswordLength(string password) {
             if (password.Length < 7)
                 throw new ApplicationException("Minimum password length is 7 characters");
         }
@@ -151,7 +151,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
+        public void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
             bool matched = false;
 
             //if (string.Compare(password, customerName, true) == 0) { matched = true; }
@@ -169,7 +169,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertRoleName(string roleName) {
+        public void AssertRoleName(string roleName) {
             bool found = false;
 
             if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
@@ -189,7 +189,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertRoleNameLength(string roleName) {
+        public void AssertRoleNameLength(string roleName) {
             if (roleName.Length == 0) { throw new ApplicationException("Role name is blank"); }
         }
 
@@ -199,7 +199,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
+        public void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
             AssertCustomerNameLength(customerName);
             AssertCustomerNameValidCharacters(customerName);
             AssertEmailAddress(emailAddres);
@@ -296,7 +296,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
-        public Core.Models.Profile.UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
+        public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
             // get user organization info
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
             profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
