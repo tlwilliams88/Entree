@@ -11,22 +11,24 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-    public class OrderController : BaseController
-    {
+    public class OrderController : BaseController {
+        #region attributes
+        private readonly IShoppingCartLogic shoppingCartLogic;
+        #endregion
 
-		private readonly IShoppingCartLogic shoppingCartLogic;
-
-		public OrderController(IUserProfileRepository userProfileRepo, IShoppingCartLogic shoppingCartLogic): base(userProfileRepo)
-		{
+        #region ctor
+        public OrderController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic): base(profileLogic) {
 			this.shoppingCartLogic = shoppingCartLogic;
 		}
+        #endregion
 
-		[HttpPost]
+        #region methods
+        [HttpPost]
 		[ApiKeyedRoute("order/{cartId}")]
 		public string SaveOrder(Guid cartId)
 		{
 			return shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, cartId);
 		}
-
+        #endregion
     }
 }

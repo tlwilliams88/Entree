@@ -12,15 +12,18 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-    public class ListController : BaseController
-    {
-		private readonly IListLogic listLogic;
+    public class ListController : BaseController {
+        #region attributes
+        private readonly IListLogic listLogic;
+        #endregion
 
-		public ListController(IListLogic listLogic, IUserProfileRepository userProfileRepo): base (userProfileRepo)
-        {
+        #region ctor
+        public ListController(IListLogic listLogic, IUserProfileLogic profileLogic): base (profileLogic) {
             this.listLogic = listLogic;
         }
-		
+        #endregion
+
+        #region methods
         [HttpGet]
 		[ApiKeyedRoute("list/")]
         public List<UserList> List(bool header = false)
@@ -115,5 +118,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var t = itemIds;
 			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
 		}
+        #endregion
     }
 }
