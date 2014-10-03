@@ -3,14 +3,16 @@
 @import 'scaffolding/variables';
 
 // vendor
-@import 'bootstrap-theme';
+@import 'vendor/bootstrap-theme';
 @import 'vendor/bootstrap/bootstrap';
 
 // scaffolding
 @import 'scaffolding/globals';
 @import 'scaffolding/typography';
+@import 'scaffolding/alignment';
 
 // mixins
+@import 'mixins/mixins';
 @import 'mixins/arrows';
 
 // components
@@ -20,11 +22,15 @@
 @import 'components/inputs';
 @import 'components/tabs';
 @import 'components/forms';
-@import 'components/alignment';
 @import 'components/featured-items';
 @import 'components/dropdown-menus';
 @import 'components/person-info';
 @import 'components/icons';
+@import 'components/context-menu';
+@import 'components/sidebar';
+@import 'components/sidebar-mobile';
+@import 'components/user-bar';
+@import 'components/page-header-bar';
 
 // pages
 @import 'pages/home';
@@ -35,16 +41,3 @@
 @import 'pages/search-results';
 @import 'pages/add-to-order';
 @import 'pages/lists';
-
-
-
-
-@import 'mixins';
-
-// @import 'component';
-@import 'context-menu';
-
-@import 'sidebar';
-@import 'sidebar-mobile';
-@import 'user-bar';
-@import 'page-header-bar';
