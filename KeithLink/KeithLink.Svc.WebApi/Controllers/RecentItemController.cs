@@ -10,36 +10,36 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class RecentItemController : BaseController
-    {
-		private readonly IRecentlyViewedListLogic recentlyViewedLogic;
+    public class RecentItemController : BaseController {
+        #region attributes
+        private readonly IRecentlyViewedListLogic recentlyViewedLogic;
+        #endregion
 
-		public RecentItemController(IRecentlyViewedListLogic recentlyViewedLogic, IUserProfileRepository userProfileRepo)
-			: base(userProfileRepo)
-        {
+        #region ctor
+        public RecentItemController(IRecentlyViewedListLogic recentlyViewedLogic, IUserProfileLogic profileLogic)  : base(profileLogic) {
 			this.recentlyViewedLogic = recentlyViewedLogic;
         }
+        #endregion
 
-		[HttpGet]
+        #region methods
+        [HttpGet]
 		[ApiKeyedRoute("recent/")]
-		public List<RecentItem> Recent()
-		{
+		public List<RecentItem> Recent() {
 			return recentlyViewedLogic.Read(this.AuthenticatedUser, this.RequestCatalogInfo);
 		}
 
 		[HttpPost]
 		[ApiKeyedRoute("recent/{itemnumber}")]
-		public void Recent(string itemnumber)
-		{
+		public void Recent(string itemnumber) {
 			recentlyViewedLogic.AddItem(this.AuthenticatedUser, this.RequestCatalogInfo, itemnumber);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("recent/")]
-		public void RecentDelete()
-		{
+		public void RecentDelete() {
 			recentlyViewedLogic.Clear(this.AuthenticatedUser, this.RequestCatalogInfo);
 		}
+        #endregion
 
     }
 }

@@ -13,26 +13,24 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class BrandController : BaseController
-    {
+    public class BrandController : BaseController {
+        #region attributes
         KeithLink.Svc.Core.Interface.Brand.IBrandRepository _brandRepository;
+        #endregion
 
-        public BrandController(IBrandRepository brandRepository, IUserProfileRepository userRepo)
-            : base(userRepo)
-        {
+        #region ctor
+        public BrandController(IBrandRepository brandRepository, IUserProfileLogic profileLogic) : base(profileLogic) {
             _brandRepository = brandRepository;
         }
+        #endregion
 
-        // GET api/<controller>
+        #region methods
         [HttpGet]
         [ApiKeyedRoute("brands/house")]
         public BrandsReturn GetHouseBrands()
         {
             return _brandRepository.GetHouseBrands();
         }
-
-
-
-
-    } // end class
-} // end namespace
+        #endregion
+    } 
+}

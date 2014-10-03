@@ -38,8 +38,13 @@ angular.module('bekApp')
     };
 
     $scope.openContextMenu = function (e, item) {
+      var isTouchDevice = false;
+      if (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)) {
+        isTouchDevice = true;
+      }
 
-      // if (window.innerWidth <= 991) {
+      // var isTouchDevice = !!('ontouchstart' in window);
+      if (window.innerWidth <= 991 || isTouchDevice) {
         var modalInstance = $modal.open({
           templateUrl: 'views/contextmenumodal.html',
           controller: 'ContextMenuModalController',
@@ -55,10 +60,10 @@ angular.module('bekApp')
             }
           }
         });  
-      // } else {
-      //   $scope.displayedItems = {};
-      //   $scope.displayedItems.isContextMenuDisplayed = true;
-      // }
+      } else {
+        $scope.displayedItems = {};
+        $scope.displayedItems.isContextMenuDisplayed = true;
+      }
 
       
 

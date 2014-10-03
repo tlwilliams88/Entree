@@ -22,12 +22,12 @@
 <!-- Recently Viewed Items -->
 <div class="row">
 	<div class="col-sm-12">
-		<h3>Recently Viewed Items</h3>
-		<ul class="horizontal-slide hidden-xs hidden-sm">
+		<h2>Recently Viewed Items</h2>
+		<ul class="horizontal-slide hidden-xs hidden-sm slide-recently-viewed-items">
 			<li loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></li>
 			<li ng-repeat="item in recentlyViewedItems" class="item-holder">
 				<div class="featured-item text-center">
-					<!-- <img class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" src="{{item.images[0]}}" alt="image"> -->
+					<img class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url || 'images/default-placeholder.png'}}" alt="image">
 					<div class="featured-item__detail">
 						{{item.name}}
 						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">View Item</a>
@@ -43,7 +43,7 @@
 <!-- Recommended Items -->
 <div class="row" ng-if="isOrderEntryCustomer">
 	<div class="col-sm-12">
-		<h3>Recommended Items</h3>
+		<h2>Recommended Items</h2>
 		<h4>Coming soon</h4>
 		<!-- <ul class="horizontal-slide hidden-xs hidden-sm">
 			<li ng-repeat="product in featuredProducts | orderBy: ['name']" class="item-holder">
@@ -63,7 +63,7 @@
 <!-- Categories -->
 <div class="row">
 	<div class="col-sm-12">
-		<h3>Select A Category</h3>
+		<h2>Select A Category</h2>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
 			<li loading-spinner="loadingCategories" ng-show="loadingCategories"></li>
 			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
@@ -84,7 +84,7 @@
 <!-- Brands -->
 <div class="row">
 	<div class="col-sm-12">
-		<h3>Select A Brand</h3>
+		<h2>Select A Brand</h2>
 		<ul class="horizontal-slide hidden-xs hidden-sm">
 			<li ng-show="loadingBrands" loading-spinner="loadingBrands"></li>
 			<li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">

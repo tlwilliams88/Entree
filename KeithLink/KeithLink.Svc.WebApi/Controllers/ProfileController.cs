@@ -1,4 +1,6 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.WebApi.Models;
 using System;
@@ -13,17 +15,17 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ProfileController : BaseController
     {
         #region attributes
-        private Core.Interface.Profile.ICustomerContainerRepository _custRepo;
-        private Core.Interface.Profile.IUserProfileRepository _profileRepo;
-        private KeithLink.Common.Core.Logging.IEventLogRepository _log;
+        private ICustomerContainerRepository    _custRepo;
+        private IEventLogRepository             _log;
+        private IUserProfileLogic               _profileLogic;
         #endregion
 
         #region ctor
-        public ProfileController(Core.Interface.Profile.ICustomerContainerRepository customerRepo, 
-                                 Core.Interface.Profile.IUserProfileRepository profileRepo,
-                                 KeithLink.Common.Core.Logging.IEventLogRepository logRepo ) : base(profileRepo) {
+        public ProfileController(ICustomerContainerRepository customerRepo, 
+                                 IEventLogRepository logRepo,
+                                 IUserProfileLogic profileLogic) : base(profileLogic) {
             _custRepo = customerRepo;
-            _profileRepo = profileRepo;
+            _profileLogic = profileLogic;
             _log = logRepo;
         }
         #endregion
@@ -32,35 +34,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpPost]
         [ApiKeyedRoute("profile/create")]
-        public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo)
-        {
-
+        public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo) {
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-            try
-            {
-                CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(userInfo.CustomerName);
-
-                // create the customer container if it does not exist
-                if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(userInfo.CustomerName); }
-
-                retVal.SuccessResponse =_profileRepo.CreateUserProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password, 
-                                                                       userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber, 
-                                                                       userInfo.RoleName);
-            }
-            catch (ApplicationException axe)
-            {
+            try {
+                retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
+                                                                            userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
+                                                                            userInfo.RoleName);
+            } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
                 _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
-
 
             return retVal;
         }
@@ -69,16 +58,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("profile/register")]
         public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
-
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                CustomerContainerReturn custExists = _custRepo.SearchCustomerContainers(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
-
-                // create the customer container if it does not exist
-                if (custExists.CustomerContainers.Count != 1) { _custRepo.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER); }
-
-                retVal.SuccessResponse = _profileRepo.CreateGuestProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfileProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -95,26 +78,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email)
-        {
-            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
-            {
+        public UserProfileReturn GetUser(string email) {
+            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
 
                 return retVal;
-            }
-            else
-            {
-                return _profileRepo.GetUserProfile(email);
+            } else {
+                return _profileLogic.GetUserProfile(email);
             }
         }
 
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
-        public CustomerContainerReturn SearchCustomers(string searchText)
-        {
+        public CustomerContainerReturn SearchCustomers(string searchText) {
             return _custRepo.SearchCustomerContainers(searchText);
         }
 
@@ -122,7 +100,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
         public string UpdatePassword(UpdatePasswordModel pwInfo) {
-            return _profileRepo.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+            return _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
         }
 
         [Authorize]
@@ -134,10 +112,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 if (userInfo.UserId == null || userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
-                _profileRepo.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
-                                               userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
+                _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
+                                                userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
 
-                retVal.SuccessResponse = _profileRepo.GetUserProfile(userInfo.Email);
+                retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -147,7 +125,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
-
 
             return retVal;
         }

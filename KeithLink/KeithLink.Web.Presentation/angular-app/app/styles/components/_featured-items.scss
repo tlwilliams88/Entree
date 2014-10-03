@@ -24,6 +24,15 @@
   }
 }
 
+.slide-recently-viewed-items {
+  .featured-item {
+    width: initial;
+    img {
+      width: initial;
+    }
+  }
+}
+
 .featured-item-mobile {
   background-color: $color-white;
   box-shadow: 0px 0px 10px $color-border;

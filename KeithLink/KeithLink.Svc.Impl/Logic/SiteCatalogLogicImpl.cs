@@ -54,11 +54,22 @@ namespace KeithLink.Svc.Impl.Logic
             return "CategoriesReturn_" + from + "_" + size;
         }
 
-        public Product GetProductById(string branch, string id, UserProfile profile)
+        public Product GetProductById(CatalogInfo catalogInfo, string id, UserProfile profile)
         {
-            Product ret = _catalogRepository.GetProductById(branch, id);
-            AddFavoriteProductInfo(branch, profile, ret);
+            Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
+			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
+
+			PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerNumber, DateTime.Now.AddDays(1), new List<Product>() { ret });
+
+			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
+			{
+				var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
+				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
+				ret.CasePriceNumeric = price.CasePrice;
+				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+			}
+			
             return ret;
         }
 
@@ -116,7 +127,7 @@ namespace KeithLink.Svc.Impl.Logic
                 ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
 
@@ -131,7 +142,7 @@ namespace KeithLink.Svc.Impl.Logic
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue);
+            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue, catalogInfo);
 
             return returnValue;
         }
@@ -147,7 +158,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
                 
             AddPricingInfo(ret, profile, searchModel);
-			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret);
+			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
 
@@ -175,16 +186,16 @@ namespace KeithLink.Svc.Impl.Logic
             }
         }
 
-        private void AddFavoriteProductInfo(string branch, UserProfile profile, Product ret)
+		private void AddFavoriteProductInfo(UserProfile profile, Product ret, CatalogInfo catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, new ProductsReturn() { Products = new List<Product>() { ret } });
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
         }
 
-        private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret)
+		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, CatalogInfo catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret);
+                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret, catalogInfo);
         }
 
 
