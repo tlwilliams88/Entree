@@ -17,5 +17,20 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "customerBranch")]
         public string CustomerBranch { get; set; }
+
+        [DataMember(Name = "customerNationalId")]
+        public string NationalId { get; set; }
+
+        [DataMember(Name = "dsrNumber")]
+        public string DsrNumber { get; set; }
+
+        [DataMember(Name = "contractId")]
+        public string ContractId { get; set; }
+
+        [DataMember(Name = "isPoRequired")]
+        public bool IsPoRequired { get; set; }
+
+        [DataMember(Name = "isPowerMenu")]
+        public bool IsPowerMenu { get; set; }
     }
 }

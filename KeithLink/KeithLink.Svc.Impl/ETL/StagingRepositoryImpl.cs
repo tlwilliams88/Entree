@@ -100,5 +100,10 @@ namespace KeithLink.Svc.Impl.ETL
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
+
+        public DataTable ReadCustomers()
+        {
+            return PopulateDataTable("[ETL].[ReadCustomers]");
+        }
 	}
 }

@@ -34,7 +34,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = 
                 new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(GetSiteName());
             String connStr = csResources ["Biz Data Service"] ["s_BizDataStoreConnectionString"].ToString( ) ;
-            ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
+            //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
             using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
             {
                 conn.Open();

@@ -180,6 +180,9 @@
   <ItemGroup>
     <Compile Include="BEKFoundationService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\UserOrganizationsResponseBuilder.cs" />
+    <Compile Include="Extensions\UserOrganizationsCommitter.cs" />
+    <Compile Include="Extensions\OrganizationCommitter.cs" />
     <Compile Include="Extensions\OrganizationProfileLoader.cs" />
     <Compile Include="Extensions\OrganizationResponseBuilder.cs" />
     <Compile Include="Extensions\OrganizationTranslator.cs" />

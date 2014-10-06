@@ -36,6 +36,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
 			builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
 			builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
+            builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
            
 
             return builder.Build();

@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ETL\ICustomerLogic.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
     <Compile Include="Exceptions\Orders\EarlySocketException.cs" />
     <Compile Include="Exceptions\Orders\FileSendException.cs" />
