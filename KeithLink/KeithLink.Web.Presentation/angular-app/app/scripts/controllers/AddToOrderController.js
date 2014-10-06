@@ -159,14 +159,7 @@ angular.module('bekApp')
       });
       return total;
     };
-
-    $scope.openDatepicker = function($event) {
-      $event.preventDefault();
-      $event.stopPropagation();
-
-      $scope.openedDatepicker = !$scope.openedDatepicker;
-    };
-
+    
     // select default cart
     var cart = CartService.getSelectedCart($stateParams.cartId);
     if ($stateParams.cartId === 'New' || !cart) {

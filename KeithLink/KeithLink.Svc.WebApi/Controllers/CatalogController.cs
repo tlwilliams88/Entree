@@ -24,10 +24,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic,
-                                 IUserProfileRepository userProfileRepo)
-            : base(userProfileRepo)
-        {
+        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic) : base(profileLogic) {
             _catalogLogic = catalogLogic;
         }
         #endregion
@@ -76,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Product GetProductById(string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogLogic.GetProductById(this.RequestCatalogInfo.BranchId, id, this.AuthenticatedUser);
+            Product prod = _catalogLogic.GetProductById(this.RequestCatalogInfo, id, this.AuthenticatedUser);
 
             if (prod == null)
                 return new Product();

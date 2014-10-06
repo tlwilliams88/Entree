@@ -1,0 +1,26 @@
+.input-group-lg > .form-control, .form-group-lg .form-control, .input-lg {
+  font-size: $font-size-base;
+}
+input.input-number {
+  width: 40px;
+}
+
+@mixin text-placeholder($color, $style) {
+  ::-webkit-input-placeholder {
+    color: $color !important;
+    font-style: $style;
+  }  
+  :-moz-placeholder { /* Firefox 18- */
+    color: $color !important;  
+    font-style: $style;
+  }
+  ::-moz-placeholder {  /* Firefox 19+ */
+    color: $color !important;  
+    font-style: $style;
+  }
+  :-ms-input-placeholder {  
+    color: $color !important;  
+    font-style: $style;
+  }
+}
+@include text-placeholder ($color-border, italic);

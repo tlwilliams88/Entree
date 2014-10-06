@@ -1,5 +1,7 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.WebApi.Attribute;
 using Newtonsoft.Json;
 using System;
@@ -8,6 +10,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Cors;
 
@@ -18,15 +22,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class BaseController : ApiController
     {
         #region attributes
-        private Core.Interface.Profile.IUserProfileRepository _userRepo;
-        private Core.Models.Profile.UserProfile _user;
-		
+        private IUserProfileLogic   _profileLogic;
+        private UserProfile         _user;
         #endregion
 
         #region ctor
-        public BaseController(Core.Interface.Profile.IUserProfileRepository userProfileRepo)
+        public BaseController(IUserProfileLogic UserProfileLogic)
         {
-            _userRepo = userProfileRepo;
+            _profileLogic = UserProfileLogic;
         }
         #endregion
 
@@ -40,14 +43,13 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (controllerContext.RequestContext.Principal.Identity.IsAuthenticated &&
                     string.Compare(controllerContext.RequestContext.Principal.Identity.AuthenticationType, "bearer", true) == 0)
                 {
-                    Core.Models.Profile.UserProfileReturn retVal = _userRepo.GetUserProfile(
-                                                                    ((System.Security.Claims.ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value
-                                                                );
+                    UserProfileReturn retVal = _profileLogic.GetUserProfile(((ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value);
 
                     _user = retVal.UserProfiles[0];
                     _user.IsAuthenticated = true;
 
-                    System.Security.Principal.GenericPrincipal genPrincipal = new System.Security.Principal.GenericPrincipal(_user, new string[] { "Owner" });
+                    //TODO: add user's role
+                    GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
 					if (Request.Headers.Contains("cataloginfo"))
@@ -67,8 +69,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 try
                 {
-                    KeithLink.Common.Core.Logging.IEventLogRepository eventLogRepository = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(KeithLink.Common.Core.Logging.IEventLogRepository))
-                        as KeithLink.Common.Core.Logging.IEventLogRepository;
+                    IEventLogRepository eventLogRepository = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IEventLogRepository)) as IEventLogRepository;
 
                     eventLogRepository.WriteErrorLog("Unhandled API Exception", ex);
                 }
@@ -88,14 +89,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region properties
-        public Core.Models.Profile.UserProfile AuthenticatedUser
+        public UserProfile AuthenticatedUser
         {
 			get
 			{
 				if (!ControllerContext.RequestContext.Principal.Identity.IsAuthenticated)
 					return null;
 				else
-					return (Core.Models.Profile.UserProfile)ControllerContext.RequestContext.Principal.Identity;
+					return (UserProfile)ControllerContext.RequestContext.Principal.Identity;
 			}
         }
 

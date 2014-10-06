@@ -39,6 +39,24 @@
 	</Configuration>
 	-->
   <!--UNCOMMENT FOR QA-->
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerFile.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_CustomerBid].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerBid.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_BidHeader].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\bidContractHeader.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_BidDetail].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\bidContractDetail.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PropItem].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\propItem.SSIS</ConfiguredValue>
+  </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PropCustomer].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\propCustomer.SSIS</ConfiguredValue>
+  </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>Data Source=corpkecqdb1;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;User Id=ecom;Password=Qa!2klkA5;</ConfiguredValue>
   </Configuration>
@@ -57,6 +75,6 @@
   <!---->
   <!--VARIABLES-->
   <Configuration ConfiguredType="Property" Path="\Package.Variables[User::ETLProcess_KeithComDir].Properties[Value]" ValueType="String">
-    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom</ConfiguredValue>
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\QA\KeithCom\</ConfiguredValue>
   </Configuration>
 </DTSConfiguration>

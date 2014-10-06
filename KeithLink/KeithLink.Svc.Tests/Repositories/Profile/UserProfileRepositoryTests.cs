@@ -1,96 +1,42 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
     [TestClass]
-    public class UserProfileRepositoryTests
-    {
-        [TestMethod]
-        public void CreateUser()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
+    public class UserProfileRepositoryTests {
+        #region attributes
+        private NoCacheUserProfileCacheRepository _cache;
+        private EventLogRepositoryImpl _log;
+        private UserProfileRepository _profile;
+        #endregion
 
-            //userProfile.CreateUserProfile("mytest", "Test Customer", "joesmith@company.com", "Joe", "Smith", "1234567890");
-			//userProfile.CreateUserProfile("Jimmys Chicken Shack", "sabroussard@somecompany.com", "L1ttleStev1e", "Steven", "Broussard", "(817)877-5700", "Owner");
+        #region ctor
+        public UserProfileRepositoryTests() {
+            _log = new EventLogRepositoryImpl("Unit tests");
+            _cache = new NoCacheUserProfileCacheRepository();
+            _profile = new UserProfileRepository(_log, _cache);
+        }
+        #endregion
+
+        #region tests
+        [TestMethod]
+        public void CreateUser() {
+            //_profile.CreateUserProfile("joesmith@company.com", "Joe", "Smith", "1234567890");
 
             Assert.IsTrue(true);
         }
 
         [TestMethod]
-        public void CreateGuest() {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
+        public void UpdateUser() {
+            KeithLink.Svc.Core.Models.Generated.UserProfile userProfile = _profile.GetCSProfile("jeremy@jeremyschickenshack.com");
 
-            //userProfile.CreateGuestProfile("jeremy@ames.com", "Ab12345", "FDF");
+            _profile.UpdateUserProfile(new System.Guid(userProfile.Id), "jeremy@jeremyschickenshack.com", "Jeremy", "Ames", "817-877-5700", "FDF");
         }
-
-        [TestMethod]
-        public void GetUserByEmailAddress()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-            userProfile.GetUserProfile("jeremy@ames.com");
-        }
-
-        [TestMethod]
-        public void GetBEKUserProfile()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-            userProfile.GetUserProfile("jwames@benekeith.com");
-        }
-
-        [TestMethod]
-        public void AuthenticateUser()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-
-            Assert.IsTrue(userProfile.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
-        }
-
-        [TestMethod]
-        public void UpdateUser()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository userProfile =
-                new Impl.Repository.Profile.UserProfileRepository(
-                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"),
-                    new Impl.Repository.Profile.ExternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.InternalUserDomainRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts")),
-                    new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository());
-
-            UserProfileReturn userReturn = userProfile.GetUserProfile("jeremy@jeremyschickenshack.com");
-
-            userProfile.UpdateUserProfile(userReturn.UserProfiles[0].UserId, 
-                                           "jeremy@jeremyschickenshack.com",
-                                           "Jeremy",
-                                           "Ames",
-                                           "817-877-5700",
-                                           "FDF");
-        }
+        #endregion
     }
 }

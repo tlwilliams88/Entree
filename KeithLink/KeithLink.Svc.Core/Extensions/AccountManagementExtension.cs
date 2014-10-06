@@ -9,6 +9,9 @@ namespace KeithLink.Svc.Core.Extensions {
             return principal.GetProperty("company");
         }
 
+        public static string GetPhoneNumber(this Principal principal) {
+            return principal.GetProperty("telephoneNumber");
+        }
 
         public static string GetProperty(this Principal principal, string property) {
             DirectoryEntry de = (DirectoryEntry)principal.GetUnderlyingObject();

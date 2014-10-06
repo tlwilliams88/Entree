@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
-    public class ExternalUserDomainRepository : Svc.Core.Interface.Profile.IUserDomainRepository
+    public class ExternalUserDomainRepository : ICustomerDomainRepository
     {
         #region attributes
         private enum UserAccountControlFlag
@@ -19,13 +20,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             NormalAccount = 0x200,
             PasswordNotRequired = 0x20
         }
+
         IEventLogRepository _logger;
+        ICustomerContainerRepository _containerRepo;
         #endregion
 
         #region ctor
-        public ExternalUserDomainRepository(IEventLogRepository logger)
+        public ExternalUserDomainRepository(IEventLogRepository logger, ICustomerContainerRepository customerContainerRepo)
         {
             _logger = logger;
+            _containerRepo = customerContainerRepo;
         }
         #endregion
 
@@ -80,7 +84,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                             Configuration.ActiveDirectoryExternalServerName,
                                                             Configuration.ActiveDirectoryExternalRootNode,
                                                             ContextOptions.SimpleBind,
-                                                            GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                            Configuration.ActiveDirectoryExternalDomainUserName,
                                                             Configuration.ActiveDirectoryExternalPassword))
                 {
                     // if user exists
@@ -152,6 +156,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
         {
+            CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
+
+            // create the customer container if it does not exist
+            if (custExists.CustomerContainers.Count != 1) { 
+                _containerRepo.CreateCustomerContainer(customerName);
+                _logger.WriteInformationLog(string.Format("New customer container created in Active Directory({0}).", customerName));
+            }
+
             const int NORMAL_ACCT = 0x200;
             const int PWD_NOTREQD = 0x20;
 
@@ -229,22 +241,53 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 throw;
             }
 
+            _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
+
             return userName;
         }
-        
+
         /// <summary>
-        /// return the domain and username
+        /// get a unique user name for AD based on the user name in the email address
         /// </summary>
-        /// <param name="userName">the user name without the domain name</param>
-        /// <returns>string in the form of domain\username</returns>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <returns>a user name</returns>
         /// <remarks>
-        /// jwames - 8/5/2014 - original code
+        /// jwames - 8/18/2014 - documented
         /// </remarks>
-        private string GetDomainUserName(string userName)
-        {
-            return string.Format("{0}\\{1}", Configuration.ActiveDirectoryExternalDomain, userName);
+        public string GetNewUserName(string emailAddress) {
+            string userName = null;
+
+            if (emailAddress.IndexOf('@') == -1)
+                userName = emailAddress;
+            else
+                userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+            if (UsernameExists(userName)) {
+                string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
+                DirectoryEntry boundServer = null;
+
+                // connect to the external AD server
+                try {
+                    boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
+                    boundServer.RefreshCache();
+                } catch (Exception ex) {
+                    _logger.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                    throw;
+                }
+
+                DirectorySearcher userSearch = new DirectorySearcher(boundServer);
+                userSearch.Filter = string.Format("cn={0}*", userName);
+
+                SearchResultCollection results = userSearch.FindAll();
+
+                // recursive call to make sure that the new user name does not also exist
+                return GetNewUserName(string.Format("{0}{1}", userName, results.Count));
+            } else {
+                return userName;
+            }
         }
-        
+
         /// <summary>
         /// get the user principal from the benekeith.com domain
         /// </summary>
@@ -262,11 +305,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                                          Configuration.ActiveDirectoryExternalServerName,
                                                                          Configuration.ActiveDirectoryExternalRootNode,
                                                                          ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
                                                                          Configuration.ActiveDirectoryExternalPassword))
                 {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
-
+                    
                     return user;
                 }
             }
@@ -275,55 +318,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 _logger.WriteErrorLog("Could not get user", ex);
 
                 return null;
-            }
-        }
-
-        /// <summary>
-        /// get a unique user name for AD based on the user name in the email address
-        /// </summary>
-        /// <param name="emailAddress">the user's email address</param>
-        /// <returns>a user name</returns>
-        /// <remarks>
-        /// jwames - 8/18/2014 - documented
-        /// </remarks>
-        public string GetNewUserName(string emailAddress)
-        {
-            string userName = null;
-
-            if (emailAddress.IndexOf('@') == -1)
-                userName = emailAddress;
-            else
-                userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
-
-            if (UsernameExists(userName))
-            {
-                string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
-                DirectoryEntry boundServer = null;
-
-                // connect to the external AD server
-                try
-                {
-                    boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-                    boundServer.RefreshCache();
-                }
-                catch (Exception ex)
-                {
-                    _logger.WriteErrorLog("Could not bind to external AD server.", ex);
-
-                    throw;
-                }
-
-                DirectorySearcher userSearch = new DirectorySearcher(boundServer);
-                userSearch.Filter = string.Format("cn={0}*", userName);
-
-                SearchResultCollection results = userSearch.FindAll();
-
-                // recursive call to make sure that the new user name does not also exist
-                return GetNewUserName(string.Format("{0}{1}", userName, results.Count));
-            }
-            else
-            {
-                return userName;
             }
         }
 
@@ -337,20 +331,18 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/4/2014 - original code
         /// jwames - 8/5/2014 - add argument validation
         /// </remarks>
-        public bool IsInGroup(string userName, string groupName)
-        {
+        public bool IsInGroup(string userName, string groupName) {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (groupName.Length == 0) { throw new ArgumentException("groupName is required", "groupName"); }
             if (groupName == null) { throw new ArgumentNullException("groupName", "groupName is required"); }
 
-            try
-            {
+            try {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
                                                                          Configuration.ActiveDirectoryExternalServerName,
                                                                          Configuration.ActiveDirectoryExternalRootNode,
                                                                          ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
                                                                          Configuration.ActiveDirectoryExternalPassword))
                 {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
@@ -358,32 +350,36 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     if (user == null)
                         return false;
                     else
-                        try
-                        {
+                        try {
                             return user.IsMemberOf(principal, IdentityType.SamAccountName, string.Format("{0} {1}", user.GetCompany(), groupName));
-                        }
-                        catch
-                        {
+                        } catch {
                             return false;
                         }
                 }
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
             }
         }
 
-        public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword)
-        {
+        /// <summary>
+        /// change the password for the user
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <param name="oldPassword">the original password</param>
+        /// <param name="newPassword">the new password</param>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
+        public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword) {
             try {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
                                                                          Configuration.ActiveDirectoryExternalServerName,
                                                                          Configuration.ActiveDirectoryExternalRootNode,
                                                                          ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
                                                                          Configuration.ActiveDirectoryExternalPassword)) {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, emailAddress);
 
@@ -411,6 +407,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
+        /// <summary>
+        /// the original update password method that is still used to aid in network testing
+        /// </summary>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
         public bool UpdatePassword_Org(string emailAddress, string oldPassword, string newPassword) {
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
@@ -460,6 +462,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return true;
         }
 
+        /// <summary>
+        /// update attributes for a user
+        /// </summary>
+        /// <param name="oldEmailAddress">the original address</param>
+        /// <param name="newEmailAdress">if the email address is changing, it is the new password. If it is not changing it can be blank or the old password</param>
+        /// <param name="firstName">the updated first name</param>
+        /// <param name="lastName">the updated last name</param>
+        /// <remarks>
+        /// jwames - 10/3/2014 - documented
+        /// </remarks>
         public void UpdateUserAttributes(string oldEmailAddress, string newEmailAdress, string firstName, string lastName) {
             if (oldEmailAddress == null) { throw new ArgumentNullException("oldEmailAddress", "oldEmailAddress is null"); }
             if (oldEmailAddress.Length == 0) { throw new ArgumentException("oldEmailAddress is required", "oldEmailAddress"); }
@@ -469,7 +481,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                                          Configuration.ActiveDirectoryExternalServerName,
                                                                          Configuration.ActiveDirectoryExternalRootNode,
                                                                          ContextOptions.Negotiate,
-                                                                         GetDomainUserName(Configuration.ActiveDirectoryExternalUserName),
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
                                                                          Configuration.ActiveDirectoryExternalPassword)) {
                     UserPrincipal user = UserPrincipal.FindByIdentity(principal, oldEmailAddress);
 

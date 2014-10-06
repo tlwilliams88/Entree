@@ -22,10 +22,5 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public bool Active { get; set; }
 		[DataMember(Name="items")]
 		public List<ShoppingCartItem> Items { get; set; }
-		
-		public string FormattedName(string branchId)
-		{
-			return string.Format("s{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
-		}
 	}
 }

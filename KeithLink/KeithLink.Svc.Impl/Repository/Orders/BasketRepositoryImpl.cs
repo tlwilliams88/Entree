@@ -26,6 +26,16 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			FoundationService.ExecuteRequest(deleteBasket.ToRequest());
 		}
 
+		public void DeleteBasket(Guid userId, string basketName)
+		{
+			var deleteBasket = new CommerceDelete<Basket>();
+			deleteBasket.SearchCriteria.Model.Properties["UserId"] = userId.ToCommerceServerFormat();
+			deleteBasket.SearchCriteria.Model.Properties["BasketType"] = 0;
+			deleteBasket.SearchCriteria.Model.Properties["Name"] = basketName;
+
+			FoundationService.ExecuteRequest(deleteBasket.ToRequest());
+		}
+
 		public Basket ReadBasket(Guid userId, Guid cartId, bool runPipelines = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
@@ -194,10 +204,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 			return ((Basket)basketResponse.CommerceEntities[0]);
-		}
-
-
-		
+		}		
 	}
 }
 
