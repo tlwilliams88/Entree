@@ -5,11 +5,14 @@
         <button type="button" class="btn-lg btn btn-default dropdown-toggle">
           {{currentCart.name}} <span class="caret"></span>
         </button>
-        <table class="dropdown-menu">
-          <tr class="hand" ng-click="goToCart(cart)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
+        <table class="hand dropdown-menu">
+          <tr ng-click="goToCart(cart)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
             <td><span class="overflow">{{cart.name}}</span></td>
             <td>{{cart.items.length}}</td>
             <td>{{cart.requestedshipdate | date:shortDate}}</td>
+          </tr>
+          <tr ng-click="createNewCart()">
+            <td colspan="3">Create a Cart...</td>
           </tr>
         </table>
       </div>

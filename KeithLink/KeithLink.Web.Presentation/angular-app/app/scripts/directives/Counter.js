@@ -1,11 +1,22 @@
+'use strict';
+
 angular.module('bekApp')
   .directive('counter', function() {
     return {
       restrict: 'A',
       require: 'ngModel',
-      scope: { value: '=ngModel' },
+      scope: { 
+        value: '=ngModel'
+      },
       templateUrl: 'views/directives/counter.html',
       link: function( scope, element, attributes, ctrl ) {
+
+        // set size
+        element.addClass('counter-container');
+        if (attributes.size === 'large') { // item details page
+          element.addClass('counter-container-lg');
+        }
+
         // Make sure the value attribute is not missing.
         if ( angular.isUndefined(scope.value) ) {
           // throw "Missing the value attribute on the counter directive.";
@@ -14,14 +25,10 @@ angular.module('bekApp')
         if (!scope.value) {
           scope.value = 0;
         }
-        scope.disabledMinus = false;
-        scope.disabledPlus = false;
         
         var min = angular.isUndefined(attributes.min) ? null : parseInt(attributes.min);
         var max = angular.isUndefined(attributes.max) ? null : parseInt(attributes.max);
         var step = angular.isUndefined(attributes.step) ? 1 : parseInt(attributes.step);
-        
-        // element.addClass('counter-container');
         
         // If the 'editable' attribute is set, we will make the field editable.
         scope.readonly = angular.isUndefined(attributes.editable) ? true : false;
@@ -33,16 +40,23 @@ angular.module('bekApp')
           scope.value = parseInt( val );
           ctrl.$setViewValue(val);
 
+          disableButtons(val);
+        };
+
+        scope.newValue = setValue;
+
+        var disableButtons = function(val) {
           if (min !== null) {
             scope.disabledMinus = (val <= min);
           }
           if (max !== null) {
             scope.disabledPlus = (val >= max);
           }
-        }
+        };
         
         // Set the value initially, as an integer.
         // setValue( scope.value );
+        disableButtons(scope.value);
         
         /**
          * Decrement the value and make sure we stay within the limits, if defined.
@@ -73,7 +87,7 @@ angular.module('bekApp')
          */
         scope.changed = function() {
             // If the user decides to delete the number, we will set it to 0.
-          if ( !scope.value ) setValue( 0 );
+          if ( !scope.value ) { setValue( 0 ); }
           
           // Check if what's typed is numeric or if it has any letters.
           if ( /[0-9]/.test(scope.value) ) {
@@ -99,5 +113,5 @@ angular.module('bekApp')
           setValue( scope.value );
         };
     }
-  }
+  };
 });

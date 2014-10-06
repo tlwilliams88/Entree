@@ -29,9 +29,7 @@ angular.module('bekApp')
     });
 
     $scope.carts = CartService.carts;
-    CartService.getAllCarts({
-      'header': true
-    });
+    CartService.getCartHeaders();
 
     $scope.canOrderProduct = function(item) {
       return ProductService.canOrderProduct(item);

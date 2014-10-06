@@ -530,8 +530,6 @@ angular.module('bekApp')
             });
 
             $scope.carts = CartService.carts;
-            CartService.getAllCarts({
-                'header': true
-            });
+            CartService.getCartHeaders();
         }
     ]);
