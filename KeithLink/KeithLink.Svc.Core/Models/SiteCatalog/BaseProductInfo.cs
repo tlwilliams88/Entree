@@ -55,5 +55,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "catchweight")]
         public bool CatchWeight { get; set; }
 
+        [DataMember(Name = "sellsheet")]
+        public bool SellSheet { get; set; }
 	}
 }
