@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 'UtilityService', 
-    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'Constants', 'ListService', 'UtilityService', 'CartService', 
+    function($scope, $filter, $timeout, $state, $stateParams, Constants, ListService, UtilityService, CartService) {
     
     var orderBy = $filter('orderBy');
 
@@ -441,5 +441,8 @@ angular.module('bekApp')
       $scope.loadingResults = false;
     }
     initPage();
+
+    $scope.carts = CartService.carts;
+    CartService.getCartHeaders();
 
   }]);

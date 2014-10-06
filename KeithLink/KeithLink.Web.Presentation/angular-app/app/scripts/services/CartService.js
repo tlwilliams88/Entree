@@ -19,11 +19,19 @@ angular.module('bekApp')
       // accepts "header: true" params to get only names
       // return array of cart objects
       getAllCarts: function(requestParams) {
-        return Cart.query({}).$promise.then(function(response) {
+        if (!requestParams) {
+          requestParams = {};
+        }
+
+        return Cart.query(requestParams).$promise.then(function(response) {
           var allCarts = response;
           angular.copy(allCarts, Service.carts);
           return allCarts;
         });
+      },
+
+      getCartHeaders: function() {
+        return Service.getAllCarts({ header: true });
       },
 
       // accepts cartId (guid)
