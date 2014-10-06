@@ -21,10 +21,10 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		public string BranchId { get; set; }
 		
-		public string FormattedName(string branchId) 
-		{ 
-			return string.Format("l{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
-		}
+		//public string FormattedName(string branchId) 
+		//{ 
+		//	return string.Format("l{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
+		//}
 
     }
 }

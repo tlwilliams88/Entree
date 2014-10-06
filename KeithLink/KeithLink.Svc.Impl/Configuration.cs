@@ -87,6 +87,12 @@ namespace KeithLink.Svc.Impl
             } 
         }
 
+        public static string ActiveDirectoryExternalDomainUserName {
+            get {
+                return string.Format("{0}\\{1}", ActiveDirectoryExternalDomain, ActiveDirectoryExternalUserName);
+            }
+        }
+        
         public static string ActiveDirectoryExternalPassword
         {
             get
@@ -124,6 +130,12 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_AD_INTERNAL_DOMAIN, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryInternalDomainUserName {
+            get {
+                return string.Format("{0}\\{1}", ActiveDirectoryInternalDomain, ActiveDirectoryInternalUserName);
             }
         }
 

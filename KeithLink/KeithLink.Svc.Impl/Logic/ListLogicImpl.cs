@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
+using System.Text.RegularExpressions;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -25,8 +26,7 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
 		private readonly IItemNoteLogic itemNoteLogic;
-
-
+		
 		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository, IItemNoteLogic itemNoteLogic)
         {
 			this.basketRepository = basketRepository;
@@ -41,7 +41,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = list.Name;
 			newBasket.Status = BasketStatus;
-			newBasket.Name = list.FormattedName(catalogInfo.BranchId);
+			newBasket.Name = ListName(list.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 
 			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
         }
 
-		public void UpdateList(Guid userId, UserList list)
+		public void UpdateList(Guid userId, UserList list, CatalogInfo catalogInfo)
         {
 			var updateBasket = basketRepository.ReadBasket(userId, list.ListId);
 
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			updateBasket.DisplayName = list.Name;
-			updateBasket.Name = list.FormattedName(updateBasket.BranchId);
+			updateBasket.Name = ListName(list.Name, catalogInfo); ;
 			var itemsToRemove = new List<Guid>();
 			var lineItems = new List<CS.LineItem>();
 
@@ -99,17 +99,16 @@ namespace KeithLink.Svc.Impl.Logic
         {
 			basketRepository.DeleteItem(userId, listId, itemId);
         }
-
-
+		
 		public List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
         {
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
 
-			if (!lists.Where(l => l.Name.Equals(string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
+			if (!lists.Where(l => l.Name.Equals(ListName(FAVORITESLIST, catalogInfo)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = string.Format("l{0}_{1}", catalogInfo.BranchId.ToLower(), FAVORITESLIST) }, null);
+				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = ListName(FAVORITESLIST, catalogInfo) }, null);
 				lists = basketRepository.ReadAllBaskets(user.UserId);
 			}
 
@@ -126,13 +125,13 @@ namespace KeithLink.Svc.Impl.Logic
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
 				returnList.ForEach(delegate(UserList list)
 				{
-					LookupProductDetails(user, list);
+					LookupProductDetails(user, list, catalogInfo);
 				});
 				return returnList;
 			}
         }
 
-		public UserList ReadList(UserProfile user, Guid listId)
+		public UserList ReadList(UserProfile user, Guid listId, CatalogInfo catalogInfo)
         {
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 			if (basket == null)
@@ -140,7 +139,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var cart = ToUserList(basket);
 
-			LookupProductDetails(user, cart);
+			LookupProductDetails(user, cart, catalogInfo);
 			return cart;			
         }
 
@@ -160,7 +159,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
-		private void LookupProductDetails(UserProfile user, UserList list)
+		private void LookupProductDetails(UserProfile user, UserList list, CatalogInfo catalogInfo)
 		{
 			if (list.Items == null)
 				return;
@@ -168,7 +167,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var activeCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.Status.Equals("ShoppingCart") && b.Active.Equals(true));
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var favorites = basketRepository.ReadBasket(user.UserId, string.Format("l{0}_{1}", list.BranchId, FAVORITESLIST));
+			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
 			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
 			var notes = itemNoteLogic.ReadNotes(user.UserId);
 
@@ -220,9 +219,9 @@ namespace KeithLink.Svc.Impl.Logic
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products)
+		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, CatalogInfo catalogInfo)
 		{
-			var list = basketRepository.ReadBasket(userId, string.Format("l{0}_{1}", branchId.ToLower(), FAVORITESLIST));
+			var list = basketRepository.ReadBasket(userId, ListName(FAVORITESLIST, catalogInfo));
 			var notes = itemNoteLogic.ReadNotes(userId);
 
 			if (list == null || list.LineItems == null)
@@ -262,9 +261,8 @@ namespace KeithLink.Svc.Impl.Logic
 			foreach(var itemId in itemIds)
 				basketRepository.DeleteItem(userId, listId, itemId);
 		}
-
-
-		public UserList AddItems(UserProfile user, Guid listId, List<ListItem> newItems, bool allowDuplicates)
+		
+		public UserList AddItems(UserProfile user, CatalogInfo catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 
@@ -283,17 +281,21 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var updatedList = ToUserList(basketRepository.ReadBasket(user.UserId, listId));
 
-			LookupProductDetails(user, updatedList);
+			LookupProductDetails(user, updatedList, catalogInfo);
 
 			return updatedList;
 		}
-
-
-
+		
 		public void DeleteLists(Guid userId, List<Guid> listIds)
 		{
 			foreach(var listId in listIds)
 				basketRepository.DeleteBasket(userId, listId);
 		}
+
+		private string ListName(string name, CatalogInfo catalogInfo)
+		{
+			return string.Format("l{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
+		}
+						
 	}
 }

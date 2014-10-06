@@ -78,16 +78,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
 
-        [DataMember(Name = "catchweight")]
-        public bool Catchweight { get; set; }
-
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }
 
 		[DataMember(Name = "isproprietary")]
 		public bool IsProprietary { get; set; }
         #endregion
-
+        
 		[OnSerializing]
 		void OnSerializing(StreamingContext context)
 		{
