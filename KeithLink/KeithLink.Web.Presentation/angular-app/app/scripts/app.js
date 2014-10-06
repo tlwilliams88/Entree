@@ -221,6 +221,8 @@ angular
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  $urlRouterProvider.when('/lists', '/lists/1');
+  $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes

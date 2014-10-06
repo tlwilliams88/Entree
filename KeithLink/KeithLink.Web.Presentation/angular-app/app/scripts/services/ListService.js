@@ -54,13 +54,20 @@ angular.module('bekApp')
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
-          return List.query({}, params).$promise.then(function(lists) {
+          if (!params) {
+            params = {};
+          }
+          return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
             flagFavoritesList();
 
             // TODO: get favorites list items if header param is true
             return lists;
           });
+        },
+
+        getListHeaders: function() {
+          return Service.getAllLists({ header: true });
         },
 
         // accepts listId (guid)
