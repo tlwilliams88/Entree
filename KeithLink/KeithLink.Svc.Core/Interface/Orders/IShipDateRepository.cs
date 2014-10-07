@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace KeithLink.Svc.Core.Interface.Orders {
+﻿namespace KeithLink.Svc.Core.Interface.Orders {
     public interface IShipDateRepository {
+        string GetShipDates(string branchId, string customerNumber);
     }
 }

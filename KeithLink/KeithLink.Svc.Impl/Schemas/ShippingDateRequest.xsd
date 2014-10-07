@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema id="ShippingDateRequest" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xsd:annotation>
+		<xsd:documentation>
+			Request Ship Date Schema for Power Net
+			Copyright 2010 Retalix. All rights reserved.
+		</xsd:documentation>
+	</xsd:annotation>
+
+  <xsd:element name="ShippingDateRequestMain" msdata:IsDataSet="true">
+    <xsd:complexType>
+      <xsd:choice minOccurs="1" maxOccurs="1">
+        <xsd:element ref="ShipDateRequest"/>
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+  
+	<xsd:element name="ShipDateRequest" msdata:IsDataSet="true">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element maxOccurs="1" minOccurs="1" ref="Customer"/>
+				<xsd:element maxOccurs="1" minOccurs="1" name="NumberOfShipDates" type="numberType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="Customer" msdata:IsDataSet="true">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="Company" type="companyType"/>
+				<xsd:element name="Division" type="companyType"/>
+				<xsd:element name="Department" type="companyType"/>
+				<xsd:element name="Number" type="customerType"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Power Net Specific data types -->
+	<xsd:simpleType name="companyType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="[A-Z0-9\s]{3}"/>
+			<xsd:whiteSpace value="preserve"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="customerType">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="([A-Z0-9\-])*"/>
+			<xsd:minLength value="1"/>
+			<xsd:maxLength value="10"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+
+	<xsd:simpleType name="numberType">
+		<xsd:restriction base="xsd:positiveInteger">
+			<xsd:minInclusive value="1"/>
+			<xsd:maxExclusive value="1000"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+</xsd:schema>
