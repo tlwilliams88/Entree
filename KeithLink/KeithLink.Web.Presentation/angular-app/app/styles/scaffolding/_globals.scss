@@ -1,3 +1,7 @@
+html {
+  height: 100%;
+}
+
 .desktop-wrapper {
   background-image: url('../images/Textured-BG.jpg');
 }
@@ -12,46 +16,15 @@
   width: calc(100% - 175px);
   margin-left: $sidebar-width;
 }
+.view {
+  padding-bottom: $gutter-size;
+}
 
 @media (max-width: $screen-sm-max) {
   .page-content {
     width: inherit;
     margin-left: 0;
   }
-}
-
-@media (min-width: $screen-md-min) {
-  .no-margin-top {
-    margin-top: 0;
-  }
-}
-
-// Angular ui bootstrap fix for cursor pointers
-.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
-
-.no-padding{
-  padding:0;
-}
-.no-margin {
-  margin: 0;
-}
-
-.view {
-  padding-bottom: $gutter-size;
-}
-.sub-content{
-  padding-top: 20px;
-}
-.sub-content-mobile{
-  padding-top: 50px;
-}
-
-.hand{
-  cursor: pointer;
-}
-
-.nowrap {
-  white-space: nowrap;
 }
 
 @media print {
