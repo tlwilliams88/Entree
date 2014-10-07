@@ -306,6 +306,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ReplacedItem = oProd._source.replaceditem;
             p.ReplacementItem = oProd._source.replacementitem;
             p.ChildNutrition = oProd._source.childnutrition;
+            p.SellSheet = oProd._source.sellsheet;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;

@@ -480,20 +480,20 @@ angular.module('bekApp')
                             count: itemcount
                         });
                     }
+                    if (itemname === 'sellsheet') {
+                        itemspecsArray.push({
+                            name: itemname,
+                            displayname: 'Product Information Sheet',
+                            iconclass: 'text-regular icon-sellsheet',
+                            count: itemcount
+                        });
+                    }
                     //THESE ITEM.NAMES ARE CURRENTLY JUST GUESSES --- I HAVE NOT SEEN WHAT THESE 4 ARE CALLED YET
                     if (itemname === 'DeviatedCost') {
                         itemspecsArray.push({
                             name: itemname,
                             displayname: 'DeviatedCost',
                             iconclass: 'text-regular icon-dollar',
-                            count: itemcount
-                        });
-                    }
-                    if (itemname === 'ItemDetailsSheet') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Item Details Sheet',
-                            iconclass: 'text-regular icon-cell-sheet',
                             count: itemcount
                         });
                     }
@@ -518,6 +518,9 @@ angular.module('bekApp')
                 }
                 if (name === 'childnutrition') {
                     return 'Child Nutrition Sheet';
+                }
+                if (name === 'sellsheet') {
+                    return 'Product Information Sheet';
                 }
                 if (name === 'nonstock') {
                     return 'Non-Stock Item';
