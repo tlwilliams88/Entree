@@ -1,5 +1,7 @@
-﻿namespace KeithLink.Svc.Core.Interface.Orders {
+﻿using KeithLink.Svc.Core.Models.Orders;
+
+namespace KeithLink.Svc.Core.Interface.Orders {
     public interface IShipDateRepository {
-        string GetShipDates(string branchId, string customerNumber);
+        ShipDateReturn GetShipDates(string branchId, string customerNumber);
     }
 }
