@@ -209,8 +209,6 @@ angular.module('bekApp')
             };
 
             $scope.infiniteScrollLoadMore = function() {
-                console.log('infinite scroll');
-
                 if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
                     return;
                 }
@@ -528,8 +526,8 @@ angular.module('bekApp')
             }
 
             // TODO: move into context menu controller
-            // $scope.lists = ListService.lists;
-            // ListService.getListHeaders();
+            $scope.lists = ListService.lists;
+            ListService.getListHeaders();
 
             $scope.carts = CartService.carts;
             CartService.getCartHeaders();
