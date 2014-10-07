@@ -67,7 +67,10 @@ angular.module('bekApp')
         },
 
         getListHeaders: function() {
-          return Service.getAllLists({ header: true });
+          return Service.getAllLists({ header: true }).then(function() {
+            var favoritesList = Service.getFavoritesList();
+            return Service.getList(favoritesList.listid);
+          });
         },
 
         // accepts listId (guid)

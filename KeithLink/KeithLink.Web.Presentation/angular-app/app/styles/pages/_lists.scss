@@ -80,8 +80,8 @@
 
 // highlight row when hovering on desktop only
 @media (min-width: $screen-md-min) {
-  .custom-lists__table tbody tr:hover td {
-    background-color: #EBE7D9 !important;
+  table.custom-lists__table tbody tr:hover td {
+    background-color: #EBE7D9;
   }
 }
 

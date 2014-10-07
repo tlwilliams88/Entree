@@ -6,7 +6,7 @@
     
     <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
       <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-        Add to Cart<span class="icon-arrow-right6"></span>
+        Add to Cart<span class="pull-right icon-arrow-right6"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
@@ -17,7 +17,7 @@
     </div>
     <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
       <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-        Add to List <span class="icon-arrow-right6"></span>
+        Add to List <span class="pull-right icon-arrow-right6"></span>
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
@@ -27,5 +27,4 @@
       </ul>
     </div>
   </div>
-  <div class="text-center" loading-spinner="loadingContextMenu"></div>
 </div>
