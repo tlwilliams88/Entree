@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace KeithLink.Svc.Impl.Schemas {
+namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
     
     
     /// <summary>
@@ -20,29 +20,29 @@ namespace KeithLink.Svc.Impl.Schemas {
     [global::System.ComponentModel.DesignerCategoryAttribute("code")]
     [global::System.ComponentModel.ToolboxItem(true)]
     [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema")]
-    [global::System.Xml.Serialization.XmlRootAttribute("ShippingDateResponseMain")]
+    [global::System.Xml.Serialization.XmlRootAttribute("PricingRequestMain")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
-    public partial class ShippingDateResponseMain : global::System.Data.DataSet {
+    public partial class PricingRequestMain : global::System.Data.DataSet {
         
-        private ShipDateResponseDataTable tableShipDateResponse;
+        private PricingRequestDataTable tablePricingRequest;
         
         private CustomerDataTable tableCustomer;
         
-        private ShipDatesDataTable tableShipDates;
+        private ItemsDataTable tableItems;
         
-        private ShipDateDataTable tableShipDate;
+        private _ItemDataTable table_Item;
         
-        private global::System.Data.DataRelation relationShipDateResponse_Customer;
+        private global::System.Data.DataRelation relationPricingRequest_Customer;
         
-        private global::System.Data.DataRelation relationShipDateResponse_ShipDates;
+        private global::System.Data.DataRelation relationPricingRequest_Items;
         
-        private global::System.Data.DataRelation relationShipDates_ShipDate;
+        private global::System.Data.DataRelation relationItems_Item;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public ShippingDateResponseMain() {
+        public PricingRequestMain() {
             this.BeginInit();
             this.InitClass();
             global::System.ComponentModel.CollectionChangeEventHandler schemaChangedHandler = new global::System.ComponentModel.CollectionChangeEventHandler(this.SchemaChanged);
@@ -53,7 +53,7 @@ namespace KeithLink.Svc.Impl.Schemas {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        protected ShippingDateResponseMain(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+        protected PricingRequestMain(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                 base(info, context, false) {
             if ((this.IsBinarySerialized(info, context) == true)) {
                 this.InitVars(false);
@@ -66,17 +66,17 @@ namespace KeithLink.Svc.Impl.Schemas {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["ShipDateResponse"] != null)) {
-                    base.Tables.Add(new ShipDateResponseDataTable(ds.Tables["ShipDateResponse"]));
+                if ((ds.Tables["PricingRequest"] != null)) {
+                    base.Tables.Add(new PricingRequestDataTable(ds.Tables["PricingRequest"]));
                 }
                 if ((ds.Tables["Customer"] != null)) {
                     base.Tables.Add(new CustomerDataTable(ds.Tables["Customer"]));
                 }
-                if ((ds.Tables["ShipDates"] != null)) {
-                    base.Tables.Add(new ShipDatesDataTable(ds.Tables["ShipDates"]));
+                if ((ds.Tables["Items"] != null)) {
+                    base.Tables.Add(new ItemsDataTable(ds.Tables["Items"]));
                 }
-                if ((ds.Tables["ShipDate"] != null)) {
-                    base.Tables.Add(new ShipDateDataTable(ds.Tables["ShipDate"]));
+                if ((ds.Tables["Item"] != null)) {
+                    base.Tables.Add(new _ItemDataTable(ds.Tables["Item"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -100,9 +100,9 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public ShipDateResponseDataTable ShipDateResponse {
+        public PricingRequestDataTable PricingRequest {
             get {
-                return this.tableShipDateResponse;
+                return this.tablePricingRequest;
             }
         }
         
@@ -120,9 +120,9 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public ShipDatesDataTable ShipDates {
+        public ItemsDataTable Items {
             get {
-                return this.tableShipDates;
+                return this.tableItems;
             }
         }
         
@@ -130,9 +130,9 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public ShipDateDataTable ShipDate {
+        public _ItemDataTable _Item {
             get {
-                return this.tableShipDate;
+                return this.table_Item;
             }
         }
         
@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public override global::System.Data.DataSet Clone() {
-            ShippingDateResponseMain cln = ((ShippingDateResponseMain)(base.Clone()));
+            PricingRequestMain cln = ((PricingRequestMain)(base.Clone()));
             cln.InitVars();
             cln.SchemaSerializationMode = this.SchemaSerializationMode;
             return cln;
@@ -203,17 +203,17 @@ namespace KeithLink.Svc.Impl.Schemas {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["ShipDateResponse"] != null)) {
-                    base.Tables.Add(new ShipDateResponseDataTable(ds.Tables["ShipDateResponse"]));
+                if ((ds.Tables["PricingRequest"] != null)) {
+                    base.Tables.Add(new PricingRequestDataTable(ds.Tables["PricingRequest"]));
                 }
                 if ((ds.Tables["Customer"] != null)) {
                     base.Tables.Add(new CustomerDataTable(ds.Tables["Customer"]));
                 }
-                if ((ds.Tables["ShipDates"] != null)) {
-                    base.Tables.Add(new ShipDatesDataTable(ds.Tables["ShipDates"]));
+                if ((ds.Tables["Items"] != null)) {
+                    base.Tables.Add(new ItemsDataTable(ds.Tables["Items"]));
                 }
-                if ((ds.Tables["ShipDate"] != null)) {
-                    base.Tables.Add(new ShipDateDataTable(ds.Tables["ShipDate"]));
+                if ((ds.Tables["Item"] != null)) {
+                    base.Tables.Add(new _ItemDataTable(ds.Tables["Item"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -248,10 +248,10 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tableShipDateResponse = ((ShipDateResponseDataTable)(base.Tables["ShipDateResponse"]));
+            this.tablePricingRequest = ((PricingRequestDataTable)(base.Tables["PricingRequest"]));
             if ((initTable == true)) {
-                if ((this.tableShipDateResponse != null)) {
-                    this.tableShipDateResponse.InitVars();
+                if ((this.tablePricingRequest != null)) {
+                    this.tablePricingRequest.InitVars();
                 }
             }
             this.tableCustomer = ((CustomerDataTable)(base.Tables["Customer"]));
@@ -260,80 +260,80 @@ namespace KeithLink.Svc.Impl.Schemas {
                     this.tableCustomer.InitVars();
                 }
             }
-            this.tableShipDates = ((ShipDatesDataTable)(base.Tables["ShipDates"]));
+            this.tableItems = ((ItemsDataTable)(base.Tables["Items"]));
             if ((initTable == true)) {
-                if ((this.tableShipDates != null)) {
-                    this.tableShipDates.InitVars();
+                if ((this.tableItems != null)) {
+                    this.tableItems.InitVars();
                 }
             }
-            this.tableShipDate = ((ShipDateDataTable)(base.Tables["ShipDate"]));
+            this.table_Item = ((_ItemDataTable)(base.Tables["Item"]));
             if ((initTable == true)) {
-                if ((this.tableShipDate != null)) {
-                    this.tableShipDate.InitVars();
+                if ((this.table_Item != null)) {
+                    this.table_Item.InitVars();
                 }
             }
-            this.relationShipDateResponse_Customer = this.Relations["ShipDateResponse_Customer"];
-            this.relationShipDateResponse_ShipDates = this.Relations["ShipDateResponse_ShipDates"];
-            this.relationShipDates_ShipDate = this.Relations["ShipDates_ShipDate"];
+            this.relationPricingRequest_Customer = this.Relations["PricingRequest_Customer"];
+            this.relationPricingRequest_Items = this.Relations["PricingRequest_Items"];
+            this.relationItems_Item = this.Relations["Items_Item"];
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitClass() {
-            this.DataSetName = "ShippingDateResponseMain";
+            this.DataSetName = "PricingRequestMain";
             this.Prefix = "";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tableShipDateResponse = new ShipDateResponseDataTable();
-            base.Tables.Add(this.tableShipDateResponse);
+            this.tablePricingRequest = new PricingRequestDataTable();
+            base.Tables.Add(this.tablePricingRequest);
             this.tableCustomer = new CustomerDataTable();
             base.Tables.Add(this.tableCustomer);
-            this.tableShipDates = new ShipDatesDataTable();
-            base.Tables.Add(this.tableShipDates);
-            this.tableShipDate = new ShipDateDataTable();
-            base.Tables.Add(this.tableShipDate);
+            this.tableItems = new ItemsDataTable();
+            base.Tables.Add(this.tableItems);
+            this.table_Item = new _ItemDataTable();
+            base.Tables.Add(this.table_Item);
             global::System.Data.ForeignKeyConstraint fkc;
-            fkc = new global::System.Data.ForeignKeyConstraint("ShipDateResponse_Customer", new global::System.Data.DataColumn[] {
-                        this.tableShipDateResponse.ShipDateResponse_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableCustomer.ShipDateResponse_IdColumn});
+            fkc = new global::System.Data.ForeignKeyConstraint("PricingRequest_Customer", new global::System.Data.DataColumn[] {
+                        this.tablePricingRequest.PricingRequest_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableCustomer.PricingRequest_IdColumn});
             this.tableCustomer.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            fkc = new global::System.Data.ForeignKeyConstraint("ShipDateResponse_ShipDates", new global::System.Data.DataColumn[] {
-                        this.tableShipDateResponse.ShipDateResponse_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableShipDates.ShipDateResponse_IdColumn});
-            this.tableShipDates.Constraints.Add(fkc);
+            fkc = new global::System.Data.ForeignKeyConstraint("PricingRequest_Items", new global::System.Data.DataColumn[] {
+                        this.tablePricingRequest.PricingRequest_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableItems.PricingRequest_IdColumn});
+            this.tableItems.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            fkc = new global::System.Data.ForeignKeyConstraint("ShipDates_ShipDate", new global::System.Data.DataColumn[] {
-                        this.tableShipDates.ShipDates_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableShipDate.ShipDates_IdColumn});
-            this.tableShipDate.Constraints.Add(fkc);
+            fkc = new global::System.Data.ForeignKeyConstraint("Items_Item", new global::System.Data.DataColumn[] {
+                        this.tableItems.Items_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.table_Item.Items_IdColumn});
+            this.table_Item.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
-            this.relationShipDateResponse_Customer = new global::System.Data.DataRelation("ShipDateResponse_Customer", new global::System.Data.DataColumn[] {
-                        this.tableShipDateResponse.ShipDateResponse_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableCustomer.ShipDateResponse_IdColumn}, false);
-            this.relationShipDateResponse_Customer.Nested = true;
-            this.Relations.Add(this.relationShipDateResponse_Customer);
-            this.relationShipDateResponse_ShipDates = new global::System.Data.DataRelation("ShipDateResponse_ShipDates", new global::System.Data.DataColumn[] {
-                        this.tableShipDateResponse.ShipDateResponse_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableShipDates.ShipDateResponse_IdColumn}, false);
-            this.relationShipDateResponse_ShipDates.Nested = true;
-            this.Relations.Add(this.relationShipDateResponse_ShipDates);
-            this.relationShipDates_ShipDate = new global::System.Data.DataRelation("ShipDates_ShipDate", new global::System.Data.DataColumn[] {
-                        this.tableShipDates.ShipDates_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.tableShipDate.ShipDates_IdColumn}, false);
-            this.relationShipDates_ShipDate.Nested = true;
-            this.Relations.Add(this.relationShipDates_ShipDate);
+            this.relationPricingRequest_Customer = new global::System.Data.DataRelation("PricingRequest_Customer", new global::System.Data.DataColumn[] {
+                        this.tablePricingRequest.PricingRequest_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableCustomer.PricingRequest_IdColumn}, false);
+            this.relationPricingRequest_Customer.Nested = true;
+            this.Relations.Add(this.relationPricingRequest_Customer);
+            this.relationPricingRequest_Items = new global::System.Data.DataRelation("PricingRequest_Items", new global::System.Data.DataColumn[] {
+                        this.tablePricingRequest.PricingRequest_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableItems.PricingRequest_IdColumn}, false);
+            this.relationPricingRequest_Items.Nested = true;
+            this.Relations.Add(this.relationPricingRequest_Items);
+            this.relationItems_Item = new global::System.Data.DataRelation("Items_Item", new global::System.Data.DataColumn[] {
+                        this.tableItems.Items_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.table_Item.Items_IdColumn}, false);
+            this.relationItems_Item.Nested = true;
+            this.Relations.Add(this.relationItems_Item);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeShipDateResponse() {
+        private bool ShouldSerializePricingRequest() {
             return false;
         }
         
@@ -345,13 +345,13 @@ namespace KeithLink.Svc.Impl.Schemas {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeShipDates() {
+        private bool ShouldSerializeItems() {
             return false;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializeShipDate() {
+        private bool ShouldSerialize_Item() {
             return false;
         }
         
@@ -366,7 +366,7 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedDataSetSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
-            ShippingDateResponseMain ds = new ShippingDateResponseMain();
+            PricingRequestMain ds = new PricingRequestMain();
             global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.Schema.XmlSchemaAny any = new global::System.Xml.Schema.XmlSchemaAny();
@@ -411,32 +411,32 @@ namespace KeithLink.Svc.Impl.Schemas {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void ShipDateResponseRowChangeEventHandler(object sender, ShipDateResponseRowChangeEvent e);
+        public delegate void PricingRequestRowChangeEventHandler(object sender, PricingRequestRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void CustomerRowChangeEventHandler(object sender, CustomerRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void ShipDatesRowChangeEventHandler(object sender, ShipDatesRowChangeEvent e);
+        public delegate void ItemsRowChangeEventHandler(object sender, ItemsRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void ShipDateRowChangeEventHandler(object sender, ShipDateRowChangeEvent e);
+        public delegate void _ItemRowChangeEventHandler(object sender, _ItemRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ShipDateResponseDataTable : global::System.Data.TypedTableBase<ShipDateResponseRow> {
+        public partial class PricingRequestDataTable : global::System.Data.TypedTableBase<PricingRequestRow> {
             
-            private global::System.Data.DataColumn columnShipDateResponse_Id;
+            private global::System.Data.DataColumn columnShipDate;
             
-            private global::System.Data.DataColumn columnErrorMessage;
+            private global::System.Data.DataColumn columnPricingRequest_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseDataTable() {
-                this.TableName = "ShipDateResponse";
+            public PricingRequestDataTable() {
+                this.TableName = "PricingRequest";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -444,7 +444,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDateResponseDataTable(global::System.Data.DataTable table) {
+            internal PricingRequestDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -461,24 +461,24 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected ShipDateResponseDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected PricingRequestDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDateResponse_IdColumn {
+            public global::System.Data.DataColumn ShipDateColumn {
                 get {
-                    return this.columnShipDateResponse_Id;
+                    return this.columnShipDate;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ErrorMessageColumn {
+            public global::System.Data.DataColumn PricingRequest_IdColumn {
                 get {
-                    return this.columnErrorMessage;
+                    return this.columnPricingRequest_Id;
                 }
             }
             
@@ -493,46 +493,46 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow this[int index] {
+            public PricingRequestRow this[int index] {
                 get {
-                    return ((ShipDateResponseRow)(this.Rows[index]));
+                    return ((PricingRequestRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateResponseRowChangeEventHandler ShipDateResponseRowChanging;
+            public event PricingRequestRowChangeEventHandler PricingRequestRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateResponseRowChangeEventHandler ShipDateResponseRowChanged;
+            public event PricingRequestRowChangeEventHandler PricingRequestRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateResponseRowChangeEventHandler ShipDateResponseRowDeleting;
+            public event PricingRequestRowChangeEventHandler PricingRequestRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateResponseRowChangeEventHandler ShipDateResponseRowDeleted;
+            public event PricingRequestRowChangeEventHandler PricingRequestRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddShipDateResponseRow(ShipDateResponseRow row) {
+            public void AddPricingRequestRow(PricingRequestRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow AddShipDateResponseRow(string ErrorMessage) {
-                ShipDateResponseRow rowShipDateResponseRow = ((ShipDateResponseRow)(this.NewRow()));
+            public PricingRequestRow AddPricingRequestRow(System.DateTime ShipDate) {
+                PricingRequestRow rowPricingRequestRow = ((PricingRequestRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        null,
-                        ErrorMessage};
-                rowShipDateResponseRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowShipDateResponseRow);
-                return rowShipDateResponseRow;
+                        ShipDate,
+                        null};
+                rowPricingRequestRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowPricingRequestRow);
+                return rowPricingRequestRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                ShipDateResponseDataTable cln = ((ShipDateResponseDataTable)(base.Clone()));
+                PricingRequestDataTable cln = ((PricingRequestDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -540,55 +540,55 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new ShipDateResponseDataTable();
+                return new PricingRequestDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnShipDateResponse_Id = base.Columns["ShipDateResponse_Id"];
-                this.columnErrorMessage = base.Columns["ErrorMessage"];
+                this.columnShipDate = base.Columns["ShipDate"];
+                this.columnPricingRequest_Id = base.Columns["PricingRequest_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnShipDateResponse_Id = new global::System.Data.DataColumn("ShipDateResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnShipDateResponse_Id);
-                this.columnErrorMessage = new global::System.Data.DataColumn("ErrorMessage", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnErrorMessage);
+                this.columnShipDate = new global::System.Data.DataColumn("ShipDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnShipDate);
+                this.columnPricingRequest_Id = new global::System.Data.DataColumn("PricingRequest_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnPricingRequest_Id);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnShipDateResponse_Id}, true));
-                this.columnShipDateResponse_Id.AutoIncrement = true;
-                this.columnShipDateResponse_Id.AllowDBNull = false;
-                this.columnShipDateResponse_Id.Unique = true;
-                this.columnShipDateResponse_Id.Namespace = "";
+                                this.columnPricingRequest_Id}, true));
+                this.columnShipDate.AllowDBNull = false;
+                this.columnPricingRequest_Id.AutoIncrement = true;
+                this.columnPricingRequest_Id.AllowDBNull = false;
+                this.columnPricingRequest_Id.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow NewShipDateResponseRow() {
-                return ((ShipDateResponseRow)(this.NewRow()));
+            public PricingRequestRow NewPricingRequestRow() {
+                return ((PricingRequestRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new ShipDateResponseRow(builder);
+                return new PricingRequestRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(ShipDateResponseRow);
+                return typeof(PricingRequestRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.ShipDateResponseRowChanged != null)) {
-                    this.ShipDateResponseRowChanged(this, new ShipDateResponseRowChangeEvent(((ShipDateResponseRow)(e.Row)), e.Action));
+                if ((this.PricingRequestRowChanged != null)) {
+                    this.PricingRequestRowChanged(this, new PricingRequestRowChangeEvent(((PricingRequestRow)(e.Row)), e.Action));
                 }
             }
             
@@ -596,8 +596,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.ShipDateResponseRowChanging != null)) {
-                    this.ShipDateResponseRowChanging(this, new ShipDateResponseRowChangeEvent(((ShipDateResponseRow)(e.Row)), e.Action));
+                if ((this.PricingRequestRowChanging != null)) {
+                    this.PricingRequestRowChanging(this, new PricingRequestRowChangeEvent(((PricingRequestRow)(e.Row)), e.Action));
                 }
             }
             
@@ -605,8 +605,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.ShipDateResponseRowDeleted != null)) {
-                    this.ShipDateResponseRowDeleted(this, new ShipDateResponseRowChangeEvent(((ShipDateResponseRow)(e.Row)), e.Action));
+                if ((this.PricingRequestRowDeleted != null)) {
+                    this.PricingRequestRowDeleted(this, new PricingRequestRowChangeEvent(((PricingRequestRow)(e.Row)), e.Action));
                 }
             }
             
@@ -614,14 +614,14 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.ShipDateResponseRowDeleting != null)) {
-                    this.ShipDateResponseRowDeleting(this, new ShipDateResponseRowChangeEvent(((ShipDateResponseRow)(e.Row)), e.Action));
+                if ((this.PricingRequestRowDeleting != null)) {
+                    this.PricingRequestRowDeleting(this, new PricingRequestRowChangeEvent(((PricingRequestRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveShipDateResponseRow(ShipDateResponseRow row) {
+            public void RemovePricingRequestRow(PricingRequestRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -630,7 +630,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                ShippingDateResponseMain ds = new ShippingDateResponseMain();
+                PricingRequestMain ds = new PricingRequestMain();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -648,7 +648,7 @@ namespace KeithLink.Svc.Impl.Schemas {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "ShipDateResponseDataTable";
+                attribute2.FixedValue = "PricingRequestDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -696,8 +696,6 @@ namespace KeithLink.Svc.Impl.Schemas {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class CustomerDataTable : global::System.Data.TypedTableBase<CustomerRow> {
             
-            private global::System.Data.DataColumn columnShipDateResponse_Id;
-            
             private global::System.Data.DataColumn columnCompany;
             
             private global::System.Data.DataColumn columnDivision;
@@ -706,7 +704,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             private global::System.Data.DataColumn columnNumber;
             
-            private global::System.Data.DataColumn columnCutOffTime;
+            private global::System.Data.DataColumn columnPricingRequest_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -743,14 +741,6 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDateResponse_IdColumn {
-                get {
-                    return this.columnShipDateResponse_Id;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn CompanyColumn {
                 get {
                     return this.columnCompany;
@@ -783,9 +773,9 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn CutOffTimeColumn {
+            public global::System.Data.DataColumn PricingRequest_IdColumn {
                 get {
-                    return this.columnCutOffTime;
+                    return this.columnPricingRequest_Id;
                 }
             }
             
@@ -826,17 +816,16 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CustomerRow AddCustomerRow(ShipDateResponseRow parentShipDateResponseRowByShipDateResponse_Customer, string Company, string Division, string Department, string Number, string CutOffTime) {
+            public CustomerRow AddCustomerRow(string Company, string Division, string Department, string Number, PricingRequestRow parentPricingRequestRowByPricingRequest_Customer) {
                 CustomerRow rowCustomerRow = ((CustomerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        null,
                         Company,
                         Division,
                         Department,
                         Number,
-                        CutOffTime};
-                if ((parentShipDateResponseRowByShipDateResponse_Customer != null)) {
-                    columnValuesArray[0] = parentShipDateResponseRowByShipDateResponse_Customer[0];
+                        null};
+                if ((parentPricingRequestRowByPricingRequest_Customer != null)) {
+                    columnValuesArray[4] = parentPricingRequestRowByPricingRequest_Customer[1];
                 }
                 rowCustomerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCustomerRow);
@@ -860,19 +849,16 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnShipDateResponse_Id = base.Columns["ShipDateResponse_Id"];
                 this.columnCompany = base.Columns["Company"];
                 this.columnDivision = base.Columns["Division"];
                 this.columnDepartment = base.Columns["Department"];
                 this.columnNumber = base.Columns["Number"];
-                this.columnCutOffTime = base.Columns["CutOffTime"];
+                this.columnPricingRequest_Id = base.Columns["PricingRequest_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnShipDateResponse_Id = new global::System.Data.DataColumn("ShipDateResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnShipDateResponse_Id);
                 this.columnCompany = new global::System.Data.DataColumn("Company", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCompany);
                 this.columnDivision = new global::System.Data.DataColumn("Division", typeof(string), null, global::System.Data.MappingType.Element);
@@ -881,9 +867,8 @@ namespace KeithLink.Svc.Impl.Schemas {
                 base.Columns.Add(this.columnDepartment);
                 this.columnNumber = new global::System.Data.DataColumn("Number", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumber);
-                this.columnCutOffTime = new global::System.Data.DataColumn("CutOffTime", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnCutOffTime);
-                this.columnShipDateResponse_Id.Namespace = "";
+                this.columnPricingRequest_Id = new global::System.Data.DataColumn("PricingRequest_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnPricingRequest_Id);
                 this.columnCompany.AllowDBNull = false;
                 this.columnDivision.AllowDBNull = false;
                 this.columnDepartment.AllowDBNull = false;
@@ -956,7 +941,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                ShippingDateResponseMain ds = new ShippingDateResponseMain();
+                PricingRequestMain ds = new PricingRequestMain();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1020,16 +1005,16 @@ namespace KeithLink.Svc.Impl.Schemas {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ShipDatesDataTable : global::System.Data.TypedTableBase<ShipDatesRow> {
+        public partial class ItemsDataTable : global::System.Data.TypedTableBase<ItemsRow> {
             
-            private global::System.Data.DataColumn columnShipDates_Id;
+            private global::System.Data.DataColumn columnItems_Id;
             
-            private global::System.Data.DataColumn columnShipDateResponse_Id;
+            private global::System.Data.DataColumn columnPricingRequest_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesDataTable() {
-                this.TableName = "ShipDates";
+            public ItemsDataTable() {
+                this.TableName = "Items";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -1037,7 +1022,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDatesDataTable(global::System.Data.DataTable table) {
+            internal ItemsDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -1054,24 +1039,24 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected ShipDatesDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected ItemsDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDates_IdColumn {
+            public global::System.Data.DataColumn Items_IdColumn {
                 get {
-                    return this.columnShipDates_Id;
+                    return this.columnItems_Id;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDateResponse_IdColumn {
+            public global::System.Data.DataColumn PricingRequest_IdColumn {
                 get {
-                    return this.columnShipDateResponse_Id;
+                    return this.columnPricingRequest_Id;
                 }
             }
             
@@ -1086,49 +1071,49 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow this[int index] {
+            public ItemsRow this[int index] {
                 get {
-                    return ((ShipDatesRow)(this.Rows[index]));
+                    return ((ItemsRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDatesRowChangeEventHandler ShipDatesRowChanging;
+            public event ItemsRowChangeEventHandler ItemsRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDatesRowChangeEventHandler ShipDatesRowChanged;
+            public event ItemsRowChangeEventHandler ItemsRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDatesRowChangeEventHandler ShipDatesRowDeleting;
+            public event ItemsRowChangeEventHandler ItemsRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDatesRowChangeEventHandler ShipDatesRowDeleted;
+            public event ItemsRowChangeEventHandler ItemsRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddShipDatesRow(ShipDatesRow row) {
+            public void AddItemsRow(ItemsRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow AddShipDatesRow(ShipDateResponseRow parentShipDateResponseRowByShipDateResponse_ShipDates) {
-                ShipDatesRow rowShipDatesRow = ((ShipDatesRow)(this.NewRow()));
+            public ItemsRow AddItemsRow(PricingRequestRow parentPricingRequestRowByPricingRequest_Items) {
+                ItemsRow rowItemsRow = ((ItemsRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
                         null};
-                if ((parentShipDateResponseRowByShipDateResponse_ShipDates != null)) {
-                    columnValuesArray[1] = parentShipDateResponseRowByShipDateResponse_ShipDates[0];
+                if ((parentPricingRequestRowByPricingRequest_Items != null)) {
+                    columnValuesArray[1] = parentPricingRequestRowByPricingRequest_Items[1];
                 }
-                rowShipDatesRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowShipDatesRow);
-                return rowShipDatesRow;
+                rowItemsRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowItemsRow);
+                return rowItemsRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                ShipDatesDataTable cln = ((ShipDatesDataTable)(base.Clone()));
+                ItemsDataTable cln = ((ItemsDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -1136,56 +1121,54 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new ShipDatesDataTable();
+                return new ItemsDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnShipDates_Id = base.Columns["ShipDates_Id"];
-                this.columnShipDateResponse_Id = base.Columns["ShipDateResponse_Id"];
+                this.columnItems_Id = base.Columns["Items_Id"];
+                this.columnPricingRequest_Id = base.Columns["PricingRequest_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnShipDates_Id = new global::System.Data.DataColumn("ShipDates_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnShipDates_Id);
-                this.columnShipDateResponse_Id = new global::System.Data.DataColumn("ShipDateResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnShipDateResponse_Id);
+                this.columnItems_Id = new global::System.Data.DataColumn("Items_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnItems_Id);
+                this.columnPricingRequest_Id = new global::System.Data.DataColumn("PricingRequest_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnPricingRequest_Id);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnShipDates_Id}, true));
-                this.columnShipDates_Id.AutoIncrement = true;
-                this.columnShipDates_Id.AllowDBNull = false;
-                this.columnShipDates_Id.Unique = true;
-                this.columnShipDates_Id.Namespace = "";
-                this.columnShipDateResponse_Id.Namespace = "";
+                                this.columnItems_Id}, true));
+                this.columnItems_Id.AutoIncrement = true;
+                this.columnItems_Id.AllowDBNull = false;
+                this.columnItems_Id.Unique = true;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow NewShipDatesRow() {
-                return ((ShipDatesRow)(this.NewRow()));
+            public ItemsRow NewItemsRow() {
+                return ((ItemsRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new ShipDatesRow(builder);
+                return new ItemsRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(ShipDatesRow);
+                return typeof(ItemsRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.ShipDatesRowChanged != null)) {
-                    this.ShipDatesRowChanged(this, new ShipDatesRowChangeEvent(((ShipDatesRow)(e.Row)), e.Action));
+                if ((this.ItemsRowChanged != null)) {
+                    this.ItemsRowChanged(this, new ItemsRowChangeEvent(((ItemsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1193,8 +1176,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.ShipDatesRowChanging != null)) {
-                    this.ShipDatesRowChanging(this, new ShipDatesRowChangeEvent(((ShipDatesRow)(e.Row)), e.Action));
+                if ((this.ItemsRowChanging != null)) {
+                    this.ItemsRowChanging(this, new ItemsRowChangeEvent(((ItemsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1202,8 +1185,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.ShipDatesRowDeleted != null)) {
-                    this.ShipDatesRowDeleted(this, new ShipDatesRowChangeEvent(((ShipDatesRow)(e.Row)), e.Action));
+                if ((this.ItemsRowDeleted != null)) {
+                    this.ItemsRowDeleted(this, new ItemsRowChangeEvent(((ItemsRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1211,14 +1194,14 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.ShipDatesRowDeleting != null)) {
-                    this.ShipDatesRowDeleting(this, new ShipDatesRowChangeEvent(((ShipDatesRow)(e.Row)), e.Action));
+                if ((this.ItemsRowDeleting != null)) {
+                    this.ItemsRowDeleting(this, new ItemsRowChangeEvent(((ItemsRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveShipDatesRow(ShipDatesRow row) {
+            public void RemoveItemsRow(ItemsRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -1227,7 +1210,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                ShippingDateResponseMain ds = new ShippingDateResponseMain();
+                PricingRequestMain ds = new PricingRequestMain();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1245,7 +1228,7 @@ namespace KeithLink.Svc.Impl.Schemas {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "ShipDatesDataTable";
+                attribute2.FixedValue = "ItemsDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -1291,16 +1274,16 @@ namespace KeithLink.Svc.Impl.Schemas {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class ShipDateDataTable : global::System.Data.TypedTableBase<ShipDateRow> {
+        public partial class _ItemDataTable : global::System.Data.TypedTableBase<_ItemRow> {
             
-            private global::System.Data.DataColumn columnShipDate_Column;
+            private global::System.Data.DataColumn columnnumber;
             
-            private global::System.Data.DataColumn columnShipDates_Id;
+            private global::System.Data.DataColumn columnItems_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateDataTable() {
-                this.TableName = "ShipDate";
+            public _ItemDataTable() {
+                this.TableName = "Item";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -1308,7 +1291,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDateDataTable(global::System.Data.DataTable table) {
+            internal _ItemDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -1325,24 +1308,24 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected ShipDateDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected _ItemDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDate_ColumnColumn {
+            public global::System.Data.DataColumn numberColumn {
                 get {
-                    return this.columnShipDate_Column;
+                    return this.columnnumber;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn ShipDates_IdColumn {
+            public global::System.Data.DataColumn Items_IdColumn {
                 get {
-                    return this.columnShipDates_Id;
+                    return this.columnItems_Id;
                 }
             }
             
@@ -1357,49 +1340,49 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRow this[int index] {
+            public _ItemRow this[int index] {
                 get {
-                    return ((ShipDateRow)(this.Rows[index]));
+                    return ((_ItemRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateRowChangeEventHandler ShipDateRowChanging;
+            public event _ItemRowChangeEventHandler _ItemRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateRowChangeEventHandler ShipDateRowChanged;
+            public event _ItemRowChangeEventHandler _ItemRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateRowChangeEventHandler ShipDateRowDeleting;
+            public event _ItemRowChangeEventHandler _ItemRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event ShipDateRowChangeEventHandler ShipDateRowDeleted;
+            public event _ItemRowChangeEventHandler _ItemRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddShipDateRow(ShipDateRow row) {
+            public void Add_ItemRow(_ItemRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRow AddShipDateRow(string ShipDate_Column, ShipDatesRow parentShipDatesRowByShipDates_ShipDate) {
-                ShipDateRow rowShipDateRow = ((ShipDateRow)(this.NewRow()));
+            public _ItemRow Add_ItemRow(string number, ItemsRow parentItemsRowByItems_Item) {
+                _ItemRow row_ItemRow = ((_ItemRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        ShipDate_Column,
+                        number,
                         null};
-                if ((parentShipDatesRowByShipDates_ShipDate != null)) {
-                    columnValuesArray[1] = parentShipDatesRowByShipDates_ShipDate[0];
+                if ((parentItemsRowByItems_Item != null)) {
+                    columnValuesArray[1] = parentItemsRowByItems_Item[0];
                 }
-                rowShipDateRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowShipDateRow);
-                return rowShipDateRow;
+                row_ItemRow.ItemArray = columnValuesArray;
+                this.Rows.Add(row_ItemRow);
+                return row_ItemRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                ShipDateDataTable cln = ((ShipDateDataTable)(base.Clone()));
+                _ItemDataTable cln = ((_ItemDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -1407,51 +1390,52 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new ShipDateDataTable();
+                return new _ItemDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnShipDate_Column = base.Columns["ShipDate_Column"];
-                this.columnShipDates_Id = base.Columns["ShipDates_Id"];
+                this.columnnumber = base.Columns["number"];
+                this.columnItems_Id = base.Columns["Items_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnShipDate_Column = new global::System.Data.DataColumn("ShipDate_Column", typeof(string), null, global::System.Data.MappingType.SimpleContent);
-                base.Columns.Add(this.columnShipDate_Column);
-                this.columnShipDates_Id = new global::System.Data.DataColumn("ShipDates_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnShipDates_Id);
-                this.columnShipDate_Column.AllowDBNull = false;
-                this.columnShipDates_Id.Namespace = "";
+                this.columnnumber = new global::System.Data.DataColumn("number", typeof(string), null, global::System.Data.MappingType.Attribute);
+                base.Columns.Add(this.columnnumber);
+                this.columnItems_Id = new global::System.Data.DataColumn("Items_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnItems_Id);
+                this.columnnumber.AllowDBNull = false;
+                this.columnnumber.Namespace = "";
+                this.columnnumber.MaxLength = 10;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRow NewShipDateRow() {
-                return ((ShipDateRow)(this.NewRow()));
+            public _ItemRow New_ItemRow() {
+                return ((_ItemRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new ShipDateRow(builder);
+                return new _ItemRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(ShipDateRow);
+                return typeof(_ItemRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.ShipDateRowChanged != null)) {
-                    this.ShipDateRowChanged(this, new ShipDateRowChangeEvent(((ShipDateRow)(e.Row)), e.Action));
+                if ((this._ItemRowChanged != null)) {
+                    this._ItemRowChanged(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1459,8 +1443,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.ShipDateRowChanging != null)) {
-                    this.ShipDateRowChanging(this, new ShipDateRowChangeEvent(((ShipDateRow)(e.Row)), e.Action));
+                if ((this._ItemRowChanging != null)) {
+                    this._ItemRowChanging(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1468,8 +1452,8 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.ShipDateRowDeleted != null)) {
-                    this.ShipDateRowDeleted(this, new ShipDateRowChangeEvent(((ShipDateRow)(e.Row)), e.Action));
+                if ((this._ItemRowDeleted != null)) {
+                    this._ItemRowDeleted(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1477,14 +1461,14 @@ namespace KeithLink.Svc.Impl.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.ShipDateRowDeleting != null)) {
-                    this.ShipDateRowDeleting(this, new ShipDateRowChangeEvent(((ShipDateRow)(e.Row)), e.Action));
+                if ((this._ItemRowDeleting != null)) {
+                    this._ItemRowDeleting(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemoveShipDateRow(ShipDateRow row) {
+            public void Remove_ItemRow(_ItemRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -1493,7 +1477,7 @@ namespace KeithLink.Svc.Impl.Schemas {
             public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
                 global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
                 global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
-                ShippingDateResponseMain ds = new ShippingDateResponseMain();
+                PricingRequestMain ds = new PricingRequestMain();
                 global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
                 any1.Namespace = "http://www.w3.org/2001/XMLSchema";
                 any1.MinOccurs = new decimal(0);
@@ -1511,7 +1495,7 @@ namespace KeithLink.Svc.Impl.Schemas {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "ShipDateDataTable";
+                attribute2.FixedValue = "_ItemDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -1555,75 +1539,58 @@ namespace KeithLink.Svc.Impl.Schemas {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class ShipDateResponseRow : global::System.Data.DataRow {
+        public partial class PricingRequestRow : global::System.Data.DataRow {
             
-            private ShipDateResponseDataTable tableShipDateResponse;
+            private PricingRequestDataTable tablePricingRequest;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDateResponseRow(global::System.Data.DataRowBuilder rb) : 
+            internal PricingRequestRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableShipDateResponse = ((ShipDateResponseDataTable)(this.Table));
+                this.tablePricingRequest = ((PricingRequestDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ShipDateResponse_Id {
+            public System.DateTime ShipDate {
                 get {
-                    return ((int)(this[this.tableShipDateResponse.ShipDateResponse_IdColumn]));
+                    return ((global::System.DateTime)(this[this.tablePricingRequest.ShipDateColumn]));
                 }
                 set {
-                    this[this.tableShipDateResponse.ShipDateResponse_IdColumn] = value;
+                    this[this.tablePricingRequest.ShipDateColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ErrorMessage {
+            public int PricingRequest_Id {
                 get {
-                    try {
-                        return ((string)(this[this.tableShipDateResponse.ErrorMessageColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ErrorMessage\' in table \'ShipDateResponse\' is DBNull.", e);
-                    }
+                    return ((int)(this[this.tablePricingRequest.PricingRequest_IdColumn]));
                 }
                 set {
-                    this[this.tableShipDateResponse.ErrorMessageColumn] = value;
+                    this[this.tablePricingRequest.PricingRequest_IdColumn] = value;
                 }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsErrorMessageNull() {
-                return this.IsNull(this.tableShipDateResponse.ErrorMessageColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetErrorMessageNull() {
-                this[this.tableShipDateResponse.ErrorMessageColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public CustomerRow[] GetCustomerRows() {
-                if ((this.Table.ChildRelations["ShipDateResponse_Customer"] == null)) {
+                if ((this.Table.ChildRelations["PricingRequest_Customer"] == null)) {
                     return new CustomerRow[0];
                 }
                 else {
-                    return ((CustomerRow[])(base.GetChildRows(this.Table.ChildRelations["ShipDateResponse_Customer"])));
+                    return ((CustomerRow[])(base.GetChildRows(this.Table.ChildRelations["PricingRequest_Customer"])));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow[] GetShipDatesRows() {
-                if ((this.Table.ChildRelations["ShipDateResponse_ShipDates"] == null)) {
-                    return new ShipDatesRow[0];
+            public ItemsRow[] GetItemsRows() {
+                if ((this.Table.ChildRelations["PricingRequest_Items"] == null)) {
+                    return new ItemsRow[0];
                 }
                 else {
-                    return ((ShipDatesRow[])(base.GetChildRows(this.Table.ChildRelations["ShipDateResponse_ShipDates"])));
+                    return ((ItemsRow[])(base.GetChildRows(this.Table.ChildRelations["PricingRequest_Items"])));
                 }
             }
         }
@@ -1640,22 +1607,6 @@ namespace KeithLink.Svc.Impl.Schemas {
             internal CustomerRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
                 this.tableCustomer = ((CustomerDataTable)(this.Table));
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ShipDateResponse_Id {
-                get {
-                    try {
-                        return ((int)(this[this.tableCustomer.ShipDateResponse_IdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ShipDateResponse_Id\' in table \'Customer\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableCustomer.ShipDateResponse_IdColumn] = value;
-                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1704,128 +1655,116 @@ namespace KeithLink.Svc.Impl.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string CutOffTime {
+            public int PricingRequest_Id {
                 get {
                     try {
-                        return ((string)(this[this.tableCustomer.CutOffTimeColumn]));
+                        return ((int)(this[this.tableCustomer.PricingRequest_IdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'CutOffTime\' in table \'Customer\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'PricingRequest_Id\' in table \'Customer\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableCustomer.CutOffTimeColumn] = value;
+                    this[this.tableCustomer.PricingRequest_IdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow ShipDateResponseRow {
+            public PricingRequestRow PricingRequestRow {
                 get {
-                    return ((ShipDateResponseRow)(this.GetParentRow(this.Table.ParentRelations["ShipDateResponse_Customer"])));
+                    return ((PricingRequestRow)(this.GetParentRow(this.Table.ParentRelations["PricingRequest_Customer"])));
                 }
                 set {
-                    this.SetParentRow(value, this.Table.ParentRelations["ShipDateResponse_Customer"]);
+                    this.SetParentRow(value, this.Table.ParentRelations["PricingRequest_Customer"]);
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsShipDateResponse_IdNull() {
-                return this.IsNull(this.tableCustomer.ShipDateResponse_IdColumn);
+            public bool IsPricingRequest_IdNull() {
+                return this.IsNull(this.tableCustomer.PricingRequest_IdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetShipDateResponse_IdNull() {
-                this[this.tableCustomer.ShipDateResponse_IdColumn] = global::System.Convert.DBNull;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsCutOffTimeNull() {
-                return this.IsNull(this.tableCustomer.CutOffTimeColumn);
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetCutOffTimeNull() {
-                this[this.tableCustomer.CutOffTimeColumn] = global::System.Convert.DBNull;
+            public void SetPricingRequest_IdNull() {
+                this[this.tableCustomer.PricingRequest_IdColumn] = global::System.Convert.DBNull;
             }
         }
         
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class ShipDatesRow : global::System.Data.DataRow {
+        public partial class ItemsRow : global::System.Data.DataRow {
             
-            private ShipDatesDataTable tableShipDates;
+            private ItemsDataTable tableItems;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDatesRow(global::System.Data.DataRowBuilder rb) : 
+            internal ItemsRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableShipDates = ((ShipDatesDataTable)(this.Table));
+                this.tableItems = ((ItemsDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ShipDates_Id {
+            public int Items_Id {
                 get {
-                    return ((int)(this[this.tableShipDates.ShipDates_IdColumn]));
+                    return ((int)(this[this.tableItems.Items_IdColumn]));
                 }
                 set {
-                    this[this.tableShipDates.ShipDates_IdColumn] = value;
+                    this[this.tableItems.Items_IdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ShipDateResponse_Id {
+            public int PricingRequest_Id {
                 get {
                     try {
-                        return ((int)(this[this.tableShipDates.ShipDateResponse_IdColumn]));
+                        return ((int)(this[this.tableItems.PricingRequest_IdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ShipDateResponse_Id\' in table \'ShipDates\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'PricingRequest_Id\' in table \'Items\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableShipDates.ShipDateResponse_IdColumn] = value;
+                    this[this.tableItems.PricingRequest_IdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow ShipDateResponseRow {
+            public PricingRequestRow PricingRequestRow {
                 get {
-                    return ((ShipDateResponseRow)(this.GetParentRow(this.Table.ParentRelations["ShipDateResponse_ShipDates"])));
+                    return ((PricingRequestRow)(this.GetParentRow(this.Table.ParentRelations["PricingRequest_Items"])));
                 }
                 set {
-                    this.SetParentRow(value, this.Table.ParentRelations["ShipDateResponse_ShipDates"]);
+                    this.SetParentRow(value, this.Table.ParentRelations["PricingRequest_Items"]);
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsShipDateResponse_IdNull() {
-                return this.IsNull(this.tableShipDates.ShipDateResponse_IdColumn);
+            public bool IsPricingRequest_IdNull() {
+                return this.IsNull(this.tableItems.PricingRequest_IdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetShipDateResponse_IdNull() {
-                this[this.tableShipDates.ShipDateResponse_IdColumn] = global::System.Convert.DBNull;
+            public void SetPricingRequest_IdNull() {
+                this[this.tableItems.PricingRequest_IdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRow[] GetShipDateRows() {
-                if ((this.Table.ChildRelations["ShipDates_ShipDate"] == null)) {
-                    return new ShipDateRow[0];
+            public _ItemRow[] GetItemRows() {
+                if ((this.Table.ChildRelations["Items_Item"] == null)) {
+                    return new _ItemRow[0];
                 }
                 else {
-                    return ((ShipDateRow[])(base.GetChildRows(this.Table.ChildRelations["ShipDates_ShipDate"])));
+                    return ((_ItemRow[])(base.GetChildRows(this.Table.ChildRelations["Items_Item"])));
                 }
             }
         }
@@ -1833,65 +1772,65 @@ namespace KeithLink.Svc.Impl.Schemas {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class ShipDateRow : global::System.Data.DataRow {
+        public partial class _ItemRow : global::System.Data.DataRow {
             
-            private ShipDateDataTable tableShipDate;
+            private _ItemDataTable table_Item;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal ShipDateRow(global::System.Data.DataRowBuilder rb) : 
+            internal _ItemRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tableShipDate = ((ShipDateDataTable)(this.Table));
+                this.table_Item = ((_ItemDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string ShipDate_Column {
+            public string number {
                 get {
-                    return ((string)(this[this.tableShipDate.ShipDate_ColumnColumn]));
+                    return ((string)(this[this.table_Item.numberColumn]));
                 }
                 set {
-                    this[this.tableShipDate.ShipDate_ColumnColumn] = value;
+                    this[this.table_Item.numberColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int ShipDates_Id {
+            public int Items_Id {
                 get {
                     try {
-                        return ((int)(this[this.tableShipDate.ShipDates_IdColumn]));
+                        return ((int)(this[this.table_Item.Items_IdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'ShipDates_Id\' in table \'ShipDate\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Items_Id\' in table \'Item\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tableShipDate.ShipDates_IdColumn] = value;
+                    this[this.table_Item.Items_IdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow ShipDatesRow {
+            public ItemsRow ItemsRow {
                 get {
-                    return ((ShipDatesRow)(this.GetParentRow(this.Table.ParentRelations["ShipDates_ShipDate"])));
+                    return ((ItemsRow)(this.GetParentRow(this.Table.ParentRelations["Items_Item"])));
                 }
                 set {
-                    this.SetParentRow(value, this.Table.ParentRelations["ShipDates_ShipDate"]);
+                    this.SetParentRow(value, this.Table.ParentRelations["Items_Item"]);
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IsShipDates_IdNull() {
-                return this.IsNull(this.tableShipDate.ShipDates_IdColumn);
+            public bool IsItems_IdNull() {
+                return this.IsNull(this.table_Item.Items_IdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetShipDates_IdNull() {
-                this[this.tableShipDate.ShipDates_IdColumn] = global::System.Convert.DBNull;
+            public void SetItems_IdNull() {
+                this[this.table_Item.Items_IdColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1899,22 +1838,22 @@ namespace KeithLink.Svc.Impl.Schemas {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class ShipDateResponseRowChangeEvent : global::System.EventArgs {
+        public class PricingRequestRowChangeEvent : global::System.EventArgs {
             
-            private ShipDateResponseRow eventRow;
+            private PricingRequestRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRowChangeEvent(ShipDateResponseRow row, global::System.Data.DataRowAction action) {
+            public PricingRequestRowChangeEvent(PricingRequestRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateResponseRow Row {
+            public PricingRequestRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1967,22 +1906,22 @@ namespace KeithLink.Svc.Impl.Schemas {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class ShipDatesRowChangeEvent : global::System.EventArgs {
+        public class ItemsRowChangeEvent : global::System.EventArgs {
             
-            private ShipDatesRow eventRow;
+            private ItemsRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRowChangeEvent(ShipDatesRow row, global::System.Data.DataRowAction action) {
+            public ItemsRowChangeEvent(ItemsRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDatesRow Row {
+            public ItemsRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -2001,22 +1940,22 @@ namespace KeithLink.Svc.Impl.Schemas {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class ShipDateRowChangeEvent : global::System.EventArgs {
+        public class _ItemRowChangeEvent : global::System.EventArgs {
             
-            private ShipDateRow eventRow;
+            private _ItemRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRowChangeEvent(ShipDateRow row, global::System.Data.DataRowAction action) {
+            public _ItemRowChangeEvent(_ItemRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public ShipDateRow Row {
+            public _ItemRow Row {
                 get {
                     return this.eventRow;
                 }

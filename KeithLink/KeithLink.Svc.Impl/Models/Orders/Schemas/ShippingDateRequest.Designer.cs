@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace KeithLink.Svc.Impl.Schemas {
+namespace KeithLink.Svc.Impl.Models.Orders.Schemas {
     
     
     /// <summary>
