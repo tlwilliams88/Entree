@@ -6,8 +6,5 @@ angular.module('bekApp')
 
   $scope.orders = orders;
 
-  if (orders && $state.current.name === 'menu.order') {
-    $state.go('menu.order.items', { orderId: orders[0].id });
-  }
 
 }]);

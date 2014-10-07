@@ -528,8 +528,8 @@ angular.module('bekApp')
             }
 
             // TODO: move into context menu controller
-            $scope.lists = ListService.lists;
-            ListService.getListHeaders();
+            // $scope.lists = ListService.lists;
+            // ListService.getListHeaders();
 
             $scope.carts = CartService.carts;
             CartService.getCartHeaders();

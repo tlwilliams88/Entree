@@ -83,33 +83,37 @@ ng-class="{ odd : $odd, even: $even }"
 // inputs 
 table {
 
-  .input-col {
-    padding: 6px 5px;
-    
-    input[type="text"] {
-      border: 1px solid #c3bc9c;
-      padding: 5px;
+  tr {
+
+    td, th {
+      &.input-col {
+        padding: 6px 5px;
+        
+        input[type="text"] {
+          border: 1px solid #c3bc9c;
+          padding: 5px;
+        }
+      }
+      input[type="checkbox"] {
+        margin: 0;
+      }
+
+      &.icon-col {
+        padding: 7px 5px;
+      }
+
+      &.notes-col {
+        max-width: 100px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
     }
-  }
-  input[type="checkbox"] {
-    margin: 0;
-  }
 
-  .icon-col {
-    padding: 7px 5px;
-  }
-
-  .notes-col {
-    max-width: 100px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-
-  .filter-row {
-    input {
-      width: 100%;
+    &.filter-row {
+      input {
+        width: 100%;
+      }
     }
-  }
-  
+  }  
 }

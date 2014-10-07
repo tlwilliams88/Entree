@@ -37,6 +37,7 @@ $order-col__background: #f1efe5;
   border: 1px solid $color-border;
   margin-top: 10px;
   margin-left: 0;
+  box-shadow: 0px 0px 5px #c3bc9c;
 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
@@ -47,14 +48,14 @@ $order-col__background: #f1efe5;
   
   // order table columns
   > div {
-    padding-top: 30px;
+    padding: 34px initial;
   }
 
   .order-col {
     @extend div;
     background-color: $order-col__background;
     border-right: 1px solid $color-border;
-    padding: 20px 0;
+    padding: $gutter-size 0;
 
     .order-col__date {
       display: block;
