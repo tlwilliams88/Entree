@@ -1,0 +1,54 @@
+.register-wrapper {
+	color: $color-white;
+  min-height: 100%;
+  position: absolute;
+  background-image: url('../images/Registration-BG.jpg');
+  width: 100%;
+  margin-left: 0;
+}
+.register-header {
+  // logo
+  img {
+    height: 80px;
+  }
+
+  .login-form {
+    // login button
+    button {
+      margin-top: 20px;
+    }
+  }
+}
+
+.register-body {
+  font-size: 14px;
+
+  hr {
+    opacity: .5;
+  }
+}
+
+.register-form {
+  input[type='text'], input[type='email'], input[type='password'] {
+    min-height: 60px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .register-header {
+    .login-form {
+      padding-top: $gutter-size;
+
+      button {
+        margin-top: 0;
+      }
+    }
+  }
+  .register-form {
+    input[type='text'], input[type='email'], input[type='password'] {
+      min-height: 40px;
+    }
+  }
+}

@@ -1,0 +1,56 @@
+.context-menu {
+  border-radius: 5px;
+  position: absolute;
+  z-index: 2;
+  font-family: 'Open Sans', sans-serif;
+  
+  .btn-group-vertical {
+    box-shadow: 0px 0px 15px $color-border;
+  }
+
+  .dropdown-menu {
+    top: 0;
+    left: 100%;
+    font-size: $font-size-base;
+    border: none;
+    padding: 0;
+    min-width: 0;
+
+    a {
+      color: $color-font-light;
+    }
+  }
+  .btn, {
+    color: $color-font-light;
+    font-size: $font-size-base;
+    // text-align: left;
+    letter-spacing: 0;
+    min-width: 150px;
+
+    &:hover {
+      color: $color-white !important;
+      background-color: $color-blue !important;
+      border: none !important;
+    }
+
+    &:focus {
+      background-color: $color-white;
+      color: $color-font-light;
+      border: 1px solid $color-border;
+    }
+  }
+
+  .btn-group.open > button {
+    box-shadow: none;
+    color: $color-white;
+  }
+}
+
+.context-menu__in-list .context-menu {
+  right: 0;
+  margin-top: -15px;
+
+  .dropdown-menu {
+    left: -100%;  
+  }
+}

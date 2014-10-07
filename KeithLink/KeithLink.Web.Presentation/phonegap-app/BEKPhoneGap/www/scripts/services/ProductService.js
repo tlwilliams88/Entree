@@ -8,15 +8,11 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService', function($http, UserProfileService) {
+  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 
+    function($http, UserProfileService, RecentlyViewedItem, ItemNotes) {
 
       var defaultPageSize = 50,
         defaultStartingIndex = 0;
-
-      function getBranch() {
-        //return UserProfileService.getCurrentBranchId();
-        return 'fdf';
-      }
 
       function concatenateNestedParameters(name, list) {
         var filters = name + ':';
@@ -67,7 +63,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/' + getBranch() + '/' + searchTerm + '/products', {
+          return $http.get('/catalog/search/' + searchTerm + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -112,7 +108,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/category/' + getBranch() + '/' + categoryName + '/products', {
+          return $http.get('/catalog/search/category/' + categoryName + '/products', {
             params: {
               size: pageSize,
               from: index,
@@ -158,7 +154,7 @@ angular.module('bekApp')
             facets = facets.substr(0, facets.length - 1);
           }
 
-          return $http.get('/catalog/search/' + getBranch() + '/brands/house/' + houseBrandId, {
+          return $http.get('/catalog/search/brands/house/' + houseBrandId, {
             params: {
               size: pageSize,
               from: index,
@@ -174,7 +170,7 @@ angular.module('bekApp')
         getProductDetails: function(id) {
           var returnProduct;
           if (!Service.selectedProduct.name) {
-            returnProduct = $http.get('/catalog/product/' + getBranch() + '/' + id).then(function(response) {
+            returnProduct = $http.get('/catalog/product/' + id).then(function(response) {
               return response.data;
             });
           } else {
@@ -188,16 +184,30 @@ angular.module('bekApp')
           return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
         },
 
+        // ITEM NOTES
         updateItemNote: function(itemNumber, note) {
           var itemNote = {
             itemnumber: itemNumber,
             note: note
           };
-          return $http.post('/itemnote', itemNote);
+          return ItemNotes.save(null, itemNote).$promise;
         },
 
         deleteItemNote: function(itemNumber) {
-          return $http.delete('/itemnote/' + itemNumber);
+          return ItemNotes.delete({
+            itemNumber: itemNumber
+          }).$promise;
+        },
+
+        // RECENTLY VIEWED ITEMS
+        saveRecentlyViewedItem: function(itemNumber) {
+          return RecentlyViewedItem.save({
+            itemNumber: itemNumber
+          }, {}).$promise;
+        },
+
+        getRecentlyViewedItems: function() {
+          return RecentlyViewedItem.query({}).$promise;
         }
       };
 

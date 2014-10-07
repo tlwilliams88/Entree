@@ -6,99 +6,99 @@
 </div>
 
 <div class="row">
+  <div class="col-xs-12 col-md-5 pull-right">
+    <h4><strong>Your Avatar</strong></h4>
+
+    <div class="person-info avatar-info" ng-click="displayUserMenu = !displayUserMenu">
+      <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+      <div class="person-info__section person-info__details">
+        <span ng-hide="userProfile.imageUrl"><a href="">Add Photo</a></span>
+        <span ng-show="userProfile.imageUrl"><a href="">Change Photo</a></span>
+        <span ng-show="userProfile.imageUrl">| <a href="">Remove Photo</a></span>
+      </div>
+    </div>
+  </div>
   <div class="col-md-7">
 
     <form name="updateProfileForm" class="style-validation-errors form-horizontal" role="form">
-      <div class="form-group">
+      <p class="text-red">{{updateProfileErrorMessage}}</p>
+      <div class="form-group form-group-lg">
         <label for="firstName" class="col-md-2 control-label">First Name</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="firstName" name="firstName" ng-model="userProfile.firstname">
+          <input type="text" class="form-control form-control-lg" id="firstName" name="firstName" ng-model="userProfile.firstname">
         </div>
         <label for="lastName" class="col-md-2 control-label">Last Name</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="lastName" name="lastName" ng-model="userProfile.lastname">
+          <input type="text" class="form-control form-control-lg" id="lastName" name="lastName" ng-model="userProfile.lastname">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <label for="emailAddress" class="col-md-2 control-label">Email</label>
         <div class="col-md-10">
           <span ng-show="updateProfileForm.emailAddress.$error.required" class="text-red">Email Address is required</span>
           <span ng-show="updateProfileForm.emailAddress.$error.email" class="text-red">Must be a valid email address</span>
-          <input type="email" class="form-control" required id="emailAddress" name="emailAddress" ng-model="userProfile.emailaddress">
+          <input type="email" class="form-control form-control-lg" required id="emailAddress" name="emailAddress" ng-model="userProfile.emailaddress">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
         <div class="col-md-4">
-          <input type="text" class="form-control" id="phoneNumber" name="phoneNumber" ng-model="userProfile.phonenumber">
+          <input type="text" class="form-control form-control-lg" id="phoneNumber" name="phoneNumber" ng-model="userProfile.phonenumber">
         </div>
       </div>
-      <div class="form-group">
-        <label for="defaultBranch" class="col-md-2 control-label">Division</label>
+      <div class="form-group form-group-lg">
+        <label for="branch" class="col-md-2 control-label">Division</label>
         <div class="col-md-6">
-          <div class="select-div">
-            <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.name for branch in branches" ng-model="userProfile.branchid">
+          <!-- <div class="select-div"> -->
+            <select required name="branch" id="branch" class="form-control form-control-lg" ng-options="branch.id as branch.name for branch in branches" ng-model="userProfile.branchid">
             </select>
-          </div>
+          <!-- </div> -->
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-md-offset-2 col-md-6">
-          <button class="btn btn-primary" ng-disabled="updateProfileForm.$invalid || updateProfileForm.$pristine" ng-click="updateUserProfile(userProfile)">Update Profile</button>
+      <div class="form-group form-group-lg">
+        <div class="col-md-offset-2 col-md-6 button-row">
+          <button class="btn-lg btn btn-primary" ng-disabled="updateProfileForm.$invalid || updateProfileForm.$pristine" ng-click="updateUserProfile(userProfile)">Update Profile</button>
           <a ng-click="cancelChanges()">Cancel</a>
         </div>
       </div>
     </form>
 
   </div>
-  <div class="col-md-5">
-    <h4><strong>Your Avatar</strong></h4>
-
-    <div class="person-info avatar-info" ng-click="displayUserMenu = !displayUserMenu">
-      <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
-      <div class="person-info__section person-info__details">
-        <div>
-          <span ng-hide="userProfile.imageUrl"><a href="">Add Photo</a></span>
-          <span ng-show="userProfile.imageUrl"><a href="">Change Photo</a></span>
-          <span ng-show="userProfile.imageUrl">| <a href="">Remove Photo</a></span>
-        </div>
-      </div>
-    </div>
-
+  <div class="col-xs-12 col-md-5 pull-right">
+    
     <hr>
     
     <h4><strong>Change Your Password</strong></h4>
     <p ng-if="changePasswordErrorMessage" class="text-red">{{changePasswordErrorMessage}}</p>
     <form name="changePasswordForm" class="style-validation-errors form-horizontal" role="form">
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <label for="originalPassword" class="col-md-4 control-label">Old Password</label>
         <div class="col-md-8">
           <span ng-show="changePasswordForm.originalPassword.$error.required && changePasswordForm.originalPassword.$dirty" class="text-red">Password is required</span>
-          <input type="password" class="form-control" required id="originalPassword" name="originalPassword" ng-model="changePasswordData.originalPassword">
+          <input type="password" class="form-control form-control-lg" required id="originalPassword" name="originalPassword" ng-model="changePasswordData.originalpassword">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <label for="newPassword" class="col-md-4 control-label">New Password</label>
         <div class="col-md-8">
           <span ng-show="changePasswordForm.newPassword.$error.required && changePasswordForm.newPassword.$dirty" class="text-red">Password is required</span>
           <span ng-show="changePasswordForm.newPassword.$error.validatePassword && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required" class="text-red">Must contain one uppercase letter, lowercase letter, and number.</span>
-          <input type="password" class="form-control" name="newPassword" id="newPassword" required validate-password ng-model="changePasswordData.newpassword">
+          <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" required validate-password ng-model="changePasswordData.newpassword">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <label for="confirmPassword" class="col-md-4 control-label">Confirm Password</label>
         <div class="col-md-8">
           <span ng-show="changePasswordForm.confirmPassword.$error.required && changePasswordForm.confirmPassword.$dirty" class="text-red">Password confirmation is required</span>
           <span ng-show="changePasswordForm.confirmPassword.$error.matchInput && changePasswordForm.confirmPassword.$dirty" class="text-red">Passwords do not match</span>
-          <input type="password" class="form-control" name="confirmPassword" id="confirmPassword" required match-input="changePasswordData.newpassword" id="confirmPassword" ng-model="changePasswordData.confirmNewpassword">
+          <input type="password" class="form-control form-control-lg" name="confirmPassword" id="confirmPassword" required match-input="changePasswordData.newpassword" id="confirmPassword" ng-model="changePasswordData.confirmNewpassword">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-lg">
         <div class="col-md-offset-4 col-md-8">
-          <button ng-disabled="changePasswordForm.$invalid || changePasswordForm.$pristine" ng-click="changePassword(changePasswordData)" type="submit" class="btn btn-primary">Change Password</button>
+          <button ng-disabled="changePasswordForm.$invalid || changePasswordForm.$pristine" ng-click="changePassword(changePasswordData)" type="submit" class="btn-lg btn btn-primary">Change Password</button>
         </div>
       </div>
     </form>
-
   </div>
 </div>

@@ -1,7 +1,6 @@
 'use strict';
 
-// only allows users to enter integer values into textbox
-// also provides dropdown of values
+// users are only allowed to enter integer values into textbox
 
 angular.module('bekApp')
 .directive('integer', [function() {

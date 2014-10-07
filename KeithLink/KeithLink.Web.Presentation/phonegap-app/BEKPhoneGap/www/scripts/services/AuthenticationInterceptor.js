@@ -1,27 +1,37 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ENV',
-  function ($q, $location, localStorageService, Constants, ENV) {
+.factory('AuthenticationInterceptor', ['$q', '$location', 'ENV', 'LocalStorage',
+  function ($q, $location, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
 
-      // do not alter requests for html templates or the service locator, all api requests start with a '/'
+      // do not alter requests for html templates, all api requests start with a '/'
       if (config.url.indexOf('/') === 0) {
         config.headers = config.headers || {};
 
         // add authorization token header if token is present and endpoint requires authorization
-        var authData = localStorageService.get(Constants.localStorage.userToken);
+        var authData = LocalStorage.getToken();
         if (authData) {
           if (endpointRequiresToken(config.url)) {
-              config.headers.Authorization = 'Bearer ' + authData.access_token;
+            config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
-        // add api key to request headers, do not add to /authen request
+
+        // do not add the following headers to /authen request
         if (config.url.indexOf('/authen') === -1) {
+          // add api key to request headers
           config.headers['api-key'] = ENV.apiKey;
+          
+          // add branch and customer information
+          var catalogInfo = {
+            customerid: LocalStorage.getCustomerNumber(),
+            branchid: LocalStorage.getBranchId()
+          };
+          config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);
         }
+
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;
@@ -33,8 +43,7 @@ angular.module('bekApp')
 
      responseError: function (rejection) {
       if (rejection.status === 401) {
-        localStorageService.remove(Constants.localStorage.userProfile);
-        localStorageService.remove(Constants.localStorage.userToken);
+        LocalStorage.clearAll();
         $location.path('/register');
       }
       return $q.reject(rejection);
