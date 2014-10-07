@@ -142,8 +142,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("catchweight")]
         public bool CatchWeight { get; set; }
 
-        [JsonProperty("ifda")]
-        public string Ifda { get; set; }
+        [JsonProperty("sellsheet")]
+        public string SellSheet { get; set; }
+
 		[JsonProperty("isproprietary")]
 		public bool IsProprietary { get; set; }
 

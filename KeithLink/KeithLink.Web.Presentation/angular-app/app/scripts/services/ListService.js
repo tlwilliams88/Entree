@@ -54,13 +54,20 @@ angular.module('bekApp')
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
-          return List.query({}, params).$promise.then(function(lists) {
+          if (!params) {
+            params = {};
+          }
+          return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
             flagFavoritesList();
 
             // TODO: get favorites list items if header param is true
             return lists;
           });
+        },
+
+        getListHeaders: function() {
+          return Service.getAllLists({ header: true });
         },
 
         // accepts listId (guid)
@@ -153,6 +160,14 @@ angular.module('bekApp')
           });
         },
 
+        deleteMultipleLists: function(listGuidArray)
+        {
+          return $http.delete('/list', {
+            headers:{'Content-Type': 'application/json'},
+            data: listGuidArray
+          });
+        },
+
         /********************
         EDIT SINGLE ITEM
         ********************/
@@ -215,6 +230,7 @@ angular.module('bekApp')
         ********************/
 
         // accepts listId (guid) and an array of items to add
+        // ** Note this does not add duplicate item numbers to a list (10/3/14)
         addMultipleItems: function(listId, items) {
           
           UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);

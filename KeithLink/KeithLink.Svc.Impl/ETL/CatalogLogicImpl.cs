@@ -34,6 +34,8 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
         private readonly string ItemSpec_CNDoc_FriendlyName = "childnutrition";
+        private readonly string ItemSpec_SellSheet = "FDAProductFlag";
+        private readonly string ItemSpec_SellSheet_FriendlyName = "sellsheet";
 		
 		private readonly string ProductMapping = @"{
 			  ""product"" : {
@@ -371,7 +373,7 @@ namespace KeithLink.Svc.Impl.ETL
                         ReplacedItem = row.GetString("ReplacedItem"),
                         ReplacementItem = row.GetString("ReplacementItem"),
                         ChildNutrition = row.GetString(ItemSpec_CNDoc),
-                        Ifda = row.GetString("FDAProductFlag"),
+                        SellSheet = row.GetString(ItemSpec_SellSheet),
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
@@ -419,6 +421,8 @@ namespace KeithLink.Svc.Impl.ETL
 				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
 			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
 			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
+            if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
 
             return item;
         }

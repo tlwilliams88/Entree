@@ -52,12 +52,15 @@
   
   .table-col {
     padding: 15px 10px !important;
-    width: 25% !important;
+    width: initial !important;
   }
 
   .hidden-drag {
     display: none;
   } 
+}
+.ui-sortable-placeholder {
+  display: block !important;
 }
 .ui-sortable-helper {
   border: 1px solid $color-border !important;
@@ -67,7 +70,7 @@
     border: none !important;
   }
 }
-.item-selected, .bek-reordered-item  {
+.item-selected, .bek-reordered-item td  {
   background-color: #f8f8c4 !important;
 }
 // // prevents weird page jumping when reordering items that are scrolled down the page
@@ -77,8 +80,8 @@
 
 // highlight row when hovering on desktop only
 @media (min-width: $screen-md-min) {
-  .custom-lists__table .table-body .table-row:hover {
-    background-color: #EBE7D9;
+  .custom-lists__table tbody tr:hover td {
+    background-color: #EBE7D9 !important;
   }
 }
 
@@ -91,65 +94,43 @@
   }
 }
 
-.table-col {
-  position: relative;
-  float: left;
-  min-height: 1px;
-  // padding-left: 3px;
-  // padding-right: 3px;
-}
-.col-position   { 
-  width: 56px;
-  padding: 5px 3px;
-}
-.col-itemnumber { 
-  width: 47px;
-  padding: 12px 3px;
-}
-.col-name       { 
-  width: calc((100% - 404px) / 2);
-  padding: 12px 3px;
-}
-.col-brand      { 
-  width: calc((100% - 404px) / 4);
-  padding: 12px 3px;
-}
-.col-packsize   { 
-  width: calc((100% - 404px) / 4);
-  padding: 12px 3px;
-}
-.col-qtyincart  {
-  width: 30px;
-  padding: 12px 3px;
-}
-.col-label      { 
-  width: 135px;
-}
-.col-parlevel   { 
-  input {width: 40px;}
-  width: 53px;
-}
-.col-icons      { 
-  width: 83px;
-  padding: 5px 3px;
+.header-row {
+  background-color: $background;
+  border: 1px solid $color-border;
+  border-bottom: none;
+  font-weight: 600;
+  padding: 8px 5px;
 }
 
 .custom-lists__table {
-  .table-header {
-    background-color: $background;
-    font-weight: 600;
-  }
-  .table-row {
-    border: 1px solid $color-border;
-    border-bottom: none;
-    &.odd {
+  width: 100%;
+
+  > tbody {
+    > tr {
+      > td {
+        border-top: 1px solid $table-border-color;
+        padding: 8px 5px;
+
+        &:first-child {
+          border-left: 1px solid $color-border;
+        }
+        &:last-child {
+          border-right: 1px solid $color-border;
+        }
+      } 
+      &.mobile-details-row > td {
+        border-top: none;
+      }
+    }
+     
+    &.odd > tr > td {
       background-color: $background;
     }
-    &.even {
-      background-color: $color-white;
+    &.even > tr > td {
+      background-color: white;
     }
-  }
-  .table-body, .table-footer {
-    border-bottom: 1px solid $color-border;
+    &:last-child > tr > td {
+      border-bottom: 1px solid $table-border-color;
+    }
   }
 }
