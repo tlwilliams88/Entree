@@ -45,8 +45,14 @@ ng-class="{ odd : $odd, even: $even }"
   > thead > tr > th {
     background-color: $background;
     border-bottom-width: 1px;
+
+    &.sort-col-header {
+      cursor: pointer;
+      white-space: nowrap;
+    }
   }
-  > tbody > tr:first-child > td {
+  > tbody > tr:first-child > td,
+  > tbody > tr:first-child > th {
     border-top: none;
   }
 
@@ -61,4 +67,49 @@ ng-class="{ odd : $odd, even: $even }"
   > tfoot > tr > td, .filter-row > td {
     background-color: $color-white;
   }
+
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        padding: 12px 5px;
+      }
+    }
+  }
+}
+
+// inputs 
+table {
+
+  .input-col {
+    padding: 6px 5px;
+    
+    input[type="text"] {
+      border: 1px solid #c3bc9c;
+      padding: 5px;
+    }
+  }
+  input[type="checkbox"] {
+    margin: 0;
+  }
+
+  .icon-col {
+    padding: 7px 5px;
+  }
+
+  .notes-col {
+    max-width: 100px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+
+  .filter-row {
+    input {
+      width: 100%;
+    }
+  }
+  
 }

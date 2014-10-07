@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Runtime.Serialization;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {

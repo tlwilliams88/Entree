@@ -5,6 +5,7 @@ using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {

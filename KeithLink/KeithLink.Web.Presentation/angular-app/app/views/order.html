@@ -12,6 +12,4 @@
   <li ng-repeat="order in orders"><a ui-sref="menu.order.items({ orderId: order.id })">{{order.name}}</a></li>
 </ul>
 
-<ui-view>
-This shows if there are no orders....
-</ui-view>
+<div ui-view></div ui-view>

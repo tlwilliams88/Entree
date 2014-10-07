@@ -9,7 +9,7 @@
           <tr ng-click="goToCart(cart)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
             <td><span class="overflow">{{cart.name}}</span></td>
             <td>{{cart.items.length}}</td>
-            <td>{{cart.requestedshipdate | date:shortDate}}</td>
+            <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
           </tr>
           <tr ng-click="createNewCart()">
             <td colspan="3">Create a Cart...</td>
@@ -17,14 +17,12 @@
         </table>
       </div>
 
-      <div style="display:inline-block;">
-        <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-        <a confirmed-click="deleteCart(currentCart)" class="hidden-print" ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"><span class="large-icon text-light icon-trash"></span></a>
-      </div>
+      <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+      <a confirmed-click="deleteCart(currentCart)" class="hidden-print" ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"><span class="large-icon text-light icon-trash"></span></a>
     </div>
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
-      <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" required ng-model="editCart.name" name="cartName" id="cartName" />
+      <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" class="input-lg form-control" required ng-model="editCart.name" name="cartName" id="cartName" />
       <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
@@ -51,17 +49,17 @@
   <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
     <div class="info-box">
       <div class="row">
+        <div class="col-xs-12">
+          <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-sm-5 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
         <div class="col-sm-7 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <p class="text-red no-margin" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
         </div>
       </div>
       <div class="sub-content row">
@@ -85,7 +83,7 @@
       <div class="row">
         <div class="col-xs-12">
           <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart">
-          <label for="activeCart" style="font-weight:normal;">Make this my Active Cart</label>
+          <label for="activeCart">Make this my Active Cart</label>
         </div>
       </div>
     </div>
@@ -98,33 +96,34 @@
     <table class="table table-striped-rows table-border" navigate-table>
       <thead>
         <tr>
-          <th class="hand" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
+          <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
             Item #
             <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print notes" ng-click="sortBy='notes';sortOrder=!sortOrder">
+          <th class="sort-col-header hidden-xs hidden-sm visible-md visible-lg visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
             Notes
             <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
+          <th class="hidden-xs hidden-sm"></th>
           <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
             Pack/Size
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print hand" ng-click="sortBy='brand';sortOrder=!sortOrder">
+          <th class="sort-col-header hidden-xs hidden-sm visible-md visible-lg visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
             Brand
             <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hand" ng-click="sortBy='name';sortOrder=!sortOrder">
+          <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder">
             Name
             <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
           <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
             
           </th>
-          <th class="hand" ng-click="sortBy='quantity';sortOrder=!sortOrder">
+          <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder">
             Qty
             <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print hand" ng-click="sortBy='each';sortOrder=!sortOrder">
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder">
             Each
             <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
@@ -134,7 +133,7 @@
           <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             Ext Price
           </th>
-          <th class="hidden-print large-icon">
+          <th class="hidden-print large-icon icon-col">
             <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
           </th>
         </tr>
@@ -143,14 +142,15 @@
         <!-- Filter row -->
         <tr class="filter-row hidden-print" ng-show="showFilter">
           <td></td>
-          <td class="hidden-xs hidden-sm">
+          <td class="hidden-xs hidden-sm input-col">
             <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
           </td>
           <td class="hidden-xs hidden-sm"></td>
-          <td class="hidden-xs hidden-sm">
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-xs hidden-sm input-col">
             <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
           </td>
-          <td>
+          <td class="input-col">
             <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
           </td>
           <td class="hidden-xs hidden-sm"></td>
@@ -158,7 +158,7 @@
           <td class="hidden-xs hidden-sm"></td>
           <td class="hidden-xs hidden-sm"></td>
           <td class="hidden-xs hidden-sm"></td>
-          <td class="large-icon">
+          <td class="large-icon icon-col">
             <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
           </td>
         </tr> <!-- end Filter row -->
@@ -168,8 +168,11 @@
           <td>
             <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print notes-col">
             {{item.notes}}
+          </td>
+          <td class="hidden-sm hidden-xs">
+            <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
           </td>
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{item.packsize}}
@@ -182,13 +185,13 @@
           </td>
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print " item-icons>
           </td>
-          <td>
+          <td class="input-col nowrap">
             <ng-form class="hidden-print" name="quantityForm">
               <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
               <div counter ng-model="item.quantity" min="0"></div>
             </ng-form>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print input-col">
             <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
               <input type="checkbox" ng-model="item.each" id="each" name="each" />
               <label for="each"></label>
@@ -200,7 +203,7 @@
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
           </td>
-          <td class="hidden-print large-icon">
+          <td class="hidden-print large-icon icon-col">
             <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
           </td>
@@ -209,6 +212,14 @@
         <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
           <td colspan="4">
             <table>
+              <colgroup>
+                <col width="15%" />
+                <col width="85%" />
+              </colgroup>
+              <tr>
+                <td>Notes</td>
+                <td>{{item.notes}}</td>
+              </tr>
               <tr>
                 <td>Pack/Size</td>
                 <td>{{item.packsize}}</td>
@@ -236,7 +247,7 @@
               </tr>
               <tr>
                 <td>
-                  <a ng-click="deleteItem(item)"><span class="large-icon text-red icon-cross"></span> Remove Item</a>
+                  <button class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
                 </td>
               </tr>
             </table>
@@ -249,6 +260,7 @@
         </tr>
       </tfoot>
     </table>
+    </div>
     <div class="text-center sub-content" ng-show="loadingResults" loading-spinner="loadingResults"></div>
   </div>
 </div>

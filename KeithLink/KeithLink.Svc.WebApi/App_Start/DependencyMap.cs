@@ -21,6 +21,7 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.Orders;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -60,6 +61,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
+			builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
 
             // Build the container.
             var container = builder.Build();
