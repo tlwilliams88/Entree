@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Common;
+﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using RabbitMQ.Client;

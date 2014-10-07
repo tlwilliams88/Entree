@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -301,7 +302,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					ItemNumber = item.ProductId,
 					OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
 					SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
