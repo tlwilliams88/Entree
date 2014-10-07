@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Test.Logic
             queue.PublishToQueue(SerializeOrder(GetStubOrder()));
 
 
-            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
+            OrderQueueLogicImpl orderLogic = new OrderQueueLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
                                                queue,
                                                new OrderSocketConnectionRepositoryImpl());
 
