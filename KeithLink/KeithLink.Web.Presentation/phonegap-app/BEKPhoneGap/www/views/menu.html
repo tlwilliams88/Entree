@@ -4,10 +4,10 @@
     <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
-        <span class="text-white user-info__name">{{userProfile.displayName}}</span>  
+        <span class="text-white user-info__name">{{userProfile.displayname}}</span>  
       </div>
       <div>
-        <span class="user-info__job-title">{{userProfile.role}}</span>
+        <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
       </div>
     </div>
     <div class="person-info__section text-white">
@@ -30,7 +30,7 @@
       <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
       </a>
-      <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+      <a ng-if="canCreateOrders" ui-sref="menu.order" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
       </a>
       <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
@@ -81,7 +81,7 @@
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
-        <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+        <a ng-if="canCreateOrders" ui-sref="menu.order" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
         </a>
         <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
@@ -133,13 +133,14 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
-          <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;">
-            <select ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeLocation()"></select>
-          </div>
+          <!-- <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;"> -->
+            <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeBranch()"></select>
+            <select class="input-lg form-control" ng-show="isOrderEntryCustomer" ng-options="customer.customerNumber as customer.customerName for customer in userProfile.user_customers" ng-model="currentLocation" ng-change="changeCustomerLocation()"></select>
+          <!-- </div> -->
         </div>
         <div class="col-md-4">
           <form name="universalSearchForm" novalidate ng-if="canBrowseCatalog">
-            <div class="input-group">
+            <div class="input-group input-group-lg">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
                 <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="glyphicon glyphicon-search"></span></button>
@@ -153,10 +154,10 @@
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span> 
-                <span class="user-info__job-title">{{userProfile.role}}</span>
+                <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn btn-default" ui-sref="menu.accountdetails">Account Settings</button>
-                  <button class="btn btn-default" ng-click="logout()">Sign Out</button>
+                  <button class="btn btn-lg btn-default" ui-sref="menu.accountdetails">Account Settings</button>
+                  <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>
               </div>
               <div class="person-info__section">

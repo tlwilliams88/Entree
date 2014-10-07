@@ -3,13 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>B. Entree</title>
+    <title>Entree</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
-    <link rel="stylesheet" href="lib/normalize.css/normalize.css" />
-    <link rel="stylesheet" href="lib/bootstrap-css-only/css/bootstrap.css" />
     <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
     <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
@@ -115,6 +113,10 @@
     <script type="text/javascript" src="scripts/controllers/CartController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CartItemsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AddToOrderController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ContextMenuModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ItemNotesModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/OrderController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/OrderItemsController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -133,6 +135,7 @@
     <script type="text/javascript" src="scripts/directives/UpdateQuantityFromParlevel.js"></script>
     <script type="text/javascript" src="scripts/directives/ValidatePassword.js"></script>
     <script type="text/javascript" src="scripts/directives/NavigateTable.js"></script>
+    <script type="text/javascript" src="scripts/directives/Counter.js"></script>
     <script type="text/javascript" src="scripts/services/Constants.js"></script>
     <script type="text/javascript" src="scripts/services/AccessService.js"></script>
     <script type="text/javascript" src="scripts/services/AuthenticationService.js"></script>
@@ -146,14 +149,16 @@
     <script type="text/javascript" src="scripts/services/UtilityService.js"></script>
     <script type="text/javascript" src="scripts/services/BranchService.js"></script>
     <script type="text/javascript" src="scripts/services/OrderService.js"></script>
+    <script type="text/javascript" src="scripts/services/LocalStorage.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/RecentlyViewedItemResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/ItemNotesResource.js"></script>
 
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
-
     <!-- endbuild -->
 </body>
 </html>

@@ -1,0 +1,16 @@
+a {
+  cursor: pointer;
+}
+a:hover {
+  text-decoration: none;
+}
+
+.text-red { color: $color-red; }
+.text-green { color: $color-green; }
+.text-white { color: $color-white; }
+.text-regular { color: $color-font; }
+.text-blue { color: $color-blue; }
+.text-light { color: $color-font-light; }
+.text-gold { color: gold; }
+
+.text-thin { font-weight: 300; }

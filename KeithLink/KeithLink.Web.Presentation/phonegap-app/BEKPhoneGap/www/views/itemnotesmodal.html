@@ -1,0 +1,15 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Item Notes for {{item.name}} - #{{item.itemnumber}}</h3>
+</div>
+<div class="modal-body">
+
+  <form name="itemNotesForm">
+    <textarea name="notes" id="notes" cols="30" rows="10" ng-model="item.notes" class="form-control"></textarea>
+  </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger btn-lg pull-left" ng-click="deleteNote(item)">Delete</button>
+    <button type="submit" class="btn btn-primary btn-lg" ng-click="saveNote(item)">Save</button>
+    <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

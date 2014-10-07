@@ -1,0 +1,53 @@
+/* list of available variables found at http://getbootstrap.com/customize/ */
+
+// colors
+$brand-primary: $color-blue;
+$brand-success: $color-green;
+$brand-warning: $color-orange;
+$brand-danger: $color-red;
+$gray-lighter: $color-border;
+
+// scaffolding
+$text-color: $color-font;
+$body-bg: $background;
+
+// typography
+$font-size-base: 12px;
+$font-size-large: 14px;
+$font-size-h1: 25px;
+$font-size-h2: 21px;
+$font-size-h3: 18px;
+$font-family-sans-serif: 'Open Sans', sans-serif;
+
+// components
+$padding-large-vertical: 10px;
+$padding-large-horizontal: 12px;
+$border-radius-large: 4px;
+$caret-width-base: 5px;
+$caret-width-large: 7px;
+
+// tables
+$table-bg-accent: $background;
+$table-bg-hover: #EBE7D9;
+$table-border-color: $color-border;
+$table-bg-hover: lighten($color-border, 20%);
+$table-cell-padding: 10px;
+
+// buttons
+$btn-default-border: $color-border;
+$btn-default-color: $color-font;
+$btn-font-weight: 300;
+
+// forms
+$input-border: $color-border;
+$input-height-large: 40px;
+
+// dropdowns 
+$dropdown-link-hover-bg: $background;
+$dropdown-caret-color: $color-border;
+
+// navs
+$nav-link-hover-bg: lighten($color-border, 20%);
+
+// list group
+$list-group-border: $color-border;

@@ -1,0 +1,35 @@
+.item-details__main-info {
+  // vertical-align: middle;
+  // display: inline-block;
+  
+  .item-details__icons {
+    margin-left: $gutter-size;
+    font-size: 15px;
+  }
+
+  .main-info__description {
+    max-width: 250px;
+  }
+}
+.item-details__main-image {
+  // display: inline-block;
+  padding-right: $gutter-size;
+
+  img {
+    height: 135px;
+  }
+}
+
+.item-details__images {
+  padding: $gutter-size;
+
+  img {
+    margin: 3px;
+  }
+}
+
+@media (min-width: $screen-sm-min) {
+  .item-name {
+    margin-top: 0;
+  }
+}
