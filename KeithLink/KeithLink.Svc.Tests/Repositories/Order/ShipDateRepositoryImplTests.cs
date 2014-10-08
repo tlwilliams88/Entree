@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Orders;
 
 namespace KeithLink.Svc.Test.Repositories.Order {
@@ -8,55 +9,75 @@ namespace KeithLink.Svc.Test.Repositories.Order {
     public class ShipDateRepositoryImplTests {
         #region attributes
         ShipDateRepositoryImpl _shipDayService;
+        CatalogInfo _customerInfo;
         #endregion
 
         #region ctor
         public ShipDateRepositoryImplTests() {
             _shipDayService = new ShipDateRepositoryImpl();
+            _customerInfo = new CatalogInfo();
         }
         #endregion
 
         #region methods
         [TestMethod]
         public void GetGoodData() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates("FDF", "709333");
+            _customerInfo.BranchId = "FDF";
+            _customerInfo.CustomerId = "709333";
 
-            Assert.IsTrue(retVal.ShipDays.Count > 0);
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
+
+            Assert.IsTrue(retVal.ShipDates.Count > 0);
         }
 
         [TestMethod]
         public void GetBadDataInvalidCustomer() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates("FDF", "909090");
+            _customerInfo.BranchId = "fdf";
+            _customerInfo.CustomerId = "909090";
+            
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
 
-            Assert.IsTrue(retVal.ShipDays.Count == 0);
+            Assert.IsTrue(retVal.ShipDates.Count == 0);
         }
 
         [TestMethod]
         public void GetBadDataNullCustomer() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates("FDF", null);
+            _customerInfo.BranchId = "FDF";
+            _customerInfo.CustomerId = null;
+            
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
 
-            Assert.IsTrue(retVal.ShipDays.Count == 0);
+            Assert.IsTrue(retVal.ShipDates.Count == 0);
         }
 
         [TestMethod]
         public void GetBadDataNullBranch() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates(null, "709333");
+            _customerInfo.BranchId = null;
+            _customerInfo.CustomerId = "70933";
 
-            Assert.IsTrue(retVal.ShipDays.Count == 0);
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
+
+            Assert.IsTrue(retVal.ShipDates.Count == 0);
         }
 
         [TestMethod]
         public void GetBadDataInvalidBranch() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates("XXX", "709333");
+            _customerInfo.BranchId = "XXX";
+            _customerInfo.CustomerId = "709333";
+            
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
 
-            Assert.IsTrue(retVal.ShipDays.Count == 0);
+            Assert.IsTrue(retVal.ShipDates.Count == 0);
         }
 
         [TestMethod]
         public void GetBadDataNullData() {
-            ShipDateReturn retVal = _shipDayService.GetShipDates(null, null);
+            _customerInfo.BranchId = null;
+            _customerInfo.CustomerId = null;
 
-            Assert.IsTrue(retVal.ShipDays.Count == 0);
+            ShipDateReturn retVal = _shipDayService.GetShipDates(_customerInfo);
+
+            Assert.IsTrue(retVal.ShipDates.Count == 0);
         }
         #endregion
     }

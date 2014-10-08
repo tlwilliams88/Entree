@@ -155,6 +155,7 @@
     <Compile Include="Models\Orders\OrderQueueLocation.cs" />
     <Compile Include="Models\Orders\OrderSource.cs" />
     <Compile Include="Models\Orders\OrderType.cs" />
+    <Compile Include="Models\Orders\ShipDate.cs" />
     <Compile Include="Models\Orders\ShipDateReturn.cs" />
     <Compile Include="Models\Orders\UnitOfMeasure.cs" />
     <Compile Include="Models\Profile\Customer.cs" />
