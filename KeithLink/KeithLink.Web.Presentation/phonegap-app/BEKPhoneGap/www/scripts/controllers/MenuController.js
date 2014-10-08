@@ -9,28 +9,34 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
-    function ($scope, $state, $modal, branches, toaster, Constants, AuthenticationService, UserProfileService, AccessService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
+    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
 
     $scope.$state = $state;
 
-    $scope.userProfile = UserProfileService.profile();
+    $scope.userProfile = LocalStorage.getProfile();
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
-
-    refreshAccessPermissions();
-    
-    $scope.changeLocation = function() {
-      UserProfileService.setCurrentLocation($scope.currentLocation);
-    };
+    $scope.currentLocation = LocalStorage.getCurrentLocation();
 
     $scope.branches = branches;
-    $scope.currentLocation = UserProfileService.profile().branchid;
-    $scope.changeLocation();
+    refreshAccessPermissions();
+    
+    // for guest users
+    $scope.changeBranch = function() {
+      LocalStorage.setBranchId($scope.currentLocation);
+      LocalStorage.setCurrentLocation($scope.currentLocation);
+    };
+    // for order-entry customers
+    $scope.changeCustomerLocation = function() {
+      LocalStorage.setBranchId($scope.currentLocation.customerBranch);
+      LocalStorage.setCustomerNumber($scope.currentLocation.customerNumber);
+      LocalStorage.setCurrentLocation($scope.currentLocation);
+    };
 
     $scope.logout = function() {
       AuthenticationService.logout();
-      refreshAccessPermissions();
+      // refreshAccessPermissions();
 
       $state.transitionTo('register');
       $scope.displayUserMenu = false;
@@ -52,8 +58,4 @@ angular.module('bekApp')
       $scope.canManageAccount = AccessService.canManageAccount();
       $scope.canManageeMenu = AccessService.canManageeMenu();
     }
-
-    $scope.displayMessage = function(type, message) {
-      toaster.pop(type, null, message);
-    };
   }]);

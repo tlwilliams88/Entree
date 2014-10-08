@@ -1,13 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$stateParams', 
-  function ($scope, $stateParams) {
+.controller('OrderItemsController', ['$scope', '$stateParams', 'OrderService', 'order',
+  function ($scope, $stateParams, OrderService, order) {
 
-  if ($stateParams.orderId) {
-    $scope.order = $stateParams.orderId;
-  } else {
-    $scope.order = 'none';
-  }
+  $scope.order = order;
   
 }]);

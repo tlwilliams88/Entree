@@ -1,0 +1,17 @@
+<div page-header-bar>
+  <div header-message>
+    Orders
+  </div>
+  <div header-buttons>
+    <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
+    <button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+  </div>
+</div>
+
+<ul>
+  <li ng-repeat="order in orders"><a ui-sref="menu.order.items({ orderId: order.id })">{{order.name}}</a></li>
+</ul>
+
+<ui-view>
+This shows if there are no orders....
+</ui-view>

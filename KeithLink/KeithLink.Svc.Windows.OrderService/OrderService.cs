@@ -129,7 +129,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 }
 
                 try {
-                    OrderLogicImpl orderQueue = new OrderLogicImpl(_log,
+                    OrderQueueLogicImpl orderQueue = new OrderQueueLogicImpl(_log,
                                                                    new KeithLink.Svc.Impl.Repository.Orders.OrderQueueRepositoryImpl(),
                                                                    new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
                     orderQueue.ProcessOrders();

@@ -31,7 +31,6 @@ $table-bg-accent: $background;
 $table-bg-hover: #EBE7D9;
 $table-border-color: $color-border;
 $table-bg-hover: lighten($color-border, 20%);
-$table-cell-padding: 10px;
 
 // buttons
 $btn-default-border: $color-border;
@@ -48,6 +47,7 @@ $dropdown-caret-color: $color-border;
 
 // navs
 $nav-link-hover-bg: lighten($color-border, 20%);
+$nav-tabs-active-link-hover-bg: $color-white;
 
 // list group
 $list-group-border: $color-border;

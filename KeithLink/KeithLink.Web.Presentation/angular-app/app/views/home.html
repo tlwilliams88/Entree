@@ -3,67 +3,149 @@
     Welcome Back {{userProfile.displayname}}!
   </div>
   <div header-buttons>
-      <button class="btn btn-primary btn-lg">Create An Order</button>
+    <button class="btn btn-primary btn-lg">Create An Order</button>
   </div>
 </div>
 
 
 <div class="row">
-    <!-- Account Summary -->
-    <div class="col-md-4 col-md-push-8">
-        <div class="info-box">
+  <!-- Account Summary -->
+  <div class="col-md-4 col-md-push-8">
+    <div class="info-box">
 
-            <button class="pull-right btn btn-primary btn-lg">Pay Now</button>
-            
-            <h4><strong>Account Balance</strong></h4>
-            
-            <p class="text-red currency-value">
-                $3,253.31
-            </p>
-            
-            <p class="">Your Terms: Net 14</p>
-            
-            <div class="row text-center">
-                <div class="col-xs-4 balance__term--amount">
-                    <strong>0 - 7</strong>
-                    $1,785
-                </div>
-                <div class="col-xs-4 balance__term--amount">
-                    <strong>0 - 14</strong>
-                    $1468.21
-                </div>
-                <div class="col-xs-4 balance__term--amount">
-                    <strong>Past Due</strong>
-                    <span class="text--late">$300.08</span>
-                </div>
-            </div>
+      <button class="pull-right btn btn-primary btn-lg">Pay Now</button>
+      
+      <h4><strong>Account Balance</strong></h4>
+      
+      <p class="text-red currency-value">
+          $3,253.31
+      </p>
+      
+      <p class="">Your Terms: Net 14</p>
+      
+      <div class="row text-center">
+        <div class="col-xs-4 balance__term--amount">
+          <strong>0 - 7</strong>
+          $1,785
         </div>
-        <div class="info-box account-summary__graph">
-            <h4><strong>Order Summary Last 6 Months</strong></h4>
-            <img src="" alt="graph" style="height:140px;width:200px;">
+        <div class="col-xs-4 balance__term--amount">
+          <strong>0 - 14</strong>
+          $1468.21
         </div>
-    </div> <!-- end Account Summary -->
-    <!-- Order Summary -->
-    <div class="col-md-8 col-md-pull-4 order-summary text-center">
-        
-        <div class="row order-summary__header hidden-xs hidden-sm">
-            <div class="col-md-2">
-                Orders
-            </div>
-            <div class="col-md-2">
-                Delivery Date
-            </div>
-            <div class="col-md-2">
-                Total Cost
-            </div>
-            <div class="col-md-4">
-                Status
-            </div>
-            <div class="col-md-2">
-                Payment Status
-            </div>
+        <div class="col-xs-4 balance__term--amount">
+          <strong>Past Due</strong>
+          <span class="text--late">$300.08</span>
         </div>
-        <div class="row visible-xs visible-sm">
+      </div>
+    </div>
+    <div class="info-box account-summary__graph">
+      <h4><strong>Order Summary Last 6 Months</strong></h4>
+      <img src="" alt="graph" style="height:140px;width:200px;">
+    </div>
+  </div> <!-- end Account Summary -->
+
+  <!-- Order Summary -->
+  <div class="col-md-8 col-md-pull-4">
+    <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
+      <div class="col-md-2">
+        Orders
+      </div>
+      <div class="col-md-2 nowrap">
+        Delivery Date
+      </div>
+      <div class="col-md-2 nowrap">
+        Total Cost
+      </div>
+      <div class="col-md-4">
+        Status
+      </div>
+      <div class="col-md-2">
+        Payment Status
+      </div>
+    </div>
+
+    <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | limitTo: 4">
+      <div class="row no-margin">
+        <div class="col-md-2 order-col">
+          <span>ORDER #</span>
+          <span class="order-col__number">{{order.ordernumber}}</span>
+          <span class="order-col__date">Order date...</span>
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.deliveryDate || 'TBD'}}
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.ordertotal | currency}}
+        </div>
+        <div class="col-md-4 table-col">
+          Status...?
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.invoicestatus || 'N/A'}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Order Summary -->
+    <div class="row sub-content visible-xs visible-sm">
+      <div class="col-xs-8">
+        <h3>Current Order Status</h3>
+      </div>
+      <div class="col-xs-4">
+        <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
+      </div>
+    </div>
+    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-hide="loadingOrders">
+      <div class="order-col">
+        <div class="row">
+          <div class="col-xs-6">
+            <span>ORDER #</span>
+            <span class="order-col__number">{{mostRecentOrder.ordernumber}}</span>
+          </div>
+          <div class="col-xs-6 order-col__date">
+            <span class="icon-calendar"></span> Order date...
+          </div>
+        </div>
+      </div>
+      <div class="order-details">
+        <div class="details-item">
+          <div class="item-title">
+            Delivery Date
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.deliveryDate || 'TBD'}}
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+           Total Cost
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.ordertotal | currency}}
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+            Status
+          </div>
+          <div class="item-value">
+            Status...?
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+            Payment Status
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.invoicestatus || 'N/A'}}
+          </div>
+        </div>
+      </div>
+    </div> <!-- end Mobile Order Summary -->
+
+    <div loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+
+        <!-- <div class="row visible-xs visible-sm">
             <div class="col-xs-12">
                 <h3 class="text-left">Current Order Status
                     <button class="btn btn-default pull-right btn-lg">View All</button>
@@ -159,61 +241,63 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div> <!-- end Order Summary -->
+
 </div>
+
 <div class="row">
-    <!-- Featured Items -->
-    <div class="col-md-8 col-xs-12">
-        <h3>Latest From Ben E. Keith</h3>
-        <div class="row">
-            <div class="col-sm-12 hidden-xs hidden-sm">
-                <div ng-repeat="item in items">
-                    <div class="featured-item text-center">
-                        <img ng-src="{{item.imageUrl}}" alt="image">
-                        <div class="featured-item__detail">
-                            {{item.name}}
-                            <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">view details</a>
-                        </div>
-                    </div>
-                </div>
+  <!-- Featured Items -->
+  <div class="col-md-8 col-xs-12">
+    <h3>Latest From Ben E. Keith</h3>
+    <div class="row">
+      <div class="col-sm-12 hidden-xs hidden-sm">
+        <div ng-repeat="item in items">
+          <div class="featured-item text-center">
+            <img ng-src="{{item.imageUrl}}" alt="image">
+            <div class="featured-item__detail">
+              {{item.name}}
+              <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">view details</a>
             </div>
-            <div class="col-xs-12 visible-xs visible-sm" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
+          </div>
         </div>
-    </div> <!-- end Featured Items -->
-    <!-- Recent Activity -->
-    <div class="col-md-4 hidden-xs hidden-sm">
-        <h3>Recent Activity</h3>
-        
-        <div class="row notification">
-            <div class="col-lg-2">
-                item
-            </div>
-            <div class="col-lg-10">
-                <div class="notification__message">
-                    You | 8:45am
-                </div>
-            </div>
+      </div>
+      <div class="col-xs-12 visible-xs visible-sm" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
+    </div>
+  </div> <!-- end Featured Items -->
+  <!-- Recent Activity -->
+  <div class="col-md-4 hidden-xs hidden-sm">
+    <h3>Recent Activity</h3>
+    
+    <div class="row notification">
+      <div class="col-lg-2">
+        item
+      </div>
+      <div class="col-lg-10">
+        <div class="notification__message">
+          You | 8:45am
         </div>
-        <div class="row notification">
-            <div class="col-lg-2">
-                item
-            </div>
-            <div class="col-lg-10">
-                <div class="notification__message">
-                    Created an Invoice | 8:30am
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="row notification">
+      <div class="col-lg-2">
+        item
+      </div>
+      <div class="col-lg-10">
+        <div class="notification__message">
+          Created an Invoice | 8:30am
         </div>
-        <div class="row notification">
-            <div class="col-lg-2">
-                item
-            </div>
-            <div class="col-lg-10">
-                <div class="notification__message">
-                    item
-                </div>
-            </div>
+      </div>
+    </div>
+    <div class="row notification">
+      <div class="col-lg-2">
+        item
+      </div>
+      <div class="col-lg-10">
+        <div class="notification__message">
+          item
         </div>
-    </div> <!-- end Recent Activity -->
+      </div>
+    </div>
+  </div> <!-- end Recent Activity -->
 </div>

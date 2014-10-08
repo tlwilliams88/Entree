@@ -74,6 +74,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 		[HttpDelete]
+		[ApiKeyedRoute("cart/")]
+		public void DeleteList(List<Guid> cartIds)
+		{
+			shoppingCartLogic.DeleteCarts(this.AuthenticatedUser.UserId, cartIds);
+		}
+
+
+		[HttpDelete]
 		[ApiKeyedRoute("cart/{cartId}/item/{itemId}")]
 		public void DeleteItem(Guid cartId, Guid itemId)
 		{

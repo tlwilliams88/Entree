@@ -1,0 +1,25 @@
+.dropdown-menu {
+  border-radius: 0;
+  padding: 0;
+
+  > li > a {
+    padding: 10px;
+    border-bottom: 1px solid $color-border;
+  }
+
+  span.overflow {
+    text-overflow: ellipsis;
+    max-width: 73px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+  }
+
+  > tbody > tr > td {
+    border-bottom: 1px solid $color-border;
+    padding: 10px;
+  }
+  > tbody > tr:hover > td {
+    background-color: $background;
+  }
+}

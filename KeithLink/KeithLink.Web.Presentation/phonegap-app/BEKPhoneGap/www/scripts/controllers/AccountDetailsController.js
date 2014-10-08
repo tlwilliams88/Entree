@@ -1,43 +1,40 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches',
-    function ($scope, UserProfileService, branches) {
+  .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage',
+    function ($scope, UserProfileService, branches, LocalStorage) {
     
-    $scope.userProfile = angular.copy(UserProfileService.profile());
+    $scope.userProfile = angular.copy(LocalStorage.getProfile());
     $scope.branches = branches;
 
     $scope.updateUserProfile = function(userProfile) {
       userProfile.email = userProfile.emailaddress;
-      UserProfileService.updateUser(userProfile).then(function(response) {
-        if (response.successResponse) {
-          UserProfileService.setProfile(userProfile);
-          $scope.$parent.userProfile = userProfile;
-          $scope.displayMessage('success', 'Successfully updated profile.');
-        } else {
-          $scope.displayMessage('error', 'Error updating profile.');
-        }
+      $scope.updateProfileErrorMessage = null;
+      
+      UserProfileService.updateUser(userProfile).then(function(profile) {
+        $scope.$parent.userProfile = profile;
+        $scope.displayMessage('success', 'Successfully updated profile.');
+      }, function(errorMessage) {
+        $scope.updateProfileErrorMessage = errorMessage;
       });
     };
 
     $scope.cancelChanges = function() {
-      $scope.userProfile = angular.copy(UserProfileService.profile());
+      $scope.userProfile = angular.copy(LocalStorage.getProfile());
       $scope.updateProfileForm.$setPristine();
     };
 
     $scope.changePassword = function(changePasswordData) {
       $scope.changePasswordErrorMessage = null;
+      changePasswordData.email = $scope.userProfile.emailaddress;
 
-      UserProfileService.changePassword(changePasswordData).then(function(response) {
-        console.log(response);
-
-        if (response.data === '"Password update successful"') {
-          $scope.changePasswordData = {};
-          $scope.displayMessage('success', 'Error updating profile.');
-        } else {
-          $scope.changePasswordErrorMessage = response.data;
-          $scope.displayMessage('error', 'Error updating profile.');
-        }
+      UserProfileService.changePassword(changePasswordData).then(function(successMessage) {
+        $scope.changePasswordData = {};
+        $scope.changePasswordForm.$setPristine();
+        $scope.displayMessage('success', 'Successfully changed password.');
+      }, function(errorMessage) {
+        $scope.changePasswordErrorMessage = errorMessage;
+        $scope.displayMessage('error', 'Error updating profile.');
       });
     };
 

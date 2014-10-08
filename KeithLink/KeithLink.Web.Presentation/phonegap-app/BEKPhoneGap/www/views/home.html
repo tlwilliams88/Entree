@@ -3,7 +3,7 @@
     Welcome Back {{userProfile.displayname}}!
   </div>
   <div header-buttons>
-      <button class="btn btn-primary">Create An Order</button>
+      <button class="btn btn-primary btn-lg">Create An Order</button>
   </div>
 </div>
 
@@ -11,17 +11,17 @@
 <div class="row">
     <!-- Account Summary -->
     <div class="col-md-4 col-md-push-8">
-        <div class="account-summary__balance">
+        <div class="info-box">
 
-            <button class="pull-right btn btn-primary pay-now-btn">Pay Now</button>
+            <button class="pull-right btn btn-primary btn-lg">Pay Now</button>
             
             <h4><strong>Account Balance</strong></h4>
             
-            <p class="text-red balance__amount text--late">
+            <p class="text-red currency-value">
                 $3,253.31
             </p>
             
-            <p class="balance__term">Your Terms: Net 14</p>
+            <p class="">Your Terms: Net 14</p>
             
             <div class="row text-center">
                 <div class="col-xs-4 balance__term--amount">
@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <div class="account-summary__graph">
+        <div class="info-box account-summary__graph">
             <h4><strong>Order Summary Last 6 Months</strong></h4>
             <img src="" alt="graph" style="height:140px;width:200px;">
         </div>
@@ -63,12 +63,11 @@
                 Payment Status
             </div>
         </div>
-        <div class="row sub-content-mobile visible-xs visible-sm">
-            <div class="col-xs-9">
-                <h2 class="text-left">Current Order Status</h2>
-            </div>
-            <div class="col-xs-3">
-                <button class="btn btn-default pull-right">View All</button>
+        <div class="row visible-xs visible-sm">
+            <div class="col-xs-12">
+                <h3 class="text-left">Current Order Status
+                    <button class="btn btn-default pull-right btn-lg">View All</button>
+                </h3>
             </div>
         </div>
         <div class="row order-summary__order hidden-xs hidden-sm">
@@ -163,10 +162,10 @@
         </div>
     </div> <!-- end Order Summary -->
 </div>
-<div class="row sub-content">
+<div class="row">
     <!-- Featured Items -->
     <div class="col-md-8 col-xs-12">
-        <h2>Latest From Ben E. Keith</h2>
+        <h3>Latest From Ben E. Keith</h3>
         <div class="row">
             <div class="col-sm-12 hidden-xs hidden-sm">
                 <div ng-repeat="item in items">
@@ -179,12 +178,12 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-12 visible-xs visible-sm sub-content" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
+            <div class="col-xs-12 visible-xs visible-sm" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
         </div>
     </div> <!-- end Featured Items -->
     <!-- Recent Activity -->
     <div class="col-md-4 hidden-xs hidden-sm">
-        <h2>Recent Activity</h2>
+        <h3>Recent Activity</h3>
         
         <div class="row notification">
             <div class="col-lg-2">

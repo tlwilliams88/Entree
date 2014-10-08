@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('Cart', [ '$resource', 'UserProfileService', 
-  function ($resource, UserProfileService) {
+  .factory('Cart', [ '$resource', 
+  function ($resource) {
     return $resource('/cart/:cartId', { }, {
 
       // defaults: GET, QUERY, SAVE

@@ -15,29 +15,45 @@ namespace KeithLink.Svc.WebApi.Controllers
 	[Authorize]
     public class OrderController : BaseController {
         #region attributes
-        private readonly IShoppingCartLogic shoppingCartLogic;
+        private readonly IShoppingCartLogic _shoppingCartLogic;
+		private readonly IOrderLogic _orderLogic;
         private IShipDateRepository _shipDayService;
         #endregion
 
         #region ctor
-        public OrderController(IShoppingCartLogic shoppingCartLogic, IShipDateRepository shipDayRepo, IUserProfileLogic profileLogic): base(profileLogic) {
-			this.shoppingCartLogic = shoppingCartLogic;
+        public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, 
+                               IUserProfileLogic profileLogic): base(profileLogic) {
+			_shoppingCartLogic = shoppingCartLogic;
+			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
-		}
+        }
         #endregion
 
         #region methods
-        [HttpPost]
-		[ApiKeyedRoute("order/{cartId}")]
-		public string SaveOrder(Guid cartId)
-		{
-			return shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, cartId);
-		}
-
         [HttpGet]
         [ApiKeyedRoute("order/shipdays")]
         public ShipDateReturn GetShipDays() {
             return _shipDayService.GetShipDates(this.RequestCatalogInfo);
+        }
+
+		[HttpGet]
+		[ApiKeyedRoute("order/")]
+		public List<Order> Orders()
+		{
+			return _orderLogic.ReadOrders(this.AuthenticatedUser, this.RequestCatalogInfo);
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("order/{orderNumber}")]
+		public Order Orders(string orderNumber)
+		{
+			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.RequestCatalogInfo, orderNumber);
+		}
+
+        [HttpPost]
+        [ApiKeyedRoute("order/{cartId}")]
+        public string SaveOrder(Guid cartId) {
+            return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, cartId);
         }
         #endregion
     }

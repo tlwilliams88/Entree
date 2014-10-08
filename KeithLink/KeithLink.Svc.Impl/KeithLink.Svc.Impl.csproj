@@ -140,6 +140,7 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
