@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
                 outputDate = new DateTime(workDate.Year, workDate.Month, workDate.Day, hours, mins, 0);
             }
 
-            return outputDate.ToString("yyyy-MM-dd hh:mm");
+            return outputDate.ToString("yyyy-MM-dd HH:mm");
         }
 
         private string GetDayOfWeek(DateTime currentDate){
