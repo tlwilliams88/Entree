@@ -457,9 +457,7 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'debug',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://localhost:8080/api',
-                      username: 'sabroussard@somecompany.com',
-                      password: 'L1ttleStev1e'
+                      apiEndpoint: 'http://localhost:8080/api'
                   }
               }
           },
@@ -468,7 +466,9 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
-                      apiEndpoint: 'https://shopapidev.benekeith.com'
+                      apiEndpoint: 'https://shopapidev.benekeith.com',
+                      username: 'sabroussard@somecompany.com',
+                      password: 'L1ttleStev1e'
                   }
               }
           },
