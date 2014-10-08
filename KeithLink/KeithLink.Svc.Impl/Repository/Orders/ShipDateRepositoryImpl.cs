@@ -32,7 +32,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
                     retVal.ShipDates.Add(new ShipDate() {
                                                             CutOffDateTime = GetCutOffTime(workDate, customerRow.CutOffTime), 
-                                                            Date = workDate,
+                                                            Date = workDate.ToString("yyyy-MM-dd"),
                                                             DayOfWeek = GetDayOfWeek(workDate)
                                                         });
                 }
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
             return retVal;
         }
 
-        private DateTime GetCutOffTime(DateTime currentDate, string cutOffTime) {
+        private string GetCutOffTime(DateTime currentDate, string cutOffTime) {
             const int TIME_LOCATION_HOUR = 0;
             const int TIME_LOCATION_MINUTE = 1;
 
@@ -52,13 +52,17 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
             int.TryParse(timePieces[TIME_LOCATION_HOUR], out hours);
             int.TryParse(timePieces[TIME_LOCATION_MINUTE], out mins);
 
+            DateTime outputDate;
+
             if (hours == 0 && mins == 0) {
-                return new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0);
+                outputDate = new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0);
             } else {
                 DateTime workDate = currentDate.AddDays(-1);
 
-                return new DateTime(workDate.Year, workDate.Month, workDate.Day, hours, mins, 0);
+                outputDate = new DateTime(workDate.Year, workDate.Month, workDate.Day, hours, mins, 0);
             }
+
+            return outputDate.ToString("yyyy-MM-dd hh:mm");
         }
 
         private string GetDayOfWeek(DateTime currentDate){
