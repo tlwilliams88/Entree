@@ -154,6 +154,8 @@
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Orders\ShipDate.cs" />
+    <Compile Include="Models\Orders\ShipDateReturn.cs" />
     <Compile Include="Models\Orders\OrderLine.cs" />
     <Compile Include="Models\Profile\Customer.cs" />
     <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />

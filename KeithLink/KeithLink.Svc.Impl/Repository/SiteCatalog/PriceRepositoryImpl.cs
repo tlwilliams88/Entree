@@ -1,10 +1,11 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Models.SiteCatalog.Schemas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
@@ -46,7 +47,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             } else {
                 // build the request XML
-                KeithLink.Svc.Core.Models.SiteCatalog.PriceReturn retVal = new PriceReturn();
+                PriceReturn retVal = new PriceReturn();
                 System.IO.StringWriter requestBody = new System.IO.StringWriter();
                 GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
 
@@ -54,16 +55,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
 
                 // call the pricing service and get the response XML
-                Schemas.PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
+                PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
 
-                foreach (Schemas.PricingResponseMain._ItemRow item in pricingResponse._Item) {
+                foreach (PricingResponseMain._ItemRow item in pricingResponse._Item) {
                     Price itemPrice = new Price();
 
                     itemPrice.BranchId = branchId;
                     itemPrice.CustomerNumber = customerNumber;
                     itemPrice.ItemNumber = item.number;
 
-                    Schemas.PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
+                    PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
 
                     itemPrice.CasePrice = (double)priceRows[0].NetCase;
                     itemPrice.PackagePrice = (double)priceRows[0].NetEach;
@@ -87,15 +88,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 7/23/2014 - original code
         /// </remarks>
-        private KeithLink.Svc.Impl.Schemas.PricingRequestMain GetRequestBody(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
+        private PricingRequestMain GetRequestBody(string branchId, string customerNumber, DateTime shipDate, List<Product> products)
         {
-            Schemas.PricingRequestMain request = new Schemas.PricingRequestMain();
+            PricingRequestMain request = new PricingRequestMain();
 
-            Schemas.PricingRequestMain.PricingRequestRow reqRow = request.PricingRequest.NewPricingRequestRow();
+            PricingRequestMain.PricingRequestRow reqRow = request.PricingRequest.NewPricingRequestRow();
             reqRow.ShipDate = shipDate;
             request.PricingRequest.AddPricingRequestRow(reqRow);
 
-            Schemas.PricingRequestMain.CustomerRow custRow = request.Customer.NewCustomerRow();
+            PricingRequestMain.CustomerRow custRow = request.Customer.NewCustomerRow();
             custRow.Company = branchId;
             custRow.Division = branchId;
             custRow.Department = branchId;
@@ -106,7 +107,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             foreach (Product item in products)
             {
-                Schemas.PricingRequestMain._ItemRow itemRow = request._Item.New_ItemRow();
+                PricingRequestMain._ItemRow itemRow = request._Item.New_ItemRow();
                 itemRow.number = item.ItemNumber;
                 request._Item.Add_ItemRow(itemRow);
             }
@@ -122,11 +123,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 7/23/2014 - original code
         /// </remarks>
-        private KeithLink.Svc.Impl.Schemas.PricingResponseMain GetResponse(string RawXml)
+        private PricingResponseMain GetResponse(string RawXml)
         {
             System.IO.StringReader responseBody = new System.IO.StringReader(RawXml);
 
-            Schemas.PricingResponseMain response = new Schemas.PricingResponseMain();
+            PricingResponseMain response = new PricingResponseMain();
 
             response.ReadXml(responseBody, System.Data.XmlReadMode.InferSchema);
 

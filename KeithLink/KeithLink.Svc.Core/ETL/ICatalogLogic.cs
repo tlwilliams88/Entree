@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.ETL
         void ImportProfiles();
         void ImportItemsToElasticSearch();
         void ImportCategoriesToElasticSearch();
+        void ImportContractLists();
     }
 }
