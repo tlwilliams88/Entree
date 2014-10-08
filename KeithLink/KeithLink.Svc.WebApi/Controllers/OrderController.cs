@@ -37,7 +37,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute("order/shipdays")]
         public ShipDateReturn GetShipDays() {
-            return _shipDayService.GetShipDates(this.RequestCatalogInfo.BranchId, this.RequestCatalogInfo.CustomerId);
+            return _shipDayService.GetShipDates(this.RequestCatalogInfo);
         }
         #endregion
     }
