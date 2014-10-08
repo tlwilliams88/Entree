@@ -26,7 +26,7 @@ angular.module('bekApp')
           
           // add branch and customer information
           var catalogInfo = {
-            customerid: LocalStorage.getCustomerNumber(),
+            customerid: '020348', //LocalStorage.getCustomerNumber(),
             branchid: LocalStorage.getBranchId()
           };
           config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);

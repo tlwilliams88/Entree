@@ -178,10 +178,10 @@
       <table class="custom-lists__table" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items">
         <tbody 
           ng-repeat="item in (filteredItems = (selectedList.items | filter:search | limitTo:itemsToDisplay)) track by item.listitemid" 
-          ng-class="{ odd : $odd, even: $even }" 
+          ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }" 
           data-product="{{item}}" 
           data-drag="isDragEnabled()" 
-          data-jqyoui-options="{helper:'clone', cursorAt: { top: -5, left: -5 }, cancel: '.bek-no-drag', handle: '.bek-drag-handle'}" 
+          data-jqyoui-options="{helper:generateDragHelper, cursorAt: { top: -5, left: -5 }, cancel: '.bek-no-drag', handle: '.bek-drag-handle'}" 
           jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
           <tr>
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">

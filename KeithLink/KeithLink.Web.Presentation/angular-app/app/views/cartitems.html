@@ -62,28 +62,27 @@
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
-      <div class="sub-content row">
+      <div class="sub-content form-group">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <input id="shipDate" name="shipDate" type="text" required class="form-control" ng-model="currentCart.requestedshipdate" />
+          <select name="shipDate" id="shipDate" required ng-model="currentCart.requestedshipdate" ng-options="shipDate.dayofweek + ' ' + shipDate.shipdate for shipDate in shipDates">
+            <option value=""></option>
+          </select>
         </div>
       </div>
-      <div class="row">
-        <label for="shipDate" class="col-sm-3 control-label">Earliest Order Date:</label>
-        <div class="col-sm-6">
-          <p class="form-control-static text-light">5pm CST 9-27-14</p>
-        </div>
-      </div>
-      <div class="row">
+      <div class="form-group">
         <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
         <div class="col-sm-6">
-          <p class="form-control-static text-light">5pm CST 9-27-14</p>
+          <p class="form-control-static text-light">{{currentCart.requestedshipdate.cutoffdatetime}}</p>
         </div>
       </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart">
-          <label for="activeCart">Make this my Active Cart</label>
+      <div class="form-group">
+        <div class="col-md-offset-2 col-sm-10">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart"> Make this my Active Cart
+            </label>
+          </div>
         </div>
       </div>
     </div>
@@ -256,7 +255,7 @@
       </tbody>
       <tfoot>
         <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-          <td colspan="11">No products found.</td>
+          <td colspan="12">No products found.</td>
         </tr>
       </tfoot>
     </table>

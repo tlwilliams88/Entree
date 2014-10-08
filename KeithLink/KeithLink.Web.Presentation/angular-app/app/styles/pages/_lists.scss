@@ -67,7 +67,7 @@
   border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
 }
-.item-selected, .bek-reordered-item td  {
+.item-selected > tr > td, .bek-reordered-item td  {
   background-color: #f8f8c4 !important;
 }
 // // prevents weird page jumping when reordering items that are scrolled down the page
