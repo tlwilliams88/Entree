@@ -12,8 +12,10 @@ namespace KeithLink.Svc.Core.Models.Orders {
         #endregion
 
         #region properties
+        [DataMember(Name="cutofftime")]
         public string CutOffTime { get; set; }
 
+        [DataMember(Name="shipdays")]
         public List<string> ShipDays { get; set; }
         #endregion
     }
