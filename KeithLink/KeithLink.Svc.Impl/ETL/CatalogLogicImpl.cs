@@ -21,11 +21,14 @@ using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
-
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CatalogLogicImpl: ICatalogLogic
+    public class CatalogLogicImpl: KeithLink.Svc.Core.ETL.ICatalogLogic
     {
         #region " attributes "
         private const string Language = "en-US";
@@ -77,15 +80,25 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
+        private readonly IListLogic listLogic;
+        private readonly IUserProfileRepository userProfile;
+        private readonly IItemNoteLogic noteLogic;
+        
         #endregion
 
         #region " Methods / Functions "
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
+            IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
+            IEventLogRepository eventLog, IListLogic listLogic, IUserProfileRepository userProfile,
+            IItemNoteLogic noteLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
 			this.eventLog = eventLog;
+            this.listLogic = listLogic;
+            this.userProfile = userProfile;
+            this.noteLogic = noteLogic;
         }
 
         public void ProcessStagedData()
@@ -130,6 +143,55 @@ namespace KeithLink.Svc.Impl.ETL
         public void ImportProfiles()
         {   
         }
+
+        public void ImportContractLists()
+        {
+            var users = stagingRepository.ReadUniqueUsers();
+
+            Parallel.ForEach(users.AsEnumerable(), userRow =>
+            {
+                Guid userId = new Guid(userRow.GetString("UserId"));
+                var userContracts = stagingRepository.ReadCustomersByUser(userId.ToString());
+
+                Parallel.ForEach(userContracts.AsEnumerable(), ucRow =>
+                    {
+                        string customerNumber = ucRow.GetString("CustomerNumber");
+                        string divisionName = ucRow.GetString("DivisionName");
+
+                        //delete existing contract lists
+                        this.DeleteContractLists(userId, customerNumber, divisionName);
+
+                        var contracts = stagingRepository.ReadContracts(customerNumber, divisionName);
+
+                        Parallel.ForEach(contracts.AsEnumerable(), contractRow =>
+                            {
+                                string contractNumber = contractRow.GetString("ContractNumber");
+
+                                NewItem listId = new NewItem() { ListItemId = listLogic.CreateList(
+                                    userId,
+                                    this.CreateCatalogInfo(customerNumber, divisionName),
+                                    this.CreateUserList(contractNumber, true)
+                                    )};
+
+                                var contractItems = stagingRepository.ReadContractItems(customerNumber, divisionName, contractNumber);
+
+                                foreach (DataRow itemRow in contractItems.Rows)
+                                {
+                                    string itemNumber = itemRow.GetString("ItemNumber");
+
+                                    if (itemNumber != null)
+                                    {
+                                        listLogic.AddItem(userId, (Guid)listId.ListItemId, this.CreateListItem(itemNumber));
+                                    }
+                                }
+
+                            });
+                    });
+            });
+            
+        }
+
+
 
         public void ImportItemsToElasticSearch()
         {
@@ -566,6 +628,51 @@ namespace KeithLink.Svc.Impl.ETL
                 NutrientType = subRow.GetString("NutrientTypeDesc"),
                 NutrientTypeCode = subRow.GetString("NutrientTypeCode")
             };
+        }
+
+
+        private void DeleteContractLists(Guid UserId, string CustomerNumber, string DivisionName)
+        {
+
+            /*
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn profile = userProfile.GetUserProfileByGuid(UserId);
+            List<UserList> lists = listLogic.ReadAllLists(
+                (KeithLink.Svc.Core.Models.Profile.UserProfile)profile.UserProfiles[0],
+                this.CreateCatalogInfo(CustomerNumber, DivisionName),
+                true);
+
+            foreach (UserList userList in lists)
+            {
+                if (userList.IsContractList == true)
+                {
+                    listLogic.DeleteList(UserId, userList.ListId);
+                }
+            }
+             */
+        }
+
+        private ListItem CreateListItem(string ItemNumber)
+        {
+            ListItem item = new ListItem();
+            item.ItemNumber = ItemNumber;
+            return item;
+        }
+
+        private UserList CreateUserList(string ContractNumber, bool IsContractList)
+        {
+            UserList list = new UserList();
+            list.Name = ContractNumber;
+            list.Items = new List<ListItem>();
+            list.IsContractList = IsContractList;
+            return list;
+        }
+
+        private KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo CreateCatalogInfo(string CustomerNumber, string DivisionName)
+        {
+            KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo catInfo = new KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo();
+            catInfo.CustomerId = CustomerNumber;
+            catInfo.BranchId = DivisionName;
+            return catInfo;
         }
 
         #endregion

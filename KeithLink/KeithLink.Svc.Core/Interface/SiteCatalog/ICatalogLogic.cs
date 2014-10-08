@@ -17,6 +17,5 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         Product GetProductById(CatalogInfo catalogInfo, string id, UserProfile profile);
         CategoriesReturn GetCategories(int from, int size);
 		List<Division> GetDivisions();
-
     }
 }
