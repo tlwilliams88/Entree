@@ -179,6 +179,12 @@ namespace KeithLink.Svc.Impl.Logic
 			return cart;
 		}
 
+		public void DeleteCarts(Guid userId, List<Guid> cartIds)
+		{
+			foreach(var cartId in cartIds)
+				basketRepository.DeleteBasket(userId, cartId);
+		}
+
 		#region Helper Methods
 
 		private void MarkCurrentActiveCartAsInactive(UserProfile user, string branchId)
@@ -325,6 +331,9 @@ namespace KeithLink.Svc.Impl.Logic
 						
 			return orderNumber; //Return actual order number
 		}
+
+
+
 
 		
 	}
