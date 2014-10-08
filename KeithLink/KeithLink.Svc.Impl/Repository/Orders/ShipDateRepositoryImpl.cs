@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Models.Orders.Schemas;
 using System;
 using System.Collections.Generic;
@@ -14,28 +15,72 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         #endregion
 
         #region methods
-        public ShipDateReturn GetShipDates(string branchId, string customerNumber) {
+        public ShipDateReturn GetShipDates(CatalogInfo customerInfo) {
             ShipDateReturn retVal = new ShipDateReturn();
 
             try {
                 System.IO.StringWriter requestBody = new System.IO.StringWriter();
-                GetRequestBody(branchId, customerNumber).WriteXml(requestBody);
+                GetRequestBody(customerInfo.BranchId, customerInfo.CustomerId).WriteXml(requestBody);
 
                 com.benekeith.ShipDateService.ShipDateSoapClient shipdayService = new com.benekeith.ShipDateService.ShipDateSoapClient();
                     
                 ShippingDateResponseMain response = GetResponse(shipdayService.GetShipDates(requestBody.ToString()));
                 ShippingDateResponseMain.CustomerRow customerRow = response.Customer[0];
 
-                retVal.CutOffTime = customerRow.CutOffTime;
-
                 foreach (ShippingDateResponseMain.ShipDateRow shipDates in response.ShipDate) {
-                    retVal.ShipDays.Add(shipDates.ShipDate_Column);
+                    DateTime workDate = DateTime.Parse(shipDates.ShipDate_Column);
+
+                    retVal.ShipDates.Add(new ShipDate() {
+                                                            CutOffDateTime = GetCutOffTime(workDate, customerRow.CutOffTime), 
+                                                            Date = workDate,
+                                                            DayOfWeek = GetDayOfWeek(workDate)
+                                                        });
                 }
             } catch {
             }
             
             return retVal;
         }
+
+        private DateTime GetCutOffTime(DateTime currentDate, string cutOffTime) {
+            const int TIME_LOCATION_HOUR = 0;
+            const int TIME_LOCATION_MINUTE = 1;
+
+            string[] timePieces = cutOffTime.Split(':');
+            int hours, mins;
+            
+            int.TryParse(timePieces[TIME_LOCATION_HOUR], out hours);
+            int.TryParse(timePieces[TIME_LOCATION_MINUTE], out mins);
+
+            if (hours == 0 && mins == 0) {
+                return new DateTime(currentDate.Year, currentDate.Month, currentDate.Day, 0, 0, 0);
+            } else {
+                DateTime workDate = currentDate.AddDays(-1);
+
+                return new DateTime(workDate.Year, workDate.Month, workDate.Day, hours, mins, 0);
+            }
+        }
+
+        private string GetDayOfWeek(DateTime currentDate){
+            switch (currentDate.DayOfWeek) 	{
+		        case DayOfWeek.Friday:
+                    return "Fri";
+                case DayOfWeek.Monday:
+                    return "Mon";
+                case DayOfWeek.Saturday:
+                    return "Sat";
+                case DayOfWeek.Sunday:
+                    return "Sun";
+                case DayOfWeek.Thursday:
+                    return "Thu";
+                case DayOfWeek.Tuesday:
+                    return "Tue";
+                case DayOfWeek.Wednesday:
+                    return "Wed";
+                default:
+                    return "???";
+	            }
+            }
 
         /// <summary>
         /// build the xml request to send to the ship date service
