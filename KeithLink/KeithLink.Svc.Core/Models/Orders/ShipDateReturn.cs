@@ -7,16 +7,13 @@ namespace KeithLink.Svc.Core.Models.Orders {
     public class ShipDateReturn {
         #region ctor
         public ShipDateReturn() {
-            ShipDays = new List<string>();
+            ShipDates = new List<ShipDate>();
         }
         #endregion
 
         #region properties
-        [DataMember(Name="cutofftime")]
-        public string CutOffTime { get; set; }
-
-        [DataMember(Name="shipdays")]
-        public List<string> ShipDays { get; set; }
+        [DataMember(Name="shipdates")]
+        public List<ShipDate> ShipDates { get; set; }
         #endregion
     }
 }
