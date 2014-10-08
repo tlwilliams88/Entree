@@ -10,8 +10,11 @@
 angular.module('bekApp')
   .controller('HomeController', [ '$scope', 'OrderService', function($scope, OrderService) {
     
+    $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
+      $scope.mostRecentOrder = orders[0];
+      $scope.loadingOrders = false;
     });
 
     $scope.myInterval = -1;

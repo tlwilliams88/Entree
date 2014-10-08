@@ -29,10 +29,10 @@
 			<li ng-repeat="item in recentlyViewedItems" class="item-holder">
 				<div class="featured-item text-center">
 					<img class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url || 'images/default-placeholder.png'}}" alt="image">
-					<div class="featured-item__detail">
+					<span class="featured-item__detail">
 						{{item.name}}
-						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase"># {{item.itemnumber}}</a>
-					</div>
+						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
+					</span>
 				</div>
 			</li>
 		</ul>

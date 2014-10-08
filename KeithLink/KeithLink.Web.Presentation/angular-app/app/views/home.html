@@ -43,9 +43,10 @@
       <img src="" alt="graph" style="height:140px;width:200px;">
     </div>
   </div> <!-- end Account Summary -->
+
   <!-- Order Summary -->
-  <div class="col-md-8 col-md-pull-4 text-center">
-    <div class="row order-summary__header hidden-xs hidden-sm">
+  <div class="col-md-8 col-md-pull-4">
+    <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
       <div class="col-md-2">
         Orders
       </div>
@@ -58,35 +59,92 @@
       <div class="col-md-4">
         Status
       </div>
-      <div class="col-md-2 nowrap">
+      <div class="col-md-2">
         Payment Status
       </div>
     </div>
-    <div class="row order-summary__order" ng-repeat="order in orders | limitTo: 4">
-      <div class="col-md-2 order-col">
+
+    <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | limitTo: 4">
+      <div class="row no-margin">
+        <div class="col-md-2 order-col">
+          <span>ORDER #</span>
+          <span class="order-col__number">{{order.ordernumber}}</span>
+          <span class="order-col__date">Order date...</span>
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.deliveryDate || 'TBD'}}
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.ordertotal | currency}}
+        </div>
+        <div class="col-md-4 table-col">
+          Status...?
+        </div>
+        <div class="col-md-2 table-col">
+          {{order.invoicestatus || 'N/A'}}
+        </div>
+      </div>
+    </div>
+
+    <!-- Mobile Order Summary -->
+    <div class="row sub-content visible-xs visible-sm">
+      <div class="col-xs-8">
+        <h3>Current Order Status</h3>
+      </div>
+      <div class="col-xs-4">
+        <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
+      </div>
+    </div>
+    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-hide="loadingOrders">
+      <div class="order-col">
         <div class="row">
-          <div class="col-md-12 col-xs-6">
-            <span class="order-col__text">Order #</span>
-            <span class="order-col__number">{{order.ordernumber}}</span>
+          <div class="col-xs-6">
+            <span>ORDER #</span>
+            <span class="order-col__number">{{mostRecentOrder.ordernumber}}</span>
           </div>
-          <div class="col-md-12 col-xs-6">
-            <span class="order-col__date"><span class="icon-calendar visible-xs-inline-block visible-sm-inline-block"></span>Order date...</span>
+          <div class="col-xs-6 order-col__date">
+            <span class="icon-calendar"></span> Order date...
           </div>
         </div>
       </div>
-      <div class="col-md-2">
-        {{order.deliveryDate || 'TBD'}}
+      <div class="order-details">
+        <div class="details-item">
+          <div class="item-title">
+            Delivery Date
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.deliveryDate || 'TBD'}}
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+           Total Cost
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.ordertotal | currency}}
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+            Status
+          </div>
+          <div class="item-value">
+            Status...?
+          </div>
+        </div>
+        <div class="details-item">
+          <div class="item-title">
+            Payment Status
+          </div>
+          <div class="item-value">
+            {{mostRecentOrder.invoicestatus || 'N/A'}}
+          </div>
+        </div>
       </div>
-      <div class="col-md-2">
-        {{order.ordertotal | currency}}
-      </div>
-      <div class="col-md-4">
-        Status...?
-      </div>
-      <div class="col-md-2">
-        {{order.invoicestatus || 'N/A'}}
-      </div>
-    </div>
+    </div> <!-- end Mobile Order Summary -->
+
+    <div loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+
         <!-- <div class="row visible-xs visible-sm">
             <div class="col-xs-12">
                 <h3 class="text-left">Current Order Status
@@ -185,7 +243,9 @@
             </div>
         </div> -->
     </div> <!-- end Order Summary -->
+
 </div>
+
 <div class="row">
   <!-- Featured Items -->
   <div class="col-md-8 col-xs-12">
