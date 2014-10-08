@@ -17,22 +17,24 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         public ShipDateReturn GetShipDates(string branchId, string customerNumber) {
             ShipDateReturn retVal = new ShipDateReturn();
 
-            if (customerNumber == null) {
-                return retVal;
-            } else {
+            try {
                 System.IO.StringWriter requestBody = new System.IO.StringWriter();
                 GetRequestBody(branchId, customerNumber).WriteXml(requestBody);
 
                 com.benekeith.ShipDateService.ShipDateSoapClient shipdayService = new com.benekeith.ShipDateService.ShipDateSoapClient();
-
+                    
                 ShippingDateResponseMain response = GetResponse(shipdayService.GetShipDates(requestBody.ToString()));
+                ShippingDateResponseMain.CustomerRow customerRow = response.Customer[0];
 
-                foreach(ShippingDateResponseMain.ShipDatesRow shipDates in response){
-                    ShippingDateResponseMain.ShipDateRow[] shipDateRow = shipDates.GetShipDateRows();
+                retVal.CutOffTime = customerRow.CutOffTime;
 
-                    retVal.ShipDays.Add(shipDates[0].ToString());
+                foreach (ShippingDateResponseMain.ShipDateRow shipDates in response.ShipDate) {
+                    retVal.ShipDays.Add(shipDates.ShipDate_Column);
                 }
+            } catch {
             }
+            
+            return retVal;
         }
 
         /// <summary>
