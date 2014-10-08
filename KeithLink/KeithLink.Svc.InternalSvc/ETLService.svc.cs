@@ -38,6 +38,7 @@ namespace KeithLink.Svc.InternalSvc
             return true;
         }
 
+        /*for testing only*/
         public bool ImportCatalogLists()
         {
             Task.Factory.StartNew(() => this.categoryLogic.ImportContractLists());

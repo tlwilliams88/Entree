@@ -19,6 +19,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "items")]
         public List<ListItem> Items { get; set; }
 
+        [DataMember(Name = "is_contract_list")]
+        public bool IsContractList { get; set; }
+        
 		public string BranchId { get; set; }
 		
 		public string FormattedName(string branchId) 

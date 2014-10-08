@@ -17,6 +17,9 @@ using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.Profile.Cache;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -43,9 +46,11 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
+            builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
+            builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
+            builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
             builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
-           
-            
             /*end new stuff*/
 
 

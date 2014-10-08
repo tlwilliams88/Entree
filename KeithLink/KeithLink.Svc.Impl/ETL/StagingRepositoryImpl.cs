@@ -139,8 +139,8 @@ namespace KeithLink.Svc.Impl.ETL
             table.Columns.Add(column);
 
             row = table.NewRow();
-            row["CustomerNumber"] = "092882";
-            row["DivisionName"] = "FSA";
+            row["CustomerNumber"] = "356063";
+            row["DivisionName"] = "FDF";
             table.Rows.Add(row);
 
             return table;
