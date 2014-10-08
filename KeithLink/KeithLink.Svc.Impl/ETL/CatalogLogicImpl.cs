@@ -630,6 +630,7 @@ namespace KeithLink.Svc.Impl.ETL
         private void DeleteContractLists(Guid UserId, string CustomerNumber, string DivisionName)
         {
 
+            /*
             KeithLink.Svc.Core.Models.Profile.UserProfileReturn profile = userProfile.GetUserProfileByGuid(UserId);
             List<UserList> lists = listLogic.ReadAllLists(
                 (KeithLink.Svc.Core.Models.Profile.UserProfile)profile.UserProfiles[0],
@@ -643,6 +644,7 @@ namespace KeithLink.Svc.Impl.ETL
                     listLogic.DeleteList(UserId, userList.ListId);
                 }
             }
+             */
         }
 
         private ListItem CreateListItem(string ItemNumber)
