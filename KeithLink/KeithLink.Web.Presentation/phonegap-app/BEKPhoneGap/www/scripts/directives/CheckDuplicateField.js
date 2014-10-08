@@ -21,22 +21,29 @@ angular.module('bekApp')
     scope: {
       collection: '='
     },
-    link: function(scope, elem, attrs, ctrl) {
-      scope.$watch(function() {
+    link: function(scope, elm, attrs, ctrl) {
+      function checkValidity(viewValue) {
 
-        var isDuplicated = false;
-        // loops through collection of items
-        angular.forEach(scope.collection, function(item, index) {
-          // checks if the given field of the item matches the input
-          if (ctrl.$modelValue && item[attrs.checkDuplicateField].toUpperCase() === ctrl.$modelValue.toUpperCase()) {
-            isDuplicated = true;
-          }
-        });
+        var isDuplicate = false;
+        if (viewValue !== ctrl.$modelValue) { // check only if the user has tried to change the name
+          angular.forEach(scope.collection, function(item, index) {
+            if (item[attrs.checkDuplicateField].toUpperCase() === viewValue.toUpperCase()) {
+              isDuplicate = true;
+            }
+          });
+        }
 
-        return (ctrl.$pristine || angular.isUndefined(ctrl.$modelValue)) || !isDuplicated;
-      }, function(currentValue) {
-        ctrl.$setValidity('checkDuplicateField', currentValue);
-      });
+        if (!isDuplicate) {
+          ctrl.$setValidity('checkDuplicateField', true);
+          return viewValue;
+        } else {
+          ctrl.$setValidity('checkDuplicateField', false);
+          return ctrl.$modelValue;
+        }
+      }
+
+      ctrl.$parsers.unshift(checkValidity);
+      ctrl.$formatters.unshift(checkValidity);
     }
   };
 });

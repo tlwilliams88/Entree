@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('bekApp')
-    .factory('PhonegapListService', ['$http', '$q', 'ListService', 'localStorageService', 'UserProfileService', 'List', 'UtilityService',
-        function($http, $q, ListService, localStorageService, UserProfileService, List, UtilityService) {
+    .factory('PhonegapListService', ['$http', '$q', '$filter',
+        'ListService', 'localStorageService', 'UserProfileService', 'List', 'UtilityService',
+        function($http, $q, $filter, ListService, localStorageService, UserProfileService, List, UtilityService) {
+
+            var originalListService = angular.copy(ListService);
+
             var Service = angular.extend(ListService, {});
 
-            function getBranch() {
-                //return UserProfileService.getCurrentBranchId();
-                return 'fdf';
-            }
+            var filter = $filter('filter');
 
             function isFavoritesList(listName) {
                 return listName === 'Favorites';
@@ -26,6 +27,15 @@ angular.module('bekApp')
                 });
             }
 
+            function getListById(listId) {
+                var itemsFound = filter(localStorageService.get("lists"), {
+                    listid: listId
+                });
+                if (itemsFound.length === 1) {
+                    return itemsFound[0];
+                }
+            }
+
             Service.getAllLists = function() {
                 if (navigator.connection.type === 'none') {
                     if (Service.lists) {
@@ -37,16 +47,11 @@ angular.module('bekApp')
                     return localLists;
                 } else {
                     console.log('getting all lists');
-                    return List.query({
-                        branchId: getBranch()
-                    }).$promise.then(function(lists) {
-                        angular.copy(lists, Service.lists);
-                        flagFavoritesList();
-
-                        // TODO: get favorites list items if header param is true
-                        console.log('returning all lists');
-                        return lists;
+                    originalListService.getAllLists().then(function(allLists) {
+                        localStorageService.set('lists', allLists);
+                        return allLists;
                     });
+
                 }
 
             };
@@ -56,46 +61,27 @@ angular.module('bekApp')
                     return Service.findListById(listId);
                 } else {
                     console.log('getting list');
-                    return List.get({
-                        listId: listId,
-                        branchId: getBranch()
-                    }).$promise.then(function(list) {
-
-                        // update new list in cache object
-                        var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
-
-                        // flag list if it is the Favorites List, used for display purposes            
-                        doFlagFavoritesList(list);
-
-                        if (existingList) {
-                            var idx = Service.lists.indexOf(existingList);
-                            angular.copy(list, Service.lists[idx]);
-                        } else {
-                            Service.lists.push(list);
-                        }
-
-                        return list;
-                    });
+                    return originalListService.getList(listId);
                 }
             };
 
             Service.createList = function(items) {
-                var newList = {};
-
-                if (!items) { // if null
-                    newList.items = [];
-                } else if (Array.isArray(items)) { // if multiple items
-                    newList.items = items;
-                } else if (typeof items === 'object') { // if one item
-                    newList.items = [items];
-                }
-
-                // remove irrelevant properties from items
-                UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
-
-                newList.name = UtilityService.generateName('List', Service.lists);
-
                 if (navigator.connection.type === 'none') {
+                    var newList = {};
+
+                    if (!items) { // if null
+                        newList.items = [];
+                    } else if (Array.isArray(items)) { // if multiple items
+                        newList.items = items;
+                    } else if (typeof items === 'object') { // if one item
+                        newList.items = [items];
+                    }
+
+                    // remove irrelevant properties from items
+                    UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
+
+                    newList.name = UtilityService.generateName('List', Service.lists);
+                    newList.isNew = true;
                     var localLists = localStorageService.get("lists");
                     newList.listid = newList.name;
                     localLists.push(newList);
@@ -106,31 +92,78 @@ angular.module('bekApp')
                     deferred.resolve(newList);
                     return deferred.promise;
                 } else {
-                    return List.save({
-                        branchId: getBranch()
-                    }, newList).$promise.then(function(response) {
-                        return Service.getList(response.listitemid);
+                    return originalListService.createList(items).then(function(response) {
+                        localStorageService.set('lists', Service.lists);
+                        return response;
                     });
                 }
             };
 
-            // Service.updateList = function(list) {
-            //     if (navigator.connection.type === 'none') {
-                    
-            //     } else {
-            //         return List.update(null, list).$promise.then(function(response) {
+            Service.updateList = function(list) {
+                if (navigator.connection.type === 'none') {
+                    var localLists = localStorageService.get("lists");
+                    angular.forEach(localLists, function(item, index) {
+                        if (item.listid === list.listid) {
+                            list.isUpdated = true;
+                            localLists[index] = list;
+                            angular.forEach(list.items, function(item, index) {
+                                if (item.label && Service.labels.indexOf(item.label) === -1) {
+                                    Service.labels.push(item.label);
+                                }
+                            });
+                            localStorageService.set('labels', Service.labels);
+                        }
+                    });
+                    localStorageService.set('lists', localLists);
+                    angular.copy(localLists, Service.lists);
+                    var deferred = $q.defer();
+                    deferred.resolve(list.listid);
+                    return deferred.promise;
 
-            //             // update labels
-            //             angular.forEach(list.items, function(item, index) {
-            //                 if (item.label && Service.labels.indexOf(item.label) === -1) {
-            //                     Service.labels.push(item.label);
-            //                 }
-            //             });
+                } else {
+                    return originalListService.updateList(list).then(function(response) {
+                        localStorageService.set('lists', Service.lists);
+                        return response;
+                    });
 
-            //             return Service.getList(response.listid);
-            //         });
-            //     }
-            // };
+                }
+            };
+
+            Service.deleteList = function(listId) {
+                if (navigator.connection.type === 'none') {
+                    var localLists = localStorageService.get("lists");
+
+                    angular.forEach(localLists, function(item, index) {
+                        if (item.listid === listId) {
+                            localLists.splice(index, 1);
+
+                            if (item.isNew) {
+                                var isNew = true;
+                            }
+
+                            localStorageService.set('lists', localLists);
+                            angular.copy(localLists, Service.lists);
+                            if (!isNew) {
+                                var deletedListGuids = localStorageService.get("deletedListGuids");
+                                if (deletedListGuids) {
+                                    deletedListGuids.push(listId);
+                                    localStorageService.set('deletedListGuids', deletedListGuids);
+                                } else {
+                                    var deletedArray = [];
+                                    deletedArray.push(listId);
+                                    localStorageService.set('deletedListGuids', deletedArray);
+                                }
+                            }
+                        }
+                    });
+                    var deferred = $q.defer();
+                    deferred.resolve();
+                    return deferred.promise;
+
+                } else {
+                    return originalListService.deleteList(listId);
+                }
+            };
 
             Service.getAllLabels = function() {
                 if (navigator.connection.type === 'none') {
@@ -142,10 +175,9 @@ angular.module('bekApp')
                     return localLabels;
                 } else {
                     console.log('getting all labels');
-                    return $http.get('/list/' + getBranch() + '/labels').then(function(response) {
-                        angular.copy(response.data, Service.labels);
-                        console.log('returning all labels');
-                        return response.data;
+                    originalListService.getAllLabels().then(function(allLabels) {
+                        localStorageService.set('labels', allLabels);
+                        return allLabels;
                     });
                 }
 
@@ -156,31 +188,100 @@ angular.module('bekApp')
                     var localLabels = localStorageService.get("labels");
                 } else {
                     console.log('getting labels for lists');
-                    return $http.get('/list/' + getBranch() + '/' + listId + '/labels').then(function(response) {
-                        return response.data;
-                    });
+                    return originalListService.getLabelsForList(listId);
                 }
 
             };
 
+            Service.addItem = function(listId, item) {
+                if (navigator.connection.type === 'none') {
+                    delete item.listitemid;
+                    item.position = 0;
+                    item.label = null;
+                    item.parlevel = null;
+                    var updatedList = Service.findListById(listId);
+                    if (updatedList && updatedList.items) {
+                        updatedList.items.push(item);
+                        updatedList.isChanged = true;
+                    }
+                    localStorageService.set('lists', Service.lists);
+                } else {
+                    return originalListService.addItem(listId, item);
+                }
+            };
+
+            Service.addMultipleItems = function(listId, items) {
+                if (navigator.connection.type === 'none') {
+                    var updatedList = Service.findListById(listId);
+                    if (updatedList && updatedList.items) {
+                        angular.forEach(items, function(currentItem, index) {
+                            delete currentItem.listitemid;
+                            currentItem.position = 0;
+                            currentItem.label = null;
+                            currentItem.parlevel = null;
+                            updatedList.items.push(currentItem);
+                        });
+                        updatedList.isChanged = true;
+                        localStorageService.set('lists', Service.lists);
+                    }
+                } else {
+                    originalListService.addMultipleItems(listId, items);
+                }
+            };
+
+            // this is ready, but not currently used since we have the "Save" button
+            // Service.updateItem = function(listId, item) {
+            //     if (navigator.connection.type === 'none') {
+            //         var updatedList = Service.findListById(listId);
+            //         if (updatedList && updatedList.items) {
+            //             angular.forEach(updatedList.items, function(updatedListItem, index) {
+            //                 if(item.listitemid === updatedListItem.listitemid){
+            //                     updatedList.items[index] = item;
+            //                     updatedList.isChanged = true;
+            //                 }
+            //             });
+            //         }
+            //         localStorageService.set('lists', Service.lists);
+            //     } else {
+            //         return originalListService.updateItem(listId, item);
+            //     }
+            // }
+
             Service.updateListsFromLocal = function() {
+                var promises = [];
                 var localLists = localStorageService.get("lists");
                 angular.forEach(localLists, function(list, index) {
-                    //need to change this logic in the future
-                    if (list.listid === list.name) {
+                    if (list.isNew) {
                         delete list.listid;
-                        Service.createListFromLocal(list);
-                    } else {
-                        Service.updateList(list);
+                        delete list.isNew;
+                        promises.push(Service.createListFromLocal(list));
                     }
+                    if (list.isChanged) {
+                        delete list.isChanged;
+                        promises.push(Service.updateList(list).then(null, function(rejection) {
+                            console.log(rejection);
+                        }));
+                    }
+
                 });
+                var deletedListGuids = localStorageService.get('deletedListGuids');
+                if (deletedListGuids) {
+                    promises.push(Service.deleteMultipleLists(deletedListGuids));
+                }
+
+                $q.all(promises).then(function() {
+                    //update from server and remove deleted array
+                    Service.getAllLists();
+                    console.log('lists updated!');
+                    localStorageService.remove('deletedListGuids');
+                });
+
+
 
             };
 
             Service.createListFromLocal = function(newList) {
-                return List.save({
-                    branchId: getBranch()
-                }, newList).$promise.then(function(response) {
+                return List.save({}, newList).$promise.then(function(response) {
                     return Service.getList(response.listitemid);
                 });
             };

@@ -2,37 +2,19 @@
   <div class="col-md-7 page-header-bar__message">
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
-        <button type="button" class="btn btn-default cart-selection-button dropdown-toggle">
+        <button type="button" class="btn-lg btn btn-default dropdown-toggle">
           {{currentCart.name}} <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-list-multi-columns ">
-          <li>
-            <div class="row">
-              <div class="col-xs-12">
-                <a class="text-regular" ng-click="goToCart(cart)" ng-if="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
-                  <div class="row">
-                    <div class="col-xs-6">
-                      {{cart.name}}
-                    </div>
-                    <div class="col-xs-2">
-                      {{cart.items.length}}
-                    </div>
-                    <div class="col-xs-4">
-                      {{cart.requestedshipdate | date:shortDate}}
-                    </div>
-                  </div>
-                </a>
-                <a ng-click="createNewCart()">
-                  <div class="row">
-                    <div class="col-xs-12">
-                      Create New Cart...
-                    </div>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </li>
-        </ul>
+        <table class="hand dropdown-menu">
+          <tr ng-click="goToCart(cart)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
+            <td><span class="overflow">{{cart.name}}</span></td>
+            <td>{{cart.items.length}}</td>
+            <td>{{cart.requestedshipdate | date:shortDate}}</td>
+          </tr>
+          <tr ng-click="createNewCart()">
+            <td colspan="3">Create a Cart...</td>
+          </tr>
+        </table>
       </div>
 
       <div style="display:inline-block;">
@@ -41,7 +23,7 @@
       </div>
     </div>
 
-    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming">
+    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
       <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" required ng-model="editCart.name" name="cartName" id="cartName" />
       <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
@@ -64,17 +46,17 @@
   </div>
 </div>
 
-<form unsaved-warning-form novalidate name="cartForm" class="style-validation-errors">
+<form unsaved-warning-form novalidate name="cartForm" class="form-horizontal style-validation-errors">
 <div class="row">
   <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
-    <div class="cart-info">
-      <div class="row cart-info-item">
-        <div class="col-sm-5 text-green cart-info-subtotal">
+    <div class="info-box">
+      <div class="row">
+        <div class="col-sm-5 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
-        <div class="col-sm-7 cart-info-buttons">
-          <button class="btn text-light btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0">Submit Order</button>
+        <div class="col-sm-7 hidden-print button-row text-right-lg text-left-xs">
+          <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
       <div class="row">
@@ -82,36 +64,25 @@
           <p class="text-red no-margin" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
         </div>
       </div>
-      <div class="row sub-content cart-info-item cart-info-item__ship-date">
-        <div class="col-sm-6 col-sm-5">
-          <strong>Ship Date</strong>
-        </div>
+      <div class="sub-content row">
+        <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <p class="input-group datepicker-input">
-            <input type="text" required class="form-control datepicker" datepicker-popup="" ng-disabled="true" ng-model="currentCart.requestedshipdate" is-open="datepicker.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default" ng-click="openDatepicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
-            </span>
-          </p>
+          <input id="shipDate" name="shipDate" type="text" required class="form-control" ng-model="currentCart.requestedshipdate" />
         </div>
       </div>
-      <div class="row cart-info-item">
-        <div class="col-sm-6 col-sm-5">
-          <strong>Earliest Order Date:</strong>
-        </div>
-        <div class="col-sm-6 text-light">
-          5pm CST 9-28-14
+      <div class="row">
+        <label for="shipDate" class="col-sm-3 control-label">Earliest Order Date:</label>
+        <div class="col-sm-6">
+          <p class="form-control-static text-light">5pm CST 9-27-14</p>
         </div>
       </div>
-      <div class="row cart-info-item">
-        <div class="col-sm-6 col-sm-5">
-          <strong>Submit by:</strong>
-        </div>
-        <div class="col-sm-6 text-light">
-          5pm CST 9-27-14
+      <div class="row">
+        <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
+        <div class="col-sm-6">
+          <p class="form-control-static text-light">5pm CST 9-27-14</p>
         </div>
       </div>
-      <div class="row cart-info-item">
+      <div class="row">
         <div class="col-xs-12">
           <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart">
           <label for="activeCart" style="font-weight:normal;">Make this my Active Cart</label>
@@ -121,185 +92,164 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row sub-content">
   <div class="col-md-12">
-    
+    <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <table class="table table-striped-rows table-border" navigate-table>
+      <thead>
+        <tr>
+          <th class="hand" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
+            Item #
+            <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print notes" ng-click="sortBy='notes';sortOrder=!sortOrder">
+            Notes
+            <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+            Pack/Size
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print hand" ng-click="sortBy='brand';sortOrder=!sortOrder">
+            Brand
+            <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hand" ng-click="sortBy='name';sortOrder=!sortOrder">
+            Name
+            <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+            
+          </th>
+          <th class="hand" ng-click="sortBy='quantity';sortOrder=!sortOrder">
+            Qty
+            <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print hand" ng-click="sortBy='each';sortOrder=!sortOrder">
+            Each
+            <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            Price
+          </th>
+          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            Ext Price
+          </th>
+          <th class="hidden-print large-icon">
+            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
+        <!-- Filter row -->
+        <tr class="filter-row hidden-print" ng-show="showFilter">
+          <td></td>
+          <td class="hidden-xs hidden-sm">
+            <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
+          </td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-xs hidden-sm">
+            <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
+          </td>
+          <td>
+            <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
+          </td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td></td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="large-icon">
+            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+          </td>
+        </tr> <!-- end Filter row -->
 
-    <div class="bootstrap-table cart__table sub-content" navigate-table>
-      <div class="text-right">
-      Showing {{filteredItems.length}} of {{currentCart.items.length}} Items in Cart
-      </div>
+        <tr ng-class="{ odd : $odd, even: $even }" 
+            ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.cartitemid">
+          <td>
+            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+            {{item.notes}}
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.packsize}}
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.brand}}
+          </td>
+          <td>
+            {{item.name}}
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print " item-icons>
+          </td>
+          <td>
+            <ng-form class="hidden-print" name="quantityForm">
+              <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
+              <div counter ng-model="item.quantity" min="0"></div>
+            </ng-form>
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
+              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+              <label for="each"></label>
+            </ng-form>
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.each ? item.packageprice : item.caseprice | currency}}
+          </td>
+          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
+          </td>
+          <td class="hidden-print large-icon">
+            <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+            <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+          </td>
+        </tr>
 
-      <!-- Header row -->
-      <div class="row table-header">
-        <div class="col-xs-12">
-          <div class="row table-row table-row-data">
-            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
-              Item #
-              <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortBy='notes';sortOrder=!sortOrder">
-              Notes
-              <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-              Pack/Size
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortBy='brand_extended_description';sortOrder=!sortOrder">
-              Brand
-              <span sort-icons field="'brand_extended_description'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-2 col-xs-6 hand nowrap" ng-click="sortBy='name';sortOrder=!sortOrder">
-              Name
-              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-              
-            </div>
-            <div class="col-md-1 col-xs-2 hand nowrap" ng-click="sortBy='quantity';sortOrder=!sortOrder">
-              Qty
-              <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortBy='each';sortOrder=!sortOrder">
-              Each
-              <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap" ng-click="sortBy='price';sortOrder=!sortOrder">
-              Price
-              <span sort-icons field="'price'" sortorder="sortOrder" sortby="sortBy"></span>
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm hand nowrap">
-              Ext Price
-            </div>
-            <div class="col-xs-1 table-col-icons">
-              <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
-              
-            </div>
-          </div>
-        </div>
-      </div> <!-- end Header row -->
-
-      <div class="table-body row" ng-hide="(currentCart.items.length === 0 || !currentCart.items) && currentCart" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-distance="2">
-        <div class="col-xs-12">
-          
-          <!-- Filter row -->
-          <div class="row table-row filter-row" ng-show="showFilter">
-            <div class="col-md-1 col-xs-2">
-              
-            </div>
-            <div class="col-md-1 table-col-input hidden-xs hidden-sm">
-              <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-              
-            </div>
-            <div class="col-md-1 table-col-input hidden-xs hidden-sm">
-              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
-            </div>
-            <div class="col-md-2 col-xs-6 table-col-input">
-              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-            </div>
-            <div class="col-md-1 col-xs-2">
-              
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-              
-            </div>
-            <div class="col-md-1 hidden-xs hidden-sm">
-              
-            </div>
-            <div class="col-xs-1 hidden-xs hidden-sm">
-              
-            </div>
-            <div class="col-xs-1 table-col-icons">
-              <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
-            </div>
-          </div> <!-- end Filter row -->
-
-          <!-- Data rows -->
-          <div 
-            class="row table-row"  
-            ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.cartitemid"
-           >
-            <div class="col-xs-12">
-              <div class="row table-row-data">
-                <div class="table-cell col-md-1 col-xs-2">
-                  <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
-                </div>
-                <div class="table-cell col-md-1 hidden-xs hidden-sm">
-                  {{item.notes}}
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs">
-                  {{item.packsize}}
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs">
-                  {{item.brand_extended_description}}
-                </div>
-                <div class="table-cell col-md-2 col-xs-6">
-                  {{item.name}}
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs" item-icons>
-                </div>
-                <div class="table-cell col-md-1 table-col-input col-xs-2">
-                  <ng-form class="hidden-print" name="quantityForm">
-                    <input name="quantity" required style="width: 55px;" type="text" ng-model="item.quantity" class="text-right" integer>
-                  </ng-form>
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs table-col-input">
-                  <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
-                      <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                      <label for="each"></label>
-                  </ng-form>
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs">
-                  {{item.each ? item.packageprice : item.caseprice | currency}}
-                </div>
-                <div class="table-cell col-md-1 hidden-sm hidden-xs">
-                  {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
-                </div>
-                <div class="table-cell col-xs-1 table-col-icons">
-                  <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-                  <a ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
-                </div>
-                
-              </div>
-
-              <!-- Mobile Details -->
-              <div class="row" ng-show="showDetails">
-                <div class="col-xs-12">
-                  <p>Notes: {{item.notes}}</p>
-                  <p>Pack/Size: {{item.packsize}}</p>
-                  <p>Brand: {{item.brand_extended_description}}</p>
-                  <p item-icons></p>
-                  <p ng-if="item.packageprice !== '0'">
-                    <!-- <div class="checkbox"> -->
-                      <label for="each">Each</label>
-                      <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
-                    <!-- </div> -->
-                  </p>
-                  <p>Price: {{item.each ? item.packageprice : item.caseprice | currency}}</p>
-                  <p>Ext Price: {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</p>
-                </div>  
-              </div> <!-- end Mobile details -->
-            </div>
-          </div> <!-- end Data rows -->
-        </div>
-      </div>
-
-      <div class="row table-footer">
-        <div class="col-xs-12">
-          <div class="row table-row table-row-data" ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-            <div class="col-xs-12">
-              There are no products to display.
-            </div>
-          </div>
-        </div>
-      </div> <!-- end Footer row -->
-    </div> <!-- end table -->
-    <div class="text-center sub-content" loading-spinner="loadingResults"></div>
+        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+          <td colspan="4">
+            <table>
+              <tr>
+                <td>Pack/Size</td>
+                <td>{{item.packsize}}</td>
+              </tr>
+              <tr>
+                <td>Brand</td>
+                <td>{{item.brand}}</td>
+              </tr>
+              <tr>
+                <td item-icons></td>
+              </tr>
+              <tr ng-if="item.packageprice !== '0'">
+                <td>Each</td>
+                <td>
+                  <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
+                </td>
+              </tr>
+              <tr>
+                <td>Price</td>
+                <td>{{item.each ? item.packageprice : item.caseprice | currency}}</td>
+              </tr>
+              <tr>
+                <td>Ext Price</td>
+                <td>{{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</td>
+              </tr>
+              <tr>
+                <td>
+                  <a ng-click="deleteItem(item)"><span class="large-icon text-red icon-cross"></span> Remove Item</a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
+          <td colspan="11">No products found.</td>
+        </tr>
+      </tfoot>
+    </table>
+    <div class="text-center sub-content" ng-show="loadingResults" loading-spinner="loadingResults"></div>
   </div>
 </div>
 </form>

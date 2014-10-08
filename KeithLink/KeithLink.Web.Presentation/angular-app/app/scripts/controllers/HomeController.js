@@ -8,20 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', function($scope) {
+  .controller('HomeController', [ '$scope', 'OrderService', function($scope, OrderService) {
     
-    $scope.orders = [{
-      orderNum: 212342342,
-      deliveryDate: '12/13/2014',
-      totalCost: '1234.32',
-      status: 'Open',
-      paymentStatus: 'N/A'
-    }];
-
-    $scope.locations = [
-      'Jimmy\'s Chicken Shack',
-      'Torchy\'s Tacos'
-    ];
+    OrderService.getAllOrders().then(function(orders) {
+      $scope.orders = orders;
+    });
 
     $scope.myInterval = -1;
     var items = $scope.items = [{
@@ -42,4 +33,4 @@ angular.module('bekApp')
       name: '50% off of apples!'
     }];
 
-  });
+  }]);

@@ -116,7 +116,6 @@ angular
     })
     .state('menu.lists', {
       url: '/lists/',
-      // controller: 'ListController',
       abstract: true,
       template: '<ui-view/>',
       data: {
@@ -163,8 +162,6 @@ angular
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
-      // templateUrl: 'views/addtoorder.html',
-      // controller: 'AddToOrderController',
       template: '<ui-view/>',
       data: {
         authorize: 'canCreateOrders'
@@ -185,6 +182,35 @@ angular
       data: {
         authorize: 'canCreateOrders'
       }
+    })
+    .state('menu.order', {
+      url: '/orders/',
+      // abstract: true,
+      // template: '<ui-view/>',
+      templateUrl: 'views/order.html',
+      controller: 'OrderController',
+      data: {
+        authorize: 'canSubmitOrders'
+      },
+      resolve: {
+        orders: function() {
+          return [{
+            name: 'This Order',
+            id: 1
+          }, {
+            name: 'That Order',
+            id: 2
+          }];
+        }
+      }
+    })
+    .state('menu.order.items', {
+      url: ':orderId/',
+      templateUrl: 'views/orderitems.html',
+      controller: 'OrderItemsController',
+      data: {
+        authorize: 'canSubmitOrders'
+      }
     });
 
   $stateProvider
@@ -195,6 +221,8 @@ angular
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  $urlRouterProvider.when('/lists', '/lists/1');
+  $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
@@ -219,21 +247,27 @@ angular
   localStorageServiceProvider.setPrefix('bek');
 
 }])
-.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', 'PhonegapServices', function($rootScope, $state, AccessService, AuthenticationService, PhonegapServices) {
+.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', 'PhonegapServices', 'toaster', function($rootScope, $state, AccessService, AuthenticationService, PhonegapServices,toaster) {
+
+  $rootScope.displayMessage = function(type, message) {
+    toaster.pop(type, null, message);
+  };
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    console.log('route: ' + toState.name);
+
     // check if route is protected
     if (toState.data && toState.data.authorize) {
       // check if user's token is expired
       if (!AccessService.isLoggedIn()) {
         AuthenticationService.logout();
-        $state.transitionTo('register');
+        $state.go('register');
         event.preventDefault();
       }
 
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
-        $state.transitionTo('register');
+        $state.go('register');
         event.preventDefault(); 
       }
     }
@@ -242,9 +276,9 @@ angular
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
-        $state.transitionTo('menu.home');  
+        $state.go('menu.home');  
       } else {
-        $state.transitionTo('menu.catalog.home');
+        $state.go('menu.catalog.home');
       }
 
       event.preventDefault(); 

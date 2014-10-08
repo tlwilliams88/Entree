@@ -209,8 +209,6 @@ angular.module('bekApp')
             };
 
             $scope.infiniteScrollLoadMore = function() {
-                console.log('infinite scroll');
-
                 if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
                     return;
                 }

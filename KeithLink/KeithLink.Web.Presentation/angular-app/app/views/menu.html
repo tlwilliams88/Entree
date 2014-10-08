@@ -30,7 +30,7 @@
       <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
       </a>
-      <a ng-if="canCreateOrders" ui-sref="menu.order.items" ui-sref-active="is-selected" >
+      <a ng-if="canCreateOrders" ui-sref="menu.order" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
       </a>
       <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
@@ -81,7 +81,7 @@
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.order.items" ui-sref-active="is-selected" >
+        <a ng-if="canCreateOrders" ui-sref="menu.order" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
         </a>
         <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
