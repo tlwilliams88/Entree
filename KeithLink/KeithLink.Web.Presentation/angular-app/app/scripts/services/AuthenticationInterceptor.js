@@ -14,22 +14,26 @@ angular.module('bekApp')
         // add authorization token header if token is present and endpoint requires authorization
         var authData = LocalStorage.getToken();
         if (authData) {
-          if (endpointRequiresToken(config.url)) {
+          var urlsWithoutToken = ['/authen', '/catalog/divisions'];
+          if (doesUrlRequireHeader(config.url, urlsWithoutToken)) {
             config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
 
-        // do not add the following headers to /authen request
-        if (config.url.indexOf('/authen') === -1) {
-          // add api key to request headers
-          config.headers['api-key'] = ENV.apiKey;
-          
-          // add branch and customer information
+        // add api key to request headers
+        var urlsWithoutApiKey = ['/authen'];
+        if (doesUrlRequireHeader(config.url, urlsWithoutApiKey)) {
+          config.headers['apiKey'] = ENV.apiKey;
+        }
+
+        // add branch and customer information header
+        var urlsWithoutCustomerInfo = ['/profile', '/authen'];
+        if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
           var catalogInfo = {
-            customerid: '020348', //LocalStorage.getCustomerNumber(),
+            customerid: LocalStorage.getCustomerNumber(), //'020348', //
             branchid: LocalStorage.getBranchId()
           };
-          config.headers['catalogInfo'] =  JSON.stringify(catalogInfo);
+          config.headers['userSelectedContext'] = JSON.stringify(catalogInfo);
         }
 
 
@@ -51,27 +55,9 @@ angular.module('bekApp')
 
   };
 
-  return authInterceptorServiceFactory;
-
-
-
-  // check if requestUrl requires authentication token
-  function endpointRequiresToken(requestUrl) {
-
-    // do not need to authenticate these urls
-    var authorizedApiUrls = [
-      '/authen',
-      '/catalog/divisions'
-    ];
-
-    var isSecure = true;
-    angular.forEach(authorizedApiUrls, function(url, index) {
-      // checks if requestUrl starts with one of the authorizedApiUrls
-      if (requestUrl.indexOf(url) === 0) {
-        isSecure = false;
-      }
-    });
-
-    return isSecure;
+  function doesUrlRequireHeader(url, invalidUrls) {
+    return invalidUrls.indexOf(url) === -1;
   }
+
+  return authInterceptorServiceFactory;
 }]);
