@@ -24,8 +24,10 @@
         </div>
         <div>
           <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-          <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} |</span>
-          <span ng-if="item.packageprice !== '$0.00' && item.packageprice"><strong>Package:</strong> {{item.packageprice}} |</span>
+          <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |</span>
+          <span ng-if="item.packageprice !== '$0.00' && item.packageprice">
+            <strong>Package:</strong> {{item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+          </span>
           <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
         </div>
         <div>

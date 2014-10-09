@@ -21,7 +21,7 @@ angular.module('bekApp')
     });
 
     $scope.login = function(loginInfo) {
-      $scope.errorMessage = '';
+      $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
         if ( AccessService.isOrderEntryCustomer() ) {

@@ -17,11 +17,11 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-6">
+  <div class="col-xs-5">
     <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel">
     <label for="useParlevel">Use PAR Level</label>
   </div>
-  <div class="col-sm-6 text-right">
+  <div class="col-xs-7 text-right">
     Showing {{filteredItems.length}} of {{selectedList.items.length}} Items
   </div>
 </div>
@@ -58,12 +58,20 @@
         </table>
       </div>
       
-      <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm ">
+      <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm dropdown-toggle" dropdown is-open="showShipDates">
         <span class="nav-description text-light">Ship Date</span>
         <span class="nav-title">
           {{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}
         </span>
         <span class="pull-right icon-arrow-down7 text-light"></span>
+        <ul class="dropdown-menu" role="menu">
+          <li ng-repeat="shipDate in shipDates">
+            <a ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
+              {{shipDate.dayofweek}}
+              <span class="pull-right">{{shipDate.shipdate}}</span>
+            </a>
+          </li>
+        </ul>
       </div>
 
       <div class="col-md-3 col-sm-6 col-xs-12 info-box">
@@ -111,7 +119,7 @@
           PAR
         </th>
         <th class="hidden-xs hidden-sm" ng-show="useParlevel">
-          On-hand
+          On Hand
         </th>
         <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
           Qty
@@ -207,6 +215,7 @@
         </td>
         <td class="hidden-xs hidden-sm">
           {{item.each ? item.packageprice : item.caseprice | currency}}
+          <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
         </td>
         <td class="hidden-xs hidden-sm">
           {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
@@ -215,12 +224,12 @@
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>
       </tr>
-      <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+      <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
         <td colspan="4">
           <table>
             <colgroup>
-              <col width="15%" />
-              <col width="85%" />
+              <col width="25%" />
+              <col width="75%" />
             </colgroup>
             <tr>
               <td>Notes</td>
@@ -250,8 +259,8 @@
               <td>{{item.parlevel}}</td>
             </tr>
             <tr ng-show="useParlevel">
-              <td>On-hand Amount</td>
-              <td>
+              <td>On Hand Amount</td>
+              <td class="input-col">
                 <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand_mobile" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
               </td>
             </tr>
@@ -267,6 +276,7 @@
               <td>Price</td>
               <td>
                 {{item.each ? item.packageprice : item.caseprice | currency}}
+                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
               </td>
             </tr>
             <tr>

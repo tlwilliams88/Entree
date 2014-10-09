@@ -15,9 +15,13 @@ angular.module('bekApp')
     $scope.sortBy = null;
     $scope.sortOrder = false;
     
-    $scope.alerts = [];
-
     $scope.carts = CartService.carts;
+
+    // get valid ship dates
+    CartService.getShipDates().then(function(data) {
+      console.log(data.shipdates);
+      $scope.shipDates = data.shipdates;
+    });
 
     $scope.goToCart = function(cart) {
       if (cart) {
@@ -31,6 +35,12 @@ angular.module('bekApp')
       $scope.editCart = {};
       $scope.editCart.name = angular.copy(cartName);
       $scope.currentCart.isRenaming = true;
+    };
+
+    $scope.selectShipDate = function(shipDate) {
+      $scope.currentCart.requestedshipdate = shipDate.shipdate;
+      $scope.selectedShipDate = shipDate;
+      $scope.cartForm.$setDirty();
     };
 
     $scope.saveCart = function(cart) {
@@ -53,11 +63,13 @@ angular.module('bekApp')
     };
 
     $scope.submitOrder = function(cart) {
-      $scope.saveCart(cart).then(OrderService.submitOrder).then(function(data) {
-        $scope.displayMessage('success', 'Successfully submitted order.');
-      }, function(error) {
-        $scope.displayMessage('error', 'Error submitting order.');
-      });
+      $scope.saveCart(cart)
+        .then(OrderService.submitOrder)
+        .then(function(data) {
+          $scope.displayMessage('success', 'Successfully submitted order.');
+        }, function(error) {
+          $scope.displayMessage('error', 'Error submitting order.');
+        });
     };
 
     $scope.renameCart = function (cartId, cartName) {

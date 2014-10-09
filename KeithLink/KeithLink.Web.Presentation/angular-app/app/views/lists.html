@@ -17,7 +17,7 @@
     </form>
   </div>
   <div header-buttons>
-    <button class="btn-lg btn btn-primary" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save</button>
+    <button type="submit" class="btn-lg btn btn-primary" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save</button>
     <button class="btn-lg btn btn-default" ng-click="revertChanges(selectedList)" ng-disabled="listForm.$pristine">
       Cancel
     </button>
@@ -35,8 +35,8 @@
 
 <div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
   <div class="btn-group-vertical list-names text-blue">
-    <button ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-default btn-list">{{list.name}}</button>
-    <button ng-click="createList()" class="btn btn-default btn-list">Create a List...</button>
+    <button type="button" ng-repeat="list in lists | orderBy:['isFavoritesList','name']" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="custom-lists__name btn btn-default btn-list">{{list.name}}</button>
+    <button type="button" ng-click="createList()" class="btn btn-default btn-list">Create a List...</button>
   </div>
 </div> <!-- end Mobile subheader bar -->
 
@@ -48,15 +48,15 @@
         <h3>Your Lists</h3>
 
         <div class="btn-group-vertical list-names text-blue">
-          <button ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
+          <button type="button" ng-repeat="list in lists | orderBy:['isFavoritesList','name'] | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
         </div>
         <h5>
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a>
         </h5>
         
-        <button ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-default btn-list text-light btn-lg">Create A List</button>
+        <button type="button" ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-default btn-list text-light btn-lg">Create A List</button>
         
-        <button class="btn btn-icon btn-default large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
+        <button type="button" class="btn btn-icon btn-default large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
 
       </div>
     </div>
@@ -73,7 +73,7 @@
       <div class="input-group hidden-print input-group-lg">
         <input ng-model="listSearchTerm" type="text" class="form-control" placeholder="Search current list by keyword, item # or label">
         <span class="input-group-btn">
-          <button  ng-click="listSearchTerm = ''" class="btn btn-default"><span class="icon-cross"></span></button>
+          <button type="button" ng-click="listSearchTerm = ''" class="btn btn-default"><span class="icon-cross"></span></button>
         </span>
       </div>
     </div>
@@ -121,7 +121,7 @@
         <input type="text" class="input-lg form-control" ng-model="newLabel" focus-me="addingNewLabel" placeholder="Add New Label...">
       </div>
       <div class="col-xs-4 col-sm-2" ng-show="addingNewLabel">
-        <button class="btn-lg btn btn-primary" ng-disabled="!newLabel" ng-click="applyNewLabel(newLabel)">Apply</button>
+        <button type="button" class="btn-lg btn btn-primary" ng-disabled="!newLabel" ng-click="applyNewLabel(newLabel)">Apply</button>
       </div>
     </div><!-- end Multi-select menu -->
 

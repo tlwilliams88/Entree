@@ -9,7 +9,11 @@ angular.module('bekApp')
 
     $scope.sortBy = 'position';
     $scope.sortOrder = false;
-    var itemsPerPage = Constants.infiniteScrollPageSize;
+
+    CartService.getShipDates().then(function(data) {
+      console.log(data.shipdates);
+      $scope.shipDates = data.shipdates;
+    });
 
     $scope.getListItemsWithQuantity = function(listItems) {
       return $filter('filter')(listItems, function(value, index) {
@@ -35,12 +39,7 @@ angular.module('bekApp')
       cart.id = 'New';
       $scope.selectCart(cart);
     };
-
-    $scope.setQuantityValueFromDropdown = function(item, qty) {
-      $scope.addToOrderForm.$setDirty();
-      item.quantity = qty;
-    };
-
+    
     function deleteFieldInList(items, field) {
       angular.forEach(items, function(item, index) {
         delete item[field];
