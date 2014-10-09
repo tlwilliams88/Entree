@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         #endregion
 
         #region methods
-		public ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel) {
+		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
 
             //List<string> childCategories = 
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
-		public ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
+		public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
 
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     };
         }
 
-        private dynamic BuildFilterTerms(string facetFilters, CatalogInfo catalogInfo, string category="") {
+        private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category="") {
             List<dynamic> mustClause = new List<dynamic>();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in facets)
@@ -238,7 +238,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return results;
         }
 
-		public ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel) {
+		public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 

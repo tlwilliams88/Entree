@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
         }
 
-		public Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list)
+		public Guid CreateList(Guid userId, UserSelectedContext catalogInfo, UserList list)
         {
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
@@ -58,12 +58,12 @@ namespace KeithLink.Svc.Impl.Logic
             return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
-		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo)
+		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
         {
 			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
         }
 
-		public void UpdateList(Guid userId, UserList list, CatalogInfo catalogInfo)
+		public void UpdateList(Guid userId, UserList list, UserSelectedContext catalogInfo)
         {
 			var updateBasket = basketRepository.ReadBasket(userId, list.ListId);
 
@@ -101,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(userId, listId, itemId);
         }
 		
-		public List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
+		public List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
         {
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
@@ -132,7 +132,7 @@ namespace KeithLink.Svc.Impl.Logic
 			}
         }
 
-		public UserList ReadList(UserProfile user, Guid listId, CatalogInfo catalogInfo)
+		public UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo)
         {
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 			if (basket == null)
@@ -154,13 +154,13 @@ namespace KeithLink.Svc.Impl.Logic
 			return lists.LineItems.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-		public List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo)
+		public List<string> ReadListLabels(Guid userId, UserSelectedContext catalogInfo)
         {
 			var lists = basketRepository.ReadAllBaskets(userId);
 			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
-		private void LookupProductDetails(UserProfile user, UserList list, CatalogInfo catalogInfo)
+		private void LookupProductDetails(UserProfile user, UserList list, UserSelectedContext catalogInfo)
 		{
 			if (list.Items == null)
 				return;
@@ -220,7 +220,7 @@ namespace KeithLink.Svc.Impl.Logic
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, CatalogInfo catalogInfo)
+		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, UserSelectedContext catalogInfo)
 		{
 			var list = basketRepository.ReadBasket(userId, ListName(FAVORITESLIST, catalogInfo));
 			var notes = itemNoteLogic.ReadNotes(userId);
@@ -264,7 +264,7 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.DeleteItem(userId, listId, itemId);
 		}
 		
-		public UserList AddItems(UserProfile user, CatalogInfo catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
+		public UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 
@@ -294,7 +294,7 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.DeleteBasket(userId, listId);
 		}
 
-		private string ListName(string name, CatalogInfo catalogInfo)
+		private string ListName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("l{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}

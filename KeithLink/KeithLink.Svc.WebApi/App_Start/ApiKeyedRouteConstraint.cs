@@ -8,7 +8,7 @@ namespace KeithLink.Svc.WebApi
 {
     internal class ApiKeyedRouteConstraint : System.Web.Http.Routing.IHttpRouteConstraint
     {
-        public const string ApiKeyHeaderName = "api-key";
+        public const string ApiKeyHeaderName = "apiKey";
         private const string DefaultApiKey = "";
 
         public ApiKeyedRouteConstraint(List<string> allowedHeaderKeys)
