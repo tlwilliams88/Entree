@@ -17,6 +17,7 @@ angular.module('bekApp')
     
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
+    $scope.carts = CartService.carts;
 
     function goToNewList(newList) {
       $scope.listForm.$setPristine();
@@ -441,8 +442,5 @@ angular.module('bekApp')
       $scope.loadingResults = false;
     }
     initPage();
-
-    $scope.carts = CartService.carts;
-    CartService.getCartHeaders();
 
   }]);

@@ -128,11 +128,14 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService){
+        lists: ['$q', 'ListService', function ($q, ListService) {
           return $q.all([
             ListService.getAllLists(),
             ListService.getAllLabels()
           ]);
+        }],
+        carts: ['CartService', function(CartService) {
+          return CartService.getCartHeaders();
         }]
       }
     })

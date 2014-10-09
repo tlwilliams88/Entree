@@ -126,10 +126,10 @@
     </div><!-- end Multi-select menu -->
 
     <div class="row sub-content">
-      <div class="col-xs-6">
+      <div class="col-xs-5">
         {{ (filteredItems | filter:{isSelected:'true'}).length }} Items Selected
       </div>
-      <div class="text-right col-xs-6">
+      <div class="text-right col-xs-7">
         Showing {{filteredItems.length}} of {{selectedList.items.length}} Items    
       </div>
     </div>
@@ -275,7 +275,7 @@
           </tr>
         </tbody>
       </table>
-      <div ng-show="filteredItems.length === 0">
+      <div class="footer-row" ng-show="filteredItems.length === 0">
         No products to display.
       </div>
     </form>
