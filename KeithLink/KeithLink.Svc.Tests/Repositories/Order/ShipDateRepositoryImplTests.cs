@@ -9,13 +9,13 @@ namespace KeithLink.Svc.Test.Repositories.Order {
     public class ShipDateRepositoryImplTests {
         #region attributes
         ShipDateRepositoryImpl _shipDayService;
-        CatalogInfo _customerInfo;
+        UserSelectedContext _customerInfo;
         #endregion
 
         #region ctor
         public ShipDateRepositoryImplTests() {
             _shipDayService = new ShipDateRepositoryImpl();
-            _customerInfo = new CatalogInfo();
+            _customerInfo = new UserSelectedContext();
         }
         #endregion
 

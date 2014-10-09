@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			this.itemNoteLogic = itemNoteLogic;
 		}
 
-		public List<Order> ReadOrders(UserProfile userProfile, CatalogInfo catalogInfo)
+		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo)
 		{
 			var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
 
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			return returnOrders;
 		}
 
-		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, CatalogInfo catalogInfo, string orderNumber)
+		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber)
 		{
 			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
 			var returnOrder = ToOrder(order);
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			};
 		}
 
-		private void LookupProductDetails(UserProfile user, CatalogInfo catalogInfo, Order order)
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order)
 		{
 			if (order.LineItems == null)
 				return;

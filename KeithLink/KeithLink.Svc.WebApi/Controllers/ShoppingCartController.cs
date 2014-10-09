@@ -28,7 +28,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public List<ShoppingCart> List(bool header = false)
 		{
-			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.RequestCatalogInfo, header);
+			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
 		}
 
 		[HttpGet]
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public NewItem List(ShoppingCart cart)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.RequestCatalogInfo, cart) };
+			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
 		}
 
 		[HttpPost]
@@ -63,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
-			shoppingCartLogic.UpdateCart(this.RequestCatalogInfo, this.AuthenticatedUser, updatedCart, deleteomitted);
+			shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
 		}
 
 		[HttpDelete]

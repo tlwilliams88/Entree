@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Test.Repositories.Catalog
             SearchInputModel searchModel = new SearchInputModel() { From = 0, Size = 500 };
             ElasticSearchCatalogRepositoryImpl siteCatalog = new ElasticSearchCatalogRepositoryImpl();
 
-			Assert.IsTrue(siteCatalog.GetHouseProductsByBranch(new CatalogInfo() { BranchId = branchId }, controlLabel, searchModel).Count > 0);
+			Assert.IsTrue(siteCatalog.GetHouseProductsByBranch(new UserSelectedContext() { BranchId = branchId }, controlLabel, searchModel).Count > 0);
         }
 
     }

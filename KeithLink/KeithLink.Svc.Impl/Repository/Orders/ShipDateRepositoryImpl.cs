@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         #endregion
 
         #region methods
-        public ShipDateReturn GetShipDates(CatalogInfo customerInfo) {
+        public ShipDateReturn GetShipDates(UserSelectedContext customerInfo) {
             ShipDateReturn retVal = new ShipDateReturn();
 
             try {

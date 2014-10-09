@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
     public interface IOrderLogic
     {
-		List<Order> ReadOrders(UserProfile userProfile, CatalogInfo catalogInfo);
-		Order ReadOrder(UserProfile userProfile, CatalogInfo catalogInfo, string orderNumber);
+		List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo);
+		Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber);
     }
 }
