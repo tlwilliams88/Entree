@@ -9693,11 +9693,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	    /// <value>
 	    /// The IsMultiShipping property from the property collection.
 	    /// </value>
-		public virtual bool? IsMultiShipping
+		public virtual string IsMultiShipping
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.IsMultiShipping) as bool?;
+				return this._commerceEntity.GetPropertyValue(PropertyName.IsMultiShipping) as string;
 			}
 	
 			set
@@ -9798,6 +9798,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.CustomerId, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the IsContractList property.
+	    /// </summary>
+	    /// <value>
+	    /// The IsContractList property from the property collection.
+	    /// </value>
+		public virtual bool? IsContractList
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.IsContractList) as bool?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.IsContractList, value);
 			}
 		}
 	
@@ -10079,6 +10098,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing CustomerId property.
 	        /// </summary>
 			public const string CustomerId = "CustomerId";
+	
+			/// <summary>
+	        /// Constant for accessing IsContractList property.
+	        /// </summary>
+			public const string IsContractList = "IsContractList";
 	
 			/// <summary>
 	        /// Constant for accessing Status property.

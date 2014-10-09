@@ -157,10 +157,6 @@
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
-    <Compile Include="Models\Orders\OrderQueueLocation.cs" />
-    <Compile Include="Models\Orders\OrderSource.cs" />
-    <Compile Include="Models\Orders\OrderType.cs" />
-    <Compile Include="Models\Orders\UnitOfMeasure.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />
