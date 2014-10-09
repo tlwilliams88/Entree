@@ -37,13 +37,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber) {
+        public void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;
             createUser.Model.LastName = lastName;
             createUser.Model.Email = emailAddress;
             createUser.Model.PhoneNumber = phoneNumber;
+            createUser.Model.SelectedBranch = branchId;
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
         }

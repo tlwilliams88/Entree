@@ -40,7 +40,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.RoleName);
+                                                                            userInfo.RoleName, userInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -61,7 +61,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfileProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
