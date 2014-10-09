@@ -21,6 +21,25 @@ namespace KeithLink.Svc.Core.Extensions {
             else
                 return string.Empty;
         }
+
+        public static string GetOrganizationalunit(this Principal principal) {
+            DirectoryEntry de = (DirectoryEntry)principal.GetUnderlyingObject();
+
+            string[] path = de.Path.Split(',');
+
+            string retVal = null;
+
+            foreach (string splitPath in path) {
+                string[] kvp = splitPath.Split('=');
+
+                if (string.Compare(kvp[0], "OU", true) == 0) {
+                    retVal = kvp[1];
+                    break;
+                }
+            }
+
+            return retVal;
+        }
         #endregion
     }
 

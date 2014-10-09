@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertCustomerNameLength(string customerName) {
+        private void AssertCustomerNameLength(string customerName) {
             if (customerName.Length == 0)
                 throw new ApplicationException("Customer name is blank");
         }
@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertCustomerNameValidCharacters(string customerName) {
+        private void AssertCustomerNameValidCharacters(string customerName) {
             if (System.Text.RegularExpressions.Regex.IsMatch(customerName, Core.Constants.REGEX_AD_ILLEGALCHARACTERS)) { throw new ApplicationException("Invalid characters in customer name"); }
         }
 
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddress(string emailAddress) {
+        private void AssertEmailAddress(string emailAddress) {
             try {
                 System.Net.Mail.MailAddress testAddress = new System.Net.Mail.MailAddress(emailAddress);
             } catch {
@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddressLength(string emailAddress) {
+        private void AssertEmailAddressLength(string emailAddress) {
             if (emailAddress.Length == 0)
                 throw new ApplicationException("Email address is blank");
         }
@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddressUnique(string emailAddress) {
+        private void AssertEmailAddressUnique(string emailAddress) {
             if (_extAd.GetUser(emailAddress) != null) {
                 throw new ApplicationException("Email address is already in use");
             }
@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertFirstNameLength(string firstName) {
+        private void AssertFirstNameLength(string firstName) {
             if (firstName.Length == 0)
                 throw new ApplicationException("First name is blank");
         }
@@ -104,9 +104,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 9/15/2014 - original code
         /// </remarks>
-        public void AssertGuestProfile(string emailAddress, string password) {
+        private void AssertGuestProfile(string emailAddress, string password) {
             AssertEmailAddress(emailAddress);
             AssertEmailAddressLength(emailAddress);
+            AssertEmailAddressUnique(emailAddress);
             AssertPasswordComplexity(password);
             AssertPasswordLength(password);
         }
@@ -117,7 +118,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertLastNameLength(string lastName) {
+        private void AssertLastNameLength(string lastName) {
             if (lastName.Length == 0)
                 throw new ApplicationException("Last name is blank");
         }
@@ -128,7 +129,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordComplexity(string password) {
+        private void AssertPasswordComplexity(string password) {
             if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) {
                 throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number");
             }
@@ -140,7 +141,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordLength(string password) {
+        private void AssertPasswordLength(string password) {
             if (password.Length < 7)
                 throw new ApplicationException("Minimum password length is 7 characters");
         }
@@ -151,7 +152,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
+        private void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
             bool matched = false;
 
             //if (string.Compare(password, customerName, true) == 0) { matched = true; }
@@ -169,7 +170,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertRoleName(string roleName) {
+        private void AssertRoleName(string roleName) {
             bool found = false;
 
             if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
@@ -189,7 +190,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertRoleNameLength(string roleName) {
+        private void AssertRoleNameLength(string roleName) {
             if (roleName.Length == 0) { throw new ApplicationException("Role name is blank"); }
         }
 
@@ -199,7 +200,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
+        private void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
             AssertCustomerNameLength(customerName);
             AssertCustomerNameValidCharacters(customerName);
             AssertEmailAddress(emailAddres);
@@ -225,7 +226,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             System.DirectoryServices.AccountManagement.UserPrincipal bekUser = _intAd.GetUser(emailAddress);
             string fName = bekUser.DisplayName.Split(' ')[0];
 
-            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber());
+            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber(), GetBranchFromOU(bekUser.GetOrganizationalunit()));
         }
 
         /// <summary>
@@ -238,7 +239,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfileProfile(string emailAddress, string password, string branchId) { 
+        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+            AssertGuestProfile(emailAddress, password);
+
             _extAd.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
                               emailAddress, 
                               password, 
@@ -250,7 +253,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.CreateUserProfile(emailAddress,
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
-                                         string.Empty
+                                         string.Empty,
+                                         branchId
                                          );
 
             return GetUserProfile(emailAddress);
@@ -270,7 +274,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName) {
+        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+            AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
+
             _extAd.CreateUser(customerName,
                               emailAddress,
                               password,
@@ -282,7 +288,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.CreateUserProfile(emailAddress,
                                          firstName,
                                          lastName,
-                                         phone
+                                         phone,
+                                         branchId
                                          );
 
             return GetUserProfile(emailAddress);
@@ -328,6 +335,30 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                         new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 }
             };
+        }
+
+        /// <summary>
+        /// translate the AD branch name to mainframe branch name
+        /// </summary>
+        /// <param name="OU">user's organization unit</param>
+        /// <returns>3-digit branch name</returns>
+        /// <remarks>
+        /// jwames - 10/9/2014 - original code
+        /// </remarks>
+        private string GetBranchFromOU(string OU) {
+            switch (OU) {
+                case "FABQ":
+                    return "FAQ";
+                case "FAMA":
+                case "FDFW":
+                case "FHST":
+                case "FLRK":
+                case "FOKC":
+                case "FSAN":
+                    return OU.Substring(0, 3);
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
