@@ -61,6 +61,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
+            builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
 			builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
 
             // Build the container.

@@ -55,6 +55,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 					if (Request.Headers.Contains("cataloginfo"))
 					{
 						this.RequestCatalogInfo = JsonConvert.DeserializeObject<CatalogInfo>(Request.Headers.GetValues("cataloginfo").FirstOrDefault().ToString());
+												
+						//Verify that the authenticated user has access to this customer/branch
+						if (!_user.UserCustomers.Where(c => c.CustomerBranch.Equals(this.RequestCatalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && c.CustomerNumber.Equals(this.RequestCatalogInfo.CustomerId)).Any())
+							throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.RequestCatalogInfo.CustomerId, this.RequestCatalogInfo.BranchId));
 					}
 
                 }
