@@ -74,11 +74,11 @@ namespace KeithLink.Svc.WebApi
             context.Request.Body.Read(bodyBytes, 0, (int)context.Request.Body.Length);
             string body = System.Text.Encoding.UTF8.GetString(bodyBytes);
 
-            if (!String.IsNullOrEmpty(body) && body.Contains("api-key"))
+            if (!String.IsNullOrEmpty(body) && body.Contains("apiKey"))
             {
                 NameValueCollection queryString = System.Web.HttpUtility.ParseQueryString(body);
-                if (String.IsNullOrEmpty(queryString["api-key"])
-                    || !Svc.Impl.Configuration.AllowedApiKeys.Contains(queryString["api-key"]))
+                if (String.IsNullOrEmpty(queryString["apiKey"])
+					|| !Svc.Impl.Configuration.AllowedApiKeys.Contains(queryString["apiKey"]))
                 {
                     context.SetError("invalid_invalidkeyprovided", "Invalid Client Version - Please Update");
                     return false;

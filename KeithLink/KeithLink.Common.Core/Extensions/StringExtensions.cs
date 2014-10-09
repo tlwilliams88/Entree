@@ -37,5 +37,14 @@ namespace KeithLink.Common.Core.Extensions
 
 			return parsedShort;
 		}
+
+		public static double? ToDouble(this string value)
+		{
+			double parsedDouble;
+
+			if (!double.TryParse(value, out parsedDouble))
+				return null;
+			return parsedDouble;
+		}
 	}
 }

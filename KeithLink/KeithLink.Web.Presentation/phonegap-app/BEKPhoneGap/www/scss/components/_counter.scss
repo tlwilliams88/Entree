@@ -1,0 +1,26 @@
+.counter-container {
+  input {
+    border: 1px solid $color-border;
+    padding: 5px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  > button {
+    padding: 4px 8px;
+  }
+
+  &.counter-container-lg {
+    display: inline-block;
+
+    input {
+      border-radius: 4px;
+      padding: 7px 10px;
+      min-height: 40px;
+      width: 55px;
+    }
+    > button {
+      padding: 7px 13px;
+      min-height: 40px;
+    }
+  }
+}

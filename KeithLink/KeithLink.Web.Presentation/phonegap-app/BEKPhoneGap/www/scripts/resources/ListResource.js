@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('List', [ '$resource', 'UserProfileService', 
-  function ($resource, UserProfileService) {
-    return $resource('/list/:branchId/:listId', { }, {
+  .factory('List', [ '$resource', 
+  function ($resource) {
+    return $resource('/list/:listId', { }, {
 
-      // defaults: GET, QUERY, SAVE
+      // defaults: GET, QUERY, SAVE, DELETE
 
       // postData is the list
       update: {
@@ -13,10 +13,10 @@ angular.module('bekApp')
         method: 'PUT'
       },
 
-      delete: {
-        url: '/list/:listId',
-        method: 'DELETE'
-      },
+      // delete: {
+      //   url: '/list/:listId',
+      //   method: 'DELETE'
+      // },
 
       // postData is the item
       addItem: {

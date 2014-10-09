@@ -29,14 +29,13 @@
 $order-col__background: #f1efe5;
 
 .order-summary__header {
-  font-weight: bold;
-  margin-left: 0;
+  font-weight: 600;
 }
 .order-summary__order {
   background-color: $color-white;
   border: 1px solid $color-border;
   margin-top: 10px;
-  margin-left: 0;
+  box-shadow: 0px 0px 5px #c3bc9c;
 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
@@ -46,26 +45,19 @@ $order-col__background: #f1efe5;
   }
   
   // order table columns
-  > div {
-    padding-top: 30px;
+  .table-col {
+    padding: 34px initial;
   }
 
   .order-col {
-    @extend div;
     background-color: $order-col__background;
     border-right: 1px solid $color-border;
-    padding: 20px 0;
+    padding: $gutter-size 0;
 
-    .order-col__date {
-      display: block;
-    }
     .order-col__number {
       font-size: 16px;
       font-weight: 600;
       display: block;
-    }
-    .order-col__text{
-      text-transform: uppercase;
     }
   }
 }
@@ -78,42 +70,88 @@ $order-col__background: #f1efe5;
 
 @media(max-width: $screen-sm-max) {
   .order-summary__order {
-    padding-bottom: $gutter-size;
-    margin-right: 0;
-    border-left: 1px solid $color-border;
-    
-    &.order-summary__order--late {
-      border-left: 1px solid $color-border;  
-      border-top: 3px solid $color-red;
-    }
-    &.order-summary__order--paid {
-      border-left: 1px solid $color-border;
-      border-top: 3px solid $color-green;
-    }
-
-    // order table rows
-    > div {
-      padding-top: $gutter-size;
-    }
-
-    .right{
-      text-align: right;
-    }
+    // background-color: $color-white;
+    // border: 1px solid $color-border;
+    border-top: none;
 
     .order-col {
-      border-right: none;
       border-bottom: 1px solid $color-border;
+      border-top: 1px solid $color-border;
+      border-right: none;
       padding: 10px $gutter-size;
-      text-align: left;
-
+      background-color: $order-col__background;
+      position: relative;
       @include arrow('bottom','left', 10px, $order-col__background, $color-border, 1px);
 
       .order-col__date {
         text-align: right;
+        font-size: 14px;
+        margin-top: 10px;
       }
-      .order-col__text {
-        width: 100%;
+
+      &.order-summary__order--late {
+        border-top: 3px solid $color-red;
       }
+      &.order-summary__order--paid {
+        border-top: 3px solid $color-green;
+      }
+    }
+    .order-details {
+      padding: $gutter-size;
+
+      > .details-item {
+        @include make-row();
+        padding-top: 10px;
+        
+        > div {
+          @include make-xs-column(6);
+        }
+        .item-value {
+          text-align: right;
+        }
+        .item-title {
+          font-weight: 600;
+        }
+      }      
     }
   }
 }
+  // .order-summary__order {
+  //   margin-right: 0;
+  //   border-left: 1px solid $color-border;
+    
+  //   &.order-summary__order--late {
+  //     border-left: 1px solid $color-border;  
+  //     border-top: 3px solid $color-red;
+  //   }
+  //   &.order-summary__order--paid {
+  //     border-left: 1px solid $color-border;
+  //     border-top: 3px solid $color-green;
+  //   }
+
+  //   // order table rows
+  //   > div {
+  //     padding: $gutter-size;
+  //   }
+
+  //   .right{
+  //     text-align: right;
+  //   }
+
+  //   .order-col {
+  //     border-right: none;
+  //     border-bottom: 1px solid $color-border;
+  //     padding: 10px $gutter-size;
+  //     text-align: left;
+
+  //     @include arrow('bottom','left', 10px, $order-col__background, $color-border, 1px);
+
+  //     .order-col__date {
+  //       text-align: right;
+  //     }
+  //     .order-col__text {
+  //       width: 100%;
+  //     }
+  //   }
+  // }
+// }

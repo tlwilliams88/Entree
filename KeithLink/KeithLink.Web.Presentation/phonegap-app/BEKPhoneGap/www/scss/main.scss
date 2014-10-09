@@ -1,58 +1,44 @@
 @import "compass";
 
-// @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600);
+@import 'scaffolding/variables';
 
-$background: #f3f1eb;
+// vendor
+@import 'vendor/bootstrap-theme';
+@import 'vendor/bootstrap/bootstrap';
 
-$color-orange: #e8aa30;
-$color-blue: #489ecf;
-$color-red: #dc6a6a;
-$color-green: #04a773;
-$color-white: #fff;
-$color-brown: #9E987E;
+// scaffolding
+@import 'scaffolding/globals';
+@import 'scaffolding/typography';
+@import 'scaffolding/alignment';
 
-$color-font: #504938;
-$color-font-light: rgb(160, 148, 127);
-$color-border: #c3bc9c;
+// mixins
+@import 'mixins/mixins';
+@import 'mixins/arrows';
 
-$sidebar-width: 175px;
-// $desktop-min: 992px;
-$mobile-max: 991px;
+// components
+@import 'components/table';
+@import 'components/info-box';
+@import 'components/buttons';
+@import 'components/inputs';
+@import 'components/tabs';
+@import 'components/forms';
+@import 'components/featured-items';
+@import 'components/dropdown-menus';
+@import 'components/person-info';
+@import 'components/icons';
+@import 'components/context-menu';
+@import 'components/counter';
+@import 'components/sidebar';
+@import 'components/sidebar-mobile';
+@import 'components/user-bar';
+@import 'components/page-header-bar';
 
-$gutter-size: 15px;
-$font-size: 12px;
-
-
-@import 'global-setup';
-@import 'mixins';
-
-@import 'component';
-@import 'component-table';
-@import 'component-arrows';
-@import 'component-featured-items';
-@import 'component-person-info';
-@import 'component-dropdown-menu-lists';
-@import 'icons';
-@import 'context-menu';
-@import 'bootstrap-table';
-@import 'forms';
-
-// menus
-@import 'sidebar';
-@import 'sidebar-mobile';
-@import 'user-bar';
-@import 'page-header-bar';
-
-// homepage
-@import 'order-summary';
-@import 'account-summary';
-@import 'catalog';
-@import 'recent-activity';
-
-@import 'search-results';
-@import 'item-details';
-@import 'lists';
-@import 'register';
-@import 'account-details';
-@import 'cart';
-@import 'add-to-order';
+// pages
+@import 'pages/home';
+@import 'pages/catalog';
+@import 'pages/register';
+@import 'pages/item-details';
+@import 'pages/account-details';
+@import 'pages/search-results';
+@import 'pages/add-to-order';
+@import 'pages/lists';

@@ -112,6 +112,14 @@ angular.module('bekApp')
         });
       },
 
+      deleteMultipleCarts: function(cartGuidArray)
+        {
+          return $http.delete('/cart', {
+            headers:{'Content-Type': 'application/json'},
+            data: cartGuidArray
+          });
+        },
+
       /********************
       EDIT SINGLE ITEM
       TODO: currently I am not keeping the cached object in sync
@@ -159,6 +167,10 @@ angular.module('bekApp')
         }
 
         return selectedCart;
+      },
+
+      getShipDates: function() {
+        return Cart.getShipDates().$promise;
       }
 
     };

@@ -52,9 +52,14 @@ namespace KeithLink.Svc.WebApi.Controllers
                     GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
-					if (Request.Headers.Contains("cataloginfo"))
+					if (Request.Headers.Contains("userSelectedContext"))
 					{
-						this.RequestCatalogInfo = JsonConvert.DeserializeObject<CatalogInfo>(Request.Headers.GetValues("cataloginfo").FirstOrDefault().ToString());
+						this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
+												
+						//Verify that the authenticated user has access to this customer/branch
+						if (!(_user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST) && string.IsNullOrEmpty(this.SelectedUserContext.CustomerId )) &&
+							!_user.UserCustomers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase) && c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any())
+							throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
 					}
 
                 }
@@ -100,7 +105,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
         }
 
-		public CatalogInfo RequestCatalogInfo { get; set; }
+		public UserSelectedContext SelectedUserContext { get; set; }
 		
         #endregion
     }

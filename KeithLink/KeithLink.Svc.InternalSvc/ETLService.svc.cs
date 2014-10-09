@@ -46,5 +46,14 @@ namespace KeithLink.Svc.InternalSvc
             customerLogic.ImportCustomersToOrganizationProfile();
             return true;
         }
+
+        /*for testing only*/
+        public bool ImportCatalogLists()
+        {
+            Task.Factory.StartNew(() => this.categoryLogic.ImportContractLists());
+            return true;
+        }
+
+            
     }
 }

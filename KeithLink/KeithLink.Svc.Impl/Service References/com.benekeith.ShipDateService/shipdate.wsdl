@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetShipDates">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="XmlRequest" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetShipDatesResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetShipDatesResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetShipDatesSoapIn">
+    <wsdl:part name="parameters" element="tns:GetShipDates" />
+  </wsdl:message>
+  <wsdl:message name="GetShipDatesSoapOut">
+    <wsdl:part name="parameters" element="tns:GetShipDatesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ShipDateSoap">
+    <wsdl:operation name="GetShipDates">
+      <wsdl:input message="tns:GetShipDatesSoapIn" />
+      <wsdl:output message="tns:GetShipDatesSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ShipDateSoap" type="tns:ShipDateSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetShipDates">
+      <soap:operation soapAction="http://tempuri.org/GetShipDates" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ShipDateSoap12" type="tns:ShipDateSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetShipDates">
+      <soap12:operation soapAction="http://tempuri.org/GetShipDates" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ShipDate">
+    <wsdl:port name="ShipDateSoap" binding="tns:ShipDateSoap">
+      <soap:address location="http://bekkpnwst2.bekco.com:8900/pricing/shipdate.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ShipDateSoap12" binding="tns:ShipDateSoap12">
+      <soap12:address location="http://bekkpnwst2.bekco.com:8900/pricing/shipdate.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

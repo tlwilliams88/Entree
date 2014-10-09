@@ -12,8 +12,7 @@ angular.module('bekApp')
         function($http, $q, UserProfileService, NameGeneratorService, List) {
 
             function getBranch() {
-                //return UserProfileService.getCurrentBranchId().toLowerCase();
-                return 'fdf';
+                return UserProfileService.getCurrentBranchId().toLowerCase();
             }
 
             function addItemToList(listId, item) {

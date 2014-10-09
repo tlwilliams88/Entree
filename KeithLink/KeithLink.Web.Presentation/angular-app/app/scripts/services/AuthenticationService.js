@@ -8,7 +8,7 @@ angular.module('bekApp')
 
       authenticateUser: function(username, password) {
 
-        var data = 'grant_type=password&username=' + username + '&password=' + password + '&api-key=' + ENV.apiKey; // move api-key here!
+        var data = 'grant_type=password&username=' + username + '&password=' + password + '&apiKey=' + ENV.apiKey;
 
         var headers = { headers : {
             'Content-Type': 'application/x-www-form-urlencoded' 

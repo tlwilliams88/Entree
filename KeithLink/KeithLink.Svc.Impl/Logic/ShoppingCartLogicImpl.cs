@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -42,7 +43,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
 		}
 
-		public Guid CreateCart(UserProfile user, CatalogInfo catalogInfo, ShoppingCart cart)
+		public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
 		{
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
@@ -88,7 +89,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(CatalogInfo catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
+		public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -145,7 +146,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
-		public List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && 
@@ -176,6 +177,12 @@ namespace KeithLink.Svc.Impl.Logic
 
 			LookupProductDetails(user, cart);
 			return cart;
+		}
+
+		public void DeleteCarts(Guid userId, List<Guid> cartIds)
+		{
+			foreach(var cartId in cartIds)
+				basketRepository.DeleteBasket(userId, cartId);
 		}
 
 		#region Helper Methods
@@ -252,7 +259,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		#endregion
 
-		private string CartName(string name, CatalogInfo catalogInfo)
+		private string CartName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
@@ -301,7 +308,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					ItemNumber = item.ProductId,
 					OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
 					SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
@@ -324,6 +331,9 @@ namespace KeithLink.Svc.Impl.Logic
 						
 			return orderNumber; //Return actual order number
 		}
+
+
+
 
 		
 	}

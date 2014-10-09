@@ -28,7 +28,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
         public List<UserList> List(bool header = false)
         {
-			var model = listLogic.ReadAllLists(this.AuthenticatedUser, this.RequestCatalogInfo, header);
+			var model = listLogic.ReadAllLists(this.AuthenticatedUser, this.SelectedUserContext, header);
             return model;
         }
 		
@@ -36,14 +36,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}")]
 		public UserList List(Guid listId)
         {
-			return listLogic.ReadList(this.AuthenticatedUser, listId, this.RequestCatalogInfo);
+			return listLogic.ReadList(this.AuthenticatedUser, listId, this.SelectedUserContext);
         }
 
         [HttpGet]
 		[ApiKeyedRoute("list/labels")]
         public List<string> ListLabels()
         {
-			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, this.RequestCatalogInfo);
+			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, this.SelectedUserContext);
         }
 
         [HttpGet]
@@ -57,7 +57,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
 		public NewItem List(UserList list)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, this.RequestCatalogInfo, list) };
+			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list) };
 			return newGuid;
         }
 		
@@ -73,21 +73,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/items")]
 		public UserList AddItems(Guid listId, List<ListItem> newItems, bool allowDuplicates = false)
 		{
-			return listLogic.AddItems(AuthenticatedUser, this.RequestCatalogInfo, listId, newItems, false);
+			return listLogic.AddItems(AuthenticatedUser, this.SelectedUserContext, listId, newItems, false);
 		}
 		
         [HttpPut]
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void UpdateItem(Guid listId, ListItem updatedItem)
         {
-			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem, this.RequestCatalogInfo);
+			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem, this.SelectedUserContext);
         }
 
 		[HttpPut]
 		[ApiKeyedRoute("list/")]
 		public void Put(UserList updatedList)
 		{
-			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList, this.RequestCatalogInfo);
+			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList, this.SelectedUserContext);
 		}
 
 		[HttpDelete]
@@ -115,7 +115,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void DeleteItem(Guid listId, List<Guid> itemIds)
 		{
-			var t = itemIds;
 			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
 		}
         #endregion

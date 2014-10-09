@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber) {
+        public void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;

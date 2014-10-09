@@ -2104,6 +2104,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
 							<PropertyMapping property="Active" csProperty="Active"/>
 							<PropertyMapping property="CustomerId" csProperty="CustomerId"/>
+              <PropertyMapping property="IsContractList" csProperty="IsContractList"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2160,7 +2161,7 @@ This file contains the Metadata Repository
           <Property name="PurchaseErrors" dataType="Array" >
             <DisplayName value="Purchase Errors"/>
           </Property>
-          <Property name="IsMultiShipping" dataType="Boolean" >
+          <Property name="IsMultiShipping" dataType="String" >
             <DisplayName value="Is Multi-Shipping"/>
           </Property>
 					
@@ -2181,7 +2182,9 @@ This file contains the Metadata Repository
 					<Property name="CustomerId" dataType="String">
 						<DisplayName value="CustomerId"/>
 					</Property>
-					
+          <Property name="IsContractList" dataType="Boolean">
+            <DisplayName value="IsContractList"/>
+          </Property>
         </Properties>
 
         <Relationships>
