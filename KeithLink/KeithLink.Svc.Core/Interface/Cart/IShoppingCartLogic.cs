@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		void UpdateCart(CatalogInfo catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems);
 
 		void DeleteCart(UserProfile user, Guid cartId);
+		void DeleteCarts(Guid userId, List<Guid> cartIds);
 		void DeleteItem(UserProfile user, Guid cartId, Guid itemId);
 
 		List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly);

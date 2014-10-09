@@ -17,5 +17,9 @@ namespace KeithLink.Svc.Core.ETL
         DataTable ReadFullItemForElasticSearch();
         DataSet ReadGSDataForItems();
 		DataTable ReadProprietaryItems();
+        DataTable ReadUniqueUsers();
+        DataTable ReadCustomersByUser(string UserId);
+        DataTable ReadContracts(string CustomerNumber, string DivisionName);
+        DataTable ReadContractItems(string CustomerNumber, string DivisionName, string ContractNumber);
     }
 }

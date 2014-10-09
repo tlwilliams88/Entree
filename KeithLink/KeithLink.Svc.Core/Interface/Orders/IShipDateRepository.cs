@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Orders {
     public interface IShipDateRepository {
+        ShipDateReturn GetShipDates(CatalogInfo customerInfo);
     }
 }

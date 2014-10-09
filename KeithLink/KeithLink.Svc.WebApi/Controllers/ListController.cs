@@ -115,7 +115,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void DeleteItem(Guid listId, List<Guid> itemIds)
 		{
-			var t = itemIds;
 			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
 		}
         #endregion

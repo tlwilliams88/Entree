@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ShippingDateResponseMain" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:simpleType name="companyType">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="customerType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ShipDateResponse" msprop:Generator_TableClassName="ShipDateResponseDataTable" msprop:Generator_TableVarName="tableShipDateResponse" msprop:Generator_TablePropName="ShipDateResponse" msprop:Generator_RowDeletingName="ShipDateResponseRowDeleting" msprop:Generator_RowChangingName="ShipDateResponseRowChanging" msprop:Generator_RowEvHandlerName="ShipDateResponseRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipDateResponseRowDeleted" msprop:Generator_UserTableName="ShipDateResponse" msprop:Generator_RowChangedName="ShipDateResponseRowChanged" msprop:Generator_RowEvArgName="ShipDateResponseRowChangeEvent" msprop:Generator_RowClassName="ShipDateResponseRow">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ErrorMessage" msprop:Generator_ColumnVarNameInTable="columnErrorMessage" msprop:Generator_ColumnPropNameInRow="ErrorMessage" msprop:Generator_ColumnPropNameInTable="ErrorMessageColumn" msprop:Generator_UserColumnName="ErrorMessage" type="xs:string" minOccurs="0" />
+        <xs:element name="Customer" msprop:Generator_TableClassName="CustomerDataTable" msprop:Generator_TableVarName="tableCustomer" msprop:Generator_TablePropName="Customer" msprop:Generator_RowDeletingName="CustomerRowDeleting" msprop:Generator_RowChangingName="CustomerRowChanging" msprop:Generator_RowEvHandlerName="CustomerRowChangeEventHandler" msprop:Generator_RowDeletedName="CustomerRowDeleted" msprop:Generator_UserTableName="Customer" msprop:Generator_RowChangedName="CustomerRowChanged" msprop:Generator_RowEvArgName="CustomerRowChangeEvent" msprop:Generator_RowClassName="CustomerRow" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Company" msprop:Generator_ColumnVarNameInTable="columnCompany" msprop:Generator_ColumnPropNameInRow="Company" msprop:Generator_ColumnPropNameInTable="CompanyColumn" msprop:Generator_UserColumnName="Company" type="companyType" />
+              <xs:element name="Division" msprop:Generator_ColumnVarNameInTable="columnDivision" msprop:Generator_ColumnPropNameInRow="Division" msprop:Generator_ColumnPropNameInTable="DivisionColumn" msprop:Generator_UserColumnName="Division" type="companyType" />
+              <xs:element name="Department" msprop:Generator_ColumnVarNameInTable="columnDepartment" msprop:Generator_ColumnPropNameInRow="Department" msprop:Generator_ColumnPropNameInTable="DepartmentColumn" msprop:Generator_UserColumnName="Department" type="companyType" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="customerType" />
+              <xs:element name="CutOffTime" msprop:Generator_ColumnVarNameInTable="columnCutOffTime" msprop:Generator_ColumnPropNameInRow="CutOffTime" msprop:Generator_ColumnPropNameInTable="CutOffTimeColumn" msprop:Generator_UserColumnName="CutOffTime" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+            <xs:attribute name="ShipDateResponse_Id" msprop:Generator_ColumnVarNameInTable="columnShipDateResponse_Id" msprop:Generator_ColumnPropNameInRow="ShipDateResponse_Id" msprop:Generator_ColumnPropNameInTable="ShipDateResponse_IdColumn" msprop:Generator_UserColumnName="ShipDateResponse_Id" type="xs:int" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ShipDates" msprop:Generator_TableClassName="ShipDatesDataTable" msprop:Generator_TableVarName="tableShipDates" msprop:Generator_TablePropName="ShipDates" msprop:Generator_RowDeletingName="ShipDatesRowDeleting" msprop:Generator_RowChangingName="ShipDatesRowChanging" msprop:Generator_RowEvHandlerName="ShipDatesRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipDatesRowDeleted" msprop:Generator_UserTableName="ShipDates" msprop:Generator_RowChangedName="ShipDatesRowChanged" msprop:Generator_RowEvArgName="ShipDatesRowChangeEvent" msprop:Generator_RowClassName="ShipDatesRow" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ShipDate" msprop:Generator_TableClassName="ShipDateDataTable" msprop:Generator_TableVarName="tableShipDate" msprop:Generator_TablePropName="ShipDate" msprop:Generator_RowDeletingName="ShipDateRowDeleting" msprop:Generator_RowChangingName="ShipDateRowChanging" msprop:Generator_RowEvHandlerName="ShipDateRowChangeEventHandler" msprop:Generator_RowDeletedName="ShipDateRowDeleted" msprop:Generator_UserTableName="ShipDate" msprop:Generator_RowChangedName="ShipDateRowChanged" msprop:Generator_RowEvArgName="ShipDateRowChangeEvent" msprop:Generator_RowClassName="ShipDateRow" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:simpleContent msprop:Generator_ColumnVarNameInTable="columnShipDate_Column" msprop:Generator_ColumnPropNameInRow="ShipDate_Column" msprop:Generator_ColumnPropNameInTable="ShipDate_ColumnColumn" msprop:Generator_UserColumnName="ShipDate_Column" msdata:ColumnName="ShipDate_Column" msdata:Ordinal="0">
+                    <xs:extension base="xs:string">
+                      <xs:attribute name="ShipDates_Id" msprop:Generator_ColumnVarNameInTable="columnShipDates_Id" msprop:Generator_ColumnPropNameInRow="ShipDates_Id" msprop:Generator_ColumnPropNameInTable="ShipDates_IdColumn" msprop:Generator_UserColumnName="ShipDates_Id" type="xs:int" use="prohibited" />
+                    </xs:extension>
+                  </xs:simpleContent>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="ShipDates_Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnShipDates_Id" msprop:Generator_ColumnPropNameInRow="ShipDates_Id" msprop:Generator_ColumnPropNameInTable="ShipDates_IdColumn" msprop:Generator_UserColumnName="ShipDates_Id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+            <xs:attribute name="ShipDateResponse_Id" msprop:Generator_ColumnVarNameInTable="columnShipDateResponse_Id" msprop:Generator_ColumnPropNameInRow="ShipDateResponse_Id" msprop:Generator_ColumnPropNameInTable="ShipDateResponse_IdColumn" msprop:Generator_UserColumnName="ShipDateResponse_Id" type="xs:int" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="ShipDateResponse_Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnShipDateResponse_Id" msprop:Generator_ColumnPropNameInRow="ShipDateResponse_Id" msprop:Generator_ColumnPropNameInTable="ShipDateResponse_IdColumn" msprop:Generator_UserColumnName="ShipDateResponse_Id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ShippingDateResponseMain" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="ShippingDateResponseMain" msprop:Generator_UserDSName="ShippingDateResponseMain">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ShipDateResponse" />
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="ShipDates_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//ShipDates" />
+      <xs:field xpath="@ShipDates_Id" />
+    </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//ShipDateResponse" />
+      <xs:field xpath="@ShipDateResponse_Id" />
+    </xs:unique>
+    <xs:keyref name="ShipDateResponse_ShipDates" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="ShipDates" msprop:rel_Generator_ChildPropName="GetShipDatesRows" msprop:rel_Generator_UserRelationName="ShipDateResponse_ShipDates" msprop:rel_Generator_ParentPropName="ShipDateResponseRow" msprop:rel_Generator_RelationVarName="relationShipDateResponse_ShipDates" msprop:rel_Generator_UserParentTable="ShipDateResponse">
+      <xs:selector xpath=".//ShipDates" />
+      <xs:field xpath="@ShipDateResponse_Id" />
+    </xs:keyref>
+    <xs:keyref name="ShipDates_ShipDate" refer="ShipDates_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="ShipDate" msprop:rel_Generator_ChildPropName="GetShipDateRows" msprop:rel_Generator_UserRelationName="ShipDates_ShipDate" msprop:rel_Generator_ParentPropName="ShipDatesRow" msprop:rel_Generator_RelationVarName="relationShipDates_ShipDate" msprop:rel_Generator_UserParentTable="ShipDates">
+      <xs:selector xpath=".//ShipDate" />
+      <xs:field xpath="@ShipDates_Id" />
+    </xs:keyref>
+    <xs:keyref name="ShipDateResponse_Customer" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="Customer" msprop:rel_Generator_ChildPropName="GetCustomerRows" msprop:rel_Generator_UserRelationName="ShipDateResponse_Customer" msprop:rel_Generator_ParentPropName="ShipDateResponseRow" msprop:rel_Generator_RelationVarName="relationShipDateResponse_Customer" msprop:rel_Generator_UserParentTable="ShipDateResponse">
+      <xs:selector xpath=".//Customer" />
+      <xs:field xpath="@ShipDateResponse_Id" />
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

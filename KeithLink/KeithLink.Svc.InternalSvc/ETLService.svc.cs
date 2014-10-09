@@ -37,5 +37,14 @@ namespace KeithLink.Svc.InternalSvc
 			categoryLogic.ImportCategoriesToElasticSearch();
             return true;
         }
+
+        /*for testing only*/
+        public bool ImportCatalogLists()
+        {
+            Task.Factory.StartNew(() => this.categoryLogic.ImportContractLists());
+            return true;
+        }
+
+            
     }
 }
