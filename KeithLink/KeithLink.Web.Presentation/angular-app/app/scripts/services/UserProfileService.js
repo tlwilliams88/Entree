@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', 'LocalStorage', function ($http, $q, LocalStorage) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
 
     var Service = {
       getProfile: function(email) {
@@ -21,7 +21,7 @@ angular.module('bekApp')
         return $http.get('/profile', data).then(function (response) {
           var profile = response.data.userProfiles[0];
 
-          console.log(profile);
+          $log.debug(profile);
 
           profile.salesRep = {
             'id': 34234,
@@ -73,7 +73,7 @@ angular.module('bekApp')
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
             profile.role = 'Owner';
-            console.log(profile);
+            $log.debug(profile);
             LocalStorage.setProfile(profile);
             deferred.resolve(profile);  
           } else {
@@ -87,7 +87,7 @@ angular.module('bekApp')
         var deferred = $q.defer();
 
         $http.put('/profile/password', passwordData).then(function(response) {
-          console.log(response);
+          $log.debug(response);
           if (response.data === '"Password update successful"') {
             deferred.resolve(response.data);
           } else {

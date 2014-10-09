@@ -254,8 +254,6 @@ angular.module('bekApp')
             listItemIds.push(item.listitemid);
           });
 
-          console.log(listItemIds);
-
           return $http.delete('/list/' + listId + '/item', { 
             headers: {'Content-Type': 'application/json'},
             data: listItemIds 

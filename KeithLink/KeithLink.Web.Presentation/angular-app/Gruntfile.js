@@ -458,6 +458,7 @@ module.exports = function (grunt) {
                       name: 'debug',
                       apiKey: 'web_dev_v1',
                       apiEndpoint: 'http://localhost:8080/api',
+                      loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
                       password: 'L1ttleStev1e'
                   }
@@ -469,6 +470,7 @@ module.exports = function (grunt) {
                       name: 'dev',
                       apiKey: 'web_dev_v1',
                       apiEndpoint: 'https://shopapidev.benekeith.com',
+                      loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
                       password: 'L1ttleStev1e'
                   }
@@ -479,7 +481,8 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'test',
                       apiKey: 'web_test_v1',
-                      apiEndpoint: 'https://shopqa.benekeith.com/api'
+                      apiEndpoint: 'https://shopqa.benekeith.com/api',
+                      loggingEnabled: true
                   }
               }
           },
@@ -488,7 +491,8 @@ module.exports = function (grunt) {
                   ENV: {
                       name: 'prod',
                       apiKey: 'web_prod_v1',
-                      apiEndpoint: 'https://shop.benekeith.com/api'
+                      apiEndpoint: 'https://shop.benekeith.com/api',
+                      loggingEnabled: false
                   }
               }
           }

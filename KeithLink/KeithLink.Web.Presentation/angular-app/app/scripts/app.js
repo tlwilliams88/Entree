@@ -26,11 +26,17 @@ angular
     'angular-loading-bar',
     'configenv'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
-  function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
   
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
+
+  // configure logging
+  $logProvider.debugEnabled(ENV.loggingEnabled);
+
+  // set local storage prefix
+  localStorageServiceProvider.setPrefix('bek');
 
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
@@ -240,18 +246,15 @@ angular
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
-  // set local storage prefix
-  localStorageServiceProvider.setPrefix('bek');
-
 }])
-.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', 'toaster', function($rootScope, $state, AccessService, AuthenticationService, toaster) {
+.run(['$rootScope', '$state', '$log', 'AccessService', 'AuthenticationService', 'toaster', function($rootScope, $state, $log, AccessService, AuthenticationService, toaster) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    console.log('route: ' + toState.name);
+    $log.debug('route: ' + toState.name);
 
     // check if route is protected
     if (toState.data && toState.data.authorize) {
