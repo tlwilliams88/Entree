@@ -5207,21 +5207,21 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the PhoneNumber property.
+	    /// Gets or sets the GeneralInfotelNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The PhoneNumber property from the property collection.
+	    /// The GeneralInfotelNumber property from the property collection.
 	    /// </value>
-		public virtual string PhoneNumber
+		public virtual string GeneralInfotelNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.PhoneNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfotelNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.PhoneNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfotelNumber, value);
 			}
 		}
 	
@@ -5378,40 +5378,40 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the SelectedBranch property.
+	    /// Gets or sets the GeneralInfodefaultCustomer property.
 	    /// </summary>
 	    /// <value>
-	    /// The SelectedBranch property from the property collection.
+	    /// The GeneralInfodefaultCustomer property from the property collection.
 	    /// </value>
-		public virtual string SelectedBranch
+		public virtual string GeneralInfodefaultCustomer
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedBranch) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfodefaultCustomer) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.SelectedBranch, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfodefaultCustomer, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the SelectedCustomer property.
+	    /// Gets or sets the GeneralInfodefaultBranch property.
 	    /// </summary>
 	    /// <value>
-	    /// The SelectedCustomer property from the property collection.
+	    /// The GeneralInfodefaultBranch property from the property collection.
 	    /// </value>
-		public virtual string SelectedCustomer
+		public virtual string GeneralInfodefaultBranch
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.SelectedCustomer) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfodefaultBranch) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.SelectedCustomer, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfodefaultBranch, value);
 			}
 		}
 	
@@ -5797,9 +5797,9 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string FirstName = "FirstName";
 	
 			/// <summary>
-	        /// Constant for accessing PhoneNumber property.
+	        /// Constant for accessing GeneralInfo.tel_number property.
 	        /// </summary>
-			public const string PhoneNumber = "PhoneNumber";
+			public const string GeneralInfotelNumber = "GeneralInfo.tel_number";
 	
 			/// <summary>
 	        /// Constant for accessing GeneralInfo.tel_extension property.
@@ -5842,14 +5842,14 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string GeneralInfoexpressCheckout = "GeneralInfo.express_checkout";
 	
 			/// <summary>
-	        /// Constant for accessing SelectedBranch property.
+	        /// Constant for accessing GeneralInfo.default_customer property.
 	        /// </summary>
-			public const string SelectedBranch = "SelectedBranch";
+			public const string GeneralInfodefaultCustomer = "GeneralInfo.default_customer";
 	
 			/// <summary>
-	        /// Constant for accessing SelectedCustomer property.
+	        /// Constant for accessing GeneralInfo.default_branch property.
 	        /// </summary>
-			public const string SelectedCustomer = "SelectedCustomer";
+			public const string GeneralInfodefaultBranch = "GeneralInfo.default_branch";
 	
 			/// <summary>
 	        /// Constant for accessing AccountStatus property.
@@ -6208,21 +6208,21 @@ namespace KeithLink.Svc.Core.Models.Generated
 		#endregion
 		#region Entity Properties
 		/// <summary>
-	    /// Gets or sets the CustomerName property.
+	    /// Gets or sets the GeneralInfoname property.
 	    /// </summary>
 	    /// <value>
-	    /// The CustomerName property from the property collection.
+	    /// The GeneralInfoname property from the property collection.
 	    /// </value>
-		public virtual string CustomerName
+		public virtual string GeneralInfoname
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.CustomerName) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfoname) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.CustomerName, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoname, value);
 			}
 		}
 	
@@ -6303,173 +6303,173 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the IsPoRequired property.
+	    /// Gets or sets the GeneralInfoisPoRequired property.
 	    /// </summary>
 	    /// <value>
-	    /// The IsPoRequired property from the property collection.
+	    /// The GeneralInfoisPoRequired property from the property collection.
 	    /// </value>
-		public virtual bool? IsPoRequired
+		public virtual bool? GeneralInfoisPoRequired
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.IsPoRequired) as bool?;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfoisPoRequired) as bool?;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.IsPoRequired, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoisPoRequired, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the IsPowerMenu property.
+	    /// Gets or sets the GeneralInfoisPowerMenu property.
 	    /// </summary>
 	    /// <value>
-	    /// The IsPowerMenu property from the property collection.
+	    /// The GeneralInfoisPowerMenu property from the property collection.
 	    /// </value>
-		public virtual bool? IsPowerMenu
+		public virtual bool? GeneralInfoisPowerMenu
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.IsPowerMenu) as bool?;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfoisPowerMenu) as bool?;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.IsPowerMenu, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoisPowerMenu, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the ContractNumber property.
+	    /// Gets or sets the GeneralInfocontractNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The ContractNumber property from the property collection.
+	    /// The GeneralInfocontractNumber property from the property collection.
 	    /// </value>
-		public virtual string ContractNumber
+		public virtual string GeneralInfocontractNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.ContractNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfocontractNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.ContractNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfocontractNumber, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the DsrNumber property.
+	    /// Gets or sets the GeneralInfodsrNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The DsrNumber property from the property collection.
+	    /// The GeneralInfodsrNumber property from the property collection.
 	    /// </value>
-		public virtual string DsrNumber
+		public virtual string GeneralInfodsrNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.DsrNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfodsrNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.DsrNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfodsrNumber, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the NationalOrRegionalAccountNumber property.
+	    /// Gets or sets the GeneralInfonatlOrReglAccountNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The NationalOrRegionalAccountNumber property from the property collection.
+	    /// The GeneralInfonatlOrReglAccountNumber property from the property collection.
 	    /// </value>
-		public virtual string NationalOrRegionalAccountNumber
+		public virtual string GeneralInfonatlOrReglAccountNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.NationalOrRegionalAccountNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfonatlOrReglAccountNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.NationalOrRegionalAccountNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfonatlOrReglAccountNumber, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the BranchNumber property.
+	    /// Gets or sets the GeneralInfobranchNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The BranchNumber property from the property collection.
+	    /// The GeneralInfobranchNumber property from the property collection.
 	    /// </value>
-		public virtual string BranchNumber
+		public virtual string GeneralInfobranchNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.BranchNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfobranchNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.BranchNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfobranchNumber, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the CustomerNumber property.
+	    /// Gets or sets the GeneralInfocustomerNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The CustomerNumber property from the property collection.
+	    /// The GeneralInfocustomerNumber property from the property collection.
 	    /// </value>
-		public virtual string CustomerNumber
+		public virtual string GeneralInfocustomerNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.CustomerNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfocustomerNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.CustomerNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfocustomerNumber, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the OrganizationType property.
+	    /// Gets or sets the GeneralInfoorganizationType property.
 	    /// </summary>
 	    /// <value>
-	    /// The OrganizationType property from the property collection.
+	    /// The GeneralInfoorganizationType property from the property collection.
 	    /// </value>
-		public virtual string OrganizationType
+		public virtual string GeneralInfoorganizationType
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.OrganizationType) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfoorganizationType) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.OrganizationType, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfoorganizationType, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the NationalAccountId property.
+	    /// Gets or sets the GeneralInfonationalAccountId property.
 	    /// </summary>
 	    /// <value>
-	    /// The NationalAccountId property from the property collection.
+	    /// The GeneralInfonationalAccountId property from the property collection.
 	    /// </value>
-		public virtual string NationalAccountId
+		public virtual string GeneralInfonationalAccountId
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.NationalAccountId) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfonationalAccountId) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.NationalAccountId, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfonationalAccountId, value);
 			}
 		}
 	
@@ -6489,6 +6489,44 @@ namespace KeithLink.Svc.Core.Models.Generated
 			set
 			{
 				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemuserIdChangedBy, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemdateLastChanged property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemdateLastChanged property from the property collection.
+	    /// </value>
+		public virtual DateTime? ProfileSystemdateLastChanged
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemdateLastChanged) as DateTime?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemdateLastChanged, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the ProfileSystemdateCreated property.
+	    /// </summary>
+	    /// <value>
+	    /// The ProfileSystemdateCreated property from the property collection.
+	    /// </value>
+		public virtual DateTime? ProfileSystemdateCreated
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.ProfileSystemdateCreated) as DateTime?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.ProfileSystemdateCreated, value);
 			}
 		}
 	
@@ -6521,9 +6559,9 @@ namespace KeithLink.Svc.Core.Models.Generated
 		public class PropertyName : CommerceEntity.PropertyName 
 		{
 			/// <summary>
-	        /// Constant for accessing CustomerName property.
+	        /// Constant for accessing GeneralInfo.name property.
 	        /// </summary>
-			public const string CustomerName = "CustomerName";
+			public const string GeneralInfoname = "GeneralInfo.name";
 	
 			/// <summary>
 	        /// Constant for accessing GeneralInfo.trading_partner_number property.
@@ -6546,54 +6584,64 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string GeneralInfopurchasing = "GeneralInfo.purchasing";
 	
 			/// <summary>
-	        /// Constant for accessing IsPoRequired property.
+	        /// Constant for accessing GeneralInfo.is_po_required property.
 	        /// </summary>
-			public const string IsPoRequired = "IsPoRequired";
+			public const string GeneralInfoisPoRequired = "GeneralInfo.is_po_required";
 	
 			/// <summary>
-	        /// Constant for accessing IsPowerMenu property.
+	        /// Constant for accessing GeneralInfo.is_power_menu property.
 	        /// </summary>
-			public const string IsPowerMenu = "IsPowerMenu";
+			public const string GeneralInfoisPowerMenu = "GeneralInfo.is_power_menu";
 	
 			/// <summary>
-	        /// Constant for accessing ContractNumber property.
+	        /// Constant for accessing GeneralInfo.contract_number property.
 	        /// </summary>
-			public const string ContractNumber = "ContractNumber";
+			public const string GeneralInfocontractNumber = "GeneralInfo.contract_number";
 	
 			/// <summary>
-	        /// Constant for accessing DsrNumber property.
+	        /// Constant for accessing GeneralInfo.dsr_number property.
 	        /// </summary>
-			public const string DsrNumber = "DsrNumber";
+			public const string GeneralInfodsrNumber = "GeneralInfo.dsr_number";
 	
 			/// <summary>
-	        /// Constant for accessing NationalOrRegionalAccountNumber property.
+	        /// Constant for accessing GeneralInfo.natl_or_regl_account_number property.
 	        /// </summary>
-			public const string NationalOrRegionalAccountNumber = "NationalOrRegionalAccountNumber";
+			public const string GeneralInfonatlOrReglAccountNumber = "GeneralInfo.natl_or_regl_account_number";
 	
 			/// <summary>
-	        /// Constant for accessing BranchNumber property.
+	        /// Constant for accessing GeneralInfo.branch_number property.
 	        /// </summary>
-			public const string BranchNumber = "BranchNumber";
+			public const string GeneralInfobranchNumber = "GeneralInfo.branch_number";
 	
 			/// <summary>
-	        /// Constant for accessing CustomerNumber property.
+	        /// Constant for accessing GeneralInfo.customer_number property.
 	        /// </summary>
-			public const string CustomerNumber = "CustomerNumber";
+			public const string GeneralInfocustomerNumber = "GeneralInfo.customer_number";
 	
 			/// <summary>
-	        /// Constant for accessing OrganizationType property.
+	        /// Constant for accessing GeneralInfo.organization_type property.
 	        /// </summary>
-			public const string OrganizationType = "OrganizationType";
+			public const string GeneralInfoorganizationType = "GeneralInfo.organization_type";
 	
 			/// <summary>
-	        /// Constant for accessing NationalAccountId property.
+	        /// Constant for accessing GeneralInfo.national_account_id property.
 	        /// </summary>
-			public const string NationalAccountId = "NationalAccountId";
+			public const string GeneralInfonationalAccountId = "GeneralInfo.national_account_id";
 	
 			/// <summary>
 	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
 	        /// </summary>
 			public const string ProfileSystemuserIdChangedBy = "ProfileSystem.user_id_changed_by";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.date_last_changed property.
+	        /// </summary>
+			public const string ProfileSystemdateLastChanged = "ProfileSystem.date_last_changed";
+	
+			/// <summary>
+	        /// Constant for accessing ProfileSystem.date_created property.
+	        /// </summary>
+			public const string ProfileSystemdateCreated = "ProfileSystem.date_created";
 	
 			/// <summary>
 	        /// Constant for accessing ProfileSystem.csadapter_date_last_changed property.

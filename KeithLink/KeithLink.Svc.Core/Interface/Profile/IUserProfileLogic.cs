@@ -33,5 +33,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
+
+        AccountReturn CreateAccount(string name);
+
+        CustomerReturn GetAllCustomers();
     }
 }

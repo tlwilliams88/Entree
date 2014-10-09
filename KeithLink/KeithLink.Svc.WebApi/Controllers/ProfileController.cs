@@ -128,6 +128,61 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute("profile/account")]
+        public OperationReturnModel<AccountReturn> CreateAccount(AccountModel account)
+        {
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+
+            try
+            {
+                _profileLogic.CreateAccount(account.Name);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/customers")]
+        public OperationReturnModel<CustomerReturn> GetAllCustomers()
+        {
+            OperationReturnModel<CustomerReturn> retVal = new OperationReturnModel<CustomerReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetAllCustomers();
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
         #endregion
     }
 }

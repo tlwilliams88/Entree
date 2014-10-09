@@ -193,6 +193,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GuestProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\OperationReturnModel.cs" />

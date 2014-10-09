@@ -16,15 +16,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
         private IUserDomainRepository       _intAd;
+        private IAccountRepository _accountRepo;
+        private ICustomerRepository _customerRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
+            _accountRepo = accountRepo;
+            _customerRepo = customerRepo;
         }
         #endregion
 
@@ -319,9 +323,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = csProfile.PhoneNumber,
-                CustomerNumber = csProfile.SelectedCustomer,
-                BranchId = csProfile.SelectedBranch,
+                PhoneNumber = csProfile.GeneralInfotelNumber,
+                CustomerNumber = csProfile.GeneralInfodefaultCustomer,
+                BranchId = csProfile.GeneralInfodefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
                 UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
                                         new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
@@ -346,8 +350,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("DefaultBranch");
+            profileQuery.Model.Properties.Add("DefaultCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             // Execute the operation and get the results back
@@ -388,8 +392,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("DefaultBranch");
+            profileQuery.Model.Properties.Add("DefaultCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -530,5 +534,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
+
+
+        public AccountReturn CreateAccount(string name)
+        {
+            // call CS account repository -- hard code it for now
+            _accountRepo.CreateAccount(name);
+            return new AccountReturn();
+        }
+
+        public CustomerReturn GetAllCustomers()
+        {
+            return _customerRepo.GetAllCustomers();
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
             CommercePropertyItem item = searchCriteria.Model.Properties[0];
             CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = 
-                new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(GetSiteName());
+                new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
             String connStr = csResources ["Biz Data Service"] ["s_BizDataStoreConnectionString"].ToString( ) ;
             //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
             using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
@@ -57,15 +57,6 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     }
                 }
             }
-        }
-
-        private static string GetSiteName()
-        {
-            if (CommerceOperationContext.CurrentInstance == null)
-            {
-                throw CommonExceptions.MissingOperationContext();
-            }
-            return CommerceOperationContext.CurrentInstance.SiteName;
         }
     }
 }
