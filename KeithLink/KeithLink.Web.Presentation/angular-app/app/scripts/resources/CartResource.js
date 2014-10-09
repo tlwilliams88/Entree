@@ -30,6 +30,11 @@ angular.module('bekApp')
       deleteItem: {
         url: '/cart/:cartId/item',
         method: 'DELETE'
+      },
+
+      getShipDates: {
+        url: '/order/shipdays',
+        method: 'GET'
       }
 
     });

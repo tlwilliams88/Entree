@@ -11,8 +11,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
 	public interface IRecentlyViewedListLogic
 	{
-		void AddItem(UserProfile user, CatalogInfo catalogInfo, string itemNumber);
-		void Clear(UserProfile user, CatalogInfo catalogInfo);
-		List<RecentItem> Read(UserProfile user, CatalogInfo catalogInfo);
+		void AddItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
+		void Clear(UserProfile user, UserSelectedContext catalogInfo);
+		List<RecentItem> Read(UserProfile user, UserSelectedContext catalogInfo);
 	}
 }

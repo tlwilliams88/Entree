@@ -3,6 +3,6 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Core.Interface.Orders {
     public interface IShipDateRepository {
-        ShipDateReturn GetShipDates(CatalogInfo customerInfo);
+        ShipDateReturn GetShipDates(UserSelectedContext customerInfo);
     }
 }

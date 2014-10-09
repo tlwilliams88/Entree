@@ -667,9 +667,9 @@ namespace KeithLink.Svc.Impl.ETL
             return list;
         }
 
-        private KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo CreateCatalogInfo(string CustomerNumber, string DivisionName)
+        private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateCatalogInfo(string CustomerNumber, string DivisionName)
         {
-            KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo catInfo = new KeithLink.Svc.Core.Models.SiteCatalog.CatalogInfo();
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
             catInfo.CustomerId = CustomerNumber;
             catInfo.BranchId = DivisionName;
             return catInfo;

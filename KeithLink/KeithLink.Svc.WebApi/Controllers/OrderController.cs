@@ -33,21 +33,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute("order/shipdays")]
         public ShipDateReturn GetShipDays() {
-            return _shipDayService.GetShipDates(this.RequestCatalogInfo);
+            return _shipDayService.GetShipDates(this.SelectedUserContext);
         }
 
 		[HttpGet]
 		[ApiKeyedRoute("order/")]
 		public List<Order> Orders()
 		{
-			return _orderLogic.ReadOrders(this.AuthenticatedUser, this.RequestCatalogInfo);
+			return _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("order/{orderNumber}")]
 		public Order Orders(string orderNumber)
 		{
-			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.RequestCatalogInfo, orderNumber);
+			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
 		}
 
         [HttpPost]

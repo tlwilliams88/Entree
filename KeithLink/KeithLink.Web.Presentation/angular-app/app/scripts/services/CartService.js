@@ -167,6 +167,10 @@ angular.module('bekApp')
         }
 
         return selectedCart;
+      },
+
+      getShipDates: function() {
+        return Cart.getShipDates().$promise;
       }
 
     };

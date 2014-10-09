@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
 		}
 
-		public Guid CreateCart(UserProfile user, CatalogInfo catalogInfo, ShoppingCart cart)
+		public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
 		{
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
@@ -89,7 +89,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(CatalogInfo catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
+		public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -146,7 +146,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
-		public List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && 
@@ -259,7 +259,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		#endregion
 
-		private string CartName(string name, CatalogInfo catalogInfo)
+		private string CartName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
