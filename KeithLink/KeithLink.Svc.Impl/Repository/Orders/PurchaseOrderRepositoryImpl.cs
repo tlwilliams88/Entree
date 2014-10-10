@@ -54,9 +54,6 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-			int i = 0;
-			var test = ((PurchaseOrder)basketResponse.CommerceEntities[i]);
-
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 
 		}
