@@ -50,7 +50,7 @@
           <tr ng-repeat="cart in carts | orderBy:'name'" ng-click="selectCart(cart); showCarts=false" ng-hide="cart.id === selectedCart.id">
             <td><span class="overflow">{{cart.name}}</span></td>
             <td>{{cart.items.length}}</td>
-            <td>{{cart.requestedshipdate | date:shortDate}}</td>
+            <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
           </tr>
           <tr ng-click="createNewCart()" ng-show="selectedCart.id">
             <td colspan="3">Create a Cart...</td>
@@ -64,14 +64,26 @@
           {{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}
         </span>
         <span class="pull-right icon-arrow-down7 text-light"></span>
-        <ul class="dropdown-menu" role="menu">
+        <!-- <ul class="dropdown-menu" role="menu">
           <li ng-repeat="shipDate in shipDates">
             <a ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
               {{shipDate.dayofweek}}
               <span class="pull-right">{{shipDate.shipdate}}</span>
             </a>
           </li>
-        </ul>
+        </ul> -->
+        <table class="dropdown-menu">
+          <tr style="cursor:default">
+            <td></td>
+            <td>Ship Date</td>
+            <td>Submit By</td>
+          </tr>
+          <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
+            <td>{{shipDate.dayofweek}}</td>
+            <td class="nowrap">{{shipDate.shipdate}}</td>
+            <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
+          </tr>
+        </table>
       </div>
 
       <div class="col-md-3 col-sm-6 col-xs-12 info-box">

@@ -171,20 +171,19 @@ angular.module('bekApp')
       },
 
       getShipDates: function() {
-        var promise;
+        var deferred = $q.defer();
+        
         if (Service.shipDates.length > 0) {
-          var deferred = $q.defer();
-          promise = deferred.promise;
-          promise.resolve(Service.shipDates);
+          deferred.resolve(Service.shipDates);
         } else {
-          promise = Cart.getShipDates().$promise.then(function(data) {
+          Cart.getShipDates().$promise.then(function(data) {
             angular.copy(data.shipdates, Service.shipDates);
+            deferred.resolve(data.shipdates);
             return data.shipdates;
           }); 
         }
-        return promise;
+        return deferred.promise;
       }
-
     };
 
     return Service;

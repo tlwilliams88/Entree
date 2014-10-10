@@ -6,14 +6,10 @@ angular.module('bekApp')
     
     $scope.carts = carts;
     $scope.lists = lists;
+    $scope.shipDates = CartService.shipDates;
 
     $scope.sortBy = 'position';
     $scope.sortOrder = false;
-
-    CartService.getShipDates().then(function(data) {
-      console.log(data.shipdates);
-      $scope.shipDates = data.shipdates;
-    });
 
     // INFINITE SCROLL
     var itemsPerPage = Constants.infiniteScrollPageSize;

@@ -18,7 +18,17 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
 
-    CartService.getShipDates();
+    function getCutoffDate(cart) {
+      if (cart && cart.requestedshipdate) {
+        angular.forEach(CartService.shipDates, function(shipDate) {
+          var requestedShipDateString = new Date(cart.requestedshipdate).toDateString(),
+            shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
+          if (requestedShipDateString === shipDateString) {
+            $scope.selectedShipDate = shipDate;
+          }
+        });        
+      }
+    }
 
     $scope.goToCart = function(cart) {
       if (cart) {
@@ -142,6 +152,8 @@ angular.module('bekApp')
       if ($scope.currentCart && $stateParams.renameCart === 'true') {
         $scope.startEditCartName($scope.currentCart.name);
       }
+
+      getCutoffDate($scope.currentCart);
     }
     
     setCurrentCart();

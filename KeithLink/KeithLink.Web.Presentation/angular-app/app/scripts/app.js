@@ -157,6 +157,9 @@ angular
       resolve: {
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
+        }],
+        shipDates: ['CartService', function (CartService){
+          return CartService.getShipDates();
         }]
       }
     })
@@ -181,6 +184,9 @@ angular
         }],
         carts: ['CartService', function(CartService) {
           return CartService.getAllCarts();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
