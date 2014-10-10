@@ -33,6 +33,8 @@ namespace KeithLink.Svc.Impl.ETL
             DataTable customers = stagingRepository.ReadCustomers();
 
             BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
+            BlockingCollection<Organization> errorOrgs = new BlockingCollection<Organization>();
+            BlockingCollection<string> orgAddOrUpdate = new BlockingCollection<string>();
 
             Parallel.ForEach(customers.AsEnumerable(), row =>
             {
@@ -44,32 +46,44 @@ namespace KeithLink.Svc.Impl.ETL
 
             ProfileContext ctxt = GetProfileContext();
             
-            Parallel.ForEach(orgsForImport, org =>
+            foreach (var org in orgsForImport)
                 {
-                    // Create a new profile object.
-                    Profile prof = null;
-                    if (existingOrgs.Any(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber))
+                    string addUpdate = "";
+                    try
                     {
-                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber).FirstOrDefault().Id, "Organization");
+                        // Create a new profile object.
+                        Profile prof = null;
+                        if (existingOrgs.Any(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber))
+                        {
+                            addUpdate = "update";
+                            prof = ctxt.GetProfile(existingOrgs.Where(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber).FirstOrDefault().Id, "Organization");
+                        }
+                        else
+                        {
+                            addUpdate = "add";
+                            prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
+                        }
+                        // Set the profile properties.
+                        prof.Properties["GeneralInfo.name"].Value = org.GeneralInfoname;
+                        prof.Properties["GeneralInfo.customer_number"].Value = org.GeneralInfocustomerNumber;
+                        prof.Properties["GeneralInfo.is_po_required"].Value = org.GeneralInfoisPoRequired;
+                        prof.Properties["GeneralInfo.is_power_menu"].Value = org.GeneralInfoisPowerMenu;
+                        prof.Properties["GeneralInfo.contract_number"].Value = org.GeneralInfocontractNumber;
+                        prof.Properties["GeneralInfo.dsr_number"].Value = org.GeneralInfodsrNumber;
+                        prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonationalAccountId;
+                        prof.Properties["GeneralInfo.branch_number"].Value = org.GeneralInfobranchNumber;
+                        prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.GeneralInfoorganizationType;
+                        // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
+
+                        // Update the profile with the property values.
+                        prof.Update();
                     }
-                    else
-                        prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
-
-                    // Set the profile properties.
-                    prof.Properties["GeneralInfo.name"].Value = org.GeneralInfonationalAccountId;
-                    prof.Properties["GeneralInfo.customer_number"].Value = org.GeneralInfocustomerNumber;
-                    prof.Properties["GeneralInfo.is_po_required"].Value = org.GeneralInfoisPoRequired;
-                    prof.Properties["GeneralInfo.is_power_menu"].Value = org.GeneralInfoisPowerMenu;
-                    prof.Properties["GeneralInfo.contract_number"].Value = org.GeneralInfocontractNumber;
-                    prof.Properties["GeneralInfo.dsr_number"].Value = org.GeneralInfodsrNumber;
-                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonationalAccountId;
-                    prof.Properties["GeneralInfo.branch_number"].Value = org.GeneralInfobranchNumber;
-                    prof.Properties["GeneralInfo.organization_type"].Value = org.GeneralInfoorganizationType;
-                    // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
-
-                    // Update the profile with the property values.
-                    prof.Update();
-                });
+                    catch (Exception ex)
+                    {
+                        errorOrgs.Add(org);
+                        orgAddOrUpdate.Add(addUpdate);
+                    }
+                };
 
             TimeSpan took = DateTime.Now - start;
             return;
