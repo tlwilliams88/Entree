@@ -34,7 +34,7 @@
         <span class="nav-title">{{selectedList.name}}</span>
         <span class="pull-right icon-arrow-down7 text-light"></span>
         <ul class="dropdown-menu" role="menu">
-          <li ng-repeat="list in lists | orderBy:['isFavoritesList', 'name']" ng-show="list.listid !== selectedList.listid">
+          <li ng-repeat="list in lists | sortLists" ng-show="list.listid !== selectedList.listid">
             <a ng-click="selectList(list)">
               {{list.name}}
             </a>
@@ -85,7 +85,7 @@
 </div>
 
 <form unsaved-warning-form novalidate name="addToOrderForm" class="style-validation-errors" autocomplete="off">
-  <table class="table table-striped-rows table-border" navigate-table>
+  <table class="table table-striped-rows table-border" navigate-table infinite-scroll="infiniteScrollLoadMore()">
     <thead>
       <tr>
         <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
@@ -129,8 +129,9 @@
           Each
           <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-sm hidden-xs">
+        <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
           Price
+          <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
         <th class="hidden-sm hidden-xs">
           Ext Price
@@ -207,7 +208,7 @@
             <div counter ng-model="item.quantity" min="0"></div>
           </ng-form>
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="input-col hidden-xs hidden-sm">
           <ng-form name="eachForm" ng-if="item.packageprice !== '0'" class="hidden-xs hidden-sm">
             <input type="checkbox" ng-model="item.each" id="each" name="each" />
             <label for="each"></label>

@@ -140,8 +140,9 @@
             Each
             <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
             Price
+            <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
           <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             Ext Price

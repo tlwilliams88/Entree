@@ -16,12 +16,9 @@ angular.module('bekApp')
     $scope.sortOrder = false;
     
     $scope.carts = CartService.carts;
+    $scope.shipDates = CartService.shipDates;
 
-    // get valid ship dates
-    CartService.getShipDates().then(function(data) {
-      console.log(data.shipdates);
-      $scope.shipDates = data.shipdates;
-    });
+    CartService.getShipDates();
 
     $scope.goToCart = function(cart) {
       if (cart) {
@@ -41,6 +38,10 @@ angular.module('bekApp')
       $scope.currentCart.requestedshipdate = shipDate.shipdate;
       $scope.selectedShipDate = shipDate;
       $scope.cartForm.$setDirty();
+    };
+
+    $scope.sortByPrice = function(item) {
+      return item.each ? item.packageprice : item.caseprice;
     };
 
     $scope.saveCart = function(cart) {

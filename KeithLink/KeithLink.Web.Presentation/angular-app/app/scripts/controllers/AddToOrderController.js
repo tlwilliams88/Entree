@@ -15,6 +15,15 @@ angular.module('bekApp')
       $scope.shipDates = data.shipdates;
     });
 
+    // INFINITE SCROLL
+    var itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
+    };
+
     $scope.getListItemsWithQuantity = function(listItems) {
       return $filter('filter')(listItems, function(value, index) {
         return value.quantity > 0;
@@ -33,13 +42,17 @@ angular.module('bekApp')
       $scope.selectedCart = cart;
     };
 
+    $scope.sortByPrice = function(item) {
+      return item.each ? item.packageprice : item.caseprice;
+    };
+
     $scope.createNewCart = function() {
       var cart = {};
       cart.items = [];
       cart.id = 'New';
       $scope.selectCart(cart);
     };
-    
+
     function deleteFieldInList(items, field) {
       angular.forEach(items, function(item, index) {
         delete item[field];

@@ -357,6 +357,7 @@ angular.module('bekApp')
     $scope.sortList = function(sortBy, sortOrder) {
       var sortField = sortBy;
       $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+        // move items with position 0 to bottom of list
         if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
           return 1000;
         }
