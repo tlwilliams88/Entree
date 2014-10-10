@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             Parallel.ForEach(customers.AsEnumerable(), row =>
             {
-                orgsForImport.Add(CreateOrganization(row));
+                orgsForImport.Add(CreateOrganizationFromStagedData(row));
             });
 
             // Get Existing Organizations from CS
@@ -53,18 +53,19 @@ namespace KeithLink.Svc.Impl.ETL
                         prof = ctxt.GetProfile(existingOrgs.Where(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber).FirstOrDefault().Id, "Organization");
                     }
                     else
+                    {
                         prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
-
+                    }
                     // Set the profile properties.
-                    prof.Properties["GeneralInfo.name"].Value = org.GeneralInfonationalAccountId;
+                    prof.Properties["GeneralInfo.name"].Value = org.GeneralInfoname;
                     prof.Properties["GeneralInfo.customer_number"].Value = org.GeneralInfocustomerNumber;
                     prof.Properties["GeneralInfo.is_po_required"].Value = org.GeneralInfoisPoRequired;
                     prof.Properties["GeneralInfo.is_power_menu"].Value = org.GeneralInfoisPowerMenu;
                     prof.Properties["GeneralInfo.contract_number"].Value = org.GeneralInfocontractNumber;
                     prof.Properties["GeneralInfo.dsr_number"].Value = org.GeneralInfodsrNumber;
-                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonationalAccountId;
+                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonatlOrReglAccountNumber;
                     prof.Properties["GeneralInfo.branch_number"].Value = org.GeneralInfobranchNumber;
-                    prof.Properties["GeneralInfo.organization_type"].Value = org.GeneralInfoorganizationType;
+                    prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.GeneralInfoorganizationType;
                     // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
 
                     // Update the profile with the property values.
@@ -75,7 +76,7 @@ namespace KeithLink.Svc.Impl.ETL
             return;
         }
 
-        private Organization CreateOrganization(DataRow row)
+        private Organization CreateOrganizationFromStagedData(DataRow row)
         {
             Organization org = new Organization()
             {

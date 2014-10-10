@@ -190,6 +190,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
+					listItem.CatchWeight = prod.CatchWeight;
 				}
 				if (favorites != null)
 				{
