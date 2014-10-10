@@ -3176,7 +3176,7 @@ th {
 .table > tbody > tr > td,
 .table > tfoot > tr > th,
 .table > tfoot > tr > td {
-  padding: 10px;
+  padding: 8px;
   line-height: 1.42857;
   vertical-align: top;
   border-top: 1px solid #c3bc9c;
@@ -4980,7 +4980,7 @@ tbody.collapse.in {
 /* line 96, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
   color: #555555;
-  background-color: #f3f1eb;
+  background-color: white;
   border: 1px solid #dddddd;
   border-bottom-color: transparent;
   cursor: default;
@@ -6602,82 +6602,87 @@ a.list-group-item-danger.active, .nav-tabs li a.list-group-item-danger.active:ho
     display: none !important;
   }
 }
-/* line 1, ../scss/scaffolding/_globals.scss */
+/* line 2, ../scss/scaffolding/_globals.scss */
+html {
+  height: 100%;
+}
+
+/* line 6, ../scss/scaffolding/_globals.scss */
 .desktop-wrapper {
   background-image: url("../images/Textured-BG.jpg");
 }
 
-/* line 7, ../scss/scaffolding/_globals.scss */
+/* line 12, ../scss/scaffolding/_globals.scss */
 .container-fluid {
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 11, ../scss/scaffolding/_globals.scss */
+/* line 16, ../scss/scaffolding/_globals.scss */
 .page-content {
   width: calc(100% - 175px);
   margin-left: 175px;
 }
 
+/* line 20, ../scss/scaffolding/_globals.scss */
+.view {
+  padding-bottom: 15px;
+}
+
 @media (max-width: 991px) {
-  /* line 17, ../scss/scaffolding/_globals.scss */
+  /* line 25, ../scss/scaffolding/_globals.scss */
   .page-content {
     width: inherit;
     margin-left: 0;
   }
 }
-@media (min-width: 992px) {
-  /* line 24, ../scss/scaffolding/_globals.scss */
-  .no-margin-top {
-    margin-top: 0;
-  }
-}
-/* line 30, ../scss/scaffolding/_globals.scss */
-.nav, .pagination, .carousel, .panel-title a, .panel-title .nav-tabs li a:hover, .nav-tabs li .panel-title a:hover {
-  cursor: pointer;
-}
-
-/* line 32, ../scss/scaffolding/_globals.scss */
-.no-padding {
-  padding: 0;
-}
-
-/* line 35, ../scss/scaffolding/_globals.scss */
-.no-margin {
-  margin: 0;
-}
-
-/* line 39, ../scss/scaffolding/_globals.scss */
-.view {
-  padding-bottom: 15px;
-}
-
-/* line 42, ../scss/scaffolding/_globals.scss */
-.sub-content {
-  padding-top: 20px;
-}
-
-/* line 45, ../scss/scaffolding/_globals.scss */
-.sub-content-mobile {
-  padding-top: 50px;
-}
-
-/* line 49, ../scss/scaffolding/_globals.scss */
-.hand {
-  cursor: pointer;
-}
-
-/* line 53, ../scss/scaffolding/_globals.scss */
-.nowrap {
-  white-space: nowrap;
-}
-
 @media print {
-  /* line 58, ../scss/scaffolding/_globals.scss */
+  /* line 32, ../scss/scaffolding/_globals.scss */
   .page-content {
     margin-left: 0;
   }
 }
+@media (min-width: 992px) {
+  /* line 2, ../scss/scaffolding/_utilities.scss */
+  .no-margin-top {
+    margin-top: 0;
+  }
+}
+/* line 8, ../scss/scaffolding/_utilities.scss */
+.nav, .pagination, .carousel, .panel-title a, .panel-title .nav-tabs li a:hover, .nav-tabs li .panel-title a:hover {
+  cursor: pointer;
+}
+
+/* line 10, ../scss/scaffolding/_utilities.scss */
+.no-padding {
+  padding: 0;
+}
+
+/* line 13, ../scss/scaffolding/_utilities.scss */
+.no-margin {
+  margin: 0;
+}
+
+/* line 17, ../scss/scaffolding/_utilities.scss */
+.sub-content {
+  padding-top: 20px;
+}
+
+/* line 20, ../scss/scaffolding/_utilities.scss */
+.sub-content-mobile {
+  padding-top: 50px;
+}
+
+/* line 24, ../scss/scaffolding/_utilities.scss */
+.hand {
+  cursor: pointer;
+}
+
+/* line 28, ../scss/scaffolding/_utilities.scss */
+.nowrap {
+  white-space: nowrap;
+}
+
 /* line 1, ../scss/scaffolding/_typography.scss */
 a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   cursor: pointer;
@@ -6880,20 +6885,64 @@ ng-class="{ odd : $odd, even: $even }"
   border-bottom-width: 1px;
 }
 /* line 49, ../scss/components/_table.scss */
-.table > tbody > tr:first-child > td {
+.table > thead > tr > th.sort-col-header {
+  cursor: pointer;
+  white-space: nowrap;
+}
+/* line 54, ../scss/components/_table.scss */
+.table > tbody > tr:first-child > td,
+.table > tbody > tr:first-child > th {
   border-top: none;
 }
-/* line 53, ../scss/components/_table.scss */
+/* line 59, ../scss/components/_table.scss */
 .table > tbody > tr.mobile-details-row > td {
   border-top: none;
 }
-/* line 57, ../scss/components/_table.scss */
+/* line 63, ../scss/components/_table.scss */
 .table .mobile-details-row table {
   width: 100%;
 }
-/* line 61, ../scss/components/_table.scss */
+/* line 67, ../scss/components/_table.scss */
 .table > tfoot > tr > td, .table .filter-row > td {
   background-color: white;
+}
+/* line 75, ../scss/components/_table.scss */
+.table > thead > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > th,
+.table > tbody > tr > td,
+.table > tfoot > tr > th,
+.table > tfoot > tr > td {
+  padding: 12px 5px;
+}
+
+/* line 89, ../scss/components/_table.scss */
+table tr td.input-col, table tr th.input-col {
+  padding: 6px 5px;
+}
+/* line 92, ../scss/components/_table.scss */
+table tr td.input-col input[type="text"], table tr th.input-col input[type="text"] {
+  border: 1px solid #c3bc9c;
+  padding: 5px;
+}
+/* line 97, ../scss/components/_table.scss */
+table tr td input[type="checkbox"], table tr th input[type="checkbox"] {
+  margin: 0;
+}
+/* line 101, ../scss/components/_table.scss */
+table tr td.icon-col, table tr th.icon-col {
+  padding: 7px 5px;
+}
+/* line 105, ../scss/components/_table.scss */
+table tr td.notes-col, table tr th.notes-col {
+  max-width: 100px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* line 114, ../scss/components/_table.scss */
+table tr.filter-row input {
+  width: 100%;
 }
 
 /* line 1, ../scss/components/_info-box.scss */
@@ -7070,74 +7119,77 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 .featured-item {
   background-color: white;
   float: left;
-  width: 170px;
+  width: 159px;
   margin: 8px 4px;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
 /* line 8, ../scss/components/_featured-items.scss */
 .featured-item img {
-  height: 175px;
+  height: 159px;
   width: 100%;
+  border-bottom: 1px solid #c3bc9c;
+  display: block;
 }
-/* line 13, ../scss/components/_featured-items.scss */
+/* line 15, ../scss/components/_featured-items.scss */
 .featured-item a, .featured-item .nav-tabs li a:hover, .nav-tabs li .featured-item a:hover {
   display: block;
   letter-spacing: 1px;
 }
-/* line 18, ../scss/components/_featured-items.scss */
+/* line 20, ../scss/components/_featured-items.scss */
 .featured-item .featured-item__detail {
   padding: 15px 10px 15px 10px;
-  border-top: 1px solid #c3bc9c;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: 158px;
+  display: inline-block;
 }
 
-/* line 28, ../scss/components/_featured-items.scss */
+/* line 31, ../scss/components/_featured-items.scss */
 .slide-recently-viewed-items .featured-item {
   width: initial;
 }
-/* line 30, ../scss/components/_featured-items.scss */
+/* line 33, ../scss/components/_featured-items.scss */
 .slide-recently-viewed-items .featured-item img {
   width: initial;
 }
 
-/* line 36, ../scss/components/_featured-items.scss */
+/* line 39, ../scss/components/_featured-items.scss */
 .featured-item-mobile {
   background-color: white;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
-/* line 40, ../scss/components/_featured-items.scss */
+/* line 43, ../scss/components/_featured-items.scss */
 .featured-item-mobile img {
   max-height: 84px;
   max-width: 100px;
 }
-/* line 45, ../scss/components/_featured-items.scss */
+/* line 48, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail {
   text-align: left;
   padding: 25px 15px 25px 20px;
 }
-/* line 49, ../scss/components/_featured-items.scss */
+/* line 52, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail a, .featured-item-mobile .featured-item-mobile__detail .nav-tabs li a:hover, .nav-tabs li .featured-item-mobile .featured-item-mobile__detail a:hover {
   font-size: 12px;
 }
-/* line 54, ../scss/components/_featured-items.scss */
+/* line 57, ../scss/components/_featured-items.scss */
 .featured-item-mobile .carousel-counter {
   display: none;
 }
 
-/* line 59, ../scss/components/_featured-items.scss */
+/* line 62, ../scss/components/_featured-items.scss */
 .carousel-control.right, .carousel-control.left {
   background-image: none;
   color: #c3bc9c;
 }
 
-/* line 65, ../scss/components/_featured-items.scss */
+/* line 68, ../scss/components/_featured-items.scss */
 .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right {
   top: 38%;
 }
 
-/* line 70, ../scss/components/_featured-items.scss */
+/* line 73, ../scss/components/_featured-items.scss */
 .carousel-paging {
   position: absolute;
   z-index: 15;
@@ -7146,7 +7198,7 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   right: 0;
   cursor: auto;
 }
-/* line 78, ../scss/components/_featured-items.scss */
+/* line 81, ../scss/components/_featured-items.scss */
 .carousel-paging .showIndex {
   display: none;
 }
@@ -7164,7 +7216,7 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 /* line 10, ../scss/components/_dropdown-menus.scss */
 .dropdown-menu span.overflow {
   text-overflow: ellipsis;
-  max-width: 73px;
+  max-width: 140px;
   overflow: hidden;
   white-space: nowrap;
   display: block;
@@ -7179,6 +7231,11 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   background-color: #f3f1eb;
 }
 
+/* line 26, ../scss/components/_dropdown-menus.scss */
+table.dropdown-menu {
+  min-width: 0;
+}
+
 /* line 1, ../scss/components/_person-info.scss */
 .person-info {
   display: inline-block;
@@ -7187,11 +7244,11 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   font-weight: 300;
 }
 /* line 7, ../scss/components/_person-info.scss */
-.person-info div.person-info__section, .person-info .order-summary__order .person-info__section.order-col, .order-summary__order .person-info .person-info__section.order-col {
+.person-info div.person-info__section {
   display: inline-block;
 }
 /* line 10, ../scss/components/_person-info.scss */
-.person-info div.person-info__section:not(:last-child), .person-info .order-summary__order .person-info__section.order-col:not(:last-child), .order-summary__order .person-info .person-info__section.order-col:not(:last-child) {
+.person-info div.person-info__section:not(:last-child) {
   margin-right: 5px;
 }
 /* line 15, ../scss/components/_person-info.scss */
@@ -7239,7 +7296,6 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 
 /* line 1, ../scss/components/_context-menu.scss */
 .context-menu {
-  border-radius: 5px;
   position: absolute;
   z-index: 2;
   font-family: 'Open Sans', sans-serif;
@@ -7253,9 +7309,9 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   top: 0;
   left: 100%;
   font-size: 12px;
-  border: none;
   padding: 0;
   min-width: 0;
+  border-radius: 4px;
 }
 /* line 19, ../scss/components/_context-menu.scss */
 .context-menu .dropdown-menu a, .context-menu .dropdown-menu .nav-tabs li a:hover, .nav-tabs li .context-menu .dropdown-menu a:hover {
@@ -7267,39 +7323,37 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   font-size: 12px;
   letter-spacing: 0;
   min-width: 150px;
+  padding: 10px;
 }
-/* line 30, ../scss/components/_context-menu.scss */
+/* line 31, ../scss/components/_context-menu.scss */
 .context-menu .btn:hover {
   color: white !important;
   background-color: #489ecf !important;
-  border: none !important;
+  border-color: #489ecf !important;
 }
-/* line 36, ../scss/components/_context-menu.scss */
-.context-menu .btn:focus {
-  background-color: white;
-  color: #a0947f;
-  border: 1px solid #c3bc9c;
-}
-/* line 43, ../scss/components/_context-menu.scss */
+/* line 44, ../scss/components/_context-menu.scss */
 .context-menu .btn-group.open > button {
   box-shadow: none;
   color: white;
 }
 
-/* line 49, ../scss/components/_context-menu.scss */
-.context-menu__in-list .context-menu {
-  right: 0;
-  margin-top: -15px;
+/* line 50, ../scss/components/_context-menu.scss */
+.context-menu__in-list {
+  position: relative;
 }
-/* line 53, ../scss/components/_context-menu.scss */
-.context-menu__in-list .context-menu .dropdown-menu {
+/* line 52, ../scss/components/_context-menu.scss */
+.context-menu__in-list .context-menu {
+  right: 90%;
+  margin-top: -5px;
+}
+/* line 56, ../scss/components/_context-menu.scss */
+.context-menu__in-list .dropdown-menu {
   left: -100%;
 }
 
 /* line 2, ../scss/components/_counter.scss */
 .counter-container input {
   border: 1px solid #c3bc9c;
-  padding: 5px;
   display: inline-block;
   vertical-align: middle;
 }
@@ -7497,12 +7551,11 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 /* line 44, ../scss/components/_user-bar.scss */
 .user-bar-mobile {
   background-color: #f3f1eb;
-  height: 65px;
   border-bottom: 1px solid #c3bc9c;
 }
 /* line 49, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile {
-  height: 65px;
+  height: 64px;
   padding: 5px 15px;
   float: left;
 }
@@ -7577,24 +7630,30 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   vertical-align: middle;
 }
 /* line 21, ../scss/components/_page-header-bar.scss */
+.page-header-bar .page-header-bar__message form input {
+  display: inline-block;
+  width: 70%;
+  vertical-align: middle;
+}
+/* line 29, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header-bar__actions {
   float: none;
   display: inline-block;
   width: 41%;
   vertical-align: middle;
 }
-/* line 28, ../scss/components/_page-header-bar.scss */
+/* line 36, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header__buttons {
   display: inline-block;
 }
-/* line 32, ../scss/components/_page-header-bar.scss */
+/* line 40, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header__orders {
   margin-left: 10px;
   vertical-align: middle;
   display: inline-block;
 }
 
-/* line 39, ../scss/components/_page-header-bar.scss */
+/* line 47, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar {
   background-color: white;
   border-bottom: 1px solid #c3bc9c;
@@ -7602,21 +7661,21 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   padding-bottom: 14px;
   margin-top: -30px;
 }
-/* line 46, ../scss/components/_page-header-bar.scss */
-.page-subheader-bar .page-subheader-bar__message > div, .page-subheader-bar .order-summary__order .page-subheader-bar__message > .order-col, .order-summary__order .page-subheader-bar .page-subheader-bar__message > .order-col {
+/* line 54, ../scss/components/_page-header-bar.scss */
+.page-subheader-bar .page-subheader-bar__message > div {
   display: inline-block;
 }
-/* line 48, ../scss/components/_page-header-bar.scss */
-.page-subheader-bar .page-subheader-bar__message > div:last-child span, .page-subheader-bar .order-summary__order .page-subheader-bar__message > .order-col:last-child span, .order-summary__order .page-subheader-bar .page-subheader-bar__message > .order-col:last-child span {
+/* line 56, ../scss/components/_page-header-bar.scss */
+.page-subheader-bar .page-subheader-bar__message > div:last-child span {
   display: none;
 }
-/* line 54, ../scss/components/_page-header-bar.scss */
+/* line 62, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container {
   padding-left: 15px;
   padding-right: 0px;
   color: #A1A1A1;
 }
-/* line 59, ../scss/components/_page-header-bar.scss */
+/* line 67, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container a, .page-subheader-bar .page-subheader-bar__container .nav-tabs li a:hover, .nav-tabs li .page-subheader-bar .page-subheader-bar__container a:hover {
   font-weight: 600;
   padding-left: 10px;
@@ -7624,14 +7683,14 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 }
 
 @media (max-width: 991px) {
-  /* line 68, ../scss/components/_page-header-bar.scss */
+  /* line 76, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar {
     background-color: white;
     border-bottom: 1px solid #c3bc9c;
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  /* line 71, ../scss/components/_page-header-bar.scss */
+  /* line 79, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__message {
     padding-top: 10px;
     padding-bottom: 4px;
@@ -7639,7 +7698,7 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  /* line 79, ../scss/components/_page-header-bar.scss */
+  /* line 87, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__filter {
     border-left: 1px solid #c3bc9c;
     float: right;
@@ -7682,48 +7741,39 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
 
 /* line 31, ../scss/pages/_home.scss */
 .order-summary__header {
-  font-weight: bold;
-  margin-left: 0;
+  font-weight: 600;
 }
 
-/* line 35, ../scss/pages/_home.scss */
+/* line 34, ../scss/pages/_home.scss */
 .order-summary__order {
   background-color: white;
   border: 1px solid #c3bc9c;
   margin-top: 10px;
-  margin-left: 0;
+  box-shadow: 0px 0px 5px #c3bc9c;
 }
-/* line 41, ../scss/pages/_home.scss */
+/* line 40, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--paid {
   border-left: 3px solid #04a773;
 }
-/* line 44, ../scss/pages/_home.scss */
+/* line 43, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--late {
   border-left: 3px solid #dc6a6a;
 }
-/* line 49, ../scss/pages/_home.scss */
-.order-summary__order > div, .order-summary__order > .order-col {
-  padding-top: 30px;
+/* line 48, ../scss/pages/_home.scss */
+.order-summary__order .table-col {
+  padding: 34px initial;
 }
-/* line 53, ../scss/pages/_home.scss */
+/* line 52, ../scss/pages/_home.scss */
 .order-summary__order .order-col {
   background-color: #f1efe5;
   border-right: 1px solid #c3bc9c;
-  padding: 20px 0;
+  padding: 15px 0;
 }
-/* line 59, ../scss/pages/_home.scss */
-.order-summary__order .order-col .order-col__date {
-  display: block;
-}
-/* line 62, ../scss/pages/_home.scss */
+/* line 57, ../scss/pages/_home.scss */
 .order-summary__order .order-col .order-col__number {
   font-size: 16px;
   font-weight: 600;
   display: block;
-}
-/* line 67, ../scss/pages/_home.scss */
-.order-summary__order .order-col .order-col__text {
-  text-transform: uppercase;
 }
 
 @media (min-width: 992px) {
@@ -7755,36 +7805,18 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
   }
 }
 @media (max-width: 991px) {
-  /* line 80, ../scss/pages/_home.scss */
+  /* line 72, ../scss/pages/_home.scss */
   .order-summary__order {
-    padding-bottom: 15px;
-    margin-right: 0;
-    border-left: 1px solid #c3bc9c;
+    border-top: none;
   }
-  /* line 85, ../scss/pages/_home.scss */
-  .order-summary__order.order-summary__order--late {
-    border-left: 1px solid #c3bc9c;
-    border-top: 3px solid #dc6a6a;
-  }
-  /* line 89, ../scss/pages/_home.scss */
-  .order-summary__order.order-summary__order--paid {
-    border-left: 1px solid #c3bc9c;
-    border-top: 3px solid #04a773;
-  }
-  /* line 95, ../scss/pages/_home.scss */
-  .order-summary__order > div, .order-summary__order > .order-col {
-    padding-top: 15px;
-  }
-  /* line 99, ../scss/pages/_home.scss */
-  .order-summary__order .right {
-    text-align: right;
-  }
-  /* line 103, ../scss/pages/_home.scss */
+  /* line 77, ../scss/pages/_home.scss */
   .order-summary__order .order-col {
-    border-right: none;
     border-bottom: 1px solid #c3bc9c;
+    border-top: 1px solid #c3bc9c;
+    border-right: none;
     padding: 10px 15px;
-    text-align: left;
+    background-color: #f1efe5;
+    position: relative;
   }
   /* line 52, ../scss/mixins/_arrows.scss */
   .order-summary__order .order-col:after, .order-summary__order .order-col:before {
@@ -7810,13 +7842,55 @@ form.style-validation-errors input.ng-dirty.ng-invalid {
     bottom: -22px;
     left: 9px;
   }
-  /* line 111, ../scss/pages/_home.scss */
+  /* line 86, ../scss/pages/_home.scss */
   .order-summary__order .order-col .order-col__date {
     text-align: right;
+    font-size: 14px;
+    margin-top: 10px;
   }
-  /* line 114, ../scss/pages/_home.scss */
-  .order-summary__order .order-col .order-col__text {
-    width: 100%;
+  /* line 92, ../scss/pages/_home.scss */
+  .order-summary__order .order-col.order-summary__order--late {
+    border-top: 3px solid #dc6a6a;
+  }
+  /* line 95, ../scss/pages/_home.scss */
+  .order-summary__order .order-col.order-summary__order--paid {
+    border-top: 3px solid #04a773;
+  }
+  /* line 99, ../scss/pages/_home.scss */
+  .order-summary__order .order-details {
+    padding: 15px;
+  }
+  /* line 102, ../scss/pages/_home.scss */
+  .order-summary__order .order-details > .details-item {
+    margin-left: -15px;
+    margin-right: -15px;
+    padding-top: 10px;
+  }
+  /* line 14, ../scss/vendor/bootstrap/bootstrap/mixins/_clearfix.scss */
+  .order-summary__order .order-details > .details-item:before, .order-summary__order .order-details > .details-item:after {
+    content: " ";
+    display: table;
+  }
+  /* line 19, ../scss/vendor/bootstrap/bootstrap/mixins/_clearfix.scss */
+  .order-summary__order .order-details > .details-item:after {
+    clear: both;
+  }
+  /* line 106, ../scss/pages/_home.scss */
+  .order-summary__order .order-details > .details-item > div {
+    position: relative;
+    float: left;
+    width: 50%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  /* line 109, ../scss/pages/_home.scss */
+  .order-summary__order .order-details > .details-item .item-value {
+    text-align: right;
+  }
+  /* line 112, ../scss/pages/_home.scss */
+  .order-summary__order .order-details > .details-item .item-title {
+    font-weight: 600;
   }
 }
 /* line 1, ../scss/pages/_catalog.scss */
@@ -7870,7 +7944,7 @@ ul.horizontal-slide .item-holder {
 }
 
 /* line 32, ../scss/pages/_register.scss */
-.register-form input[type='text'], .register-form input[type='email'], .register-form input[type='password'] {
+.register-form input[type='text'], .register-form input[type='email'], .register-form input[type='password'], .register-form select {
   min-height: 60px;
   font-size: 14px;
   font-weight: 400;
@@ -7898,7 +7972,7 @@ ul.horizontal-slide .item-holder {
 }
 /* line 10, ../scss/pages/_item-details.scss */
 .item-details__main-info .main-info__description {
-  max-width: 250px;
+  max-width: 275px;
 }
 
 /* line 14, ../scss/pages/_item-details.scss */
@@ -8159,23 +8233,50 @@ ul.horizontal-slide .item-holder {
 /* line 2, ../scss/pages/_add-to-order.scss */
 .select-nav-bar .info-box {
   padding: 10px 15px;
-  border-right: none;
   border-bottom: none;
 }
 /* line 7, ../scss/pages/_add-to-order.scss */
-.select-nav-bar .info-box:last-child {
-  border-right: 1px solid #c3bc9c;
-}
-/* line 11, ../scss/pages/_add-to-order.scss */
 .select-nav-bar .info-box .nav-description {
   font-size: 14px;
   display: block;
 }
-/* line 15, ../scss/pages/_add-to-order.scss */
+/* line 11, ../scss/pages/_add-to-order.scss */
 .select-nav-bar .info-box .nav-title {
   font-size: 16px;
 }
+/* line 14, ../scss/pages/_add-to-order.scss */
+.select-nav-bar .info-box .nav-subtotal {
+  font-size: 16px;
+  font-weight: 600;
+}
 
+@media (max-width: 991px) {
+  /* line 23, ../scss/pages/_add-to-order.scss */
+  .select-nav-bar .info-box .nav-description {
+    display: inline-block;
+    width: 90px;
+  }
+  /* line 27, ../scss/pages/_add-to-order.scss */
+  .select-nav-bar .info-box .icon-arrow-down7 {
+    line-height: 22px;
+  }
+}
+@media (min-width: 992px) {
+  /* line 37, ../scss/pages/_add-to-order.scss */
+  .select-nav-bar .info-box {
+    border-right: none;
+  }
+  /* line 39, ../scss/pages/_add-to-order.scss */
+  .select-nav-bar .info-box:last-child {
+    border-right: 1px solid #c3bc9c;
+  }
+}
+@media (min-width: 768px) {
+  /* line 46, ../scss/pages/_add-to-order.scss */
+  .select-nav-bar .no-border-right-sm.info-box {
+    border-right: none;
+  }
+}
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 /* line 2, ../scss/pages/_lists.scss */
 .custom-lists .btn-list {
@@ -8214,57 +8315,52 @@ ul.horizontal-slide .item-holder {
   cursor: copy;
 }
 
-/* DRAG AND DROP */
 /* line 45, ../scss/pages/_lists.scss */
+.custom-lists__multi-actions .multi-action-btn {
+  height: 40px;
+}
+
+/* DRAG AND DROP */
+/* line 51, ../scss/pages/_lists.scss */
 .ui-draggable-handle {
   cursor: move;
 }
 
-/* line 48, ../scss/pages/_lists.scss */
+/* line 54, ../scss/pages/_lists.scss */
 .ui-draggable-dragging {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
   background-color: white !important;
 }
-/* line 53, ../scss/pages/_lists.scss */
-.ui-draggable-dragging .table-col {
-  padding: 15px 10px !important;
-  width: initial !important;
-}
-/* line 58, ../scss/pages/_lists.scss */
+/* line 59, ../scss/pages/_lists.scss */
 .ui-draggable-dragging .hidden-drag {
   display: none;
 }
 
-/* line 62, ../scss/pages/_lists.scss */
+/* line 63, ../scss/pages/_lists.scss */
 .ui-sortable-placeholder {
   display: block !important;
 }
 
-/* line 65, ../scss/pages/_lists.scss */
-.ui-sortable-helper {
+/* line 66, ../scss/pages/_lists.scss */
+.ui-sortable-helper tr {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
-  background-color: #EBE7D9 !important;
-}
-/* line 69, ../scss/pages/_lists.scss */
-.ui-sortable-helper .table-col {
-  border: none !important;
 }
 
-/* line 73, ../scss/pages/_lists.scss */
-.item-selected, .bek-reordered-item td {
+/* line 70, ../scss/pages/_lists.scss */
+.item-selected > tr > td, .bek-reordered-item td {
   background-color: #f8f8c4 !important;
 }
 
 @media (min-width: 992px) {
-  /* line 83, ../scss/pages/_lists.scss */
-  .custom-lists__table tbody tr:hover td {
-    background-color: #EBE7D9 !important;
+  /* line 80, ../scss/pages/_lists.scss */
+  table.custom-lists__table tbody tr:hover td {
+    background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 89, ../scss/pages/_lists.scss */
+  /* line 86, ../scss/pages/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;
@@ -8272,7 +8368,7 @@ ul.horizontal-slide .item-holder {
     top: 155px;
   }
 }
-/* line 97, ../scss/pages/_lists.scss */
+/* line 94, ../scss/pages/_lists.scss */
 .header-row {
   background-color: #f3f1eb;
   border: 1px solid #c3bc9c;
@@ -8281,38 +8377,83 @@ ul.horizontal-slide .item-holder {
   padding: 8px 5px;
 }
 
-/* line 105, ../scss/pages/_lists.scss */
+/* line 102, ../scss/pages/_lists.scss */
 .custom-lists__table {
   width: 100%;
+  border-bottom: 1px solid #c3bc9c;
 }
-/* line 110, ../scss/pages/_lists.scss */
+/* line 108, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td {
   border-top: 1px solid #c3bc9c;
   padding: 8px 5px;
 }
-/* line 114, ../scss/pages/_lists.scss */
+/* line 112, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td:first-child {
   border-left: 1px solid #c3bc9c;
 }
-/* line 117, ../scss/pages/_lists.scss */
+/* line 115, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td:last-child {
   border-right: 1px solid #c3bc9c;
 }
-/* line 121, ../scss/pages/_lists.scss */
+/* line 119, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr.mobile-details-row > td {
   border-top: none;
 }
-/* line 126, ../scss/pages/_lists.scss */
+/* line 124, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody.odd > tr > td {
   background-color: #f3f1eb;
 }
-/* line 129, ../scss/pages/_lists.scss */
+/* line 127, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody.even > tr > td {
   background-color: white;
 }
-/* line 132, ../scss/pages/_lists.scss */
+/* line 130, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody:last-child > tr > td {
   border-bottom: 1px solid #c3bc9c;
+}
+
+/* line 1, ../scss/pages/_orders.scss */
+.order-item {
+  margin-left: -15px;
+  margin-right: -15px;
+  margin-top: 8px;
+}
+/* line 14, ../scss/vendor/bootstrap/bootstrap/mixins/_clearfix.scss */
+.order-item:before, .order-item:after {
+  content: " ";
+  display: table;
+}
+/* line 19, ../scss/vendor/bootstrap/bootstrap/mixins/_clearfix.scss */
+.order-item:after {
+  clear: both;
+}
+/* line 5, ../scss/pages/_orders.scss */
+.order-item > div {
+  position: relative;
+  float: left;
+  width: 50%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+@media (min-width: 768px) {
+  /* line 5, ../scss/pages/_orders.scss */
+  .order-item > div {
+    float: left;
+    width: 25%;
+  }
+}
+/* line 9, ../scss/pages/_orders.scss */
+.order-item .order-item-title {
+  font-weight: 600;
+}
+/* line 12, ../scss/pages/_orders.scss */
+.order-item .order-item-value {
+  color: #a0947f;
 }
 
 /*# sourceMappingURL=main.css.map */

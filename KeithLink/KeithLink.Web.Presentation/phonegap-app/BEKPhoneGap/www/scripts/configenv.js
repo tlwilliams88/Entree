@@ -2,6 +2,6 @@
 
  angular.module('configenv', [])
 
-.constant('ENV', {name:'debug',apiKey:'web_dev_v1',apiEndpoint:'http://devapi.bekco.com'})
+.constant('ENV', {name:'debug',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api'})
 
 ;

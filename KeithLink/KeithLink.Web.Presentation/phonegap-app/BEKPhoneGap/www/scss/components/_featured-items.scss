@@ -1,13 +1,15 @@
 .featured-item {
   background-color: white;
   float: left;
-  width: 170px;
+  width: 159px;
   margin: 8px 4px;
   box-shadow: 0px 0px 10px $color-border;
 
   img {
-    height: 175px;
+    height: 159px;
     width: 100%;
+    border-bottom: 1px solid $color-border;
+    display: block;
   }
 
   a {
@@ -17,10 +19,11 @@
 
   .featured-item__detail {
     padding: 15px 10px 15px 10px;
-    border-top: 1px solid $color-border;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 158px;
+    display: inline-block;
   }
 }
 
