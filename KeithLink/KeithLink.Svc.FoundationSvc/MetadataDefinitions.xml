@@ -1493,9 +1493,6 @@ This file contains the Metadata Repository
               <PropertyMapping property="LastName"				csProperty="GeneralInfo.last_name" />
               <PropertyMapping property="PreferredCreditCard"				csProperty="GeneralInfo.preferred_credit_card" />
               <PropertyMapping property="DirectMailOptOut"          csProperty="GeneralInfo.direct_mail_opt_out" />
-              <PropertyMapping property="SelectedBranch"            csProperty="GeneralInfo.SelectedBranch" />
-              <PropertyMapping property="SelectedCustomer"          csProperty="GeneralInfo.SelectedCustomer" />
-              <PropertyMapping property="PhoneNumber"               csProperty="GeneralInfo.tel_number" />
             </PropertyMappings>
 
           </EntityMapping>
@@ -1630,16 +1627,23 @@ This file contains the Metadata Repository
           <EntityMapping
 								  csType="CommerceServer.Core.Runtime.Profiles.Profile"
 								  csAssembly="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a"
-								  csDefinitionName="Organization"
-                  csArea="Profiles" >
+								  csDefinitionName="Organization" >
 
             <!-- Examples of the Property Mappings -->
             <PropertyMappings>
               <PropertyMapping property="Id"						csProperty="GeneralInfo.org_id" />
-              <PropertyMapping property="CustomerName"						csProperty="GeneralInfo.name" />
-              <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.trading_partner_number" />
+              <!--<PropertyMapping property="Name"						csProperty="GeneralInfo.name" />
+              <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.customer_number" />
+              <PropertyMapping property="IsPoRequired"						csProperty="GeneralInfo.is_po_required" />
+              <PropertyMapping property="IsPowerMenu"						csProperty="GeneralInfo.is_power_menu" />
+              <PropertyMapping property="ContractNumber"						csProperty="GeneralInfo.contract_number" />
+              <PropertyMapping property="DsrNumber"						csProperty="GeneralInfo.dsr_number" />
+              <PropertyMapping property="NationalOrRegionalAccountNumber"						csProperty="GeneralInfo.natl_or_regl_account_number" />
+              <PropertyMapping property="NationalAccountId"						csProperty="GeneralInfo.national_account_id" />
+              <PropertyMapping property="BranchNumber"						csProperty="GeneralInfo.branch_number" />
+              <PropertyMapping property="OrganizationType"						csProperty="GeneralInfo.organization_type" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
-              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
+              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />-->
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>

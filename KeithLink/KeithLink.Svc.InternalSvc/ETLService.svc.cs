@@ -17,24 +17,32 @@ namespace KeithLink.Svc.InternalSvc
     public class ETLService : IETLService
     {
         private readonly ICatalogLogic categoryLogic;
+        private readonly ICustomerLogic customerLogic;
         
 
-        public ETLService(ICatalogLogic categoryLogic)
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic)
         {
             this.categoryLogic = categoryLogic;
+            this.customerLogic = customerLogic;
         }
 
         public bool ProcessStagedData()
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
+            Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile());
             return true;
         }
-
-
+        
         public bool UpdateElasticSearch()
         {
             categoryLogic.ImportItemsToElasticSearch();
 			categoryLogic.ImportCategoriesToElasticSearch();
+            return true;
+        }
+        
+        public bool UpdateCustomerOrganizations()
+        {
+            Task.Factory.StartNew(() => this.customerLogic.ImportCustomersToOrganizationProfile());
             return true;
         }
 

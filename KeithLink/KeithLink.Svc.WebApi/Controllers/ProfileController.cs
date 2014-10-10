@@ -40,7 +40,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.RoleName);
+                                                                            userInfo.RoleName, userInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -61,7 +61,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfileProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -128,6 +128,61 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute("profile/account")]
+        public OperationReturnModel<AccountReturn> CreateAccount(AccountModel account)
+        {
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+
+            try
+            {
+                _profileLogic.CreateAccount(account.Name);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/customers")]
+        public OperationReturnModel<CustomerReturn> GetAllCustomers()
+        {
+            OperationReturnModel<CustomerReturn> retVal = new OperationReturnModel<CustomerReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetAllCustomers();
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
         #endregion
     }
 }

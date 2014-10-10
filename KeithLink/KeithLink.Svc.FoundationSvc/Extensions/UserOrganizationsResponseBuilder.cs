@@ -8,29 +8,18 @@ using CommerceServer.Core.Runtime.Profiles;
 
 namespace KeithLink.Svc.FoundationSvc.Extensions
 {
-    public class OrganizationResponseBuilder : ProfileResponseBuilderBase
+    public class UserOrganizationsResponseBuilder : ProfileResponseBuilderBase
     {
         protected override string ProfileModelName
         {
             get
             {
-                return "Organization";
+                return "UserOrganizations";
             }
         }
 
-        public OrganizationResponseBuilder()
+        public UserOrganizationsResponseBuilder()
         {
-        }
-
-        public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
-        {
-            if (!queryOperation.SearchCriteria.SearchCriteriaHasValues())
-            {
-            }
-            else
-            {
-                base.ExecuteQuery(queryOperation, operationCache, response);
-            }
         }
 
         protected override List<CommerceEntity> TranslateAll(IEnumerable<Profile> commerceProfileList, CommerceEntity userOrganizationModel)

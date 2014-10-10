@@ -106,6 +106,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
     <Compile Include="Exceptions\Orders\EarlySocketException.cs" />
@@ -129,6 +130,8 @@
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IOrderQueueLogic.cs" />
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
+    <Compile Include="Interface\Profile\ICustomerRepository.cs" />
+    <Compile Include="Interface\Profile\IAccountRepository.cs" />
     <Compile Include="Interface\Orders\IShipDateRepository.cs" />
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
@@ -154,6 +157,9 @@
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Profile\Account.cs" />
+    <Compile Include="Models\Profile\AccountReturn.cs" />
+    <Compile Include="Models\Profile\CustomerReturn.cs" />
     <Compile Include="Models\Orders\ShipDate.cs" />
     <Compile Include="Models\Orders\ShipDateReturn.cs" />
     <Compile Include="Models\Orders\OrderLine.cs" />
