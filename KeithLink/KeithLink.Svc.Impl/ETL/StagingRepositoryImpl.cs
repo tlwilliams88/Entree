@@ -115,6 +115,7 @@ namespace KeithLink.Svc.Impl.ETL
             DataTable table = new DataTable();
             DataColumn column;
             DataRow row;
+            DataRow rowTwo;
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
@@ -130,9 +131,9 @@ namespace KeithLink.Svc.Impl.ETL
             row["UserId"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";
             table.Rows.Add(row);
 
-            row = table.NewRow();
-            row["Email"] = "jason@jason.com";
-            table.Rows.Add(row);
+            rowTwo = table.NewRow();
+            rowTwo["Email"] = "jason@jason.com";
+            table.Rows.Add(rowTwo);
 
             return table;
         }

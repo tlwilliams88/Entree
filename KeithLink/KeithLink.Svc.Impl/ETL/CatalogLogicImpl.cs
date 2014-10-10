@@ -151,9 +151,9 @@ namespace KeithLink.Svc.Impl.ETL
             
             Parallel.ForEach(users.AsEnumerable(), userRow =>
             {
-                Guid userId = new Guid(userRow.GetString("UserId"));
+                Guid userId = new Guid("{fcbd9217-980f-4030-88c3-9a3e8d459fce}");
                 string emailAddress = userRow.GetString("Email");
-                KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = this.userProfile.GetUserProfile(emailAddress);
+                KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = this.userProfile.GetUserProfileByGuid(userId);
                 List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
                 
                 Parallel.ForEach(customers.AsEnumerable(), customerRow =>
