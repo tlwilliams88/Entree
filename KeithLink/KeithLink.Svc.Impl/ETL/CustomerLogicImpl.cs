@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             ProfileContext ctxt = GetProfileContext();
             
-            foreach (var org in orgsForImport)
+            Parallel.ForEach(orgsForImport, org =>
                 {
                     string addUpdate = "";
                     try
@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Impl.ETL
                         errorOrgs.Add(org);
                         orgAddOrUpdate.Add(addUpdate);
                     }
-                };
+                });
 
             TimeSpan took = DateTime.Now - start;
             return;
