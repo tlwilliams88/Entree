@@ -25,7 +25,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Profile.Customer;
+//using KeithLink.Svc.Core.Models.Profile.Customer;
 
 namespace KeithLink.Svc.Impl.ETL
 {
