@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface ICustomerRepository
     {
-        CustomerReturn GetAllCustomers();
+        List<Customer> GetCustomers(CustomerFilterModel customerFilter);
     }
 }

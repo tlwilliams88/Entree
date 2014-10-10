@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public CustomerReturn GetAllCustomers() {
+        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters) {
 
             var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 

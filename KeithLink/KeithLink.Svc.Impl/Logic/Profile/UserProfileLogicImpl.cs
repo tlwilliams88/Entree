@@ -574,9 +574,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn();
         }
 
-        public CustomerReturn GetAllCustomers()
+        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
         {
-            return _customerRepo.GetAllCustomers();
+            List<Customer> customers = _customerRepo.GetCustomers(customerFilters);
+            return 
         }
     }
 }

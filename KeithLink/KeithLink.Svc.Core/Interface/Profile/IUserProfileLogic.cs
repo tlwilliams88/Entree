@@ -21,6 +21,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         AccountReturn CreateAccount(string name);
 
-        CustomerReturn GetAllCustomers();
+        CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
     }
 }

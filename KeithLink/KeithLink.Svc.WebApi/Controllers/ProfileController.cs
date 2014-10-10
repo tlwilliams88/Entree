@@ -159,13 +159,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/customers")]
-        public OperationReturnModel<CustomerReturn> GetAllCustomers()
+        public OperationReturnModel<CustomerReturn> GetCustomers([FromUri] CustomerFilterModel customerFilter)
         {
             OperationReturnModel<CustomerReturn> retVal = new OperationReturnModel<CustomerReturn>();
 
             try
             {
-                retVal.SuccessResponse = _profileLogic.GetAllCustomers();
+                retVal.SuccessResponse = _profileLogic.GetCustomers(customerFilter);
             }
             catch (ApplicationException axe)
             {
