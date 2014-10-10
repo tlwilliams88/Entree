@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.ETL
                         prof.Properties["GeneralInfo.is_power_menu"].Value = org.GeneralInfoisPowerMenu;
                         prof.Properties["GeneralInfo.contract_number"].Value = org.GeneralInfocontractNumber;
                         prof.Properties["GeneralInfo.dsr_number"].Value = org.GeneralInfodsrNumber;
-                        prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonationalAccountId;
+                        prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonatlOrReglAccountNumber;
                         prof.Properties["GeneralInfo.branch_number"].Value = org.GeneralInfobranchNumber;
                         prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.GeneralInfoorganizationType;
                         // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
