@@ -111,14 +111,19 @@ namespace KeithLink.Svc.Impl.ETL
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
                 var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
-
-				Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask);
+                
+                Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask);
             }
             catch (Exception ex) 
             {
 				//log
 				eventLog.WriteErrorLog("Catalog Import Error", ex);
             }
+        }
+
+        public void ImportCustomers()
+        {
+
         }
 
         public void ImportCatalog()
