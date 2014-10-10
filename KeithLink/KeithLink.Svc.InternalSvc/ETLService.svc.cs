@@ -31,19 +31,17 @@ namespace KeithLink.Svc.InternalSvc
             Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
             return true;
         }
-
-
+        
         public bool UpdateElasticSearch()
         {
             categoryLogic.ImportItemsToElasticSearch();
 			categoryLogic.ImportCategoriesToElasticSearch();
             return true;
         }
-
-
+        
         public bool UpdateCustomerOrganizations()
         {
-            customerLogic.ImportCustomersToOrganizationProfile();
+            Task.Factory.StartNew(() => this.customerLogic.ImportCustomersToOrganizationProfile());
             return true;
         }
 

@@ -108,78 +108,33 @@ namespace KeithLink.Svc.Impl.ETL
         public DataTable ReadUniqueUsers()
         {
             //hard coded until user/customer data structure is defined
-            DataTable table = new DataTable();
-            DataColumn column;
-            DataRow rowOne;
-
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "UserId";
-            table.Columns.Add(column);
-
-            rowOne = table.NewRow();
-            rowOne["UserId"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";
-            table.Rows.Add(rowOne);
-
-            return table;
-        }
-
-        public DataTable ReadCustomersByUser(string UserId)
-        {
-            //hard coded until user/customer data structure is defined
+            
+            //Code to use for sql calls
+            //return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
+            
             DataTable table = new DataTable();
             DataColumn column;
             DataRow row;
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "CustomerNumber";
+            column.ColumnName = "UserId";
             table.Columns.Add(column);
 
             column = new DataColumn();
             column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "DivisionName";
+            column.ColumnName = "Email";
             table.Columns.Add(column);
 
             row = table.NewRow();
-            row["CustomerNumber"] = "356063";
-            row["DivisionName"] = "FDF";
+            row["UserId"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";
+            table.Rows.Add(row);
+
+            row = table.NewRow();
+            row["Email"] = "jason@jason.com";
             table.Rows.Add(row);
 
             return table;
-
-        }
-
-        public DataTable ReadContracts(string CustomerNumber, string DivisionName)
-        {
-            //return PopulateDataTable("[ETL].[usp_ECOM_SelectDistinctCustomerContracts]");
-
-            var contracts = new DataTable();
-
-            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-            {
-                using (var cmd = new SqlCommand("[ETL].[usp_ECOM_SelectDistinctCustomerContracts]", conn))
-                {
-                    cmd.CommandType = CommandType.StoredProcedure;
-
-                    var paramCustomerNumber = cmd.Parameters.Add("CustomerNumber", SqlDbType.VarChar);
-                    var paramDivisionName = cmd.Parameters.Add("DivisionName", SqlDbType.VarChar);
-                    
-                    paramCustomerNumber.Direction = ParameterDirection.Input;
-                    paramDivisionName.Direction = ParameterDirection.Input;
-                    
-                    paramCustomerNumber.Value = CustomerNumber;
-                    paramDivisionName.Value = DivisionName;
-                    
-                    cmd.CommandTimeout = 0;
-                    conn.Open();
-                    var da = new SqlDataAdapter(cmd);
-                    da.Fill(contracts);
-                }
-            }
-
-            return contracts;
         }
 
         public DataTable ReadContractItems(string CustomerNumber, string DivisionName, string ContractNumber)
@@ -213,5 +168,6 @@ namespace KeithLink.Svc.Impl.ETL
 
             return contractItems;
         }
-	}
+
+    }
 }
