@@ -587,7 +587,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId))
                 {
-                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == customerFilters.AccountId));
+                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
                 }
                 if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId))
                 {
@@ -595,7 +595,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard))
                 {
-                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.Contains(customerFilters.Wildcard) || x.CustomerNumber.Contains(customerFilters.Wildcard)));
+                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
                 }
             }
             else
