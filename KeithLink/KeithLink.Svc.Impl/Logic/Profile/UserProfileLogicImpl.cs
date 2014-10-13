@@ -662,8 +662,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
+            //profileQuery.Model.Properties.Add("SelectedBranch");
+            //profileQuery.Model.Properties.Add("SelectedCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
