@@ -1632,7 +1632,7 @@ This file contains the Metadata Repository
             <!-- Examples of the Property Mappings -->
             <PropertyMappings>
               <PropertyMapping property="Id"						csProperty="GeneralInfo.org_id" />
-              <!--<PropertyMapping property="Name"						csProperty="GeneralInfo.name" />
+              <PropertyMapping property="Name"						csProperty="GeneralInfo.name" />
               <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.customer_number" />
               <PropertyMapping property="IsPoRequired"						csProperty="GeneralInfo.is_po_required" />
               <PropertyMapping property="IsPowerMenu"						csProperty="GeneralInfo.is_power_menu" />
@@ -1642,8 +1642,9 @@ This file contains the Metadata Repository
               <PropertyMapping property="NationalAccountId"						csProperty="GeneralInfo.national_account_id" />
               <PropertyMapping property="BranchNumber"						csProperty="GeneralInfo.branch_number" />
               <PropertyMapping property="OrganizationType"						csProperty="GeneralInfo.organization_type" />
+              <PropertyMapping property="ParentOrganizationId"						csProperty="GeneralInfo.parent_organization" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
-              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />-->
+              <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>

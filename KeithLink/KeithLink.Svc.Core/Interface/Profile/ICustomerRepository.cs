@@ -9,6 +9,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
 {
     public interface ICustomerRepository
     {
-        CustomerReturn GetAllCustomers();
+        List<Customer> GetCustomers();
+        void AddUserToCustomer(Guid customerId, Guid userId, string role);
+        void RemoveUserFromCustomer(Guid customerId, Guid userId);
     }
 }

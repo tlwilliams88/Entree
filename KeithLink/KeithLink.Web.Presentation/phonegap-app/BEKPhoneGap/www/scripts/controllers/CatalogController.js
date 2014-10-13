@@ -10,6 +10,8 @@
 angular.module('bekApp')
   .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', function ($scope, $state, CategoryService, ProductService, BrandService) {
     
+    $scope.myInterval = -1;
+
     $scope.loadingRecentlyViewedItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;

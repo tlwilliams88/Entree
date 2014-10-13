@@ -7,6 +7,24 @@ using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Profile
 {
+    public class CustomerNumberComparer : EqualityComparer<Customer>
+    {
+        public override bool Equals(object obj)
+        {
+            return base.Equals(obj);
+        }
+
+        public override bool Equals(Customer x, Customer y)
+        {
+            return x.CustomerNumber == y.CustomerNumber;
+        }
+
+        public override int GetHashCode(Customer obj)
+        {
+            return int.Parse(obj.CustomerNumber);
+        }
+    }
+
     public class Customer
     {
         [DataMember(Name = "customerNumber")]
@@ -32,5 +50,18 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "isPowerMenu")]
         public bool IsPowerMenu { get; set; }
+
+        [DataMember(Name = "customerId")]
+        public string CustomerId { get; set; }
+
+        [DataMember(Name = "accountId")]
+        public string AccountId { get; set; }
+    }
+
+    public class CustomerAddUserModel
+    {
+        public Guid customerId { get; set; }
+        public Guid userId { get; set; }
+        public string role { get; set; }
     }
 }

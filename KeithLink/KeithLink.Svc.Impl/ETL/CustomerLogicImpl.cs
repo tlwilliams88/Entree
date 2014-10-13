@@ -48,24 +48,24 @@ namespace KeithLink.Svc.Impl.ETL
                 {
                     // Create a new profile object.
                     Profile prof = null;
-                    if (existingOrgs.Any(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber))
+                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber))
                     {
-                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.GeneralInfocustomerNumber == org.GeneralInfocustomerNumber).FirstOrDefault().Id, "Organization");
+                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber).FirstOrDefault().Id, "Organization");
                     }
                     else
                     {
                         prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
                     }
                     // Set the profile properties.
-                    prof.Properties["GeneralInfo.name"].Value = org.GeneralInfoname;
-                    prof.Properties["GeneralInfo.customer_number"].Value = org.GeneralInfocustomerNumber;
-                    prof.Properties["GeneralInfo.is_po_required"].Value = org.GeneralInfoisPoRequired;
-                    prof.Properties["GeneralInfo.is_power_menu"].Value = org.GeneralInfoisPowerMenu;
-                    prof.Properties["GeneralInfo.contract_number"].Value = org.GeneralInfocontractNumber;
-                    prof.Properties["GeneralInfo.dsr_number"].Value = org.GeneralInfodsrNumber;
-                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.GeneralInfonatlOrReglAccountNumber;
-                    prof.Properties["GeneralInfo.branch_number"].Value = org.GeneralInfobranchNumber;
-                    prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.GeneralInfoorganizationType;
+                    prof.Properties["GeneralInfo.name"].Value = org.Name;
+                    prof.Properties["GeneralInfo.customer_number"].Value = org.CustomerNumber;
+                    prof.Properties["GeneralInfo.is_po_required"].Value = org.IsPoRequired;
+                    prof.Properties["GeneralInfo.is_power_menu"].Value = org.IsPowerMenu;
+                    prof.Properties["GeneralInfo.contract_number"].Value = org.ContractNumber;
+                    prof.Properties["GeneralInfo.dsr_number"].Value = org.DsrNumber;
+                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
+                    prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
+                    prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
                     // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
 
                     // Update the profile with the property values.
@@ -80,14 +80,14 @@ namespace KeithLink.Svc.Impl.ETL
         {
             Organization org = new Organization()
             {
-                GeneralInfoname = row.GetString("CustomerName"),
-                GeneralInfocustomerNumber = row.GetString("CustomerNumber"),
-                GeneralInfobranchNumber = row.GetString("BranchNumber"),
-                GeneralInfodsrNumber = row.GetString("DsrNumber"),
-                GeneralInfonatlOrReglAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
-                GeneralInfocontractNumber = row.GetString("ContractNumber"),
-                GeneralInfoisPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
-                GeneralInfoisPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu"))
+                Name = row.GetString("CustomerName"),
+                CustomerNumber = row.GetString("CustomerNumber"),
+                BranchNumber = row.GetString("BranchNumber"),
+                DsrNumber = row.GetString("DsrNumber"),
+                NationalOrRegionalAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
+                ContractNumber = row.GetString("ContractNumber"),
+                IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
+                IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu"))
                 // NationalAccountId = row.Get // TODO - this will come from a separate file
             };
             return org;
@@ -122,9 +122,9 @@ namespace KeithLink.Svc.Impl.ETL
                 while (!rs.EOF)
                 {
                     // Write out the user_id value.
-                    existingOrgs.Add(new Organization() { GeneralInfocustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
-                                                          GeneralInfonatlOrReglAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
-                                                          GeneralInfoorganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
+                    existingOrgs.Add(new Organization() { CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
+                                                          NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
+                                                          OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
                                                           Id = rs.Fields["GeneralInfo.org_id"].Value.ToString()
                                                         });
 

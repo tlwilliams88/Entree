@@ -34,41 +34,59 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public void CreateAccount(string name) {
+        public Guid CreateAccount(string name) {
             KeithLink.Svc.Core.Models.Generated.SiteTerm orgTypes = GetOrganizationTypes();
             string accountOrgTypeId = orgTypes.Elements.Where(o => o.DisplayName == "Account").FirstOrDefault().Id;
 
             var createOrg = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
-            createOrg.Model.GeneralInfoname = name;
-            //createOrg.Model.GeneralInfonatlOrReglAccountNumber = nationalOrRegionalAccountNumber;
-            // createOrg.Model.GeneralInfonationalAccountId = ""; // TODO: Data does not exist in currend data feeds
-            createOrg.Model.GeneralInfoorganizationType = accountOrgTypeId;
+            createOrg.Model.Name = name;
+            //createOrg.Model.NationalOrRegionalAccountNumber = nationalOrRegionalAccountNumber;
+            // createOrg.Model.NationalAccountId = ""; // TODO: Data does not exist in currend data feeds
+            createOrg.Model.OrganizationType = accountOrgTypeId;
+            createOrg.CreateOptions.ReturnModel = new Core.Models.Generated.Organization();
 
-            Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest());
+            CommerceCreateOperationResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest()).OperationResponses[0] as CommerceCreateOperationResponse;
+
+            return new Guid(res.CommerceEntity.Id);
         }
 
-        public void AddUserToAccount(string accountId, string userId, string role)
+        public List<Account> GetAccounts()
+        {
+            var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            createOrg.SearchCriteria.Model.OrganizationType = "1"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+            var accounts = new System.Collections.Concurrent.BlockingCollection<Account>();
+            System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
+                {
+                    KeithLink.Svc.Core.Models.Generated.Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
+                    accounts.Add(new Account()
+                    {
+                        Id = org.Id,
+                        Name = org.Name,
+                    });
+                });
+
+            return  accounts.ToList();
+        }
+
+        public void AddCustomerToAccount(Guid accountId, Guid customerId)
+        {
+            var updateQuery = new CommerceUpdate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = customerId.ToCommerceServerFormat();
+
+            updateQuery.Model.ParentOrganizationId = accountId.ToCommerceServerFormat();
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+        }
+
+        public void AddUserToAccount(Guid accountId, Guid userId, string role)
         {
         }
-
-        public void AddCustomerToAccount(string accountId, string customerId)
-        {
-        }
-
-        public void AddUserToCustomer(string customerId, string userId, string role)
-        {
-        }
-
-        public void RemoveUserFromAccount(string accountId, string userId, string role)
-        {
-        }
-
-        public void RemoveCustomerFromAccount(string accountId, string customerId)
-        {
-        }
-
-        public void RemoveUserFromCustomer(string accountId, string userId, string role)
+        
+        public void RemoveUserFromAccount(Guid accountId, Guid userId)
         {
         }
 
@@ -88,10 +106,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             var createOrg = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
-            createOrg.Model.GeneralInfoname = name;
-            createOrg.Model.GeneralInfonatlOrReglAccountNumber = "";
-            createOrg.Model.GeneralInfonationalAccountId = nationalId;
-            createOrg.Model.GeneralInfoorganizationType = "National ID"; // TODO: Read from site term, validate and convert to id
+            createOrg.Model.Name = name;
+            createOrg.Model.NationalOrRegionalAccountNumber = "";
+            createOrg.Model.NationalAccountId = nationalId;
+            createOrg.Model.OrganizationType = "National ID"; // TODO: Read from site term, validate and convert to id
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest());
         }

@@ -159,6 +159,9 @@
     <Compile Include="Models\Orders\OrderHeader.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
+    <Compile Include="Models\Profile\AccountFilterModel.cs" />
+    <Compile Include="Models\Profile\UserFilterModel.cs" />
+    <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />
     <Compile Include="Models\Orders\ShipDate.cs" />
     <Compile Include="Models\Orders\ShipDateReturn.cs" />
