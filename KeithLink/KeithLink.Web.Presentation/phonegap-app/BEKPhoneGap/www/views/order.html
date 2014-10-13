@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    Orders
+    Order History
   </div>
   <div header-buttons>
     <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
@@ -8,10 +8,23 @@
   </div>
 </div>
 
-<ul>
-  <li ng-repeat="order in orders"><a ui-sref="menu.order.items({ orderId: order.id })">{{order.name}}</a></li>
-</ul>
-
-<ui-view>
-This shows if there are no orders....
-</ui-view>
+<table class="table table-border table-striped-rows">
+  <thead>
+    <tr>
+      <th>Order Number</th>
+      <th>Delivery Date</th>
+      <th>Item Count</th>
+      <th class="text-right">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="order in orders" ng-class="{ odd : $odd, even: $even }">
+      <td>
+        <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
+      </td>
+      <td>{{order.deliveryDate}}</td>
+      <td>{{order.itemcount}}</td>
+      <td class="text-right">{{order.ordertotal | currency}}</td>
+    </tr>
+  </tbody>
+</table>

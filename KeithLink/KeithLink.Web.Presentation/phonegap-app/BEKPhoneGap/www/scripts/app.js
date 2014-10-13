@@ -185,31 +185,28 @@ angular
     })
     .state('menu.order', {
       url: '/orders/',
-      // abstract: true,
-      // template: '<ui-view/>',
       templateUrl: 'views/order.html',
       controller: 'OrderController',
       data: {
         authorize: 'canSubmitOrders'
       },
       resolve: {
-        orders: function() {
-          return [{
-            name: 'This Order',
-            id: 1
-          }, {
-            name: 'That Order',
-            id: 2
-          }];
-        }
+        orders: [ 'OrderService', function(OrderService) {
+          return OrderService.getAllOrders();
+        }]
       }
     })
-    .state('menu.order.items', {
-      url: ':orderId/',
+    .state('menu.orderitems', {
+      url: '/orders/:orderNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
         authorize: 'canSubmitOrders'
+      },
+      resolve: {
+        order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
+          return OrderService.getOrderDetails($stateParams.orderNumber);
+        }]
       }
     });
 

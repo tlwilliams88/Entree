@@ -13,6 +13,12 @@ angular.module('bekApp')
     
     $scope.$state = $state;
 
+    // get valid ship dates
+    CartService.getShipDates().then(function(data) {
+      console.log(data.shipdates);
+      $scope.shipDates = data.shipdates;
+    });
+
     // navigate to appropriate cart if no cart is selected
     var currentCart = CartService.getSelectedCart($state.params.cartId);
     if (currentCart && currentCart.id) {

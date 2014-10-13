@@ -58,6 +58,7 @@ var app = {
 
         //merge local with server data
         listService.updateListsFromLocal();
+        cartService.updateCartsFromLocal();
 
         //check for pending orders and submit if pending connection
     },

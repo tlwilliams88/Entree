@@ -17,7 +17,7 @@ angular.module('bekApp')
                     angular.copy(localCarts, Service.carts);
                     return localCarts;
                 } else {
-                    originalCartService.getAllCarts().then(function(allCarts) {
+                    return originalCartService.getAllCarts().then(function(allCarts) {
                         localStorageService.set('carts', allCarts);
                         return allCarts;
                     });
@@ -79,16 +79,37 @@ angular.module('bekApp')
             Service.updateCart = function(cart, params) {
                 if (navigator.connection.type === 'none') {
                     var localCarts = localStorageService.get('carts');
+                    var updatedCart = cart;
                     angular.forEach(localCarts, function(item, index) {
                         if (item.id === cart.id) {
-                            cart.isUpdated = true;
-                            localCarts[index] = cart;
+                            if (cart.items[0].cartitemid) {
+                                //if on cart page
+                                localCarts[index] = cart;
+                            } else {
+
+                                angular.forEach(cart.items, function(newCartItem, index2) {
+                                    var foundItem = false;
+                                    angular.forEach(item.items, function(localCartItem, index3) {
+                                        if (localCartItem.itemnumber === newCartItem.itemnumber) {
+                                            foundItem = true;
+                                            //if item found on local, change quantities
+                                            localCarts[index].items[index3].quantity = newCartItem.quantity + localCartItem.quantity;
+                                        }
+                                    });
+                                    //if item never is found, add it
+                                    if (!foundItem) {
+                                        localCarts[index].items.push(newCartItem);
+                                    }
+                                });
+                            }
+                            localCarts[index].isChanged = true;
+                            updatedCart = localCarts[index];
                         }
                     });
                     localStorageService.set('carts', localCarts);
                     angular.copy(localCarts, Service.carts);
                     var deferred = $q.defer();
-                    deferred.resolve(cart.id);
+                    deferred.resolve(updatedCart);
                     return deferred.promise;
                 } else {
                     return originalCartService.updateCart(cart, params).then(function(response) {
@@ -188,6 +209,20 @@ angular.module('bekApp')
                 return Cart.save({}, newCart).$promise.then(function(response) {
                     return Service.getCart(response.listitemid);
                 });
+            };
+
+            Service.getShipDates = function() {
+                if (navigator.connection.type === 'none') {
+                    var shipDates = localStorageService.get('shipDates')
+                    var deferred = $q.defer();
+                    deferred.resolve(shipDates);
+                    return deferred.promise;
+                } else {
+                    return originalCartService.getShipDates().then(function(response) {
+                        localStorageService.set('shipDates', response);
+                        return response;
+                    });
+                }
             };
 
 

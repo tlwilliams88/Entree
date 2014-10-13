@@ -32,14 +32,14 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
             CommercePropertyItem item = searchCriteria.Model.Properties[0];
             CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = 
-                new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(GetSiteName());
+                new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
             String connStr = csResources ["Biz Data Service"] ["s_BizDataStoreConnectionString"].ToString( ) ;
-            ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
+            //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
             using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
             {
                 conn.Open();
                 using (System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(
-                    @"SELECT u_user_org_id,u_user_id,oo.u_org_id,u_Name,u_trading_partner_number
+                    @"SELECT u_user_org_id,u_user_id,oo.u_org_id,u_Name, u_customer_number, u_branch_number, u_contract_number
                         FROM UserOrganizationObject uoo inner join OrganizationObject oo 
                         on uoo.u_org_id=oo.u_org_id WHERE uoo.u_user_id = '" + item.Value + "'",
                     conn))
@@ -52,20 +52,13 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                         CommerceEntity org = new CommerceEntity("Organization");
                         org.Id = (string)r["u_org_id"];
                         org.SetPropertyValue("GeneralInfo.Name", (string)r["u_Name"]);
-                        org.SetPropertyValue("GeneralInfo.TradingPartnerNumber", (string)r["u_trading_partner_number"]);
+                        org.SetPropertyValue("GeneralInfo.CustomerNumber", (string)r["u_customer_number"]);
+                        org.SetPropertyValue("GeneralInfo.BranchNumber", (string)r["u_branch_number"]);
+                        org.SetPropertyValue("GeneralInfo.ContractId", (string)r["u_contract_number"]);
                         response.CommerceEntities.Add(org);
                     }
                 }
             }
-        }
-
-        private static string GetSiteName()
-        {
-            if (CommerceOperationContext.CurrentInstance == null)
-            {
-                throw CommonExceptions.MissingOperationContext();
-            }
-            return CommerceOperationContext.CurrentInstance.SiteName;
         }
     }
 }

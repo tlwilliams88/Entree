@@ -17,6 +17,8 @@ namespace KeithLink.Svc.Test.Logic {
         private InternalUserDomainRepository        _intAd;
         private EventLogRepositoryImpl              _log;
         private UserProfileLogicImpl                _logic;
+        private AccountRepository                   _acct;
+        private CustomerRepository                  _cust;
         #endregion
 
         #region ctor
@@ -32,7 +34,10 @@ namespace KeithLink.Svc.Test.Logic {
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _cache);
 
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache);
+            _acct = new AccountRepository(_log, _cache);
+            _cust = new CustomerRepository(_log, _cache);
+
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust);
         }
         #endregion
 

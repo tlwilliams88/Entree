@@ -43,6 +43,9 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="CommerceMessageManager">
       <HintPath>..\packages\CommerceServerContrib.FoundationConfiguration.1.0.184.0\lib\Net35\CommerceMessageManager.dll</HintPath>
     </Reference>
@@ -180,6 +183,10 @@
   <ItemGroup>
     <Compile Include="BEKFoundationService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\SiteHelper.cs" />
+    <Compile Include="Extensions\UserOrganizationsResponseBuilder.cs" />
+    <Compile Include="Extensions\UserOrganizationsCommitter.cs" />
+    <Compile Include="Extensions\OrganizationCommitter.cs" />
     <Compile Include="Extensions\OrganizationProfileLoader.cs" />
     <Compile Include="Extensions\OrganizationResponseBuilder.cs" />
     <Compile Include="Extensions\OrganizationTranslator.cs" />
