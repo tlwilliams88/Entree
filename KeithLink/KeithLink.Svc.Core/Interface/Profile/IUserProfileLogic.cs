@@ -12,6 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
 
         UserProfileReturn GetUserProfile(string emailAddress);
+        UserProfileReturn GetUserProfileByGuid(Guid UserId);
 
         bool IsInternalAddress(string emailAddress);
 

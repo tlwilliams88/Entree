@@ -51,6 +51,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 		KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql = KeithLink.ETL.Setup\SQL\Create_function_GetItemType.sql
 		KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql = KeithLink.ETL.Setup\SQL\Create_SSISSupport_ECOM.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectContractItems.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectContractItems.sql
+		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectCSUsers.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectCSUsers.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectDistinctCustomerContracts.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectDistinctCustomerContracts.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductAllergens.sql
 		KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql = KeithLink.ETL.Setup\SQL\Create_usp_ECOM_SelectProductDiet.sql

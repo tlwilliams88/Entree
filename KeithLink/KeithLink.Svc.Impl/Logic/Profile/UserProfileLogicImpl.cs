@@ -645,5 +645,46 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // TODO: Create user if they don't exist....   Add ROLE to call
             _accountRepo.AddCustomerToAccount(customerId, userId);
         }
+
+        /// <summary>
+        /// get the user profile by guid
+        /// </summary>
+        /// <remarks>
+        /// jmmcmillan - 10/6/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfileByGuid(Guid UserId)
+        {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0)
+            {
+                /*
+                 Throw profile not found exception??
+                 */
+            }
+            else
+            {
+                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            return retVal;
+        }
     }
+
+
 }

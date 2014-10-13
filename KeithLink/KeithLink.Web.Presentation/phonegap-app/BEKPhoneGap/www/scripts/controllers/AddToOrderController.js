@@ -27,7 +27,6 @@ angular.module('bekApp')
 
     $scope.selectCart = function(cart) {
       $scope.selectedCart = cart;
-      $scope.showCarts = false;
     };
 
     $scope.createNewCart = function() {

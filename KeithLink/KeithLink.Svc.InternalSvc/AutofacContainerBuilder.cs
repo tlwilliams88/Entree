@@ -20,6 +20,9 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Logic.Profile;
+
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -46,12 +49,15 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
-            builder.RegisterType<ExternalUserDomainRepository>().As<ExternalUserDomainRepository>();
-            builder.RegisterType<InternalUserDomainRepository>().As<InternalUserDomainRepository>();
+            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+            builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
+            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
+            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
+            builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
-            
-
+            builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
 
             return builder.Build();
         }

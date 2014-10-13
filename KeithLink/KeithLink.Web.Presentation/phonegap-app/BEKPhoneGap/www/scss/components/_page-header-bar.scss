@@ -16,6 +16,14 @@
     float: none;
     display: inline-block;
     vertical-align: middle;
+
+    form {
+      input {
+        display: inline-block;
+        width: 70%;
+        vertical-align: middle;
+      }
+    }
   }
 
   .page-header-bar__actions {

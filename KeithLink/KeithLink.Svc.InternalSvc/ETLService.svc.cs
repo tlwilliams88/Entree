@@ -29,21 +29,20 @@ namespace KeithLink.Svc.InternalSvc
         public bool ProcessStagedData()
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
+            Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile());
             return true;
         }
-
-
+        
         public bool UpdateElasticSearch()
         {
             categoryLogic.ImportItemsToElasticSearch();
 			categoryLogic.ImportCategoriesToElasticSearch();
             return true;
         }
-
-
+        
         public bool UpdateCustomerOrganizations()
         {
-            customerLogic.ImportCustomersToOrganizationProfile();
+            Task.Factory.StartNew(() => this.customerLogic.ImportCustomersToOrganizationProfile());
             return true;
         }
 
