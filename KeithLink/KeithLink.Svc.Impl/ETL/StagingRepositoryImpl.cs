@@ -105,40 +105,12 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[ReadCustomers]");
         }
 
-        public DataTable ReadUniqueUsers()
+        public DataTable ReadCSUsers()
         {
-            //hard coded until user/customer data structure is defined
-            
-            //Code to use for sql calls
-            //return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
-            
-            DataTable table = new DataTable();
-            DataColumn column;
-            DataRow row;
-            DataRow rowTwo;
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "UserId";
-            table.Columns.Add(column);
-
-            column = new DataColumn();
-            column.DataType = System.Type.GetType("System.String");
-            column.ColumnName = "Email";
-            table.Columns.Add(column);
-
-            row = table.NewRow();
-            row["UserId"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";
-            table.Rows.Add(row);
-
-            rowTwo = table.NewRow();
-            rowTwo["Email"] = "jason@jason.com";
-            table.Rows.Add(rowTwo);
-
-            return table;
+            return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
         }
 
-        public DataTable ReadContractItems(string CustomerNumber, string DivisionName, string ContractNumber)
+        public DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber)
         {
             var contractItems = new DataTable();
 
@@ -156,9 +128,9 @@ namespace KeithLink.Svc.Impl.ETL
                     paramDivisionName.Direction = ParameterDirection.Input;
                     paramContractNumber.Direction = ParameterDirection.Input;
 
-                    paramCustomerNumber.Value = CustomerNumber;
-                    paramDivisionName.Value = DivisionName;
-                    paramContractNumber.Value = ContractNumber;
+                    paramCustomerNumber.Value = customerNumber;
+                    paramDivisionName.Value = divisionName;
+                    paramContractNumber.Value = contractNumber;
 
                     cmd.CommandTimeout = 0;
                     conn.Open();
