@@ -37,9 +37,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters) {
+        public List<Customer> GetCustomers() {
 
             var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            createOrg.SearchCriteria.Model.OrganizationType = "0"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
@@ -49,19 +50,31 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     KeithLink.Svc.Core.Models.Generated.Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
                     customers.Add(new Customer()
                     {
-                        ContractId = org.GeneralInfocontractNumber,
-                        CustomerBranch = org.GeneralInfobranchNumber,
-                        CustomerName = org.GeneralInfoname,
-                        CustomerNumber = org.GeneralInfocustomerNumber,
-                        DsrNumber = org.GeneralInfodsrNumber,
-                        IsPoRequired = org.GeneralInfoisPoRequired.HasValue ? org.GeneralInfoisPoRequired.Value : false,
-                        IsPowerMenu = org.GeneralInfoisPowerMenu.HasValue ? org.GeneralInfoisPowerMenu.Value : false,
-                        NationalId = org.GeneralInfonationalAccountId
+                        CustomerId = org.Id,
+                        AccountId = "",
+                        ContractId = org.ContractNumber,
+                        CustomerBranch = org.BranchNumber,
+                        CustomerName = org.Name,
+                        CustomerNumber = org.CustomerNumber,
+                        DsrNumber = org.DsrNumber,
+                        IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
+                        IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
+                        NationalId = org.NationalAccountId
                     });
                 });
 
-            return new CustomerReturn() { Customers = customers.ToList() };
+            return  customers.ToList();
         }
+
+
+        public void AddUserToCustomer(Guid customerId, Guid userId, string role)
+        {
+        }
+
+        public void RemoveUserFromCustomer(Guid customerId, Guid userId)
+        {
+        }
+
 
         #endregion
     }

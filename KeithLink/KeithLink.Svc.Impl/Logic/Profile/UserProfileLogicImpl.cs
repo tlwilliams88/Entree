@@ -574,10 +574,76 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn();
         }
 
+        
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
         {
-            List<Customer> customers = _customerRepo.GetCustomers(customerFilters);
-            return 
+            List<Customer> allCustomers = _customerRepo.GetCustomers();
+            List<Customer> retCustomers = new List<Customer>();
+
+            if (customerFilters != null)
+            {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId))
+                {
+                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == customerFilters.AccountId));
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId))
+                {
+                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard))
+                {
+                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.Contains(customerFilters.Wildcard) || x.CustomerNumber.Contains(customerFilters.Wildcard)));
+                }
+            }
+            else
+                retCustomers = allCustomers;
+            
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
+        }
+
+        public AccountReturn GetAccounts(AccountFilterModel accountFilters)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            List<Account> retAccounts = new List<Account>();
+
+            if (accountFilters != null)
+            {
+                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.UserId))
+                {
+                    //TODO
+                }
+                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.Wildcard))
+                {
+                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+                }
+            }
+            else
+                retAccounts = allAccounts;
+
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
+        }
+
+
+        public void AddCustomerToAccount(Guid accountId, Guid customerId)
+        {
+            _accountRepo.AddCustomerToAccount(accountId, customerId);
+        }
+
+
+        public UserProfileReturn GetUsers(UserFilterModel userFilters)
+        {
+            //_csProfile.GetUsers(userFilters); // TODO
+            throw new NotImplementedException();
+        }
+
+        public void AddUserToCustomer(Guid customerId, Guid userId, string role)
+        {
+            // TODO: Create user if they don't exist....   Add ROLE to call
+            _accountRepo.AddCustomerToAccount(customerId, userId);
         }
     }
 }

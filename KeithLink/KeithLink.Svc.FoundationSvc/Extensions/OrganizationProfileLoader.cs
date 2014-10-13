@@ -23,9 +23,8 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
         public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
         {
-
-            
-            if (!queryOperation.SearchCriteria.SearchCriteriaHasValues())
+            CommerceModelSearch search = ((CommerceServer.Foundation.CommerceModelSearch)(queryOperation.SearchCriteria));
+            if (search.Model.Properties.Count == 1 && search.Model.Properties[0].Key == "OrganizationType")
             { // no search criteria, so override CS behavior to load all orgs
                 CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources =
                     new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
@@ -33,7 +32,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                 //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
                 string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), i => i.Value));
                 CommerceServer.Core.Runtime.Profiles.ProfileContext ctxt = CommerceServer.Foundation.SequenceComponents.ContextProviders.CommerceSiteContexts.Profile[SiteHelper.GetSiteName()];
-                string cmdText = "SELECT " + fields + " FROM Organization"; // todo: map out specific fields or check if field names are in ProfileEntityMappings
+                string cmdText = "SELECT " + fields + " FROM Organization WHERE " + this.ProfileEntityMappings.PropertyMappings["OrganizationType"] + " = '" + search.Model.Properties[0].Value + "'"; // todo: map out specific fields or check if field names are in ProfileEntityMappings
 
                 // Create a new RecordsetClass object.
                 ADODB.Recordset rs = new ADODB.Recordset();
@@ -57,7 +56,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                         entity.Id = rs.Fields["GeneralInfo.org_id"].Value.ToString();
                         foreach (var prop in this.ProfileEntityMappings.PropertyMappings)
                         {
-                            entity.Properties[prop.Value] = rs.Fields[prop.Value].Value.ToString();
+                            entity.Properties[prop.Key] = rs.Fields[prop.Value].Value.ToString();
                         }
                         response.CommerceEntities.Add(entity);
                         // Move to the next record.

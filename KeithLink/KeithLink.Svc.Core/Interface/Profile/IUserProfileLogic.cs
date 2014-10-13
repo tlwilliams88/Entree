@@ -19,8 +19,11 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 
-        AccountReturn CreateAccount(string name);
-
+        // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
+        AccountReturn GetAccounts(AccountFilterModel accountFilters);
+        UserProfileReturn GetUsers(UserFilterModel userFilters);
+        AccountReturn CreateAccount(string name);
+        void AddCustomerToAccount(Guid accountId, Guid customerId);
     }
 }
