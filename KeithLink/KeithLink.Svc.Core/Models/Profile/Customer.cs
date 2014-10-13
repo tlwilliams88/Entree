@@ -52,10 +52,10 @@ namespace KeithLink.Svc.Core.Models.Profile
         public bool IsPowerMenu { get; set; }
 
         [DataMember(Name = "customerId")]
-        public string CustomerId { get; set; }
+        public Guid CustomerId { get; set; }
 
         [DataMember(Name = "accountId")]
-        public string AccountId { get; set; }
+        public Guid? AccountId { get; set; }
     }
 
     public class CustomerAddUserModel

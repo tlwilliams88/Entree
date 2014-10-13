@@ -50,8 +50,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     KeithLink.Svc.Core.Models.Generated.Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
                     customers.Add(new Customer()
                     {
-                        CustomerId = org.Id,
-                        AccountId = "",
+                        CustomerId = Guid.Parse(org.Id),
+                        AccountId = String.IsNullOrEmpty(org.ParentOrganizationId) ? new Nullable<Guid>() : Guid.Parse(org.ParentOrganizationId),
                         ContractId = org.ContractNumber,
                         CustomerBranch = org.BranchNumber,
                         CustomerName = org.Name,
