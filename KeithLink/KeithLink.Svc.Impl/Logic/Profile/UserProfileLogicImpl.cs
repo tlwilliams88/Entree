@@ -321,8 +321,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
                 userCustomers.Add(new Customer() {
                     CustomerName = (string)ent.Properties["GeneralInfo.Name"],
-                    CustomerNumber = (string)ent.Properties["GeneralInfo.TradingPartnerNumber"],
-                    CustomerBranch = "fdf" // TODO: add field to organization for branch
+                    CustomerNumber = (string)ent.Properties["GeneralInfo.CustomerNumber"],
+                    CustomerBranch = (string)ent.Properties["GeneralInfo.BranchNumber"],
+                    ContractId = (string)ent.Properties["GeneralInfo.ContractId"]
                 });
 
             return new UserProfile() {
@@ -334,9 +335,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.GeneralInfodefaultCustomer,
                 BranchId = csProfile.GeneralInfodefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
+                
                 UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
                                         new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                         new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                //UserCustomers = userCustomers
                 }
             };
         }
@@ -658,13 +661,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
+            //profileQuery.Model.Properties.Add("Id");
+            //profileQuery.Model.Properties.Add("Email");
+            //profileQuery.Model.Properties.Add("FirstName");
+            //profileQuery.Model.Properties.Add("LastName");
             //profileQuery.Model.Properties.Add("SelectedBranch");
             //profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
+            //profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;

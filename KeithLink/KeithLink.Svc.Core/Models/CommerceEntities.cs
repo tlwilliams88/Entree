@@ -6962,6 +6962,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 				this._commerceEntity.SetPropertyValue(PropertyName.CustomerNumber, value);
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the ParentOrganizationId property.
+        /// </summary>
+        /// <value>
+        /// The ParentOrganizationId property from the property collection.
+        /// </value>
+        public virtual string ParentOrganizationId
+        {
+            get
+            {
+                return this._commerceEntity.GetPropertyValue(PropertyName.ParentOrganizationId) as string;
+            }
+
+            set
+            {
+                this._commerceEntity.SetPropertyValue(PropertyName.ParentOrganizationId, value);
+            }
+        }
 	
 		/// <summary>
 	    /// Gets or sets the OrganizationType property.
@@ -7112,7 +7131,12 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing OrganizationType property.
 	        /// </summary>
 			public const string OrganizationType = "OrganizationType";
-	
+
+            /// <summary>
+            /// Constant for accessing ParentOrganizationId property.
+            /// </summary>
+            public const string ParentOrganizationId = "ParentOrganizationId";
+
 			/// <summary>
 	        /// Constant for accessing NationalAccountId property.
 	        /// </summary>
