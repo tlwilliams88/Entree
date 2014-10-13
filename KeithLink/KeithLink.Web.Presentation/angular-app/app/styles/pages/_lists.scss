@@ -1,3 +1,10 @@
+.lists {
+  width: 150px;
+}
+.items {
+  width: calc(100% - 150px);
+}
+
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
   min-width: 105px;
@@ -15,6 +22,8 @@
   
   // button list of custom list names
   &.custom-lists__name {
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     // currently selected list link
     &.current-list {
@@ -24,6 +33,10 @@
     }
   }
 }
+.list-names {
+  max-width: 100%;  
+}
+
 
 // trash can button
 .btn-trash {
@@ -89,6 +102,9 @@
 }
 
 @media (max-width: $screen-sm-max) {
+  .items {
+    width: 100%;
+  }
   .custom-lists {
     position:absolute; 
     z-index: 3; 

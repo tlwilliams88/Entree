@@ -48,6 +48,19 @@ angular.module('bekApp')
         });
       },
 
+      getAllUsers: function(params) {
+        var deferred = $q.defer();
+        $http.get('/profile/users', params).then(function() {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse.users);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
+        });
+        return deferred.promise;
+      },
+
       createUser: function(userProfile) {
         var deferred = $q.defer();
 

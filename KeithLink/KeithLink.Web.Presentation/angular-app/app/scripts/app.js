@@ -78,12 +78,15 @@ angular
         }]
       }
     })
+
+    /**********
+    CATALOG
+    **********/
     .state('menu.catalog', {
       abstract: true,
       url: '/catalog/',
       template: '<div ui-view=""></div>'
     })
-    // /catalog
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
@@ -97,7 +100,6 @@ angular
       url: 'products/',
       template: '<div ui-view=""></div>'
     })
-    // /catalog/:type/:id
     .state('menu.catalog.products.list', {
       url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
@@ -106,7 +108,6 @@ angular
         authorize: 'canBrowseCatalog'
       }
     })
-    // /catalog/products/:itemNumber (item details page)
     .state('menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
@@ -120,6 +121,8 @@ angular
         }]
       }
     })
+
+
     .state('menu.lists', {
       url: '/lists/',
       abstract: true,
@@ -223,6 +226,59 @@ angular
           return OrderService.getOrderDetails($stateParams.orderNumber);
         }]
       }
+    })
+
+    /**********
+    ADMIN
+    **********/
+    .state('menu.admin', {
+      url: '/admin/',
+      templateUrl: 'views/admin/menu.html'
+    })
+    .state('menu.admin.user', {
+      url: 'users/',
+      templateUrl: 'views/admin/users.html', //'views/adminusers.html',
+      controller: 'UsersController',
+      resolve: {
+        users: [ 'UserProfileService', function(UserProfileService) {
+          return [{name: 'Maria'}, {name: 'Andrew'}, {name: 'Josh'}]; //UserProfileService.getAllUsers();
+        }]
+      }
+    })
+    .state('menu.admin.adduser', {
+      url: 'users/add/',
+      templateUrl: 'views/admin/adduserdetails.html',
+      controller: 'AddUserDetailsController'
+    })
+    .state('menu.admin.edituser', {
+      url: 'users/:userId/',
+      templateUrl: 'views/admin/edituserdetails.html',
+      controller: 'EditUserDetailsController'
+    })
+    .state('menu.admin.customer', {
+      url: 'customers/',
+      templateUrl: 'views/admin/customers.html',
+      controller: 'CustomersController',
+      resolve: {
+        customers: [ 'CustomerService', function(CustomerService) {
+          return CustomerService.getCustomers();
+        }]
+      }
+    })
+    .state('menu.admin.account', {
+      url: 'accounts/',
+      templateUrl: 'views/admin/accounts.html',
+      controller: 'AccountsController',
+      resolve: {
+        accounts: [ 'AccountService', function(AccountService) {
+          return AccountService.getAccounts();
+        }]
+      }
+    })
+    .state('menu.admin.account.details', {
+      url: ':accountId/',
+      templateUrl: 'views/admin/accountdetails.html',
+      controller: 'AccountDetailsController'
     });
 
   $stateProvider
