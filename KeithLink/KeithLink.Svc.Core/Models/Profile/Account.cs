@@ -37,4 +37,18 @@ namespace KeithLink.Svc.Core.Models.Profile
             return obj.GetHashCode();
         }
     }
+
+    public class AccountAddCustomerModel
+    {
+        public Guid accountId { get; set; }
+        public Guid customerId { get; set; }
+        public string role { get; set; }
+    }
+
+    public class AccountAddUserModel
+    {
+        public Guid accountId { get; set; }
+        public Guid userId { get; set; }
+        public string role { get; set; }
+    }
 }

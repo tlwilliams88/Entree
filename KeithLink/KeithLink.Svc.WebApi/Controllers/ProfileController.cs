@@ -162,13 +162,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/account/customer")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> AddCustomerToAccount(Guid accountId, Guid customerId)
+        public OperationReturnModel<bool> AddCustomerToAccount(AccountAddCustomerModel info)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try
             {
-                _profileLogic.AddCustomerToAccount(accountId, customerId);
+                _profileLogic.AddCustomerToAccount(info.accountId, info.customerId);
                 retVal.SuccessResponse = true;
             }
             catch (ApplicationException axe)
@@ -191,7 +191,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/account/user")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> AddUserToAccount(Guid accountId, Guid customerId, string role)
+        public OperationReturnModel<bool> AddUserToAccount(AccountAddUserModel info)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
@@ -220,7 +220,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/customer/user")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> AddUserToCustomer(Guid accountId, Guid customerId, string role)
+        public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
