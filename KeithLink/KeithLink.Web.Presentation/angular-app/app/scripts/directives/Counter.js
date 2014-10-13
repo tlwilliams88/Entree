@@ -21,6 +21,10 @@ angular.module('bekApp')
         if ( angular.isUndefined(scope.value) ) {
           // throw "Missing the value attribute on the counter directive.";
         }
+        
+        if (attributes.allowdropdown === 'true') {
+          scope.allowDropdown = true;
+        }
 
         if (!scope.value) {
           scope.value = 0;
@@ -41,6 +45,7 @@ angular.module('bekApp')
           ctrl.$setViewValue(val);
 
           disableButtons(val);
+          scope.counter.isopen = false;
         };
 
         scope.newValue = setValue;
