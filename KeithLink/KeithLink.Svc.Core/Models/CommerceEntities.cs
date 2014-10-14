@@ -7131,12 +7131,12 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing OrganizationType property.
 	        /// </summary>
 			public const string OrganizationType = "OrganizationType";
-
+            
             /// <summary>
             /// Constant for accessing ParentOrganizationId property.
             /// </summary>
-            public const string ParentOrganizationId = "ParentOrganizationId";
-
+            public const string ParentOrganizationId = "GeneralInfo.parent_organization";
+            
 			/// <summary>
 	        /// Constant for accessing NationalAccountId property.
 	        /// </summary>
@@ -7153,6 +7153,7 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string ProfileSystemcsadapterDateLastChanged = "ProfileSystem.csadapter_date_last_changed";
 	
 		}
+
 	#endregion
 		
 	
@@ -10323,6 +10324,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 				this._commerceEntity.SetPropertyValue(PropertyName.IsContractList, value);
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the ReadOnly property.
+        /// </summary>
+        /// <value>
+        /// The ReadOnly property from the property collection.
+        /// </value>
+        public virtual bool? ReadOnly
+        {
+            get
+            {
+                return this._commerceEntity.GetPropertyValue(PropertyName.ReadOnly) as bool?;
+            }
+
+            set
+            {
+                this._commerceEntity.SetPropertyValue(PropertyName.ReadOnly, value);
+            }
+        }
 	
 		/// <summary>
 	    /// Gets or sets the Status property.
@@ -10607,7 +10627,12 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing IsContractList property.
 	        /// </summary>
 			public const string IsContractList = "IsContractList";
-	
+
+            /// <summary>
+            /// Constant for accessing ReadOnly property.
+            /// </summary>
+            public const string ReadOnly = "ReadOnly";
+
 			/// <summary>
 	        /// Constant for accessing Status property.
 	        /// </summary>

@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool IsInGroup(string userName, string groupName);
 
+        void JoinGroup(string customerName, string roleName, UserPrincipal user);
+
         bool UpdatePassword(string emailAddress, string oldPassword, string newPassword);
 
         void UpdateUserAttributes(string oldEmailAddress, string newEmailAdress, string firstName, string lastName);

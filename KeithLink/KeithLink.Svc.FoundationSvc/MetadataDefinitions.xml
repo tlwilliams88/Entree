@@ -2106,6 +2106,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Active" csProperty="Active"/>
 							<PropertyMapping property="CustomerId" csProperty="CustomerId"/>
               <PropertyMapping property="IsContractList" csProperty="IsContractList"/>
+              <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2185,6 +2186,9 @@ This file contains the Metadata Repository
 					</Property>
           <Property name="IsContractList" dataType="Boolean">
             <DisplayName value="IsContractList"/>
+          </Property>
+          <Property name="ReadOnly" dataType="Boolean">
+            <DisplayName value="ReadOnly"/>
           </Property>
         </Properties>
 
