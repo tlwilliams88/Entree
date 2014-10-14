@@ -185,7 +185,7 @@ namespace KeithLink.Svc.Impl.ETL
 
                     listLogic.CreateList(userId,
                         this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
-                        this.CreateUserList(customerRow.ContractId, true, contractItems)
+                        this.CreateUserList(customerRow.ContractId, true, true, contractItems)
                         );
                 }
                 
@@ -676,12 +676,13 @@ namespace KeithLink.Svc.Impl.ETL
              
         }
 
-        private UserList CreateUserList(string contractNumber, bool isContractList, List<ListItem> items)
+        private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
         {
             UserList list = new UserList();
             list.Name = contractNumber;
             list.Items = items;
             list.IsContractList = isContractList;
+            list.ReadOnly = readOnly;
             return list;
         }
 

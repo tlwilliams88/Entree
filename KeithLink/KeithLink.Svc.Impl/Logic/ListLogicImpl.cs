@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Name = ListName(list.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
             newBasket.IsContractList = list.IsContractList;
+            newBasket.ReadOnly = list.ReadOnly;
             
 			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
         }
@@ -120,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.Equals(null) ? false : true }).ToList();
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.Equals(null) ? false : true, ReadOnly = l.ReadOnly.Equals(null) ? false : true }).ToList();
 			else 
 			{
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
@@ -247,6 +248,7 @@ namespace KeithLink.Svc.Impl.Logic
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
                 IsContractList = basket.IsContractList.Equals(null) ? false : true,
+                ReadOnly = basket.ReadOnly.Equals(null) ? false : true,
 				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
