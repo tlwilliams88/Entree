@@ -20,12 +20,6 @@ angular.module('bekApp')
         return Order.get({
           orderNumber: orderNumber
         }).$promise;
-      },
-
-      submitOrder: function(cartId) {
-        return Order.submit({
-          cartId: cartId
-        }, null).$promise;
       }
     };
  

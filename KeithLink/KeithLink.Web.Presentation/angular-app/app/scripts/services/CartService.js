@@ -183,6 +183,12 @@ angular.module('bekApp')
           }); 
         }
         return deferred.promise;
+      },
+
+      submitOrder: function(cartId) {
+        return Cart.submit({
+          cartId: cartId
+        }, null).$promise;
       }
     };
 
