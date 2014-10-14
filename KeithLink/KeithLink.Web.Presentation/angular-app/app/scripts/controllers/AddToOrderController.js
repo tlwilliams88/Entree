@@ -175,7 +175,7 @@ angular.module('bekApp')
       $scope.selectedList = ListSerivce.findListById($stateParams.listId);
     }
     if (!$scope.selectedList) {
-      $scope.selectList(angular.copy(lists[0]));
+      $scope.selectList(ListSerivce.getFavoritesList());
     }
 
     $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
