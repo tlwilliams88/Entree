@@ -8,13 +8,14 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', 'UserProfileService', 'UtilityService', 'Cart', 
-    function ($http, $filter, UserProfileService, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$filter', '$q', 'UserProfileService', 'UtilityService', 'Cart', 
+    function ($http, $filter, $q, UserProfileService, UtilityService, Cart) {
 
     var filter = $filter('filter');
 
     var Service = {
       carts: [],
+      shipDates: [],
 
       // accepts "header: true" params to get only names
       // return array of cart objects
@@ -170,9 +171,19 @@ angular.module('bekApp')
       },
 
       getShipDates: function() {
-        return Cart.getShipDates().$promise;
+        var deferred = $q.defer();
+        
+        if (Service.shipDates.length > 0) {
+          deferred.resolve(Service.shipDates);
+        } else {
+          Cart.getShipDates().$promise.then(function(data) {
+            angular.copy(data.shipdates, Service.shipDates);
+            deferred.resolve(data.shipdates);
+            return data.shipdates;
+          }); 
+        }
+        return deferred.promise;
       }
-
     };
 
     return Service;

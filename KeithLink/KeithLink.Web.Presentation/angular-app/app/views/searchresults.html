@@ -220,10 +220,11 @@
           <td class="hidden-sm hidden-xs">
             {{item.pack | number}} / {{item.size}}
           </td>
-          <td class="hidden-sm hidden-xs text-right" item-icons>
+          <td class="nowrap hidden-sm hidden-xs text-right" item-icons>
           </td>
           <td class="hidden-sm hidden-xs">
             <span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
             <a ng-if="canOrderProduct(item)" class="icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true"><div context-menu class="context-menu__in-list"></div></a>

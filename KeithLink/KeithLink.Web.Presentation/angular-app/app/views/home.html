@@ -3,7 +3,7 @@
     Welcome Back {{userProfile.displayname}}!
   </div>
   <div header-buttons>
-    <button class="btn btn-primary btn-lg">Create An Order</button>
+    <button class="btn btn-primary btn-lg" ng-click="createNewCart()">Create An Order</button>
   </div>
 </div>
 
@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | limitTo: 4">
+    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | limitTo: 4">
       <div class="row no-margin">
         <div class="col-md-2 order-col">
           <span>ORDER #</span>
@@ -95,7 +95,7 @@
         <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
       </div>
     </div>
-    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-hide="loadingOrders">
+    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-show="!loadingOrders && mostRecentOrder">
       <div class="order-col">
         <div class="row">
           <div class="col-xs-6">
@@ -144,6 +144,12 @@
     </div> <!-- end Mobile Order Summary -->
 
     <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+    <div class="visible-md visible-lg" ng-hide="orders || orders.length > 0 || loadingOrders">
+      No Recent Orders
+    </div>
+    <div class="visible-xs visible-sm" ng-hide="mostRecentOrder || loadingOrders">
+      No Current Order
+    </div>
 
         <!-- <div class="row visible-xs visible-sm">
             <div class="col-xs-12">

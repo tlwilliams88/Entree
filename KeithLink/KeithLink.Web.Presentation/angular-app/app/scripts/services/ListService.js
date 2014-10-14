@@ -29,9 +29,17 @@ angular.module('bekApp')
         }
       }
 
+      // used on lists page so users cannot rename list or add labels/parlevels
+      function isReadOnly(list) {
+        if (isFavoritesList(list.name)) {
+          list.isReadOnly = true;
+        }
+      }
+
       function flagFavoritesList() {
         angular.forEach(Service.lists, function(list, index) {
           doFlagFavoritesList(list);
+          isReadOnly(list);
         });
       }
 
@@ -253,8 +261,6 @@ angular.module('bekApp')
           angular.forEach(items, function(item, index) {
             listItemIds.push(item.listitemid);
           });
-
-          console.log(listItemIds);
 
           return $http.delete('/list/' + listId + '/item', { 
             headers: {'Content-Type': 'application/json'},

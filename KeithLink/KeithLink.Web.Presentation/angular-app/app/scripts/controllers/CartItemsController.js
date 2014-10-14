@@ -15,9 +15,20 @@ angular.module('bekApp')
     $scope.sortBy = null;
     $scope.sortOrder = false;
     
-    $scope.alerts = [];
-
     $scope.carts = CartService.carts;
+    $scope.shipDates = CartService.shipDates;
+
+    function getCutoffDate(cart) {
+      if (cart && cart.requestedshipdate) {
+        angular.forEach(CartService.shipDates, function(shipDate) {
+          var requestedShipDateString = new Date(cart.requestedshipdate).toDateString(),
+            shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
+          if (requestedShipDateString === shipDateString) {
+            $scope.selectedShipDate = shipDate;
+          }
+        });        
+      }
+    }
 
     $scope.goToCart = function(cart) {
       if (cart) {
@@ -31,6 +42,16 @@ angular.module('bekApp')
       $scope.editCart = {};
       $scope.editCart.name = angular.copy(cartName);
       $scope.currentCart.isRenaming = true;
+    };
+
+    $scope.selectShipDate = function(shipDate) {
+      $scope.currentCart.requestedshipdate = shipDate.shipdate;
+      $scope.selectedShipDate = shipDate;
+      $scope.cartForm.$setDirty();
+    };
+
+    $scope.sortByPrice = function(item) {
+      return item.each ? item.packageprice : item.caseprice;
     };
 
     $scope.saveCart = function(cart) {
@@ -53,11 +74,13 @@ angular.module('bekApp')
     };
 
     $scope.submitOrder = function(cart) {
-      $scope.saveCart(cart).then(OrderService.submitOrder).then(function(data) {
-        $scope.displayMessage('success', 'Successfully submitted order.');
-      }, function(error) {
-        $scope.displayMessage('error', 'Error submitting order.');
-      });
+      $scope.saveCart(cart)
+        .then(OrderService.submitOrder)
+        .then(function(data) {
+          $scope.displayMessage('success', 'Successfully submitted order.');
+        }, function(error) {
+          $scope.displayMessage('error', 'Error submitting order.');
+        });
     };
 
     $scope.renameCart = function (cartId, cartName) {
@@ -129,6 +152,8 @@ angular.module('bekApp')
       if ($scope.currentCart && $stateParams.renameCart === 'true') {
         $scope.startEditCartName($scope.currentCart.name);
       }
+
+      getCutoffDate($scope.currentCart);
     }
     
     setCurrentCart();
