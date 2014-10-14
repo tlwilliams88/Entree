@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using KeithLink.Svc.WebApi.Attribute;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -128,6 +129,206 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute("profile/account")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<AccountReturn> CreateAccount(AccountModel account)
+        {
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.CreateAccount(account.Name);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ApiKeyedRoute("profile/account/customer")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<bool> AddCustomerToAccount(AccountAddCustomerModel info)
+        {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try
+            {
+                _profileLogic.AddCustomerToAccount(info.accountId, info.customerId);
+                retVal.SuccessResponse = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ApiKeyedRoute("profile/account/user")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<bool> AddUserToAccount(AccountAddUserModel info)
+        {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try
+            {
+                // TODO
+                retVal.SuccessResponse = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpPut]
+        [ApiKeyedRoute("profile/customer/user")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
+        {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try
+            {
+                // TODO
+                retVal.SuccessResponse = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/customers")]
+        //[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
+        public OperationReturnModel<CustomerReturn> GetCustomers([FromUri] CustomerFilterModel customerFilter)
+        {
+            OperationReturnModel<CustomerReturn> retVal = new OperationReturnModel<CustomerReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetCustomers(customerFilter);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/accounts")]
+        //[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
+        public OperationReturnModel<AccountReturn> GetAccounts([FromUri] AccountFilterModel accountFilter)
+        {
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetAccounts(accountFilter);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/users")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<UserProfileReturn> GetUsers(UserFilterModel userFilter)
+        {
+            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+
+            try
+            {
+                _profileLogic.GetUsers(userFilter);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
         #endregion
     }
 }

@@ -47,7 +47,7 @@ angular.module('bekApp')
                     return localLists;
                 } else {
                     console.log('getting all lists');
-                    originalListService.getAllLists().then(function(allLists) {
+                    return originalListService.getAllLists().then(function(allLists) {
                         localStorageService.set('lists', allLists);
                         return allLists;
                     });

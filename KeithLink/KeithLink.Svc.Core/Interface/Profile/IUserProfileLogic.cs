@@ -12,11 +12,19 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
 
         UserProfileReturn GetUserProfile(string emailAddress);
+        UserProfileReturn GetUserProfile(Guid userId);
 
         bool IsInternalAddress(string emailAddress);
 
         string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
+
+        // admin functions
+        CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
+        AccountReturn GetAccounts(AccountFilterModel accountFilters);
+        UserProfileReturn GetUsers(UserFilterModel userFilters);
+        AccountReturn CreateAccount(string name);
+        void AddCustomerToAccount(Guid accountId, Guid customerId);
     }
 }

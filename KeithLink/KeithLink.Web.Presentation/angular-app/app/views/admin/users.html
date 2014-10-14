@@ -1,0 +1,11 @@
+<div class="col-xs-12">
+
+<h3>Users</h3>
+
+<a ui-sref="menu.admin.adduser({})">Add User</a>
+
+<ul>
+  <li ng-repeat="user in users"><a ui-sref="menu.admin.edituser({userId: 1})">{{user.name}}</a></li>
+</ul>
+
+</div>

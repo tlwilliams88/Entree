@@ -16,19 +16,32 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
         private IUserDomainRepository       _intAd;
+        private IAccountRepository _accountRepo;
+        private ICustomerRepository _customerRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
+            _accountRepo = accountRepo;
+            _customerRepo = customerRepo;
         }
         #endregion
 
         #region methods
+        public void AddCustomerToAccount(Guid accountId, Guid customerId) {
+            _accountRepo.AddCustomerToAccount(accountId, customerId);
+        }
+
+        public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
+            // TODO: Create user if they don't exist....   Add ROLE to call
+            _accountRepo.AddCustomerToAccount(customerId, userId);
+        }
+
         /// <summary>
         /// check that the customer name is longer the 0 characters
         /// </summary>
@@ -215,6 +228,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             AssertRoleNameLength(roleName);
         }
 
+        public AccountReturn CreateAccount(string name) {
+            // call CS account repository -- hard code it for now
+            _accountRepo.CreateAccount(name);
+            return new AccountReturn();
+        }
+
         /// <summary>
         /// create a Commerce Server User Profile for a BEK user
         /// </summary>
@@ -317,8 +336,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
                 userCustomers.Add(new Customer() {
                     CustomerName = (string)ent.Properties["GeneralInfo.Name"],
-                    CustomerNumber = (string)ent.Properties["GeneralInfo.TradingPartnerNumber"],
-                    CustomerBranch = "fdf" // TODO: add field to organization for branch
+                    CustomerNumber = (string)ent.Properties["GeneralInfo.CustomerNumber"],
+                    CustomerBranch = (string)ent.Properties["GeneralInfo.BranchNumber"],
+                    ContractId = (string)ent.Properties["GeneralInfo.ContractId"]
                 });
 
             return new UserProfile() {
@@ -326,15 +346,36 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = csProfile.PhoneNumber,
-                CustomerNumber = csProfile.SelectedCustomer,
-                BranchId = csProfile.SelectedBranch,
+                PhoneNumber = csProfile.GeneralInfotelNumber,
+                CustomerNumber = csProfile.GeneralInfodefaultCustomer,
+                BranchId = csProfile.GeneralInfodefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
+                
                 UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
-                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
-                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf", ContractId = "D709333" },
+                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf", ContractId = "D709333" }
+                //UserCustomers = userCustomers
                 }
             };
+        }
+
+        public AccountReturn GetAccounts(AccountFilterModel accountFilters) {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            List<Account> retAccounts = new List<Account>();
+
+            if (accountFilters != null) {
+                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.UserId)) {
+                    //TODO
+                }
+                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.Wildcard)) {
+                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+                }
+            } else
+                retAccounts = allAccounts;
+
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
         /// <summary>
@@ -361,6 +402,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
+        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters) {
+            List<Customer> allCustomers = _customerRepo.GetCustomers();
+            List<Customer> retCustomers = new List<Customer>();
+
+            if (customerFilters != null) {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
+                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
+                }
+            } else
+                retCustomers = allCustomers;
+
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
+        }
+
         /// <summary>
         /// get a user profile from commerce server
         /// </summary>
@@ -381,6 +444,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             return retVal;
+        }
+        
+        public UserProfileReturn GetUsers(UserFilterModel userFilters) {
+            //_csProfile.GetUsers(userFilters); // TODO
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -540,4 +608,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
         #endregion
     }
+
+
 }

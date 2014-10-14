@@ -1,3 +1,10 @@
+.lists {
+  width: 150px;
+}
+.items {
+  width: calc(100% - 150px);
+}
+
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
   min-width: 105px;
@@ -15,6 +22,8 @@
   
   // button list of custom list names
   &.custom-lists__name {
+    text-overflow: ellipsis;
+    overflow: hidden;
 
     // currently selected list link
     &.current-list {
@@ -24,6 +33,10 @@
     }
   }
 }
+.list-names {
+  max-width: 100%;  
+}
+
 
 // trash can button
 .btn-trash {
@@ -52,9 +65,12 @@
   cursor: move;
 }
 .ui-draggable-dragging {
-  border: 1px solid $color-border !important;
+  border-right: 1px solid $color-border !important;
+  border-left: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
-  background-color: $color-white !important;
+  td {
+    background-color: $color-white !important;
+  }
   
   .hidden-drag {
     display: none;
@@ -66,6 +82,9 @@
 .ui-sortable-helper tr {
   border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
+  td {
+    background-color: $color-white !important;
+  }
 }
 .item-selected > tr > td, .bek-reordered-item td  {
   background-color: #f8f8c4 !important;
@@ -83,6 +102,9 @@
 }
 
 @media (max-width: $screen-sm-max) {
+  .items {
+    width: 100%;
+  }
   .custom-lists {
     position:absolute; 
     z-index: 3; 
@@ -97,6 +119,11 @@
   border-bottom: none;
   font-weight: 600;
   padding: 8px 5px;
+}
+.footer-row {
+  padding: 10px;
+  border: 1px solid $color-border;
+  background-color: $color-white;
 }
 
 .custom-lists__table {

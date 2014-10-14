@@ -17,5 +17,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool UpdateElasticSearch();
         [OperationContract]
         bool ImportCatalogLists();
+        [OperationContract]
+        bool UpdateCustomerOrganizations();
     }
 }

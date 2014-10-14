@@ -12,9 +12,12 @@
   <thead>
     <tr>
       <th>Order Number</th>
+      <th>Status</th>
       <th>Delivery Date</th>
       <th>Item Count</th>
       <th class="text-right">Total</th>
+      <th>Invoice #</th>
+      <th>Invoice Status</th>
     </tr>
   </thead>
   <tbody>
@@ -22,9 +25,12 @@
       <td>
         <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
       </td>
+      <td></td>
       <td>{{order.deliveryDate}}</td>
       <td>{{order.itemcount}}</td>
       <td class="text-right">{{order.ordertotal | currency}}</td>
+      <td>{{order.invoicenumber || 'N/A'}}</td>
+      <td>{{order.invoicestatus || 'N/A'}}</td>
     </tr>
   </tbody>
 </table>

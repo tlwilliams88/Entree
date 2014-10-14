@@ -11,14 +11,17 @@ angular.module('bekApp')
                         return $q.all(
                             ListService.getAllLists(),
                             ListService.getAllLabels(),
-                            CartService.getAllCarts()
+                            CartService.getAllCarts(),
+                            CartService.getShipDates()
                         ).then(function(results) {
                                 var lists = results[0];
                                 var labels = results[1];
                                 var carts = results[2];
+                                var shipDates = results[3];
                                 localStorageService.set('lists', lists);
                                 localStorageService.set('labels', labels);
                                 localStorageService.set('carts', carts);
+                                localStorageService.set('shipDates', shipDates);
                                 return profile;
                             },
                             function(error) {

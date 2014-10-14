@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'ENV', 'LocalStorage',
-  function ($q, $location, ENV, LocalStorage) {
+.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage',
+  function ($q, $location, $log, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
@@ -23,7 +23,7 @@ angular.module('bekApp')
         // add api key to request headers
         var urlsWithoutApiKey = ['/authen'];
         if (doesUrlRequireHeader(config.url, urlsWithoutApiKey)) {
-          config.headers['apiKey'] = ENV.apiKey;
+          config.headers.apiKey = ENV.apiKey;
         }
 
         // add branch and customer information header
@@ -33,13 +33,13 @@ angular.module('bekApp')
             customerid: LocalStorage.getCustomerNumber(), //'020348', //
             branchid: LocalStorage.getBranchId()
           };
-          config.headers['userSelectedContext'] = JSON.stringify(catalogInfo);
+          config.headers.userSelectedContext = JSON.stringify(catalogInfo);
         }
 
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;
-        console.log(config.url);
+        $log.debug(config.url);
       }
 
       return config;

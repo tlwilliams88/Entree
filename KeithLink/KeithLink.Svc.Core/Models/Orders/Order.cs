@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "ordernumber")]
 		public string OrderNumber { get; set; }
 
-		[DataMember(Name = "DeliveryDate")]
+		[DataMember(Name = "deliverydate")]
 		public DateTime? DeliveryDate { get; set; }
 						
 		[DataMember(Name = "invoicenumber")]
@@ -27,6 +27,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "ordertotal")]
 		public double OrderTotal { get; set; }
+
+		[DataMember(Name = "createddate")]
+		public DateTime CreatedDate { get; set; }
 
 		[DataMember(Name ="LineItems")]
 		public List<OrderLine> LineItems { get; set; }

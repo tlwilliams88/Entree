@@ -9,7 +9,7 @@
 
   span.overflow {
     text-overflow: ellipsis;
-    max-width: 73px;
+    max-width: 140px;
     overflow: hidden;
     white-space: nowrap;
     display: block;
@@ -22,4 +22,7 @@
   > tbody > tr:hover > td {
     background-color: $background;
   }
+}
+table.dropdown-menu {
+  min-width: 0;
 }

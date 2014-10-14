@@ -129,12 +129,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 				mustClause.Add(new { query_string = new { query = string.Format("isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId) } });
 			else
 				mustClause.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
+            
+            if (!String.IsNullOrEmpty(category))
+                mustClause.Add(BuildCategoryFilter(category));
 
             List<dynamic> fieldFilterTerms = BuildStatusFilter();
-            List<dynamic> categoryFilterTerms = BuildCategoryFilter(category);
 
             ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms, should = categoryFilterTerms });
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms });
 
             return filterTerms;
 
@@ -167,18 +169,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        private static List<dynamic> BuildCategoryFilter(string category) {
-            List<dynamic> categoryFilterTerms = new List<dynamic>();
-
-            if (String.IsNullOrEmpty(category))
-                return categoryFilterTerms;
-
-            categoryFilterTerms.Add(
-                new { multi_match =
+        private static dynamic BuildCategoryFilter(string category) {
+            return new { multi_match =
                     new { query = category, fields = 
-                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } });
-
-            return categoryFilterTerms;
+                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
         private static dynamic BuildSort(string sortField, string sortDir) {

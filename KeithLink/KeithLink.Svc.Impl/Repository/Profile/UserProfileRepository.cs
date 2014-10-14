@@ -43,8 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createUser.Model.FirstName = firstName;
             createUser.Model.LastName = lastName;
             createUser.Model.Email = emailAddress;
-            createUser.Model.PhoneNumber = phoneNumber;
-            createUser.Model.SelectedBranch = branchId;
+            createUser.Model.GeneralInfotelNumber = phoneNumber;
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
         }
@@ -77,9 +76,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
+            profileQuery.Model.Properties.Add("GeneralInfo.default_branch");
+            profileQuery.Model.Properties.Add("GeneralInfo.default_customer");
+            profileQuery.Model.Properties.Add("GeneralInfo.tel_number");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
@@ -107,9 +106,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
+            profileQuery.Model.Properties.Add("GeneralInfo.default_branch");
+            profileQuery.Model.Properties.Add("GeneralInfo.default_customer");
+            profileQuery.Model.Properties.Add("GeneralInfo.tel_number");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -135,8 +134,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             updateQuery.Model.Properties["Email"] = emailAddress;
             updateQuery.Model.Properties["FirstName"] = firstName;
             updateQuery.Model.Properties["LastName"] = lastName;
-            updateQuery.Model.Properties["PhoneNumber"] = phoneNumber;
-            updateQuery.Model.Properties["SelectedBranch"] = branchId;
+            updateQuery.Model.Properties["GeneralInfo.tel_number"] = phoneNumber;
+            updateQuery.Model.Properties["GeneralInfo.default_branch"] = branchId;
+            // TODO: add DefaultCustomer
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
         }

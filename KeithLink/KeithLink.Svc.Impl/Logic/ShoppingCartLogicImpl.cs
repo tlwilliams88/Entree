@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return null;
 
 			//Does item already exist? If so, just update the quantity
-			var existingItem = basket.LineItems.Where(l => l.ProductId.Equals(newItem.ItemNumber));
+			var existingItem = basket.LineItems.Where(l => l.ProductId.Equals(newItem.ItemNumber) && l.Each.Equals(newItem.Each));
 			if (existingItem.Any())
 			{
 				existingItem.First().Quantity += newItem.Quantity;
@@ -126,7 +126,19 @@ namespace KeithLink.Svc.Impl.Logic
 				}
 				
 			}
-			
+
+			var duplicates = lineItems.Cast<CS.LineItem>().GroupBy(l => new { l.ProductId, l.Each }).Select(i => new { Ech = i.Select(p => p.Each).First(), Key = i.Key, Cnt = i.Count() }).Where(w => w.Cnt > 1).ToList();
+
+			foreach (var duplicate in duplicates)
+			{
+				var keepGuid = lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals((bool)duplicate.Key.Each)).First();
+
+				lineItems.Where(i => i.Id.Equals(keepGuid.Id)).First().Quantity = lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each)).Sum(s => s.Quantity);
+
+				itemsToRemove.AddRange(lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each) && !l.Id.Equals(keepGuid.Id)).Select(p => p.Id.ToGuid()).ToList());
+
+			}
+
 			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
 			if(deleteOmmitedItems)
@@ -134,6 +146,10 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
 				}
+
+			
+				
+
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
@@ -223,6 +239,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
+					item.CatchWeight = prod.CatchWeight;
 				}
 				if (price != null)
 				{

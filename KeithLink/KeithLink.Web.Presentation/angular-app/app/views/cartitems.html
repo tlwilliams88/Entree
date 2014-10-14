@@ -48,36 +48,85 @@
 <div class="row">
   <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
     <div class="info-box">
+      
       <div class="row">
         <div class="col-xs-12">
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
+          <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
         </div>
       </div>
+
       <div class="row">
-        <div class="col-sm-5 text-green currency-value">
+        <div class="col-sm-5 col-md-4 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
-        <div class="col-sm-7 hidden-print button-row text-right-lg text-left-xs">
+        <div class="col-sm-7 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
-      <div class="sub-content form-group">
+
+      <!-- <div class="row">
+        <h3 class="col-xs-12">Upcoming Ship Dates</h3>
+        <div class="col-xs-6 col-sm-3 col-md-4">
+          Ship Date
+        </div>
+        <div class="col-xs-6 col-sm-9 col-md-8">
+          Submit By
+        </div>
+        <div class="text-light col-xs-6 col-sm-3 col-md-4" ng-repeat-start="shipDate in shipDates">
+          {{shipDate.dayofweek}} {{shipDate.shipdate}}
+        </div>
+        <div class="text-light col-xs-6 col-sm-9 col-md-8" ng-repeat-end>
+          {{shipDate.cutoffdatetime}}
+        </div>
+      </div> -->
+
+      <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <select name="shipDate" id="shipDate" required ng-model="currentCart.requestedshipdate" ng-options="shipDate.dayofweek + ' ' + shipDate.shipdate for shipDate in shipDates">
-            <option value=""></option>
-          </select>
+          <p class="form-control-static">
+            {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+            <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
+              
+              <!-- <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="shipDate in shipDates">
+                  <a ng-click="selectShipDate(shipDate)">
+                    {{shipDate.dayofweek}}
+                    <span class="pull-right">{{shipDate.shipdate}}</span>
+                    {{shipDate.cutoffdatetime}}
+                  </a>
+                </li>
+              </ul> -->
+
+              <table class="dropdown-menu">
+                <tr style="cursor:default">
+                  <td></td>
+                  <td>Ship Date</td>
+                  <td>Submit By</td>
+                </tr>
+                <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
+                  <td>{{shipDate.dayofweek}}</td>
+                  <td class="nowrap">{{shipDate.shipdate}}</td>
+                  <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
+                </tr>
+              </table>
+
+            </button>
+          </p>
         </div>
       </div>
-      <div class="form-group">
+
+      <div class="form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
         <div class="col-sm-6">
-          <p class="form-control-static text-light">{{currentCart.requestedshipdate.cutoffdatetime}}</p>
+          <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime}}</p>
+          <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
         </div>
       </div>
-      <div class="form-group">
-        <div class="col-md-offset-2 col-sm-10">
+
+      <div class="row">
+        <div class="col-offset-sm-2 col-sm-10">
           <div class="checkbox">
             <label>
               <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart"> Make this my Active Cart
@@ -85,6 +134,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>
@@ -126,8 +176,9 @@
             Each
             <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
             Price
+            <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
           <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             Ext Price
@@ -198,6 +249,7 @@
           </td>
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{item.each ? item.packageprice : item.caseprice | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
@@ -208,12 +260,12 @@
           </td>
         </tr>
 
-        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
           <td colspan="4">
             <table>
               <colgroup>
-                <col width="15%" />
-                <col width="85%" />
+                <col width="25%" />
+                <col width="75%" />
               </colgroup>
               <tr>
                 <td>Notes</td>
@@ -238,15 +290,18 @@
               </tr>
               <tr>
                 <td>Price</td>
-                <td>{{item.each ? item.packageprice : item.caseprice | currency}}</td>
+                <td>
+                  {{item.each ? item.packageprice : item.caseprice | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                </td>
               </tr>
               <tr>
                 <td>Ext Price</td>
                 <td>{{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</td>
               </tr>
               <tr>
-                <td>
-                  <button class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
+                <td colspan="2" class="sub-content">
+                  <button ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
                 </td>
               </tr>
             </table>

@@ -10,10 +10,10 @@ namespace KeithLink.Svc.WebApi.Attribute
 {
 	public class AuthorizationAttribute: AuthorizeAttribute
 	{
-		internal string UserRole { get; set; }
+		internal string[] UserRoles { get; set; }
 
-		public AuthorizationAttribute(string role) { UserRole = role; }
-
+		public AuthorizationAttribute(params string[] allowedRoles) { UserRoles = allowedRoles; }
+		
 		protected override bool IsAuthorized(HttpActionContext actionContext)
 		{
 			if (HttpContext.Current.User.Identity.IsAuthenticated)
@@ -22,15 +22,10 @@ namespace KeithLink.Svc.WebApi.Attribute
 				{
 					var user = ((BaseController)actionContext.ControllerContext.Controller).AuthenticatedUser;
 
-					return user.RoleName.Equals(UserRole, StringComparison.InvariantCultureIgnoreCase) ;
-
+					return UserRoles.Contains(user.RoleName);
 				}
-
 			}
-
 			return base.IsAuthorized(actionContext);
-		}
-
-		
+		}		
 	}
 }
