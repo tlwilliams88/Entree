@@ -183,7 +183,7 @@
         </td>
       </tr> <!-- end Filter Row -->
 
-      <tr ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder)) track by item.listitemid" ng-class="{ odd : $odd, even: $even }">
+      <tr ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo: itemsToDisplay)) track by item.listitemid" ng-class="{ odd : $odd, even: $even }">
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
         </td>

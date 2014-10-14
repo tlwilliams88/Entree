@@ -31,7 +31,7 @@ angular.module('bekApp')
 
       // used on lists page so users cannot rename list or add labels/parlevels
       function isReadOnly(list) {
-        if (isFavoritesList(list.name)) {
+        if (isFavoritesList(list.name) || list.read_only) {
           list.isReadOnly = true;
         }
       }

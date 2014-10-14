@@ -7,6 +7,8 @@ angular.module('bekApp')
       // add display priority list of lists
       if (item.isFavoritesList) {
         item.sortPriority = 1;
+      } else if (item.is_contract_list) {
+        item.sortPriority = 2;
       } else {
         item.sortPriority = 10;
       }

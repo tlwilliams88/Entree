@@ -33,4 +33,9 @@
       <td>{{order.invoicestatus || 'N/A'}}</td>
     </tr>
   </tbody>
+  <tfoot ng-show="orders.length === 0">
+    <tr>
+      <td>There are no orders to display.</td>
+    </tr>
+  </tfoot>
 </table>

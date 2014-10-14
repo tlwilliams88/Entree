@@ -60,13 +60,6 @@ ng-class="{ odd : $odd, even: $even }"
     border-top: none;
   }
 
-  .mobile-details-row table {
-    width: 100%;
-    > tbody > tr > td {
-      padding-top: 5px;
-    }
-  }
-
   > tfoot > tr > td, .filter-row > td {
     background-color: $color-white;
   }
@@ -113,6 +106,13 @@ table {
     &.filter-row {
       input {
         width: 100%;
+      }
+    }
+
+    &.mobile-details-row table {
+      width: 100%;
+      > tbody > tr > td {
+        padding-top: 5px;
       }
     }
   }  

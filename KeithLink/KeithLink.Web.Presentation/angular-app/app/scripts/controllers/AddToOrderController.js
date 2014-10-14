@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
-    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 'UtilityService', 
+    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce, UtilityService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
@@ -49,13 +49,6 @@ angular.module('bekApp')
       $scope.selectCart(cart);
     };
 
-    function deleteFieldInList(items, field) {
-      angular.forEach(items, function(item, index) {
-        delete item[field];
-      });
-      return items;
-    }
-
     function combineDuplicateItemNumbers(items) {
 
       // combine quantities if itemnumber is a duplicate
@@ -97,7 +90,9 @@ angular.module('bekApp')
         $scope.selectedCart = cart;
 
         // reset quantities
-        $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
+        angular.forEach($scope.selectedList.items, function(item) {
+          item.quantity = 0;
+        });
 
         $scope.addToOrderForm.$setPristine();
         $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
@@ -123,7 +118,7 @@ angular.module('bekApp')
 
       if (itemsToAdd && itemsToAdd.length > 0) {
         // remove cart item ids
-        itemsToAdd = deleteFieldInList(itemsToAdd, 'listitemid');
+        UtilityService.deleteFieldFromObjects(itemsToAdd, ['listitemid']);
 
         // add items to existing cart
         if (cart && cart.id && cart.id !== 'New') {
@@ -180,7 +175,7 @@ angular.module('bekApp')
       $scope.selectedList = ListSerivce.findListById($stateParams.listId);
     }
     if (!$scope.selectedList) {
-      $scope.selectList(angular.copy(lists[0]));
+      $scope.selectList(ListSerivce.getFavoritesList());
     }
 
     $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;

@@ -10,7 +10,6 @@ angular.module('bekApp')
       },
       templateUrl: 'views/directives/counter.html',
       link: function( scope, element, attributes, ctrl ) {
-
         // set size
         element.addClass('counter-container');
         if (attributes.size === 'large') { // item details page

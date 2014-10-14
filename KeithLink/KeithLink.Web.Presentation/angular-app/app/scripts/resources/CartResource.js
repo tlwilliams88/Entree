@@ -35,6 +35,11 @@ angular.module('bekApp')
       getShipDates: {
         url: '/order/shipdays',
         method: 'GET'
+      },
+
+      submit: {
+        url: '/order/:cartId',
+        method: 'POST'
       }
 
     });
