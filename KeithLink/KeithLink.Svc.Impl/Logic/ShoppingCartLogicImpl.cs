@@ -280,8 +280,8 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
-		
-		public string SaveAsOrder(UserProfile user, Guid cartId)
+
+		public NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId)
 		{
 			//Check that RequestedShipDate
 			var basket = basketRepository.ReadBasket(user.UserId, cartId);
@@ -345,8 +345,8 @@ namespace KeithLink.Svc.Impl.Logic
 			xs.Serialize(sw, newOrderFile);
 			
 			queueRepository.PublishToQueue(sw.ToString());
-						
-			return orderNumber; //Return actual order number
+
+			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
 
 
