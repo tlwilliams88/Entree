@@ -247,8 +247,8 @@ namespace KeithLink.Svc.Impl.Logic
 				ListId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-                IsContractList = basket.IsContractList.Equals(null) ? false : true,
-                ReadOnly = basket.ReadOnly.Equals(null) ? false : true,
+                IsContractList = basket.IsContractList.HasValue ? basket.IsContractList.Value : false,
+                ReadOnly = basket.ReadOnly.HasValue ? basket.ReadOnly.Value : false,
 				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
