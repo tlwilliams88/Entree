@@ -370,26 +370,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public UserProfileReturn GetUserProfile(Guid userId) {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
-
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
-
-            // Execute the operation and get the results back
-            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
-
+            // search commerce server 
+            Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(userId);
+            
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profileResponse.Count == 0) {
+            if (csUserProfile == null) {
             } else {
-                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
             }
 
             return retVal;
@@ -403,42 +391,32 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress) {
-            Core.Models.Profile.UserProfile upFromCache = null;
-            upFromCache = _cache.GetProfile(emailAddress);
-            //if (_userProfileCacheRepository.GetProfile(emailAddress) != null) {
-            //if (_cache.GetProfile(emailAddress) != null) {
-            if (upFromCache != null) {
-                return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
-            }
-
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
-            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
-
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
-
-            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+            // check for cached user profile first
+            Core.Models.Profile.UserProfile profile = _cache.GetProfile(emailAddress);
 
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profileResponse.Count == 0) {
+            if (profile != null) {
+                retVal.UserProfiles.Add(profile);
+
+                return retVal;
+            }
+
+            // search commerce server next
+            Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(emailAddress);
+            
+            if (csUserProfile == null) {
                 if (IsInternalAddress(emailAddress)) {
                     CreateBekUserProfile(emailAddress);
 
                     return GetUserProfile(emailAddress);
                 }
             } else {
-                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
             }
 
-            if (retVal != null) {
+            // add to cache if found
+            if (retVal.UserProfiles.Count > 0) {
                 _cache.AddProfile(retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;

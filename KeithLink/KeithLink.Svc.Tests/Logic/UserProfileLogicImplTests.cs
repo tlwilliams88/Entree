@@ -37,8 +37,10 @@ namespace KeithLink.Svc.Test.Logic {
         #endregion
 
         [TestMethod]
-        public void Ummmmm() {
-            //Assert.IsTrue(_logic.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
+        public void GetUserProfile() {
+            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("jeremy@jeremyschickenshack.com");
+
+            Assert.IsTrue(userProfiles.UserProfiles.Count == 1);
         }
 
     }

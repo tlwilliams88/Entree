@@ -91,6 +91,37 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
+        /// <summary>
+        /// retrieve the user's profile from commerce server
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <returns>a commerce server user profile object</returns>
+        /// <remarks>
+        /// jwames - 10/14/14 - original code
+        /// </remarks>
+        public Core.Models.Generated.UserProfile GetCSProfile(Guid userId) {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            // Execute the operation and get the results back
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            if (profileResponse.Count == 0) {
+                return null;
+            } else {
+                return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0];
+            }
+        }
+
         ///// <summary>
         ///// update the user profile in Commerce Server (not implemented)
         ///// </summary>
