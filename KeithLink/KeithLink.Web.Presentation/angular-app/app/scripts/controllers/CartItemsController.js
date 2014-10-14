@@ -77,9 +77,8 @@ angular.module('bekApp')
       $scope.saveCart(cart)
         .then(CartService.submitOrder)
         .then(function(data) {
+          $state.go('menu.orderitems', { orderNumber: data.ordernumber });
           $scope.displayMessage('success', 'Successfully submitted order.');
-          // $state.go('menu.orderitems', { orderNumber: data });
-          $state.go('menu.home');
         }, function(error) {
           $scope.displayMessage('error', 'Error submitting order.');
         });

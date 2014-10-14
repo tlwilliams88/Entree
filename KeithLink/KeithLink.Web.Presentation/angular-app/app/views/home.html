@@ -64,12 +64,12 @@
       </div>
     </div>
 
-    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | limitTo: 4">
+    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4">
       <div class="row no-margin">
-        <div class="col-md-2 order-col">
+        <div class="col-md-3 order-col">
           <span>ORDER #</span>
           <span class="order-col__number">{{order.ordernumber}}</span>
-          <span class="order-col__date">Order date...</span>
+          <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
         </div>
         <div class="col-md-2 table-col">
           {{order.deliveryDate || 'TBD'}}
@@ -77,7 +77,7 @@
         <div class="col-md-2 table-col">
           {{order.ordertotal | currency}}
         </div>
-        <div class="col-md-4 table-col">
+        <div class="col-md-3 table-col">
           Status...?
         </div>
         <div class="col-md-2 table-col">
@@ -95,15 +95,15 @@
         <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
       </div>
     </div>
-    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-show="!loadingOrders && mostRecentOrder">
+    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1">
       <div class="order-col">
         <div class="row">
           <div class="col-xs-6">
             <span>ORDER #</span>
-            <span class="order-col__number">{{mostRecentOrder.ordernumber}}</span>
+            <span class="order-col__number">{{order.ordernumber}}</span>
           </div>
           <div class="col-xs-6 order-col__date">
-            <span class="icon-calendar"></span> Order date...
+            <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}
           </div>
         </div>
       </div>
@@ -113,7 +113,7 @@
             Delivery Date
           </div>
           <div class="item-value">
-            {{mostRecentOrder.deliveryDate || 'TBD'}}
+            {{order.deliveryDate || 'TBD'}}
           </div>
         </div>
         <div class="details-item">
@@ -121,7 +121,7 @@
            Total Cost
           </div>
           <div class="item-value">
-            {{mostRecentOrder.ordertotal | currency}}
+            {{order.ordertotal | currency}}
           </div>
         </div>
         <div class="details-item">
@@ -137,7 +137,7 @@
             Payment Status
           </div>
           <div class="item-value">
-            {{mostRecentOrder.invoicestatus || 'N/A'}}
+            {{order.invoicestatus || 'N/A'}}
           </div>
         </div>
       </div>

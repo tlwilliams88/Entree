@@ -16,7 +16,6 @@ angular.module('bekApp')
     $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
-      $scope.mostRecentOrder = orders[0];
       $scope.loadingOrders = false;
     });
 

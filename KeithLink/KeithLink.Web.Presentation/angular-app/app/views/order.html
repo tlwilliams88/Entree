@@ -12,6 +12,7 @@
   <thead>
     <tr>
       <th>Order Number</th>
+      <th>Order Date</th>
       <th>Status</th>
       <th>Delivery Date</th>
       <th>Item Count</th>
@@ -21,10 +22,11 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="order in orders" ng-class="{ odd : $odd, even: $even }">
+    <tr ng-repeat="order in orders | orderBy:'createddate':true" ng-class="{ odd : $odd, even: $even }">
       <td>
         <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
       </td>
+      <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
       <td></td>
       <td>{{order.deliveryDate}}</td>
       <td>{{order.itemcount}}</td>
