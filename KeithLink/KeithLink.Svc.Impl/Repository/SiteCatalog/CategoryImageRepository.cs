@@ -39,6 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     returnValue.CategoryImage = JsonConvert.DeserializeObject<CategoryImage>(response.Content.ReadAsStringAsync().Result);
+                    returnValue.CategoryImage.Url.Replace("http://testmultidocs.bekco.com/", Configuration.MultiDocsUrl);
                 }
             }
 
