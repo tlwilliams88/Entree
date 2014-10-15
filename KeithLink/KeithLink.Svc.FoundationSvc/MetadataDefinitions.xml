@@ -1493,6 +1493,9 @@ This file contains the Metadata Repository
               <PropertyMapping property="LastName"				csProperty="GeneralInfo.last_name" />
               <PropertyMapping property="PreferredCreditCard"				csProperty="GeneralInfo.preferred_credit_card" />
               <PropertyMapping property="DirectMailOptOut"          csProperty="GeneralInfo.direct_mail_opt_out" />
+              <PropertyMapping property="DefaultCustomer"				csProperty="GeneralInfo.default_customer" />
+              <PropertyMapping property="DefaultBranch"				csProperty="GeneralInfo.default_branch" />
+              <PropertyMapping property="Telephone"          csProperty="GeneralInfo.tel_number" />
             </PropertyMappings>
 
           </EntityMapping>
@@ -1686,6 +1689,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="Id"						csProperty="GeneralInfo.user_org_id" />
               <PropertyMapping property="UserId"						csProperty="GeneralInfo.user_id" />
               <PropertyMapping property="OrganizationId"						csProperty="GeneralInfo.org_id" />
+              <PropertyMapping property="UserOrganizationKey"						csProperty="GeneralInfo.user_org_key" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
             </PropertyMappings>
@@ -1694,7 +1698,7 @@ This file contains the Metadata Repository
 
         <Relationships>
           <Relationship name="OrganizationUser" type="Relationship" modelName="UserProfile" isMultipleItems="true" />
-          <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="false" />
+          <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="true" />
         </Relationships>
 
       </CommerceEntity>

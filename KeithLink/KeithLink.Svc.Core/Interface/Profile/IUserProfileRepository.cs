@@ -10,11 +10,9 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface IUserProfileRepository
     {
         void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
-
-        void DeleteUserProfile(string userName);
-        
-        Core.Models.Generated.UserProfile GetCSProfile(string emailAddress);
-        
+        void DeleteUserProfile(string userName);        
+        Core.Models.Generated.UserProfile GetCSProfile(string emailAddress);        
         void UpdateUserProfile(Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
+        List<Core.Models.Profile.UserProfile> GetUsersForCustomerOrAccount(Guid orgId);
     }
 }

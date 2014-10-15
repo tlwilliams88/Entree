@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createUser.Model.FirstName = firstName;
             createUser.Model.LastName = lastName;
             createUser.Model.Email = emailAddress;
-            createUser.Model.GeneralInfotelNumber = phoneNumber;
+            createUser.Model.Telephone = phoneNumber;
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
         }
@@ -57,6 +57,26 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public void DeleteUserProfile(string userName)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Core.Models.Profile.UserProfile> GetUsersForCustomerOrAccount(Guid orgId)
+        {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
+            profileQuery.SearchCriteria.Model.Properties["OrganizationId"] = orgId;
+
+            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+
+            List<Core.Models.Profile.UserProfile> customerUsers = new List<Core.Models.Profile.UserProfile>();
+            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
+                customerUsers.Add(new Core.Models.Profile.UserProfile()
+                {
+                    UserId = Guid.Parse(ent.Id),
+                    FirstName = (string)ent.Properties["FirstName"],
+                    LastName = (string)ent.Properties["LastName"],
+                    EmailAddress = (string)ent.Properties["Email"]
+                });
+
+            return customerUsers;
         }
 
         /// <summary>
@@ -76,9 +96,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("GeneralInfo.default_branch");
-            profileQuery.Model.Properties.Add("GeneralInfo.default_customer");
-            profileQuery.Model.Properties.Add("GeneralInfo.tel_number");
+            profileQuery.Model.Properties.Add("DefaultBranch");
+            profileQuery.Model.Properties.Add("DefaultCustomer");
+            profileQuery.Model.Properties.Add("Telephone");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
             CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
@@ -97,14 +117,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         ///// jwames - 8/18/2014 - documented
         ///// </remarks>
         public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
-            var updateQuery = new CommerceUpdate<CommerceEntity>("UserProfile");
+            var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
             updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
 
-            updateQuery.Model.Properties["Email"] = emailAddress;
-            updateQuery.Model.Properties["FirstName"] = firstName;
-            updateQuery.Model.Properties["LastName"] = lastName;
-            updateQuery.Model.Properties["GeneralInfo.tel_number"] = phoneNumber;
-            updateQuery.Model.Properties["GeneralInfo.default_branch"] = branchId;
+            updateQuery.Model.Email = emailAddress;
+            updateQuery.Model.FirstName = firstName;
+            updateQuery.Model.LastName = lastName;
+            updateQuery.Model.Telephone = phoneNumber;
+            updateQuery.Model.DefaultBranch = branchId;
             // TODO: add DefaultCustomer
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());

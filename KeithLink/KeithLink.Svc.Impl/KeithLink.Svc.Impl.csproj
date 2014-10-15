@@ -181,6 +181,9 @@
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
+    <Compile Include="Repository\Profile\Cache\NoCacheCustomerCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\Cache\CustomerCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\BaseOrgRepository.cs" />
     <Compile Include="Repository\Profile\CustomerRepository.cs" />
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />

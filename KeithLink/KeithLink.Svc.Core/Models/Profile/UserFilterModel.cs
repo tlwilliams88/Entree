@@ -7,8 +7,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 {
     public class UserFilterModel
     {
-        public string AccountId { get; set; }
-        public string CustomerId { get; set; }
+        public Nullable<Guid> AccountId { get; set; }
+        public Nullable<Guid> CustomerId { get; set; }
         public string Email { get; set; }
     }
 }

@@ -11,13 +11,16 @@ namespace KeithLink.Svc.Core.Models.Profile
     public class Account
     {
         [DataMember(Name = "id")]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
         
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "accountAdmin")]
-        public UserProfile AccountAdmin { get; set; }
+        [DataMember(Name = "customers")]
+        public List<Customer> Customers { get; set; }
+
+        [DataMember(Name = "user")]
+        public List<UserProfile> Users { get; set; }
     }
 
     public class AccountComparer : EqualityComparer<Account>
@@ -38,17 +41,8 @@ namespace KeithLink.Svc.Core.Models.Profile
         }
     }
 
-    public class AccountAddCustomerModel
-    {
-        public Guid accountId { get; set; }
-        public Guid customerId { get; set; }
-        public string role { get; set; }
-    }
-
     public class AccountAddUserModel
     {
-        public Guid accountId { get; set; }
-        public Guid userId { get; set; }
-        public string role { get; set; }
+
     }
 }

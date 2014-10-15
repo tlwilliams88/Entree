@@ -65,6 +65,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
+            builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 
             // Build the container.
             var container = builder.Build();

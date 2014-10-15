@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
                     prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
                     prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
-                    // prof.Properties["GeneralInfo.national_account_id"].Value = ; // TODO - not available in current data feeds
+                    // prof.Properties["GeneralInfo.national_account_id"].Value = ; // not available in current data feeds
 
                     // Update the profile with the property values.
                     prof.Update();
@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Impl.ETL
                 ContractNumber = row.GetString("ContractNumber"),
                 IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
                 IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu"))
-                // NationalAccountId = row.Get // TODO - this will come from a separate file
+                // NationalAccountId = row.Get // this will come from a separate file
             };
             return org;
         }
