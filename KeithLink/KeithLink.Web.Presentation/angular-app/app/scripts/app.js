@@ -312,7 +312,8 @@ angular
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
 }])
-.run(['$rootScope', '$state', '$log', 'AccessService', 'AuthenticationService', 'toaster', function($rootScope, $state, $log, AccessService, AuthenticationService, toaster) {
+.run(['$rootScope', '$state', '$log', 'toaster','AccessService', 'AuthenticationService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
