@@ -10,7 +10,7 @@
  */
 angular
   .module('bekApp', [
-    // 'ngAnimate',
+    'ngAnimate', // needed for ui-bootstrap carousel
     // 'ngCookies',
     'ngResource',
     'ngTouch',
