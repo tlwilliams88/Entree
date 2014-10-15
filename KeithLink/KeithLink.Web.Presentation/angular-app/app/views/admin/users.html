@@ -2,10 +2,10 @@
 
 <h3>Users</h3>
 
-<a ui-sref="menu.admin.adduser({})">Add User</a>
-
-<ul>
+<ul class="list-no-style">
   <li ng-repeat="user in users"><a ui-sref="menu.admin.edituser({userId: 1})">{{user.name}}</a></li>
 </ul>
+
+<a ui-sref="menu.admin.adduser({})">Add User</a>
 
 </div>

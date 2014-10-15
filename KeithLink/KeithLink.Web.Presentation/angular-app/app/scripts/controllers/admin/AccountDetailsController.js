@@ -1,23 +1,33 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AdminAccountDetailsController', ['$scope', '$stateParams', 'AccountService',
-    function ($scope, $stateParams, AccountService) {
+  .controller('AdminAccountDetailsController', ['$scope', '$state', '$stateParams', 'AccountService',
+    function ($scope, $state, $stateParams, AccountService) {
     
     if ($stateParams.accountId === 'new') {
       $scope.isNew = true;
     } else {
-      $scope.account = AccountService.findAccountById($stateParams.accountId);
+      $scope.accountOriginal = AccountService.findAccountById($stateParams.accountId);
+      $scope.account = angular.copy($scope.accountOriginal);
       $scope.isNew = false;
     }
 
     $scope.createNewAccount = function(account) {
       AccountService.createAccount(account).then(function(accounts) {
+        // TODO: redirect to new account details page
         $scope.displayMessage('success', 'Successfully created a new account.');
       }, function(error) {
         console.log(error);
         $scope.displayMessage('error', 'Error creating new account.');
       });
+    };
+
+    $scope.updateAccount = function(account) {
+
+    };
+
+    $scope.cancelChanges = function() {
+      $state.go('menu.admin.account');
     };
 
   }]);

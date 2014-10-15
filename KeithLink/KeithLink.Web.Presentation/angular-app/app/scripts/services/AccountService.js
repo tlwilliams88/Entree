@@ -43,6 +43,8 @@ angular.module('bekApp')
           var data = response.data;
           console.log(data);
           if (data.successResponse) {
+            // TODO: return just new account id
+            // TODO: add new account to cache lists
             // angular.copy(data.successResponse.accounts, Service.accounts);
             deferred.resolve(data.successResponse.accounts);
           } else {

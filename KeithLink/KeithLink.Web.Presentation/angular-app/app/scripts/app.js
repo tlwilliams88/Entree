@@ -278,7 +278,7 @@ angular
     .state('menu.admin.account.details', {
       url: ':accountId/',
       templateUrl: 'views/admin/accountdetails.html',
-      controller: 'AccountDetailsController'
+      controller: 'AdminAccountDetailsController'
     });
 
   $stateProvider
