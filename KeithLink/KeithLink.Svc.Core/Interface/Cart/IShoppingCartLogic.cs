@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -24,7 +25,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly);
 		ShoppingCart ReadCart(UserProfile user, Guid cartId);
 
-		string SaveAsOrder(UserProfile user, Guid cartId);
+		NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId);
 
 	}
 }

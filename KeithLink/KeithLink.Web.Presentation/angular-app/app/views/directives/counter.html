@@ -1,11 +1,14 @@
 <button class="btn btn-warning icon-minus3 hidden-md hidden-lg" ng-click="minus()" ng-disabled="disabledMinus"></button>
 
-<!-- <div class="btn-group" dropdown is-open="isopen"> -->
+<div ng-show="allowDropdown" class="btn-group" dropdown is-open="counter.isopen">
   <input type="text" class="dropdown-toggle input-number text-right" ng-model="value" ng-change="changed()" integer>
-  <!-- <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu" role="menu">
     <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="newValue(qty);">
       <a>{{qty}}</a>
     </li>
   </ul>
-</div> -->
+</div>
+
+<input ng-show="!allowDropdown" type="text" class="dropdown-toggle input-number text-right" ng-model="value" ng-change="changed()" integer>
+
 <button class="btn btn-warning icon-plus3 hidden-md hidden-lg" ng-click="plus()" ng-disabled="disabledPlus"></button>

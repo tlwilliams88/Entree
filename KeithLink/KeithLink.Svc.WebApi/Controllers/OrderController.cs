@@ -52,7 +52,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
-        public string SaveOrder(Guid cartId) {
+        public NewOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, cartId);
         }
         #endregion

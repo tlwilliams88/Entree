@@ -154,6 +154,7 @@
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
+    <Compile Include="Models\Orders\NewOrderReturn.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />

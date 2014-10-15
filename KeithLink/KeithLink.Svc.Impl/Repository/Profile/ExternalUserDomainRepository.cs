@@ -213,6 +213,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 throw;
             }
 
+            JoinGroup(customerName, roleName, user);
+
             principal.Dispose();
 
             _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
@@ -432,6 +434,34 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
+            }
+        }
+
+        public void JoinGroup(string customerName, string roleName, UserPrincipal user) {
+            string groupOU = string.Format("ou=Groups,ou={0},{1}", customerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                 Configuration.ActiveDirectoryExternalServerName,
+                                                 groupOU,
+                                                 ContextOptions.Negotiate,
+                                                 Configuration.ActiveDirectoryExternalDomainUserName,
+                                                 Configuration.ActiveDirectoryExternalPassword)) {
+                string groupName = string.Join(" ", new string[] { customerName, roleName });
+
+                GroupPrincipal group = GroupPrincipal.FindByIdentity(principal, groupName);
+
+                // have to use directory entries because the computer making the call is not necessarily on the domain
+                DirectoryEntry de = (DirectoryEntry)group.GetUnderlyingObject();
+
+                de.Properties["member"].Add(user.DistinguishedName);
+
+                try {
+                    de.CommitChanges();
+                } catch (Exception ex) {
+                    _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
+
+                    throw;
+                }    
             }
         }
 

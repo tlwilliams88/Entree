@@ -54,6 +54,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		{
 			return new Order()
 			{
+				CreatedDate = purchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
 				LineItems = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList()

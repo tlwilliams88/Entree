@@ -37,6 +37,14 @@ namespace KeithLink.Svc.Test.Repositories.Profile
 
             _profile.UpdateUserProfile(new System.Guid(userProfile.Id), "jeremy@jeremyschickenshack.com", "Jeremy", "Ames", "817-877-5700", "FDF");
         }
+
+        [TestMethod]
+        public void GetUserByEmailAddress()
+        {
+            KeithLink.Svc.Core.Models.Generated.UserProfile userProfile = _profile.GetCSProfile("jeremy@jeremyschickenshack.com");
+
+            Assert.IsTrue(userProfile != null);
+        }
         #endregion
     }
 }
