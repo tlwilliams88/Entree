@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.Equals(null) ? false : true, ReadOnly = l.ReadOnly.Equals(null) ? false : true }).ToList();
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
 			else 
 			{
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
