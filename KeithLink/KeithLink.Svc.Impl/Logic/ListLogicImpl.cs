@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.Equals(null) ? false : true, ReadOnly = l.ReadOnly.Equals(null) ? false : true }).ToList();
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
 			else 
 			{
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
+			var pricing = priceRepository.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 			var notes = itemNoteLogic.ReadNotes(user.UserId);
 
 
