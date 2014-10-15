@@ -177,13 +177,13 @@ namespace KeithLink.Svc.Impl.Logic
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
-					LookupProductDetails(user, list);
+					LookupProductDetails(user, list, catalogInfo);
 				});
 				return returnCart;
 			}
 		}
 
-		public ShoppingCart ReadCart(UserProfile user, Guid cartId)
+		public ShoppingCart ReadCart(UserProfile user, Guid cartId, UserSelectedContext catalogInfo)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, cartId);
 			if (basket == null)
@@ -191,7 +191,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var cart = ToShoppingCart(basket);
 
-			LookupProductDetails(user, cart);
+			LookupProductDetails(user, cart, catalogInfo);
 			return cart;
 		}
 
@@ -214,13 +214,13 @@ namespace KeithLink.Svc.Impl.Logic
 			}
 		}
 		
-		private void LookupProductDetails(UserProfile user, ShoppingCart cart)
+		private void LookupProductDetails(UserProfile user, ShoppingCart cart, UserSelectedContext catalogInfo)
 		{
 			if (cart.Items == null)
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
+			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 			var notes = itemNoteLogic.ReadNotes(user.UserId);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
