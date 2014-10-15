@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public void AddUserToOrg(Guid orgId, Guid userId)
         {
             CommerceCreate<UserOrganizations> createOrg = new CommerceCreate<UserOrganizations>("UserOrganizations");
-            createOrg.Model.Id = (new Guid()).ToCommerceServerFormat();
+            createOrg.Model.Id = Guid.NewGuid().ToCommerceServerFormat();
             createOrg.Model.OrganizationId = orgId.ToCommerceServerFormat();
             createOrg.Model.UserId = userId.ToCommerceServerFormat();
             createOrg.CreateOptions.ReturnModel = new UserOrganizations();

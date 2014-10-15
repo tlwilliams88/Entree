@@ -33,9 +33,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region methods
-        public void AddCustomerToAccount(Guid accountId, Guid customerId) {
-            _accountRepo.AddCustomerToAccount(accountId, customerId);
-        }
 
         public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
             // TODO: Create user if they don't exist....   Add ROLE to call
@@ -325,7 +322,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
             List<Customer> userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id));
 
-
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
                 FirstName = csProfile.FirstName,
@@ -341,25 +337,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
             };
-        }
-
-        public AccountReturn GetAccounts(AccountFilterModel accountFilters) {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
-            List<Account> retAccounts = new List<Account>();
-
-            if (accountFilters != null) {
-                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.UserId)) {
-                    //TODO
-                }
-                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.Wildcard)) {
-                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
-                }
-            } else
-                retAccounts = allAccounts;
-
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
         /// <summary>
@@ -386,28 +363,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
-        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters) {
-            List<Customer> allCustomers = _customerRepo.GetCustomers();
-            List<Customer> retCustomers = new List<Customer>();
-
-            if (customerFilters != null) {
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
-                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
-                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
-                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
-                }
-            } else
-                retCustomers = allCustomers;
-
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
-        }
-
         /// <summary>
         /// get a user profile from commerce server
         /// </summary>
@@ -420,9 +375,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // search commerce server 
             Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(userId);
             
-            profileQuery.Model.Properties.Add("DefaultBranch");
-            profileQuery.Model.Properties.Add("DefaultCustomer");
-            profileQuery.Model.Properties.Add("Telephone");
             UserProfileReturn retVal = new UserProfileReturn();
 
             if (csUserProfile == null) {
@@ -431,11 +383,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             return retVal;
-        }
-        
-        public UserProfileReturn GetUsers(UserFilterModel userFilters) {
-            //_csProfile.GetUsers(userFilters); // TODO
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -453,10 +400,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (profile != null) {
                 retVal.UserProfiles.Add(profile);
-            profileQuery.Model.Properties.Add("DefaultBranch");
-            profileQuery.Model.Properties.Add("DefaultCustomer");
-            profileQuery.Model.Properties.Add("Telephone");
-
                 return retVal;
             }
 
@@ -597,13 +540,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
-        public AccountReturn CreateAccount(string name)
-        {
-            // call CS account repository -- hard code it for now
-            _accountRepo.CreateAccount(name);
-            return new AccountReturn();
-        }
-
         
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
         {
@@ -612,16 +548,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (customerFilters != null)
             {
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId))
-                {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
                     retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
                 }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId))
-                {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
                     retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
                 }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard))
-                {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
                     retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
                 }
             }
@@ -638,14 +571,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             List<Account> allAccounts = _accountRepo.GetAccounts();
             List<Account> retAccounts = new List<Account>();
 
-            if (accountFilters != null)
-            {
-                if (accountFilters != null && accountFilters.UserId.HasValue)
-                {
+            if (accountFilters != null) {
+                if (accountFilters.UserId.HasValue) {
                     _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
                 }
-                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.Wildcard))
-                {
+                if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
                     retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
                 }
             }

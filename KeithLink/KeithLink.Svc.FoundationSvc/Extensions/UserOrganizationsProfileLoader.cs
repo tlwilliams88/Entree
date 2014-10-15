@@ -74,6 +74,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                                 org.Id = r.GetString("u_org_id");
                                 org.SetPropertyValue("Name", r.GetString("u_name"));
                                 org.SetPropertyValue("CustomerNumber", r.GetString("u_customer_number"));
+                                org.SetPropertyValue("BranchNumber", r.GetString("u_branch_number"));
                                 org.SetPropertyValue("DsrNumber", r.GetString("u_dsr_number"));
                                 org.SetPropertyValue("ContractNumber", r.GetString("u_contract_number"));
                                 org.SetPropertyValue("IsPoRequired", r.GetNullableBool("u_is_po_required"));

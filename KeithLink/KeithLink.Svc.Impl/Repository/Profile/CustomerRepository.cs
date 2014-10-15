@@ -105,7 +105,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         CustomerId = Guid.Parse(org.Id),
                         CustomerName = org.Name,
                         CustomerNumber = org.CustomerNumber,
-                        CustomerBranch = org.BranchNumber,
+                        CustomerBranch = org.BranchNumber.ToLower(),
                         ContractId = org.ContractNumber,
                         DsrNumber = org.DsrNumber,
                         IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
