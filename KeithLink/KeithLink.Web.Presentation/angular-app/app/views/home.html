@@ -268,7 +268,23 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-12 visible-xs visible-sm" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
+
+      <div class="col-xs-12">
+        <div class="featured-item-mobile visible-xs visible-sm">
+          <carousel interval="myInterval" disable-ng-animate="true">
+            <slide ng-repeat="item in items track by $index" active="item.active">
+              <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
+                <img ng-src="{{item.imageUrl}}">
+              </div>
+              <div class="col-xs-8 no-padding featured-item-mobile__detail">
+                {{item.name}}<br />
+                <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">View Details</a>
+              </div>
+            </slide>
+          </carousel>
+        </div>
+      </div> 
+
     </div>
   </div> <!-- end Featured Items -->
   <!-- Recent Activity -->

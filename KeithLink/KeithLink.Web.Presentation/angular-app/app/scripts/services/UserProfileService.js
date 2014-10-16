@@ -48,9 +48,10 @@ angular.module('bekApp')
         });
       },
 
+      // accountid, customerid , email
       getAllUsers: function(params) {
         var deferred = $q.defer();
-        $http.get('/profile/users', params).then(function() {
+        $http.get('/profile/users', params).then(function(response) {
           var data = response.data;
           if (data.successResponse) {
             deferred.resolve(data.successResponse.users);
@@ -79,13 +80,13 @@ angular.module('bekApp')
       updateUser: function(userProfile) {
         var deferred = $q.defer();
 
-        $http.put('/profile', userProfile).then(function(response) {
+        $http.put('/profile/user', userProfile).then(function(response) {
 
           var data = response.data;
 
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
-            profile.role = 'Owner';
+            // profile.role = 'Owner';
             $log.debug(profile);
             LocalStorage.setProfile(profile);
             deferred.resolve(profile);  

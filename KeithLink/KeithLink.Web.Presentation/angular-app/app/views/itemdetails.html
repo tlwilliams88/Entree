@@ -38,7 +38,11 @@
         </div>
       </div>
       <div ng-if="canOrderProduct(item)" class="hidden-print sub-content">
-        <a class="btn-primary btn btn-lg" ng-click="openContextMenu($event, item)" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
+        <div class="btn-primary btn btn-lg" context-menu>
+          Add To...
+          <span class="icon-arrow-down6"></span>
+        </div>
+
         <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
       </div>
    </div>

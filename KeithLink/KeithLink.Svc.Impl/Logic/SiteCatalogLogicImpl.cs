@@ -189,13 +189,13 @@ namespace KeithLink.Svc.Impl.Logic
 		private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
+                _listLogic.MarkFavoriteProductsAndNotes(profile, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
         }
 
 		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret, catalogInfo);
+                _listLogic.MarkFavoriteProductsAndNotes(profile, branch, ret, catalogInfo);
         }
 
 
