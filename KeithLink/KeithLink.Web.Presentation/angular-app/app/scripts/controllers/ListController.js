@@ -348,7 +348,7 @@ angular.module('bekApp')
       angular.forEach($scope.selectedList.items, function(item, index) {
         item.editPosition = index + 1;
       });
-      if ($scope.listForm) {
+      if ($scope.listForm && !$scope.selectedList.is_contract_list) {
         $scope.listForm.$setDirty();
       }
     }
