@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('bekApp')
 .filter('sortLists', [ '$filter', 'ListService', function($filter, ListService) {
   return function(items) {
@@ -15,6 +17,7 @@ angular.module('bekApp')
     });
 
     // sort lists by priority then name
-    return $filter('orderBy')(items, ['sortPriority', 'name'], false);
-  }
+    var sortedItems = $filter('orderBy')(items, ['sortPriority', 'name'], false);
+    return sortedItems;
+  };
 }]);

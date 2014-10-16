@@ -70,5 +70,11 @@ namespace KeithLink.Svc.Test.MockRepository
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public Guid? AddItem(Guid basketId, CS.LineItem newItem, CS.Basket basket, bool runPipelines = false)
+		{
+			return Guid.NewGuid();
+		}
 	}
 }

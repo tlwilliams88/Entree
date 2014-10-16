@@ -220,7 +220,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
+			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)

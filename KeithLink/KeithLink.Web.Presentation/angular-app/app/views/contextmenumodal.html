@@ -1,5 +1,5 @@
  <div class="modal-header">
-    <h3 class="modal-title">Add Item To...</h3>
+    <h3 class="modal-title">Add Item {{item.name}} To...</h3>
 </div>
 <div class="modal-body">
 
@@ -15,7 +15,7 @@
 
   <h3>Lists</h3>
   <ul class="list-group">
-    <li ng-repeat="list in lists | orderBy:['name']" ng-if="!list.isFavoritesList" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
+    <li ng-repeat="list in lists | sortLists" ng-if="!list.isReadOnly" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
     <li class="hand list-group-item" ng-click="createListWithItem(item)">Create New List...</li>
   </ul>
 

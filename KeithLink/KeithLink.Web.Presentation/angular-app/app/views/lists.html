@@ -231,11 +231,12 @@
               </ng-form>
             </td>
             <td class="nowrap hidden-drag bek-no-drag large-icon">
-              <a style="display:inline-block" class="hidden-print icon-plus2" ng-mouseleave="displayedItems.isContextMenuDisplayed=false" ng-mouseenter="displayedItems.isContextMenuDisplayed = true">
-              <div context-menu class="context-menu__in-list"></div>
-              </a>
+              <span context-menu class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+
               <a ng-if="!selectedList.isReadOnly || selectedList.isFavoritesList" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+              
               <span ng-if="filteredItems.length === selectedList.items.length" class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" style="cursor:move;"></span>
+              
               <a class="bek-no-drag"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
           </tr>
