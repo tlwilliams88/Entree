@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		void DeleteItem(UserProfile user, Guid cartId, Guid itemId);
 
 		List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly);
-		ShoppingCart ReadCart(UserProfile user, Guid cartId);
+		ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 
 		NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId);
 

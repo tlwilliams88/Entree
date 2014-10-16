@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public List<Core.Models.Profile.UserProfile> GetUsersForCustomerOrAccount(Guid orgId)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
-            profileQuery.SearchCriteria.Model.Properties["OrganizationId"] = orgId;
+            profileQuery.SearchCriteria.Model.Properties["OrganizationId"] = orgId.ToCommerceServerFormat();
 
             CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
 
