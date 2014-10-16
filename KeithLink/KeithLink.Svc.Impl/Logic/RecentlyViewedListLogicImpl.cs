@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic
 					if (basket.LineItems.Count >= Configuration.RecentItemsToKeep)
 						basketRepository.DeleteItem(user.UserId, basket.Id.ToGuid(), basket.LineItems.OrderBy(l => l.Properties["DateModified"]).FirstOrDefault().Id.ToGuid());
 
-					basketRepository.AddItem(user.UserId, basket.Id.ToGuid(), new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId }, basket);
+					basketRepository.AddItem(basket.Id.ToGuid(), new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId }, basket);
 				}
 			}
 		}

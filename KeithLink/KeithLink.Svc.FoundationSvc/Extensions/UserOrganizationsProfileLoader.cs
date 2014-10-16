@@ -87,7 +87,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                             else if (searchCriteria.Model.Properties[0].Key == "OrganizationId")
                             {
                                 CommerceEntity org = new CommerceEntity("UserProfile");
-                                org.Id = r.GetString("u_org_id");
+                                org.Id = r.GetString("u_user_id");
                                 org.SetPropertyValue("FirstName", r.GetString("u_first_name"));
                                 org.SetPropertyValue("LastName", r.GetString("u_last_name"));
                                 org.SetPropertyValue("Email", r.GetString("u_email_address"));

@@ -35,7 +35,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}")]
 		public ShoppingCart Cart(Guid cartId)
 		{
-			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, cartId, this.SelectedUserContext);
+			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
 		}
 
 		[HttpPost]
