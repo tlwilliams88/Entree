@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic
 				newBasket.BranchId = string.Empty;
 				newBasket.DisplayName = NotesName;
 				newBasket.Status = NotesName;
-				newBasket.Name = NotesName;
+				newBasket.Name = ListName(catalogInfo);
 
 				basketRepository.CreateOrUpdateBasket(user.UserId, string.Empty, newBasket, new List<CS.LineItem>() { new CS.LineItem() { ProductId = note.ItemNumber, Notes = note.Note, CatalogName = catalogInfo.BranchId } });
 			}
@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			foreach (var sharedUser in sharedUsers)
 			{
-				var sharedBasket = basketRepository.ReadBasket(sharedUser.UserId, NotesName);
+				var sharedBasket = basketRepository.ReadBasket(sharedUser.UserId, ListName(catalogInfo));
 				if (sharedBasket.Status == NotesName)
 				{
 					basket = sharedBasket;
@@ -86,8 +86,8 @@ namespace KeithLink.Svc.Impl.Logic
 				}
 			}
 
-			if (basket == null) 
-				basket = basketRepository.ReadBasket(user.UserId, NotesName);
+			if (basket == null)
+				basket = basketRepository.ReadBasket(user.UserId, ListName(catalogInfo));
 	
 			return basket;
 		}
@@ -101,6 +101,11 @@ namespace KeithLink.Svc.Impl.Logic
 			if(item.Any())
 				basketRepository.DeleteItem(basket.UserId.ToGuid(), basket.Id.ToGuid(), item.First().Id.ToGuid());
 
+		}
+
+		private string ListName(UserSelectedContext catalogInfo)
+		{
+			return string.Format("n{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, NotesName);
 		}
 	}
 }
