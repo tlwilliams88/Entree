@@ -10,7 +10,7 @@
  */
 angular
   .module('bekApp', [
-    'ngAnimate', // needed for ui-bootstrap carousel
+    // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
     'ngTouch',
@@ -312,7 +312,7 @@ angular
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster','AccessService', 'AuthenticationService',
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService',
   function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
 
   $rootScope.displayMessage = function(type, message) {
