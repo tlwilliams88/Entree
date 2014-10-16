@@ -180,7 +180,9 @@ namespace KeithLink.Svc.Impl.ETL
                         .Select(itemRow =>
                             new ListItem
                             {
-                                ItemNumber = itemRow.GetString("ItemNumber")
+                                ItemNumber = itemRow.GetString("ItemNumber"),
+                                Position = itemRow.GetInt("BidLineNumber"),
+                                Label = itemRow.GetString("CategoryDescription")
                             }).ToList();
 
                     listLogic.CreateList(userId,
@@ -679,7 +681,7 @@ namespace KeithLink.Svc.Impl.ETL
         private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
         {
             UserList list = new UserList();
-            list.Name = contractNumber;
+            list.Name = "Contract - " + contractNumber;
             list.Items = items;
             list.IsContractList = isContractList;
             list.ReadOnly = readOnly;

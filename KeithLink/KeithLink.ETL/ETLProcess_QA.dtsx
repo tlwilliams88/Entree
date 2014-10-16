@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
-  DTS:VersionBuild="139"
-  DTS:VersionGUID="{07D027E0-46EE-405E-8F04-39074790F31B}">
+  DTS:VersionBuild="140"
+  DTS:VersionGUID="{756F50F1-CD8F-4C2A-AC30-019537AAFC7B}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -892,11 +892,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADzjW0xVG+pMn85dd4r9FSeAAAAAASAAACgAAAAEAAAAP3FTNe2r84Lfy4SW/u5ChIIAAAAyScxpgMtOGQUAAAAU35K9DtMM+edtYb8+Z00yXCGu2E</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAgRSrOybL7QLymifRVF9+kAAAAAASAAACgAAAAEAAAAJ2gZmV6hXAf+6Q714NQ4eQIAAAA6LaOwW+lL7kUAAAAz3j/BKNikauKAEsRjIWvpoZefyw</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADNIiZFpA+5NLFM5qcv9wlsAAAAAASAAACgAAAAEAAAAL5fqOInxcPABqMUXmU7gCQIAAAASl/z5/TZjnoUAAAAQ1p3bDzZ+bCq09ZNi2FxVNhgrHI</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACTTeDWpTQiQ+bdKIT4zkTcAAAAAASAAACgAAAAEAAAAINyKyNaY9NVYTBKZEpYkmcIAAAA0rKE4uRWqOcUAAAAiWhrfDgkU4MwIplxpn7kIjLRk+I</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -912,7 +912,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABHOey6416AEuxcEEl6DHPyAAAAAASAAACgAAAAEAAAABaIxNqd8Hxn/z8PobNXEi4YAAAA2/GfADIhgEsbZSyNR58kJPJSrxjl+ym0FAAAAF+k3RctxolAP3FAEY9pBFozZpif</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACdFLn36PWXys+jvEPAG2xcAAAAAASAAACgAAAAEAAAABjtsXBXSEI0snCgM2uE+QgYAAAADOTVwGEOsuDbSRJn5/w67cAV69Igj+FWFAAAAPwR1+5zeS92rgODleRuumAW4nsI</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -927,7 +927,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAACmYZ1cc7ZG9RGTfSA8jlhAAAAAASAAACgAAAAEAAAAHyv6bu/0TvjcWJaPEpKwSsQAAAA2yUGk6zCeUc8z9lIT04WkRQAAACT0otCkX6ZN7AmouPdiPTvq0t5JQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADRzH3Zsb0vr8ETlIndhhJ1AAAAAASAAACgAAAAEAAAAHhNIfJdj79kmXumIIoPrmcQAAAA4FRw+btis/50k3G6dmgnlRQAAAB158NKv+lq2fxDqx+GPDLh/gWLcw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -952,7 +952,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACiHCcKkogAUxxoD+2wTUYDAAAAAASAAACgAAAAEAAAAEZ8+0xIRYvubiJU+Xddl0cQAAAA7SzwKqgjY6MXJMT6HlHqiBQAAAAULi+uK+hSgRkOIZ3EUofdxIOdCg</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD/W96oe/aV+6ig5E3Lk/uVAAAAAASAAACgAAAAEAAAAI9xY4coozHNaPAfQCD6tbIQAAAAlR0LR1NEE9Q0Y7E7tr9W6RQAAAAcMiUysTMjcUwwe2ZbiTWZt6885A</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -14833,18 +14833,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           WSTask:OutputType="Variable"
           WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
           <WSTask:MethodInfo
-            WSTask:MethodName="ProcessStagedData"
+            WSTask:MethodName="ImportCatalogLists"
             WSTask:MessageName="">
             <WSTask:Documentation></WSTask:Documentation>
             <WSTask:ParamInfo
-              WSTask:Name="ProcessStagedDataResult"
+              WSTask:Name="ImportCatalogListsResult"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="0">
               <WSTask:VariableValue></WSTask:VariableValue>
             </WSTask:ParamInfo>
             <WSTask:ParamInfo
-              WSTask:Name="ProcessStagedDataResultSpecified"
+              WSTask:Name="ImportCatalogListsResultSpecified"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="1">
