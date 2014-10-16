@@ -164,7 +164,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
-			var lists = basketRepository.ReadAllBaskets(user.UserId);
+			var lists = basketRepository.ReadAllBaskets(user.UserId, BasketStatus);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && 
 				b.Status.Equals(BasketStatus) && 
 				!string.IsNullOrEmpty(b.CustomerId) && 
@@ -205,7 +205,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		private void MarkCurrentActiveCartAsInactive(UserProfile user, string branchId)
 		{
-			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
+			var currentlyActiveCart = basketRepository.ReadAllBaskets(user.UserId, BasketStatus).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
 
 			if (currentlyActiveCart != null)
 			{

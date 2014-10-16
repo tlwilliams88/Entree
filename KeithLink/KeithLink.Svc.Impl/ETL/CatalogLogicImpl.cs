@@ -670,7 +670,7 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 if (userList.IsContractList == true)
                 {
-                    listLogic.DeleteList(userProfile.UserId, userList.ListId);
+                    listLogic.DeleteList(userProfile, catalogInfo, userList.ListId);
                 }
             }
              

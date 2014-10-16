@@ -130,6 +130,7 @@
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IOrderQueueLogic.cs" />
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
+    <Compile Include="Interface\Orders\IBasketLogic.cs" />
     <Compile Include="Interface\Profile\ICustomerCacheRepository.cs" />
     <Compile Include="Interface\Profile\ICustomerRepository.cs" />
     <Compile Include="Interface\Profile\IAccountRepository.cs" />
