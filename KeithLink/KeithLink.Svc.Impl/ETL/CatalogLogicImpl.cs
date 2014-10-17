@@ -185,7 +185,7 @@ namespace KeithLink.Svc.Impl.ETL
 							{
 								ItemNumber = itemRow.GetString("ItemNumber"),
 								Position = itemRow.GetInt("BidLineNumber"),
-								Label = itemRow.GetString("CategoryDescription")
+								Category = itemRow.GetString("CategoryDescription")
 							}).ToList();
 
 					if(contractItems.Count > 0)
