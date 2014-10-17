@@ -8,7 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', 'item', 'ProductService', 'ListService', 'CartService', function ($scope, item, ProductService, ListService, CartService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'ListService', 'CartService', 
+    function ($scope, $modal, item, ProductService, ListService, CartService) {
     
     var originalItemNotes = item.notes;
 
@@ -19,44 +20,33 @@ angular.module('bekApp')
       $scope.item.productimages = item.productimages;
     });
 
+    ProductService.saveRecentlyViewedItem(item.itemnumber);
+
     // TODO: move into context menu controller
     $scope.lists = ListService.lists;
-    ListService.getAllLists({
-      'header': true
-    });
+    ListService.getListHeaders();
 
     $scope.carts = CartService.carts;
-    CartService.getAllCarts({
-      'header': true
-    });
+    CartService.getCartHeaders();
 
     $scope.canOrderProduct = function(item) {
       return ProductService.canOrderProduct(item);
     };
 
-    $scope.saveNote = function(itemNumber, note) {
-      ProductService.updateItemNote(itemNumber, note).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        originalItemNotes = note;
-        $scope.displayMessage('success', 'Successfully updated note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error updating note.');
-      });
-    };
+    $scope.openNotesModal = function (item) {
 
-    $scope.deleteNote = function(itemNumber) {
-      ProductService.deleteItemNote(itemNumber).then(function() {
-        $scope.itemNotesForm.$setPristine();
-        item.notes = null;
-        $scope.item.notes = null;
-        $scope.displayMessage('success', 'Successfully deleted note.');
-      }, function() {
-        $scope.displayMessage('error', 'Error deleting note.');
+      var modalInstance = $modal.open({
+        templateUrl: 'views/itemnotesmodal.html',
+        controller: 'ItemNotesModalController',
+        resolve: {
+          item: function() {
+            return angular.copy(item);
+          }
+        }
       });
-    };
 
-    $scope.cancelChanges = function() {
-      $scope.item.notes = originalItemNotes;
-      $scope.itemNotesForm.$setPristine();
+      modalInstance.result.then(function(item) {
+        $scope.item = item;
+      });
     };
   }]);

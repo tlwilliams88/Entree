@@ -1,0 +1,30 @@
+@media (min-width: $screen-md-min) {
+  .no-margin-top {
+    margin-top: 0;
+  }
+}
+
+// Angular ui bootstrap fix for cursor pointers
+.nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
+
+.no-padding{
+  padding:0;
+}
+.no-margin {
+  margin: 0;
+}
+
+.sub-content{
+  padding-top: 20px !important;
+}
+.sub-content-mobile {
+  padding-top: 50px !important;
+}
+
+.hand{
+  cursor: pointer;
+}
+
+.nowrap {
+  white-space: nowrap;
+}

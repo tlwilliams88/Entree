@@ -8,54 +8,51 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-9 col-md-8">
-    <div ng-show="item.productimages.length > 0" class="item-details__main-image">
+  <div class="col-xs-12 col-md-8">
+    <div ng-show="item.productimages.length > 0" class="pull-left item-details__main-image">
       <img ng-src="{{item.productimages[0].url}}" alt=""/>
     </div>
-    <div class="item-details__main-info visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
-      <h2>
+    <div class="item-details__main-info pull-left">
+      <h3 class="item-name">
         <span favorite-item-click-handlers favorite-icons></span>
         {{item.name}}
         <span class="item-details__icons" item-icons="item"></span>
-      </h2>
+      </h3>
       <div>
-        <div ng-if="item.description">
+        <div ng-if="item.description" class="main-info__description">
           <strong>Description:</strong> {{item.description}}
         </div>
         <div>
           <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-          <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} |</span>
-          <span ng-if="item.packageprice !== '$0.00' && item.packageprice"><strong>Package:</strong> {{item.packageprice}} |</span>
+          <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |</span>
+          <span ng-if="item.packageprice !== '$0.00' && item.packageprice">
+            <strong>Package:</strong> {{item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+          </span>
           <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
         </div>
         <div>
           <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{item.brand_extended_description}}</span>
+        </div>
+        <div>
           <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
         </div>
       </div>
-      <div ng-if="canOrderProduct(item)" class="item-details__actions hidden-print">
-        <a class="btn-primary btn" ng-mouseenter="displayedItems.isContextMenuDisplayed = true" ng-mouseleave="displayedItems.isContextMenuDisplayed = false">Add To... <span class="icon-arrow-down6"></span><div context-menu></div></a>
-        <div class="btn-group" dropdown is-open="isopen">
-          <input required style="width: 55px;" type="text" ng-model="item.quantity" class="dropdown-toggle form-control text-right" integer>
-          <ul class="dropdown-menu quantity-dropdown" role="menu">
-            <li ng-repeat="qty in [1,2,3,4,5,6,7,8,9,10]" ng-click="item.quantity = qty">{{qty}}
-            </li>
-          </ul>
+      <div ng-if="canOrderProduct(item)" class="hidden-print sub-content">
+        <div class="btn-primary btn btn-lg" context-menu>
+          Add To...
+          <span class="icon-arrow-down6"></span>
         </div>
+
+        <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
       </div>
-    </div>
+   </div>
   </div>
-  <div class="col-sm-3 col-md-4 item-details__notes">
-    <form name="itemNotesForm">
-      <p>
-        <textarea placeholder="Add a note..." name="notes" id="notes" rows="3" class="form-control" ng-model="item.notes"></textarea>
-      </p>
-      <div class="text-right">
-        <button class="pull-left btn btn-default" ng-disabled="!item.notes" ng-click="deleteNote(item.itemnumber)"><span class="icon-trash text-light large-icon"></span></button>
-        <button class="btn btn-primary" type="submit" ng-disabled="itemNotesForm.$pristine" ng-click="saveNote(item.itemnumber, item.notes)">Save</button>
-        <a ng-click="cancelChanges()">Cancel</a>
-      </div>
-    </form>
+  <div class="col-xs-12 col-md-4">
+    <h4 class="no-margin-top">Item Notes
+      <a ng-click="openNotesModal(item)"><span class="icon-pencil large-icon"></span></a>
+    </h4>
+    <p>{{item.notes || 'None'}}</p>
+    <!-- <button class="btn btn-primary" ng-click="openNotesModal(item)"><span class="icon-pencil"></span> Edit Notes</button> -->
   </div>
 </div>
 
@@ -64,14 +61,13 @@
     <tabset class="tabset">
       <tab heading="Item Specifications">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
-        <div class="table-responsive">
-          <table class="item-details__table table table-striped">
+          <table class="table table-striped-rows no-margin">
             <colgroup>
               <col style="width: 25%">
               <col style="width: 75%">
             </colgroup>
             <tbody>
-              <tr class="even">
+              <tr>
                 <th>Specification</th>
                 <th>Details</th>
               </tr>
@@ -79,7 +75,7 @@
                 <td>Item #</td>
                 <td>{{item.itemnumber}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>GTIN</td>
                 <td>{{item.upc}}</td>
               </tr>
@@ -87,7 +83,7 @@
                 <td>Servings / Case</td>
                 <td>{{item.gs1.servingsperpack}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>Portion Cost</td>
                 <td>{{item.packageprice}}</td>
               </tr>
@@ -100,7 +96,7 @@
                 <td>Portion Size</td>
                 <td>{{item.gs1.servingsuggestion}}</td>
               </tr> -->
-              <tr class="even">
+              <tr class="event">
                 <td>Previous Orders</td>
                 <td></td>
               </tr>
@@ -108,7 +104,7 @@
                 <td>Manufacturer</td>
                 <td>{{item.manufacturer_name}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>Manufacturer Brand</td>
                 <td>{{item.manufacturer_brand}}</td>
               </tr>
@@ -116,7 +112,7 @@
                 <td>Vendor</td>
                 <td>{{item.vendor_num}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>Vendor Item #</td>
                 <td>{{item.manufacturer_number}}</td>
               </tr>
@@ -124,7 +120,7 @@
                 <td>Category</td>
                 <td>{{item.categoryname}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>Class</td>
                 <td>{{item.iclass}}</td>
               </tr>
@@ -132,7 +128,7 @@
                 <td>Storage Instructions</td>
                 <td>{{item.gs1.storagetemp}}</td>
               </tr>
-              <tr class="even">
+              <tr class="event">
                 <td>Gross Wt</td>
                 <td>{{item.gs1.grossweight}}</td>
               </tr>
@@ -142,19 +138,17 @@
               </tr>
             </tbody>
           </table>
-        </div>
       </tab>
       <tab heading="Dietary Specifications">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
-        <div class="table-responsive">
-          <table class="item-details__table table table-striped">
+          <table class="table table-striped-rows no-margin">
             <colgroup>
               <col style="width: 15%">
               <col style="width: 85%">
             </colgroup>
             <tbody>
-              <tr class="even">
-                <th>Diet Types</th>
+              <tr class="event">
+                <td><strong>Diet Types</strong></td>
                 <td ng-if="item.gs1.diet" class="text-capitalize">
                   <span ng-repeat-start="diet in item.gs1.diet">{{diet.diettype}}</span>
                   <span ng-repeat-end ng-if="!$last">, </span>
@@ -162,32 +156,30 @@
                 <td ng-if="!item.gs1.diet.length > 0">Not Tested</td>
               </tr>
               <tr class="odd">
-                <th>Contains</th>
+                <td><strong>Contains</strong></td>
                 <td ng-if="item.gs1.allergens.contains.length > 0">{{item.gs1.allergens.contains.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.contains.length > 0">Not Tested</td>
               </tr>
-              <tr class="even">
-                <th>May Contain</th>
+              <tr class="event">
+                <td><strong>May Contain</strong></td>
                 <td ng-if="item.gs1.allergens.maycontain.length > 0">{{item.gs1.allergens.maycontain.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.maycontain.length > 0">Not Tested</td>
               </tr>
               <tr class="odd">
-                <th>Free From</th>
+                <td><strong>Free From</strong></td>
                 <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
                 <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
               </tr>
-              <tr class="even">
-                <th>Ingredients</th>
+              <tr class="event">
+                <td><strong>Ingredients</strong></td>
                 <td>{{item.gs1.ingredients}}</td>
               </tr>
             </tbody>
           </table>
-        </div>
       </tab>
       <tab heading="Nutrition">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
-        <div class="table-responsive">
-          <table class="item-details__table table table-striped">
+          <table class="table table-striped-rows no-margin">
             <colgroup>
               <col style="width: 20%">
               <col style="width: 20%">
@@ -200,10 +192,10 @@
                 <th>Nutrient Type</th>
                 <th>Nutrient Type Code</th>
                 <th>Daily Value</th>
-                <th>Measurement Type ID</th>
-                <th>Measurement Value</th>
+                <th>MS. Type ID</th>
+                <th>MS. Value</th>
               </tr>
-              <tr ng-repeat="nutrition in item.gs1.nutrition" ng-class="{ odd : $even, even: $odd }">
+              <tr ng-repeat="nutrition in item.gs1.nutrition" ng-class="{ even : $odd, odd: $even }">
                 <td>{{nutrition.nutrienttype}}</td>
                 <td>{{nutrition.nutrienttypecode}}</td>
                 <td>{{nutrition.dailyvalue}}</td>
@@ -213,7 +205,6 @@
               <tr class="odd" ng-if="!item.gs1.nutrition || item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
             </tbody>
           </table>
-        </div>
       </tab>
       <tab heading="Images" ng-show="item.productimages.length > 0">
         <div class="hidden-print item-details__images">

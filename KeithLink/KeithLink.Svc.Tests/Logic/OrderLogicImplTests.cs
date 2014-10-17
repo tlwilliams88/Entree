@@ -5,6 +5,7 @@ using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Test.Logic
 {
@@ -64,7 +65,7 @@ namespace KeithLink.Svc.Test.Logic
             queue.PublishToQueue(SerializeOrder(GetStubOrder()));
 
 
-            OrderLogicImpl orderLogic = new OrderLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
+            OrderQueueLogicImpl orderLogic = new OrderQueueLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
                                                queue,
                                                new OrderSocketConnectionRepositoryImpl());
 

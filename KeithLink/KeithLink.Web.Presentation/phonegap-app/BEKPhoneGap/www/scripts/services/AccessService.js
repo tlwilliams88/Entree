@@ -1,53 +1,53 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AccessService', ['localStorageService', 'Constants', 'AuthenticationService', 'UserProfileService', 
-    function (localStorageService, Constants, AuthenticationService, UserProfileService) {
+  .factory('AccessService', ['AuthenticationService', 'LocalStorage', 'Constants',
+    function (AuthenticationService, LocalStorage, Constants) {
 
     var Service = {
 
       isLoggedIn: function() {
-        return !!(AuthenticationService.getToken() && UserProfileService.profile() && AuthenticationService.isValidToken());
+        return !!(LocalStorage.getToken() && LocalStorage.getProfile() && AuthenticationService.isValidToken());
       },
 
       isOrderEntryCustomer: function() {
-        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() ) );
+        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() ) );
       },
 
       // ROLES
 
       isOwner: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.OWNER );
+        return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
       },
 
       isAccounting: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.ACCOUNTING );
+        return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
       },
 
       isApprover: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.APPROVER );
+        return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
       },
 
-      isShopper: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.SHOPPER );
+      isBuyer: function() {
+        return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
       },
 
       isUser: function() {
-        return ( UserProfileService.getUserRole() === Constants.roles.GUEST );
+        return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
       },
 
       // PRIVILEDGES
 
       canBrowseCatalog: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
       },
 
       canManageLists: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isShopper() || Service.isUser() );
+        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
       },
 
       canCreateOrders: function() {
-        return ( Service.isOwner()  || Service.isApprover() || Service.isShopper() );
+        return ( Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
       },
 
       canSubmitOrders: function() {

@@ -27,21 +27,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("itemnote/")]
 		public void AddItem(ItemNote newNote)
 		{
-			itemNoteLogic.AddNote(this.AuthenticatedUser.UserId, newNote);
+			itemNoteLogic.AddNote(this.AuthenticatedUser, this.SelectedUserContext, newNote);
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("itemnote/")]
 		public List<ItemNote> Read()
 		{
-			return itemNoteLogic.ReadNotes(this.AuthenticatedUser.UserId);
+			return itemNoteLogic.ReadNotes(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("itemnote/{itemnumber}")]
 		public void Delete(string itemNumber)
 		{
-			itemNoteLogic.DeleteNote(this.AuthenticatedUser.UserId, itemNumber);
+			itemNoteLogic.DeleteNote(this.AuthenticatedUser, this.SelectedUserContext, itemNumber);
 		}
         #endregion
     }

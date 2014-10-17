@@ -16,26 +16,36 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
         private IUserDomainRepository       _intAd;
+        private IAccountRepository _accountRepo;
+        private ICustomerRepository _customerRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
+            _accountRepo = accountRepo;
+            _customerRepo = customerRepo;
         }
         #endregion
 
         #region methods
+
+        public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
+            // TODO: Create user if they don't exist....   Add ROLE to call
+            _accountRepo.AddCustomerToAccount(customerId, userId);
+        }
+
         /// <summary>
         /// check that the customer name is longer the 0 characters
         /// </summary>
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertCustomerNameLength(string customerName) {
+        private void AssertCustomerNameLength(string customerName) {
             if (customerName.Length == 0)
                 throw new ApplicationException("Customer name is blank");
         }
@@ -46,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertCustomerNameValidCharacters(string customerName) {
+        private void AssertCustomerNameValidCharacters(string customerName) {
             if (System.Text.RegularExpressions.Regex.IsMatch(customerName, Core.Constants.REGEX_AD_ILLEGALCHARACTERS)) { throw new ApplicationException("Invalid characters in customer name"); }
         }
 
@@ -56,7 +66,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddress(string emailAddress) {
+        private void AssertEmailAddress(string emailAddress) {
             try {
                 System.Net.Mail.MailAddress testAddress = new System.Net.Mail.MailAddress(emailAddress);
             } catch {
@@ -70,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddressLength(string emailAddress) {
+        private void AssertEmailAddressLength(string emailAddress) {
             if (emailAddress.Length == 0)
                 throw new ApplicationException("Email address is blank");
         }
@@ -81,7 +91,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertEmailAddressUnique(string emailAddress) {
+        private void AssertEmailAddressUnique(string emailAddress) {
             if (_extAd.GetUser(emailAddress) != null) {
                 throw new ApplicationException("Email address is already in use");
             }
@@ -93,7 +103,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertFirstNameLength(string firstName) {
+        private void AssertFirstNameLength(string firstName) {
             if (firstName.Length == 0)
                 throw new ApplicationException("First name is blank");
         }
@@ -104,9 +114,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 9/15/2014 - original code
         /// </remarks>
-        public void AssertGuestProfile(string emailAddress, string password) {
+        private void AssertGuestProfile(string emailAddress, string password) {
             AssertEmailAddress(emailAddress);
             AssertEmailAddressLength(emailAddress);
+            AssertEmailAddressUnique(emailAddress);
             AssertPasswordComplexity(password);
             AssertPasswordLength(password);
         }
@@ -117,7 +128,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertLastNameLength(string lastName) {
+        private void AssertLastNameLength(string lastName) {
             if (lastName.Length == 0)
                 throw new ApplicationException("Last name is blank");
         }
@@ -128,7 +139,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordComplexity(string password) {
+        private void AssertPasswordComplexity(string password) {
             if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) {
                 throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number");
             }
@@ -140,7 +151,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordLength(string password) {
+        private void AssertPasswordLength(string password) {
             if (password.Length < 7)
                 throw new ApplicationException("Minimum password length is 7 characters");
         }
@@ -151,7 +162,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
+        private void AssertPasswordVsAttributes(string password, string firstName, string lastName) {
             bool matched = false;
 
             //if (string.Compare(password, customerName, true) == 0) { matched = true; }
@@ -169,7 +180,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertRoleName(string roleName) {
+        private void AssertRoleName(string roleName) {
             bool found = false;
 
             if (string.Compare(roleName, Core.Constants.ROLE_EXTERNAL_ACCOUNTING, true) == 0) { found = true; }
@@ -189,7 +200,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertRoleNameLength(string roleName) {
+        private void AssertRoleNameLength(string roleName) {
             if (roleName.Length == 0) { throw new ApplicationException("Role name is blank"); }
         }
 
@@ -199,7 +210,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
+        private void AssertUserProfile(string customerName, string emailAddres, string password, string firstName, string lastName, string phoneNumber, string roleName) {
             AssertCustomerNameLength(customerName);
             AssertCustomerNameValidCharacters(customerName);
             AssertEmailAddress(emailAddres);
@@ -214,6 +225,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             AssertRoleNameLength(roleName);
         }
 
+        public AccountReturn CreateAccount(string name) {
+            // call CS account repository -- hard code it for now
+            _accountRepo.CreateAccount(name);
+            return new AccountReturn();
+        }
+
         /// <summary>
         /// create a Commerce Server User Profile for a BEK user
         /// </summary>
@@ -225,7 +242,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             System.DirectoryServices.AccountManagement.UserPrincipal bekUser = _intAd.GetUser(emailAddress);
             string fName = bekUser.DisplayName.Split(' ')[0];
 
-            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber());
+            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber(), GetBranchFromOU(bekUser.GetOrganizationalunit()));
         }
 
         /// <summary>
@@ -238,7 +255,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfileProfile(string emailAddress, string password, string branchId) { 
+        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+            AssertGuestProfile(emailAddress, password);
+
             _extAd.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
                               emailAddress, 
                               password, 
@@ -250,7 +269,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.CreateUserProfile(emailAddress,
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
-                                         string.Empty
+                                         string.Empty,
+                                         branchId
                                          );
 
             return GetUserProfile(emailAddress);
@@ -270,7 +290,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName) {
+        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+            AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
+
             _extAd.CreateUser(customerName,
                               emailAddress,
                               password,
@@ -282,7 +304,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.CreateUserProfile(emailAddress,
                                          firstName,
                                          lastName,
-                                         phone
+                                         phone,
+                                         branchId
                                          );
 
             return GetUserProfile(emailAddress);
@@ -297,37 +320,47 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
-            // get user organization info
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
-            profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
-
-            var queryOrganizations = new CommerceServer.Foundation.CommerceQueryRelatedItem<CommerceServer.Foundation.CommerceEntity>("UserOrganization", "Organization");
-            profileQuery.RelatedOperations.Add(queryOrganizations);
-
-            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-
-            List<Customer> userCustomers = new List<Customer>();
-            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
-                userCustomers.Add(new Customer() {
-                    CustomerName = (string)ent.Properties["GeneralInfo.Name"],
-                    CustomerNumber = (string)ent.Properties["GeneralInfo.TradingPartnerNumber"],
-                    CustomerBranch = "fdf" // TODO: add field to organization for branch
-                });
+            List<Customer> userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id));
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = csProfile.PhoneNumber,
-                CustomerNumber = csProfile.SelectedCustomer,
-                BranchId = csProfile.SelectedBranch,
+                PhoneNumber = csProfile.Telephone,
+                CustomerNumber = csProfile.DefaultCustomer,
+                BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
-                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
-                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
-                }
+                UserCustomers = userCustomers
+                //new List<Customer>() { // for testing only
+                                //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
+                                //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                //}
             };
+        }
+
+        /// <summary>
+        /// translate the AD branch name to mainframe branch name
+        /// </summary>
+        /// <param name="OU">user's organization unit</param>
+        /// <returns>3-digit branch name</returns>
+        /// <remarks>
+        /// jwames - 10/9/2014 - original code
+        /// </remarks>
+        private string GetBranchFromOU(string OU) {
+            switch (OU) {
+                case "FABQ":
+                    return "FAQ";
+                case "FAMA":
+                case "FDFW":
+                case "FHST":
+                case "FLRK":
+                case "FOKC":
+                case "FSAN":
+                    return OU.Substring(0, 3);
+                default:
+                    return null;
+            }
         }
 
         /// <summary>
@@ -339,26 +372,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public UserProfileReturn GetUserProfile(Guid userId) {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
-
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
-
-            // Execute the operation and get the results back
-            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
-
+            // search commerce server 
+            Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(userId);
+            
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profileResponse.Count == 0) {
+            if (csUserProfile == null) {
             } else {
-                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
             }
 
             return retVal;
@@ -372,42 +393,31 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
         public UserProfileReturn GetUserProfile(string emailAddress) {
-            Core.Models.Profile.UserProfile upFromCache = null;
-            upFromCache = _cache.GetProfile(emailAddress);
-            //if (_userProfileCacheRepository.GetProfile(emailAddress) != null) {
-            //if (_cache.GetProfile(emailAddress) != null) {
-            if (upFromCache != null) {
-                return new UserProfileReturn() { UserProfiles = new List<UserProfile>() { upFromCache } };
-            }
-
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
-            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
-
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
-            profileQuery.Model.Properties.Add("PhoneNumber");
-
-            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+            // check for cached user profile first
+            Core.Models.Profile.UserProfile profile = _cache.GetProfile(emailAddress);
 
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profileResponse.Count == 0) {
+            if (profile != null) {
+                retVal.UserProfiles.Add(profile);
+                return retVal;
+            }
+
+            // search commerce server next
+            Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(emailAddress);
+            
+            if (csUserProfile == null) {
                 if (IsInternalAddress(emailAddress)) {
                     CreateBekUserProfile(emailAddress);
 
                     return GetUserProfile(emailAddress);
                 }
             } else {
-                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
             }
 
-            if (retVal != null) {
+            // add to cache if found
+            if (retVal.UserProfiles.Count > 0) {
                 _cache.AddProfile(retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;
@@ -530,5 +540,157 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
+        
+        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
+        {
+            List<Customer> allCustomers = _customerRepo.GetCustomers();
+            List<Customer> retCustomers = new List<Customer>();
+
+            if (customerFilters != null)
+            {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
+                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
+                }
+            }
+            else
+                retCustomers = allCustomers;
+            
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
+        }
+
+        public AccountReturn GetAccounts(AccountFilterModel accountFilters)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            List<Account> retAccounts = new List<Account>();
+
+            if (accountFilters != null) {
+                if (accountFilters.UserId.HasValue) {
+                    _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
+                }
+                if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
+                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+                }
+            }
+            else
+                retAccounts = allAccounts;
+
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
+        }
+        public AccountReturn GetAccount(Guid accountId)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
+            acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            return new AccountReturn() { Accounts = new List<Account>() { acct } };
+        }
+        public void AddCustomerToAccount(Guid accountId, Guid customerId)
+        {
+            _accountRepo.AddCustomerToAccount(accountId, customerId);
+        }
+
+
+        public UserProfileReturn GetUsers(UserFilterModel userFilters)
+        {
+            if (userFilters != null)
+            {
+                if (userFilters.AccountId.HasValue)
+                {
+                    return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.AccountId.Value) };
+                }
+                else if (userFilters.CustomerId.HasValue)
+                {
+                    return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.CustomerId.Value) };
+                }
+                else if (!String.IsNullOrEmpty(userFilters.Email))
+                {
+                    return GetUserProfile(userFilters.Email);
+                }
+            }
+
+            throw new ApplicationException("No filter provided for users");
+        }
+
+        /// <summary>
+        /// get the user profile by guid
+        /// </summary>
+        /// <remarks>
+        /// jmmcmillan - 10/6/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfileByGuid(Guid UserId)
+        {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0)
+            {
+                /*
+                 Throw profile not found exception??
+                 */
+            }
+            else
+            {
+                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            return retVal;
+        }
+
+
+        public void AddUserToCustomer(Guid customerId, Guid userId)
+        {
+            _customerRepo.AddUserToCustomer(customerId, userId);
+        }
+
+        public void RemoveUserFromCustomer(Guid customerId, Guid userId)
+        {
+            _customerRepo.RemoveUserFromCustomer(customerId, userId);
+        }
+
+        public bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users)
+        {
+            List<Customer> existingCustomers = _customerRepo.GetCustomers().Where(c => c.AccountId == accountId).ToList();
+            List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+
+            IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId).Except(existingCustomers.Select(c => c.CustomerId));
+            IEnumerable<Guid> customersToDelete = existingCustomers.Select(c => c.CustomerId).Except(customers.Select(c => c.CustomerId));
+            IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
+            IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
+
+            foreach (Guid g in customersToAdd)
+                _accountRepo.AddCustomerToAccount(accountId, g);
+            foreach (Guid g in customersToDelete)
+                _accountRepo.RemoveCustomerFromAccount(accountId, g);
+            foreach (Guid g in usersToAdd)
+                _accountRepo.AddUserToAccount(accountId, g);
+            foreach (Guid g in usersToDelete)
+                _accountRepo.RemoveUserFromAccount(accountId, g);
+
+            return true;
+        }
     }
 }

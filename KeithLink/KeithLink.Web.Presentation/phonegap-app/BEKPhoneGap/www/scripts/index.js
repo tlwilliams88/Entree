@@ -29,37 +29,47 @@ var app = {
         document.addEventListener('deviceready', this.onDeviceReady, false);
         document.addEventListener('online', this.onOnline, false);
         document.addEventListener('offline', this.onOffline, false);
+        document.addEventListener('pause', this.onPause, false);
+        document.addEventListener('resume', this.onResume, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
+        console.log("Device Ready!");
         app.receivedEvent('deviceready');
     },
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+        //var listeningElement = parentElement.querySelector('.listening');
+        //var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        //listeningElement.setAttribute('style', 'display:none;');
+        //receivedElement.setAttribute('style', 'display:block;');
 
         console.log('Received Event: ' + id);
     },
     onOnline: function(){
-        debugger;
         console.log("BACK ONLINE!");
         var listService = angular.element($('body')).injector().get('ListService');
         var cartService = angular.element($('body')).injector().get('CartService');
 
         //merge local with server data
         listService.updateListsFromLocal();
+        cartService.updateCartsFromLocal();
 
         //check for pending orders and submit if pending connection
     },
     onOffline: function(){
         console.log("Taken Offline");
+    },
+    onPause: function() {
+        console.log("Paused.")
+    },
+    onResume: function(){
+        console.log("Resumed!!");
     }
+
 };

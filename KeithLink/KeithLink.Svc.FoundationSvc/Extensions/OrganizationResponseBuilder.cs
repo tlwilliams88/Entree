@@ -22,6 +22,18 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
         {
         }
 
+        public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
+        {
+            CommerceModelSearch search = ((CommerceServer.Foundation.CommerceModelSearch)(queryOperation.SearchCriteria));
+            if (search.Model.Properties.Count == 1 && search.Model.Properties[0].Key == "OrganizationType")
+            {
+            }
+            else
+            {
+                base.ExecuteQuery(queryOperation, operationCache, response);
+            }
+        }
+
         protected override List<CommerceEntity> TranslateAll(IEnumerable<Profile> commerceProfileList, CommerceEntity userOrganizationModel)
         {
             List<CommerceEntity> commerceEntities = base.TranslateAll(commerceProfileList, userOrganizationModel);

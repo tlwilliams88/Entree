@@ -23,22 +23,37 @@
 <div class="row">
 	<div class="col-sm-12">
 		<h2>Recently Viewed Items</h2>
+    <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
+
 		<ul class="horizontal-slide hidden-xs hidden-sm slide-recently-viewed-items">
-			<li loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></li>
 			<li ng-repeat="item in recentlyViewedItems" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url || 'images/default-placeholder.png'}}" alt="image">
-					<div class="featured-item__detail">
+					<img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+          <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+					<span class="featured-item__detail">
 						{{item.name}}
-						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">View Item</a>
-					</div>
+						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
+					</span>
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm" ng-show="loadingRecentlyViewedItems" loading-spinner="loadingRecentlyViewedItems"></div>
-		<div ng-hide="loadingRecentlyViewedItems" class="visible-xs visible-sm" featured-item-carousel items="recentlyViewedItems" link="'menu.catalog.products.details({ itemNumber: item.itemnumber })'"></div>
+
+    <div class="featured-item-mobile visible-xs visible-sm">
+      <carousel interval="myInterval" disable-ng-animate="true">
+        <slide ng-repeat="item in recentlyViewedItems" active="item.active">
+          <div class="col-xs-4 no-padding text-left">
+            <img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+            <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+          </div>
+          <div class="col-xs-8 no-padding featured-item-mobile__detail">
+            {{item.name}}<br />
+            <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase"># {{item.itemnumber}}</a>
+          </div>
+        </slide>
+      </carousel>
+    </div>
 	</div>
-</div>
+</div>  <!-- end Recently Viewed Items -->
 
 <!-- Recommended Items -->
 <div class="row" ng-if="isOrderEntryCustomer">
@@ -64,11 +79,12 @@
 <div class="row">
 	<div class="col-sm-12">
 		<h2>Select A Category</h2>
+    <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
+
 		<ul class="horizontal-slide hidden-xs hidden-sm">
-			<li loading-spinner="loadingCategories" ng-show="loadingCategories"></li>
 			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" src="{{category.category_image.url}}" alt="image">
+					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" ng-src="{{category.category_image.url}}" alt="image">
 					<div class="featured-item__detail">
 						{{category.name}}
 						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" class="text-uppercase">view category</a>
@@ -76,17 +92,30 @@
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm" ng-show="loadingCategories" loading-spinner="loadingCategories"></div>
-		<div ng-hide="loadingCategories" class="visible-xs visible-sm" featured-item-carousel items="categories" link="'menu.catalog.products.list({ type: \'category\', id: item.name })'"></div>
+		
+		<div class="featured-item-mobile visible-xs visible-sm">
+	    <carousel interval="myInterval" disable-ng-animate="true">
+        <slide ng-repeat="category in categories | orderBy: ['name'] track by $index" active="category.active">
+          <div ng-show="category.category_image.url" class="col-xs-4 no-padding text-left">
+            <img ng-src="{{category.category_image.url}}">
+          </div>
+          <div class="col-xs-8 no-padding featured-item-mobile__detail">
+            {{category.name}}<br />
+            <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" class="text-uppercase">View Details</a>
+          </div>
+        </slide>
+		  </carousel>
+		</div>
 	</div>
-</div>
+</div> <!-- end Categories -->
 
 <!-- Brands -->
 <div class="row">
 	<div class="col-sm-12">
 		<h2>Select A Brand</h2>
-		<ul class="horizontal-slide hidden-xs hidden-sm">
-			<li ng-show="loadingBrands" loading-spinner="loadingBrands"></li>
+		<div ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
+
+    <ul class="horizontal-slide hidden-xs hidden-sm">
 			<li ng-repeat="brand in brands | orderBy: ['extended_description']" class="item-holder">
 				<div class="featured-item text-center">
 					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" ng-src="{{brand.imageurl}}" alt="image">
@@ -97,7 +126,19 @@
 				</div>
 			</li>
 		</ul>
-		<div class="visible-xs visible-sm" ng-show="loadingBrands" loading-spinner="loadingBrands"></div>
-		<div ng-hide="loadingBrands" class="visible-xs visible-sm" featured-item-carousel items="brands" link="'menu.catalog.products.list({ type: \'brand\', id: item.brand_control_label })'"></div>
+
+    <div class="featured-item-mobile visible-xs visible-sm">
+      <carousel interval="myInterval" disable-ng-animate="true">
+        <slide ng-repeat="brand in brands | orderBy: ['extended_description'] track by $index" active="brand.active">
+          <div ng-show="brand.imageurl" class="col-xs-4 no-padding text-left">
+            <img ng-src="{{brand.imageurl}}">
+          </div>
+          <div class="col-xs-8 no-padding featured-item-mobile__detail">
+            {{brand.extended_description}}<br />
+            <a ui-sref="menu.catalog.products.list({ type: 'brand', id: brand.brand_control_label })" class="text-uppercase">View Details</a>
+          </div>
+        </slide>
+      </carousel>
+    </div>
 	</div>
 </div>

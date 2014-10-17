@@ -1,15 +1,24 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 
-    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 'UtilityService', 
+    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListSerivce, UtilityService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
+    $scope.shipDates = CartService.shipDates;
 
     $scope.sortBy = 'position';
     $scope.sortOrder = false;
+
+    // INFINITE SCROLL
     var itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.itemsToDisplay = itemsPerPage;
+    $scope.infiniteScrollLoadMore = function() {
+      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
+        $scope.itemsToDisplay += itemsPerPage;
+      }
+    };
 
     $scope.getListItemsWithQuantity = function(listItems) {
       return $filter('filter')(listItems, function(value, index) {
@@ -27,7 +36,10 @@ angular.module('bekApp')
 
     $scope.selectCart = function(cart) {
       $scope.selectedCart = cart;
-      $scope.showCarts = false;
+    };
+
+    $scope.sortByPrice = function(item) {
+      return item.each ? item.packageprice : item.caseprice;
     };
 
     $scope.createNewCart = function() {
@@ -36,18 +48,6 @@ angular.module('bekApp')
       cart.id = 'New';
       $scope.selectCart(cart);
     };
-
-    $scope.setQuantityValueFromDropdown = function(item, qty) {
-      $scope.addToOrderForm.$setDirty();
-      item.quantity = qty;
-    };
-
-    function deleteFieldInList(items, field) {
-      angular.forEach(items, function(item, index) {
-        delete item[field];
-      });
-      return items;
-    }
 
     function combineDuplicateItemNumbers(items) {
 
@@ -90,7 +90,9 @@ angular.module('bekApp')
         $scope.selectedCart = cart;
 
         // reset quantities
-        $scope.selectedList.items = deleteFieldInList($scope.selectedList.items, 'quantity');
+        angular.forEach($scope.selectedList.items, function(item) {
+          item.quantity = 0;
+        });
 
         $scope.addToOrderForm.$setPristine();
         $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
@@ -116,7 +118,7 @@ angular.module('bekApp')
 
       if (itemsToAdd && itemsToAdd.length > 0) {
         // remove cart item ids
-        itemsToAdd = deleteFieldInList(itemsToAdd, 'listitemid');
+        UtilityService.deleteFieldFromObjects(itemsToAdd, ['listitemid']);
 
         // add items to existing cart
         if (cart && cart.id && cart.id !== 'New') {
@@ -173,7 +175,7 @@ angular.module('bekApp')
       $scope.selectedList = ListSerivce.findListById($stateParams.listId);
     }
     if (!$scope.selectedList) {
-      $scope.selectList(angular.copy(lists[0]));
+      $scope.selectList(ListSerivce.getFavoritesList());
     }
 
     $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;

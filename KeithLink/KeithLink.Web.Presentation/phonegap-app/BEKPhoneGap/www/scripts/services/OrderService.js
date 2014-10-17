@@ -8,12 +8,18 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', function ($http) {
+  .factory('OrderService', ['$http', 'Order', function ($http, Order) {
     
     var Service = {
       
-      submitOrder: function(cartId) {
-        return $http.post('/order/' + cartId);
+      getAllOrders: function() {
+        return Order.query().$promise;
+      },
+
+      getOrderDetails: function(orderNumber) {
+        return Order.get({
+          orderNumber: orderNumber
+        }).$promise;
       }
     };
  

@@ -8,14 +8,10 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$filter', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $filter, UserProfileService, UtilityService, List) {
 
       var filter = $filter('filter');
-
-      function getBranch() {
-        return 'fdf';
-      }
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -33,9 +29,17 @@ angular.module('bekApp')
         }
       }
 
+      // used on lists page so users cannot rename list or add labels/parlevels
+      function isReadOnly(list) {
+        if (isFavoritesList(list.name) || list.read_only) {
+          list.isReadOnly = true;
+        }
+      }
+
       function flagFavoritesList() {
         angular.forEach(Service.lists, function(list, index) {
           doFlagFavoritesList(list);
+          isReadOnly(list);
         });
       }
 
@@ -58,9 +62,10 @@ angular.module('bekApp')
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
-          return List.query({
-            branchId: getBranch()
-          }, params).$promise.then(function(lists) {
+          if (!params) {
+            params = {};
+          }
+          return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
             flagFavoritesList();
 
@@ -69,12 +74,15 @@ angular.module('bekApp')
           });
         },
 
+        getListHeaders: function() {
+          return Service.getAllLists({ header: true });
+        },
+
         // accepts listId (guid)
         // returns list object
         getList: function(listId) {
           return List.get({
             listId: listId,
-            branchId: getBranch()
           }).$promise.then(function(list) {
             
             // update new list in cache object
@@ -124,9 +132,7 @@ angular.module('bekApp')
 
           newList.name = UtilityService.generateName('List', Service.lists);
 
-          return List.save({
-            branchId: getBranch()
-          }, newList).$promise.then(function(response) {
+          return List.save({}, newList).$promise.then(function(response) {
             return Service.getList(response.listitemid);
           });
         },
@@ -159,6 +165,14 @@ angular.module('bekApp')
               Service.lists.splice(idx, 1);
             }
             return;
+          });
+        },
+
+        deleteMultipleLists: function(listGuidArray)
+        {
+          return $http.delete('/list', {
+            headers:{'Content-Type': 'application/json'},
+            data: listGuidArray
           });
         },
 
@@ -224,6 +238,7 @@ angular.module('bekApp')
         ********************/
 
         // accepts listId (guid) and an array of items to add
+        // ** Note this does not add duplicate item numbers to a list (10/3/14)
         addMultipleItems: function(listId, items) {
           
           UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
@@ -244,8 +259,6 @@ angular.module('bekApp')
             listItemIds.push(item.listitemid);
           });
 
-          console.log(listItemIds);
-
           return $http.delete('/list/' + listId + '/item', { 
             headers: {'Content-Type': 'application/json'},
             data: listItemIds 
@@ -261,7 +274,7 @@ angular.module('bekApp')
 
         // returns array of labels are strings that are found in all lists for the user
         getAllLabels: function() {
-          return $http.get('/list/' + getBranch() + '/labels').then(function(response) {
+          return $http.get('/list/labels').then(function(response) {
             angular.copy(response.data, Service.labels);
             return response.data;
           });
@@ -270,7 +283,7 @@ angular.module('bekApp')
         // accepts listId (guid)
         // returns array of labels as strings that are found in the given list
         getLabelsForList: function(listId) {
-          return $http.get('/list/' + getBranch() + '/' + listId + '/labels').then(function(response) {
+          return $http.get('/list/' + listId + '/labels').then(function(response) {
             // TODO: add new labels to Service.labels
             return response.data;
           });
@@ -288,14 +301,12 @@ angular.module('bekApp')
         // returns new item list id
         addItemToFavorites: function(item) {
           var newItem = item,
-            favoritesList = Service.getFavoritesList();
+            favoritesList = Service.getFavoritesList(),
+            newListItemId;
           
-          // check if item number already exists in favorites list
-          var existingItem = filter(favoritesList.items, {itemnumber: item.itemnumber});
-          
-          // return existing item or add new item to favorites list
-          var newListItemId;
-          if (existingItem.length === 0) {
+          console.log(item.favorite);
+          if (!item.favorite) {
+            console.log('adding item');
             newListItemId = Service.addItem(favoritesList.listid, item).then(function(listitemid) {
               newItem.favorite = true;
               
@@ -305,7 +316,7 @@ angular.module('bekApp')
               return listitemid;
             });
           } else {
-            newListItemId = existingItem.listitemid;
+            newListItemId = item.listitemid;
           }
           return newListItemId;
         },

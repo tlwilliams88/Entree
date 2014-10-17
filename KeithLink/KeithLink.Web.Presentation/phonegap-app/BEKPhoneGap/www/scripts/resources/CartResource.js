@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('Cart', [ '$resource', 'UserProfileService', 
-  function ($resource, UserProfileService) {
-    return $resource('/cart/:branchId/:cartId', { }, {
+  .factory('Cart', [ '$resource', 
+  function ($resource) {
+    return $resource('/cart/:cartId', { }, {
 
       // defaults: GET, QUERY, SAVE
 
@@ -30,6 +30,16 @@ angular.module('bekApp')
       deleteItem: {
         url: '/cart/:cartId/item',
         method: 'DELETE'
+      },
+
+      getShipDates: {
+        url: '/order/shipdays',
+        method: 'GET'
+      },
+
+      submit: {
+        url: '/order/:cartId',
+        method: 'POST'
       }
 
     });

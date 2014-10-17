@@ -17,12 +17,15 @@ namespace KeithLink.Svc.Test.Logic {
         private InternalUserDomainRepository        _intAd;
         private EventLogRepositoryImpl              _log;
         private UserProfileLogicImpl                _logic;
+        private AccountRepository                   _acct;
+        private CustomerRepository                  _cust;
         #endregion
 
         #region ctor
         public UserProfileLogicImplTests() {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
             _cache = new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository();
+            var _custCach = new Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl();
             
             _custRepo = new CustomerContainerRepository(_log);
 
@@ -32,13 +35,18 @@ namespace KeithLink.Svc.Test.Logic {
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _cache);
 
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache);
+            _acct = new AccountRepository(_log, _custCach);
+            _cust = new CustomerRepository(_log, _custCach);
+
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust);
         }
         #endregion
 
         [TestMethod]
-        public void Ummmmm() {
-            //Assert.IsTrue(_logic.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e"));
+        public void GetUserProfile() {
+            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("jeremy@jeremyschickenshack.com");
+
+            Assert.IsTrue(userProfiles.UserProfiles.Count == 1);
         }
 
     }

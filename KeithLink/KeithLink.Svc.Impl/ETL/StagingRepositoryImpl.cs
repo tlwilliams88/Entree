@@ -100,5 +100,47 @@ namespace KeithLink.Svc.Impl.ETL
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
-	}
+        public DataTable ReadCustomers()
+        {
+            return PopulateDataTable("[ETL].[ReadCustomers]");
+        }
+
+        public DataTable ReadCSUsers()
+        {
+            return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
+        }
+
+        public DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber)
+        {
+            var contractItems = new DataTable();
+
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[usp_ECOM_SelectContractItems]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var paramCustomerNumber = cmd.Parameters.Add("CustomerNumber", SqlDbType.VarChar);
+                    var paramDivisionName = cmd.Parameters.Add("DivisionName", SqlDbType.VarChar);
+                    var paramContractNumber = cmd.Parameters.Add("ContractNumber", SqlDbType.VarChar);
+
+                    paramCustomerNumber.Direction = ParameterDirection.Input;
+                    paramDivisionName.Direction = ParameterDirection.Input;
+                    paramContractNumber.Direction = ParameterDirection.Input;
+
+                    paramCustomerNumber.Value = customerNumber;
+                    paramDivisionName.Value = divisionName;
+                    paramContractNumber.Value = contractNumber;
+
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(contractItems);
+                }
+            }
+
+            return contractItems;
+        }
+
+    }
 }

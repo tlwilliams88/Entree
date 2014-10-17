@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
         }
 
-		public Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list)
+		public Guid CreateList(Guid userId, UserSelectedContext catalogInfo, UserList list)
         {
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
@@ -43,7 +43,9 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Status = BasketStatus;
 			newBasket.Name = ListName(list.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
-
+            newBasket.IsContractList = list.IsContractList;
+            newBasket.ReadOnly = list.ReadOnly;
+            
 			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
         }
 
@@ -54,15 +56,15 @@ namespace KeithLink.Svc.Impl.Logic
 			if (basket == null)
 				return null;
 
-            return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId), basket);
+            return basketRepository.AddItem(listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
-		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo)
+		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
         {
 			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
         }
 
-		public void UpdateList(Guid userId, UserList list, CatalogInfo catalogInfo)
+		public void UpdateList(Guid userId, UserList list, UserSelectedContext catalogInfo)
         {
 			var updateBasket = basketRepository.ReadBasket(userId, list.ListId);
 
@@ -100,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(userId, listId, itemId);
         }
 		
-		public List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
+		public List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
         {
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 
@@ -119,8 +121,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
-			else
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
+			else 
 			{
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
 				returnList.ForEach(delegate(UserList list)
@@ -131,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic
 			}
         }
 
-		public UserList ReadList(UserProfile user, Guid listId, CatalogInfo catalogInfo)
+		public UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo)
         {
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 			if (basket == null)
@@ -153,13 +155,13 @@ namespace KeithLink.Svc.Impl.Logic
 			return lists.LineItems.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
         }
 
-		public List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo)
+		public List<string> ReadListLabels(Guid userId, UserSelectedContext catalogInfo)
         {
 			var lists = basketRepository.ReadAllBaskets(userId);
 			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
         }
 
-		private void LookupProductDetails(UserProfile user, UserList list, CatalogInfo catalogInfo)
+		private void LookupProductDetails(UserProfile user, UserList list, UserSelectedContext catalogInfo)
 		{
 			if (list.Items == null)
 				return;
@@ -168,8 +170,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user.UserId);
+			var pricing = priceRepository.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 
 			list.Items.ForEach(delegate (ListItem listItem)
@@ -189,6 +191,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
+					listItem.CatchWeight = prod.CatchWeight;
 				}
 				if (favorites != null)
 				{
@@ -219,10 +222,10 @@ namespace KeithLink.Svc.Impl.Logic
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, CatalogInfo catalogInfo)
+		public void MarkFavoriteProductsAndNotes(UserProfile user, string branchId, ProductsReturn products, UserSelectedContext catalogInfo)
 		{
-			var list = basketRepository.ReadBasket(userId, ListName(FAVORITESLIST, catalogInfo));
-			var notes = itemNoteLogic.ReadNotes(userId);
+			var list = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 			if (list == null || list.LineItems == null)
 				return;
@@ -244,6 +247,8 @@ namespace KeithLink.Svc.Impl.Logic
 				ListId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
+                IsContractList = basket.IsContractList.HasValue ? basket.IsContractList.Value : false,
+                ReadOnly = basket.ReadOnly.HasValue ? basket.ReadOnly.Value : false,
 				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
@@ -262,7 +267,7 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.DeleteItem(userId, listId, itemId);
 		}
 		
-		public UserList AddItems(UserProfile user, CatalogInfo catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
+		public UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
 
@@ -292,10 +297,11 @@ namespace KeithLink.Svc.Impl.Logic
 				basketRepository.DeleteBasket(userId, listId);
 		}
 
-		private string ListName(string name, CatalogInfo catalogInfo)
+		private string ListName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("l{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
-						
+
+		
 	}
 }

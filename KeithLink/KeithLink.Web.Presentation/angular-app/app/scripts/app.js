@@ -26,11 +26,17 @@ angular
     'angular-loading-bar',
     'configenv'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider',
-  function($stateProvider, $urlRouterProvider, $httpProvider, localStorageServiceProvider, cfpLoadingBarProvider) {
+.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
   
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
+
+  // configure logging
+  $logProvider.debugEnabled(ENV.loggingEnabled);
+
+  // set local storage prefix
+  localStorageServiceProvider.setPrefix('bek');
 
   // the $stateProvider determines path urls and their related controllers
   $stateProvider
@@ -72,12 +78,15 @@ angular
         }]
       }
     })
+
+    /**********
+    CATALOG
+    **********/
     .state('menu.catalog', {
       abstract: true,
       url: '/catalog/',
       template: '<div ui-view=""></div>'
     })
-    // /catalog
     .state('menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
@@ -91,7 +100,6 @@ angular
       url: 'products/',
       template: '<div ui-view=""></div>'
     })
-    // /catalog/:type/:id
     .state('menu.catalog.products.list', {
       url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
@@ -100,7 +108,6 @@ angular
         authorize: 'canBrowseCatalog'
       }
     })
-    // /catalog/products/:itemNumber (item details page)
     .state('menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
@@ -114,20 +121,24 @@ angular
         }]
       }
     })
+
+
     .state('menu.lists', {
       url: '/lists/',
-      // controller: 'ListController',
       abstract: true,
       template: '<ui-view/>',
       data: {
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService){
+        lists: ['$q', 'ListService', function ($q, ListService) {
           return $q.all([
             ListService.getAllLists(),
             ListService.getAllLabels()
           ]);
+        }],
+        carts: ['CartService', function(CartService) {
+          return CartService.getCartHeaders();
         }]
       }
     })
@@ -149,6 +160,9 @@ angular
       resolve: {
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
+        }],
+        shipDates: ['CartService', function (CartService){
+          return CartService.getShipDates();
         }]
       }
     })
@@ -163,8 +177,6 @@ angular
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
-      // templateUrl: 'views/addtoorder.html',
-      // controller: 'AddToOrderController',
       template: '<ui-view/>',
       data: {
         authorize: 'canCreateOrders'
@@ -175,6 +187,9 @@ angular
         }],
         carts: ['CartService', function(CartService) {
           return CartService.getAllCarts();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -185,6 +200,85 @@ angular
       data: {
         authorize: 'canCreateOrders'
       }
+    })
+    .state('menu.order', {
+      url: '/orders/',
+      templateUrl: 'views/order.html',
+      controller: 'OrderController',
+      data: {
+        authorize: 'canSubmitOrders'
+      },
+      resolve: {
+        orders: [ 'OrderService', function(OrderService) {
+          return OrderService.getAllOrders();
+        }]
+      }
+    })
+    .state('menu.orderitems', {
+      url: '/orders/:orderNumber/',
+      templateUrl: 'views/orderitems.html',
+      controller: 'OrderItemsController',
+      data: {
+        authorize: 'canSubmitOrders'
+      },
+      resolve: {
+        order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
+          return OrderService.getOrderDetails($stateParams.orderNumber);
+        }]
+      }
+    })
+
+    /**********
+    ADMIN
+    **********/
+    .state('menu.admin', {
+      url: '/admin/',
+      templateUrl: 'views/admin/menu.html'
+    })
+    .state('menu.admin.user', {
+      url: 'users/',
+      templateUrl: 'views/admin/users.html', //'views/adminusers.html',
+      controller: 'UsersController',
+      resolve: {
+        users: [ 'UserProfileService', function(UserProfileService) {
+          return [{name: 'Maria'}, {name: 'Andrew'}, {name: 'Josh'}]; //UserProfileService.getAllUsers();
+        }]
+      }
+    })
+    .state('menu.admin.adduser', {
+      url: 'users/add/',
+      templateUrl: 'views/admin/adduserdetails.html',
+      controller: 'AddUserDetailsController'
+    })
+    .state('menu.admin.edituser', {
+      url: 'users/:userId/',
+      templateUrl: 'views/admin/edituserdetails.html',
+      controller: 'EditUserDetailsController'
+    })
+    .state('menu.admin.customer', {
+      url: 'customers/',
+      templateUrl: 'views/admin/customers.html',
+      controller: 'CustomersController',
+      resolve: {
+        customers: [ 'CustomerService', function(CustomerService) {
+          return CustomerService.getCustomers();
+        }]
+      }
+    })
+    .state('menu.admin.account', {
+      url: 'accounts/',
+      templateUrl: 'views/admin/accounts.html',
+      controller: 'AccountsController',
+      resolve: {
+        accounts: [ 'AccountService', function(AccountService) {
+          return AccountService.getAccounts();
+        }]
+      }
+    })
+    .state('menu.admin.account.details', {
+      url: ':accountId/',
+      templateUrl: 'views/admin/accountdetails.html',
+      controller: 'AdminAccountDetailsController'
     });
 
   $stateProvider
@@ -195,6 +289,8 @@ angular
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  $urlRouterProvider.when('/lists', '/lists/1');
+  $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
@@ -215,29 +311,29 @@ angular
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
-  // set local storage prefix
-  localStorageServiceProvider.setPrefix('bek');
-
 }])
-.run(['$rootScope', '$state', 'AccessService', 'AuthenticationService', 'toaster', function($rootScope, $state, AccessService, AuthenticationService, toaster) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    $log.debug('route: ' + toState.name);
+
     // check if route is protected
     if (toState.data && toState.data.authorize) {
       // check if user's token is expired
       if (!AccessService.isLoggedIn()) {
         AuthenticationService.logout();
-        $state.transitionTo('register');
+        $state.go('register');
         event.preventDefault();
       }
 
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
-        $state.transitionTo('register');
+        $state.go('register');
         event.preventDefault(); 
       }
     }
@@ -246,9 +342,9 @@ angular
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
-        $state.transitionTo('menu.home');  
+        $state.go('menu.home');  
       } else {
-        $state.transitionTo('menu.catalog.home');
+        $state.go('menu.catalog.home');
       }
 
       event.preventDefault(); 

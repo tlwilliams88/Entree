@@ -8,22 +8,23 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', function($scope) {
+  .controller('HomeController', [ '$scope', '$state', 'CartService', 'OrderService', 
+    function($scope, $state, CartService, OrderService) {
     
-    $scope.orders = [{
-      orderNum: 212342342,
-      deliveryDate: '12/13/2014',
-      totalCost: '1234.32',
-      status: 'Open',
-      paymentStatus: 'N/A'
-    }];
-
-    $scope.locations = [
-      'Jimmy\'s Chicken Shack',
-      'Torchy\'s Tacos'
-    ];
-
     $scope.myInterval = -1;
+
+    $scope.loadingOrders = true;
+    OrderService.getAllOrders().then(function(orders) {
+      $scope.orders = orders;
+      $scope.loadingOrders = false;
+    });
+
+    $scope.createNewCart = function() {
+      return CartService.createCart().then(function(cart) {
+        $state.go('menu.cart.items', {cartId: cart.id, renameCart: true});
+      });
+    };
+
     var items = $scope.items = [{
       id: 1,
       imageUrl: 'images/demoimage1.jpg',
@@ -42,4 +43,4 @@ angular.module('bekApp')
       name: '50% off of apples!'
     }];
 
-  });
+  }]);

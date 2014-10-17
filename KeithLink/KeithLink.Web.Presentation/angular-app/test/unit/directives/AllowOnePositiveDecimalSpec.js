@@ -43,8 +43,7 @@ describe('Directive: AllowOnePositiveDecimal', function () {
   it('should pass when blank', function() {
     var testNum = '';
     form.somenum.$setViewValue(testNum);
-    expect($scope.model.somenum).toBeUndefined();
-    expect(form.somenum.$valid).toBe(false);
+    expect(form.somenum.$valid).toBe(true);
   });
 
   it('should fail with a number ending in a decimal', function() {

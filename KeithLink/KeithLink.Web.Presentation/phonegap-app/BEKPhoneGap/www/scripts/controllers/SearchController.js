@@ -44,14 +44,14 @@ angular.module('bekApp')
             $scope.paramType = $stateParams.type;
             $scope.categoryName = '';
 
-            function getCategoryByName(categoryName) {
+            function getCategoryBySearchName(categorySearchName) {
                 return CategoryService.getCategories().then(function(data) {
                     angular.forEach(data.categories, function(item, index) {
-                        if (item.name === categoryName) {
+                        if (item.search_name === categorySearchName) {
                             $scope.categoryName = item.name;
                         }
                     });
-                    return ProductService.getProductsByCategory($scope.categoryName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
+                    return ProductService.getProductsByCategory(categorySearchName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 });
             }
 
@@ -71,8 +71,8 @@ angular.module('bekApp')
                 var type = $stateParams.type;
 
                 if (type === 'category') {
-                    var categoryName = $stateParams.id;
-                    return getCategoryByName(categoryName);
+                    var categorySearchName = $stateParams.id;
+                    return getCategoryBySearchName(categorySearchName);
 
                 } else if (type === 'search') {
 
@@ -209,14 +209,12 @@ angular.module('bekApp')
             };
 
             $scope.infiniteScrollLoadMore = function() {
-
                 if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
                     return;
                 }
 
                 $scope.itemIndex += $scope.itemsPerPage;
 
-                console.log('more: ' + $scope.itemIndex);
                 loadProducts(true);
             };
 
@@ -471,11 +469,19 @@ angular.module('bekApp')
                             count: itemcount
                         });
                     }
-                    if (itemname === 'cndoc') {
+                    if (itemname === 'childnutrition') {
                         itemspecsArray.push({
                             name: itemname,
                             displayname: 'Child Nutrition Sheet',
                             iconclass: 'text-regular icon-apple',
+                            count: itemcount
+                        });
+                    }
+                    if (itemname === 'sellsheet') {
+                        itemspecsArray.push({
+                            name: itemname,
+                            displayname: 'Product Information Sheet',
+                            iconclass: 'text-regular icon-sellsheet',
                             count: itemcount
                         });
                     }
@@ -485,14 +491,6 @@ angular.module('bekApp')
                             name: itemname,
                             displayname: 'DeviatedCost',
                             iconclass: 'text-regular icon-dollar',
-                            count: itemcount
-                        });
-                    }
-                    if (itemname === 'ItemDetailsSheet') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Item Details Sheet',
-                            iconclass: 'text-regular icon-cell-sheet',
                             count: itemcount
                         });
                     }
@@ -515,8 +513,11 @@ angular.module('bekApp')
                 if (name === 'replacementitem') {
                     return 'Replacement Item';
                 }
-                if (name === 'cndoc') {
+                if (name === 'childnutrition') {
                     return 'Child Nutrition Sheet';
+                }
+                if (name === 'sellsheet') {
+                    return 'Product Information Sheet';
                 }
                 if (name === 'nonstock') {
                     return 'Non-Stock Item';
@@ -525,13 +526,9 @@ angular.module('bekApp')
 
             // TODO: move into context menu controller
             $scope.lists = ListService.lists;
-            ListService.getAllLists({
-                'header': true
-            });
+            ListService.getListHeaders();
 
             $scope.carts = CartService.carts;
-            CartService.getAllCarts({
-                'header': true
-            });
+            CartService.getCartHeaders();
         }
     ]);

@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         #endregion
 
         #region methods
-		public ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel) {
+		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
 
             //List<string> childCategories = 
@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
-		public ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
+		public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
 
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     };
         }
 
-        private dynamic BuildFilterTerms(string facetFilters, CatalogInfo catalogInfo, string category="") {
+        private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category="") {
             List<dynamic> mustClause = new List<dynamic>();
             string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in facets)
@@ -129,12 +129,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 				mustClause.Add(new { query_string = new { query = string.Format("isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId) } });
 			else
 				mustClause.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
+            
+            if (!String.IsNullOrEmpty(category))
+                mustClause.Add(BuildCategoryFilter(category));
 
             List<dynamic> fieldFilterTerms = BuildStatusFilter();
-            List<dynamic> categoryFilterTerms = BuildCategoryFilter(category);
 
             ExpandoObject filterTerms = new ExpandoObject();
-            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms, should = categoryFilterTerms });
+            (filterTerms as IDictionary<string, object>).Add("bool", new { must = mustClause, must_not = fieldFilterTerms });
 
             return filterTerms;
 
@@ -167,18 +169,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        private static List<dynamic> BuildCategoryFilter(string category) {
-            List<dynamic> categoryFilterTerms = new List<dynamic>();
-
-            if (String.IsNullOrEmpty(category))
-                return categoryFilterTerms;
-
-            categoryFilterTerms.Add(
-                new { multi_match =
+        private static dynamic BuildCategoryFilter(string category) {
+            return new { multi_match =
                     new { query = category, fields = 
-                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } });
-
-            return categoryFilterTerms;
+                        new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
         private static dynamic BuildSort(string sortField, string sortDir) {
@@ -238,7 +232,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             return results;
         }
 
-		public ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel) {
+		public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
@@ -306,6 +300,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.ReplacedItem = oProd._source.replaceditem;
             p.ReplacementItem = oProd._source.replacementitem;
             p.ChildNutrition = oProd._source.childnutrition;
+            p.SellSheet = oProd._source.sellsheet;
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;

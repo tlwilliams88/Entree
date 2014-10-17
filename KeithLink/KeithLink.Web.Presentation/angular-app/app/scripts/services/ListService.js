@@ -29,9 +29,17 @@ angular.module('bekApp')
         }
       }
 
+      // used on lists page so users cannot rename list or add labels/parlevels
+      function isReadOnly(list) {
+        if (isFavoritesList(list.name) || list.read_only) {
+          list.isReadOnly = true;
+        }
+      }
+
       function flagFavoritesList() {
         angular.forEach(Service.lists, function(list, index) {
           doFlagFavoritesList(list);
+          isReadOnly(list);
         });
       }
 
@@ -54,13 +62,20 @@ angular.module('bekApp')
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
-          return List.query({}, params).$promise.then(function(lists) {
+          if (!params) {
+            params = {};
+          }
+          return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
             flagFavoritesList();
 
             // TODO: get favorites list items if header param is true
             return lists;
           });
+        },
+
+        getListHeaders: function() {
+          return Service.getAllLists({ header: true });
         },
 
         // accepts listId (guid)
@@ -223,6 +238,7 @@ angular.module('bekApp')
         ********************/
 
         // accepts listId (guid) and an array of items to add
+        // ** Note this does not add duplicate item numbers to a list (10/3/14)
         addMultipleItems: function(listId, items) {
           
           UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
@@ -242,8 +258,6 @@ angular.module('bekApp')
           angular.forEach(items, function(item, index) {
             listItemIds.push(item.listitemid);
           });
-
-          console.log(listItemIds);
 
           return $http.delete('/list/' + listId + '/item', { 
             headers: {'Content-Type': 'application/json'},
@@ -287,14 +301,12 @@ angular.module('bekApp')
         // returns new item list id
         addItemToFavorites: function(item) {
           var newItem = item,
-            favoritesList = Service.getFavoritesList();
+            favoritesList = Service.getFavoritesList(),
+            newListItemId;
           
-          // check if item number already exists in favorites list
-          var existingItem = filter(favoritesList.items, {itemnumber: item.itemnumber});
-          
-          // return existing item or add new item to favorites list
-          var newListItemId;
-          if (existingItem.length === 0) {
+          console.log(item.favorite);
+          if (!item.favorite) {
+            console.log('adding item');
             newListItemId = Service.addItem(favoritesList.listid, item).then(function(listitemid) {
               newItem.favorite = true;
               
@@ -304,7 +316,7 @@ angular.module('bekApp')
               return listitemid;
             });
           } else {
-            newListItemId = existingItem.listitemid;
+            newListItemId = item.listitemid;
           }
           return newListItemId;
         },

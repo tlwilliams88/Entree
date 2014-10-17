@@ -1493,9 +1493,9 @@ This file contains the Metadata Repository
               <PropertyMapping property="LastName"				csProperty="GeneralInfo.last_name" />
               <PropertyMapping property="PreferredCreditCard"				csProperty="GeneralInfo.preferred_credit_card" />
               <PropertyMapping property="DirectMailOptOut"          csProperty="GeneralInfo.direct_mail_opt_out" />
-              <PropertyMapping property="SelectedBranch"            csProperty="GeneralInfo.SelectedBranch" />
-              <PropertyMapping property="SelectedCustomer"          csProperty="GeneralInfo.SelectedCustomer" />
-              <PropertyMapping property="PhoneNumber"               csProperty="GeneralInfo.tel_number" />
+              <PropertyMapping property="DefaultCustomer"				csProperty="GeneralInfo.default_customer" />
+              <PropertyMapping property="DefaultBranch"				csProperty="GeneralInfo.default_branch" />
+              <PropertyMapping property="Telephone"          csProperty="GeneralInfo.tel_number" />
             </PropertyMappings>
 
           </EntityMapping>
@@ -1630,14 +1630,22 @@ This file contains the Metadata Repository
           <EntityMapping
 								  csType="CommerceServer.Core.Runtime.Profiles.Profile"
 								  csAssembly="CommerceServer.Core.Runtime, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a"
-								  csDefinitionName="Organization"
-                  csArea="Profiles" >
+								  csDefinitionName="Organization" >
 
             <!-- Examples of the Property Mappings -->
             <PropertyMappings>
               <PropertyMapping property="Id"						csProperty="GeneralInfo.org_id" />
-              <PropertyMapping property="CustomerName"						csProperty="GeneralInfo.name" />
-              <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.trading_partner_number" />
+              <PropertyMapping property="Name"						csProperty="GeneralInfo.name" />
+              <PropertyMapping property="CustomerNumber"						csProperty="GeneralInfo.customer_number" />
+              <PropertyMapping property="IsPoRequired"						csProperty="GeneralInfo.is_po_required" />
+              <PropertyMapping property="IsPowerMenu"						csProperty="GeneralInfo.is_power_menu" />
+              <PropertyMapping property="ContractNumber"						csProperty="GeneralInfo.contract_number" />
+              <PropertyMapping property="DsrNumber"						csProperty="GeneralInfo.dsr_number" />
+              <PropertyMapping property="NationalOrRegionalAccountNumber"						csProperty="GeneralInfo.natl_or_regl_account_number" />
+              <PropertyMapping property="NationalAccountId"						csProperty="GeneralInfo.national_account_id" />
+              <PropertyMapping property="BranchNumber"						csProperty="GeneralInfo.branch_number" />
+              <PropertyMapping property="OrganizationType"						csProperty="GeneralInfo.organization_type" />
+              <PropertyMapping property="ParentOrganizationId"						csProperty="GeneralInfo.parent_organization" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
             </PropertyMappings>
@@ -1681,6 +1689,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="Id"						csProperty="GeneralInfo.user_org_id" />
               <PropertyMapping property="UserId"						csProperty="GeneralInfo.user_id" />
               <PropertyMapping property="OrganizationId"						csProperty="GeneralInfo.org_id" />
+              <PropertyMapping property="UserOrganizationKey"						csProperty="GeneralInfo.user_org_key" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
             </PropertyMappings>
@@ -1689,7 +1698,7 @@ This file contains the Metadata Repository
 
         <Relationships>
           <Relationship name="OrganizationUser" type="Relationship" modelName="UserProfile" isMultipleItems="true" />
-          <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="false" />
+          <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="true" />
         </Relationships>
 
       </CommerceEntity>
@@ -2100,6 +2109,8 @@ This file contains the Metadata Repository
 							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
 							<PropertyMapping property="Active" csProperty="Active"/>
 							<PropertyMapping property="CustomerId" csProperty="CustomerId"/>
+              <PropertyMapping property="IsContractList" csProperty="IsContractList"/>
+              <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2156,7 +2167,7 @@ This file contains the Metadata Repository
           <Property name="PurchaseErrors" dataType="Array" >
             <DisplayName value="Purchase Errors"/>
           </Property>
-          <Property name="IsMultiShipping" dataType="Boolean" >
+          <Property name="IsMultiShipping" dataType="String" >
             <DisplayName value="Is Multi-Shipping"/>
           </Property>
 					
@@ -2177,7 +2188,12 @@ This file contains the Metadata Repository
 					<Property name="CustomerId" dataType="String">
 						<DisplayName value="CustomerId"/>
 					</Property>
-					
+          <Property name="IsContractList" dataType="Boolean">
+            <DisplayName value="IsContractList"/>
+          </Property>
+          <Property name="ReadOnly" dataType="Boolean">
+            <DisplayName value="ReadOnly"/>
+          </Property>
         </Properties>
 
         <Relationships>

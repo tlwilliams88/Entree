@@ -25,19 +25,19 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
 		[ApiKeyedRoute("recent/")]
 		public List<RecentItem> Recent() {
-			return recentlyViewedLogic.Read(this.AuthenticatedUser, this.RequestCatalogInfo);
+			return recentlyViewedLogic.Read(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
 		[HttpPost]
 		[ApiKeyedRoute("recent/{itemnumber}")]
 		public void Recent(string itemnumber) {
-			recentlyViewedLogic.AddItem(this.AuthenticatedUser, this.RequestCatalogInfo, itemnumber);
+			recentlyViewedLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("recent/")]
 		public void RecentDelete() {
-			recentlyViewedLogic.Clear(this.AuthenticatedUser, this.RequestCatalogInfo);
+			recentlyViewedLogic.Clear(this.AuthenticatedUser, this.SelectedUserContext);
 		}
         #endregion
 

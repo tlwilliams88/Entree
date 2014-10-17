@@ -1,0 +1,15 @@
+.order-item {
+  @include make-row();
+  margin-top: 8px;
+
+  > div {
+    @include make-xs-column(6);
+    @include make-sm-column(3);
+  }
+  .order-item-title {
+    font-weight: 600;
+  }
+  .order-item-value {
+    color: $color-font-light;
+  }
+}

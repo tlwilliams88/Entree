@@ -152,9 +152,83 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// create a user in the benekeith.com domain
         /// </summary>
         /// <remarks>
+        /// jwames - 10/9/2014 - converted to use AccountManagement from original code
+        /// </remarks>
+        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName) {
+            CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
+
+            // create the customer container if it does not exist
+            if (custExists.CustomerContainers.Count != 1) {
+                _containerRepo.CreateCustomerContainer(customerName);
+                _logger.WriteInformationLog(string.Format("New customer container created in Active Directory({0}).", customerName));
+            }
+
+            PrincipalContext principal = null;
+            string userOU = string.Format("ou=Users,ou={0},{1}", customerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            try {
+                principal = new PrincipalContext(ContextType.Domain,
+                                                 Configuration.ActiveDirectoryExternalServerName,
+                                                 userOU,
+                                                 ContextOptions.Negotiate,
+                                                 Configuration.ActiveDirectoryExternalDomainUserName,
+                                                 Configuration.ActiveDirectoryExternalPassword);
+            } catch(Exception ex){
+                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
+
+                throw;
+            }
+
+            UserPrincipal user = new UserPrincipal(principal);
+
+            user.DisplayName = string.Format("{0} {1}", firstName, lastName);
+            user.GivenName = firstName;
+            user.Surname = lastName;
+
+            string userName = GetNewUserName(emailAddress);
+
+            user.Name = userName;
+            user.SamAccountName = userName;
+            user.UserPrincipalName = emailAddress;
+
+            user.SetPassword(password);
+            user.Enabled = true;
+
+            try {
+                user.Save();
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not create user on external AD server.", ex);
+
+                throw;
+            }
+
+            try {
+                DirectoryEntry de = (DirectoryEntry)user.GetUnderlyingObject();
+                de.Properties["company"].Value = customerName;
+
+                de.CommitChanges();
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("After user was created, could not set company name.", ex);
+
+                throw;
+            }
+
+            JoinGroup(customerName, roleName, user);
+
+            principal.Dispose();
+
+            _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
+
+            return userName;
+        }
+
+        /// <summary>
+        /// create a user in the benekeith.com domain
+        /// </summary>
+        /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
+        public string CreateUser_Org(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
         {
             CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
 
@@ -360,6 +434,34 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
 
                 return false;
+            }
+        }
+
+        public void JoinGroup(string customerName, string roleName, UserPrincipal user) {
+            string groupOU = string.Format("ou=Groups,ou={0},{1}", customerName, Configuration.ActiveDirectoryExternalRootNode);
+
+            using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                 Configuration.ActiveDirectoryExternalServerName,
+                                                 groupOU,
+                                                 ContextOptions.Negotiate,
+                                                 Configuration.ActiveDirectoryExternalDomainUserName,
+                                                 Configuration.ActiveDirectoryExternalPassword)) {
+                string groupName = string.Join(" ", new string[] { customerName, roleName });
+
+                GroupPrincipal group = GroupPrincipal.FindByIdentity(principal, groupName);
+
+                // have to use directory entries because the computer making the call is not necessarily on the domain
+                DirectoryEntry de = (DirectoryEntry)group.GetUnderlyingObject();
+
+                de.Properties["member"].Add(user.DistinguishedName);
+
+                try {
+                    de.CommitChanges();
+                } catch (Exception ex) {
+                    _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
+
+                    throw;
+                }    
             }
         }
 

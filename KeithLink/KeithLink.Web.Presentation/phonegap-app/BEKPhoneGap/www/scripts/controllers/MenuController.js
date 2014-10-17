@@ -9,28 +9,48 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'toaster', 'Constants', 'AuthenticationService', 'UserProfileService', 'AccessService', 
-    function ($scope, $state, $modal, branches, toaster, Constants, AuthenticationService, UserProfileService, AccessService) {
+  .controller('MenuController', ['$scope', '$state', '$stateParams', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
+    function ($scope, $state, $stateParams, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
 
     $scope.$state = $state;
-
-    $scope.userProfile = UserProfileService.profile();
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
 
-    refreshAccessPermissions();
-    
-    $scope.changeLocation = function() {
-      UserProfileService.setCurrentLocation($scope.currentLocation);
-    };
-
+    $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
-    $scope.currentLocation = UserProfileService.profile().branchid;
-    $scope.changeLocation();
+    refreshAccessPermissions();
+
+    // if ($scope.isOrderEntryCustomer) {
+    //   $scope.currentLocation = LocalStorage.getCurrentLocation().customerNumber;
+    // } else {
+      $scope.currentLocation = LocalStorage.getCurrentLocation();
+    // }
+    
+    // for guest users
+    $scope.changeBranch = function() {
+      LocalStorage.setBranchId($scope.currentLocation);
+      LocalStorage.setCurrentLocation($scope.currentLocation);
+    };
+    // for order-entry customers
+    $scope.changeCustomerLocation = function() {
+      angular.forEach($scope.userProfile.user_customers, function(customer) {
+        if (customer.customerNumber === $scope.currentLocation) {
+          LocalStorage.setBranchId(customer.customerBranch);
+          LocalStorage.setCustomerNumber(customer.customerNumber);
+          LocalStorage.setCurrentLocation(customer.customerNumber);
+        }
+      }); 
+      
+      $state.transitionTo($state.current, $state.params, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
+    };
 
     $scope.logout = function() {
       AuthenticationService.logout();
-      refreshAccessPermissions();
+      // refreshAccessPermissions();
 
       $state.transitionTo('register');
       $scope.displayUserMenu = false;
@@ -52,8 +72,4 @@ angular.module('bekApp')
       $scope.canManageAccount = AccessService.canManageAccount();
       $scope.canManageeMenu = AccessService.canManageeMenu();
     }
-
-    $scope.displayMessage = function(type, message) {
-      toaster.pop(type, null, message);
-    };
   }]);

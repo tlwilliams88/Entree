@@ -11,24 +11,24 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
     public interface IListLogic
     {
-        Guid CreateList(Guid userId, CatalogInfo catalogInfo, UserList list);
+        Guid CreateList(Guid userId, UserSelectedContext catalogInfo, UserList list);
 		Guid? AddItem(Guid userId, Guid listId, ListItem newItem);
-		UserList AddItems(UserProfile user, CatalogInfo catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates);
+		UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates);
 
-		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, CatalogInfo catalogInfo);
-		void UpdateList(Guid userId, UserList list, CatalogInfo catalogInfo);
+		void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo);
+		void UpdateList(Guid userId, UserList list, UserSelectedContext catalogInfo);
 
 		void DeleteList(Guid userId, Guid listId);
 		void DeleteLists(Guid userId, List<Guid> listIds);
 		void DeleteItem(Guid userId, Guid listId, Guid itemId);
 		void DeleteItems(Guid userId, Guid listId, List<Guid> itemIds);
 
-		List<UserList> ReadAllLists(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly);
-		UserList ReadList(UserProfile user, Guid listId, CatalogInfo catalogInfo);
+		List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly);
+		UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo);
 		List<string> ReadListLabels(Guid userId, Guid listId);
-		List<string> ReadListLabels(Guid userId, CatalogInfo catalogInfo);
+		List<string> ReadListLabels(Guid userId, UserSelectedContext catalogInfo);
 
-		void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, CatalogInfo catalogInfo);
+		void MarkFavoriteProductsAndNotes(UserProfile user, string branchId, ProductsReturn products, UserSelectedContext catalogInfo);
 
     }
 }

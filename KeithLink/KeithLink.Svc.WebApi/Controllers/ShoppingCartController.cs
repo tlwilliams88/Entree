@@ -28,21 +28,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public List<ShoppingCart> List(bool header = false)
 		{
-			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.RequestCatalogInfo, header);
+			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("cart/{cartId}")]
 		public ShoppingCart Cart(Guid cartId)
 		{
-			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, cartId);
+			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
 		}
 
 		[HttpPost]
 		[ApiKeyedRoute("cart/")]
 		public NewItem List(ShoppingCart cart)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.RequestCatalogInfo, cart) };
+			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
 		}
 
 		[HttpPost]
@@ -63,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/")]
 		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
-			shoppingCartLogic.UpdateCart(this.RequestCatalogInfo, this.AuthenticatedUser, updatedCart, deleteomitted);
+			shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
 		}
 
 		[HttpDelete]
@@ -72,6 +72,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, cartId);
 		}
+
+		[HttpDelete]
+		[ApiKeyedRoute("cart/")]
+		public void DeleteList(List<Guid> cartIds)
+		{
+			shoppingCartLogic.DeleteCarts(this.AuthenticatedUser.UserId, cartIds);
+		}
+
 
 		[HttpDelete]
 		[ApiKeyedRoute("cart/{cartId}/item/{itemId}")]

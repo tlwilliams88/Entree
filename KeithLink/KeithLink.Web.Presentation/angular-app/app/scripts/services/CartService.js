@@ -8,22 +8,31 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', 'UserProfileService', 'UtilityService', 'Cart', 
-    function ($http, $filter, UserProfileService, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$filter', '$q', 'UserProfileService', 'UtilityService', 'Cart', 
+    function ($http, $filter, $q, UserProfileService, UtilityService, Cart) {
 
     var filter = $filter('filter');
 
     var Service = {
       carts: [],
+      shipDates: [],
 
       // accepts "header: true" params to get only names
       // return array of cart objects
       getAllCarts: function(requestParams) {
-        return Cart.query({}).$promise.then(function(response) {
+        if (!requestParams) {
+          requestParams = {};
+        }
+
+        return Cart.query(requestParams).$promise.then(function(response) {
           var allCarts = response;
           angular.copy(allCarts, Service.carts);
           return allCarts;
         });
+      },
+
+      getCartHeaders: function() {
+        return Service.getAllCarts({ header: true });
       },
 
       // accepts cartId (guid)
@@ -104,6 +113,14 @@ angular.module('bekApp')
         });
       },
 
+      deleteMultipleCarts: function(cartGuidArray)
+        {
+          return $http.delete('/cart', {
+            headers:{'Content-Type': 'application/json'},
+            data: cartGuidArray
+          });
+        },
+
       /********************
       EDIT SINGLE ITEM
       TODO: currently I am not keeping the cached object in sync
@@ -151,8 +168,28 @@ angular.module('bekApp')
         }
 
         return selectedCart;
-      }
+      },
 
+      getShipDates: function() {
+        var deferred = $q.defer();
+        
+        if (Service.shipDates.length > 0) {
+          deferred.resolve(Service.shipDates);
+        } else {
+          Cart.getShipDates().$promise.then(function(data) {
+            angular.copy(data.shipdates, Service.shipDates);
+            deferred.resolve(data.shipdates);
+            return data.shipdates;
+          }); 
+        }
+        return deferred.promise;
+      },
+
+      submitOrder: function(cartId) {
+        return Cart.submit({
+          cartId: cartId
+        }, null).$promise;
+      }
     };
 
     return Service;

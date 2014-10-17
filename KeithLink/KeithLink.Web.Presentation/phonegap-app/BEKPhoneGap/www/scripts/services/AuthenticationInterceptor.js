@@ -1,31 +1,45 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', 'localStorageService', 'Constants', 'ENV',
-  function ($q, $location, localStorageService, Constants, ENV) {
+.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage',
+  function ($q, $location, $log, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
 
-      // do not alter requests for html templates or the service locator, all api requests start with a '/'
+      // do not alter requests for html templates, all api requests start with a '/'
       if (config.url.indexOf('/') === 0) {
         config.headers = config.headers || {};
 
         // add authorization token header if token is present and endpoint requires authorization
-        var authData = localStorageService.get(Constants.localStorage.userToken);
+        var authData = LocalStorage.getToken();
         if (authData) {
-          if (endpointRequiresToken(config.url)) {
-              config.headers.Authorization = 'Bearer ' + authData.access_token;
+          var urlsWithoutToken = ['/authen', '/catalog/divisions'];
+          if (doesUrlRequireHeader(config.url, urlsWithoutToken)) {
+            config.headers.Authorization = 'Bearer ' + authData.access_token;
           }
         }
-        // add api key to request headers, do not add to /authen request
-        if (config.url.indexOf('/authen') === -1) {
-          config.headers['api-key'] = ENV.apiKey;
+
+        // add api key to request headers
+        var urlsWithoutApiKey = ['/authen'];
+        if (doesUrlRequireHeader(config.url, urlsWithoutApiKey)) {
+          config.headers.apiKey = ENV.apiKey;
         }
+
+        // add branch and customer information header
+        var urlsWithoutCustomerInfo = ['/profile', '/authen'];
+        if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
+          var catalogInfo = {
+            customerid: LocalStorage.getCustomerNumber(), //'020348', //
+            branchid: LocalStorage.getBranchId()
+          };
+          config.headers.userSelectedContext = JSON.stringify(catalogInfo);
+        }
+
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;
-        console.log(config.url);
+        $log.debug(config.url);
       }
 
       return config;
@@ -33,8 +47,7 @@ angular.module('bekApp')
 
      responseError: function (rejection) {
       if (rejection.status === 401) {
-        localStorageService.remove(Constants.localStorage.userProfile);
-        localStorageService.remove(Constants.localStorage.userToken);
+        LocalStorage.clearAll();
         $location.path('/register');
       }
       return $q.reject(rejection);
@@ -42,27 +55,9 @@ angular.module('bekApp')
 
   };
 
-  return authInterceptorServiceFactory;
-
-
-
-  // check if requestUrl requires authentication token
-  function endpointRequiresToken(requestUrl) {
-
-    // do not need to authenticate these urls
-    var authorizedApiUrls = [
-      '/authen',
-      '/catalog/divisions'
-    ];
-
-    var isSecure = true;
-    angular.forEach(authorizedApiUrls, function(url, index) {
-      // checks if requestUrl starts with one of the authorizedApiUrls
-      if (requestUrl.indexOf(url) === 0) {
-        isSecure = false;
-      }
-    });
-
-    return isSecure;
+  function doesUrlRequireHeader(url, invalidUrls) {
+    return invalidUrls.indexOf(url) === -1;
   }
+
+  return authInterceptorServiceFactory;
 }]);

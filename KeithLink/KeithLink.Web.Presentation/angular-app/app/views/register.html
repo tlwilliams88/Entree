@@ -102,11 +102,11 @@
             <label for="branch">Division</label>
             <a class="pull-right" target="_blank" href="/images/bek-division-map.png">Division Map</a>
             <span ng-show="registrationForm.branch.$error.required && registrationForm.branch.$dirty" class="text-red">Division is required</span>
-            <!-- <div class="select-div"> -->
+            <div class="select-div block full-width">
               <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.name for branch in branches" ng-model="registerUser.branchid">
                 <option value="">Please select a division</option>
               </select>
-            <!-- </div> -->
+            </div>
           </div>
         </div>
         
@@ -115,8 +115,10 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="checkbox">
-              <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-checked="true">
-              <label for="discounts">Select checkbox to learn more about Ben E. Keith</label>
+              <label for="discounts">
+                <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-checked="true">
+                Select checkbox to learn more about Ben E. Keith
+              </label>
             </div>
           </div>
         </div>

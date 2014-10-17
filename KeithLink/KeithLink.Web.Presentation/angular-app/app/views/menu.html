@@ -30,10 +30,10 @@
       <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
       </a>
-      <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+      <a ng-if="canCreateOrders" ui-sref="menu.order" ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
         <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
       </a>
-      <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+      <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ng-class="{'is-selected': $state.includes('menu.catalog')}" >
         <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
       </a>
       <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
@@ -45,12 +45,15 @@
       <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
       </a>
-      <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
+      <a ng-if="canManageLists" ui-sref="menu.lists.items" ng-class="{'is-selected': $state.includes('menu.lists')}" >
         <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
       </a>
-      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+      <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
         <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
       </a>
+      <a ui-sref="menu.admin" ng-class="{'is-selected': $state.includes('menu.admin')}" >
+          <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
+        </a>
       <a ng-if="isOrderEntryCustomer" ui-sref="blank" ui-sref-active="is-selected" >
         <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
       </a>
@@ -81,10 +84,10 @@
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
         </a>
-        <a ng-if="canCreateOrders" ui-sref="blank" ui-sref-active="is-selected" >
+        <a ng-if="canCreateOrders" ui-sref="menu.order" ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
         </a>
-        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ui-sref-active="is-selected" >
+        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ng-class="{'is-selected': $state.includes('menu.catalog')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
         </a>
         <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
@@ -96,11 +99,14 @@
         <a ng-if="canManageeMenu" ui-sref="blank" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-food"></span></div>eMenuManage</li>
         </a>
-        <a ng-if="canManageLists" ui-sref="menu.lists.items" ui-sref-active="is-selected" >
+        <a ng-if="canManageLists" ui-sref="menu.lists.items" ng-class="{'is-selected': $state.includes('menu.lists')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
         </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ui-sref-active="is-selected" >
+        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
+        </a>
+        <a ui-sref="menu.admin" ng-class="{'is-selected': $state.includes('menu.admin')}" >
+          <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
       </ul>
     </nav>
@@ -133,7 +139,7 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
         <div class="col-md-4 hidden-sm hidden-xs">
-          <!-- <div class="select-div" ng-show="canBrowseCatalog" style="max-width:100%;"> -->
+          <!-- <div class="select-div"> -->
             <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="currentLocation" ng-change="changeBranch()"></select>
             <select class="input-lg form-control" ng-show="isOrderEntryCustomer" ng-options="customer.customerNumber as customer.customerName for customer in userProfile.user_customers" ng-model="currentLocation" ng-change="changeCustomerLocation()"></select>
           <!-- </div> -->

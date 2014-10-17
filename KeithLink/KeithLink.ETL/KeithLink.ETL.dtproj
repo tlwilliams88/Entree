@@ -23,6 +23,11 @@
           <FullPath>ETLProcess_QA.dtsx</FullPath>
           <References />
         </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>HourlyOrder_Process.dtsx</Name>
+          <FullPath>HourlyOrder_Process.dtsx</FullPath>
+          <References />
+        </DtsPackage>
       </DTSPackages>
     </Manifest>
   </DeploymentModelSpecificContent>

@@ -8,15 +8,9 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', 'localStorageService', 'Constants',
-    function ($http, localStorageService, Constants) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
 
     var Service = {
-
-      profile: function() {
-        return localStorageService.get(Constants.localStorage.userProfile);
-      },
-
       getProfile: function(email) {
         var data = { 
           params: {
@@ -27,31 +21,7 @@ angular.module('bekApp')
         return $http.get('/profile', data).then(function (response) {
           var profile = response.data.userProfiles[0];
 
-          console.log(profile);
-
-          // TEMP: to show different roles
-          if (profile.emailaddress === 'guestuser@gmail.com') {
-            profile.role = 'Guest';
-          } else {
-            profile.role = 'Owner';
-            profile.stores = [{
-              'name': 'Dallas-Ft. Worth',
-              'customerNumber': 453234,
-              'id': 'FDF'
-            }, {
-              'name': 'San Antonio',
-              'customerNumber': 534939,
-              'id': 'FSA'
-            }, {
-              'name': 'Amarillo',
-              'customerNumber': 534939,
-              'id': 'FAM'
-            }, {
-              'name': 'Arkansas',
-              'customerNumber': 534939,
-              'id': 'FAR'
-            }];
-          }
+          $log.debug(profile);
 
           profile.salesRep = {
             'id': 34234,
@@ -63,55 +33,83 @@ angular.module('bekApp')
 
           profile.imageUrl = '../images/placeholder-user.png';
 
-          Service.setProfile(profile);
+          LocalStorage.setProfile(profile);
+          // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
+          if (profile.rolename === 'guest') { 
+            LocalStorage.setBranchId(profile.branchid);
+            LocalStorage.setCurrentLocation(profile.branchid);
+          } else {
+            var currentLocation = profile.user_customers[0];
+            LocalStorage.setCurrentLocation(currentLocation.customerNumber);
+            LocalStorage.setBranchId(currentLocation.customerBranch);
+            LocalStorage.setCustomerNumber(currentLocation.customerNumber);
+          }
           return profile;
         });
       },
 
-      setProfile: function(profile) {
-        // set display name for user
-        if (profile.firstname === 'guest' && profile.lastname === 'account') {
-          profile.displayname = profile.emailaddress;
-        } else {
-          profile.displayname = profile.firstname + ' ' + profile.lastname;
-        }
-
-        localStorageService.set(Constants.localStorage.userProfile, profile);
-      },
-
-      getUserRole: function() {
-        if (Service.profile()) {
-          return Service.profile().role;
-        }
-      },
-
-      getCurrentLocation: function() {
-        return localStorageService.get(Constants.localStorage.currentLocation);
-      },
-
-      setCurrentLocation: function(locationId) {
-        localStorageService.set(Constants.localStorage.currentLocation, locationId);
-      },
-
-      getCurrentBranchId: function() {
-        return Service.getCurrentLocation();
+      // accountid, customerid , email
+      getAllUsers: function(params) {
+        var deferred = $q.defer();
+        $http.get('/profile/users', params).then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse.users);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
+        });
+        return deferred.promise;
       },
 
       createUser: function(userProfile) {
-        return $http.post('/profile/register', userProfile).then(function(response) {
-          return response.data; //.successResponse.userProfiles[0];
+        var deferred = $q.defer();
+
+        $http.post('/profile/register', userProfile).then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
         });
+
+        return deferred.promise;
       },
 
       updateUser: function(userProfile) {
-        return $http.put('/profile', userProfile).then(function(response) {
-          console.log(response.data);
-          return response.data;
+        var deferred = $q.defer();
+
+        $http.put('/profile/user', userProfile).then(function(response) {
+
+          var data = response.data;
+
+          if (data.successResponse) {
+            var profile = data.successResponse.userProfiles[0];
+            // profile.role = 'Owner';
+            $log.debug(profile);
+            LocalStorage.setProfile(profile);
+            deferred.resolve(profile);  
+          } else {
+            deferred.reject(data.errorMessage);
+          }
         });
+        return deferred.promise;
       },
 
       changePassword: function(passwordData) {
-        return $http.put('/profile/password', passwordData);
+        var deferred = $q.defer();
+
+        $http.put('/profile/password', passwordData).then(function(response) {
+          $log.debug(response);
+          if (response.data === '"Password update successful"') {
+            deferred.resolve(response.data);
+          } else {
+            deferred.reject(response.data);
+          }
+        });
+
+        return deferred.promise;
       }
     };
 

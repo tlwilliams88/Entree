@@ -82,17 +82,17 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		}
 
 
-		public ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel)
+		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel)
+		public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string brandControlLabel, SearchInputModel searchModel)
+		public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel)
 		{
 			throw new NotImplementedException();
 		}

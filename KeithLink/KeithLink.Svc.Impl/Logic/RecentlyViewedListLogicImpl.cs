@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.catalogRepository = catalogRepository;
 		}
 
-		public void AddItem(UserProfile user, CatalogInfo catalogInfo, string itemNumber)
+		public void AddItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, RecentlyViewedListName(catalogInfo));
 
@@ -65,17 +65,17 @@ namespace KeithLink.Svc.Impl.Logic
 					if (basket.LineItems.Count >= Configuration.RecentItemsToKeep)
 						basketRepository.DeleteItem(user.UserId, basket.Id.ToGuid(), basket.LineItems.OrderBy(l => l.Properties["DateModified"]).FirstOrDefault().Id.ToGuid());
 
-					basketRepository.AddItem(user.UserId, basket.Id.ToGuid(), new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId }, basket);
+					basketRepository.AddItem(basket.Id.ToGuid(), new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId }, basket);
 				}
 			}
 		}
 
-		public void Clear(UserProfile user, CatalogInfo catalogInfo)
+		public void Clear(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			basketRepository.DeleteBasket(user.UserId, RecentlyViewedListName(catalogInfo));
 		}
 
-		public List<RecentItem> Read(UserProfile user, CatalogInfo catalogInfo)
+		public List<RecentItem> Read(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, RecentlyViewedListName(catalogInfo));
 			var returnList = basket.LineItems.OrderByDescending(o => o.Properties["DateModified"]).Select(l => new RecentItem() { ItemNumber = l.ProductId }).ToList();
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return returnList;
 		}
 
-		private void PopulateProductDetails(CatalogInfo catalogInfo, List<RecentItem> returnList)
+		private void PopulateProductDetails(UserSelectedContext catalogInfo, List<RecentItem> returnList)
 		{
 			if (returnList == null)
 				return;
@@ -100,7 +100,7 @@ namespace KeithLink.Svc.Impl.Logic
 					
 		}
 
-		private string RecentlyViewedListName(CatalogInfo catalogInfo)
+		private string RecentlyViewedListName(UserSelectedContext catalogInfo)
 		{
 			return string.Format(RecentlyViewedListNameFormat, catalogInfo.CustomerId);
 		}

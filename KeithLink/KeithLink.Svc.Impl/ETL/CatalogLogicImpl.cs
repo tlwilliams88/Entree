@@ -21,11 +21,15 @@ using KeithLink.Svc.Impl.Models;
 using System.Collections.Concurrent;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
-
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
+//using KeithLink.Svc.Core.Models.Profile.Customer;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CatalogLogicImpl: ICatalogLogic
+    public class CatalogLogicImpl: KeithLink.Svc.Core.ETL.ICatalogLogic
     {
         #region " attributes "
         private const string Language = "en-US";
@@ -34,6 +38,8 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
 		private readonly string ItemSpec_CNDoc = "CNDoc";
         private readonly string ItemSpec_CNDoc_FriendlyName = "childnutrition";
+        private readonly string ItemSpec_SellSheet = "FDAProductFlag";
+        private readonly string ItemSpec_SellSheet_FriendlyName = "sellsheet";
 		
 		private readonly string ProductMapping = @"{
 			  ""product"" : {
@@ -75,15 +81,25 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
+        private readonly IListLogic listLogic;
+        private readonly IUserProfileLogic userProfile;
+        private readonly IItemNoteLogic noteLogic;
+        
         #endregion
 
         #region " Methods / Functions "
-        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository, IEventLogRepository eventLog)
+        public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
+            IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
+            IEventLogRepository eventLog, IListLogic listLogic, IUserProfileLogic userProfile,
+            IItemNoteLogic noteLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
 			this.eventLog = eventLog;
+            this.listLogic = listLogic;
+            this.userProfile = userProfile;
+            this.noteLogic = noteLogic;
         }
 
         public void ProcessStagedData()
@@ -95,14 +111,20 @@ namespace KeithLink.Svc.Impl.ETL
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
                 var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
-
-				Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask);
+                var contractTask = Task.Factory.StartNew(() => ImportContractLists());
+                
+                Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask, contractTask);
             }
             catch (Exception ex) 
             {
 				//log
 				eventLog.WriteErrorLog("Catalog Import Error", ex);
             }
+        }
+
+        public void ImportCustomers()
+        {
+
         }
 
         public void ImportCatalog()
@@ -127,6 +149,75 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportProfiles()
         {   
+        }
+
+        public void ImportContractLists()
+        {
+            var users = stagingRepository.ReadCSUsers();
+            
+            Parallel.ForEach(users.AsEnumerable(), userRow =>
+            {
+                
+                Guid userId = new Guid(userRow.GetString("u_user_id"));
+                KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfile.GetUserProfile(userId);
+                List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
+
+                //TODO:  this foreach block will be replaced by the parallel foreach block below
+                //       after UserProfileLogicImpl.FillUserProfile() starts using real data
+                foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
+                {
+                    KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = this.CreateCatalogInfo(
+                            customerRow.CustomerNumber,
+                            customerRow.CustomerBranch);
+
+                    this.DeleteContractLists(
+                        (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
+                        catalogInfo);
+
+                    List<ListItem> contractItems = stagingRepository
+                        .ReadContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId)
+                        .AsEnumerable()
+                        .Select(itemRow =>
+                            new ListItem
+                            {
+                                ItemNumber = itemRow.GetString("ItemNumber"),
+                                Position = itemRow.GetInt("BidLineNumber"),
+                                Label = itemRow.GetString("CategoryDescription")
+                            }).ToList();
+
+                    listLogic.CreateList(userId,
+                        this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
+                        this.CreateUserList(customerRow.ContractId, true, true, contractItems)
+                        );
+                }
+                
+                //TODO: After UserProfileLogicImpl.FillUserProfile() starts using real data, use this Parallel.foreach
+                /*Parallel.ForEach(customers.AsEnumerable(), customerRow =>
+                    {
+                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = this.CreateCatalogInfo(
+                            customerRow.CustomerNumber,
+                            customerRow.CustomerBranch);
+
+                        this.DeleteContractLists(
+                            (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
+                            catalogInfo);
+
+                        List<ListItem> contractItems = stagingRepository
+                            .ReadContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId)
+                            .AsEnumerable()
+                            .Select(itemRow =>
+                                new ListItem
+                                {
+                                    ItemNumber = itemRow.GetString("ItemNumber")
+                                }).ToList();
+
+                        listLogic.CreateList(userId,
+                            this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
+                            this.CreateUserList(customerRow.ContractId, true, contractItems)
+                            );
+                    });
+                 */
+            });
         }
 
         public void ImportItemsToElasticSearch()
@@ -371,7 +462,7 @@ namespace KeithLink.Svc.Impl.ETL
                         ReplacedItem = row.GetString("ReplacedItem"),
                         ReplacementItem = row.GetString("ReplacementItem"),
                         ChildNutrition = row.GetString(ItemSpec_CNDoc),
-                        Ifda = row.GetString("FDAProductFlag"),
+                        SellSheet = row.GetString(ItemSpec_SellSheet),
                         ItemNumber = row.GetString("ItemId"),
 						NonStock = row.GetString("NonStock"),
                         TempZone = row.GetString("TempZone"),
@@ -419,6 +510,8 @@ namespace KeithLink.Svc.Impl.ETL
 				item.index.data.ItemSpecification.Add(ItemSpec_CNDoc_FriendlyName);
 			//if(row.GetString("NonStock").Equals("y", StringComparison.CurrentCultureIgnoreCase))
 			//	item.index.data.itemspecification.Add(ItemSpec_NonStock);
+            if (item.index.data.SellSheet.Equals("y", StringComparison.CurrentCultureIgnoreCase))
+                item.index.data.ItemSpecification.Add(ItemSpec_SellSheet_FriendlyName);
 
             return item;
         }
@@ -562,6 +655,45 @@ namespace KeithLink.Svc.Impl.ETL
                 NutrientType = subRow.GetString("NutrientTypeDesc"),
                 NutrientTypeCode = subRow.GetString("NutrientTypeCode")
             };
+        }
+
+
+        private void DeleteContractLists(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        {
+
+            List<UserList> lists = listLogic.ReadAllLists(
+                userProfile,
+                catalogInfo,
+                true);
+
+            foreach (UserList userList in lists)
+            {
+                if (userList.IsContractList == true)
+                {
+                    listLogic.DeleteList(userProfile.UserId, userList.ListId);
+                }
+            }
+             
+        }
+
+        private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
+        {
+            UserList list = new UserList();
+            list.Name = "Contract - " + contractNumber;
+            list.Items = items;
+            list.IsContractList = isContractList;
+            list.ReadOnly = readOnly;
+            return list;
+        }
+
+        private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateCatalogInfo(string customerNumber, string divisionName)
+        {
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
+            catInfo.CustomerId = customerNumber;
+            catInfo.BranchId = divisionName;
+            return catInfo;
         }
 
         #endregion

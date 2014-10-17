@@ -10,13 +10,12 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogLogic
     {
-		ProductsReturn GetProductsByCategory(CatalogInfo catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
-        ProductsReturn GetProductsBySearch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
-		ProductsReturn GetHouseProductsByBranch(CatalogInfo catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
+		ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
+        ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
+		ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
         ProductsReturn GetProductsByIds(string branch, List<string> ids, UserProfile profile);
-        Product GetProductById(CatalogInfo catalogInfo, string id, UserProfile profile);
+        Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile);
         CategoriesReturn GetCategories(int from, int size);
 		List<Division> GetDivisions();
-
     }
 }

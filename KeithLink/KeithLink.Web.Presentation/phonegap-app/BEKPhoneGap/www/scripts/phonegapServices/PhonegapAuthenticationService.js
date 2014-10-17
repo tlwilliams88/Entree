@@ -7,28 +7,33 @@ angular.module('bekApp')
 
             Service.login = function(username, password) {
                 return Service.authenticateUser(username, password).then(function(token) {
-
-                    return $q.all([
-                        UserProfileService.getProfile(username),
-                        ListService.getAllLists(),
-                        ListService.getAllLabels(),
-                        CartService.getAllCarts()
-                    ]).then(function(results) {
-                        var profile = results[0];
-                        var lists = results[1];
-                        var labels = results[2];
-                        var carts = results[3];
-                        localStorageService.set('lists', lists);
-                        localStorageService.set('labels', labels);
-                        localStorageService.set('carts', carts);
-                        return profile;
-                    },
-                    function(error){
-                    	console.log(error);
-                    	Service.logout();
+                    return UserProfileService.getProfile(username).then(function(profile) {
+                        return $q.all(
+                            ListService.getAllLists(),
+                            ListService.getAllLabels(),
+                            CartService.getAllCarts(),
+                            CartService.getShipDates()
+                        ).then(function(results) {
+                                var lists = results[0];
+                                var labels = results[1];
+                                var carts = results[2];
+                                var shipDates = results[3];
+                                localStorageService.set('lists', lists);
+                                localStorageService.set('labels', labels);
+                                localStorageService.set('carts', carts);
+                                localStorageService.set('shipDates', shipDates);
+                                return profile;
+                            },
+                            function(error) {
+                                console.log(error);
+                                Service.logout();
+                            });
                     });
+
+
                 });
             }
+
             return Service;
         }
     ]);

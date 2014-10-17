@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -42,7 +43,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
 		}
 
-		public Guid CreateCart(UserProfile user, CatalogInfo catalogInfo, ShoppingCart cart)
+		public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
 		{
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
@@ -68,7 +69,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return null;
 
 			//Does item already exist? If so, just update the quantity
-			var existingItem = basket.LineItems.Where(l => l.ProductId.Equals(newItem.ItemNumber));
+			var existingItem = basket.LineItems.Where(l => l.ProductId.Equals(newItem.ItemNumber) && l.Each.Equals(newItem.Each));
 			if (existingItem.Any())
 			{
 				existingItem.First().Quantity += newItem.Quantity;
@@ -76,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return existingItem.First().Id.ToGuid();
 			}
 						
-			return basketRepository.AddItem(user.UserId, cartId, newItem.ToLineItem(basket.BranchId), basket);
+			return basketRepository.AddItem(cartId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
 		public void UpdateItem(UserProfile user, Guid cartId, ShoppingCartItem updatedItem)
@@ -88,7 +89,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(user.UserId, cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
 
-		public void UpdateCart(CatalogInfo catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
+		public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketRepository.ReadBasket(user.UserId, cart.CartId);
 			
@@ -125,7 +126,19 @@ namespace KeithLink.Svc.Impl.Logic
 				}
 				
 			}
-			
+
+			var duplicates = lineItems.Cast<CS.LineItem>().GroupBy(l => new { l.ProductId, l.Each }).Select(i => new { Ech = i.Select(p => p.Each).First(), Key = i.Key, Cnt = i.Count() }).Where(w => w.Cnt > 1).ToList();
+
+			foreach (var duplicate in duplicates)
+			{
+				var keepGuid = lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals((bool)duplicate.Key.Each)).First();
+
+				lineItems.Where(i => i.Id.Equals(keepGuid.Id)).First().Quantity = lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each)).Sum(s => s.Quantity);
+
+				itemsToRemove.AddRange(lineItems.Where(l => l.ProductId.Equals(duplicate.Key.ProductId) && l.Each.Equals(duplicate.Key.Each) && !l.Id.Equals(keepGuid.Id)).Select(p => p.Id.ToGuid()).ToList());
+
+			}
+
 			basketRepository.CreateOrUpdateBasket(user.UserId, updateCart.BranchId, updateCart, lineItems);
 
 			if(deleteOmmitedItems)
@@ -133,6 +146,10 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					basketRepository.DeleteItem(user.UserId, cart.CartId, toDelete);
 				}
+
+			
+				
+
 		}
 
 		public void DeleteCart(UserProfile user, Guid cartId)
@@ -145,7 +162,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(user.UserId, cartId, itemId);
 		}
 
-		public List<ShoppingCart> ReadAllCarts(UserProfile user, CatalogInfo catalogInfo, bool headerInfoOnly)
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketRepository.ReadAllBaskets(user.UserId);
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) && 
@@ -160,13 +177,13 @@ namespace KeithLink.Svc.Impl.Logic
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
-					LookupProductDetails(user, list);
+					LookupProductDetails(user, catalogInfo, list);
 				});
 				return returnCart;
 			}
 		}
 
-		public ShoppingCart ReadCart(UserProfile user, Guid cartId)
+		public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketRepository.ReadBasket(user.UserId, cartId);
 			if (basket == null)
@@ -174,8 +191,14 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var cart = ToShoppingCart(basket);
 
-			LookupProductDetails(user, cart);
+			LookupProductDetails(user, catalogInfo, cart);
 			return cart;
+		}
+
+		public void DeleteCarts(Guid userId, List<Guid> cartIds)
+		{
+			foreach(var cartId in cartIds)
+				basketRepository.DeleteBasket(userId, cartId);
 		}
 
 		#region Helper Methods
@@ -191,14 +214,14 @@ namespace KeithLink.Svc.Impl.Logic
 			}
 		}
 		
-		private void LookupProductDetails(UserProfile user, ShoppingCart cart)
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
 		{
 			if (cart.Items == null)
 				return;
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user.UserId);
+			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
@@ -216,6 +239,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
+					item.CatchWeight = prod.CatchWeight;
 				}
 				if (price != null)
 				{
@@ -252,12 +276,12 @@ namespace KeithLink.Svc.Impl.Logic
 
 		#endregion
 
-		private string CartName(string name, CatalogInfo catalogInfo)
+		private string CartName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
-		
-		public string SaveAsOrder(UserProfile user, Guid cartId)
+
+		public NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId)
 		{
 			//Check that RequestedShipDate
 			var basket = basketRepository.ReadBasket(user.UserId, cartId);
@@ -301,7 +325,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					ItemNumber = item.ProductId,
 					OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? Core.Models.Orders.UnitOfMeasure.Package : Core.Models.Orders.UnitOfMeasure.Case),
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
 					SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
@@ -321,9 +345,12 @@ namespace KeithLink.Svc.Impl.Logic
 			xs.Serialize(sw, newOrderFile);
 			
 			queueRepository.PublishToQueue(sw.ToString());
-						
-			return orderNumber; //Return actual order number
+
+			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
+
+
+
 
 		
 	}

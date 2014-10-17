@@ -8,12 +8,12 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
-    function ($scope, $state, toaster, AuthenticationService, AccessService, BranchService, UserProfileService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
+    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
     $scope.loginInfo = {
-      username: 'sabroussard@somecompany.com',
-      password: 'L1ttleStev1e'
+      username: ENV.username,
+      password: ENV.password
     };
 
     BranchService.getBranches().then(function(branches) {
@@ -21,7 +21,7 @@ angular.module('bekApp')
     });
 
     $scope.login = function(loginInfo) {
-      $scope.errorMessage = '';
+      $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
         if ( AccessService.isOrderEntryCustomer() ) {
@@ -40,16 +40,18 @@ angular.module('bekApp')
       
       UserProfileService.createUser(userProfile).then(function(data) {
 
-        if (data.successResponse) {
-          $scope.loginInfo = {};
+        // log user in
+        AuthenticationService.login(userProfile.email, userProfile.password).then(function(profile) {
+          // redirect to account details page
+          $state.go('menu.accountdetails');
+        }, function(error) {
+          $scope.loginErrorMessage = error.data.error_description;
           $scope.clearForm();
-          // $scope.registrationFormSubmitted = false;
+          $scope.loginInfo = {};
+        });
 
-          toaster.pop('success', null, 'Successfully registered! Please log in.');
-        } else {
-          $scope.registrationErrorMessage = data.errorMessage;
-        }
       }, function(error) {
+        $scope.registrationErrorMessage = error;
       });
     };
 

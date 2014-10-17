@@ -84,6 +84,7 @@
     <Compile Include="Logic\ListLogicTests.cs" />
     <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
+    <Compile Include="Repositories\Order\ShipDateRepositoryImplTests.cs" />
     <Compile Include="Repositories\Price\PriceRepositoryImplTests.cs" />
     <Compile Include="Repositories\Price\PriceCacheRepositoryImplTests.cs" />
     <Compile Include="Repositories\Profile\ExternalUserDomainRepositoryTests.cs" />
