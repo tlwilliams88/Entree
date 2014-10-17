@@ -14,60 +14,193 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
-    public class ListLogicImpl: IListLogic
-    {
+	public class ListLogicImpl : IListLogic
+	{
 		private const string FAVORITESLIST = "Favorites";
-		private readonly string BasketStatus = "CustomerList";
 
-        private readonly IBasketRepository basketRepository;
+		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceRepository priceRepository;
 		private readonly IItemNoteLogic itemNoteLogic;
-		
-		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceRepository priceRepository, IItemNoteLogic itemNoteLogic)
-        {
+		private readonly IBasketLogic basketLogic;
+
+		public ListLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository,
+			IPriceRepository priceRepository, IItemNoteLogic itemNoteLogic, IBasketLogic basketLogic)
+		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceRepository = priceRepository;
 			this.itemNoteLogic = itemNoteLogic;
-        }
+			this.basketLogic = basketLogic;
+		}
 
 		public Guid CreateList(Guid userId, UserSelectedContext catalogInfo, UserList list)
-        {
+		{
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = list.Name;
-			newBasket.Status = BasketStatus;
+			newBasket.ListType = (int)ListType.Custom;
 			newBasket.Name = ListName(list.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
-            newBasket.IsContractList = list.IsContractList;
-            newBasket.ReadOnly = list.ReadOnly;
-            
+			newBasket.IsContractList = list.IsContractList;
+			newBasket.ReadOnly = list.ReadOnly;
+			newBasket.Shared = true;
+
 			return basketRepository.CreateOrUpdateBasket(userId, catalogInfo.BranchId.ToLower(), newBasket, list.Items.Select(l => l.ToLineItem(catalogInfo.BranchId)).ToList());
-        }
+		}
 
-		public Guid? AddItem(Guid userId, Guid listId, ListItem newItem)
-        {
+		public Guid? AddItem(UserProfile user, UserSelectedContext catalogInfo, Guid listId, ListItem newItem)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
-			var basket = basketRepository.ReadBasket(userId, listId);
 			if (basket == null)
 				return null;
 
-            return basketRepository.AddItem(listId, newItem.ToLineItem(basket.BranchId), basket);
+			return basketRepository.AddItem(listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
-		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
-        {
-			basketRepository.UpdateItem(userId, listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
-        }
+		public void UpdateItem(UserProfile user, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
-		public void UpdateList(Guid userId, UserList list, UserSelectedContext catalogInfo)
-        {
-			var updateBasket = basketRepository.ReadBasket(userId, list.ListId);
+			if (basket == null)
+				return;
 
+			basketRepository.UpdateItem(basket.UserId.ToGuid(), listId, updatedItem.ToLineItem(catalogInfo.BranchId.ToLower()));
+		}
+
+		public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, Guid listId, Guid itemId)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+
+			if (basket == null)
+				return;
+
+			basketRepository.DeleteItem(basket.UserId.ToGuid(), listId, itemId);
+		}
+
+		public List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
+		{
+			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom, true);
+
+
+			if (!lists.Where(l => l.Name.Equals(ListName(FAVORITESLIST, catalogInfo)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
+			{
+				//favorites list doesn't exist yet, create an empty one
+				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { Shared = false, DisplayName = FAVORITESLIST, ListType = (int)ListType.Favorite, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = ListName(FAVORITESLIST, catalogInfo) }, null);
+				lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom,true);
+			}
+
+			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+				!string.IsNullOrEmpty(b.CustomerId) &&
+				b.CustomerId.Equals(catalogInfo.CustomerId));
+
+
+			if (headerInfoOnly)
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
+			else
+			{
+				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
+				returnList.ForEach(delegate(UserList list)
+				{
+					LookupProductDetails(user, list, catalogInfo);
+				});
+				return returnList;
+			}
+		}
+
+		public UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+			if (basket == null)
+				return null;
+
+			var list = ToUserList(basket);
+
+			LookupProductDetails(user, list, catalogInfo);
+			return list;
+		}
+
+		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
+		{
+			var lists = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+
+			if (lists == null || lists.LineItems == null)
+				return null;
+
+			return lists.LineItems.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
+		}
+
+		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
+		{
+			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom);
+			return lists.Where(i => i.LineItems != null && i.ListType.Equals((int)ListType.Custom) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+		}
+
+		public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<Guid> itemIds)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+
+			if (basket == null && !(basket.ReadOnly.HasValue && basket.ReadOnly.Value))
+				return;
+
+			foreach (var itemId in itemIds)
+				basketRepository.DeleteItem(basket.UserId.ToGuid(), listId, itemId);
+		}
+
+		public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+
+			if (basket == null)
+				return;
+
+			basketRepository.DeleteBasket(basket.UserId.ToGuid(), listId);
+		}
+		
+		public void DeleteLists(UserProfile user, UserSelectedContext catalogInfo, List<Guid> listIds)
+		{
+			foreach (var listId in listIds)
+			{
+				var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+				if(basket != null)
+					basketRepository.DeleteBasket(basket.UserId.ToGuid(), listId);
+			}
+		}
+
+		public UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
+		{
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
+
+			if (basket == null)
+				return null;
+
+			var lineItems = new List<CS.LineItem>();
+
+			foreach (var item in newItems)
+			{
+				if (allowDuplicates || !basket.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber)).Any())
+					lineItems.Add(item.ToLineItem(basket.BranchId));
+			}
+
+			basketRepository.CreateOrUpdateBasket(basket.UserId.ToGuid(), basket.BranchId, basket, lineItems);
+
+			var updatedList = ToUserList(basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId));
+
+			LookupProductDetails(user, updatedList, catalogInfo);
+
+			return updatedList;
+		}
+
+		public void UpdateList(UserProfile user, UserList list, UserSelectedContext catalogInfo)
+		{
+			var updateBasket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, list.ListId);
+			
 			if (updateBasket == null)
 				return;
 
@@ -84,89 +217,21 @@ namespace KeithLink.Svc.Impl.Logic
 			else
 				itemsToRemove = updateBasket.LineItems.Select(l => l.Id.ToGuid()).ToList();
 
-			basketRepository.CreateOrUpdateBasket(userId, updateBasket.BranchId, updateBasket, lineItems);
+			basketRepository.CreateOrUpdateBasket(updateBasket.UserId.ToGuid(), updateBasket.BranchId, updateBasket, lineItems);
 
 			foreach (var toDelete in itemsToRemove)
 			{
-				basketRepository.DeleteItem(userId, list.ListId, toDelete);
-			}						
-        }
+				basketRepository.DeleteItem(updateBasket.UserId.ToGuid(), list.ListId, toDelete);
+			}
+		}
 
-		public void DeleteList(Guid userId, Guid listId)
-        {
-			basketRepository.DeleteBasket(userId, listId);
-        }
-
-		public void DeleteItem(Guid userId, Guid listId, Guid itemId)
-        {
-			basketRepository.DeleteItem(userId, listId, itemId);
-        }
 		
-		public List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
-        {
-			var lists = basketRepository.ReadAllBaskets(user.UserId);
-
-
-			if (!lists.Where(l => l.Name.Equals(ListName(FAVORITESLIST, catalogInfo)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
-			{
-				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = ListName(FAVORITESLIST, catalogInfo) }, null);
-				lists = basketRepository.ReadAllBaskets(user.UserId);
-			}
-
-			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
-				b.Status.Equals(BasketStatus) &&
-				!string.IsNullOrEmpty(b.CustomerId) &&
-				b.CustomerId.Equals(catalogInfo.CustomerId));
-
-
-			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
-			else 
-			{
-				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
-				returnList.ForEach(delegate(UserList list)
-				{
-					LookupProductDetails(user, list, catalogInfo);
-				});
-				return returnList;
-			}
-        }
-
-		public UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo)
-        {
-			var basket = basketRepository.ReadBasket(user.UserId, listId);
-			if (basket == null)
-				return null;
-
-			var cart = ToUserList(basket);
-
-			LookupProductDetails(user, cart, catalogInfo);
-			return cart;			
-        }
-
-		public List<string> ReadListLabels(Guid userId, Guid listId)
-        {
-			var lists = basketRepository.ReadBasket(userId, listId);
-            
-            if (lists == null || lists.LineItems == null)
-                return null;
-
-			return lists.LineItems.Where(l => l.Label != null).Select(i => i.Label).Distinct().ToList();
-        }
-
-		public List<string> ReadListLabels(Guid userId, UserSelectedContext catalogInfo)
-        {
-			var lists = basketRepository.ReadAllBaskets(userId);
-			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
-        }
-
 		private void LookupProductDetails(UserProfile user, UserList list, UserSelectedContext catalogInfo)
 		{
 			if (list.Items == null)
 				return;
 
-			var activeCart = basketRepository.ReadAllBaskets(user.UserId).Where(b => b.Status.Equals("ShoppingCart") && b.Active.Equals(true));
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart).Where(b => b.Active.Equals(true));
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
@@ -174,7 +239,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 
-			list.Items.ForEach(delegate (ListItem listItem)
+			list.Items.ForEach(delegate(ListItem listItem)
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
@@ -186,7 +251,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
-					listItem.Brand = prod.Brand;
+					listItem.Brand = prod.BrandExtendedDescription;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
@@ -213,9 +278,9 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.Notes = note.First().Note;
 
 			});
-			
+
 		}
-		
+
 		/// <summary>
 		/// Checks if any of the products are in the user's Favorites list. 
 		/// If so, their Favorite property is set to "true"
@@ -247,8 +312,8 @@ namespace KeithLink.Svc.Impl.Logic
 				ListId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-                IsContractList = basket.IsContractList.HasValue ? basket.IsContractList.Value : false,
-                ReadOnly = basket.ReadOnly.HasValue ? basket.ReadOnly.Value : false,
+				IsContractList = basket.IsContractList.HasValue ? basket.IsContractList.Value : false,
+				ReadOnly = basket.ReadOnly.HasValue ? basket.ReadOnly.Value : false,
 				Items = basket.LineItems == null ? null : basket.LineItems.Select(l => new ListItem()
 				{
 					ItemNumber = l.ProductId,
@@ -260,48 +325,13 @@ namespace KeithLink.Svc.Impl.Logic
 			};
 
 		}
-		
-		public void DeleteItems(Guid userId, Guid listId, List<Guid> itemIds)
-		{
-			foreach(var itemId in itemIds)
-				basketRepository.DeleteItem(userId, listId, itemId);
-		}
-		
-		public UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
-		{
-			var basket = basketRepository.ReadBasket(user.UserId, listId);
-
-			if (basket == null)
-				return null;
-
-			var lineItems = new List<CS.LineItem>();
-
-			foreach (var item in newItems)
-			{
-				if (allowDuplicates || !basket.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber)).Any())
-					lineItems.Add(item.ToLineItem(basket.BranchId));
-			}
-
-			basketRepository.CreateOrUpdateBasket(user.UserId, basket.BranchId, basket, lineItems);
-
-			var updatedList = ToUserList(basketRepository.ReadBasket(user.UserId, listId));
-
-			LookupProductDetails(user, updatedList, catalogInfo);
-
-			return updatedList;
-		}
-		
-		public void DeleteLists(Guid userId, List<Guid> listIds)
-		{
-			foreach(var listId in listIds)
-				basketRepository.DeleteBasket(userId, listId);
-		}
+				
 
 		private string ListName(string name, UserSelectedContext catalogInfo)
 		{
 			return string.Format("l{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
+			
 
-		
 	}
 }

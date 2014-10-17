@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Generated;
+﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Generated;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		Guid? AddItem(Guid basketId, LineItem newItem, Basket basket, bool runPipelines = false);
 
-		List<Basket> ReadAllBaskets(Guid userId, bool runPipelines = false);
+		List<Basket> ReadAllBaskets(Guid userId, ListType type, bool runPipelines = false);
 
 		Basket ReadBasket(Guid userId, Guid basketId, bool runPipelines = false);
 		Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false);

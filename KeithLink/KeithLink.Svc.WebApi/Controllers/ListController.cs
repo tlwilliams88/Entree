@@ -43,14 +43,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/labels")]
         public List<string> ListLabels()
         {
-			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, this.SelectedUserContext);
+			return listLogic.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
         }
 
         [HttpGet]
 		[ApiKeyedRoute("list/{listId}/labels")]
 		public List<string> ListLabels(Guid listId)
         {
-			return listLogic.ReadListLabels(this.AuthenticatedUser.UserId, listId);
+			return listLogic.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext, listId);
         }
 
         [HttpPost]
@@ -65,7 +65,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/item")]
 		public NewItem AddItem(Guid listId, ListItem newItem)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(this.AuthenticatedUser.UserId, listId, newItem) };
+			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, listId, newItem) };
 			return newGuid;
         }
 
@@ -80,42 +80,42 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void UpdateItem(Guid listId, ListItem updatedItem)
         {
-			listLogic.UpdateItem(this.AuthenticatedUser.UserId, listId, updatedItem, this.SelectedUserContext);
+			listLogic.UpdateItem(this.AuthenticatedUser, listId, updatedItem, this.SelectedUserContext);
         }
 
 		[HttpPut]
 		[ApiKeyedRoute("list/")]
 		public void Put(UserList updatedList)
 		{
-			listLogic.UpdateList(this.AuthenticatedUser.UserId, updatedList, this.SelectedUserContext);
+			listLogic.UpdateList(this.AuthenticatedUser, updatedList, this.SelectedUserContext);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}")]
 		public void DeleteList(Guid listId)
 		{
-			listLogic.DeleteList(this.AuthenticatedUser.UserId, listId);
+			listLogic.DeleteList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/")]
 		public void DeleteList(List<Guid> listIds)
 		{
-			listLogic.DeleteLists(this.AuthenticatedUser.UserId, listIds);
+			listLogic.DeleteLists(this.AuthenticatedUser, this.SelectedUserContext, listIds);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}/item/{itemId}")]
 		public void DeleteItem(Guid listId, Guid itemId)
 		{
-			listLogic.DeleteItem(this.AuthenticatedUser.UserId, listId, itemId);
+			listLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, listId, itemId);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}/item")]
 		public void DeleteItem(Guid listId, List<Guid> itemIds)
 		{
-			listLogic.DeleteItems(this.AuthenticatedUser.UserId, listId, itemIds);
+			listLogic.DeleteItems(this.AuthenticatedUser, this.SelectedUserContext, listId, itemIds);
 		}
         #endregion
     }
