@@ -39,7 +39,7 @@
 		</ul>
 
     <div class="featured-item-mobile visible-xs visible-sm">
-      <carousel interval="myInterval" disable-ng-animate="true">
+      <carousel interval="myInterval" disable-ng-animate>
         <slide ng-repeat="item in recentlyViewedItems" active="item.active">
           <div class="col-xs-4 no-padding text-left">
             <img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
@@ -94,7 +94,7 @@
 		</ul>
 		
 		<div class="featured-item-mobile visible-xs visible-sm">
-	    <carousel interval="myInterval" disable-ng-animate="true">
+	    <carousel interval="myInterval" disable-ng-animate>
         <slide ng-repeat="category in categories | orderBy: ['name'] track by $index" active="category.active">
           <div ng-show="category.category_image.url" class="col-xs-4 no-padding text-left">
             <img ng-src="{{category.category_image.url}}">
@@ -128,7 +128,7 @@
 		</ul>
 
     <div class="featured-item-mobile visible-xs visible-sm">
-      <carousel interval="myInterval" disable-ng-animate="true">
+      <carousel interval="myInterval" disable-ng-animate>
         <slide ng-repeat="brand in brands | orderBy: ['extended_description'] track by $index" active="brand.active">
           <div ng-show="brand.imageurl" class="col-xs-4 no-padding text-left">
             <img ng-src="{{brand.imageurl}}">
