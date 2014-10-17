@@ -174,7 +174,9 @@ namespace KeithLink.Svc.Impl.ETL
                         (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
                         catalogInfo);
 
-                    List<ListItem> contractItems = stagingRepository
+                    if (!customerRow.ContractId.Equals(null) && !customerRow.ContractId.Equals(""))
+                    {
+                        List<ListItem> contractItems = stagingRepository
                         .ReadContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId)
                         .AsEnumerable()
                         .Select(itemRow =>
@@ -185,10 +187,12 @@ namespace KeithLink.Svc.Impl.ETL
                                 Label = itemRow.GetString("CategoryDescription")
                             }).ToList();
 
-                    listLogic.CreateList(userId,
-                        this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
-                        this.CreateUserList(customerRow.ContractId, true, true, contractItems)
-                        );
+                        listLogic.CreateList(userId,
+                            this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
+                            this.CreateUserList(customerRow.ContractId, true, true, contractItems)
+                            );
+                    }
+                    
                 }
                 
                 //TODO: After UserProfileLogicImpl.FillUserProfile() starts using real data, use this Parallel.foreach
