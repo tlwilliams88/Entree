@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -23,7 +24,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.userProfileRepository = userProfileRepository;
 		}
 
-		public CS.Basket RetrieveSharedBasket(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
+		public CS.Basket RetrieveSharedCustomerBasket(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
 		{
 			//Have to find the specific list...try current user first
 			var basket = basketRepository.ReadBasket(user.UserId, listId);
@@ -46,7 +47,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return null;
 		}
 
-		public List<CS.Basket> RetrieveAllSharedBaskets(UserProfile user, UserSelectedContext catalogInfo, string basketStatus)
+		public List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool includeFavorites = false)
 		{
 			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(user.UserCustomers.Where(c => c.CustomerNumber.Equals(catalogInfo.CustomerId)).First().CustomerId).ToList();
 
@@ -54,10 +55,16 @@ namespace KeithLink.Svc.Impl.Logic
 
 			foreach (var sharedUser in sharedUsers)
 			{
-				var basket = basketRepository.ReadAllBaskets(sharedUser.UserId, basketStatus).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
+				var basket = basketRepository.ReadAllBaskets(sharedUser.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
 					&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
 
 				returnBaskets.AddRange(basket);
+			}
+
+			if (includeFavorites)
+			{
+				var favorite = basketRepository.ReadAllBaskets(user.UserId, ListType.Favorite).ToList();
+				returnBaskets.AddRange(favorite);
 			}
 
 			return returnBaskets;

@@ -11453,6 +11453,26 @@ public partial class Basket : ICommerceEntity
 
 
 	/// <summary>
+    /// Gets or sets the ListType property.
+    /// </summary>
+    /// <value>
+    /// The ListType property from the property collection.
+    /// </value>
+	public virtual int? ListType
+	{
+		get
+		{
+			return this._commerceEntity.GetPropertyValue(PropertyName.ListType) as int?;
+		}
+
+		set
+		{
+			this._commerceEntity.SetPropertyValue(PropertyName.ListType, value);
+		}
+	}
+
+
+	/// <summary>
     /// Gets or sets the Status property.
     /// </summary>
     /// <value>
@@ -11775,6 +11795,12 @@ public partial class Basket : ICommerceEntity
         /// Constant for accessing Shared property.
         /// </summary>
 		public const string Shared = "Shared";
+
+
+		/// <summary>
+        /// Constant for accessing ListType property.
+        /// </summary>
+		public const string ListType = "ListType";
 
 
 		/// <summary>

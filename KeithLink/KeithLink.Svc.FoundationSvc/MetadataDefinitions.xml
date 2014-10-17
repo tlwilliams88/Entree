@@ -2112,6 +2112,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="IsContractList" csProperty="IsContractList"/>
               <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
 							<PropertyMapping property="Shared" csProperty="Shared"/>
+							<PropertyMapping property="ListType" csProperty="ListType"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2197,6 +2198,9 @@ This file contains the Metadata Repository
           </Property>
 					<Property name="Shared" dataType="Boolean">
 						<DisplayName value="Shared"/>
+					</Property>
+					<Property name="ListType" dataType="Integer">
+						<DisplayName value="ListType"/>
 					</Property>
         </Properties>
 

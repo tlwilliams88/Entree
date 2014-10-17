@@ -15,13 +15,13 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ListLogicImpl : IListLogic
 	{
 		private const string FAVORITESLIST = "Favorites";
-		private readonly string BasketStatus = "CustomerList";
 
 		private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = list.Name;
-			newBasket.Status = BasketStatus;
+			newBasket.ListType = (int)ListType.Custom;
 			newBasket.Name = ListName(list.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.IsContractList = list.IsContractList;
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public Guid? AddItem(UserProfile user, UserSelectedContext catalogInfo, Guid listId, ListItem newItem)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null)
 				return null;
@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public void UpdateItem(UserProfile user, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null)
 				return;
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic
 		
 		public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, Guid listId, Guid itemId)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null)
 				return;
@@ -87,18 +87,17 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<UserList> ReadAllLists(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
-			var lists = basketLogic.RetrieveAllSharedBaskets(user, catalogInfo, BasketStatus);
+			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom, true);
 
 
 			if (!lists.Where(l => l.Name.Equals(ListName(FAVORITESLIST, catalogInfo)) && !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).Any())
 			{
 				//favorites list doesn't exist yet, create an empty one
-				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { Shared = false, DisplayName = FAVORITESLIST, Status = BasketStatus, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = ListName(FAVORITESLIST, catalogInfo) }, null);
-				lists = basketLogic.RetrieveAllSharedBaskets(user, catalogInfo, BasketStatus);
+				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), new CS.Basket() { Shared = false, DisplayName = FAVORITESLIST, ListType = (int)ListType.Favorite, BranchId = catalogInfo.BranchId, CustomerId = catalogInfo.CustomerId, Name = ListName(FAVORITESLIST, catalogInfo) }, null);
+				lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom,true);
 			}
 
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-				b.Status.Equals(BasketStatus) &&
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
 
@@ -118,7 +117,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public UserList ReadList(UserProfile user, Guid listId, UserSelectedContext catalogInfo)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 			if (basket == null)
 				return null;
 
@@ -130,7 +129,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
 		{
-			var lists = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var lists = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (lists == null || lists.LineItems == null)
 				return null;
@@ -140,13 +139,13 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var lists = basketLogic.RetrieveAllSharedBaskets(user, catalogInfo, BasketStatus);
-			return lists.Where(i => i.LineItems != null && i.Status.Equals(BasketStatus) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
+			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Custom);
+			return lists.Where(i => i.LineItems != null && i.ListType.Equals((int)ListType.Custom) && i.BranchId.Equals(catalogInfo.BranchId.ToLower())).SelectMany(l => l.LineItems.Where(b => b.Label != null).Select(i => i.Label)).Distinct().ToList();
 		}
 
 		public void DeleteItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<Guid> itemIds)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null && !(basket.ReadOnly.HasValue && basket.ReadOnly.Value))
 				return;
@@ -157,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public void DeleteList(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null)
 				return;
@@ -169,7 +168,7 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			foreach (var listId in listIds)
 			{
-				var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+				var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 				if(basket != null)
 					basketRepository.DeleteBasket(basket.UserId.ToGuid(), listId);
 			}
@@ -177,7 +176,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public UserList AddItems(UserProfile user, UserSelectedContext catalogInfo, Guid listId, List<ListItem> newItems, bool allowDuplicates)
 		{
-			var basket = basketLogic.RetrieveSharedBasket(user, catalogInfo, listId);
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId);
 
 			if (basket == null)
 				return null;
@@ -192,7 +191,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			basketRepository.CreateOrUpdateBasket(basket.UserId.ToGuid(), basket.BranchId, basket, lineItems);
 
-			var updatedList = ToUserList(basketLogic.RetrieveSharedBasket(user, catalogInfo, listId));
+			var updatedList = ToUserList(basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, listId));
 
 			LookupProductDetails(user, updatedList, catalogInfo);
 
@@ -201,7 +200,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public void UpdateList(UserProfile user, UserList list, UserSelectedContext catalogInfo)
 		{
-			var updateBasket = basketLogic.RetrieveSharedBasket(user, catalogInfo, list.ListId);
+			var updateBasket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, list.ListId);
 			
 			if (updateBasket == null)
 				return;
@@ -233,7 +232,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (list.Items == null)
 				return;
 
-			var activeCart = basketLogic.RetrieveAllSharedBaskets(user, catalogInfo, "ShoppingCart").Where(b => b.Active.Equals(true));
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart).Where(b => b.Active.Equals(true));
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
@@ -253,7 +252,7 @@ namespace KeithLink.Svc.Impl.Logic
 					listItem.Name = prod.Name;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
-					listItem.Brand = prod.Brand;
+					listItem.Brand = prod.BrandExtendedDescription;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
