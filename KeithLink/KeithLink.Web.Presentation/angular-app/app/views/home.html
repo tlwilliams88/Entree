@@ -268,7 +268,7 @@
 
       <div class="col-xs-12">
         <div class="featured-item-mobile visible-xs visible-sm">
-          <carousel interval="myInterval" disable-ng-animate="true">
+          <carousel interval="myInterval" disable-ng-animate>
             <slide ng-repeat="item in items track by $index" active="item.active">
               <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
                 <img ng-src="{{item.imageUrl}}">
