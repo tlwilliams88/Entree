@@ -7,6 +7,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl;
+using KeithLink.Svc.Test.MockRepository;
 
 namespace KeithLink.Svc.Test.Logic
 {
@@ -22,7 +23,11 @@ namespace KeithLink.Svc.Test.Logic
                 new ElasticSearchCatalogRepositoryImpl(),
                 new PriceLogicImpl(new PriceRepositoryImpl(), new NoCachePriceCacheRepositoryImpl()),
                 new ProductImageRepositoryImpl(),
-				new ListLogicImpl(new Impl.Repository.Orders.BasketRepositoryImpl(), new ElasticSearchCatalogRepositoryImpl(), new PriceRepositoryImpl(), new ItemNoteLogicImpl(new MockRepository.BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository()))),
+				new ListLogicImpl(new BasketRepositoryMock(), 
+			new StubCatalogRepositoryImpl(), 
+			new PriceRepositoryImpl(), 
+			new ItemNoteLogicImpl(new MockRepository.BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository())),
+			new BasketLogicImpl(new BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository()))),
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository(),
                 new NoCacheCatalogCacheRepositoryImpl()
