@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class RecentlyViewedListLogicImpl: IRecentlyViewedListLogic
 	{
 		private readonly string RecentlyViewedListNameFormat = "rv_{0}_RecentItems";
-		private readonly string BasketStatus = "RecentlyViewed";
 		
 		private readonly IBasketRepository basketRepository;
 		private readonly IProductImageRepository productImageRepository;
@@ -45,8 +45,8 @@ namespace KeithLink.Svc.Impl.Logic
 				newBasket.CustomerId = catalogInfo.CustomerId;
 				newBasket.BranchId = catalogInfo.BranchId.ToLower();
 				newBasket.DisplayName = "Recent Items";
-				newBasket.Status = BasketStatus;
 				newBasket.Name = RecentlyViewedListName(catalogInfo);
+				newBasket.ListType = (int)ListType.RecentlyViewed;
 				
 
 				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, new List<CS.LineItem>() { new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId } });
