@@ -106,6 +106,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\EventArgs\ExceptionEventArgs.cs" />
+    <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
+    <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
     <Compile Include="Exceptions\Orders\EarlySocketException.cs" />
     <Compile Include="Exceptions\Orders\FileSendException.cs" />
@@ -116,11 +119,15 @@
     <Compile Include="Exceptions\Profile\NoApiKeyProvidedException.cs" />
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\ConfirmationDetailExtension.cs" />
+    <Compile Include="Extensions\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\OrderDetailExtension.cs" />
     <Compile Include="Extensions\OrderHeaderExtension.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
+    <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
+    <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
@@ -146,6 +153,10 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Confirmations\ConfirmationDetail.cs" />
+    <Compile Include="Models\Confirmations\ConfirmationFile.cs" />
+    <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
+    <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\LineType.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />
@@ -220,6 +231,7 @@
       <Name>KeithLink.Common.Core</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

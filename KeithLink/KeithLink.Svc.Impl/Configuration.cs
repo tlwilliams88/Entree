@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
         private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
 		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
+
+        // Active Directory Constants
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
@@ -28,6 +30,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_INVALIDATTEMPTS = "ADBadPwdCount";
         private const string KEY_AD_LOCKOUTDURATION = "ADLockoutDuration";
         private const string KEY_APP_NAME = "AppName";
+
+        // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
         private const string KEY_APPDATA_CONNECTIONSTRING = "AppDataConnection";
         private const string KEY_BASE_CATALOG = "CS_BaseCatalog";
@@ -44,10 +48,15 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
+
+        // Mainframe KEys
         private const string KEY_MF_ADDRESS = "MfAddress";
+        private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_PORT = "MfPort";
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
+
+        // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
@@ -62,6 +71,11 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
+        private const string KEY_RABBITMQ_CONFIRMATION_EXCHANGE = "RabbitMQConfirmationExchange";
+        private const string KEY_RABBITMQ_CONFIRMATION_QUEUE = "RabbitMQConfirmationQueue";
+        private const string KEY_RABBITMQ_CONFIRMATION_VHOST = "RabbitMQConfirmationVHost";
+
+        // Misc
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
         private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
@@ -322,6 +336,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static int MainframeConfirmationListeningPort
+        {
+            get
+            {
+                return int.Parse(GetValue(KEY_MF_CONFRIMATION_PORT, "4001"));
+            }
+        }
+
         public static int MainframeListeningPort
         {
             get
@@ -445,6 +467,30 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_RABBITMQ_ORDER_VHOST, string.Empty);
+            }
+        }
+
+        public static string RabbitMQConfirmationExchange
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_CONFIRMATION_EXCHANGE, string.Empty);
+            }
+        }
+
+        public static string RabbitMQConfirmationQueue
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_CONFIRMATION_QUEUE, string.Empty);
+            }
+        }
+
+        public static string RabbitMQConfirmationVhost
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_CONFIRMATION_VHOST, string.Empty);
             }
         }
 

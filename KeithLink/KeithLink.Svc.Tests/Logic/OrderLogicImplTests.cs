@@ -15,8 +15,8 @@ namespace KeithLink.Svc.Test.Logic
             OrderFile order = new OrderFile();
 
             order.Header.Branch = "FDF";
-            order.Header.ControlNumber = 3;
-            order.Header.CustomerNumber = "010166";
+            order.Header.ControlNumber = 32;
+            order.Header.CustomerNumber = "709333";
             order.Header.DeliveryDate = DateTime.Now.AddDays(1);
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;

@@ -69,6 +69,7 @@
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Logging\IEventLogRepository.cs" />
+    <Compile Include="Parsing\StringHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueParsingUtil.cs" />
   </ItemGroup>

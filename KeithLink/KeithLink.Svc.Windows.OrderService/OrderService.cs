@@ -1,6 +1,7 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿ using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.Confirmations;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private static bool _successfulConnection;
         private static UInt16 _unsentCount;
         private Timer _queueTimer;
+        private Thread _confirmationThread;
 
         const int TIMER_DURATION_TICK = 2000;
         const int TIMER_DURATION_START = 1000;
@@ -92,6 +94,12 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
+        private void InitializeConfirmationThread()
+        {
+            _confirmationThread = new Thread(ProcessConfirmations);
+            _confirmationThread.Start();
+        }
+
         private void InitializeQueueTimer() {
             AutoResetEvent auto = new AutoResetEvent(true);
             TimerCallback cb = new TimerCallback(ProcessQueueTick);
@@ -105,12 +113,43 @@ namespace KeithLink.Svc.Windows.OrderService {
             _log.WriteInformationLog("Service starting");
 
             InitializeQueueTimer();
+            InitializeConfirmationThread();
         }
 
         protected override void OnStop() {
             TerminateQueueTimer();
 
             _log.WriteInformationLog("Service stopping");
+        }
+
+        protected void ProcessConfirmations()
+        {
+            try
+            {
+                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+                confirmationLogic.Listen();
+            }
+            catch (Exception e)
+            {
+                StringBuilder logMessage = new StringBuilder();
+                logMessage.AppendLine("Processing failed receiving confirmation. ");
+                Exception currentException = e;
+                while (currentException != null)
+                {
+                    logMessage.AppendLine("Message:");
+                    logMessage.AppendLine(currentException.Message);
+                    logMessage.AppendLine();
+                    logMessage.AppendLine("Stack:");
+                    logMessage.AppendLine(currentException.StackTrace);
+
+                    currentException = currentException.InnerException;
+                }
+                _log.WriteErrorLog(logMessage.ToString());
+
+                //TODO: Add exception email
+            }
         }
 
         private void ProcessQueueTick(object state) {
