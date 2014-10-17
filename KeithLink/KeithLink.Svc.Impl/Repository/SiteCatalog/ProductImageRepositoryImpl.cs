@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     if (retVal.ProductImages != null)
                         foreach (var pi in retVal.ProductImages)
                         if (pi != null && !String.IsNullOrEmpty(pi.Url))
-                            pi.Url.Replace("http://testmultidocs.bekco.com/", Configuration.MultiDocsUrl);
+                            pi.Url = pi.Url.Replace("http://testmultidocs.bekco.com/", Configuration.MultiDocsUrl);
                 }
             }
 
