@@ -108,8 +108,6 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         protected override void OnStart(string[] args) {
-            //Debugger.Launch();
-
             _log.WriteInformationLog("Service starting");
 
             InitializeQueueTimer();
@@ -148,6 +146,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 }
                 _log.WriteErrorLog(logMessage.ToString());
 
+                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage.ToString());
                 //TODO: Add exception email
             }
         }
