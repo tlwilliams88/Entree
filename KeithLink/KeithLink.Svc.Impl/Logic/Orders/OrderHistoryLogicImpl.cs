@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int DETAIL_LENGTH_SUBORG = 6;
         private const int DETAIL_LENGTH_REPLORG = 6;
         private const int DETAIL_LENGTH_ITEMSTS = 1;
+        private const int DETAIL_LENGTH_FUTURE = 1;
+        private const int DETAIL_LENGTH_WEIGHT = 8;
 
         private const int DETAIL_STARTPOS_ITEMNUM = 1;
         private const int DETAIL_STARTPOS_LINNUM = 7;
@@ -35,6 +37,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int DETAIL_STARTPOS_SUBORG = 33;
         private const int DETAIL_STARTPOS_REPLORG = 39;
         private const int DETAIL_STARTPOS_ITEMSTS = 45;
+        private const int DETAIL_LENGTH_FUTURE = 46;
+        private const int DETAIL_LENGTH_WEIGHT = 47;
 
         private const int HEADER_LENGTH_ORDSYS = 1; 
         private const int HEADER_LENGTH_BRANCH = 3; 
@@ -45,7 +49,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int HEADER_LENGTH_INVNUM = 8; 
         private const int HEADER_LENGTH_ORDSTS = 1; 
         private const int HEADER_LENGTH_FUTURE = 1; 
-        private const int HEADER_LENGTH_ERRSTS = 1; 
+        private const int HEADER_LENGTH_ERRSTS = 1;
+        private const int HEADER_LENGTH_RTENUM = 3;
+        private const int HEADER_LENGTH_STPNUM = 3;
         
         private const int HEADER_STARTPOS_ORDSYS = 1; 
         private const int HEADER_STARTPOS_BRANCH = 2; 
@@ -56,7 +62,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int HEADER_STARTPOS_INVNUM = 36; 
         private const int HEADER_STARTPOS_ORDSTS = 44; 
         private const int HEADER_STARTPOS_FUTURE = 45; 
-        private const int HEADER_STARTPOS_ERRSTS = 46; 
+        private const int HEADER_STARTPOS_ERRSTS = 46;
+        private const int HEADER_STARTPOS_RTENUM = 47;
+        private const int HEADER_STARTPOS_STPNUM = 50;
         #endregion
 
         #region methods
