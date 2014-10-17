@@ -22,6 +22,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         [DataMember()]
+        public double SellPrice { get; set; }
+
+        [DataMember()]
         public bool CatchWeight { get; set; }
 
         [DataMember()]
@@ -35,6 +38,12 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public string ItemStatus { get; set; }
+
+        [DataMember()]
+        public bool FutuerItem { get; set; }
+
+        [DataMember()]
+        public double TotalShippedWeight { get; set; }
         #endregion
     }
 }

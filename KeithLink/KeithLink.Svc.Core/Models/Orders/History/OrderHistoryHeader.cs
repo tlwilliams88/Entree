@@ -35,6 +35,12 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public bool ErrorStatus { get; set; }
+
+        [DataMember()]
+        public string RouteNumber { get; set; }
+
+        [DataMember()]
+        public string StopNumber { get; set; }
         #endregion
     }
 }
