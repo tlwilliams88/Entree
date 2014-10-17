@@ -47,6 +47,8 @@ namespace KeithLink.Svc.Impl.Logic
 				newBasket.DisplayName = "Recent Items";
 				newBasket.Name = RecentlyViewedListName(catalogInfo);
 				newBasket.ListType = (int)ListType.RecentlyViewed;
+				newBasket.ReadOnly = false;
+				newBasket.IsContractList = false;
 				
 
 				basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, new List<CS.LineItem>() { new CS.LineItem() { ProductId = itemNumber, CatalogName = catalogInfo.BranchId } });
