@@ -10,6 +10,7 @@ using KeithLink.Common.Core.Extensions;
 using RT = KeithLink.Svc.Impl.RequestTemplates;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Enumerations.List;
 
 
 namespace KeithLink.Svc.Impl.Repository.Orders
@@ -53,14 +54,19 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 				return null;
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+			if (basketResponse.CommerceEntities.Count == 0)
+				return null;
+
 			return ((Basket)basketResponse.CommerceEntities[0]);
 		}
 
-        public List<Basket> ReadAllBaskets(Guid userId, bool runPipelines = false)
+        public List<Basket> ReadAllBaskets(Guid userId, ListType type, bool runPipelines = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToCommerceServerFormat();
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 0;
+			queryBaskets.SearchCriteria.Model.Properties["ListType"] = (int)type;
+
             queryBaskets.QueryOptions.RefreshBasket = runPipelines;
 
 			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
@@ -71,7 +77,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(i => (Basket)i).ToList();
+			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(b => b.Properties["ListType"].Equals((int)type)).Select(i => (Basket)i).ToList();
 		}
 
         public Guid? AddItem(Guid cartId, LineItem newItem, Basket basket, bool runPipelines = false)

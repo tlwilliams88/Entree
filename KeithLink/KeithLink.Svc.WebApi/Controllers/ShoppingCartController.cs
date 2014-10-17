@@ -49,14 +49,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}/item")]
 		public NewItem AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, cartId, newItem) };
+			return new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
 		}
 
 		[HttpPut]
 		[ApiKeyedRoute("cart/{cartId}/item")]
 		public void UpdateItem(Guid cartId, ShoppingCartItem updatedItem)
 		{
-			shoppingCartLogic.UpdateItem(this.AuthenticatedUser, cartId, updatedItem);
+			shoppingCartLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, updatedItem);
 		}
 
 		[HttpPut]
@@ -70,14 +70,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}")]
 		public void DeleteList(Guid cartId)
 		{
-			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, cartId);
+			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("cart/")]
 		public void DeleteList(List<Guid> cartIds)
 		{
-			shoppingCartLogic.DeleteCarts(this.AuthenticatedUser.UserId, cartIds);
+			shoppingCartLogic.DeleteCarts(this.AuthenticatedUser, this.SelectedUserContext, cartIds);
 		}
 
 
@@ -85,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}/item/{itemId}")]
 		public void DeleteItem(Guid cartId, Guid itemId)
 		{
-			shoppingCartLogic.DeleteItem(this.AuthenticatedUser, cartId, itemId);
+			shoppingCartLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, itemId);
 		}
         #endregion
     }
