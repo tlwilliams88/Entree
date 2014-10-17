@@ -74,12 +74,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(i => (Basket)i).ToList();
 		}
 
-        public Guid? AddItem(Guid userId, Guid cartId, LineItem newItem, Basket basket, bool runPipelines = false)
+        public Guid? AddItem(Guid cartId, LineItem newItem, Basket basket, bool runPipelines = false)
 		{
             var updateOrder = new CommerceUpdate<Basket,
                         CommerceModelSearch<Basket>,
                         CommerceBasketUpdateOptionsBuilder>();
-            updateOrder.SearchCriteria.Model.UserId = userId.ToString();
+			updateOrder.SearchCriteria.Model.UserId = basket.UserId;
             updateOrder.SearchCriteria.Model.BasketType = 0;
             updateOrder.SearchCriteria.Model.Id = cartId.ToCommerceServerFormat();
             updateOrder.UpdateOptions.RefreshBasket = runPipelines; // disable running of pipelines to optimize save time

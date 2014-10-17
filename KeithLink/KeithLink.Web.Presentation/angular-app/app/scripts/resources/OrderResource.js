@@ -7,11 +7,6 @@ angular.module('bekApp')
 
       // defaults: GET, QUERY, SAVE
 
-      submit: {
-        url: '/order/:cartId',
-        method: 'POST'
-      }
-
     });
   
   }]);

@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Test.Logic {
         public UserProfileLogicImplTests() {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
             _cache = new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository();
+            var _custCach = new Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl();
             
             _custRepo = new CustomerContainerRepository(_log);
 
@@ -34,8 +35,8 @@ namespace KeithLink.Svc.Test.Logic {
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _cache);
 
-            _acct = new AccountRepository(_log, _cache);
-            _cust = new CustomerRepository(_log, _cache);
+            _acct = new AccountRepository(_log, _custCach);
+            _cust = new CustomerRepository(_log, _custCach);
 
             _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust);
         }

@@ -28,7 +28,8 @@
 		<ul class="horizontal-slide hidden-xs hidden-sm slide-recently-viewed-items">
 			<li ng-repeat="item in recentlyViewedItems" class="item-holder">
 				<div class="featured-item text-center">
-					<img class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url || 'images/default-placeholder.png'}}" alt="image">
+					<img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+          <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
 					<span class="featured-item__detail">
 						{{item.name}}
 						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
@@ -38,10 +39,11 @@
 		</ul>
 
     <div class="featured-item-mobile visible-xs visible-sm">
-      <carousel interval="myInterval">
+      <carousel interval="myInterval" disable-ng-animate="true">
         <slide ng-repeat="item in recentlyViewedItems" active="item.active">
           <div class="col-xs-4 no-padding text-left">
-            <img ng-src="{{item.images[0].url || 'images/default-placeholder.png'}}">
+            <img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+            <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
           </div>
           <div class="col-xs-8 no-padding featured-item-mobile__detail">
             {{item.name}}<br />
@@ -92,7 +94,7 @@
 		</ul>
 		
 		<div class="featured-item-mobile visible-xs visible-sm">
-	    <carousel interval="myInterval">
+	    <carousel interval="myInterval" disable-ng-animate="true">
         <slide ng-repeat="category in categories | orderBy: ['name'] track by $index" active="category.active">
           <div ng-show="category.category_image.url" class="col-xs-4 no-padding text-left">
             <img ng-src="{{category.category_image.url}}">
@@ -126,7 +128,7 @@
 		</ul>
 
     <div class="featured-item-mobile visible-xs visible-sm">
-      <carousel interval="myInterval">
+      <carousel interval="myInterval" disable-ng-animate="true">
         <slide ng-repeat="brand in brands | orderBy: ['extended_description'] track by $index" active="brand.active">
           <div ng-show="brand.imageurl" class="col-xs-4 no-padding text-left">
             <img ng-src="{{brand.imageurl}}">

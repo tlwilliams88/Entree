@@ -1,12 +1,25 @@
-<h3>Account Details</h3>
+<h3 ng-show="isNew">Add New Account</h3>
+<h3 ng-hide="isNew">Account Details</h3>
 
-<form action="">
-  <input type="text" ng-model="account.name">
+<form name="accountDetailsForm">
+  
+  <div class="form-group">
+    <label for="accountName" class="control-label">Name</label>
+    <span class="text-red" ng-show="accountDetailsForm.accountName.$dirty && accountDetailsForm.accountName.$error.required">Account name is required.</span>
+    <input type="text" class="form-control" name="accountName" id="accountName" ng-model="account.name" required>
+  </div>
 
-  <p>Customers</p>
+  <h4>Customers</h4>
+  <p>List of customers in this account...</p>
 
-  <p>Users</p>
+  <h4>Users</h4>
+  <p>List of users in this account...</p>
+  
+  <hr>
+
+  <div class="form-group button-row">
+    <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-show="isNew" ng-click="createNewAccount(account)">Create New</button>
+    <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-hide="isNew">Save</button>
+    <a ng-click="cancelChanges()">Cancel</a>
+  </div>
 </form>
-
-<button ng-show="isNew" ng-click="createNewAccount(account)">Create New</button>
-<button ng-hide="isNew">Save</button>

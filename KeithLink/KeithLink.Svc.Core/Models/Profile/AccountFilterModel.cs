@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 {
     public class AccountFilterModel
     {
-        public string UserId { get; set; }
+        public Nullable<Guid> UserId { get; set; }
         public string Wildcard { get; set; }
     }
 }

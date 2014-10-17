@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.SiteCatalog;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +10,11 @@ namespace KeithLink.Svc.Core.Interface.Lists
 {
 	public interface IItemNoteLogic
 	{
-		List<ItemNote> ReadNotes(Guid userId);
+		List<ItemNote> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 		ItemNote ReadNoteForItem(Guid userId, string itemNumber);
 
-		void AddNote(Guid userId, ItemNote note);
-		void DeleteNote(Guid userId, string itemNumber);
+		void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote note);
+		void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
 	}
 }

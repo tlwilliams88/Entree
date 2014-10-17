@@ -2,6 +2,7 @@
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,18 @@ using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
-    public class AccountRepository : Core.Interface.Profile.IAccountRepository
+    public class AccountRepository : BaseOrgRepository, Core.Interface.Profile.IAccountRepository
     {
         #region attributes
         IEventLogRepository _logger;
-        IUserProfileCacheRepository _userProfileCacheRepository;
+        ICustomerCacheRepository _customerCacheRepository;
         #endregion
 
         #region ctor
-        public AccountRepository(IEventLogRepository logger, IUserProfileCacheRepository userProfileCacheRepository)
+        public AccountRepository(IEventLogRepository logger, ICustomerCacheRepository customerCacheRepository)
         {
             _logger = logger;
-            _userProfileCacheRepository = userProfileCacheRepository;
+            _customerCacheRepository = customerCacheRepository;
         }
         #endregion
 
@@ -41,8 +42,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             var createOrg = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
             createOrg.Model.Name = name;
-            //createOrg.Model.NationalOrRegionalAccountNumber = nationalOrRegionalAccountNumber;
-            // createOrg.Model.NationalAccountId = ""; // TODO: Data does not exist in currend data feeds
             createOrg.Model.OrganizationType = accountOrgTypeId;
             createOrg.CreateOptions.ReturnModel = new Core.Models.Generated.Organization();
 
@@ -51,10 +50,26 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return new Guid(res.CommerceEntity.Id);
         }
 
+        public Guid UpdateAccount(string name, Guid accountId) {
+            KeithLink.Svc.Core.Models.Generated.SiteTerm orgTypes = GetOrganizationTypes();
+            string accountOrgTypeId = orgTypes.Elements.Where(o => o.DisplayName == "Account").FirstOrDefault().Id;
+
+            var createOrg = new CommerceServer.Foundation.CommerceUpdate<KeithLink.Svc.Core.Models.Generated.Organization>();
+            createOrg.SearchCriteria.Model.Id = accountId.ToCommerceServerFormat();
+            createOrg.Model.Name = name;
+
+            createOrg.Model.OrganizationType = accountOrgTypeId;
+            createOrg.UpdateOptions.ReturnModel = new Core.Models.Generated.Organization();
+
+            CommerceUpdateOperationResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest()).OperationResponses[0] as CommerceUpdateOperationResponse;
+
+            return new Guid(res.CommerceEntities[0].Id);
+        }
+
         public List<Account> GetAccounts()
         {
             var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            createOrg.SearchCriteria.Model.OrganizationType = "1"; // org type of customer
+            createOrg.SearchCriteria.Model.OrganizationType = "1"; // org type of account
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
@@ -64,7 +79,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     KeithLink.Svc.Core.Models.Generated.Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
                     accounts.Add(new Account()
                     {
-                        Id = org.Id,
+                        Id = Guid.Parse(org.Id),
                         Name = org.Name,
                     });
                 });
@@ -82,12 +97,35 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
         }
 
-        public void AddUserToAccount(Guid accountId, Guid userId, string role)
+        public void AddUserToAccount(Guid accountId, Guid userId)
         {
+            base.AddUserToOrg(accountId, userId);
         }
         
         public void RemoveUserFromAccount(Guid accountId, Guid userId)
         {
+            base.RemoveUserFromOrg(accountId, userId);
+        }
+
+        public List<Core.Models.Profile.Account> GetAccountsForUser(Guid userId)
+        {
+            // get user organization info
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
+            profileQuery.SearchCriteria.Model.Properties["UserId"] = userId.ToCommerceServerFormat();
+
+            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+
+            List<Account> userAccounts = new List<Account>();
+            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
+            {
+                Organization org = new Organization(ent);
+                userAccounts.Add(new Account()
+                {
+                    Id = Guid.Parse(org.Id),
+                    Name = org.Name,                     
+                });
+            }
+            return userAccounts;
         }
 
         /// <summary>
@@ -109,23 +147,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createOrg.Model.Name = name;
             createOrg.Model.NationalOrRegionalAccountNumber = "";
             createOrg.Model.NationalAccountId = nationalId;
-            createOrg.Model.OrganizationType = "National ID"; // TODO: Read from site term, validate and convert to id
+            createOrg.Model.OrganizationType = "National ID"; // No National ID concept for now; only used in KBIT for reporting
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest());
         }
 
-        protected KeithLink.Svc.Core.Models.Generated.SiteTerm GetOrganizationTypes()
-        {
-            var siteTermQuery = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.SiteTerm>("SiteTerm");
-            siteTermQuery.SearchCriteria.Model.Properties["Id"] = "OrganizationType";
-            siteTermQuery.RelatedOperations.Add(
-                new CommerceQueryRelatedItem<KeithLink.Svc.Core.Models.Generated.SiteTermElement>
-                    (KeithLink.Svc.Core.Models.Generated.SiteTerm.RelationshipName.Elements));
-            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(siteTermQuery.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
-
-            return new KeithLink.Svc.Core.Models.Generated.SiteTerm(res.CommerceEntities[0]);
-        }
-
         #endregion
+
+
+        public void RemoveCustomerFromAccount(Guid accountId, Guid customerId)
+        {
+            var updateQuery = new CommerceUpdate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = customerId.ToCommerceServerFormat();
+
+            updateQuery.Model.ParentOrganizationId = string.Empty;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+
+            // TODO: remove all users associated directly to the customer
+        }
     }
 }

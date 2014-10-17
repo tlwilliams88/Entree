@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		void UpdateItem(Guid userId, Guid basketId, LineItem updatedItem, bool runPipelines = false);
 
-		Guid? AddItem(Guid userId, Guid basketId, LineItem newItem, Basket basket, bool runPipelines = false);
+		Guid? AddItem(Guid basketId, LineItem newItem, Basket basket, bool runPipelines = false);
 
 		List<Basket> ReadAllBaskets(Guid userId, bool runPipelines = false);
 

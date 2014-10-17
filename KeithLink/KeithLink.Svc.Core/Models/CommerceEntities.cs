@@ -5735,21 +5735,21 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the GeneralInfotelNumber property.
+	    /// Gets or sets the Telephone property.
 	    /// </summary>
 	    /// <value>
-	    /// The GeneralInfotelNumber property from the property collection.
+	    /// The Telephone property from the property collection.
 	    /// </value>
-		public virtual string GeneralInfotelNumber
+		public virtual string Telephone
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfotelNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.Telephone) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfotelNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.Telephone, value);
 			}
 		}
 	
@@ -5906,40 +5906,40 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the GeneralInfodefaultCustomer property.
+	    /// Gets or sets the DefaultCustomer property.
 	    /// </summary>
 	    /// <value>
-	    /// The GeneralInfodefaultCustomer property from the property collection.
+	    /// The DefaultCustomer property from the property collection.
 	    /// </value>
-		public virtual string GeneralInfodefaultCustomer
+		public virtual string DefaultCustomer
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfodefaultCustomer) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.DefaultCustomer) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfodefaultCustomer, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.DefaultCustomer, value);
 			}
 		}
 	
 		/// <summary>
-	    /// Gets or sets the GeneralInfodefaultBranch property.
+	    /// Gets or sets the DefaultBranch property.
 	    /// </summary>
 	    /// <value>
-	    /// The GeneralInfodefaultBranch property from the property collection.
+	    /// The DefaultBranch property from the property collection.
 	    /// </value>
-		public virtual string GeneralInfodefaultBranch
+		public virtual string DefaultBranch
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.GeneralInfodefaultBranch) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.DefaultBranch) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.GeneralInfodefaultBranch, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.DefaultBranch, value);
 			}
 		}
 	
@@ -6325,9 +6325,9 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string FirstName = "FirstName";
 	
 			/// <summary>
-	        /// Constant for accessing GeneralInfo.tel_number property.
+	        /// Constant for accessing Telephone property.
 	        /// </summary>
-			public const string GeneralInfotelNumber = "GeneralInfo.tel_number";
+			public const string Telephone = "Telephone";
 	
 			/// <summary>
 	        /// Constant for accessing GeneralInfo.tel_extension property.
@@ -6370,14 +6370,14 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string GeneralInfoexpressCheckout = "GeneralInfo.express_checkout";
 	
 			/// <summary>
-	        /// Constant for accessing GeneralInfo.default_customer property.
+	        /// Constant for accessing DefaultCustomer property.
 	        /// </summary>
-			public const string GeneralInfodefaultCustomer = "GeneralInfo.default_customer";
+			public const string DefaultCustomer = "DefaultCustomer";
 	
 			/// <summary>
-	        /// Constant for accessing GeneralInfo.default_branch property.
+	        /// Constant for accessing DefaultBranch property.
 	        /// </summary>
-			public const string GeneralInfodefaultBranch = "GeneralInfo.default_branch";
+			public const string DefaultBranch = "DefaultBranch";
 	
 			/// <summary>
 	        /// Constant for accessing AccountStatus property.
@@ -7289,6 +7289,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the UserOrganizationKey property.
+	    /// </summary>
+	    /// <value>
+	    /// The UserOrganizationKey property from the property collection.
+	    /// </value>
+		public virtual string UserOrganizationKey
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.UserOrganizationKey) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.UserOrganizationKey, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProfileSystemcsadapterDateLastChanged property.
 	    /// </summary>
 	    /// <value>
@@ -7344,6 +7363,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing OrganizationId property.
 	        /// </summary>
 			public const string OrganizationId = "OrganizationId";
+	
+			/// <summary>
+	        /// Constant for accessing UserOrganizationKey property.
+	        /// </summary>
+			public const string UserOrganizationKey = "UserOrganizationKey";
 	
 			/// <summary>
 	        /// Constant for accessing ProfileSystem.csadapter_date_last_changed property.
@@ -7432,21 +7456,56 @@ namespace KeithLink.Svc.Core.Models.Generated
 		/// <summary>
 	    /// UserOrganization Relationship.
 	    /// </summary>
-		public Organization UserOrganization
+		public List<Organization> UserOrganization
 		{
 			get
 			{
-				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.UserOrganization) as CommerceRelationship;
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.UserOrganization) as CommerceRelationshipList;
 					
 				if(relationship == null)
 				{
 					return null;
 				}
 		
-				return (Organization)relationship.Target;
+				return new List<Organization>(relationship.Select(c=> (Organization)c.Target));
 			}
 		}
 	
+		/// <summary>
+	    /// UserOrganization Total Item Count.
+	    /// </summary>
+		public int? UserOrganizationTotalItemCount
+	    {
+			get
+	        {
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.UserOrganization) as CommerceRelationshipList;
+	
+	            if (relationship == null)
+	            {
+					return null;
+	            }
+	
+	            return relationship.TotalItemCount;
+			}
+	    }
+	
+		/// <summary>
+	    /// UserOrganization First Item Index.
+	    /// </summary>
+	    public int UserOrganizationFirstItemIndex
+	    {
+			get
+	        {
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.UserOrganization) as CommerceRelationshipList;
+	
+	            if (relationship == null)
+	            {
+					return 0;
+	            }
+	
+	            return relationship.FirstItemIndex;
+			}
+		}
 		#endregion	
 	
 		#region CommerceEntity Properties

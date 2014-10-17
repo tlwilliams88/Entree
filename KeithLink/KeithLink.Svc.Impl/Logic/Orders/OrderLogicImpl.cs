@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				return;
 
 			var products = catalogRepository.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList());
-			var notes = itemNoteLogic.ReadNotes(user.UserId);
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 			order.LineItems.ForEach(delegate(OrderLine item)
 			{

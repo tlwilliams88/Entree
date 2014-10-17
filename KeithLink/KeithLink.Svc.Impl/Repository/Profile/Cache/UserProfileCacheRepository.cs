@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile.Cache
         /// </returns>
         private TimeSpan GetCacheExpiration()
         {
-            return new TimeSpan(0, 1, 0); // TODO - tune this and ensure chache is refreshed when changes occur!
+            return new TimeSpan(0, 1, 0);
         }
 
         /// <summary>

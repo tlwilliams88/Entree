@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService',
+    function($scope, $state, $stateParams, $filter, Constants, CartService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -75,8 +75,9 @@ angular.module('bekApp')
 
     $scope.submitOrder = function(cart) {
       $scope.saveCart(cart)
-        .then(OrderService.submitOrder)
+        .then(CartService.submitOrder)
         .then(function(data) {
+          $state.go('menu.orderitems', { orderNumber: data.ordernumber });
           $scope.displayMessage('success', 'Successfully submitted order.');
         }, function(error) {
           $scope.displayMessage('error', 'Error submitting order.');

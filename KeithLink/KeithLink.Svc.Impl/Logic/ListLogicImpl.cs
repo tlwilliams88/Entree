@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (basket == null)
 				return null;
 
-            return basketRepository.AddItem(userId, listId, newItem.ToLineItem(basket.BranchId), basket);
+            return basketRepository.AddItem(listId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
 		public void UpdateItem(Guid userId, Guid listId, ListItem updatedItem, UserSelectedContext catalogInfo)
@@ -121,7 +121,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.Equals(null) ? false : true, ReadOnly = l.ReadOnly.Equals(null) ? false : true }).ToList();
+				return listForBranch.Select(l => new UserList() { ListId = l.Id.ToGuid(), Name = l.DisplayName, IsContractList = l.IsContractList.HasValue ? l.IsContractList.Value : false, ReadOnly = l.ReadOnly.HasValue ? l.ReadOnly.Value : false }).ToList();
 			else 
 			{
 				var returnList = listForBranch.Select(b => ToUserList(b)).ToList();
@@ -170,8 +170,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var favorites = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
-			var pricing = priceRepository.GetPrices(user.BranchId, user.CustomerNumber, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user.UserId);
+			var pricing = priceRepository.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 
 			list.Items.ForEach(delegate (ListItem listItem)
@@ -222,10 +222,10 @@ namespace KeithLink.Svc.Impl.Logic
 		/// </summary>
 		/// <param name="branchId">The branch/catalog to use</param>
 		/// <param name="products">List of products</param>
-		public void MarkFavoriteProductsAndNotes(Guid userId, string branchId, ProductsReturn products, UserSelectedContext catalogInfo)
+		public void MarkFavoriteProductsAndNotes(UserProfile user, string branchId, ProductsReturn products, UserSelectedContext catalogInfo)
 		{
-			var list = basketRepository.ReadBasket(userId, ListName(FAVORITESLIST, catalogInfo));
-			var notes = itemNoteLogic.ReadNotes(userId);
+			var list = basketRepository.ReadBasket(user.UserId, ListName(FAVORITESLIST, catalogInfo));
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
 
 			if (list == null || list.LineItems == null)
 				return;
@@ -301,6 +301,7 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			return string.Format("l{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
-						
+
+		
 	}
 }

@@ -19,6 +19,10 @@
         <div class="order-item-value">PENDING</div>
       </div>
       <div class="order-item">
+        <div class="order-item-title">Order Date</div>
+        <div class="order-item-value">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+      </div>
+      <div class="order-item">
         <div class="order-item-title">Delivery Date</div>
         <div class="order-item-value">{{order.deliveryDate || 'N/A'}}</div>
         <div class="order-item-title">Delivered</div>
@@ -141,12 +145,12 @@
       </td>
     </tr>
 
-    <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+    <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
       <td colspan="4">
         <table>
           <colgroup>
-            <col width="15%" />
-            <col width="85%" />
+            <col width="25%" />
+            <col width="75%" />
           </colgroup>
           <tr>
             <td>Notes</td>

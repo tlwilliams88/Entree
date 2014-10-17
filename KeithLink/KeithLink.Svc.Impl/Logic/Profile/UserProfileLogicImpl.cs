@@ -33,9 +33,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region methods
-        public void AddCustomerToAccount(Guid accountId, Guid customerId) {
-            _accountRepo.AddCustomerToAccount(accountId, customerId);
-        }
 
         public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
             // TODO: Create user if they don't exist....   Add ROLE to call
@@ -323,59 +320,23 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
-            // get user organization info
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserOrganizations");
-            profileQuery.SearchCriteria.Model.Properties["UserId"] = csProfile.Id;
-
-            var queryOrganizations = new CommerceServer.Foundation.CommerceQueryRelatedItem<CommerceServer.Foundation.CommerceEntity>("UserOrganization", "Organization");
-            profileQuery.RelatedOperations.Add(queryOrganizations);
-
-            CommerceServer.Foundation.CommerceResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
-
-            List<Customer> userCustomers = new List<Customer>();
-            foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
-                userCustomers.Add(new Customer() {
-                    CustomerName = (string)ent.Properties["GeneralInfo.Name"],
-                    CustomerNumber = (string)ent.Properties["GeneralInfo.CustomerNumber"],
-                    CustomerBranch = (string)ent.Properties["GeneralInfo.BranchNumber"],
-                    ContractId = (string)ent.Properties["GeneralInfo.ContractId"]
-                });
+            List<Customer> userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id));
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
-                PhoneNumber = csProfile.GeneralInfotelNumber,
-                CustomerNumber = csProfile.GeneralInfodefaultCustomer,
-                BranchId = csProfile.GeneralInfodefaultBranch,
+                PhoneNumber = csProfile.Telephone,
+                CustomerNumber = csProfile.DefaultCustomer,
+                BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                
-                UserCustomers = new List<Customer>() { // TODO: Plugin the list from CS from above once we have customer data
-                                        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf", ContractId = "D709333" },
-                                        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf", ContractId = "D709333" }
-                //UserCustomers = userCustomers
-                }
+                UserCustomers = userCustomers
+                //new List<Customer>() { // for testing only
+                                //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
+                                //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
+                //}
             };
-        }
-
-        public AccountReturn GetAccounts(AccountFilterModel accountFilters) {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
-            List<Account> retAccounts = new List<Account>();
-
-            if (accountFilters != null) {
-                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.UserId)) {
-                    //TODO
-                }
-                if (accountFilters != null && !String.IsNullOrEmpty(accountFilters.Wildcard)) {
-                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
-                }
-            } else
-                retAccounts = allAccounts;
-
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
         /// <summary>
@@ -402,28 +363,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
-        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters) {
-            List<Customer> allCustomers = _customerRepo.GetCustomers();
-            List<Customer> retCustomers = new List<Customer>();
-
-            if (customerFilters != null) {
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
-                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
-                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
-                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
-                }
-            } else
-                retCustomers = allCustomers;
-
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
-        }
-
         /// <summary>
         /// get a user profile from commerce server
         /// </summary>
@@ -445,11 +384,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return retVal;
         }
-        
-        public UserProfileReturn GetUsers(UserFilterModel userFilters) {
-            //_csProfile.GetUsers(userFilters); // TODO
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// get the user profile
@@ -466,7 +400,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (profile != null) {
                 retVal.UserProfiles.Add(profile);
-
                 return retVal;
             }
 
@@ -607,7 +540,157 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
+        
+        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
+        {
+            List<Customer> allCustomers = _customerRepo.GetCustomers();
+            List<Customer> retCustomers = new List<Customer>();
+
+            if (customerFilters != null)
+            {
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.AccountId == Guid.Parse(customerFilters.AccountId)));
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
+                    retCustomers.AddRange(GetUserProfile(customerFilters.UserId).UserProfiles[0].UserCustomers);
+                }
+                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
+                    retCustomers.AddRange(allCustomers.Where(x => x.CustomerName.ToLower().Contains(customerFilters.Wildcard.ToLower()) || x.CustomerNumber.ToLower().Contains(customerFilters.Wildcard.ToLower())));
+                }
+            }
+            else
+                retCustomers = allCustomers;
+            
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
+        }
+
+        public AccountReturn GetAccounts(AccountFilterModel accountFilters)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            List<Account> retAccounts = new List<Account>();
+
+            if (accountFilters != null) {
+                if (accountFilters.UserId.HasValue) {
+                    _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
+                }
+                if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
+                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+                }
+            }
+            else
+                retAccounts = allAccounts;
+
+            // TODO: add logic to filter down for internal administration versus external owner
+
+            return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
+        }
+        public AccountReturn GetAccount(Guid accountId)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
+            acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            return new AccountReturn() { Accounts = new List<Account>() { acct } };
+        }
+        public void AddCustomerToAccount(Guid accountId, Guid customerId)
+        {
+            _accountRepo.AddCustomerToAccount(accountId, customerId);
+        }
+
+
+        public UserProfileReturn GetUsers(UserFilterModel userFilters)
+        {
+            if (userFilters != null)
+            {
+                if (userFilters.AccountId.HasValue)
+                {
+                    return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.AccountId.Value) };
+                }
+                else if (userFilters.CustomerId.HasValue)
+                {
+                    return new UserProfileReturn() { UserProfiles = _csProfile.GetUsersForCustomerOrAccount(userFilters.CustomerId.Value) };
+                }
+                else if (!String.IsNullOrEmpty(userFilters.Email))
+                {
+                    return GetUserProfile(userFilters.Email);
+                }
+            }
+
+            throw new ApplicationException("No filter provided for users");
+        }
+
+        /// <summary>
+        /// get the user profile by guid
+        /// </summary>
+        /// <remarks>
+        /// jmmcmillan - 10/6/2014 - documented
+        /// </remarks>
+        public UserProfileReturn GetUserProfileByGuid(Guid UserId)
+        {
+            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
+
+            profileQuery.Model.Properties.Add("Id");
+            profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastName");
+            profileQuery.Model.Properties.Add("SelectedBranch");
+            profileQuery.Model.Properties.Add("SelectedCustomer");
+            profileQuery.Model.Properties.Add("PhoneNumber");
+
+            CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
+            CommerceServer.Foundation.CommerceQueryOperationResponse profileResponse = response.OperationResponses[0] as CommerceServer.Foundation.CommerceQueryOperationResponse;
+
+            UserProfileReturn retVal = new UserProfileReturn();
+
+            if (profileResponse.Count == 0)
+            {
+                /*
+                 Throw profile not found exception??
+                 */
+            }
+            else
+            {
+                retVal.UserProfiles.Add(FillUserProfile((Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0]));
+            }
+
+            return retVal;
+        }
+
+
+        public void AddUserToCustomer(Guid customerId, Guid userId)
+        {
+            _customerRepo.AddUserToCustomer(customerId, userId);
+        }
+
+        public void RemoveUserFromCustomer(Guid customerId, Guid userId)
+        {
+            _customerRepo.RemoveUserFromCustomer(customerId, userId);
+        }
+
+        public bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users)
+        {
+            List<Customer> existingCustomers = _customerRepo.GetCustomers().Where(c => c.AccountId == accountId).ToList();
+            List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+
+            IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId).Except(existingCustomers.Select(c => c.CustomerId));
+            IEnumerable<Guid> customersToDelete = existingCustomers.Select(c => c.CustomerId).Except(customers.Select(c => c.CustomerId));
+            IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
+            IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
+
+            foreach (Guid g in customersToAdd)
+                _accountRepo.AddCustomerToAccount(accountId, g);
+            foreach (Guid g in customersToDelete)
+                _accountRepo.RemoveCustomerFromAccount(accountId, g);
+            foreach (Guid g in usersToAdd)
+                _accountRepo.AddUserToAccount(accountId, g);
+            foreach (Guid g in usersToDelete)
+                _accountRepo.RemoveUserFromAccount(accountId, g);
+
+            return true;
+        }
     }
-
-
 }

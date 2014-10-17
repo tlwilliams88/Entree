@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
 using System;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
@@ -23,8 +24,12 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
+        AccountReturn GetAccount(Guid id);
         UserProfileReturn GetUsers(UserFilterModel userFilters);
         AccountReturn CreateAccount(string name);
+        bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
         void AddCustomerToAccount(Guid accountId, Guid customerId);
+        void AddUserToCustomer(Guid customerId, Guid userId);
+        void RemoveUserFromCustomer(Guid customerId, Guid userId);
     }
 }

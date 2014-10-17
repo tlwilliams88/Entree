@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Logic
 			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
 
-			PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerNumber, DateTime.Now.AddDays(1), new List<Product>() { ret });
+			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
 
 			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
 			{
@@ -126,7 +126,7 @@ namespace KeithLink.Svc.Impl.Logic
             else
                 ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
-            AddPricingInfo(ret, profile, searchModel);
+            AddPricingInfo(ret, profile, catalogInfo, searchModel);
             AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
@@ -141,7 +141,7 @@ namespace KeithLink.Svc.Impl.Logic
             else
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
-            AddPricingInfo(returnValue, profile, searchModel);
+            AddPricingInfo(returnValue, profile, catalogInfo, searchModel);
             AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue, catalogInfo);
 
             return returnValue;
@@ -157,17 +157,17 @@ namespace KeithLink.Svc.Impl.Logic
             else
 				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
                 
-            AddPricingInfo(ret, profile, searchModel);
+            AddPricingInfo(ret, profile, catalogInfo, searchModel);
 			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
             return ret;
         }
 
-        private void AddPricingInfo(ProductsReturn prods, UserProfile profile, SearchInputModel searchModel)
+        private void AddPricingInfo(ProductsReturn prods, UserProfile profile, UserSelectedContext context, SearchInputModel searchModel)
         {
-            if (profile == null)
+            if (profile == null || context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(profile.BranchId, profile.CustomerNumber, DateTime.Now.AddDays(1), prods.Products);
+            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices)
             {
@@ -189,13 +189,13 @@ namespace KeithLink.Svc.Impl.Logic
 		private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
+                _listLogic.MarkFavoriteProductsAndNotes(profile, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
         }
 
 		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
             if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile.UserId, branch, ret, catalogInfo);
+                _listLogic.MarkFavoriteProductsAndNotes(profile, branch, ret, catalogInfo);
         }
 
 

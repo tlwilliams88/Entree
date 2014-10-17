@@ -41,7 +41,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.RoleName, userInfo.BranchId);
+                                                                            userInfo.Role, userInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -111,12 +111,23 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                if (userInfo.UserId == null || userInfo.UserId.Length == 0) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
+                if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
                 _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
                                                 userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
 
-                retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
+                UserProfileReturn profile = _profileLogic.GetUserProfile(userInfo.Email);
+
+                // handle customer updates - will need to add security here
+                if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
+                {
+                    IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c =>c.CustomerId).Except(profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId));
+                    IEnumerable<Guid> custsToRemove = profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
+                    foreach (Guid c in custsToAdd)
+                        _profileLogic.AddUserToCustomer(c, profile.UserProfiles[0].UserId);
+                    foreach (Guid c in custsToRemove)
+                        _profileLogic.RemoveUserFromCustomer(c, profile.UserProfiles[0].UserId);
+                }
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -160,16 +171,43 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpPut]
-        [ApiKeyedRoute("profile/account/customer")]
+        [ApiKeyedRoute("profile/account")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> AddCustomerToAccount(AccountAddCustomerModel info)
+        public OperationReturnModel<AccountReturn> UpdateAccount(AccountModel account)
         {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
 
             try
             {
-                _profileLogic.AddCustomerToAccount(info.accountId, info.customerId);
-                retVal.SuccessResponse = true;
+                _profileLogic.UpdateAccount(account.AccountId.Value, account.Name, account.Customers, account.Users);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/account")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<AccountReturn> GetAccount(AccountModel account)
+        {
+            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetAccount(account.AccountId.Value);
             }
             catch (ApplicationException axe)
             {
@@ -219,14 +257,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/customer/user")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
         public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try
             {
-                // TODO
+                _profileLogic.AddUserToCustomer(info.customerId, info.userId);
                 retVal.SuccessResponse = true;
             }
             catch (ApplicationException axe)

@@ -36,6 +36,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "customerBranch")]
         public string CustomerBranch { get; set; }
 
+        [DataMember(Name = "nationalOrRegionalAccountNumber")]
+        public string NationalOrRegionalAccountNumber { get; set; }
+
         [DataMember(Name = "customerNationalId")]
         public string NationalId { get; set; }
 
