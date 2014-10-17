@@ -12,19 +12,32 @@
   <thead>
     <tr>
       <th>Order Number</th>
+      <th>Order Date</th>
+      <th>Status</th>
       <th>Delivery Date</th>
       <th>Item Count</th>
       <th class="text-right">Total</th>
+      <th>Invoice #</th>
+      <th>Invoice Status</th>
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="order in orders" ng-class="{ odd : $odd, even: $even }">
+    <tr ng-repeat="order in orders | orderBy:'createddate':true" ng-class="{ odd : $odd, even: $even }">
       <td>
         <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
       </td>
+      <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
+      <td></td>
       <td>{{order.deliveryDate}}</td>
       <td>{{order.itemcount}}</td>
       <td class="text-right">{{order.ordertotal | currency}}</td>
+      <td>{{order.invoicenumber || 'N/A'}}</td>
+      <td>{{order.invoicestatus || 'N/A'}}</td>
     </tr>
   </tbody>
+  <tfoot ng-show="orders.length === 0">
+    <tr>
+      <td>There are no orders to display.</td>
+    </tr>
+  </tfoot>
 </table>

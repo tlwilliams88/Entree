@@ -5,8 +5,9 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     scope: true,
-    controller: ['$scope', '$state', '$q', 'toaster', 'ListService', 'CartService', 
-    function($scope, $state, $q, toaster, ListService, CartService){
+    transclude: true,
+    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 
+    function($scope, $state, $q, $modal, toaster, ListService, CartService){
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
@@ -52,6 +53,36 @@ angular.module('bekApp')
         }, function() {
           $scope.displayMessage('error', 'Error creating new cart.');
         });
+      };
+
+      $scope.closeContextMenu = function() {
+        $scope.isContextMenuDisplayed = false;
+      };
+
+      function isTouchDevice() {
+        return ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 || window.innerWidth <= 991;
+      }
+
+      $scope.openContextMenu = function (e, item, lists, carts) {
+        if (isTouchDevice()) {
+          var modalInstance = $modal.open({
+            templateUrl: 'views/contextmenumodal.html',
+            controller: 'ContextMenuModalController',
+            resolve: {
+              lists: function () {
+                return lists;
+              },
+              carts: function () {
+                return carts;
+              },
+              item: function() {
+                return item;
+              }
+            }
+          });
+        } else {
+          $scope.isContextMenuDisplayed = true;
+        }
       };
     }],
     templateUrl: 'views/directives/contextmenu.html'
