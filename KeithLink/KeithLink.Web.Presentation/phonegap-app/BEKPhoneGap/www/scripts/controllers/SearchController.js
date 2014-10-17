@@ -215,7 +215,6 @@ angular.module('bekApp')
 
                 $scope.itemIndex += $scope.itemsPerPage;
 
-                console.log('more: ' + $scope.itemIndex);
                 loadProducts(true);
             };
 

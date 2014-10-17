@@ -12,8 +12,8 @@ angular.module('bekApp')
     function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
     $scope.loginInfo = {
-      username: 'qauser@qa.com',//ENV.username,
-      password: 'Ab12345'//ENV.password
+      username: ENV.username,
+      password: ENV.password
     };
 
     BranchService.getBranches().then(function(branches) {
@@ -21,7 +21,7 @@ angular.module('bekApp')
     });
 
     $scope.login = function(loginInfo) {
-      $scope.errorMessage = '';
+      $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
         if ( AccessService.isOrderEntryCustomer() ) {

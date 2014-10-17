@@ -4652,13 +4652,13 @@ tbody.collapse.in {
 
 /* line 134, ../scss/vendor/bootstrap/bootstrap/_button-groups.scss */
 .btn-lg .caret, .btn-group-lg > .btn .caret {
-  border-width: 7px 7px 0;
+  border-width: 5px 5px 0;
   border-bottom-width: 0;
 }
 
 /* line 139, ../scss/vendor/bootstrap/bootstrap/_button-groups.scss */
 .dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret {
-  border-width: 0 7px 7px;
+  border-width: 0 5px 5px;
 }
 
 /* line 148, ../scss/vendor/bootstrap/bootstrap/_button-groups.scss */
@@ -6665,12 +6665,12 @@ html {
 
 /* line 17, ../scss/scaffolding/_utilities.scss */
 .sub-content {
-  padding-top: 20px;
+  padding-top: 20px !important;
 }
 
 /* line 20, ../scss/scaffolding/_utilities.scss */
 .sub-content-mobile {
-  padding-top: 50px;
+  padding-top: 50px !important;
 }
 
 /* line 24, ../scss/scaffolding/_utilities.scss */
@@ -6731,6 +6731,12 @@ a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
 /* line 16, ../scss/scaffolding/_typography.scss */
 .text-thin {
   font-weight: 300;
+}
+
+/* line 18, ../scss/scaffolding/_typography.scss */
+.text-small {
+  font-size: 8px;
+  font-weight: 600;
 }
 
 /* line 1, ../scss/scaffolding/_alignment.scss */
@@ -6899,14 +6905,10 @@ ng-class="{ odd : $odd, even: $even }"
   border-top: none;
 }
 /* line 63, ../scss/components/_table.scss */
-.table .mobile-details-row table {
-  width: 100%;
-}
-/* line 67, ../scss/components/_table.scss */
 .table > tfoot > tr > td, .table .filter-row > td {
   background-color: white;
 }
-/* line 75, ../scss/components/_table.scss */
+/* line 71, ../scss/components/_table.scss */
 .table > thead > tr > th,
 .table > thead > tr > td,
 .table > tbody > tr > th,
@@ -6916,33 +6918,37 @@ ng-class="{ odd : $odd, even: $even }"
   padding: 12px 5px;
 }
 
-/* line 89, ../scss/components/_table.scss */
-table tr td.input-col, table tr th.input-col {
+/* line 85, ../scss/components/_table.scss */
+table tr > td.input-col, table tr > th.input-col {
   padding: 6px 5px;
 }
-/* line 92, ../scss/components/_table.scss */
-table tr td.input-col input[type="text"], table tr th.input-col input[type="text"] {
+/* line 88, ../scss/components/_table.scss */
+table tr > td.input-col input[type="text"], table tr > th.input-col input[type="text"] {
   border: 1px solid #c3bc9c;
   padding: 5px;
 }
-/* line 97, ../scss/components/_table.scss */
-table tr td input[type="checkbox"], table tr th input[type="checkbox"] {
-  margin: 0;
-}
-/* line 101, ../scss/components/_table.scss */
-table tr td.icon-col, table tr th.icon-col {
+/* line 94, ../scss/components/_table.scss */
+table tr > td.icon-col, table tr > th.icon-col {
   padding: 7px 5px;
 }
-/* line 105, ../scss/components/_table.scss */
-table tr td.notes-col, table tr th.notes-col {
+/* line 98, ../scss/components/_table.scss */
+table tr > td.notes-col, table tr > th.notes-col {
   max-width: 100px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-/* line 114, ../scss/components/_table.scss */
+/* line 107, ../scss/components/_table.scss */
 table tr.filter-row input {
   width: 100%;
+}
+/* line 112, ../scss/components/_table.scss */
+table tr.mobile-details-row table {
+  width: 100%;
+}
+/* line 114, ../scss/components/_table.scss */
+table tr.mobile-details-row table > tbody > tr > td {
+  padding-top: 5px;
 }
 
 /* line 1, ../scss/components/_info-box.scss */
@@ -7236,6 +7242,42 @@ table.dropdown-menu {
   min-width: 0;
 }
 
+/* SELECT DROPDOWNS */
+/* line 3, ../scss/components/_select-dropdown.scss */
+.select-div {
+  display: inline-block;
+  width: 260px;
+  min-height: 40px;
+  overflow: hidden;
+  background: url("../images/down-arrow.png") no-repeat 96% white;
+  border: 1px solid #c3bc9c;
+  vertical-align: middle;
+  border-radius: 5px;
+}
+/* line 13, ../scss/components/_select-dropdown.scss */
+.select-div select {
+  background: transparent;
+  width: 300px;
+  padding: 10px 0px 10px 12px;
+  min-height: 40px;
+  -webkit-appearance: none;
+  font-weight: 300;
+  border: 0;
+  font-size: 12px;
+}
+/* line 24, ../scss/components/_select-dropdown.scss */
+.select-div.block {
+  display: block;
+}
+/* line 27, ../scss/components/_select-dropdown.scss */
+.select-div.full-width {
+  width: 100%;
+}
+/* line 30, ../scss/components/_select-dropdown.scss */
+.select-div.full-width select {
+  width: calc(100% + 20px);
+}
+
 /* line 1, ../scss/components/_person-info.scss */
 .person-info {
   display: inline-block;
@@ -7343,8 +7385,8 @@ table.dropdown-menu {
 }
 /* line 52, ../scss/components/_context-menu.scss */
 .context-menu__in-list .context-menu {
-  right: 90%;
-  margin-top: -5px;
+  right: 80%;
+  margin-top: -10px;
 }
 /* line 56, ../scss/components/_context-menu.scss */
 .context-menu__in-list .dropdown-menu {
@@ -7905,12 +7947,16 @@ ul.horizontal-slide {
 ul.horizontal-slide .item-holder {
   display: inline-block;
 }
+/* line 12, ../scss/pages/_catalog.scss */
+ul.horizontal-slide .product-placeholder-image {
+  padding: 50px 39px;
+}
 
-/* line 14, ../scss/pages/_catalog.scss */
+/* line 18, ../scss/pages/_catalog.scss */
 .catalog-search input {
   font-size: 14px;
 }
-/* line 18, ../scss/pages/_catalog.scss */
+/* line 22, ../scss/pages/_catalog.scss */
 .catalog-search input, .catalog-search button {
   height: 60px;
 }
@@ -8277,90 +8323,123 @@ ul.horizontal-slide .item-holder {
     border-right: none;
   }
 }
+/* line 1, ../scss/pages/_lists.scss */
+.lists {
+  width: 150px;
+}
+
+/* line 4, ../scss/pages/_lists.scss */
+.items {
+  width: calc(100% - 150px);
+}
+
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
-/* line 2, ../scss/pages/_lists.scss */
+/* line 9, ../scss/pages/_lists.scss */
 .custom-lists .btn-list {
   min-width: 105px;
   font-size: 12px;
 }
-/* line 6, ../scss/pages/_lists.scss */
+/* line 13, ../scss/pages/_lists.scss */
 .custom-lists .btn-list.bek-drag-active {
   border: 1px dashed #c3bc9c;
 }
-/* line 10, ../scss/pages/_lists.scss */
+/* line 17, ../scss/pages/_lists.scss */
 .custom-lists .btn-list.bek-drag-hover {
   color: #489ecf;
   border: 2px solid #489ecf;
   cursor: copy;
 }
-/* line 20, ../scss/pages/_lists.scss */
+/* line 24, ../scss/pages/_lists.scss */
+.custom-lists .btn-list.custom-lists__name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+/* line 29, ../scss/pages/_lists.scss */
 .custom-lists .btn-list.custom-lists__name.current-list {
   background-color: #489ecf;
   color: white !important;
   border: 1px solid #489ecf;
 }
 
-/* line 29, ../scss/pages/_lists.scss */
+/* line 36, ../scss/pages/_lists.scss */
+.list-names {
+  max-width: 100%;
+}
+
+/* line 42, ../scss/pages/_lists.scss */
 .btn-trash {
   margin-top: 10px;
   display: block;
 }
-/* line 33, ../scss/pages/_lists.scss */
+/* line 46, ../scss/pages/_lists.scss */
 .btn-trash.bek-drag-active {
   border: 1px dashed #dc6a6a;
 }
-/* line 38, ../scss/pages/_lists.scss */
+/* line 51, ../scss/pages/_lists.scss */
 .btn-trash.bek-drag-hover {
   border: 2px solid #dc6a6a;
   cursor: copy;
 }
 
-/* line 45, ../scss/pages/_lists.scss */
+/* line 58, ../scss/pages/_lists.scss */
 .custom-lists__multi-actions .multi-action-btn {
   height: 40px;
 }
 
 /* DRAG AND DROP */
-/* line 51, ../scss/pages/_lists.scss */
+/* line 64, ../scss/pages/_lists.scss */
 .ui-draggable-handle {
   cursor: move;
 }
 
-/* line 54, ../scss/pages/_lists.scss */
+/* line 67, ../scss/pages/_lists.scss */
 .ui-draggable-dragging {
-  border: 1px solid #c3bc9c !important;
+  border-right: 1px solid #c3bc9c !important;
+  border-left: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
+}
+/* line 71, ../scss/pages/_lists.scss */
+.ui-draggable-dragging td {
   background-color: white !important;
 }
-/* line 59, ../scss/pages/_lists.scss */
+/* line 75, ../scss/pages/_lists.scss */
 .ui-draggable-dragging .hidden-drag {
   display: none;
 }
 
-/* line 63, ../scss/pages/_lists.scss */
+/* line 79, ../scss/pages/_lists.scss */
 .ui-sortable-placeholder {
   display: block !important;
 }
 
-/* line 66, ../scss/pages/_lists.scss */
+/* line 82, ../scss/pages/_lists.scss */
 .ui-sortable-helper tr {
   border: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
+/* line 85, ../scss/pages/_lists.scss */
+.ui-sortable-helper tr td {
+  background-color: white !important;
+}
 
-/* line 70, ../scss/pages/_lists.scss */
+/* line 89, ../scss/pages/_lists.scss */
 .item-selected > tr > td, .bek-reordered-item td {
   background-color: #f8f8c4 !important;
 }
 
 @media (min-width: 992px) {
-  /* line 80, ../scss/pages/_lists.scss */
+  /* line 99, ../scss/pages/_lists.scss */
   table.custom-lists__table tbody tr:hover td {
     background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 86, ../scss/pages/_lists.scss */
+  /* line 105, ../scss/pages/_lists.scss */
+  .items {
+    width: 100%;
+  }
+
+  /* line 108, ../scss/pages/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;
@@ -8368,7 +8447,7 @@ ul.horizontal-slide .item-holder {
     top: 155px;
   }
 }
-/* line 94, ../scss/pages/_lists.scss */
+/* line 116, ../scss/pages/_lists.scss */
 .header-row {
   background-color: #f3f1eb;
   border: 1px solid #c3bc9c;
@@ -8377,37 +8456,44 @@ ul.horizontal-slide .item-holder {
   padding: 8px 5px;
 }
 
-/* line 102, ../scss/pages/_lists.scss */
+/* line 123, ../scss/pages/_lists.scss */
+.footer-row {
+  padding: 10px;
+  border: 1px solid #c3bc9c;
+  background-color: white;
+}
+
+/* line 129, ../scss/pages/_lists.scss */
 .custom-lists__table {
   width: 100%;
   border-bottom: 1px solid #c3bc9c;
 }
-/* line 108, ../scss/pages/_lists.scss */
+/* line 135, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td {
   border-top: 1px solid #c3bc9c;
   padding: 8px 5px;
 }
-/* line 112, ../scss/pages/_lists.scss */
+/* line 139, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td:first-child {
   border-left: 1px solid #c3bc9c;
 }
-/* line 115, ../scss/pages/_lists.scss */
+/* line 142, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr > td:last-child {
   border-right: 1px solid #c3bc9c;
 }
-/* line 119, ../scss/pages/_lists.scss */
+/* line 146, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody > tr.mobile-details-row > td {
   border-top: none;
 }
-/* line 124, ../scss/pages/_lists.scss */
+/* line 151, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody.odd > tr > td {
   background-color: #f3f1eb;
 }
-/* line 127, ../scss/pages/_lists.scss */
+/* line 154, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody.even > tr > td {
   background-color: white;
 }
-/* line 130, ../scss/pages/_lists.scss */
+/* line 157, ../scss/pages/_lists.scss */
 .custom-lists__table > tbody:last-child > tr > td {
   border-bottom: 1px solid #c3bc9c;
 }
@@ -8454,6 +8540,21 @@ ul.horizontal-slide .item-holder {
 /* line 12, ../scss/pages/_orders.scss */
 .order-item .order-item-value {
   color: #a0947f;
+}
+
+/* line 1, ../scss/pages/_cart.scss */
+.ship-dates {
+  left: initial;
+  right: 0;
+}
+
+/* line 1, ../scss/pages/_admin.scss */
+.list-no-style {
+  padding: 0;
+}
+/* line 3, ../scss/pages/_admin.scss */
+.list-no-style > li {
+  list-style-type: none;
 }
 
 /*# sourceMappingURL=main.css.map */

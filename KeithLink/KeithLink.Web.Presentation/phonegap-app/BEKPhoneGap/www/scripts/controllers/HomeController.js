@@ -8,16 +8,23 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', 'OrderService', function($scope, OrderService) {
+  .controller('HomeController', [ '$scope', '$state', 'CartService', 'OrderService', 
+    function($scope, $state, CartService, OrderService) {
     
+    $scope.myInterval = -1;
+
     $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
-      $scope.mostRecentOrder = orders[0];
       $scope.loadingOrders = false;
     });
 
-    $scope.myInterval = -1;
+    $scope.createNewCart = function() {
+      return CartService.createCart().then(function(cart) {
+        $state.go('menu.cart.items', {cartId: cart.id, renameCart: true});
+      });
+    };
+
     var items = $scope.items = [{
       id: 1,
       imageUrl: 'images/demoimage1.jpg',
