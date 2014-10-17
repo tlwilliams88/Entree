@@ -320,7 +320,8 @@ namespace KeithLink.Svc.Impl.Logic
 					Label = l.Label,
 					ListItemId = l.Id.ToGuid(),
 					ParLevel = l.ParLevel == null ? 0M : (decimal)l.ParLevel,
-					Position = string.IsNullOrEmpty(l.LinePosition) ? 0 : int.Parse(l.LinePosition)
+					Position = string.IsNullOrEmpty(l.LinePosition) ? 0 : int.Parse(l.LinePosition),
+					Category = l.Category
 				}).ToList()
 			};
 

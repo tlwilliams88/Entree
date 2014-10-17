@@ -175,7 +175,6 @@ namespace KeithLink.Svc.Impl.ETL
 							customerRow.CustomerNumber,
 							customerRow.CustomerBranch);
 
-                    
 					this.DeleteContractLists(
 						(KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
 						catalogInfo);
@@ -199,7 +198,6 @@ namespace KeithLink.Svc.Impl.ETL
                                 this.CreateUserList(customerRow.ContractId, true, true, contractItems)
                                 );
                     }
-					
 				}
 			}			
         }

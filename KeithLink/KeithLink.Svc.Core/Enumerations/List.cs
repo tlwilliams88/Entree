@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Enumerations.List
 		Notes,
 		Favorite,
 		Custom,
-		Cart
+		Cart,
+		RecentlyViewed
 	}
 }
