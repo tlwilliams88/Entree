@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Core.Extensions {
     public static class OrderHeaderExtension {
         public static string GetOrderSource(OrderSource value) {
             switch (value) {
-                case OrderSource.KeithCom:
+                case OrderSource.Entree:
                     return "B";
                 default:
                     throw new ArgumentException("Unkown OrderingSystem", "OrderingSystem");

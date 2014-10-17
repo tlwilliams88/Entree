@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Test.Logic
             order.Header.DeliveryDate = DateTime.Now.AddDays(1);
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;
-            order.Header.OrderingSystem = OrderSource.KeithCom;
+            order.Header.OrderingSystem = OrderSource.Entree;
             order.Header.OrderSendDateTime = DateTime.Now;
             order.Header.PONumber = string.Empty;
             order.Header.Specialinstructions = string.Empty;

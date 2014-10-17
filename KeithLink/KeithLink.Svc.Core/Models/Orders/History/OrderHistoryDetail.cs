@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public string ItemStatus { get; set; }
 
         [DataMember()]
-        public bool FutuerItem { get; set; }
+        public bool FutureItem { get; set; }
 
         [DataMember()]
         public double TotalShippedWeight { get; set; }

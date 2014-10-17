@@ -299,7 +299,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				Header = new OrderHeader()
 				{
-					OrderingSystem = OrderSource.KeithCom,
+					OrderingSystem = OrderSource.Entree,
 					Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
 					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
