@@ -320,7 +320,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
-            List<Customer> userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id));
+            List<Customer> userCustomers;
+            if (IsInternalAddress(csProfile.Email))
+            {
+                // until we add the DSR/DSM info and logic, return all customers to internal users.  certain things will be missing (contract lists) if there is no account yet...
+                userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+            }
+            else
+            {
+                 userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList();
+            }
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),

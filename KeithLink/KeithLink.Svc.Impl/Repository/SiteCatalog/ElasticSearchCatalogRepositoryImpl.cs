@@ -196,7 +196,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         facetValue.Add(new KeyValuePair<string, object>("name", oFacetValue["key"].ToString()));
                         facetValue.Add(new KeyValuePair<string, object>("count", oFacetValue["doc_count"]));
                         if (oFacet.Key == "categories") {
-                            facetValue.Add(new KeyValuePair<string, object>("categoryname", oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
+                            facetValue.Add(new KeyValuePair<string, object>("categoryname",  oFacetValue["category_meta"]["buckets"][0]["key"].ToString()));
                         } else if (oFacet.Key == "brands") {
                             if (oFacetValue["brand_meta"]["buckets"].Count > 0) {
                                 facetValue.Add(new KeyValuePair<string, object>("brand_control_label", oFacetValue["brand_meta"]["buckets"][0]["key"].ToString()));
