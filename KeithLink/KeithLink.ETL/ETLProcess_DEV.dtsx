@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="163"
-  DTS:VersionGUID="{2128B2FF-768F-4EE7-BC6D-ED0761CC7825}">
+  DTS:VersionBuild="166"
+  DTS:VersionGUID="{B0A3BF57-BDDF-44DC-A9F3-E63050BA2674}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -892,11 +892,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD0Pid5Y5r2xWNML7uR9SLRAAAAAASAAACgAAAAEAAAAMO7MdJb/qC4kpdAkgoMkzEIAAAAZP16vVKrE+IUAAAAB61tOH9ZrFEBV8pG8wZ3+KgmuKI</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAeZLT86ODWD1dMseZouQJHAAAAAASAAACgAAAAEAAAANOao54Y4lDMJc8Kzx5CsaQIAAAA64SlWhZzu/wUAAAAY4e/G8TLf5gDD1XmmdcH2rFAAAY</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAFBuXzg0jgfrqic5pZ13SjAAAAAASAAACgAAAAEAAAACNZCv63qg4rJzU/5UmdCM8IAAAAPn6/XOTF8tMUAAAAuI2B3sLkBvA6MoO7Qz3Td8KadmY</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACkuEH0Z/+67rDk60P1cSpuAAAAAASAAACgAAAAEAAAAHrIbA2IHLwKa2LYvP1YnQ4IAAAA1U5MrZAAP5oUAAAA14UPlacVo5sp0Rn/82OTNyP6vTc</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -14818,18 +14818,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           WSTask:OutputType="Variable"
           WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
           <WSTask:MethodInfo
-            WSTask:MethodName="UpdateElasticSearch"
+            WSTask:MethodName="ImportCatalogLists"
             WSTask:MessageName="">
             <WSTask:Documentation></WSTask:Documentation>
             <WSTask:ParamInfo
-              WSTask:Name="UpdateElasticSearchResult"
+              WSTask:Name="ImportCatalogListsResult"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="0">
               <WSTask:VariableValue></WSTask:VariableValue>
             </WSTask:ParamInfo>
             <WSTask:ParamInfo
-              WSTask:Name="UpdateElasticSearchResultSpecified"
+              WSTask:Name="ImportCatalogListsResultSpecified"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="1">
