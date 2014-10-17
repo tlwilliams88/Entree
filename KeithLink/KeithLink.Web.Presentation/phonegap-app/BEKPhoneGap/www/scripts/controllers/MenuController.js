@@ -9,18 +9,22 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
-    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
+  .controller('MenuController', ['$scope', '$state', '$stateParams', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
+    function ($scope, $state, $stateParams, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
 
     $scope.$state = $state;
-
-    $scope.userProfile = LocalStorage.getProfile();
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
-    $scope.currentLocation = LocalStorage.getCurrentLocation();
 
+    $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
     refreshAccessPermissions();
+
+    // if ($scope.isOrderEntryCustomer) {
+    //   $scope.currentLocation = LocalStorage.getCurrentLocation().customerNumber;
+    // } else {
+      $scope.currentLocation = LocalStorage.getCurrentLocation();
+    // }
     
     // for guest users
     $scope.changeBranch = function() {
@@ -29,9 +33,19 @@ angular.module('bekApp')
     };
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
-      LocalStorage.setBranchId($scope.currentLocation.customerBranch);
-      LocalStorage.setCustomerNumber($scope.currentLocation.customerNumber);
-      LocalStorage.setCurrentLocation($scope.currentLocation);
+      angular.forEach($scope.userProfile.user_customers, function(customer) {
+        if (customer.customerNumber === $scope.currentLocation) {
+          LocalStorage.setBranchId(customer.customerBranch);
+          LocalStorage.setCustomerNumber(customer.customerNumber);
+          LocalStorage.setCurrentLocation(customer.customerNumber);
+        }
+      }); 
+      
+      $state.transitionTo($state.current, $state.params, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
     };
 
     $scope.logout = function() {

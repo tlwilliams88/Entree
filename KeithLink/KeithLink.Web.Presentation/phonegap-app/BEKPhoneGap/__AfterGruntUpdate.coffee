@@ -32,7 +32,7 @@ Below resources:
 
 configenv.js
 
-change apiEndpoint to: apiEndpoint:'http://devapi.bekco.com'
+change apiEndpoint to: apiEndpoint:'https://shopqa.benekeith.com/api'
 
 ------------------------------------------------------------
 
@@ -41,13 +41,3 @@ compass compile www/scss/main.scss
 
 ------------------------------------------------------------
 
-IF HTTPS.... DO THIS FOR NOW
-
-then change this in build/platforms/ios/BEKPhoneGapApp/Classes/AppDelegate.m after doing a grunt phonegap:build:ios
-
-@implementation NSURLRequest(DataController)
-+ (BOOL)allowsAnyHTTPSCertificateForHost:(NSString *)host
-{
-    return YES; 
-}
-@end

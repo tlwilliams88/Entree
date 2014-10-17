@@ -47,7 +47,7 @@
   <!-- Order Summary -->
   <div class="col-md-8 col-md-pull-4">
     <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
-      <div class="col-md-2">
+      <div class="col-md-3">
         Orders
       </div>
       <div class="col-md-2 nowrap">
@@ -56,7 +56,7 @@
       <div class="col-md-2 nowrap">
         Total Cost
       </div>
-      <div class="col-md-4">
+      <div class="col-md-3">
         Status
       </div>
       <div class="col-md-2">
@@ -146,9 +146,6 @@
     <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
     <div class="hidden-xs hidden-sm" ng-hide="orders || orders.length > 0 || loadingOrders">
       No Recent Orders
-    </div>
-    <div class="hidden-md hidden-lg" ng-hide="mostRecentOrder || loadingOrders">
-      No Current Order
     </div>
 
         <!-- <div class="row visible-xs visible-sm">
@@ -268,7 +265,23 @@
           </div>
         </div>
       </div>
-      <div class="col-xs-12 visible-xs visible-sm" featured-item-carousel items="items" link="'menu.catalog.products.details({ itemId : item.id })'" info="currentItem"></div>
+
+      <div class="col-xs-12">
+        <div class="featured-item-mobile visible-xs visible-sm">
+          <carousel interval="myInterval" disable-ng-animate="true">
+            <slide ng-repeat="item in items track by $index" active="item.active">
+              <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
+                <img ng-src="{{item.imageUrl}}">
+              </div>
+              <div class="col-xs-8 no-padding featured-item-mobile__detail">
+                {{item.name}}<br />
+                <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">View Details</a>
+              </div>
+            </slide>
+          </carousel>
+        </div>
+      </div> 
+
     </div>
   </div> <!-- end Featured Items -->
   <!-- Recent Activity -->
