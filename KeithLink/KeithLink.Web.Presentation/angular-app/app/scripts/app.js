@@ -215,7 +215,7 @@ angular
       }
     })
     .state('menu.orderitems', {
-      url: '/orders/:orderNumber/',
+      url: '/order/:orderNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {

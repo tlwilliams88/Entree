@@ -41,8 +41,10 @@
         <div class="order-item-value">{{order.invoicestatus}}</div>
       </div>
       <hr>
-      <button class="btn btn-lg btn-primary">Change Order</button>
-      <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
+      <form name="changeOrderForm">
+        <button name="changeOrderButton" class="btn btn-lg btn-primary" ng-model="cutoffdate" order-cutoff-date ng-disabled="changeOrderForm.$invalid">Change Order</button>
+        <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
+      </form>
     </div>
   </div>
 </div>

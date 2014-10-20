@@ -18,19 +18,6 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
 
-    // find ship date object given just the ship date
-    function getCutoffDate(cart) {
-      if (cart && cart.requestedshipdate) {
-        angular.forEach(CartService.shipDates, function(shipDate) {
-          var requestedShipDateString = new Date(cart.requestedshipdate).toDateString(),
-            shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
-          if (requestedShipDateString === shipDateString) {
-            $scope.selectedShipDate = shipDate;
-          }
-        });        
-      }
-    }
-
     $scope.goToCart = function(cart) {
       if (cart) {
         $state.go('menu.cart.items', {cartId: cart.id, renameCart: null});
@@ -155,7 +142,7 @@ angular.module('bekApp')
         $scope.startEditCartName($scope.currentCart.name);
       }
 
-      getCutoffDate($scope.currentCart);
+      $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     }
     
     setCurrentCart();

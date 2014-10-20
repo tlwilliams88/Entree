@@ -6,19 +6,12 @@ angular.module('bekApp')
 
   $scope.order = order;
 
-  CartService.getShipDates();
-
-  // $scope.isOrderChangeable = function() {
-  //   if (order && order.requestedshipdate) {
-  //     angular.forEach(CartService.shipDates, function(shipDate) {
-  //       var requestedShipDateString = new Date(order.requestedshipdate).toDateString(),
-  //         shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
-  //       if (requestedShipDateString === shipDateString) {
-  //         $scope.selectedShipDate = shipDate;
-  //       }
-  //     })
-  //   }
-  // };
+  CartService.getShipDates().then(function() {
+    var shipDateObject = CartService.findCutoffDate(order);
+    if (shipDateObject) {
+      $scope.cutoffdate = shipDateObject.cutoffdatetime;
+    }
+  });
 
   $scope.cancelOrder = function() {
     console.log('hit cancel order endpoint');

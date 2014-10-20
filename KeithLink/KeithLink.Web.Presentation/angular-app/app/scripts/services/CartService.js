@@ -185,6 +185,20 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
+      findCutoffDate: function(obj) {
+        var cutoffdate;
+        if (obj && obj.requestedshipdate) {
+          angular.forEach(Service.shipDates, function(shipDate) {
+            var requestedShipDateString = new Date(obj.requestedshipdate).toDateString(),
+              shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
+            if (requestedShipDateString === shipDateString) {
+              cutoffdate = shipDate;
+            }
+          })
+        }
+        return cutoffdate;
+      },
+
       submitOrder: function(cartId) {
         return Cart.submit({
           cartId: cartId
