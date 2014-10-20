@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
                 using (IModel model = connection.CreateModel())
                 {
                     BasicGetResult result = model.BasicGet(GetSelectedQueue(), true);
-
+                    
                     if (result == null)
                     {
                         return null;

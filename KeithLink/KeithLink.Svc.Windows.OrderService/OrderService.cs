@@ -13,20 +13,27 @@ namespace KeithLink.Svc.Windows.OrderService {
     partial class OrderService : ServiceBase {
 
         #region attributes
+
         private EventLogRepositoryImpl _log;
         private static bool _processing;
         private static bool _successfulConnection;
+        private static bool _confirmationMoverProcessing;
+
         private static UInt16 _unsentCount;
+
         private Timer _queueTimer;
+        private Timer _confirmationMover;
         private Thread _confirmationThread;
 
         const int TIMER_DURATION_TICK = 2000;
         const int TIMER_DURATION_START = 1000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
+
         #endregion
 
         #region ctor
+
         public OrderService() {
             InitializeComponent();
 
@@ -34,10 +41,13 @@ namespace KeithLink.Svc.Windows.OrderService {
             _processing = false;
             _successfulConnection = false;
             _unsentCount = 0;
+            _confirmationMoverProcessing = false;
         }
+
         #endregion
 
         #region methods
+
         private void HandleCancelledException(CancelledTransactionException ex) {
             StringBuilder msg = new StringBuilder();
 
@@ -94,6 +104,13 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
+        private void InitializeConfirmationMoverThread() {
+            //AutoResetEvent auto = new AutoResetEvent( true );
+            //TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
+
+            //_confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
+        }
+
         private void InitializeConfirmationThread()
         {
             _confirmationThread = new Thread(ProcessConfirmations);
@@ -105,6 +122,10 @@ namespace KeithLink.Svc.Windows.OrderService {
             TimerCallback cb = new TimerCallback(ProcessQueueTick);
 
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
+        }
+
+        private void MoveConfirmationsToCommerceServiceTick() {
+            // TODO : Add logic for moving to Commerce Server
         }
 
         protected override void OnStart(string[] args) {
@@ -120,22 +141,19 @@ namespace KeithLink.Svc.Windows.OrderService {
             _log.WriteInformationLog("Service stopping");
         }
 
-        protected void ProcessConfirmations()
-        {
-            try
-            {
+        protected void ProcessConfirmations() {
+            try {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
-                                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+                                                                       new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                       new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
                 confirmationLogic.Listen();
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 StringBuilder logMessage = new StringBuilder();
                 logMessage.AppendLine("Processing failed receiving confirmation. ");
                 Exception currentException = e;
-                while (currentException != null)
-                {
+
+                while (currentException != null) {
                     logMessage.AppendLine("Message:");
                     logMessage.AppendLine(currentException.Message);
                     logMessage.AppendLine();
@@ -144,10 +162,10 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     currentException = currentException.InnerException;
                 }
+                
                 _log.WriteErrorLog(logMessage.ToString());
 
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage.ToString());
-                //TODO: Add exception email
             }
         }
 
@@ -194,6 +212,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _queueTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
             }
         }
+
         #endregion
     }
 }
