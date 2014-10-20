@@ -37,6 +37,10 @@ ng-class="{ odd : $odd, even: $even }"
   > tbody, > tfoot {
     border-bottom: 1px solid $color-border;
   }
+  > tbody > tr:first-child > td,
+  > tbody > tr:first-child > th {
+    border-top: none;
+  }
 }
 
 .table {
@@ -50,10 +54,6 @@ ng-class="{ odd : $odd, even: $even }"
       cursor: pointer;
       white-space: nowrap;
     }
-  }
-  > tbody > tr:first-child > td,
-  > tbody > tr:first-child > th {
-    border-top: none;
   }
 
   > tbody > tr.mobile-details-row > td {
@@ -73,6 +73,10 @@ ng-class="{ odd : $odd, even: $even }"
         padding: 12px 5px;
       }
     }
+  }
+
+  > tbody + tbody {
+    border-top: none;
   }
 }
 

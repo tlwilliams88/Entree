@@ -80,7 +80,7 @@
   display: block !important;
 }
 .ui-sortable-helper tr {
-  border: 1px solid $color-border !important;
+  // border: 1px solid $color-border !important;
   box-shadow: 0px 0px 10px $color-border;
   td {
     background-color: $color-white !important;
@@ -113,49 +113,63 @@
   }
 }
 
-.header-row {
-  background-color: $background;
-  border: 1px solid $color-border;
-  border-bottom: none;
-  font-weight: 600;
-  padding: 8px 5px;
-}
-.footer-row {
-  padding: 10px;
-  border: 1px solid $color-border;
-  background-color: $color-white;
-}
-
 .custom-lists__table {
-  width: 100%;
-  border-bottom: 1px solid $table-border-color;
+  > tbody > tr > td {
+    border-bottom: 1px solid $color-border;
 
-  > tbody {
-    > tr {
-      > td {
-        border-top: 1px solid $table-border-color;
-        padding: 8px 5px;
 
-        &:first-child {
-          border-left: 1px solid $color-border;
-        }
-        &:last-child {
-          border-right: 1px solid $color-border;
-        }
-      } 
-      &.mobile-details-row > td {
-        border-top: none;
-      }
+    &:first-child {
+      border-left: 1px solid $color-border;
     }
-     
-    &.odd > tr > td {
-      background-color: $background;
-    }
-    &.even > tr > td {
-      background-color: white;
-    }
-    &:last-child > tr > td {
-      border-bottom: 1px solid $table-border-color;
+    &:last-child {
+      border-right: 1px solid $color-border;
     }
   }
 }
+
+// .header-row {
+//   background-color: $background;
+//   border: 1px solid $color-border;
+//   border-bottom: none;
+//   font-weight: 600;
+//   padding: 8px 5px;
+// }
+// .footer-row {
+//   padding: 10px;
+//   border: 1px solid $color-border;
+//   background-color: $color-white;
+// }
+
+// .custom-lists__table {
+//   width: 100%;
+//   border-bottom: 1px solid $table-border-color;
+
+//   > tbody {
+//     > tr {
+//       > td {
+//         border-top: 1px solid $table-border-color;
+//         padding: 8px 5px;
+
+//         &:first-child {
+//           border-left: 1px solid $color-border;
+//         }
+//         &:last-child {
+//           border-right: 1px solid $color-border;
+//         }
+//       } 
+//       &.mobile-details-row > td {
+//         border-top: none;
+//       }
+//     }
+     
+//     &.odd > tr > td {
+//       background-color: $background;
+//     }
+//     &.even > tr > td {
+//       background-color: white;
+//     }
+//     &:last-child > tr > td {
+//       border-bottom: 1px solid $table-border-color;
+//     }
+//   }
+// }

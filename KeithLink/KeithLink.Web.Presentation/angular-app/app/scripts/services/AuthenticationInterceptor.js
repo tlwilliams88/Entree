@@ -46,10 +46,18 @@ angular.module('bekApp')
     },
 
      responseError: function (rejection) {
+      // log user out if token has expired or they don't have access to a url
+      // should we log the user out if they tried to hit an endpoint they don't have access? I think it should go to the homepage
       if (rejection.status === 401) {
         LocalStorage.clearAll();
         $location.path('/register');
       }
+
+      // force hard refresh if api key is outdated
+      // if (rejection.message === 'Invalid Api') {
+      //   window.location.href = "http://localhost:9000";
+      // }
+
       return $q.reject(rejection);
     }
 

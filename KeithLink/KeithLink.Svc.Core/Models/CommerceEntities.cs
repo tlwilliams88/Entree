@@ -14277,6 +14277,26 @@ public partial class LineItem : ICommerceEntity
 
 
 	/// <summary>
+    /// Gets or sets the Category property.
+    /// </summary>
+    /// <value>
+    /// The Category property from the property collection.
+    /// </value>
+	public virtual string Category
+	{
+		get
+		{
+			return this._commerceEntity.GetPropertyValue(PropertyName.Category) as string;
+		}
+
+		set
+		{
+			this._commerceEntity.SetPropertyValue(PropertyName.Category, value);
+		}
+	}
+
+
+	/// <summary>
     /// Gets or sets the ProductCategory property.
     /// </summary>
     /// <value>
@@ -14807,6 +14827,12 @@ public partial class LineItem : ICommerceEntity
         /// Constant for accessing CatchWeight property.
         /// </summary>
 		public const string CatchWeight = "CatchWeight";
+
+
+		/// <summary>
+        /// Constant for accessing Category property.
+        /// </summary>
+		public const string Category = "Category";
 
 
 		/// <summary>
