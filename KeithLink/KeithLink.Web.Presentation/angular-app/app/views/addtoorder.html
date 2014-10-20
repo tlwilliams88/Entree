@@ -212,7 +212,9 @@
           {{item.parlevel}}
         </td>
         <td ng-show="useParlevel" class="hidden-xs hidden-sm input-col">
-          <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+          <ng-form name="parlevelForm">
+            <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand" name="onhand" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+          </ng-form>
         </td>
         <td class="input-col nowrap">
           <ng-form class="hidden-print" name="quantityForm">
@@ -274,7 +276,9 @@
             <tr ng-show="useParlevel">
               <td>On Hand Amount</td>
               <td class="input-col">
-                <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand_mobile" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                <ng-form name="parlevelForm_mobile">
+                  <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand_mobile" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                </ng-form>
               </td>
             </tr>
             <tr ng-if="item.packageprice !== '0'">
