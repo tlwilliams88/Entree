@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$stateParams', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
-    function ($scope, $state, $stateParams, $modal, branches, AuthenticationService, AccessService, LocalStorage) {
+  .controller('MenuController', ['$scope', '$state', '$stateParams', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
+    function ($scope, $state, $stateParams, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -30,6 +30,12 @@ angular.module('bekApp')
     $scope.changeBranch = function() {
       LocalStorage.setBranchId($scope.currentLocation);
       LocalStorage.setCurrentLocation($scope.currentLocation);
+
+      $state.transitionTo($state.current, $state.params, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
     };
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
@@ -40,6 +46,8 @@ angular.module('bekApp')
           LocalStorage.setCurrentLocation(customer.customerNumber);
         }
       }); 
+
+      angular.copy([], CartService.shipDates);
       
       $state.transitionTo($state.current, $state.params, {
         reload: true,

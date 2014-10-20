@@ -18,6 +18,7 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
 
+    // find ship date object given just the ship date
     function getCutoffDate(cart) {
       if (cart && cart.requestedshipdate) {
         angular.forEach(CartService.shipDates, function(shipDate) {
