@@ -58,11 +58,13 @@ namespace KeithLink.Svc.Impl
 
         // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
+        private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
@@ -380,6 +382,10 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeHourlyUpdates {
+            get { return GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
+        }
+
         public static string RabbitMQExchangeOrdersCreated {
             get {
                 return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_CREATED, string.Empty);
@@ -408,6 +414,10 @@ namespace KeithLink.Svc.Impl
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
             }
+        }
+
+        public static string RabbitMQQueueHourlyUpdates {
+            get { return GetValue(KEY_RABBITMQ_QUEUE_HOURLYUPDATES, string.Empty); }
         }
 
         public static string RabbitMQQueueOrderCreated {
