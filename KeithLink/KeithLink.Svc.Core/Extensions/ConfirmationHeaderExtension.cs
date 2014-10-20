@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Core.Extensions
             value.ConfirmationDate = DateTime.ParseExact(StringHelpers.GetField(
                 Constants.CONFIRMATION_HEADER_DATE_INDEX, 
                 Constants.CONFIRMATION_HEADER_DATE_LENGTH, 
-                Line), "yyyyMMddhhmmss", CultureInfo.InvariantCulture);
+                Line), "yyyyMMddHHmmss", CultureInfo.InvariantCulture);
 
             value.Branch = StringHelpers.GetField(
                 Constants.CONFIRMATION_HEADER_DIVISION_INDEX, 
