@@ -35,10 +35,10 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         {
             ConnectionFactory connectionFactory = new ConnectionFactory()
             {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderConsumerUserName,
-                Password = Configuration.RabbitMQOrderConsumerUserPassword,
-                VirtualHost = Configuration.RabbitMQConfirmationVhost
+                HostName = Configuration.RabbitMQServer,
+                UserName = Configuration.RabbitMQUserNameConsumer,
+                Password = Configuration.RabbitMQUserPasswordConsumer,
+                VirtualHost = Configuration.RabbitMQVHostConfirmation
             };
 
             using (IConnection connection = connectionFactory.CreateConnection())
@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         /// <returns></returns>
         private string GetSelectedExchange()
         {
-            return Configuration.RabbitMQConfirmationExchange;
+            return Configuration.RabbitMQExchangeConfirmation;
         }
 
         /// <summary>
@@ -78,9 +78,9 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
             switch (_queuePath)
             {
                 case ConfirmationQueueLocation.Default:
-                    return Configuration.RabbitMQConfirmationQueue;
+                    return Configuration.RabbitMQQueueConfirmation;
                 default:
-                    return Configuration.RabbitMQConfirmationQueue;
+                    return Configuration.RabbitMQQueueConfirmation;
             }
         }
 
@@ -92,10 +92,10 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         {
             ConnectionFactory connectionFactory = new ConnectionFactory()
             {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderPublisherUserName,
-                Password = Configuration.RabbitMQOrderPublisherUserPassword,
-                VirtualHost = Configuration.RabbitMQConfirmationVhost
+                HostName = Configuration.RabbitMQServer,
+                UserName = Configuration.RabbitMQUserNamePublisher,
+                Password = Configuration.RabbitMQUserPasswordPublisher,
+                VirtualHost = Configuration.RabbitMQVHostConfirmation
             };
 
             using (IConnection connection = connectionFactory.CreateConnection())
