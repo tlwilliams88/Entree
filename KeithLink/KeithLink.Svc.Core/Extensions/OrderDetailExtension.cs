@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Orders;
+﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Models.Orders;
 using System;
 using System.Text;
 
