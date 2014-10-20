@@ -8,6 +8,8 @@ namespace KeithLink.Svc.Test.Logic.Order {
     public class OrderHistoryLogicImplTests {
         #region attributes
         private OrderHistoryLogicImpl _logic;
+
+        private const string TEST_FILE = "Assets\\hourlyupdate.txt";
         #endregion
 
         #region ctor
@@ -19,9 +21,9 @@ namespace KeithLink.Svc.Test.Logic.Order {
         #region methods
         [TestMethod]
         public void ParseOrderHistoryFile() {
-             OrderHistoryFileReturn parsedFile = _logic.ParseMainframeFile(@"c:\test\hourlyupdate.txt");
+            OrderHistoryFileReturn parsedFile = _logic.ParseMainframeFile(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
 
-             Assert.IsTrue(parsedFile.Files.Count > 0);
+            Assert.IsTrue(parsedFile.Files.Count > 0);
         }
         #endregion
     }

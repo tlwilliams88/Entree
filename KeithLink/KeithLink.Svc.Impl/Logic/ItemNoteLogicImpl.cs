@@ -11,6 +11,7 @@ using KeithLink.Common.Core.Extensions;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -45,13 +46,14 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			var basket = RetrieveSharedList(user, catalogInfo);
 
-			if (basket.Status != NotesName)
+			if (basket.ListType != (int)ListType.Notes)
 			{
 				var newBasket = new CS.Basket();
 				newBasket.BranchId = string.Empty;
 				newBasket.DisplayName = NotesName;
-				newBasket.Status = NotesName;
+				newBasket.ListType = (int)ListType.Notes;
 				newBasket.Name = ListName(catalogInfo);
+				newBasket.Shared = true;
 
 				basketRepository.CreateOrUpdateBasket(user.UserId, string.Empty, newBasket, new List<CS.LineItem>() { new CS.LineItem() { ProductId = note.ItemNumber, Notes = note.Note, CatalogName = catalogInfo.BranchId } });
 			}
@@ -79,7 +81,7 @@ namespace KeithLink.Svc.Impl.Logic
 			foreach (var sharedUser in sharedUsers)
 			{
 				var sharedBasket = basketRepository.ReadBasket(sharedUser.UserId, ListName(catalogInfo));
-				if (sharedBasket.Status == NotesName)
+				if (sharedBasket.ListType == (int)ListType.Notes)
 				{
 					basket = sharedBasket;
 					break;

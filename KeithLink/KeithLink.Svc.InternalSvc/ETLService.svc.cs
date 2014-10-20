@@ -35,8 +35,8 @@ namespace KeithLink.Svc.InternalSvc
         
         public bool UpdateElasticSearch()
         {
-            categoryLogic.ImportItemsToElasticSearch();
-			categoryLogic.ImportCategoriesToElasticSearch();
+            Task.Factory.StartNew(() => categoryLogic.ImportItemsToElasticSearch());
+			Task.Factory.StartNew(() => categoryLogic.ImportCategoriesToElasticSearch());
             return true;
         }
         

@@ -17,6 +17,7 @@ angular.module('bekApp')
     
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
+    $scope.carts = CartService.carts;
 
     function goToNewList(newList) {
       $scope.listForm.$setPristine();
@@ -356,6 +357,7 @@ angular.module('bekApp')
     $scope.sortList = function(sortBy, sortOrder) {
       var sortField = sortBy;
       $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+        // move items with position 0 to bottom of list
         if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
           return 1000;
         }
@@ -441,8 +443,5 @@ angular.module('bekApp')
       $scope.loadingResults = false;
     }
     initPage();
-
-    $scope.carts = CartService.carts;
-    CartService.getCartHeaders();
 
   }]);

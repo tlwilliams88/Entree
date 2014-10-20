@@ -81,7 +81,7 @@
               </tr>
               <tr class="odd">
                 <td>Servings / Case</td>
-                <td>{{item.gs1.servingsperpack}}</td>
+                <td>{{item.nutritional.servingsperpack}}</td>
               </tr>
               <tr class="event">
                 <td>Portion Cost</td>
@@ -89,12 +89,12 @@
               </tr>
               <tr class="odd">
                 <td>Portion Size</td>
-                <td>{{item.gs1.servingsize}} {{item.gs1.servingsizeuom}}</td>
+                <td>{{item.nutritional.servingsize}} {{item.nutritional.servingsizeuom}}</td>
               </tr>
               <!-- Always null
               <tr>
                 <td>Portion Size</td>
-                <td>{{item.gs1.servingsuggestion}}</td>
+                <td>{{item.nutritional.servingsuggestion}}</td>
               </tr> -->
               <tr class="event">
                 <td>Previous Orders</td>
@@ -126,11 +126,11 @@
               </tr>
               <tr class="odd">
                 <td>Storage Instructions</td>
-                <td>{{item.gs1.storagetemp}}</td>
+                <td>{{item.nutritional.storagetemp}}</td>
               </tr>
               <tr class="event">
                 <td>Gross Wt</td>
-                <td>{{item.gs1.grossweight}}</td>
+                <td>{{item.nutritional.grossweight}}</td>
               </tr>
               <tr class="odd">
                 <td>Case Cube</td>
@@ -149,30 +149,30 @@
             <tbody>
               <tr class="event">
                 <td><strong>Diet Types</strong></td>
-                <td ng-if="item.gs1.diet" class="text-capitalize">
-                  <span ng-repeat-start="diet in item.gs1.diet">{{diet.diettype}}</span>
+                <td ng-if="item.nutritional.diet" class="text-capitalize">
+                  <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
                   <span ng-repeat-end ng-if="!$last">, </span>
                 </td>
-                <td ng-if="!item.gs1.diet.length > 0">Not Tested</td>
+                <td ng-if="!item.nutritional.diet.length > 0">Not Tested</td>
               </tr>
               <tr class="odd">
                 <td><strong>Contains</strong></td>
-                <td ng-if="item.gs1.allergens.contains.length > 0">{{item.gs1.allergens.contains.join(', ')}}</td>
-                <td ng-if="!item.gs1.allergens.contains.length > 0">Not Tested</td>
+                <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
+                <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
               </tr>
               <tr class="event">
                 <td><strong>May Contain</strong></td>
-                <td ng-if="item.gs1.allergens.maycontain.length > 0">{{item.gs1.allergens.maycontain.join(', ')}}</td>
-                <td ng-if="!item.gs1.allergens.maycontain.length > 0">Not Tested</td>
+                <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
+                <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
               </tr>
               <tr class="odd">
                 <td><strong>Free From</strong></td>
-                <td ng-if="item.gs1.allergens.freefrom.length > 0">{{item.gs1.allergens.freefrom.join(', ')}}</td>
-                <td ng-if="!item.gs1.allergens.freefrom.length > 0">Not Tested</td>
+                <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
+                <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
               </tr>
               <tr class="event">
                 <td><strong>Ingredients</strong></td>
-                <td>{{item.gs1.ingredients}}</td>
+                <td>{{item.nutritional.ingredients}}</td>
               </tr>
             </tbody>
           </table>
@@ -195,14 +195,14 @@
                 <th>MS. Type ID</th>
                 <th>MS. Value</th>
               </tr>
-              <tr ng-repeat="nutrition in item.gs1.nutrition" ng-class="{ even : $odd, odd: $even }">
+              <tr ng-repeat="nutrition in item.nutritional.nutrition" ng-class="{ even : $odd, odd: $even }">
                 <td>{{nutrition.nutrienttype}}</td>
                 <td>{{nutrition.nutrienttypecode}}</td>
                 <td>{{nutrition.dailyvalue}}</td>
                 <td>{{nutrition.measurementtypeid}}</td>
                 <td>{{nutrition.measurementvalue}}</td>
               </tr>
-              <tr class="odd" ng-if="!item.gs1.nutrition || item.gs1.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
+              <tr class="odd" ng-if="!item.nutritional.nutrition || item.nutritional.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
             </tbody>
           </table>
       </tab>

@@ -59,6 +59,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
+			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
             return builder.Build();
         }
 

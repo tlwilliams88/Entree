@@ -82,7 +82,6 @@ angular.module('bekApp')
                     }).$promise.then(function(lists) {
                         angular.copy(lists, Service.lists);
                         Service.setFavoritesList();
-                        console.log(lists);
                         return lists;
                     });
                 },
@@ -92,7 +91,6 @@ angular.module('bekApp')
                         listId: listId,
                         branchId: getBranch()
                     }).$promise.then(function(list) {
-                        console.log(list);
                         return list;
                     });
                 },

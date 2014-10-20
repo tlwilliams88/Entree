@@ -31,6 +31,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "createddate")]
 		public DateTime CreatedDate { get; set; }
 
+        [DataMember(Name = "requestedshipdate")]
+        public DateTime RequestedShipDate { get; set; }
+
 		[DataMember(Name ="LineItems")]
 		public List<OrderLine> LineItems { get; set; }
 	}

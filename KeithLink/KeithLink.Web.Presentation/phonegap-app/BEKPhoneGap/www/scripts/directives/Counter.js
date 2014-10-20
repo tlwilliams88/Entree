@@ -10,7 +10,6 @@ angular.module('bekApp')
       },
       templateUrl: 'views/directives/counter.html',
       link: function( scope, element, attributes, ctrl ) {
-
         // set size
         element.addClass('counter-container');
         if (attributes.size === 'large') { // item details page
@@ -20,6 +19,10 @@ angular.module('bekApp')
         // Make sure the value attribute is not missing.
         if ( angular.isUndefined(scope.value) ) {
           // throw "Missing the value attribute on the counter directive.";
+        }
+        
+        if (attributes.allowdropdown === 'true') {
+          scope.allowDropdown = true;
         }
 
         if (!scope.value) {
@@ -41,6 +44,7 @@ angular.module('bekApp')
           ctrl.$setViewValue(val);
 
           disableButtons(val);
+          scope.counter.isopen = false;
         };
 
         scope.newValue = setValue;

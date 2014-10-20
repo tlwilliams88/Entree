@@ -75,7 +75,10 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
+    <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
+    <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
     <Compile Include="Logic\SiteCatalogLogicTests.cs" />
+    <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
     <Compile Include="MockRepository\BasketRepositoryMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -126,6 +129,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\confirmation_file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

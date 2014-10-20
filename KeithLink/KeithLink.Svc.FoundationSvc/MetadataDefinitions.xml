@@ -2111,6 +2111,8 @@ This file contains the Metadata Repository
 							<PropertyMapping property="CustomerId" csProperty="CustomerId"/>
               <PropertyMapping property="IsContractList" csProperty="IsContractList"/>
               <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
+							<PropertyMapping property="Shared" csProperty="Shared"/>
+							<PropertyMapping property="ListType" csProperty="ListType"/>
 							
             </PropertyMappings>
           </EntityMapping>
@@ -2194,6 +2196,12 @@ This file contains the Metadata Repository
           <Property name="ReadOnly" dataType="Boolean">
             <DisplayName value="ReadOnly"/>
           </Property>
+					<Property name="Shared" dataType="Boolean">
+						<DisplayName value="Shared"/>
+					</Property>
+					<Property name="ListType" dataType="Integer">
+						<DisplayName value="ListType"/>
+					</Property>
         </Properties>
 
         <Relationships>
@@ -2443,6 +2451,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Notes" csProperty="Notes"/>
               <PropertyMapping property="Each" csProperty="Each"/>
               <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
+							<PropertyMapping property="Category" csProperty="Category" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2505,7 +2514,9 @@ This file contains the Metadata Repository
           <Property name="CatchWeight" dataType="Boolean">
             <DisplayName value="CatchWeight" />
           </Property>
-
+					<Property name="Category" dataType="String">
+						<DisplayName value="Category"/>
+					</Property>
 
 				</Properties>
 

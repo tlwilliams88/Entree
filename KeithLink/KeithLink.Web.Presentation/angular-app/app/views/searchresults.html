@@ -227,7 +227,7 @@
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span context-menu class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+            <span ng-if="canOrderProduct(item)" context-menu class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
 
             <a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>

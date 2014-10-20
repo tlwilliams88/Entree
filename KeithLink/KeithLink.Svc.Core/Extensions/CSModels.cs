@@ -22,7 +22,8 @@ namespace KeithLink.Svc.Core.Extensions
                 LinePosition = listItem.Position.ToString(), 
                 Label = listItem.Label, 
                 ProductId = listItem.ItemNumber,
-                CatchWeight = listItem.CatchWeight
+                CatchWeight = listItem.CatchWeight,
+				Category = listItem.Category
             };
 		}
 

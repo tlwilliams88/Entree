@@ -154,70 +154,55 @@ namespace KeithLink.Svc.Impl.ETL
         public void ImportContractLists()
         {
             var users = stagingRepository.ReadCSUsers();
-            
-            Parallel.ForEach(users.AsEnumerable(), userRow =>
-            {
+			var processedCustomers = new List<string>();
+
+			foreach (DataRow userRow in users.Rows)
+			{
+				Guid userId = userRow.GetGuid("u_user_id");
+				KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfile.GetUserProfile(userId);
+				List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
                 
-                Guid userId = new Guid(userRow.GetString("u_user_id"));
-                KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfile.GetUserProfile(userId);
-                List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
+				foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
+				{
+					//These list are shared across all users in the same customer, 
+					//so if the list has already been created for the customer, there is nothing to do
+					if (processedCustomers.Contains(customerRow.CustomerNumber))
+						break;
+					processedCustomers.Add(customerRow.CustomerNumber);
 
-                //TODO:  this foreach block will be replaced by the parallel foreach block below
-                //       after UserProfileLogicImpl.FillUserProfile() starts using real data
-                foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
-                {
-                    KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = this.CreateCatalogInfo(
-                            customerRow.CustomerNumber,
-                            customerRow.CustomerBranch);
-
-                    this.DeleteContractLists(
-                        (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
-                        catalogInfo);
-
-                    List<ListItem> contractItems = stagingRepository
-                        .ReadContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId)
-                        .AsEnumerable()
-                        .Select(itemRow =>
-                            new ListItem
-                            {
-                                ItemNumber = itemRow.GetString("ItemNumber"),
-                                Position = itemRow.GetInt("BidLineNumber"),
-                                Label = itemRow.GetString("CategoryDescription")
-                            }).ToList();
-
-                    listLogic.CreateList(userId,
-                        this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
-                        this.CreateUserList(customerRow.ContractId, true, true, contractItems)
-                        );
-                }
-                
-                //TODO: After UserProfileLogicImpl.FillUserProfile() starts using real data, use this Parallel.foreach
-                /*Parallel.ForEach(customers.AsEnumerable(), customerRow =>
+                    if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
                     {
-                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = this.CreateCatalogInfo(
-                            customerRow.CustomerNumber,
-                            customerRow.CustomerBranch);
+                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = CreateCatalogInfo(
+                           customerRow.CustomerNumber,
+                           customerRow.CustomerBranch);
 
-                        this.DeleteContractLists(
+                        List<UserList> contractLists = GetContractLists(
                             (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
                             catalogInfo);
 
-                        List<ListItem> contractItems = stagingRepository
-                            .ReadContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId)
-                            .AsEnumerable()
-                            .Select(itemRow =>
-                                new ListItem
-                                {
-                                    ItemNumber = itemRow.GetString("ItemNumber")
-                                }).ToList();
+                        List<ListItem> contractItems = GetContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId);
 
-                        listLogic.CreateList(userId,
-                            this.CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
-                            this.CreateUserList(customerRow.ContractId, true, contractItems)
+                        if (contractLists.Count == 0)
+                        {
+                            //create
+                            listLogic.CreateList(userId,
+                            CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
+                            CreateUserList(customerRow.ContractId, true, true, contractItems)
                             );
-                    });
-                 */
-            });
+                        }
+                        else if (contractLists.Count == 1)
+                        {
+                            //update
+                            contractLists[0].Items = contractItems;
+                            listLogic.UpdateList((KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0], contractLists[0], catalogInfo);
+                        }
+                        else if (contractLists.Count > 1)
+                        {
+                            //too many, error
+                        }
+                    }
+				}
+			}			
         }
 
         public void ImportItemsToElasticSearch()
@@ -657,12 +642,11 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
-
-        private void DeleteContractLists(
+        private List<UserList> GetContractLists(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
         {
-
+            List<UserList> userLists = new List<UserList>();
             List<UserList> lists = listLogic.ReadAllLists(
                 userProfile,
                 catalogInfo,
@@ -672,10 +656,13 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 if (userList.IsContractList == true)
                 {
-                    listLogic.DeleteList(userProfile.UserId, userList.ListId);
+                    //listLogic.DeleteList(userProfile.UserId, userList.ListId);
+                    userLists.Add(userList);
                 }
             }
-             
+
+            return userLists;
+
         }
 
         private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
@@ -694,6 +681,25 @@ namespace KeithLink.Svc.Impl.ETL
             catInfo.CustomerId = customerNumber;
             catInfo.BranchId = divisionName;
             return catInfo;
+        }
+
+        private List<ListItem> GetContractItems(
+            string customerNumber,
+            string branchId,
+            string contractId
+            )
+        {
+            List<ListItem> contractItems = stagingRepository
+                            .ReadContractItems(customerNumber, branchId, contractId)
+                            .AsEnumerable()
+                            .Select(itemRow =>
+                                new ListItem
+                                {
+                                    ItemNumber = itemRow.GetString("ItemNumber"),
+                                    Position = itemRow.GetInt("BidLineNumber"),
+                                    Label = itemRow.GetString("CategoryDescription")
+                                }).ToList();
+            return contractItems;
         }
 
         #endregion
