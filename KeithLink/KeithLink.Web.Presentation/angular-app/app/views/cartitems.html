@@ -46,41 +46,27 @@
 
 <form unsaved-warning-form novalidate name="cartForm" class="form-horizontal style-validation-errors">
 <div class="row">
-  <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
+  <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
     <div class="info-box">
       
       <div class="row">
         <div class="col-xs-12">
+          
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+
         </div>
       </div>
 
       <div class="row">
-        <div class="col-sm-5 col-md-4 text-green currency-value">
+        <div class="col-sm-4 col-md-4 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
-        <div class="col-sm-7 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+        <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-confirm-click="You have reminder items you haven’t ordered. Would you like to order from your reminder list before submitting your order?" confirmed-click="goToReminderList(currentCart.id)" cancel-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
-
-      <!-- <div class="row">
-        <h3 class="col-xs-12">Upcoming Ship Dates</h3>
-        <div class="col-xs-6 col-sm-3 col-md-4">
-          Ship Date
-        </div>
-        <div class="col-xs-6 col-sm-9 col-md-8">
-          Submit By
-        </div>
-        <div class="text-light col-xs-6 col-sm-3 col-md-4" ng-repeat-start="shipDate in shipDates">
-          {{shipDate.dayofweek}} {{shipDate.shipdate}}
-        </div>
-        <div class="text-light col-xs-6 col-sm-9 col-md-8" ng-repeat-end>
-          {{shipDate.cutoffdatetime}}
-        </div>
-      </div> -->
 
       <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
@@ -88,17 +74,7 @@
           <p class="form-control-static">
             {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
             <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
-              
-              <!-- <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="shipDate in shipDates">
-                  <a ng-click="selectShipDate(shipDate)">
-                    {{shipDate.dayofweek}}
-                    <span class="pull-right">{{shipDate.shipdate}}</span>
-                    {{shipDate.cutoffdatetime}}
-                  </a>
-                </li>
-              </ul> -->
-
+      
               <table class="dropdown-menu">
                 <tr style="cursor:default">
                   <td></td>
@@ -137,11 +113,42 @@
 
     </div>
   </div>
+
+  <!-- <div ng-if="reminderList && reminderList.items.length > 0" class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs">
+    <h4 class="no-margin">Reminder Items</h4>
+    <div class="reminder-items__table">
+      <table class="table table-border table-striped-rows">
+        <thead>
+          <tr>
+            <th>Item #</th>
+            <th>Name</th>
+            <th>PAR</th>
+            <th># in Cart</th>
+          </tr>
+        </thead>
+        <tr ng-repeat="item in reminderList.items" ng-class="{ odd : $odd, even: $even }">
+          <td>
+            <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+          </td>
+          <td>
+            {{item.name}}
+          </td>
+          <td>
+            {{item.parlevel}}
+          </td>
+          <td>
+            {{calculateReminderItemsInCart(item)}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div> -->
 </div>
 
 <div class="row sub-content">
   <div class="col-md-12">
     <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <h4 class="visible-xs-inline-block">Cart Items</h4>
     <table class="table table-striped-rows table-border" navigate-table>
       <thead>
         <tr>

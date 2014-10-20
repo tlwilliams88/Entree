@@ -13,7 +13,8 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     link: function (scope, element, attr) {
-      var clickAction = attr.confirmedClick;
+      var clickAction = attr.confirmedClick,
+        cancelAction = attr.cancelClick;
       element.bind('click',function (event) {
 
         var msg;
@@ -28,7 +29,13 @@ angular.module('bekApp')
         }
 
         if ( window.confirm(msg) ) {
+          // ok
           scope.$eval(clickAction);
+        } else {
+          // cancel
+          if (cancelAction) {
+            scope.$eval(cancelAction);
+          }
         }
       });
     }
