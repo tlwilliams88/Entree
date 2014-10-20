@@ -57,6 +57,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				CreatedDate = purchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
+                RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
 				LineItems = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList()
 			};
 		}
