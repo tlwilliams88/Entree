@@ -2105,6 +2105,7 @@ This file contains the Metadata Repository
 							
 							<!-- Custom Properties -->
 							<PropertyMapping property="BranchId" csProperty="BranchId"/>
+              <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
 							<PropertyMapping property="DisplayName" csProperty="DisplayName"/>
 							<PropertyMapping property="RequestedShipDate" csProperty="RequestedShipDate"/>
 							<PropertyMapping property="Active" csProperty="Active"/>
@@ -2176,6 +2177,9 @@ This file contains the Metadata Repository
 					<!-- Custom Properties -->
 					<Property name="BranchId" dataType="String" >
 						<DisplayName value="BranchId"/>
+					</Property>
+					<Property name="MasterNumber" dataType="String" >
+						<DisplayName value="MasterNumber"/>
 					</Property>
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
@@ -2452,6 +2456,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="Each" csProperty="Each"/>
               <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
 							<PropertyMapping property="Category" csProperty="Category" />
+              <PropertyMapping property="SubstitueItemNumber" csProperty="SubstitueItemNumber" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2514,8 +2519,11 @@ This file contains the Metadata Repository
           <Property name="CatchWeight" dataType="Boolean">
             <DisplayName value="CatchWeight" />
           </Property>
-					<Property name="Category" dataType="String">
-						<DisplayName value="Category"/>
+          <Property name="Category" dataType="String">
+            <DisplayName value="Category"/>
+          </Property>
+          <Property name="SubstitueItemNumber" dataType="String">
+              <DisplayName value="SubstitueItemNumber"/>
 					</Property>
 
 				</Properties>

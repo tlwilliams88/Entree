@@ -175,6 +175,7 @@ Tag definitions
         <Column Name="Status" DataType="nvarchar" Precision="64" IsNullable="true" />
         <Column Name="SoldToName" DataType="nvarchar" Precision="64" IsNullable="true" />
         <Column Name="MarshalledData" DataType="image" IsNullable="true" />
+        <Column Name="MasterNumber" DataType="nvarchar" Precision="32" IsNullable="true" />
       </Columns>
       <Constraints>
         <PrimaryKey Name="PK_PurchaseOrders">
