@@ -133,6 +133,8 @@
     <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderHistoryLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderHistoryRepository.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
@@ -167,6 +169,11 @@
     <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
     <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryFile.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryFileReturn.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryHeader.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryHeaderReturn.cs" />
     <Compile Include="Models\Orders\NewOrderReturn.cs" />
     <Compile Include="Models\Orders\Order.cs" />
     <Compile Include="Models\Orders\OrderDetail.cs" />

@@ -191,6 +191,61 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return false;
             }
         }
+
+
+        /// <summary>
+        /// test to see if the user has access to the specified group
+        /// </summary>
+        /// <param name="userName">the user we are testing</param>
+        /// <param name="groupName">the group</param>
+        /// <returns>true if the user has access to the group</returns>
+        /// <remarks>
+        /// gsalazar - 10.19/2014 - original code
+        /// gsalazar - 10/19/2014 - add argument validation
+        /// </remarks>
+        public string FirstUserGroup(string userName, List<string> groupNames)
+        {
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (groupNames == null) { throw new ArgumentNullException("groupName", "groupName is required"); }
+            if (groupNames.Count == 0 || String.IsNullOrEmpty(groupNames[0])) { throw new ArgumentException("groupName is required", "groupName"); }
+
+            try
+            {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryInternalServerName,
+                                                                         Configuration.ActiveDirectoryInternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryInternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryInternalPassword))
+                {
+                    string domainUserName = string.Format(Configuration.ActiveDirectoryInternalDomain, userName);
+
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, domainUserName);
+
+                    if (user == null)
+                        return string.Empty;
+                    else
+                        try
+                        {
+                            foreach (string groupName in groupNames)
+                            {
+                                if (user.IsMemberOf(principal, IdentityType.SamAccountName, groupName))
+                                    return groupName;
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.WriteErrorLog("Error lookup up user's group", ex);
+                        }
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
+            }
+            return string.Empty;
+        }
         #endregion
     }
 }

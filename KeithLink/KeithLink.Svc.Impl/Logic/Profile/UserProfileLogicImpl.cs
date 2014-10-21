@@ -3,6 +3,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
@@ -323,8 +324,27 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             List<Customer> userCustomers;
             if (IsInternalAddress(csProfile.Email))
             {
-                // until we add the DSR/DSM info and logic, return all customers to internal users.  certain things will be missing (contract lists) if there is no account yet...
-                userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                UserPrincipal user = _intAd.GetUser(csProfile.Email);
+                string dsrRole = GetUserDsrRole(user);
+                if (!String.IsNullOrEmpty(dsrRole))
+                {
+                    // lookup customers by their assigned dsr number
+                    userCustomers = _customerRepo.GetCustomers().Where(x => x.DsrNumber == user.Description).OrderBy(x => x.CustomerName).ToList();
+                }
+                else
+                {
+                    string dsmRole = GetUserDsmRole(user);
+                    if (!String.IsNullOrEmpty(dsmRole))
+                    {
+                        // lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
+                        userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList(); // TODO: reduce list to only the DSM's DSRs
+                    }
+                    else
+                    {
+                        // until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
+                        userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                    }
+                }
             }
             else
             {
@@ -346,6 +366,20 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
             };
+        }
+
+        private string GetUserDsmRole(UserPrincipal user)
+        {
+            string dsmRole = _intAd.FirstUserGroup(user.UserPrincipalName, new List<string>() { Constants.ROLE_INTERNAL_DSM_FAM, Constants.ROLE_INTERNAL_DSM_FAQ, Constants.ROLE_INTERNAL_DSM_FDF,
+                    Constants.ROLE_INTERNAL_DSM_FHS, Constants.ROLE_INTERNAL_DSM_FLR, Constants.ROLE_INTERNAL_DSM_FOK, Constants.ROLE_INTERNAL_DSM_FSA });
+            return dsmRole;
+        }
+
+        private string GetUserDsrRole(UserPrincipal user)
+        {
+            string dsrRole = _intAd.FirstUserGroup(user.UserPrincipalName, new List<string>() { Constants.ROLE_INTERNAL_DSR_FAM, Constants.ROLE_INTERNAL_DSR_FAQ, Constants.ROLE_INTERNAL_DSR_FDF,
+                    Constants.ROLE_INTERNAL_DSR_FHS, Constants.ROLE_INTERNAL_DSR_FLR, Constants.ROLE_INTERNAL_DSR_FOK, Constants.ROLE_INTERNAL_DSR_FSA });
+            return dsrRole;
         }
 
         /// <summary>

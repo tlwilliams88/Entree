@@ -149,6 +149,7 @@
     <Compile Include="Logic\Confirmations\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />

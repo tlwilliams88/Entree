@@ -108,6 +108,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="OrderService.svc" />
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
     <Content Include="PipelineService.svc" />
@@ -117,6 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
+    <Compile Include="Interfaces\IOrderService.cs" />
+    <Compile Include="OrderService.svc.cs">
+      <DependentUpon>OrderService.svc</DependentUpon>
+    </Compile>
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ErrorHandlerBehavior.cs" />
     <Compile Include="ErrorServiceBehavior.cs" />

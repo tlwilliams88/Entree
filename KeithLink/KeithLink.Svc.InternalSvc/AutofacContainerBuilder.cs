@@ -33,7 +33,8 @@ namespace KeithLink.Svc.InternalSvc
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ETLService>();
-			builder.RegisterType<PipelineService>();
+            builder.RegisterType<PipelineService>(); 
+            builder.RegisterType<OrderService>();
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
