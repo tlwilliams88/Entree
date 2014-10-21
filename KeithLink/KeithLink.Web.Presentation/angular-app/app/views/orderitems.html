@@ -9,7 +9,7 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-md-7 col-lg-6">
+  <div class="col-sm-12 col-md-8 col-lg-7">
     <div class="info-box">
       <h3 class="no-margin">ORDER INFORMATION</h3>
       <div class="order-item">
@@ -21,6 +21,8 @@
       <div class="order-item">
         <div class="order-item-title">Order Date</div>
         <div class="order-item-value">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+        <div class="order-item-title">Requested Ship Date</div>
+        <div class="order-item-value">{{order.requestedshipdate | date:'MM/dd/yyyy h:mma'}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Delivery Date</div>
@@ -40,8 +42,15 @@
         <div class="order-item-title">Invoice Status</div>
         <div class="order-item-value">{{order.invoicestatus}}</div>
       </div>
-      <hr>
-      <a href="">VIEW ORDER CHANGES</a>
+      <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
+        <input type="text" order-cutoff-date ng-model="cutoffdate">
+      </form>
+      <div ng-if="changeOrderForm.$valid">
+        <hr>
+        <p class="text-green">You can make changes to this order until {{cutoffdate}}.</p>
+        <button class="btn btn-lg btn-primary">Change Order</button>
+        <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
+      </div>
     </div>
   </div>
 </div>

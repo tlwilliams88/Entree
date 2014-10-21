@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
 using System.DirectoryServices.AccountManagement;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile
 {
@@ -11,5 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
         UserPrincipal GetUser(string userName);
 
         bool IsInGroup(string userName, string groupName);
+
+        string FirstUserGroup(string userName, List<string> groupNames);
     }
 }

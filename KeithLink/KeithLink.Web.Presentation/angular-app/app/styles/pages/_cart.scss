@@ -2,3 +2,9 @@
   left: initial;
   right: 0;
 }
+
+.reminder-items__table {
+  max-height: 150px;
+  overflow-y: auto;
+  margin-top: 10px;
+}

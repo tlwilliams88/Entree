@@ -161,8 +161,8 @@ angular
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
         }],
-        shipDates: ['CartService', function (CartService){
-          return CartService.getShipDates();
+        reminderList: ['ListService', function(ListService) {
+          return ListService.getList('9dddd911-d5b8-4635-acf1-480c39f7fdf3');
         }]
       }
     })
@@ -187,9 +187,6 @@ angular
         }],
         carts: ['CartService', function(CartService) {
           return CartService.getAllCarts();
-        }],
-        shipDates: ['CartService', function(CartService) {
-          return CartService.getShipDates();
         }]
       }
     })
@@ -215,7 +212,7 @@ angular
       }
     })
     .state('menu.orderitems', {
-      url: '/orders/:orderNumber/',
+      url: '/order/:orderNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
