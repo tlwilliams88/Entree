@@ -24,7 +24,10 @@ namespace KeithLink.Svc.Core.Enumerations.Order
 
 	public enum OrderSource
 	{
-		KeithCom
+		Entree,
+        DSR,
+        CustomerService,
+        Other
 	}
 
 	public enum OrderType
