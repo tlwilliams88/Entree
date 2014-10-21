@@ -162,7 +162,7 @@ angular
           return CartService.getAllCarts();
         }],
         reminderList: ['ListService', function(ListService) {
-          return ListService.getList('84f8a733-fdaf-42b7-9fc1-570aab4e3040');
+          return ListService.getReminderList();
         }]
       }
     })

@@ -63,7 +63,7 @@
   </div>
 
   <!-- Items in List -->
-  <div class="items col-md-10 col-xs-12">
+  <div class="padding-top-sm padding-top-xs items col-md-10 col-xs-12">
     
     <div class="hidden-print">
       <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
@@ -135,16 +135,64 @@
     </div>
 
    <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" autocomplete="off">
-      <table class="custom-lists__table table table-striped-rows" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items" infinite-scroll="infiniteScrollLoadMore()">
-        <tbody 
-          ng-repeat="item in (filteredItems = (selectedList.items | filter:search | limitTo:itemsToDisplay)) track by item.listitemid" 
-          ng-class="{ 'item-selected': item.isSelected }" 
-          data-product="{{item}}" 
-          data-drag="isDragEnabled()" 
-          data-jqyoui-options="{helper:generateDragHelper, cursorAt: { top: -5, left: -5 }, cancel: '.bek-no-drag', handle: '.bek-drag-handle'}" 
-          jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
+      <table class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+        <thead>
+          <tr>
+            <th class="nowrap input-col">
+              <input type="checkbox" ng-model="allSelected" ng-change="changeAll()" no-dirty-check>
+              <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
+                #
+                <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
+              </span>
+            </th>
+            <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
+              Item
+              <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
+              Name
+              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="hidden-xs hidden-sm sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
+              Brand
+              <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="hidden-sm hidden-xs">
+              Pack/Size
+            </th>
+            <th class="hidden-xs hidden-sm">
+              # in Cart
+            </th>
+            <th class="hidden-sm hidden-xs sort-col-header" ng-if="selectedList.is_contract_list" ng-click="sortOrder=!sortOrder;sortList('category',sortOrder)">
+              Category
+              <span sort-icons field="'category'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
+              Label
+              <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="hidden-sm hidden-xs sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
+              Notes
+              <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="hidden-sm hidden-xs"></th>
+            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditPar" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
+              PAR
+              <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th></th>
+          </tr> 
+        </thead>
 
-          <tr ng-class="{ odd : $odd, even: $even }">
+        <div class="find-me">
+        <tbody ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items">
+          <tr 
+            ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }" 
+            ng-repeat="item in (filteredItems = (selectedList.items | filter:search | limitTo:itemsToDisplay)) track by item.listitemid" 
+            data-product="{{item}}" 
+            data-drag="isDragEnabled()" 
+            data-jqyoui-options="{helper:generateDragHelper, cursorAt: { top: -5, left: -5 }, cancel: '.bek-no-drag', handle: '.bek-drag-handle'}" 
+            jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">
               <input type="checkbox" class="bek-no-drag" ng-model="item.isSelected" no-dirty-check>
               <span style="font-size:12px;">
@@ -204,7 +252,7 @@
               <a class="bek-no-drag"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
           </tr>
-          <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+          <!-- <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
             <td colspan="10">
               <table style="width:100%;">
                 <colgroup>
@@ -262,55 +310,10 @@
                 </tbody>
               </table>
             </td>
-          </tr>
+          </tr> -->
         </tbody>
-        <thead>
-          <tr>
-            <th class="nowrap input-col">
-              <input type="checkbox" ng-model="allSelected" ng-change="changeAll()" no-dirty-check>
-              <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
-                #
-                <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
-              </span>
-            </th>
-            <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
-              Item
-              <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
-              Name
-              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="hidden-xs hidden-sm sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
-              Brand
-              <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="hidden-sm hidden-xs">
-              Pack/Size
-            </th>
-            <th class="hidden-xs hidden-sm">
-              # in Cart
-            </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="selectedList.is_contract_list" ng-click="sortOrder=!sortOrder;sortList('category',sortOrder)">
-              Category
-              <span sort-icons field="'category'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
-              Label
-              <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
-              Notes
-              <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th class="hidden-sm hidden-xs"></th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditPar" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
-              PAR
-              <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th>
-            <th></th>
-          </tr> 
-        </thead>
+        </div>
+
         <tfoot ng-show="filteredItems.length === 0">
           <tr>
             <td colspan="13">

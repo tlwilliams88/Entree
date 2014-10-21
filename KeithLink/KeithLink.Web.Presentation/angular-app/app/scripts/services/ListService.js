@@ -349,10 +349,11 @@ angular.module('bekApp')
           });
         },
 
+        // used to 'unstar mulitple' on list page
+        // finds the listitemids of the matching items in the favorites list so they can be deleted
         removeMultipleItemsFromFavorites: function(items) {
           var favoritesList = Service.getFavoritesList();
 
-          // find listitemids of items in the Favorites List
           var itemsToRemove = [];
           angular.forEach(items, function(item, index) {
             var itemsFound = $filter('filter')(favoritesList.items, {itemnumber: item.itemnumber});
@@ -373,11 +374,12 @@ angular.module('bekApp')
         ********************/
 
         getReminderList: function() {
-
+          return ListService.getList('84f8a733-fdaf-42b7-9fc1-570aab4e3040');
         },
 
-        addItemToReminderList: function() {
-
+        addItemToListWithoutDuplicates: function(item) {
+          // Service.addMultipleItems('84f8a733-fdaf-42b7-9fc1-570aab4e3040')
+          console.log(item);
         }
 
 
