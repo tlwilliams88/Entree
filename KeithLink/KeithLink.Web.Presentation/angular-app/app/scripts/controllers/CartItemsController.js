@@ -18,16 +18,6 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
     $scope.reminderList = reminderList;
-
-    // $scope.calculateReminderItemsInCart = function(reminderItem) {
-    //   var qtyInCart = 0;
-
-    //   var items = $filter('filter')($scope.currentCart.items, {itemnumber: reminderItem.itemnumber});
-    //   if (items.length > 0) {
-    //     qtyInCart = items[0].quantity;
-    //   }
-    //   return qtyInCart;
-    // };
     
     $scope.goToCart = function(cart) {
       if (cart) {
@@ -35,10 +25,6 @@ angular.module('bekApp')
       } else {
         $state.go('menu.cart');
       }
-    };
-
-    $scope.goToReminderList = function(cartId) {
-      $state.go('menu.addtoorder.items', { listId: '9dddd911-d5b8-4635-acf1-480c39f7fdf3', cartId: cartId });
     };
 
     $scope.startEditCartName = function(cartName) {
