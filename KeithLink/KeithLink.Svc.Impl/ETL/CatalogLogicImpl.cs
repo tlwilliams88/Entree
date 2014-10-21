@@ -183,9 +183,7 @@ namespace KeithLink.Svc.Impl.ETL
 
                     if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
                     {
-                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo = CreateCatalogInfo(
-                           customerRow.CustomerNumber,
-                           customerRow.CustomerBranch);
+						var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customerRow.CustomerBranch, CustomerId = customerRow.CustomerNumber };
 
                         List<UserList> contractLists = GetContractLists(
                             (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
@@ -197,7 +195,7 @@ namespace KeithLink.Svc.Impl.ETL
                         {
                             //create
                             listLogic.CreateList(userId,
-                            CreateCatalogInfo(customerRow.CustomerNumber, customerRow.CustomerBranch),
+                            catalogInfo,
                             CreateUserList(customerRow.ContractId, true, true, contractItems)
                             );
                         }
@@ -702,15 +700,7 @@ namespace KeithLink.Svc.Impl.ETL
             return list;
         }
 
-        private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateCatalogInfo(string customerNumber, string divisionName)
-        {
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
-            catInfo.CustomerId = customerNumber;
-            catInfo.BranchId = divisionName;
-            return catInfo;
-        }
-
-        private List<ListItem> GetContractItems(
+       private List<ListItem> GetContractItems(
             string customerNumber,
             string branchId,
             string contractId
