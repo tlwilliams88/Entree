@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService',
-    function($scope, $state, $stateParams, $filter, Constants, CartService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'reminderList',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, reminderList) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,25 +17,28 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
+    $scope.reminderList = reminderList;
 
-    function getCutoffDate(cart) {
-      if (cart && cart.requestedshipdate) {
-        angular.forEach(CartService.shipDates, function(shipDate) {
-          var requestedShipDateString = new Date(cart.requestedshipdate).toDateString(),
-            shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
-          if (requestedShipDateString === shipDateString) {
-            $scope.selectedShipDate = shipDate;
-          }
-        });        
-      }
-    }
+    // $scope.calculateReminderItemsInCart = function(reminderItem) {
+    //   var qtyInCart = 0;
 
+    //   var items = $filter('filter')($scope.currentCart.items, {itemnumber: reminderItem.itemnumber});
+    //   if (items.length > 0) {
+    //     qtyInCart = items[0].quantity;
+    //   }
+    //   return qtyInCart;
+    // };
+    
     $scope.goToCart = function(cart) {
       if (cart) {
         $state.go('menu.cart.items', {cartId: cart.id, renameCart: null});
       } else {
         $state.go('menu.cart');
       }
+    };
+
+    $scope.goToReminderList = function(cartId) {
+      $state.go('menu.addtoorder.items', { listId: '9dddd911-d5b8-4635-acf1-480c39f7fdf3', cartId: cartId });
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -154,7 +157,7 @@ angular.module('bekApp')
         $scope.startEditCartName($scope.currentCart.name);
       }
 
-      getCutoffDate($scope.currentCart);
+      $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     }
     
     setCurrentCart();

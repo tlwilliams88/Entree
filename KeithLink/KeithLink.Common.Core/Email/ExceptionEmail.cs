@@ -16,14 +16,14 @@ namespace KeithLink.Common.Core.Email {
                 msg.Priority = MailPriority.High;
 
                 StringBuilder body = new StringBuilder();
-                body.Append("An exception has occurred in the KeithLink Order Service. Please contact the on-call person within the E0Business group and ");
-                body.AppendLine("open an incident.");
+                //body.AppendLine("An exception has occurred in the KeithLink Order Service.");
+                //body.AppendLine();
 
                 if (additionalMessage != null) { body.Append(additionalMessage); }
 
                 body.AppendLine(GetExceptionDetails(currentExcpetion));
 
-                if (Configuration.IsProduction) {
+                if (!Configuration.IsProduction) {
                     body.AppendLine();
                     body.AppendLine();
                     body.AppendLine("****************************************************************************************");
