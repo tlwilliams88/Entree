@@ -128,6 +128,9 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\OrderDetailExtension.cs" />
     <Compile Include="Extensions\OrderHeaderExtension.cs" />
+    <Compile Include="Extensions\OrderHistoryDetailExtension.cs" />
+    <Compile Include="Extensions\OrderHistoryHeaderExtension.cs" />
+    <Compile Include="Extensions\OrderSourceExtension.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
