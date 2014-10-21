@@ -1,5 +1,4 @@
-﻿
-using KeithLink.Svc.Core.Interface.Cart;
+﻿using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Profile;
@@ -20,20 +19,21 @@ using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
 
-
 namespace KeithLink.Svc.Impl.Logic
 {
-	public class ShoppingCartLogicImpl: IShoppingCartLogic
-	{
-		private readonly IBasketRepository basketRepository;
+	public class ShoppingCartLogicImpl: IShoppingCartLogic {
+        #region attributes
+        private readonly IBasketRepository basketRepository;
 		private readonly ICatalogRepository catalogRepository;
 		private readonly IPriceLogic priceLogic;
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IQueueRepository queueRepository;
 		private readonly IItemNoteLogic itemNoteLogic;
 		private readonly IBasketLogic basketLogic;
-				
-		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
+        #endregion
+
+        #region ctor
+        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
 			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IItemNoteLogic itemNoteLogic, IBasketLogic basketLogic)
 		{
 			this.basketRepository = basketRepository;
@@ -44,26 +44,9 @@ namespace KeithLink.Svc.Impl.Logic
 			this.itemNoteLogic = itemNoteLogic;
 			this.basketLogic = basketLogic;
 		}
+        #endregion
 
-		public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
-		{
-			var newBasket = new CS.Basket();
-			newBasket.BranchId = catalogInfo.BranchId.ToLower();
-			newBasket.DisplayName = cart.Name;
-			newBasket.ListType = (int)ListType.Cart;
-			newBasket.Name = CartName(cart.Name, catalogInfo);
-			newBasket.CustomerId = catalogInfo.CustomerId;
-			newBasket.Shared = true;
-
-			if(cart.Active)
-				MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
-
-			newBasket.Active = cart.Active;
-			newBasket.RequestedShipDate = cart.RequestedShipDate;
-
-			return basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
-		}
-
+        #region methods
 		public Guid? AddItem(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem newItem)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -83,16 +66,31 @@ namespace KeithLink.Svc.Impl.Logic
 			return basketRepository.AddItem(cartId, newItem.ToLineItem(basket.BranchId), basket);
 		}
 
-		public void UpdateItem(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem updatedItem)
+		private string CartName(string name, UserSelectedContext catalogInfo)
 		{
-			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
-			if (basket == null)
-				return;
-
-			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
+			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
+        
+        public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
+		{
+			var newBasket = new CS.Basket();
+			newBasket.BranchId = catalogInfo.BranchId.ToLower();
+			newBasket.DisplayName = cart.Name;
+			newBasket.ListType = (int)ListType.Cart;
+			newBasket.Name = CartName(cart.Name, catalogInfo);
+			newBasket.CustomerId = catalogInfo.CustomerId;
+			newBasket.Shared = true;
 
-		public void DeleteCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+			if(cart.Active)
+				MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
+
+			newBasket.Active = cart.Active;
+			newBasket.RequestedShipDate = cart.RequestedShipDate;
+
+			return basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
+		}
+		
+        public void DeleteCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -101,8 +99,18 @@ namespace KeithLink.Svc.Impl.Logic
 
 			basketRepository.DeleteBasket(basket.UserId.ToGuid(), cartId);
 		}
+        
+        public void DeleteCarts(UserProfile user, UserSelectedContext catalogInfo, List<Guid> cartIds)
+		{
+			foreach (var cartId in cartIds)
+			{
+				var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+				if (basket != null)
+					basketRepository.DeleteBasket(basket.UserId.ToGuid(), cartId);
+			}
+		}
 		
-		public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, Guid itemId)
+        public void DeleteItem(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, Guid itemId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -111,8 +119,58 @@ namespace KeithLink.Svc.Impl.Logic
 
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
 		}
+        
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
+		{
+			if (cart.Items == null)
+				return;
+
+			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
+			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
+
+			cart.Items.ForEach(delegate(ShoppingCartItem item)
+			{
+
+				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
+				if (prod != null)
+				{
+					item.Name = prod.Name;
+					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+					item.StorageTemp = prod.Nutritional.StorageTemp;
+					item.Brand = prod.Brand;
+					item.ReplacedItem = prod.ReplacedItem;
+					item.ReplacementItem = prod.ReplacementItem;
+					item.NonStock = prod.NonStock;
+					item.ChildNutrition = prod.ChildNutrition;
+					item.CatchWeight = prod.CatchWeight;
+				}
+				if (price != null)
+				{
+					item.PackagePrice = price.PackagePrice.ToString();
+					item.CasePrice = price.CasePrice.ToString();
+					
+				}
+				if (note.Any())
+					item.Notes = note.First().Note;
+			});
+
+		}
 		
-		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
+        private void MarkCurrentActiveCartAsInactive(UserProfile user, UserSelectedContext catalogInfo, string branchId)
+		{
+			var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
+
+			if (currentlyActiveCart != null)
+			{
+				currentlyActiveCart.Active = false;
+				basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
+			}
+		}
+		
+        public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
 			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart);
 
@@ -144,18 +202,76 @@ namespace KeithLink.Svc.Impl.Logic
 			LookupProductDetails(user, catalogInfo, cart);
 			return cart;
 		}
-
-		public void DeleteCarts(UserProfile user, UserSelectedContext catalogInfo, List<Guid> cartIds)
+        
+		public NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId)
 		{
-			foreach (var cartId in cartIds)
-			{
-				var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
-				if (basket != null)
-					basketRepository.DeleteBasket(basket.UserId.ToGuid(), cartId);
-			}
-		}
+			//Check that RequestedShipDate
+			var basket = basketRepository.ReadBasket(user.UserId, cartId);
 
-		public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
+			if (basket.RequestedShipDate == null)
+				throw new ApplicationException("Requested Ship Date is required before submitting an order");
+
+			//Save to Commerce Server
+			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+			var orderNumber = client.SaveCartAsOrder(user.UserId, cartId);
+
+			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(user.UserId, orderNumber);
+
+			var newOrderFile = new OrderFile()
+			{
+				Header = new OrderHeader()
+				{
+					OrderingSystem = OrderSource.Entree,
+					Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
+					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
+					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+					PONumber = string.Empty,
+                    Specialinstructions = string.Empty,
+					ControlNumber = int.Parse(orderNumber),
+					OrderType = OrderType.NormalOrder,
+                    InvoiceNumber = string.Empty,
+					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+					OrderSendDateTime = DateTime.Now,
+					UserId = user.EmailAddress.ToUpper(),
+					OrderFilled = false,
+                    FutureOrder = false
+				},
+				Details = new List<OrderDetail>()
+			};
+
+			foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+			{
+				var item = (CS.LineItem)lineItem.Target;
+
+				newOrderFile.Details.Add(new OrderDetail()
+				{
+					ItemNumber = item.ProductId,
+					OrderedQuantity = (short)item.Quantity,
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
+					SellPrice = (double)item.PlacedPrice,
+                    Catchweight = (bool)item.CatchWeight,
+                    //Catchweight = false,
+					LineNumber = (short)(newOrderFile.Details.Count + 1),
+					ItemChange = LineType.Add,
+                    SubOriginalItemNumber = string.Empty,
+                    ReplacedOriginalItemNumber = string.Empty,
+                    ItemStatus = string.Empty
+				});
+							
+			}	
+
+			
+			System.IO.StringWriter sw = new System.IO.StringWriter();
+			System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
+
+			xs.Serialize(sw, newOrderFile);
+			
+			queueRepository.PublishToQueue(sw.ToString());
+
+			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
+		}
+		
+        public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -173,7 +289,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				Header = new OrderHeader()
 				{
-					OrderingSystem = OrderSource.KeithCom,
+					OrderingSystem = OrderSource.Entree,
 					Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
 					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
 					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
@@ -222,8 +338,29 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
-		
-		public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
+        
+		private ShoppingCart ToShoppingCart(CS.Basket basket)
+		{
+			return new ShoppingCart()
+			{
+				CartId = basket.Id.ToGuid(),
+				Name = basket.DisplayName,
+				BranchId = basket.BranchId,
+				RequestedShipDate = basket.RequestedShipDate,
+				Active = basket.Active.HasValue ? basket.Active.Value : false,
+				Items = basket.LineItems.Select(l => new ShoppingCartItem()
+				{
+					ItemNumber = l.ProductId,
+					CartItemId = l.Id.ToGuid(),
+					Notes = l.Notes,
+					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+					Each = l.Each.HasValue ? l.Each.Value : false
+				}).ToList()
+			};
+
+		}
+
+        public void UpdateCart(UserSelectedContext catalogInfo, UserProfile user, ShoppingCart cart, bool deleteOmmitedItems)
 		{
 			var updateCart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cart.CartId);
 			
@@ -285,101 +422,15 @@ namespace KeithLink.Svc.Impl.Logic
 				
 
 		}
-
-		
-
-		
-
-		
-
-		
-
-		
-
-		#region Helper Methods
-
-		private void MarkCurrentActiveCartAsInactive(UserProfile user, UserSelectedContext catalogInfo, string branchId)
+        
+        public void UpdateItem(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem updatedItem)
 		{
-			var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
-
-			if (currentlyActiveCart != null)
-			{
-				currentlyActiveCart.Active = false;
-				basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
-			}
-		}
-		
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
-		{
-			if (cart.Items == null)
+			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+			if (basket == null)
 				return;
 
-			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
-
-			cart.Items.ForEach(delegate(ShoppingCartItem item)
-			{
-
-				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
-				if (prod != null)
-				{
-					item.Name = prod.Name;
-					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					item.StorageTemp = prod.Nutritional.StorageTemp;
-					item.Brand = prod.Brand;
-					item.ReplacedItem = prod.ReplacedItem;
-					item.ReplacementItem = prod.ReplacementItem;
-					item.NonStock = prod.NonStock;
-					item.ChildNutrition = prod.ChildNutrition;
-					item.CatchWeight = prod.CatchWeight;
-				}
-				if (price != null)
-				{
-					item.PackagePrice = price.PackagePrice.ToString();
-					item.CasePrice = price.CasePrice.ToString();
-					
-				}
-				if (note.Any())
-					item.Notes = note.First().Note;
-			});
-
+			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
-
-		private ShoppingCart ToShoppingCart(CS.Basket basket)
-		{
-			return new ShoppingCart()
-			{
-				CartId = basket.Id.ToGuid(),
-				Name = basket.DisplayName,
-				BranchId = basket.BranchId,
-				RequestedShipDate = basket.RequestedShipDate,
-				Active = basket.Active.HasValue ? basket.Active.Value : false,
-				Items = basket.LineItems.Select(l => new ShoppingCartItem()
-				{
-					ItemNumber = l.ProductId,
-					CartItemId = l.Id.ToGuid(),
-					Notes = l.Notes,
-					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-					Each = l.Each.HasValue ? l.Each.Value : false
-				}).ToList()
-			};
-
-		}
-
-		#endregion
-
-		private string CartName(string name, UserSelectedContext catalogInfo)
-		{
-			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
-		}
-
-		
-
-
-
-		
+        #endregion
 	}
 }

@@ -146,8 +146,10 @@
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
+    <Compile Include="Logic\Confirmations\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
@@ -177,6 +179,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
+    <Compile Include="Repository\Confirmations\ConfirmationListenerRepositoryImpl.cs" />
+    <Compile Include="Repository\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
@@ -414,6 +418,7 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="Service References\com.benekeith.ShipDateService\shipdate.disco" />
   </ItemGroup>

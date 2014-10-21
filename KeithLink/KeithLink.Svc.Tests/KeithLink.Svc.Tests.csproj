@@ -74,13 +74,18 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
+    <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
+    <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
     <Compile Include="Logic\SiteCatalogLogicTests.cs" />
+    <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
     <Compile Include="MockRepository\BasketRepositoryMock.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Logic\ListLogicTests.cs" />
     <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
+    <Compile Include="Repositories\Order\OrderHistoryRepositoryTests.cs" />
     <Compile Include="Repositories\Order\ShipDateRepositoryImplTests.cs" />
     <Compile Include="Repositories\Price\PriceRepositoryImplTests.cs" />
     <Compile Include="Repositories\Price\PriceCacheRepositoryImplTests.cs" />
@@ -90,7 +95,7 @@
     <Compile Include="Repositories\Profile\UserProfileRepositoryTests.cs" />
     <Compile Include="Repositories\Catalog\ProductImageRepositoryTests.cs" />
     <Compile Include="Repositories\Order\OrderSocketConnectionRepositoryTests.cs" />
-    <Compile Include="Logic\OrderLogicImplTests.cs" />
+    <Compile Include="Logic\Order\OrderLogicImplTests.cs" />
     <Compile Include="Repositories\Order\OrderQueueRepositoryImplTests.cs" />
     <Compile Include="Controllers\CatalogControllerTests.cs" />
   </ItemGroup>
@@ -124,6 +129,11 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup />
+  <ItemGroup>
+    <Content Include="Assets\confirmation_file.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
