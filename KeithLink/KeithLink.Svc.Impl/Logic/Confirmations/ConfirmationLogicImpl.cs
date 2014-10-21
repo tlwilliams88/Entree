@@ -42,11 +42,19 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
 
         #region methods/functions
 
+        /// <summary>
+        /// Begin listening for new confirmations
+        /// </summary>
         public void Listen()
         {
             _socket.Listen();
         }
 
+        /// <summary>
+        /// Deserialize the confirmation
+        /// </summary>
+        /// <param name="rawConfirmation"></param>
+        /// <returns></returns>
         private ConfirmationFile DeserializeConfirmation(string rawConfirmation)
         {
             ConfirmationFile confirmation = new ConfirmationFile();
@@ -69,6 +77,11 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             _confirmationQueue.SetQueuePath((int)ConfirmationQueueLocation.Default);
 
             _confirmationQueue.PublishToQueue(serializedConfirmation);
+        }
+
+        public void ProcessQueued() {
+            // TODO : Add logic to handle queued confirmations
+            
         }
 
         /// <summary>
@@ -97,6 +110,11 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             return confirmation;
         }
 
+        /// <summary>
+        /// Serialize the confirmation
+        /// </summary>
+        /// <param name="confirmation"></param>
+        /// <returns></returns>
         private string SerializeConfirmation(ConfirmationFile confirmation)
         {
             StringWriter writer = new StringWriter();

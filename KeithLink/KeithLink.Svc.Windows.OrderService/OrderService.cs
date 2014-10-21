@@ -105,10 +105,10 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         private void InitializeConfirmationMoverThread() {
-            //AutoResetEvent auto = new AutoResetEvent( true );
-            //TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
+            AutoResetEvent auto = new AutoResetEvent( true );
+            TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
 
-            //_confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
+            _confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
         }
 
         private void InitializeConfirmationThread()
@@ -124,8 +124,22 @@ namespace KeithLink.Svc.Windows.OrderService {
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        private void MoveConfirmationsToCommerceServiceTick() {
-            // TODO : Add logic for moving to Commerce Server
+        private void MoveConfirmationsToCommerceServiceTick(object state) {
+            if (!_confirmationMoverProcessing) {
+                _confirmationMoverProcessing = true;
+
+                try {
+                    //
+                    ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+
+                    confirmationLogic.ProcessQueued();
+                } catch (Exception e) {
+                    //HandleConfirmationQueueProcessingerror(e);
+                }
+
+            }
         }
 
         protected override void OnStart(string[] args) {
