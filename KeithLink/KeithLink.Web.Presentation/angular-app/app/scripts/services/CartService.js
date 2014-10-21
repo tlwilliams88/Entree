@@ -200,7 +200,7 @@ angular.module('bekApp')
             if (requestedShipDateString === shipDateString) {
               cutoffdate = shipDate;
             }
-          })
+          });
         }
         return cutoffdate;
       },

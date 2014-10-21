@@ -11,6 +11,8 @@ angular.module('bekApp')
         item.sortPriority = 1;
       } else if (item.is_contract_list) {
         item.sortPriority = 2;
+      } else if (item.isReminderList) {
+        item.sortPriority = 3;
       } else {
         item.sortPriority = 10;
       }

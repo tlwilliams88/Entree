@@ -24,10 +24,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         #region methods
         public string ConsumeFromQueue() {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderConsumerUserName,
-                Password = Configuration.RabbitMQOrderConsumerUserPassword,
-                VirtualHost = Configuration.RabbitMQOrderVHost
+                HostName = Configuration.RabbitMQServer,
+                UserName = Configuration.RabbitMQUserNameConsumer,
+                Password = Configuration.RabbitMQUserPasswordConsumer,
+                VirtualHost = Configuration.RabbitMQVHostOrder
             };
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
@@ -59,23 +59,23 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         private string GetSelectedQueue() {
             switch (_queuePath) {
                 case OrderQueueLocation.Normal:
-                    return Configuration.RabbitMQOrderCreatedQueue;
+                    return Configuration.RabbitMQQueueOrderCreated;
                 case OrderQueueLocation.History:
-                    return Configuration.RabbitMQOrderHistoryQueue;
+                    return Configuration.RabbitMQQueueOrderHistory;
                 case OrderQueueLocation.Error:
-                    return Configuration.RabbitMQOrderErrorQueue;
+                    return Configuration.RabbitMQQueueOrderError;
                 default:
-                    return Configuration.RabbitMQOrderCreatedQueue;
+                    return Configuration.RabbitMQQueueOrderCreated;
             }
         }
 
         public void PublishToQueue(string item) {
             // this connection uses different credentials than the other methods in this class
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQOrderPublisherUserName,
-                Password = Configuration.RabbitMQOrderPublisherUserPassword,
-                VirtualHost = Configuration.RabbitMQOrderVHost
+                HostName = Configuration.RabbitMQServer,
+                UserName = Configuration.RabbitMQUserNamePublisher,
+                Password = Configuration.RabbitMQUserPasswordPublisher,
+                VirtualHost = Configuration.RabbitMQVHostOrder
             };
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
