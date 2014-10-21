@@ -83,6 +83,7 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
 		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
         private const string KEY_SITE_NAME = "CS_SiteName";
+        private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
 
 
         #endregion
@@ -374,6 +375,10 @@ namespace KeithLink.Svc.Impl
         public static string MultiDocsUrl
         {
             get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
+        }
+
+        public static string OrderUpdateWatchPath {
+            get{ return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
         }
 
         public static string RabbitMQExchangeConfirmation {
