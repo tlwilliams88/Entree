@@ -20,6 +20,8 @@ angular.module('bekApp')
     $scope.branches = branches;
     refreshAccessPermissions();
 
+    CartService.getShipDates();
+
     // if ($scope.isOrderEntryCustomer) {
     //   $scope.currentLocation = LocalStorage.getCurrentLocation().customerNumber;
     // } else {
@@ -48,6 +50,7 @@ angular.module('bekApp')
       }); 
 
       angular.copy([], CartService.shipDates);
+      CartService.getShipDates();
       
       $state.transitionTo($state.current, $state.params, {
         reload: true,
