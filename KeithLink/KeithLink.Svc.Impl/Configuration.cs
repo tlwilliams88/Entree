@@ -29,7 +29,6 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_INTERNAL_USER = "ADIntUser";
         private const string KEY_AD_INVALIDATTEMPTS = "ADBadPwdCount";
         private const string KEY_AD_LOCKOUTDURATION = "ADLockoutDuration";
-        private const string KEY_APP_NAME = "AppName";
 
         // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
@@ -44,6 +43,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_DEFAULT_PRODUCT_RETURN_SIZE = "DefaultProductReturnSize";
         private const string KEY_ELASTIC_SEARCH_AGGREGATIONS = "ElasticSearchAggregations";
         private const string KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS = "ElasticSearchTermSearchFields";
+        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
+        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
         private const string KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS = "ElasticSearchDigitSearchFields";
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
@@ -54,33 +55,35 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_PORT = "MfPort";
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
-        private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
 
         // Rabbit MQ Constants
+        private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
+        private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
+        private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
-        private const string KEY_RABBITMQ_ORDER_VHOST = "RabbitMQOrderVHost";
         private const string KEY_RABBITMQ_SERVER = "RabbitMQOrderServer";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
-        private const string KEY_RABBITMQ_CONFIRMATION_EXCHANGE = "RabbitMQConfirmationExchange";
-        private const string KEY_RABBITMQ_CONFIRMATION_QUEUE = "RabbitMQConfirmationQueue";
-        private const string KEY_RABBITMQ_CONFIRMATION_VHOST = "RabbitMQConfirmationVHost";
+        private const string KEY_RABBITMQ_VHOST_CONFIRMATION = "RabbitMQConfirmationVHost";
+        private const string KEY_RABBITMQ_VHOST_ORDER = "RabbitMQOrderVHost";
 
         // Misc
-        private const string KEY_SITE_NAME = "CS_SiteName";
-        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_FIELDS = "ElasticSearchItemExcludeFields";
-        private const string KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES = "ElasticSearchItemExcludeValues";
+        private const string KEY_APP_NAME = "AppName";
+        private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
 		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
+        private const string KEY_SITE_NAME = "CS_SiteName";
+        private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
 
 
         #endregion
@@ -374,6 +377,20 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
         }
 
+        public static string OrderUpdateWatchPath {
+            get{ return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
+        }
+
+        public static string RabbitMQExchangeConfirmation {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQExchangeHourlyUpdates {
+            get { return GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
+        }
+
         public static string RabbitMQExchangeOrdersCreated {
             get {
                 return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_CREATED, string.Empty);
@@ -398,41 +415,47 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderConsumerUserName
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);
+        public static string RabbitMQQueueConfirmation {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
             }
         }
 
-        public static string RabbitMQOrderConsumerUserPassword
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEPASS, string.Empty);
-            }
+        public static string RabbitMQQueueHourlyUpdates {
+            get { return GetValue(KEY_RABBITMQ_QUEUE_HOURLYUPDATES, string.Empty); }
         }
 
-        public static string RabbitMQOrderCreatedQueue {
+        public static string RabbitMQQueueOrderCreated {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_CREATED, string.Empty);
             }
         }
 
-        public static string RabbitMQOrderErrorQueue {
+        public static string RabbitMQQueueOrderError {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_ERROR, string.Empty);
             }
         }
 
-        public static string RabbitMQOrderHistoryQueue {
+        public static string RabbitMQQueueOrderHistory {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_HISTORY, string.Empty);
             }
         }
 
-        public static string RabbitMQOrderPublisherUserName
+        public static string RabbitMQQueueOrderReprocess {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQUserNameConsumer {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQUserNamePublisher
         {
             get
             {
@@ -440,7 +463,13 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderPublisherUserPassword
+        public static string RabbitMQUserPasswordConsumer {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEPASS, string.Empty);
+            }
+        }
+        
+        public static string RabbitMQUserPasswordPublisher
         {
             get
             {
@@ -448,7 +477,7 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderServer
+        public static string RabbitMQServer
         {
             get
             {
@@ -456,41 +485,19 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderReprocessQueue {
-            get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
+        public static string RabbitMQVHostConfirmation
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_VHOST_CONFIRMATION, string.Empty);
             }
         }
         
-        public static string RabbitMQOrderVHost
+        public static string RabbitMQVHostOrder
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_ORDER_VHOST, string.Empty);
-            }
-        }
-
-        public static string RabbitMQConfirmationExchange
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_CONFIRMATION_EXCHANGE, string.Empty);
-            }
-        }
-
-        public static string RabbitMQConfirmationQueue
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_CONFIRMATION_QUEUE, string.Empty);
-            }
-        }
-
-        public static string RabbitMQConfirmationVhost
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_CONFIRMATION_VHOST, string.Empty);
+                return GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
             }
         }
 
@@ -502,7 +509,6 @@ namespace KeithLink.Svc.Impl
 				return ValueParsingUtil.ParseBool(value, "false");
 			}
 		}
-
 
 		public static int RecentItemsToKeep
 		{
