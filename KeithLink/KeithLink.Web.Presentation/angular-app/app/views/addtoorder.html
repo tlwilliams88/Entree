@@ -100,6 +100,10 @@
   <table class="table table-striped-rows table-border" navigate-table infinite-scroll="infiniteScrollLoadMore()">
     <thead>
       <tr>
+        <th class="sort-col-header" ng-click="sortBy='position';sortOrder=!sortOrder;">
+          #
+          <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
+        </th>
         <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
           Item #
           <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -157,6 +161,7 @@
       <!-- Filter Row -->
       <tr class="filter-row" ng-show="showFilter">
         <td></td>
+        <td></td>
         <td class="hidden-xs hidden-sm input-col">
           <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
         </td>
@@ -184,6 +189,9 @@
       </tr> <!-- end Filter Row -->
 
       <tr ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo: itemsToDisplay)) track by item.listitemid" ng-class="{ odd : $odd, even: $even }">
+        <td>
+          {{item.position}}
+        </td>
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
         </td>

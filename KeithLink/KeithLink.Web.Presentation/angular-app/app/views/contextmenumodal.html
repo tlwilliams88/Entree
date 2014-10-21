@@ -18,7 +18,7 @@
   <div>
     <h3>Lists</h3>
     <ul class="list-group">
-      <li ng-repeat="list in lists | sortLists" ng-if="!list.isReadOnly" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
+      <li ng-repeat="list in lists | sortLists" ng-if="!list.read_only && !list.isFavoritesList" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
       <li class="hand list-group-item" ng-click="createListWithItem(item)">Create New List...</li>
     </ul>
   </div>

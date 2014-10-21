@@ -28,7 +28,7 @@
         </button>
         <ul class="dropdown-menu" role="menu">
           <div class="btn-group-vertical">
-            <button ng-repeat="list in lists | sortLists" ng-if="!list.isReadOnly" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+            <button ng-repeat="list in lists | sortLists" ng-if="!list.read_only && !list.isFavoritesList" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
             <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
           </div>
         </ul>

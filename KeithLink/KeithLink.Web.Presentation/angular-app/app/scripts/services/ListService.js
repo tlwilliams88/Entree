@@ -23,23 +23,31 @@ angular.module('bekApp')
         return listName === 'Favorites';
       }
 
-      function doFlagFavoritesList(list) {
+      function isReminderList(listName) {
+        return listName === 'Reminders';
+      }
+
+      // determine editing abilities for 'special' lists
+      // you cannot rename or delete special lists
+      // they also have custom fields for fields cannot be edited (label, par, etc.)
+      function flagSpecialLists(list) {
+        
         if (isFavoritesList(list.name)) {
           list.isFavoritesList = true;
+          list.cannotEditLabels = true;
+          list.cannotEditPar = true;
+          list.isSpecialList = true;
+        
+        } else if (isReminderList(list.name)) {
+          list.isReminderList = true;
+          list.cannotEditLabels = true;
+          list.cannotEditPar = false;
+          list.isSpecialList = true;
         }
       }
-
-      // used on lists page so users cannot rename list or add labels/parlevels
-      function isReadOnly(list) {
-        if (isFavoritesList(list.name) || list.read_only) {
-          list.isReadOnly = true;
-        }
-      }
-
-      function flagFavoritesList() {
+      function flagLists() {
         angular.forEach(Service.lists, function(list, index) {
-          doFlagFavoritesList(list);
-          isReadOnly(list);
+          flagSpecialLists(list);
         });
       }
 
@@ -67,7 +75,7 @@ angular.module('bekApp')
           }
           return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
-            flagFavoritesList();
+            flagLists();
 
             // TODO: get favorites list items if header param is true
             return lists;
@@ -89,7 +97,7 @@ angular.module('bekApp')
             var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
 
             // flag list if it is the Favorites List, used for display purposes            
-            doFlagFavoritesList(list);
+            flagSpecialLists(list);
             
             if (existingList) {
               var idx = Service.lists.indexOf(existingList);
@@ -358,6 +366,18 @@ angular.module('bekApp')
               updateListFavorites(item.itemnumber, false);
             });
           });
+        },
+
+        /********************
+        REMINDER/MANDATORY ITEMS LISTS
+        ********************/
+
+        getReminderList: function() {
+
+        },
+
+        addItemToReminderList: function() {
+
         }
 
 
