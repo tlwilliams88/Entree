@@ -185,7 +185,7 @@
         </thead>
 
         <div class="find-me">
-        <tbody ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer' }" ng-model="selectedList.items">
+        <tbody ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
           <tr 
             ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }" 
             ng-repeat="item in (filteredItems = (selectedList.items | filter:search | limitTo:itemsToDisplay)) track by item.listitemid" 

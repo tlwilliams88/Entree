@@ -26,7 +26,6 @@ angular.module('bekApp')
 
       $scope.addItemToReminderList = function(item) {
         ListService.addItemToListWithoutDuplicates(item).then(function(data) {
-          $modalInstance.close(item);
           $scope.displayMessage('success', 'Successfully added item to Reminder List.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to Reminder List.');
