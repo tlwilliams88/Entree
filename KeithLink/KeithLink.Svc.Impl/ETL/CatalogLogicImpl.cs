@@ -82,7 +82,7 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
         private readonly IListLogic listLogic;
-        private readonly IUserProfileLogic userProfile;
+        private readonly IUserProfileLogic userProfileLogic;
         private readonly IItemNoteLogic noteLogic;
         
         #endregion
@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Impl.ETL
             this.elasticSearchRepository = elasticSearchRepository;
 			this.eventLog = eventLog;
             this.listLogic = listLogic;
-            this.userProfile = userProfile;
+            this.userProfileLogic = userProfile;
             this.noteLogic = noteLogic;
         }
 
@@ -107,13 +107,13 @@ namespace KeithLink.Svc.Impl.ETL
             try
             {
 				var catTask = Task.Factory.StartNew(() => ImportCatalog());
-				var profileTask = Task.Factory.StartNew(() => ImportProfiles());
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
                 var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
                 var contractTask = Task.Factory.StartNew(() => ImportContractLists());
                 
-                Task.WaitAll(catTask, profileTask, esItemTask, esCatTask, esBrandTask, contractTask);
+                Task.WaitAll(catTask, esItemTask, esCatTask, esBrandTask, contractTask);
+				
             }
             catch (Exception ex) 
             {
@@ -129,6 +129,9 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportCatalog()
         {
+			//For performance debugging purposes
+			var startTime = DateTime.Now;
+
             //Create root level catalog object
             MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
             catalog.version = "3.0"; //Required for the import to work
@@ -144,7 +147,10 @@ namespace KeithLink.Svc.Impl.ETL
             memoryStream.Position = 0;
             var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
             
-            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);            
+            catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
+
+			eventLog.WriteInformationLog(string.Format("ImportCatalog Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+
         }
 
         public void ImportProfiles()
@@ -153,13 +159,18 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportContractLists()
         {
+			//For performance debugging purposes
+			var startTime = DateTime.Now;
+
             var users = stagingRepository.ReadCSUsers();
 			var processedCustomers = new List<string>();
 
 			foreach (DataRow userRow in users.Rows)
 			{
 				Guid userId = userRow.GetGuid("u_user_id");
-				KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfile.GetUserProfile(userId);
+				KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfileLogic.GetUserProfile(userId);
+				if(userProfileLogic.IsInternalAddress(userProfiles.UserProfiles[0].EmailAddress))
+					continue;
 				List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
                 
 				foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
@@ -202,11 +213,16 @@ namespace KeithLink.Svc.Impl.ETL
                         }
                     }
 				}
-			}			
+			}
+
+			eventLog.WriteInformationLog(string.Format("ImportContractLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
         public void ImportItemsToElasticSearch()
         {
+			//For performance debugging purposes
+			var startTime = DateTime.Now;
+
 			var branches = stagingRepository.ReadAllBranches();
 
 			Parallel.ForEach(branches.AsEnumerable(), row =>
@@ -244,10 +260,14 @@ namespace KeithLink.Svc.Impl.ETL
                 totalProcessed += Configuration.ElasticSearchBatchSize;
             }
 
+			eventLog.WriteInformationLog(string.Format("ImportItemsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
         public void ImportCategoriesToElasticSearch()
         {
+			//For performance debugging purposes
+			var startTime = DateTime.Now;
+
             var parentCategories = stagingRepository.ReadParentCategories();
             var childCategories = stagingRepository.ReadSubCategories();
             var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
@@ -290,10 +310,15 @@ namespace KeithLink.Svc.Impl.ETL
             });
 
             elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
+
+			eventLog.WriteInformationLog(string.Format("ImportCategoriesToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
         public void ImportHouseBrandsToElasticSearch()
         {
+			//For performance debugging purposes
+			var startTime = DateTime.Now;
+
             var brandsDataTable = stagingRepository.ReadBrandControlLabels();
             var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
 
@@ -314,6 +339,8 @@ namespace KeithLink.Svc.Impl.ETL
                 });
 
             elasticSearchRepository.Create(string.Concat(brands.Select(c => c.ToJson())));
+
+			eventLog.WriteInformationLog(string.Format("ImportHouseBrandsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
         #endregion
