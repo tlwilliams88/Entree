@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$filter', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $filter, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, UserProfileService, UtilityService, List) {
 
       var filter = $filter('filter');
 
@@ -37,12 +37,14 @@ angular.module('bekApp')
           list.cannotEditLabels = true;
           list.cannotEditPar = true;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         
         } else if (isReminderList(list.name)) {
           list.isReminderList = true;
           list.cannotEditLabels = true;
           list.cannotEditPar = false;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         }
       }
       function flagLists() {
@@ -176,8 +178,7 @@ angular.module('bekApp')
           });
         },
 
-        deleteMultipleLists: function(listGuidArray)
-        {
+        deleteMultipleLists: function(listGuidArray) {
           return $http.delete('/list', {
             headers:{'Content-Type': 'application/json'},
             data: listGuidArray
@@ -312,10 +313,8 @@ angular.module('bekApp')
             favoritesList = Service.getFavoritesList(),
             newListItemId;
           
-          console.log(item.favorite);
           if (!item.favorite) {
-            console.log('adding item');
-            newListItemId = Service.addItem(favoritesList.listid, item).then(function(listitemid) {
+            return Service.addItem(favoritesList.listid, item).then(function(listitemid) {
               newItem.favorite = true;
               
               // favorite the item in all other lists
@@ -324,9 +323,10 @@ angular.module('bekApp')
               return listitemid;
             });
           } else {
-            newListItemId = item.listitemid;
+            var deferred = $q.defer();
+            deferred.resolve(item.listitemid);
+            return deferred.promise;
           }
-          return newListItemId;
         },
 
         // accepts item number to remove from favorites list
@@ -375,11 +375,6 @@ angular.module('bekApp')
 
         getReminderList: function() {
           return Service.getList('84f8a733-fdaf-42b7-9fc1-570aab4e3040');
-        },
-
-        addItemToListWithoutDuplicates: function(item) {
-          // Service.addMultipleItems('84f8a733-fdaf-42b7-9fc1-570aab4e3040')
-          console.log(item);
         }
 
 
