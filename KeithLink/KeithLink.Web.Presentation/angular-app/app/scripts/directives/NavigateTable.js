@@ -31,7 +31,7 @@ angular.module('bekApp')
           switch (e.which) {
 
               case key.left: {
-                  if (input.selectionStart === 0) {
+                  if (input.type === 'checkbox' || input.selectionStart === 0) {
                       moveTo = td.prev('td:has(input,textarea)');
                   }
                   break;

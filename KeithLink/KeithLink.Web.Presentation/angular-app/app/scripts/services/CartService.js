@@ -67,6 +67,7 @@ angular.module('bekApp')
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
       createCart: function(items, shipDate) {
+
         var newCart = {};
 
         if (!items) { // if null
@@ -85,7 +86,12 @@ angular.module('bekApp')
         });
 
         newCart.name = UtilityService.generateName('Cart', Service.carts);
+
         newCart.requestedshipdate = shipDate;
+        // default to next ship date
+        if (!newCart.requestedshipdate && Service.shipDates) {
+          newCart.requestedshipdate = Service.shipDates[0].shipdate;
+        }
 
         return Cart.save({}, newCart).$promise.then(function(response) {
           return Service.getCart(response.listitemid);
@@ -183,6 +189,20 @@ angular.module('bekApp')
           }); 
         }
         return deferred.promise;
+      },
+
+      findCutoffDate: function(obj) {
+        var cutoffdate;
+        if (obj && obj.requestedshipdate) {
+          angular.forEach(Service.shipDates, function(shipDate) {
+            var requestedShipDateString = new Date(obj.requestedshipdate).toDateString(),
+              shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
+            if (requestedShipDateString === shipDateString) {
+              cutoffdate = shipDate;
+            }
+          });
+        }
+        return cutoffdate;
       },
 
       submitOrder: function(cartId) {

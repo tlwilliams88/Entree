@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService',
-    function($scope, $state, $stateParams, $filter, Constants, CartService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'reminderList',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, reminderList) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,19 +17,8 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-
-    function getCutoffDate(cart) {
-      if (cart && cart.requestedshipdate) {
-        angular.forEach(CartService.shipDates, function(shipDate) {
-          var requestedShipDateString = new Date(cart.requestedshipdate).toDateString(),
-            shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
-          if (requestedShipDateString === shipDateString) {
-            $scope.selectedShipDate = shipDate;
-          }
-        });        
-      }
-    }
-
+    $scope.reminderList = reminderList;
+    
     $scope.goToCart = function(cart) {
       if (cart) {
         $state.go('menu.cart.items', {cartId: cart.id, renameCart: null});
@@ -154,7 +143,7 @@ angular.module('bekApp')
         $scope.startEditCartName($scope.currentCart.name);
       }
 
-      getCutoffDate($scope.currentCart);
+      $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     }
     
     setCurrentCart();

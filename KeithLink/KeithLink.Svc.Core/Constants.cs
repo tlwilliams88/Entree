@@ -25,6 +25,17 @@ namespace KeithLink.Svc.Core
         public const string ROLE_EXTERNAL_PURCHASINGAPPROVER = "Approver";
         public const string ROLE_EXTERNAL_PURCHASINGBUYER = "Buyer";
 
+        public const string ROLE_CORPORATE_ADMIN = "CORP-DIS-eBusiness";
+        public const string ROLE_CORPORATE_SECURITY = "CORP-DIS-Security";
+
+        public const string ROLE_INTERNAL_CSR_FAQ = "fabq-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FAM = "fama-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FDF = "fdfw-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FHS = "fhst-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FLR = "flrk-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FSA = "fsan-ls-csv-all";
+        public const string ROLE_INTERNAL_CSR_FOK = "fokc-ls-csv-all";
+
         public const string ROLE_INTERNAL_DSM_FAQ = "fabq-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FAM = "fama-ls-sys-ac-dsms";
         public const string ROLE_INTERNAL_DSM_FDF = "fdfw-ls-sys-ac-dsms";
@@ -40,6 +51,14 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSR_FLR = "flrk-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FSA = "fsan-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FOK = "fokc-ls-sys-ac-dsrs";
+
+        public const string ROLE_INTERNAL_MIS_FAQ = "fabq-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FAM = "fama-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FDF = "fdfw-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FHS = "fhst-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FLR = "flrk-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FSA = "fsan-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FOK = "fokc-ls-mis-all";
 
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";

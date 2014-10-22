@@ -24,6 +24,14 @@ angular.module('bekApp')
         });
       };
 
+      $scope.addItemToReminderList = function(item) {
+        ListService.addItemToListWithoutDuplicates(item).then(function(data) {
+          $scope.displayMessage('success', 'Successfully added item to Reminder List.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding item to Reminder List.');
+        });
+      };
+
       $scope.createListWithItem = function(item) {
         $q.all([
           ListService.createList(item),
@@ -68,6 +76,7 @@ angular.module('bekApp')
           var modalInstance = $modal.open({
             templateUrl: 'views/contextmenumodal.html',
             controller: 'ContextMenuModalController',
+            // backdrop: false,
             resolve: {
               lists: function () {
                 return lists;
