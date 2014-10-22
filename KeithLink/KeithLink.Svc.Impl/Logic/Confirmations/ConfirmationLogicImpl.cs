@@ -42,11 +42,19 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
 
         #region methods/functions
 
+        /// <summary>
+        /// Begin listening for new confirmations
+        /// </summary>
         public void Listen()
         {
             _socket.Listen();
         }
 
+        /// <summary>
+        /// Deserialize the confirmation
+        /// </summary>
+        /// <param name="rawConfirmation"></param>
+        /// <returns></returns>
         private ConfirmationFile DeserializeConfirmation(string rawConfirmation)
         {
             ConfirmationFile confirmation = new ConfirmationFile();
@@ -63,12 +71,32 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
         /// <param name="file"></param>
         public void ProcessFileData(string[] file)
         {
-            ConfirmationFile confirmation = ParseFile(file);
-            string serializedConfirmation = SerializeConfirmation(confirmation);
+            try {
+                ConfirmationFile confirmation = ParseFile( file );
+                PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
+            } catch (Exception e) {
+                throw e;
+            }
+        }
 
-            _confirmationQueue.SetQueuePath((int)ConfirmationQueueLocation.Default);
+        /// <summary>
+        /// Publish confirmation file to queue
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="location"></param>
+        public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
+            string serializedConfirmation = SerializeConfirmation( file );
 
-            _confirmationQueue.PublishToQueue(serializedConfirmation);
+            _confirmationQueue.SetQueuePath( (int) location );
+            _confirmationQueue.PublishToQueue( serializedConfirmation );
+        }
+
+        /// <summary>
+        /// Get the current top Confirmation from the queue
+        /// </summary>
+        /// <returns></returns>
+        public ConfirmationFile GetFileFromQueue() {
+            return DeserializeConfirmation( _confirmationQueue.ConsumeFromQueue() );
         }
 
         /// <summary>
@@ -97,6 +125,11 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             return confirmation;
         }
 
+        /// <summary>
+        /// Serialize the confirmation
+        /// </summary>
+        /// <param name="confirmation"></param>
+        /// <returns></returns>
         private string SerializeConfirmation(ConfirmationFile confirmation)
         {
             StringWriter writer = new StringWriter();

@@ -2,6 +2,7 @@
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Confirmations;
@@ -139,10 +140,10 @@ namespace KeithLink.Svc.Windows.OrderService {
         }
 
         private void InitializeConfirmationMoverThread() {
-            //AutoResetEvent auto = new AutoResetEvent( true );
-            //TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
+            AutoResetEvent auto = new AutoResetEvent( true );
+            TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
 
-            //_confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
+            _confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
         }
 
         private void InitializeConfirmationThread()
@@ -165,8 +166,30 @@ namespace KeithLink.Svc.Windows.OrderService {
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        private void MoveConfirmationsToCommerceServiceTick() {
-            // TODO : Add logic for moving to Commerce Server
+        private void MoveConfirmationsToCommerceServiceTick(object state) {
+            if (!_confirmationMoverProcessing) {
+                _confirmationMoverProcessing = true;
+                
+                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+
+                ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
+
+                try {
+                    IS_OrderService.OrderServiceClient internalSvc = new IS_OrderService.OrderServiceClient();
+                    
+                    if ( internalSvc.OrderConfirmation( confirmation ) == false ) {
+                        // If it fails we need to put the message back in the queue
+                        confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default ); 
+                    }
+                } catch (Exception e) {
+                    //HandleConfirmationQueueProcessingerror(e);
+                    confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
+                }
+
+                _confirmationMoverProcessing = false;
+            }
         }
 
         protected override void OnStart(string[] args) {
@@ -175,6 +198,7 @@ namespace KeithLink.Svc.Windows.OrderService {
             InitializeConfirmationThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
+            InitializeConfirmationMoverThread();
         }
 
         protected override void OnStop() {

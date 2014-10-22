@@ -10,5 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
     {
 		List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo);
 		Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber);
+        Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems);
+        NewOrderReturn SubmitChangeOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber);
     }
 }

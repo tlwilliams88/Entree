@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Confirmations" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Confirmations" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ConfirmationFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ConfirmationDetail" nillable="true" type="tns:ArrayOfConfirmationDetail" />
+      <xs:element minOccurs="0" name="ConfirmationHeader" nillable="true" type="tns:ConfirmationHeader" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfirmationFile" nillable="true" type="tns:ConfirmationFile" />
+  <xs:complexType name="ArrayOfConfirmationDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ConfirmationDetail" nillable="true" type="tns:ConfirmationDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfConfirmationDetail" nillable="true" type="tns:ArrayOfConfirmationDetail" />
+  <xs:complexType name="ConfirmationDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BrokenCase" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaseCube" type="xs:double" />
+      <xs:element minOccurs="0" name="CaseWeight" type="xs:double" />
+      <xs:element minOccurs="0" name="ConfirmationMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PriceGross" type="xs:double" />
+      <xs:element minOccurs="0" name="PriceNet" type="xs:double" />
+      <xs:element minOccurs="0" name="QuantityOrdered" type="xs:int" />
+      <xs:element minOccurs="0" name="QuantityShipped" type="xs:int" />
+      <xs:element minOccurs="0" name="ReasonNotShipped" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RecordNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SalesGross" type="xs:double" />
+      <xs:element minOccurs="0" name="SalesNet" type="xs:double" />
+      <xs:element minOccurs="0" name="ShipWeight" type="xs:double" />
+      <xs:element minOccurs="0" name="SplitPriceGross" type="xs:double" />
+      <xs:element minOccurs="0" name="SplitPriceNet" type="xs:double" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfirmationDetail" nillable="true" type="tns:ConfirmationDetail" />
+  <xs:complexType name="ConfirmationHeader">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ConfirmationDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ConfirmationMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ConfirmationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ConfirmationStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Remote_OrderNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RouteNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShipDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SpecialInstructions" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SpecialInstructionsExtended" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StopNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TotalCube" type="xs:double" />
+      <xs:element minOccurs="0" name="TotalInvoice" type="xs:double" />
+      <xs:element minOccurs="0" name="TotalQuantityOrdered" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalQuantityShipped" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalWeight" type="xs:double" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ConfirmationHeader" nillable="true" type="tns:ConfirmationHeader" />
+</xs:schema>

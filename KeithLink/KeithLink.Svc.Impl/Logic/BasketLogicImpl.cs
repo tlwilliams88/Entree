@@ -53,11 +53,20 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var returnBaskets = new List<CS.Basket>();
 
-			foreach (var sharedUser in sharedUsers)
+			if (sharedUsers.Any())
 			{
-				var basket = basketRepository.ReadAllBaskets(sharedUser.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
-					&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
+				foreach (var sharedUser in sharedUsers)
+				{
+					var basket = basketRepository.ReadAllBaskets(sharedUser.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
+						&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
 
+					returnBaskets.AddRange(basket);
+				}
+			}
+			else
+			{
+				var basket = basketRepository.ReadAllBaskets(user.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
+						&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
 				returnBaskets.AddRange(basket);
 			}
 

@@ -13,6 +13,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "ordernumber")]
 		public string OrderNumber { get; set; }
 
+        [DataMember(Name = "status")]
+        public string Status { get; set; }
+
 		[DataMember(Name = "deliverydate")]
 		public DateTime? DeliveryDate { get; set; }
 						
@@ -33,8 +36,14 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "requestedshipdate")]
         public DateTime RequestedShipDate { get; set; }
+        
+        [DataMember(Name = "ischangeorderallowed")]
+        public bool IsCangeOrderAllowed { get; set; }
 
 		[DataMember(Name ="LineItems")]
 		public List<OrderLine> LineItems { get; set; }
+
+        [DataMember(Name = "CommerceId")]
+        public Guid CommerceId { get; set; }
 	}
 }

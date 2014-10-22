@@ -183,6 +183,7 @@
   <ItemGroup>
     <Compile Include="BEKFoundationService.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="Extensions\BasketQueryPoHelper.cs" />
     <Compile Include="Extensions\SiteHelper.cs" />
     <Compile Include="Extensions\UserOrganizationsResponseBuilder.cs" />
     <Compile Include="Extensions\UserOrganizationsCommitter.cs" />
@@ -211,7 +212,9 @@
     <Content Include="MetadataDefinitions.xml">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="OrderObjectMappings.xml" />
+    <Content Include="OrderObjectMappings.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="OrderPipelineMappings.xml" />
     <Content Include="pipelines\total.pcf" />
     <Content Include="pipelines\recvpo.pcf" />

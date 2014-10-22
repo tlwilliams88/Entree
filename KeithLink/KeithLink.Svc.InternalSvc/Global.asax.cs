@@ -12,11 +12,13 @@ namespace KeithLink.Svc.InternalSvc
 {
     public class Global : System.Web.HttpApplication
     {
+        bool keepQueueListening = true;
 
         protected void Application_Start(object sender, EventArgs e)
         {
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
+            System.Threading.Tasks.Task.Factory.StartNew(() => this.QueueListener());
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -47,6 +49,23 @@ namespace KeithLink.Svc.InternalSvc
         protected void Application_End(object sender, EventArgs e)
         {
 
+        }
+
+        protected void QueueListener()
+        {
+            while (keepQueueListening)
+            {
+                try
+                {
+                    // plug in RMQ listener here
+                    System.Threading.Thread.Sleep(1000);
+                }
+                catch (Exception ex)
+                {
+                    IEventLogRepository eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
+                    eventLogRepository.WriteErrorLog("Error in Internal Service Queue Listener", ex);
+                }
+            }
         }
     }
 }

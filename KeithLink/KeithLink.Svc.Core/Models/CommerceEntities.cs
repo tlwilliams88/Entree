@@ -14297,6 +14297,26 @@ public partial class LineItem : ICommerceEntity
 
 
 	/// <summary>
+    /// Gets or sets the SubstitueItemNumber property.
+    /// </summary>
+    /// <value>
+    /// The SubstitueItemNumber property from the property collection.
+    /// </value>
+	public virtual string SubstitueItemNumber
+	{
+		get
+		{
+			return this._commerceEntity.GetPropertyValue(PropertyName.SubstitueItemNumber) as string;
+		}
+
+		set
+		{
+			this._commerceEntity.SetPropertyValue(PropertyName.SubstitueItemNumber, value);
+		}
+	}
+
+
+	/// <summary>
     /// Gets or sets the ProductCategory property.
     /// </summary>
     /// <value>
@@ -14833,6 +14853,12 @@ public partial class LineItem : ICommerceEntity
         /// Constant for accessing Category property.
         /// </summary>
 		public const string Category = "Category";
+
+
+		/// <summary>
+        /// Constant for accessing SubstitueItemNumber property.
+        /// </summary>
+		public const string SubstitueItemNumber = "SubstitueItemNumber";
 
 
 		/// <summary>
