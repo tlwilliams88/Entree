@@ -101,5 +101,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.Notes = note.First().Note;
 			});
 		}
-	}
+
+
+        
+		public Core.Models.Orders.Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems)
+        {
+            return this.ReadOrder(user, catalogInfo, order.OrderNumber); // TODO update and return updated order
+        }
+
+        public NewOrderReturn SubmitChangeOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber)
+        {
+            return new NewOrderReturn() { OrderNumber = "123stubbed" };
+        }
+    }
 }

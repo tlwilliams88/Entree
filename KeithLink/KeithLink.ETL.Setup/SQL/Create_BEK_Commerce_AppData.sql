@@ -800,3 +800,54 @@ USE [master]
 GO
 ALTER DATABASE [BEK_Commerce_AppData] SET  READ_WRITE 
 GO
+
+
+
+-- Order History Schema --
+create schema Orders
+go
+
+create table Orders.OrderHistoryHeader (
+	OrderSystem			CHAR(1),
+	BranchId			CHAR(3)	NOT NULL,
+	CustomerNumber		CHAR(6),
+	InvoiceNumber		CHAR(8)	NOT NULL,
+	DeliveryDate		DATE,
+	PONumber			VARCHAR(20),
+	ControlNumber		CHAR(7),
+	OrderStatus			CHAR(1),
+	FutureItems			BIT,
+	ErrorStatus			BIT,
+	RouteNumber			CHAR(3),
+	StopNumber			CHAR(3)
+)
+go
+
+alter table Orders.OrderHistoryHeader add constraint [pkOrderHistoryHeader] primary key (
+	BranchId,
+	InvoiceNumber
+)
+go
+
+create table Orders.OrderHistoryDetail (
+	BranchId					CHAR(3)	NOT NULL,
+	InvoiceNumber				CHAR(8)	NOT NULL,
+	ItemNumber					CHAR(6),
+	LineNumber					INT		NOT NULL,
+	OrderQuantity				INT,
+	ShippedQuatity				INT,
+	UnitOfMeasure				CHAR(1),
+	CatchWeight					BIT,
+	ItemDeleted					BIT,
+	SubbedOriginalItemNumber	CHAR(6),
+	ReplacedOriginalItemNumber	CHAR(6),
+	ItemStatus					CHAR(1),
+	TotalShippedWeight			DECIMAL(7,2)
+)
+go
+
+alter table Orders.OrderHistoryDetail add constraint [pkOrderHistoryDetal] primary key (
+	Branchid,
+	InvoiceNumber,
+	LineNumber
+)
