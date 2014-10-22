@@ -26,8 +26,8 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             CommerceModelSearch search = ((CommerceServer.Foundation.CommerceModelSearch)(queryOperation.SearchCriteria));
             if (search.Model.Properties.Count == 1 && search.Model.Properties[0].Key == "OrganizationType")
             { // no search criteria, so override CS behavior to load all orgs
-                CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources =
-                    new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
+                CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
+
                 String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
                 //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
                 string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), i => i.Value));

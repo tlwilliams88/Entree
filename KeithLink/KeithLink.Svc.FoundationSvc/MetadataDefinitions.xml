@@ -2457,6 +2457,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
 							<PropertyMapping property="Category" csProperty="Category" />
               <PropertyMapping property="SubstitueItemNumber" csProperty="SubstitueItemNumber" />
+              <PropertyMapping property="MainFrameStatus" csProperty="MainFrameStatus" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2525,6 +2526,9 @@ This file contains the Metadata Repository
           <Property name="SubstitueItemNumber" dataType="String">
               <DisplayName value="SubstitueItemNumber"/>
 					</Property>
+          <Property name="MainFrameStatus" dataType="String">
+            <DisplayName value="MainFrameStatus"/>
+          </Property>
 
 				</Properties>
 
