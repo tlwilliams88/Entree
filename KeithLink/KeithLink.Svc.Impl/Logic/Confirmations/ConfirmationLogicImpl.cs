@@ -66,8 +66,6 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             ConfirmationFile confirmation = ParseFile(file);
             string serializedConfirmation = SerializeConfirmation(confirmation);
 
-            _confirmationQueue.SetQueuePath((int)ConfirmationQueueLocation.Default);
-
             _confirmationQueue.PublishToQueue(serializedConfirmation);
         }
 

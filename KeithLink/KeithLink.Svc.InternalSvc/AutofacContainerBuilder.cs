@@ -1,27 +1,29 @@
 ﻿using Autofac;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
+using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Repository.Confirmations;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.Profile.Cache;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using KeithLink.Svc.Core.Interface.InternalCatalog;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Logic.Profile;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -61,6 +63,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+            builder.RegisterType<OrderUpdateQueueRepositoryImpl>().As<IOrderHistoryQueueRepository>();
+            builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IConfirmationQueueRepository>();
+
             return builder.Build();
         }
 

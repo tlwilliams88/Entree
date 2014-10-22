@@ -135,14 +135,17 @@
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
+    <Compile Include="Interface\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderHistoryQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryRepository.cs" />
     <Compile Include="Interface\Orders\IOrderLogic.cs" />
     <Compile Include="Interface\Common\IQueueRepository.cs" />
     <Compile Include="Interface\Common\ISocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IOrderQueueLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderQueueRepository.cs" />
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
     <Compile Include="Interface\Orders\IBasketLogic.cs" />
     <Compile Include="Interface\Profile\ICustomerCacheRepository.cs" />

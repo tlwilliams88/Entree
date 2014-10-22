@@ -1,5 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
-using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using RabbitMQ.Client;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace KeithLink.Svc.Impl.Repository.Orders {
-    public class OrderQueueRepositoryImpl : IQueueRepository {
+    public class OrderQueueRepositoryImpl : IOrderQueueRepository {
         #region attributes
         private OrderQueueLocation _queuePath;
         #endregion

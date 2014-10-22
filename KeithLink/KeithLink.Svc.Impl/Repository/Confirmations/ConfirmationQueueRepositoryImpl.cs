@@ -1,86 +1,38 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Models.Common;
+using KeithLink.Svc.Core.Models.Confirmations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Models.Common;
-using KeithLink.Svc.Core.Models.Confirmations;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
 namespace KeithLink.Svc.Impl.Repository.Confirmations
 {
-    public class ConfirmationQueueRepositoryImpl : IQueueRepository
+    public class ConfirmationQueueRepositoryImpl : IConfirmationQueueRepository
     {
-        #region attributes
-
-        private ConfirmationQueueLocation _queuePath;
-
-        #endregion
-
-        #region constructor
-
-        public ConfirmationQueueRepositoryImpl()
-        {
-            _queuePath = ConfirmationQueueLocation.Default;
-        }
-
-        #endregion
-
         #region methods
-
-        public string ConsumeFromQueue()
-        {
-            ConnectionFactory connectionFactory = new ConnectionFactory()
-            {
+        public string ConsumeFromQueue() {
+            ConnectionFactory connectionFactory = new ConnectionFactory() {
                 HostName = Configuration.RabbitMQServer,
                 UserName = Configuration.RabbitMQUserNameConsumer,
                 Password = Configuration.RabbitMQUserPasswordConsumer,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation
             };
 
-            using (IConnection connection = connectionFactory.CreateConnection())
-            {
-                using (IModel model = connection.CreateModel())
-                {
-                    BasicGetResult result = model.BasicGet(GetSelectedQueue(), true);
+            using (IConnection connection = connectionFactory.CreateConnection()) {
+                using (IModel model = connection.CreateModel()) {
+                    BasicGetResult result = model.BasicGet(Configuration.RabbitMQQueueConfirmation, true);
                     
-                    if (result == null)
-                    {
+                    if (result == null) {
                         return null;
-                    }
-                    else
-                    {
+                    } else {
                         return Encoding.UTF8.GetString(result.Body);
                     }
                 }
-            }
-
-        }
-
-        /// <summary>
-        /// Returns the selected exchange. This is future proofed to support the possibility of different exchanges.
-        /// </summary>
-        /// <returns></returns>
-        private string GetSelectedExchange()
-        {
-            return Configuration.RabbitMQExchangeConfirmation;
-        }
-
-        /// <summary>
-        /// Returns the selected queue. This is setup to support the possibility of different queues in the future.
-        /// </summary>
-        /// <returns></returns>
-        private string GetSelectedQueue()
-        {
-            switch (_queuePath)
-            {
-                case ConfirmationQueueLocation.Default:
-                    return Configuration.RabbitMQQueueConfirmation;
-                default:
-                    return Configuration.RabbitMQQueueConfirmation;
             }
         }
 
@@ -88,41 +40,25 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         /// Publish data to RabbitMQ
         /// </summary>
         /// <param name="item"></param>
-        public void PublishToQueue(string item)
-        {
-            ConnectionFactory connectionFactory = new ConnectionFactory()
-            {
+        public void PublishToQueue(string item) {
+            ConnectionFactory connectionFactory = new ConnectionFactory() {
                 HostName = Configuration.RabbitMQServer,
                 UserName = Configuration.RabbitMQUserNamePublisher,
                 Password = Configuration.RabbitMQUserPasswordPublisher,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation
             };
 
-            using (IConnection connection = connectionFactory.CreateConnection())
-            {
-                using (IModel model = connection.CreateModel())
-                {
-                    string exchange = GetSelectedExchange();
-
-                    model.QueueBind(GetSelectedQueue(), exchange, string.Empty, new Dictionary<string, object>());
+            using (IConnection connection = connectionFactory.CreateConnection()) {
+                using (IModel model = connection.CreateModel()) {
+                    model.QueueBind(Configuration.RabbitMQQueueConfirmation, Configuration.RabbitMQExchangeConfirmation, string.Empty, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(exchange, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+                    model.BasicPublish(Configuration.RabbitMQExchangeConfirmation, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
                 }
             }
         }
-
-        /// <summary>
-        /// Set the queue to publish to
-        /// </summary>
-        /// <param name="enumPath"></param>
-        public void SetQueuePath(int enumPath)
-        {
-            _queuePath = (ConfirmationQueueLocation)enumPath;
-        }
         #endregion
-
     }
 }
