@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 
-    function($scope, $state, $stateParams, $filter, Constants, CartService) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'changeOrders',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, changeOrders) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -18,10 +18,11 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
     // $scope.reminderList = reminderList;
+    $scope.changeOrders = changeOrders;
     
-    $scope.goToCart = function(cart) {
-      if (cart) {
-        $state.go('menu.cart.items', {cartId: cart.id, renameCart: null});
+    $scope.goToCart = function(cartId, isChangeOrder) {
+      if (cartId) {
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: null, isChangeOrder: isChangeOrder});
       } else {
         $state.go('menu.cart');
       }
@@ -133,7 +134,7 @@ angular.module('bekApp')
         if (selectedCart.id === $stateParams.cartId) {
           $scope.currentCart = angular.copy(selectedCart);
         } else {
-          $scope.goToCart(selectedCart);
+          $scope.goToCart(selectedCart.id);
         }
       } else {
         $state.go('menu.cart');
@@ -145,7 +146,26 @@ angular.module('bekApp')
 
       $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     }
+
+    function setCurrentChangeOrder() {
+      var selectedChangeOrder = OrderService.getOrderDetails($stateParams.cartId);
+
+      selectedChangeOrder.then(function(order) {
+        if (order) {
+          $scope.currentCart = angular.copy(order);
+        } else {
+          $state.go('menu.cart');
+        }
+      }, function() {
+        $state.go('menu.cart');
+      });
+      
+    }
     
-    setCurrentCart();
+    if ($stateParams.isChangeOrder === 'true') {
+      setCurrentChangeOrder();
+    } else {
+      setCurrentCart();
+    }
 
   }]);

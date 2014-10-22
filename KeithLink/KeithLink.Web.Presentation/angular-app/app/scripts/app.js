@@ -160,6 +160,9 @@ angular
       resolve: {
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
+        }],
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
         }]
         // ,
         // reminderList: ['ListService', function(ListService) {
@@ -168,7 +171,7 @@ angular
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId/?renameCart',
+      url: ':cartId/?renameCart&isChangeOrder',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
