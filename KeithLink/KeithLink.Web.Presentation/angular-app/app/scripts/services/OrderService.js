@@ -36,7 +36,7 @@ angular.module('bekApp')
       resubmitOrder: function(orderNumber) {
         return Order.resubmitOrder({
           orderNumber: orderNumber
-        }).$promise;
+        }, null).$promise;
       },
 
       updateOrder: function(order) {

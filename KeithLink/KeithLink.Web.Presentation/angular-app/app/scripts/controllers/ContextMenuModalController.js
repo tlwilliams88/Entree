@@ -100,12 +100,11 @@ angular.module('bekApp')
     };
     order.lineItems.push(orderItem);
 
-    console.log(order);
-    // OrderService.updateOrder(order).then(function(data) {
-    //   $modalInstance.close(item);
-    //   $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
-    // }, function() {
-    //   $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
-    // });
+    OrderService.updateOrder(order).then(function(data) {
+      $modalInstance.close(item);
+      $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
+    }, function() {
+      $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
+    });
   };
 }]);

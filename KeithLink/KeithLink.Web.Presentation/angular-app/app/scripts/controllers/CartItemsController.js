@@ -41,7 +41,11 @@ angular.module('bekApp')
     };
 
     $scope.sortByPrice = function(item) {
-      return item.each ? item.packageprice : item.caseprice;
+      if (item.price) {
+        return item.price;
+      } else {
+        return item.each ? item.packageprice : item.caseprice;
+      }
     };
 
     $scope.saveCart = function(cart) {
@@ -108,7 +112,11 @@ angular.module('bekApp')
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
-        subtotal +=( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
+        if (item.price) {
+          subtotal += (item.quantity || 0) * item.price;
+        } else {
+          subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
+        }
       });
       return subtotal;
     };
@@ -117,6 +125,24 @@ angular.module('bekApp')
       var idx = $scope.currentCart.items.indexOf(item);
       $scope.currentCart.items.splice(idx, 1);
       $scope.cartForm.$setDirty();
+    };
+
+    /**********
+    CHANGE ORDERS
+    **********/
+    $scope.resubmitOrder = function(order) {
+      var changeOrder = angular.copy(order);
+
+      // delete items if quantity is 0
+      changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
+
+      OrderService.updateOrder(changeOrder).then(function() {
+        OrderService.resubmitOrder(changeOrder.ordernumber).then(function() {
+          $scope.displayMessage('success', 'Successfully submitted change order.');
+        }, function(error) {
+          $scope.displayMessage('error', 'Error re-submitting order.');
+        });
+      });
     };
 
     // INFINITE SCROLL
@@ -164,8 +190,10 @@ angular.module('bekApp')
     
     if ($stateParams.isChangeOrder === 'true') {
       setCurrentChangeOrder();
+      $scope.isChangeOrder = true;
     } else {
       setCurrentCart();
+      $scope.isChangeOrder = false;
     }
 
   }]);
