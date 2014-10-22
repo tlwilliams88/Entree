@@ -122,11 +122,12 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
+      var idx;
       if ($scope.isChangeOrder) {
-        var idx = $scope.currentCart.lineItems.indexOf(item);
+        idx = $scope.currentCart.lineItems.indexOf(item);
         $scope.currentCart.lineItems.splice(idx, 1);
       } else {
-        var idx = $scope.currentCart.items.indexOf(item);
+        idx = $scope.currentCart.items.indexOf(item);
         $scope.currentCart.items.splice(idx, 1);
       }
       $scope.cartForm.$setDirty();

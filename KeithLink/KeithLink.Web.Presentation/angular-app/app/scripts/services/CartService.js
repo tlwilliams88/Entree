@@ -166,7 +166,7 @@ angular.module('bekApp')
               if (cartId === order.ordernumber) {
                 selectedCart = order;
               }
-            })
+            });
           }
         }
         // go to active cart

@@ -40,7 +40,7 @@ angular.module('bekApp')
 
     $scope.revertChanges = function(selectedList) {
       $scope.selectedList = angular.copy(ListService.findListById(selectedList.listid));
-      $scope.selectedList.items.unshift({});
+      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       $scope.sortList('position', false);
@@ -59,7 +59,7 @@ angular.module('bekApp')
     $scope.deleteList = function(listId) {
       ListService.deleteList(listId).then(function(data) {
         $scope.selectedList = angular.copy(ListService.getFavoritesList());
-        $scope.selectedList.items.unshift({});
+        $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
         $scope.displayMessage('success', 'Successfully deleted list.');
       },function(error) {
         $scope.displayMessage('error', 'Error deleting list.');
@@ -89,7 +89,7 @@ angular.module('bekApp')
         $scope.sortOrder = false;
 
         $scope.selectedList = updatedList;
-        $scope.selectedList.items.unshift({});
+        $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
         $scope.listForm.$setPristine();
         $scope.displayMessage('success', 'Successfully saved list ' + list.name + '.');
       }, function(error) {
@@ -444,12 +444,15 @@ angular.module('bekApp')
     // FILTER LIST
     $scope.listSearchTerm = '';
     $scope.search = function (row) {
-      var term = $scope.listSearchTerm.toLowerCase();
+      var term = $scope.listSearchTerm.toLowerCase(),
+        itemnumberMatch,
+        nameMatch,
+        labelMatch;
 
       if (row.itemnumber) {
-        var itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1,
-          nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1,
-          labelMatch = row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);  
+        itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1;
+        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1;
+        labelMatch = row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);  
       }
 
       return !!(itemnumberMatch || nameMatch || labelMatch);
@@ -487,7 +490,7 @@ angular.module('bekApp')
       $scope.itemsToDisplay = itemsPerPage;
       $scope.loadingResults = false;
 
-      $scope.selectedList.items.unshift({});
+      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
     }
     initPage();
 
