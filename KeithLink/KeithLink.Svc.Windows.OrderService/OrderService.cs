@@ -2,6 +2,7 @@
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Confirmations;
@@ -168,18 +169,26 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void MoveConfirmationsToCommerceServiceTick(object state) {
             if (!_confirmationMoverProcessing) {
                 _confirmationMoverProcessing = true;
-
-                try {
-                    //
-                    ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                
+                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                     new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
                                                                     new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
 
-                    confirmationLogic.ProcessQueued();
+                ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
+
+                try {
+                    IS_OrderService.OrderServiceClient internalSvc = new IS_OrderService.OrderServiceClient();
+                    
+                    if ( internalSvc.OrderConfirmation( confirmation ) == false ) {
+                        // If it fails we need to put the message back in the queue
+                        confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default ); 
+                    }
                 } catch (Exception e) {
                     //HandleConfirmationQueueProcessingerror(e);
+                    confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
                 }
 
+                _confirmationMoverProcessing = false;
             }
         }
 
@@ -189,6 +198,7 @@ namespace KeithLink.Svc.Windows.OrderService {
             InitializeConfirmationThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
+            InitializeConfirmationMoverThread();
         }
 
         protected override void OnStop() {

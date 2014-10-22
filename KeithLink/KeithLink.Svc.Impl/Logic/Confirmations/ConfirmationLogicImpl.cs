@@ -71,17 +71,32 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
         /// <param name="file"></param>
         public void ProcessFileData(string[] file)
         {
-            ConfirmationFile confirmation = ParseFile(file);
-            string serializedConfirmation = SerializeConfirmation(confirmation);
-
-            _confirmationQueue.SetQueuePath((int)ConfirmationQueueLocation.Default);
-
-            _confirmationQueue.PublishToQueue(serializedConfirmation);
+            try {
+                ConfirmationFile confirmation = ParseFile( file );
+                PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
+            } catch (Exception e) {
+                throw e;
+            }
         }
 
-        public void ProcessQueued() {
-            // TODO : Add logic to handle queued confirmations
-            
+        /// <summary>
+        /// Publish confirmation file to queue
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="location"></param>
+        public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
+            string serializedConfirmation = SerializeConfirmation( file );
+
+            _confirmationQueue.SetQueuePath( (int) location );
+            _confirmationQueue.PublishToQueue( serializedConfirmation );
+        }
+
+        /// <summary>
+        /// Get the current top Confirmation from the queue
+        /// </summary>
+        /// <returns></returns>
+        public ConfirmationFile GetFileFromQueue() {
+            return DeserializeConfirmation( _confirmationQueue.ConsumeFromQueue() );
         }
 
         /// <summary>
