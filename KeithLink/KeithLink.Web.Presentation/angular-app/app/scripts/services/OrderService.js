@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', 'Order', function ($http, Order) {
+  .factory('OrderService', ['$http', '$filter', 'Order', function ($http, $filter, Order) {
     
     var Service = {
       
@@ -20,6 +20,28 @@ angular.module('bekApp')
         return Order.get({
           orderNumber: orderNumber
         }).$promise;
+      },
+
+      /*************
+      CHANGE ORDERS
+      *************/
+
+      getChangeOrders: function() {
+        return Service.getAllOrders().then(function(orders) {
+          orders[0].ischangeorderallowed = true;
+          return $filter('filter')(orders, {ischangeorderallowed: true});
+        });
+      },
+
+      resubmitOrder: function(orderNumber) {
+        return Order.resubmitOrder({
+          orderNumber: orderNumber
+        }).$promise;
+      },
+
+      updateOrder: function(order) {
+        var params = {};
+        return Order.update(params, order).$promise;
       }
     };
  

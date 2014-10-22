@@ -247,7 +247,7 @@ angular.module('bekApp')
         ********************/
 
         // accepts listId (guid) and an array of items to add
-        // ** Note this does not add duplicate item numbers to a list (10/3/14)
+        // params: allowDuplicates
         addMultipleItems: function(listId, items) {
           
           UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);

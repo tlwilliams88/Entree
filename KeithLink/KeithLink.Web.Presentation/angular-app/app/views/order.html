@@ -27,7 +27,7 @@
         <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
       </td>
       <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
-      <td></td>
+      <td>{{order.status}}</td>
       <td>{{order.deliveryDate}}</td>
       <td>{{order.itemcount}}</td>
       <td class="text-right">{{order.ordertotal | currency}}</td>

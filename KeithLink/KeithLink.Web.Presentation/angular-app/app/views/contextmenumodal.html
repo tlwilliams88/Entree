@@ -24,6 +24,13 @@
     </ul>
   </div>
 
+  <div ng-if="changeOrders.length > 0">
+    <h3>Change Orders</h3>
+    <ul class="list-group">
+      <li ng-repeat="order in changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{order.ordernumber}}</li>
+    </ul>
+  </div>
+
 </div>
 <div class="modal-footer">
     <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>

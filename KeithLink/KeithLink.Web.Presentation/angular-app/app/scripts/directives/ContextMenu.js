@@ -6,8 +6,12 @@ angular.module('bekApp')
     restrict: 'A',
     scope: true,
     transclude: true,
-    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 
-    function($scope, $state, $q, $modal, toaster, ListService, CartService){
+    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService',
+    function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService){
+
+      /*************
+      LISTS
+      *************/
 
       $scope.addItemToList = function(listId, item) {
         var newItem = angular.copy(item);
@@ -44,6 +48,10 @@ angular.module('bekApp')
         });
       };
 
+      /*************
+      CARTS
+      *************/
+
       $scope.addItemToCart = function(cartId, item) {
         CartService.addItemToCart(cartId, item).then(function(data) {
           $scope.displayedItems.isContextMenuDisplayed = false;
@@ -63,6 +71,29 @@ angular.module('bekApp')
         });
       };
 
+      /*************
+      CHANGE ORDERS
+      *************/
+
+       $scope.addItemToChangeOrder = function(order, item) {
+        var orderItem = {
+          quantity: 1,
+          itemnumber: item.itemnumber
+        };
+        order.lineItems.push(orderItem);
+
+        OrderService.updateOrder(order).then(function(data) {
+          $scope.displayedItems.isContextMenuDisplayed = false;
+          $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
+        });
+      };
+
+      /*************
+      OPEN BEHAVIOR
+      *************/
+
       $scope.closeContextMenu = function() {
         $scope.isContextMenuDisplayed = false;
       };
@@ -71,7 +102,7 @@ angular.module('bekApp')
         return ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 || window.innerWidth <= 991;
       }
 
-      $scope.openContextMenu = function (e, item, lists, carts) {
+      $scope.openContextMenu = function (e, item, lists, carts, changeOrders) {
         if (isTouchDevice()) {
           var modalInstance = $modal.open({
             templateUrl: 'views/contextmenumodal.html',
@@ -86,6 +117,9 @@ angular.module('bekApp')
               },
               item: function() {
                 return item;
+              },
+              changeOrders: function() {
+                return changeOrders;
               }
             }
           });
