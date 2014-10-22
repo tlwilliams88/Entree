@@ -13,6 +13,7 @@ using CommerceServer.Foundation;
 using KeithLink.Svc.FoundationSvc.Interface;
 using System.ServiceModel.Activation;
 using System.Configuration;
+using System.Data.SqlClient;
 
 namespace KeithLink.Svc.FoundationSvc
 {
@@ -30,10 +31,17 @@ namespace KeithLink.Svc.FoundationSvc
 
 			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
+
 			var purchaseOrder = basket.SaveAsOrder();
 
 			return purchaseOrder.TrackingNumber;
 		}
+
+        public string SaveOrderAsChangeOrder(Guid userId, Guid cartId)
+        {
+
+            return string.Empty;
+        }
 	}
 
 	

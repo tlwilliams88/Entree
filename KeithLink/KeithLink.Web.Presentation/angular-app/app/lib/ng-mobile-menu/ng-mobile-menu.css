@@ -23,7 +23,7 @@
   z-index: 5;
 }
 #sp-page {
-  position: absolute;
+  /*position: absolute;*/
   width: 100%;
   min-height: 100%;
   float: left;

@@ -17,5 +17,15 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             }
             return CommerceOperationContext.CurrentInstance.SiteName;
         }
+
+        static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection siteConfig = null;
+        public static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection GetCsConfig()
+        {
+            if (siteConfig == null)
+            {
+                siteConfig = new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
+            }
+            return siteConfig;
+        }
     }
 }

@@ -64,7 +64,7 @@
         </div>
         <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-confirm-click="You have reminder items you haven’t ordered. Would you like to order from your reminder list before submitting your order?" confirmed-click="goToReminderList(currentCart.id)" cancel-click="submitOrder(currentCart)" >Submit Order</button>
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
 
@@ -114,7 +114,7 @@
     </div>
   </div>
 
-  <!-- <div ng-if="reminderList && reminderList.items.length > 0" class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs">
+  <div ng-if="reminderList && reminderList.items.length > 0" class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs">
     <h4 class="no-margin">Reminder Items</h4>
     <div class="reminder-items__table">
       <table class="table table-border table-striped-rows">
@@ -122,11 +122,11 @@
           <tr>
             <th>Item #</th>
             <th>Name</th>
-            <th>PAR</th>
+            <th>Total PAR</th>
             <th># in Cart</th>
           </tr>
         </thead>
-        <tr ng-repeat="item in reminderList.items" ng-class="{ odd : $odd, even: $even }">
+        <tr ng-repeat="item in reminderList.items | meetsMinimumQuantity:currentCart.items" ng-class="{ odd : $odd, even: $even }">
           <td>
             <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
           </td>
@@ -134,15 +134,15 @@
             {{item.name}}
           </td>
           <td>
-            {{item.parlevel}}
+            {{item.totalPar}}
           </td>
           <td>
-            {{calculateReminderItemsInCart(item)}}
+            {{item.qtyInCart}}
           </td>
         </tr>
       </table>
     </div>
-  </div> -->
+  </div>
 </div>
 
 <div class="row sub-content">

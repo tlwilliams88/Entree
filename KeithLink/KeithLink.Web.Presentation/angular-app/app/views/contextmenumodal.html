@@ -3,8 +3,9 @@
 </div>
 <div class="modal-body">
 
-  <ul class="list-group" ng-show="!item.favorite" ng-click="addItemToFavorites(item)">
-    <li class="hand list-group-item"><span class="large-icon" favorite-icons></span>Favorites</li>
+  <ul class="list-group">
+    <li class="hand list-group-item" ng-if="!item.favorite" ng-click="addItemToFavorites(item)"><span class="large-icon" favorite-icons></span>Favorites</li>
+    <li class="hand list-group-item" ng-click="addItemToReminderList(item)">Reminders</li>
   </ul>
 
   <div ng-if="item.nonstock !== 'Y'">
@@ -18,7 +19,7 @@
   <div>
     <h3>Lists</h3>
     <ul class="list-group">
-      <li ng-repeat="list in lists | sortLists" ng-if="!list.isReadOnly" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
+      <li ng-repeat="list in lists | sortLists" ng-if="!list.read_only && !list.isSpecialList" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{list.name}}</li>
       <li class="hand list-group-item" ng-click="createListWithItem(item)">Create New List...</li>
     </ul>
   </div>

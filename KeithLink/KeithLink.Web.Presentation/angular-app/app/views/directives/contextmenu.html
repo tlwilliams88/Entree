@@ -9,10 +9,12 @@
     <div class="btn-group-vertical">
 
       <button type="button" favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
+
+      <button type="button" ng-click="addItemToReminderList(item)" class="btn btn-default text-uppercase">To Reminders</button>
       
       <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
         <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-          Add to Cart<span class="pull-right icon-arrow-right6"></span>
+          <span class="pull-right icon-arrow-right6"></span>Add to Cart
         </button>
         <ul class="dropdown-menu" role="menu">
           <div class="btn-group-vertical">
@@ -24,11 +26,11 @@
 
       <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
         <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-          Add to List <span class="pull-right icon-arrow-right6"></span>
+          <span class="pull-right icon-arrow-right6"></span>Add to List
         </button>
         <ul class="dropdown-menu" role="menu">
           <div class="btn-group-vertical">
-            <button ng-repeat="list in lists | sortLists" ng-if="!list.isReadOnly" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+            <button ng-repeat="list in lists | sortLists" ng-if="!list.read_only && !list.isSpecialList" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
             <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
           </div>
         </ul>

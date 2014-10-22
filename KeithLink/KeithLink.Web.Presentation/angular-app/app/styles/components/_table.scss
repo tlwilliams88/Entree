@@ -20,7 +20,6 @@ ng-class="{ odd : $odd, even: $even }"
 }
 
 .table-border {
-  // border: 1px solid $color-border;
   > thead:first-child > tr:first-child > th {
     border-top: 1px solid $color-border;
   }
@@ -34,7 +33,8 @@ ng-class="{ odd : $odd, even: $even }"
       border-right: 1px solid $color-border;
     }
   }
-  > tbody, > tfoot {
+  > tbody > tr > td, 
+  > tfoot > tr > td {
     border-bottom: 1px solid $color-border;
   }
   > tbody > tr:first-child > td,
