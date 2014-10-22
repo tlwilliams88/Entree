@@ -28,7 +28,8 @@ angular.module('bekApp')
 
       getChangeOrders: function() {
         return Service.getAllOrders().then(function(orders) {
-          orders[0].ischangeorderallowed = true;
+          // orders[0].ischangeorderallowed = true;
+          // orders[0].items = orders[0].lineItems;
           return $filter('filter')(orders, {ischangeorderallowed: true});
         });
       },

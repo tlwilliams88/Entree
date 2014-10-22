@@ -154,11 +154,20 @@ angular.module('bekApp')
         });
       },
 
-      // gets the default selected cart
-      getSelectedCart: function(cartId) {
+      // gets the default selected cart or change order
+      getSelectedCart: function(cartId, changeOrders) {
         var selectedCart;
         if (cartId) {
           selectedCart = Service.findCartById(cartId);
+
+          // find change order
+          if (!selectedCart) {
+            angular.forEach(changeOrders, function(order) {
+              if (cartId === order.ordernumber) {
+                selectedCart = order;
+              }
+            })
+          }
         }
         // go to active cart
         if (!selectedCart) {

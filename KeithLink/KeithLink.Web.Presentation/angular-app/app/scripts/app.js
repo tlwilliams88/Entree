@@ -191,6 +191,9 @@ angular
         }],
         carts: ['CartService', function(CartService) {
           return CartService.getAllCarts();
+        }],
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
         }]
       }
     })
