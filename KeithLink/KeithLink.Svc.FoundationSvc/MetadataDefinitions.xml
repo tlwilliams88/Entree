@@ -2113,7 +2113,8 @@ This file contains the Metadata Repository
               <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
 							<PropertyMapping property="Shared" csProperty="Shared"/>
 							<PropertyMapping property="ListType" csProperty="ListType"/>
-							
+              <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
+
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2177,6 +2178,9 @@ This file contains the Metadata Repository
 					<Property name="BranchId" dataType="String" >
 						<DisplayName value="BranchId"/>
 					</Property>
+          <Property name="MasterNumber" dataType="String" >
+            <DisplayName value="MasterNumber"/>
+          </Property>
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
 					</Property>
