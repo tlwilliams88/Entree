@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'reminderList',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, reminderList) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 
+    function($scope, $state, $stateParams, $filter, Constants, CartService) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,7 +17,7 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    $scope.reminderList = reminderList;
+    // $scope.reminderList = reminderList;
     
     $scope.goToCart = function(cart) {
       if (cart) {

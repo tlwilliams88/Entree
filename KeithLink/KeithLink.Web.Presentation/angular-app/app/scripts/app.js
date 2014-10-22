@@ -160,10 +160,11 @@ angular
       resolve: {
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
-        }],
-        reminderList: ['ListService', function(ListService) {
-          return ListService.getReminderList();
         }]
+        // ,
+        // reminderList: ['ListService', function(ListService) {
+        //   return ListService.getReminderList();
+        // }]
       }
     })
     .state('menu.cart.items', {
