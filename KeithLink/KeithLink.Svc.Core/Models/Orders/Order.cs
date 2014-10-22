@@ -40,7 +40,10 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "ischangeorderallowed")]
         public bool IsCangeOrderAllowed { get; set; }
 
-		[DataMember(Name ="LineItems")]
+		[DataMember(Name ="items")]
 		public List<OrderLine> LineItems { get; set; }
+
+        [DataMember(Name = "CommerceId")]
+        public Guid CommerceId { get; set; }
 	}
 }
