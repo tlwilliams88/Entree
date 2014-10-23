@@ -96,7 +96,13 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            return DeserializeConfirmation( _confirmationQueue.ConsumeFromQueue() );
+            string fileFromQueue = _confirmationQueue.ConsumeFromQueue();
+            if (fileFromQueue == null)
+                return null; // a null return indicates no message on queue
+            else if (String.IsNullOrEmpty(fileFromQueue))
+                throw new ApplicationException("Empty file from Confirmation Queue");
+
+            return DeserializeConfirmation( fileFromQueue );
         }
 
         /// <summary>

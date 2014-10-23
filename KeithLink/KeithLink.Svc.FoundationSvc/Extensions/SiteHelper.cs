@@ -11,11 +11,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
     {
         public static string GetSiteName()
         {
-            if (CommerceOperationContext.CurrentInstance == null)
-            {
-                throw CommonExceptions.MissingOperationContext();
-            }
-            return CommerceOperationContext.CurrentInstance.SiteName;
+            return System.Configuration.ConfigurationManager.AppSettings["CS_Sitename"];
         }
 
         static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection siteConfig = null;
