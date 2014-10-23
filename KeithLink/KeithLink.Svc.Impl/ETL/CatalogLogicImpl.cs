@@ -164,41 +164,47 @@ namespace KeithLink.Svc.Impl.ETL
 
             foreach (DataRow userRow in users.Rows)
             {
-                Guid userId = userRow.GetGuid("u_user_id");
-                KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId).UserProfiles[0];
-
-                if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
-                    continue;
-
-                List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfile.UserCustomers;
-
-                foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
+                try
                 {
-                    //These list are shared across all users in the same customer, 
-                    //so if the list has already been created for the customer, there is nothing to do
-                    if (processedCustomers.Contains(customerRow.CustomerNumber))
-                        break;
-                    processedCustomers.Add(customerRow.CustomerNumber);
+                    Guid userId = userRow.GetGuid("u_user_id");
+                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId).UserProfiles[0];
 
-                    KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerRow.CustomerNumber, customerRow.CustomerBranch);
+                    if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
+                        continue;
 
-                    //delete contract lists
-                    DeleteContractLists(userProfile, userSelectedContext);
-                    //delete worksheet lists
-                    DeleteWorksheetLists(userProfile, userSelectedContext);
+                    List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfile.UserCustomers;
 
-                    //create contract lists
-                    if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
+                    foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
                     {
-                        CreateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
+                        //These list are shared across all users in the same customer, 
+                        //so if the list has already been created for the customer, there is nothing to do
+                        if (processedCustomers.Contains(customerRow.CustomerNumber))
+                            break;
+                        processedCustomers.Add(customerRow.CustomerNumber);
+
+                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerRow.CustomerNumber, customerRow.CustomerBranch);
+
+                        //delete contract lists
+                        DeleteContractLists(userProfile, userSelectedContext);
+                        //delete worksheet lists
+                        DeleteWorksheetLists(userProfile, userSelectedContext);
+
+                        //create contract lists
+                        if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
+                        {
+                            CreateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
+                        }
+
+                        //worksheet Lists
+                        CreatetWorksheetLists(userProfile, userSelectedContext);
+
                     }
-
-                    //worksheet Lists
-                    CreatetWorksheetLists(userProfile, userSelectedContext);
-
-                    
-
                 }
+                catch (Exception ex)
+                {
+                    eventLog.WriteErrorLog("Catalog Import Error", ex);
+                }
+                
             }
 
             eventLog.WriteInformationLog(string.Format("ImportContractLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
