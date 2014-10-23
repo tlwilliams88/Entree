@@ -111,11 +111,11 @@ namespace KeithLink.Svc.Impl.com.benekeith.ListService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadNotes", ReplyAction="http://tempuri.org/IListServcie/ReadNotesResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListItemModel[]> ReadNotesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadContractList", ReplyAction="http://tempuri.org/IListServcie/ReadContractListResponse")]
-        KeithLink.Svc.Core.Models.Lists.ListModel[] ReadContractList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListByType", ReplyAction="http://tempuri.org/IListServcie/ReadListByTypeResponse")]
+        KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.EF.ListType type);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadContractList", ReplyAction="http://tempuri.org/IListServcie/ReadContractListResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadContractListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListByType", ReplyAction="http://tempuri.org/IListServcie/ReadListByTypeResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.EF.ListType type);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -273,12 +273,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.ListService {
             return base.Channel.ReadNotesAsync(user, catalogInfo);
         }
         
-        public KeithLink.Svc.Core.Models.Lists.ListModel[] ReadContractList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.ReadContractList(user, catalogInfo);
+        public KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.EF.ListType type) {
+            return base.Channel.ReadListByType(user, catalogInfo, type);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadContractListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.ReadContractListAsync(user, catalogInfo);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.EF.ListType type) {
+            return base.Channel.ReadListByTypeAsync(user, catalogInfo, type);
         }
     }
 }

@@ -237,18 +237,19 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="ReadContractList">
+  <xs:element name="ReadListByType">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q37:userprofile" />
         <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q38:UserSelectedContext" />
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" minOccurs="0" name="type" type="q39:ListType" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="ReadContractListResponse">
+  <xs:element name="ReadListByTypeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadContractListResult" nillable="true" type="q39:ArrayOfUserList" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadListByTypeResult" nillable="true" type="q40:ArrayOfUserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

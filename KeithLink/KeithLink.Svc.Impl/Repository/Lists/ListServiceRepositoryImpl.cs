@@ -124,9 +124,9 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		}
 
 
-		public List<ListModel> ReadContractList(UserProfile user, UserSelectedContext catalogInfo)
+		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
 		{
-			return serviceClient.ReadContractList(user, catalogInfo).ToList();
+			return serviceClient.ReadListByType(user, catalogInfo, type).ToList();
 		}
 	}
 }

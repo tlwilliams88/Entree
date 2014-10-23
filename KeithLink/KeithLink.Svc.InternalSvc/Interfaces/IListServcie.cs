@@ -48,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		[OperationContract]
 		List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 		[OperationContract]
-		List<ListModel> ReadContractList(UserProfile user, UserSelectedContext catalogInfo);
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
 		
 	}
 }

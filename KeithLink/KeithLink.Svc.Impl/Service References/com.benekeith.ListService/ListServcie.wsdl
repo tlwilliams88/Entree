@@ -107,11 +107,11 @@
   <wsdl:message name="IListServcie_ReadNotes_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadNotesResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadContractList_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadContractList" />
+  <wsdl:message name="IListServcie_ReadListByType_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadListByType" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadContractList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadContractListResponse" />
+  <wsdl:message name="IListServcie_ReadListByType_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadListByTypeResponse" />
   </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="ReadUserList">
@@ -178,9 +178,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadNotes" message="tns:IListServcie_ReadNotes_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadNotesResponse" message="tns:IListServcie_ReadNotes_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ReadContractList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadContractList" message="tns:IListServcie_ReadContractList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadContractListResponse" message="tns:IListServcie_ReadContractList_OutputMessage" />
+    <wsdl:operation name="ReadListByType">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadListByType" message="tns:IListServcie_ReadListByType_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListByTypeResponse" message="tns:IListServcie_ReadListByType_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -329,8 +329,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ReadContractList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadContractList" style="document" />
+    <wsdl:operation name="ReadListByType">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadListByType" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

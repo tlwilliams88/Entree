@@ -42,8 +42,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 		List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
-
-		List<ListModel> ReadContractList(UserProfile user, UserSelectedContext catalogInfo);
+		
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
 		
 	}
 }

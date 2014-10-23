@@ -11,6 +11,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
       <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isworksheet" type="xs:boolean" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfListItem" />
       <xs:element minOccurs="0" name="listid" type="xs:long" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />

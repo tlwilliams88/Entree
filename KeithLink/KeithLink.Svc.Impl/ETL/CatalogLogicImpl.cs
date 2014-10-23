@@ -671,7 +671,7 @@ namespace KeithLink.Svc.Impl.ETL
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
         {
             List<ListModel> userLists = new List<ListModel>();
-			List<ListModel> lists = listLogic.ReadContractList(userProfile, catalogInfo);
+			List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Contract);
 			
 
             foreach (ListModel userList in lists)

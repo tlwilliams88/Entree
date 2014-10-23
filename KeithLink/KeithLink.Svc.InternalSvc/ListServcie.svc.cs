@@ -109,9 +109,9 @@ namespace KeithLink.Svc.InternalSvc
 		}
 
 
-		public List<ListModel> ReadContractList(UserProfile user, UserSelectedContext catalogInfo)
+		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
 		{
-			return listLogic.ReadContractList(user, catalogInfo);
+			return listLogic.ReadListByType(user, catalogInfo, type);
 		}
 	}
 }
