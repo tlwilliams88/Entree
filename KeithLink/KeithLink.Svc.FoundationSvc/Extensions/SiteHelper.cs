@@ -27,5 +27,15 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             }
             return siteConfig;
         }
+
+        static CommerceServer.Core.Runtime.Orders.OrderContext orderContext = null;
+        public static CommerceServer.Core.Runtime.Orders.OrderContext GetOrderContext()
+        {
+            if (orderContext == null)
+            {
+                orderContext = CommerceServer.Core.Runtime.Orders.OrderContext.Create(GetSiteName());
+            }
+            return orderContext;
+        }
     }
 }

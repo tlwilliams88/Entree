@@ -335,6 +335,9 @@
     <None Include="Service References\com.benekeith.FoundationService\FoundationService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>

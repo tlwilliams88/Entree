@@ -9,7 +9,7 @@ This file contains the Metadata Repository
       <ClaimsetDefinition name="Everyone">
         <!-- Leave empty -->
       </ClaimsetDefinition>
-
+pu
       <ClaimsetDefinition name="CatalogViewer">
         <!-- Leave empty -->
       </ClaimsetDefinition>

@@ -31,11 +31,11 @@ namespace KeithLink.Svc.FoundationSvc
 		CommerceServer.Core.Catalog.CatalogContext catContext;
 		OrderContext orderCtx;
 
-		public PipelineHelper(String siteName, OrderContext orderContext)
+		public PipelineHelper(String siteName)
 		{
-			resources = new CommerceResourceCollection(siteName);
+			resources = Extensions.SiteHelper.GetCsConfig();
 			webSiteName = siteName;
-			orderCtx = orderContext;
+            orderCtx = Extensions.SiteHelper.GetOrderContext();
 		}
 
 		public String SiteName

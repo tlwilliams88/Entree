@@ -12,5 +12,18 @@ namespace KeithLink.Svc.FoundationSvc.Interface
 	{
 		[OperationContract]
 		string SaveCartAsOrder(Guid userId, Guid cartId);
+            
+		[OperationContract]
+        string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
+
+        [OperationContract]
+        string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
 	}
+
+    public class PurchaseOrderLineItemUpdate
+    {
+        public string ItemNumber { get; set; }
+        public string Status { get; set; }
+        public int Quantity { get; set; }
+    }
 }
