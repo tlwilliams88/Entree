@@ -94,10 +94,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elasticsearch.Net.1.0.1\lib\Elasticsearch.Net.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -181,6 +183,10 @@
     <Compile Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.cs" />
     <Compile Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.Designer.cs">
       <DependentUpon>201410231630515_Make ListItem ItemNumber Required.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.cs" />
+    <Compile Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.Designer.cs">
+      <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -532,6 +538,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.resx">
       <DependentUpon>201410231630515_Make ListItem ItemNumber Required.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.resx">
+      <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
