@@ -78,7 +78,7 @@
           {{order.ordertotal | currency}}
         </div>
         <div class="col-md-3 table-col">
-          Status...?
+          {{order.status}}
         </div>
         <div class="col-md-2 table-col">
           {{order.invoicestatus || 'N/A'}}
@@ -129,7 +129,7 @@
             Status
           </div>
           <div class="item-value">
-            Status...?
+            {{order.status}}
           </div>
         </div>
         <div class="details-item">

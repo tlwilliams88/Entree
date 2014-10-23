@@ -6,12 +6,12 @@ angular.module('bekApp')
 
   $scope.order = order;
 
-  CartService.getShipDates().then(function() {
-    var shipDateObject = CartService.findCutoffDate(order);
-    if (shipDateObject) {
-      $scope.cutoffdate = shipDateObject.cutoffdatetime;
-    }
-  });
+  // CartService.getShipDates().then(function() {
+  //   var shipDateObject = CartService.findCutoffDate(order);
+  //   if (shipDateObject) {
+  //     $scope.cutoffdate = shipDateObject.cutoffdatetime;
+  //   }
+  // });
 
   $scope.cancelOrder = function() {
     console.log('hit cancel order endpoint');

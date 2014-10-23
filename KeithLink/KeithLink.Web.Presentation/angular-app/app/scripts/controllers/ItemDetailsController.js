@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'ListService', 'CartService', 
-    function ($scope, $modal, item, ProductService, ListService, CartService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'ListService', 'CartService', 'OrderService',
+    function ($scope, $modal, item, ProductService, ListService, CartService, OrderService) {
     
     var originalItemNotes = item.notes;
 
@@ -28,6 +28,10 @@ angular.module('bekApp')
 
     $scope.carts = CartService.carts;
     CartService.getCartHeaders();
+
+    OrderService.getChangeOrders().then(function(orders) {
+      $scope.changeOrders = orders;
+    });
 
     $scope.canOrderProduct = function(item) {
       return ProductService.canOrderProduct(item);
