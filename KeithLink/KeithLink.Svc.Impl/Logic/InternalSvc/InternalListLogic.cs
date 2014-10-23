@@ -193,6 +193,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			foreach (var updateItem in userList.Items)
 			{
+				if (string.IsNullOrEmpty(updateItem.ItemNumber))
+					continue;
+
 				if (updateItem.ListItemId != 0)
 				{
 					var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
