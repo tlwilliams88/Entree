@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', 'toaster', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, toaster, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, UserProfileService, UtilityService, List) {
 
       var filter = $filter('filter');
 
@@ -19,28 +19,32 @@ angular.module('bekApp')
         });
       }
 
-      // function isFavoritesList(listName) {
-      //   return listName === 'Favorites';
-      // }
+      function isFavoritesList(listName) {
+        return listName === 'Favorites';
+      }
 
-      // function isReminderList(listName) {
-      //   return listName === 'Reminders';
-      // }
+      function isReminderList(listName) {
+        return listName === 'Reminders';
+      }
 
       // determine editing abilities for 'special' lists
       // you cannot rename or delete special lists
       // they also have custom fields for fields cannot be edited (label, par, etc.)
       function flagSpecialLists(list) {
         
-        if (list.isfavorites) {
+        if (isFavoritesList(list.name)) {
+          list.isFavoritesList = true;
           list.cannotEditLabels = true;
           list.cannotEditPar = true;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         
-        } else if (list.isreminder) {
+        } else if (isReminderList(list.name)) {
+          list.isReminderList = true;
           list.cannotEditLabels = true;
           list.cannotEditPar = false;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         }
       }
       function flagLists() {
@@ -296,72 +300,72 @@ angular.module('bekApp')
         FAVORITES LIST
         ********************/
 
-        // getFavoritesList: function() {
-        //   return filter(Service.lists, {isFavoritesList: true})[0];
-        // },
+        getFavoritesList: function() {
+          return filter(Service.lists, {isFavoritesList: true})[0];
+        },
 
-        // // accepts item object
-        // // returns new item list id
-        // addItemToFavorites: function(item) {
-        //   var newItem = item,
-        //     favoritesList = Service.getFavoritesList(),
-        //     newListItemId;
+        // accepts item object
+        // returns new item list id
+        addItemToFavorites: function(item) {
+          var newItem = item,
+            favoritesList = Service.getFavoritesList(),
+            newListItemId;
           
-        //   if (!item.favorite) {
-        //     return Service.addItem(favoritesList.listid, item).then(function(listitemid) {
-        //       newItem.favorite = true;
+          if (!item.favorite) {
+            return Service.addItem(favoritesList.listid, item).then(function(listitemid) {
+              newItem.favorite = true;
               
-        //       // favorite the item in all other lists
-        //       updateListFavorites(newItem.itemnumber, true);
+              // favorite the item in all other lists
+              updateListFavorites(newItem.itemnumber, true);
 
-        //       return listitemid;
-        //     });
-        //   } else {
-        //     var deferred = $q.defer();
-        //     deferred.resolve(item.listitemid);
-        //     return deferred.promise;
-        //   }
-        // },
+              return listitemid;
+            });
+          } else {
+            var deferred = $q.defer();
+            deferred.resolve(item.listitemid);
+            return deferred.promise;
+          }
+        },
 
-        // // accepts item number to remove from favorites list
-        // removeItemFromFavorites: function(itemNumber) {
-        //   var favoritesList = Service.getFavoritesList();
-        //   var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
+        // accepts item number to remove from favorites list
+        removeItemFromFavorites: function(itemNumber) {
+          var favoritesList = Service.getFavoritesList();
+          var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
 
-        //   return Service.deleteItem(favoritesList.listid, itemToDelete.listitemid).then(function() {
-        //     updateListFavorites(itemToDelete.itemnumber, false);
-        //     return;
-        //   });
-        // },
+          return Service.deleteItem(favoritesList.listid, itemToDelete.listitemid).then(function() {
+            updateListFavorites(itemToDelete.itemnumber, false);
+            return;
+          });
+        },
 
-        // addMultipleItemsToFavorites: function(items) {
-        //   var favoritesList = Service.getFavoritesList();
-        //   return Service.addMultipleItems(favoritesList.listid, items).then(function() {
-        //     angular.forEach(items, function(item, index) {
-        //       updateListFavorites(item.itemnumber, true);
-        //     });
-        //   });
-        // },
+        addMultipleItemsToFavorites: function(items) {
+          var favoritesList = Service.getFavoritesList();
+          return Service.addMultipleItems(favoritesList.listid, items).then(function() {
+            angular.forEach(items, function(item, index) {
+              updateListFavorites(item.itemnumber, true);
+            });
+          });
+        },
 
-        // // used to 'unstar mulitple' on list page
-        // // finds the listitemids of the matching items in the favorites list so they can be deleted
-        // removeMultipleItemsFromFavorites: function(items) {
-        //   var favoritesList = Service.getFavoritesList();
+        // used to 'unstar mulitple' on list page
+        // finds the listitemids of the matching items in the favorites list so they can be deleted
+        removeMultipleItemsFromFavorites: function(items) {
+          var favoritesList = Service.getFavoritesList();
 
-        //   var itemsToRemove = [];
-        //   angular.forEach(items, function(item, index) {
-        //     var itemsFound = $filter('filter')(favoritesList.items, {itemnumber: item.itemnumber});
-        //     if (itemsFound.length > 0) {
-        //       itemsToRemove = itemsToRemove.concat(itemsFound);
-        //     }
-        //   });
+          var itemsToRemove = [];
+          angular.forEach(items, function(item, index) {
+            var itemsFound = $filter('filter')(favoritesList.items, {itemnumber: item.itemnumber});
+            if (itemsFound.length > 0) {
+              itemsToRemove = itemsToRemove.concat(itemsFound);
+            }
+          });
 
-        //   return Service.deleteMultipleItems(favoritesList.listid, itemsToRemove).then(function() {
-        //     angular.forEach(items, function(item, index) {
-        //       updateListFavorites(item.itemnumber, false);
-        //     });
-        //   });
-        // },
+          return Service.deleteMultipleItems(favoritesList.listid, itemsToRemove).then(function() {
+            angular.forEach(items, function(item, index) {
+              updateListFavorites(item.itemnumber, false);
+            });
+          });
+        },
 
         /********************
         REMINDER/MANDATORY ITEMS LISTS
