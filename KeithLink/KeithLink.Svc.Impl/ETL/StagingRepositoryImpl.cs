@@ -141,6 +141,35 @@ namespace KeithLink.Svc.Impl.ETL
 
             return contractItems;
         }
+        public DataTable ReadWorksheetItems(string customerNumber, string divisionName)
+        {
+            var worksheetItems = new DataTable();
+
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[usp_ECOM_SelectWorksheetItems]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var paramCustomerNumber = cmd.Parameters.Add("CustomerNumber", SqlDbType.VarChar);
+                    var paramDivisionName = cmd.Parameters.Add("DivisionName", SqlDbType.VarChar);
+
+                    paramCustomerNumber.Direction = ParameterDirection.Input;
+                    paramDivisionName.Direction = ParameterDirection.Input;
+
+                    paramCustomerNumber.Value = customerNumber;
+                    paramDivisionName.Value = divisionName;
+
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(worksheetItems);
+                }
+            }
+
+            return worksheetItems;
+        }
+
 
     }
 }
