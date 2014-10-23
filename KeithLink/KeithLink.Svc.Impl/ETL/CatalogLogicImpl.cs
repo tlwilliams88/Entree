@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Impl.ETL
 {
     public class CatalogLogicImpl: KeithLink.Svc.Core.ETL.ICatalogLogic
     {
-        #region " attributes "
+        #region attributes
         private const string Language = "en-US";
 		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
@@ -84,15 +84,13 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IListLogic listLogic;
         private readonly IUserProfileLogic userProfileLogic;
         private readonly IItemNoteLogic noteLogic;
-        
         #endregion
 
-        #region " Methods / Functions "
+        #region methods
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
-            IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
-            IEventLogRepository eventLog, IListLogic listLogic, IUserProfileLogic userProfile,
-            IItemNoteLogic noteLogic)
-        {
+                                IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
+                                IEventLogRepository eventLog, IListLogic listLogic, IUserProfileLogic userProfile,
+                                IItemNoteLogic noteLogic) {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
@@ -102,10 +100,8 @@ namespace KeithLink.Svc.Impl.ETL
             this.noteLogic = noteLogic;
         }
 
-        public void ProcessStagedData()
-        {
-            try
-            {
+        public void ProcessStagedData() {
+            try {
 				var catTask = Task.Factory.StartNew(() => ImportCatalog());
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
@@ -114,21 +110,17 @@ namespace KeithLink.Svc.Impl.ETL
                 
                 Task.WaitAll(catTask, esItemTask, esCatTask, esBrandTask, contractTask);
 				
-            }
-            catch (Exception ex) 
-            {
+            } catch (Exception ex)  {
 				//log
 				eventLog.WriteErrorLog("Catalog Import Error", ex);
             }
         }
 
-        public void ImportCustomers()
-        {
+        public void ImportCustomers() {
 
         }
 
-        public void ImportCatalog()
-        {
+        public void ImportCatalog() {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
 
@@ -150,39 +142,34 @@ namespace KeithLink.Svc.Impl.ETL
             catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
 
 			eventLog.WriteInformationLog(string.Format("ImportCatalog Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+        }
+
+        public void ImportProfiles() {   
 
         }
 
-        public void ImportProfiles()
-        {   
-        }
-
-        public void ImportContractLists()
-        {
+        public void ImportContractLists() {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
 
             var users = stagingRepository.ReadCSUsers();
 			var processedCustomers = new List<string>();
 
-			foreach (DataRow userRow in users.Rows)
-			{
+			foreach (DataRow userRow in users.Rows) {
 				Guid userId = userRow.GetGuid("u_user_id");
 				KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfileLogic.GetUserProfile(userId);
 				if(userProfileLogic.IsInternalAddress(userProfiles.UserProfiles[0].EmailAddress))
 					continue;
 				List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
                 
-				foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
-				{
+				foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers) {
 					//These list are shared across all users in the same customer, 
 					//so if the list has already been created for the customer, there is nothing to do
 					if (processedCustomers.Contains(customerRow.CustomerNumber))
 						break;
 					processedCustomers.Add(customerRow.CustomerNumber);
 
-                    if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
-                    {
+                    if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "") {
 						var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customerRow.CustomerBranch, CustomerId = customerRow.CustomerNumber };
 
                         List<UserList> contractLists = GetContractLists(
@@ -191,22 +178,17 @@ namespace KeithLink.Svc.Impl.ETL
 
                         List<ListItem> contractItems = GetContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId);
 
-                        if (contractLists.Count == 0)
-                        {
+                        if (contractLists.Count == 0) {
                             //create
                             listLogic.CreateList(userId,
                             catalogInfo,
                             CreateUserList(customerRow.ContractId, true, true, contractItems)
                             );
-                        }
-                        else if (contractLists.Count == 1)
-                        {
+                        } else if (contractLists.Count == 1) {
                             //update
                             contractLists[0].Items = contractItems;
                             listLogic.UpdateList((KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0], contractLists[0], catalogInfo);
-                        }
-                        else if (contractLists.Count > 1)
-                        {
+                        } else if (contractLists.Count > 1) {
                             //too many, error
                         }
                     }
@@ -223,10 +205,8 @@ namespace KeithLink.Svc.Impl.ETL
 
 			var branches = stagingRepository.ReadAllBranches();
 
-			Parallel.ForEach(branches.AsEnumerable(), row =>
-			{
-				if (!elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
-				{
+			Parallel.ForEach(branches.AsEnumerable(), row => {
+				if (!elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower())) {
 					elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
 					elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
 				}
@@ -242,15 +222,13 @@ namespace KeithLink.Svc.Impl.ETL
             var itemAllergens = BuildAllergenDictionary(gsData);
 			var proprietaryItems = BuildProprietaryItemDictionary(stagingRepository.ReadProprietaryItems());
 
-            Parallel.ForEach(dataTable.AsEnumerable(), row =>
-            {
+            Parallel.ForEach(dataTable.AsEnumerable(), row => {
                 products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
             });
 
             int totalProcessed = 0;
 			
-            while (totalProcessed < products.Count)
-            {
+            while (totalProcessed < products.Count) {
                 var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
 
                 elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
@@ -261,8 +239,7 @@ namespace KeithLink.Svc.Impl.ETL
 			eventLog.WriteInformationLog(string.Format("ImportItemsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
-        public void ImportCategoriesToElasticSearch()
-        {
+        public void ImportCategoriesToElasticSearch() {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
 
@@ -271,15 +248,11 @@ namespace KeithLink.Svc.Impl.ETL
             var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
 
             //Parent Categories
-            Parallel.ForEach(parentCategories.AsEnumerable(), row =>
-            {
-                categories.Add(new ElasticSearchCategoryUpdate()
-                {
-                    index = new ESCategoryRootData()
-                    {
+            Parallel.ForEach(parentCategories.AsEnumerable(), row => {
+                categories.Add(new ElasticSearchCategoryUpdate() {
+                    index = new ESCategoryRootData() {
                         _id = row.GetString("CategoryId"),
-                        data = new ESCategoryData()
-                        {
+                        data = new ESCategoryData() {
                             parentcategoryid = null,
                             name = row.GetString("CategoryName"),
                             ppicode = row.GetString("PPICode"),
@@ -292,13 +265,10 @@ namespace KeithLink.Svc.Impl.ETL
             //Sub Categories
             Parallel.ForEach(childCategories.AsEnumerable(), row =>
             {
-                categories.Add(new ElasticSearchCategoryUpdate()
-                {
-                    index = new ESCategoryRootData()
-                    {
+                categories.Add(new ElasticSearchCategoryUpdate() {
+                    index = new ESCategoryRootData() {
                         _id = row.GetString("CategoryId"),
-                        data = new ESCategoryData()
-                        {
+                        data = new ESCategoryData() {
                             parentcategoryid = row.GetString("ParentCategoryId"),
                             name = row.GetString("CategoryName"),
                             ppicode = row.GetString("PPICode")
@@ -320,15 +290,11 @@ namespace KeithLink.Svc.Impl.ETL
             var brandsDataTable = stagingRepository.ReadBrandControlLabels();
             var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
 
-            Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>
-                {
-                    brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate() 
-                    {
-                        index = new Models.ElasticSearch.BrandControlLabels.RootData()
-                        {
+            Parallel.ForEach(brandsDataTable.AsEnumerable(), row => {
+                    brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate() {
+                        index = new Models.ElasticSearch.BrandControlLabels.RootData() {
                             _id = row.GetString("ControlLabel"),
-                            data = new Models.ElasticSearch.BrandControlLabels.BrandData()
-                            {
+                            data = new Models.ElasticSearch.BrandControlLabels.BrandData() {
                                 BrandControlLabel = row.GetString("ControlLabel"),
                                 ExtendedDescription = row.GetString("ExtendedDescription")
                             }
@@ -344,14 +310,11 @@ namespace KeithLink.Svc.Impl.ETL
         #endregion
 
         #region Helper Methods
-
-        private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
-        {
+        private MSCommerceCatalogCollection2Catalog[] BuildCatalogs() {
             var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
             var dataTable = stagingRepository.ReadAllBranches();
 
-            foreach (DataRow row in dataTable.Rows)
-            {
+            foreach (DataRow row in dataTable.Rows) {
                 var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = row.GetString("BranchId"), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
                 newCatalog.DisplayName = CreateDisplayName(row.GetString("Description"));
 
@@ -363,14 +326,12 @@ namespace KeithLink.Svc.Impl.ETL
             return catalogs.ToArray();
         }
                 
-        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId)
-        {
+        private MSCommerceCatalogCollection2CatalogProduct[] GenerateProducts(string branchId) {
             var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
             var itemTable = stagingRepository.ReadItems(branchId);
 			var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
 
-            foreach (DataRow row in itemTable.Rows)
-            {
+            foreach (DataRow row in itemTable.Rows) {
 				if(prefixesToExclude.Contains(row.GetString("CategoryId").Substring(0,2)))
 					continue;
 
@@ -384,27 +345,21 @@ namespace KeithLink.Svc.Impl.ETL
             return products.ToArray();
         }
 
-        private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories()
-        {
+        private MSCommerceCatalogCollection2CatalogCategory[] GenerateCategories() {
             List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
             
-
-            
             var dataTable = stagingRepository.ReadParentCategories();
             var childTable = stagingRepository.ReadSubCategories();
 
-            foreach (DataRow cat in dataTable.Rows)
-            {
+            foreach (DataRow cat in dataTable.Rows) {
                 var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("CategoryId"), Definition = "Category" };
                 newSubCat.DisplayName = CreateDisplayName(cat.GetString("CategoryName"));
                 categories.Add(newSubCat);
             }
 
-			foreach (DataRow subCat in childTable.Rows)
-			{
-
+			foreach (DataRow subCat in childTable.Rows) {
 				if (prefixesToExclude.Contains(subCat.GetString("CategoryId").Substring(0, 2)))
 					continue;
 
@@ -412,28 +367,23 @@ namespace KeithLink.Svc.Impl.ETL
 				newSubCat.DisplayName = CreateDisplayName(subCat.GetString("CategoryName"));
 				newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = string.Format("{0}000", subCat.GetString("CategoryId", true).Substring(0, 2)) } };
 				categories.Add(newSubCat);
-
-
 			}
 
             return categories.ToArray();
         }
 
-        private static DisplayName[] CreateDisplayName(string value)
-        {
+        private static DisplayName[] CreateDisplayName(string value) {
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, Dictionary<string, List<string>> proprietaryItems)
-        {
-            var item =  new ItemUpdate()
-            {
-                index = new RootData()
-                {
+        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
+                                                     Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, 
+                                                     Dictionary<string, List<string>> proprietaryItems) {
+            var item =  new ItemUpdate() {
+                index = new RootData() {
                     _id = row.GetString("ItemId"),
                     _index = row.GetString("BranchId").ToLower(),
-                    data = new AdditionalData()
-                    {
+                    data = new AdditionalData() {
                         Brand = row.GetString("Brand"),
                         BrandNotAnalyzed = row.GetString("Brand"),
                         BrandDescription = row.GetString("BrandDescription"),
@@ -510,8 +460,6 @@ namespace KeithLink.Svc.Impl.ETL
             };
 			item.index.data.ItemSpecification = new List<string>();
 
-			
-
 			if (item.index.data.ReplacementItem != "000000")
 				item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);
 			if (item.index.data.ReplacedItem != "000000")
@@ -526,8 +474,7 @@ namespace KeithLink.Svc.Impl.ETL
             return item;
         }
 
-		private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
-		{
+		private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems) {
 			if (!proprietaryItems.ContainsKey(itemNumber))
 				return null;
 
@@ -537,18 +484,15 @@ namespace KeithLink.Svc.Impl.ETL
 				sbCustomerList.AppendFormat("{0} ", customer);
 
 			return sbCustomerList.ToString();
-
 		}
                 
-        private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories)
-        {
+        private List<ESSubCategories> PopulateSubCategories(string parentCategoryId, DataTable childCategories) {
             var subCategories = new List<ESSubCategories>();
 
             var sub = childCategories.AsEnumerable().Where(c => c.Field<string>("ParentCategoryId") == parentCategoryId);
 
             foreach (var category in sub)
-                subCategories.Add(new ESSubCategories()
-                {
+                subCategories.Add(new ESSubCategories() {
                     categoryid = category.Field<string>("CategoryId"),
                     name = category.Field<string>("CategoryName"),
                     ppicode = category.Field<string>("PPICode")
@@ -558,12 +502,10 @@ namespace KeithLink.Svc.Impl.ETL
             return subCategories;
         }
 
-        private Dictionary<string, List<ItemNutrition>> BuildNutritionDictionary(DataSet gsData)
-        {
+        private Dictionary<string, List<ItemNutrition>> BuildNutritionDictionary(DataSet gsData) {
             var itemNutritions = new Dictionary<string, List<ItemNutrition>>();
 
-            foreach (DataRow row in gsData.Tables[0].Rows)
-            {
+            foreach (DataRow row in gsData.Tables[0].Rows) {
                 if (itemNutritions.ContainsKey(row.GetString("gtin")))
                     itemNutritions[row.GetString("gtin")].Add(MapItemNutrition(row));
                 else
@@ -573,12 +515,10 @@ namespace KeithLink.Svc.Impl.ETL
             return itemNutritions;
         }
 
-        private Dictionary<string, List<Diet>> BuildDietDictionary(DataSet gsData)
-        {
+        private Dictionary<string, List<Diet>> BuildDietDictionary(DataSet gsData) {
             var itemDiets = new Dictionary<string, List<Diet>>();
 
-            foreach (DataRow row in gsData.Tables[1].Rows)
-            {
+            foreach (DataRow row in gsData.Tables[1].Rows) {
 				if (row.GetString("Value").Equals("y", StringComparison.CurrentCultureIgnoreCase))
 					if (itemDiets.ContainsKey(row.GetString("gtin")))
 						itemDiets[row.GetString("gtin")].Add(MapDiet(row));
@@ -589,19 +529,14 @@ namespace KeithLink.Svc.Impl.ETL
             return itemDiets;
         }
 
-        private Dictionary<string, Allergen> BuildAllergenDictionary(DataSet gsData)
-        {
+        private Dictionary<string, Allergen> BuildAllergenDictionary(DataSet gsData) {
             var itemAllergen = new Dictionary<string, Allergen>();
 
-            foreach (DataRow row in gsData.Tables[2].Rows)
-            {
-				if (itemAllergen.ContainsKey(row.GetString("gtin")))
-				{
+            foreach (DataRow row in gsData.Tables[2].Rows) {
+				if (itemAllergen.ContainsKey(row.GetString("gtin"))) {
 					var existing = itemAllergen[row.GetString("gtin")];
 					MapAllergen(existing, row);
-				}
-				else
-				{
+				} else {
 					var newItem = new Allergen();
 					MapAllergen(newItem, row);
 					itemAllergen.Add(row.GetString("gtin"), newItem);
@@ -611,27 +546,22 @@ namespace KeithLink.Svc.Impl.ETL
             return itemAllergen;
         }
 
-		private Dictionary<string, List<string>> BuildProprietaryItemDictionary(DataTable propItemData)
-		{
+		private Dictionary<string, List<string>> BuildProprietaryItemDictionary(DataTable propItemData) {
 			var proprietaryItems = new Dictionary<string, List<string>>();
 
-			foreach (DataRow row in propItemData.Rows)
-			{
-				if (proprietaryItems.ContainsKey(row.GetString("ItemNumber")))
-				{
-					proprietaryItems[row.GetString("ItemNumber")].Add(row.GetString("CustomerNumber"));
-				}
-				else
+			foreach (DataRow row in propItemData.Rows) {
+                if (proprietaryItems.ContainsKey(row.GetString("ItemNumber"))) {
+                    proprietaryItems[row.GetString("ItemNumber")].Add(row.GetString("CustomerNumber"));
+                } else { 
 					proprietaryItems.Add(row.GetString("ItemNumber"), new List<string>() { row.GetString("CustomerNumber") });
+                }
 			}
 
 			return proprietaryItems;
 		}
 
-		private static void MapAllergen(Allergen allergen, DataRow row)
-		{
-			switch (row.GetString("LevelOfContainment"))
-			{
+		private static void MapAllergen(Allergen allergen, DataRow row) {
+			switch (row.GetString("LevelOfContainment")) {
 				case "FREE_FROM":
 					allergen.FreeFrom.Add(row.GetString("AllergenTypeDesc"));
 					break;
@@ -644,20 +574,16 @@ namespace KeithLink.Svc.Impl.ETL
 			}
 		}
 
-		//private static Allergen MappAllergen(DataRow row)
-		//{
+		//private static Allergen MappAllergen(DataRow row) {
 		//	return new Allergen() { allergentype = row.GetString("AllergenTypeDesc"), level = row.GetString("LevelOfContainment") };
 		//}
 
-
-        private static Diet MapDiet(DataRow row)
-        {
+        private static Diet MapDiet(DataRow row) {
             return new Diet() { DietType = row.GetString("DietType") };
         }
 
-        private ItemNutrition MapItemNutrition(DataRow subRow)
-        {
-            return new ItemNutrition()
+        private ItemNutrition MapItemNutrition(DataRow subRow) {
+            return new ItemNutrition() 
             {
                 DailyValue = subRow.GetString("DailyValue"),
                 MeasurementTypeId = subRow.GetString("MeasurmentTypeId"),
@@ -667,31 +593,25 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
-        private List<UserList> GetContractLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
-        {
+        private List<UserList> GetContractLists(KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
+                                                KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             List<UserList> userLists = new List<UserList>();
             List<UserList> lists = listLogic.ReadAllLists(
                 userProfile,
                 catalogInfo,
                 true);
 
-            foreach (UserList userList in lists)
-            {
-                if (userList.IsContractList == true)
-                {
+            foreach (UserList userList in lists) {
+                if (userList.IsContractList == true) {
                     //listLogic.DeleteList(userProfile.UserId, userList.ListId);
                     userLists.Add(userList);
                 }
             }
 
             return userLists;
-
         }
 
-        private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
-        {
+        private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items) {
             UserList list = new UserList();
             list.Name = "Contract - " + contractNumber;
             list.Items = items;
@@ -700,18 +620,14 @@ namespace KeithLink.Svc.Impl.ETL
             return list;
         }
 
-       private List<ListItem> GetContractItems(
-            string customerNumber,
-            string branchId,
-            string contractId
-            )
-        {
+       private List<ListItem> GetContractItems(string customerNumber,
+                                               string branchId,
+                                               string contractId ) {
             List<ListItem> contractItems = stagingRepository
                             .ReadContractItems(customerNumber, branchId, contractId)
                             .AsEnumerable()
                             .Select(itemRow =>
-                                new ListItem
-                                {
+                                new ListItem {
                                     ItemNumber = itemRow.GetString("ItemNumber"),
                                     Position = itemRow.GetInt("BidLineNumber"),
                                     Label = itemRow.GetString("CategoryDescription")

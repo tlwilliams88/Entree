@@ -6,9 +6,12 @@
   <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
 </a>
 <!-- Deviated Cost -->
+<a ng-if="item.deviatedcost === 'Y'">
+  <span tooltip="Your agreed upon pricing" class="text-regular icon-cycle"></span>
+</a>
 <!-- Sell Sheet -->
 <a ng-if="item.sellsheet === 'Y'" ng-href="{{'http://multidocs.benekeith.com/SellSheet/GetFile?ItemNumber=' + item.itemnumber}}" target="_blank">
-  <span tooltip="Product information sheet" class="text-regular icon-sellsheet"></span>
+  <span tooltip="Product information sheet" class="text-regular icon-dollar"></span>
 </a>
 <!-- Child Nutrition -->
 <a ng-if="item.childnutrition === 'Y'" ng-href="{{'http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber}}" target="_blank">

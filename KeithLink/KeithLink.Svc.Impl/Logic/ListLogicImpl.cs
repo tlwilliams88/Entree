@@ -266,7 +266,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					listItem.PackagePrice = price.PackagePrice.ToString();
 					listItem.CasePrice = price.CasePrice.ToString();
-
+                    listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 				}
 
 				if (activeCart.Any()) //Is there an active cart? If so get item counts

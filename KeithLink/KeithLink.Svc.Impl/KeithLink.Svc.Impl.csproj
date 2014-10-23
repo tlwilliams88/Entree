@@ -173,6 +173,11 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
+    <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -224,11 +229,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Models\Orders\Schemas\ShippingDateRequest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -261,6 +261,20 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Caching.config" />
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PricingResponse.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xss">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsx">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Presentation.config" />
     <None Include="Properties\Settings.settings">
@@ -282,20 +296,6 @@
     </None>
     <None Include="Models\SiteCatalog\Schemas\PricingRequest.xss">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>PricingResponse.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xss">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsx">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
     </None>
     <None Include="Models\Orders\Schemas\ShippingDateRequest.xsc">
       <DependentUpon>ShippingDateRequest.xsd</DependentUpon>
