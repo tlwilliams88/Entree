@@ -11,7 +11,9 @@ namespace KeithLink.Svc.Windows.OrderService {
         /// The main entry point for the application.
         /// </summary>
         static void Main() {
-
+            bool waitForDebugger = true;
+            while (waitForDebugger) 
+                System.Threading.Thread.Sleep(1000);
             ServiceBase[] ServicesToRun;
                 
             ServicesToRun = new ServiceBase[] { 
