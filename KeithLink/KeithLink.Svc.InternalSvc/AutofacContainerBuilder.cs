@@ -22,6 +22,8 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Lists;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -35,6 +37,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ETLService>();
             builder.RegisterType<PipelineService>(); 
             builder.RegisterType<OrderService>();
+			builder.RegisterType<ListServcie>();
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
@@ -45,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
 			builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
-            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
+			builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
@@ -57,10 +60,26 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+			builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
+			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+			builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
+			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
+			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
+
+
+			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
+
+			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
+
+			
+
+
             return builder.Build();
         }
 

@@ -95,6 +95,7 @@
       <HintPath>..\packages\Newtonsoft.Json.6.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -126,16 +127,22 @@
     <Compile Include="Extensions\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
+    <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\OrderDetailExtension.cs" />
     <Compile Include="Extensions\OrderHeaderExtension.cs" />
     <Compile Include="Extensions\OrderHistoryDetailExtension.cs" />
     <Compile Include="Extensions\OrderHistoryHeaderExtension.cs" />
     <Compile Include="Extensions\OrderSourceExtension.cs" />
+    <Compile Include="Interface\IBaseEFRepository.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
+    <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
+    <Compile Include="Interface\Lists\IListItemRepository.cs" />
+    <Compile Include="Interface\Lists\IListRepository.cs" />
+    <Compile Include="Interface\Lists\IListServiceRepository.cs" />
     <Compile Include="Interface\Lists\IRecentlyViewedListLogic.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\IOrderHistoryRepository.cs" />
@@ -172,6 +179,9 @@
     <Compile Include="Models\Confirmations\ConfirmationFile.cs" />
     <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
     <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
+    <Compile Include="Models\EF\BaseEFModel.cs" />
+    <Compile Include="Models\EF\List.cs" />
+    <Compile Include="Models\EF\ListItem.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryFile.cs" />
@@ -204,7 +214,7 @@
     <Compile Include="Models\Lists\NewItem.cs" />
     <Compile Include="Models\SiteCatalog\Gs1.cs" />
     <Compile Include="Interface\Lists\IListLogic.cs" />
-    <Compile Include="Models\Lists\ListItem.cs" />
+    <Compile Include="Models\Lists\ListItemModel.cs" />
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
@@ -231,9 +241,10 @@
     <Compile Include="Models\Profile\UserProfile.cs" />
     <Compile Include="Models\Profile\UserProfileReturn.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Lists\UserList.cs" />
+    <Compile Include="Models\Lists\ListModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Caching.config" />
     <None Include="Models\CommerceEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

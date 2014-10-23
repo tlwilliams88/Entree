@@ -28,20 +28,20 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPriceLogic priceLogic;
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IQueueRepository queueRepository;
-		private readonly IItemNoteLogic itemNoteLogic;
 		private readonly IBasketLogic basketLogic;
+		private readonly IListServiceRepository listServiceRepository;
         #endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
-			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IItemNoteLogic itemNoteLogic, IBasketLogic basketLogic)
+			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepostory, IBasketLogic basketLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceLogic = priceLogic;
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
-			this.itemNoteLogic = itemNoteLogic;
+			this.listServiceRepository = listServiceRepository;
 			this.basketLogic = basketLogic;
 		}
         #endregion
@@ -127,7 +127,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
+			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
@@ -153,8 +153,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 					
 				}
-				if (note.Any())
-					item.Notes = note.First().Note;
+				if (note != null)
+					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
 
 		}

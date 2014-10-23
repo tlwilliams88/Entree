@@ -22,6 +22,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Repository.Lists;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -45,7 +46,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<PriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
-            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
+            //builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 			builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
@@ -58,15 +59,19 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-			builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
+			//builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
-			builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
+			//builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
             builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+			
+
+			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 
             // Build the container.
             var container = builder.Build();

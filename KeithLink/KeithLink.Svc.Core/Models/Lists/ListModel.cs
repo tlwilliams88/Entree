@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "UserList")]
-    public class UserList
+    public class ListModel
     {
         [DataMember(Name = "listid")]
-        public Guid ListId { get; set; }
+        public long ListId { get; set; }
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -23,8 +23,13 @@ namespace KeithLink.Svc.Core.Models.Lists
         public bool ReadOnly { get; set; }
 
         [DataMember(Name = "items")]
-        public List<ListItem> Items { get; set; }
+        public List<ListItemModel> Items { get; set; }
 
+		[DataMember(Name="isfavorite")]
+		public bool IsFavorite { get; set; }
+
+		[DataMember(Name = "isworksheet")]
+		public bool IsWorksheet { get; set; }
 
 		public string BranchId { get; set; }
 		

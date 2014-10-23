@@ -15,11 +15,11 @@ namespace KeithLink.Svc.Test.Logic
     [TestClass]
     public class ListLogicTests
     {
-		private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), 
-			new StubCatalogRepositoryImpl(), 
-			new PriceRepositoryImpl(), 
-			new ItemNoteLogicImpl(new MockRepository.BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository())),
-			new BasketLogicImpl(new BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository())));
+		//private readonly IListLogic listLogic = new ListLogicImpl(new BasketRepositoryMock(), 
+		//	new StubCatalogRepositoryImpl(), 
+		//	new PriceRepositoryImpl(), 
+		//	new ItemNoteLogicImpl(new MockRepository.BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository())),
+		//	new BasketLogicImpl(new BasketRepositoryMock(), new UserProfileRepository(new EventLogRepositoryImpl(Configuration.ApplicationName), new NoCacheUserProfileCacheRepository())));
 
         [TestMethod]
         public void ReadAllList()

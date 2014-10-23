@@ -12,12 +12,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 {
     public class RecentItemController : BaseController {
         #region attributes
-        private readonly IRecentlyViewedListLogic recentlyViewedLogic;
+        private readonly IListServiceRepository listServiceRepository;
+        
         #endregion
 
         #region ctor
-        public RecentItemController(IRecentlyViewedListLogic recentlyViewedLogic, IUserProfileLogic profileLogic)  : base(profileLogic) {
-			this.recentlyViewedLogic = recentlyViewedLogic;
+        public RecentItemController(IListServiceRepository listServiceRepository,  IUserProfileLogic profileLogic)  : base(profileLogic) {
+			this.listServiceRepository = listServiceRepository;
         }
         #endregion
 
@@ -25,20 +26,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
 		[ApiKeyedRoute("recent/")]
 		public List<RecentItem> Recent() {
-			return recentlyViewedLogic.Read(this.AuthenticatedUser, this.SelectedUserContext);
+			return listServiceRepository.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
 		[HttpPost]
 		[ApiKeyedRoute("recent/{itemnumber}")]
 		public void Recent(string itemnumber) {
-			recentlyViewedLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
+			listServiceRepository.AddRecentlyViewedItem(this.AuthenticatedUser, this.SelectedUserContext, itemnumber);
 		}
-
-		[HttpDelete]
-		[ApiKeyedRoute("recent/")]
-		public void RecentDelete() {
-			recentlyViewedLogic.Clear(this.AuthenticatedUser, this.SelectedUserContext);
-		}
+				
         #endregion
 
     }

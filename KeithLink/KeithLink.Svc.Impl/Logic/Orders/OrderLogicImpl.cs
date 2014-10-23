@@ -18,15 +18,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 	{
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly ICatalogRepository catalogRepository;
-		private readonly IItemNoteLogic itemNoteLogic;
+		private IListServiceRepository listServiceRepository;
 
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogRepository catalogRepository,
-			IItemNoteLogic itemNoteLogic)
+			IListServiceRepository listServiceRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogRepository = catalogRepository;
-			this.itemNoteLogic = itemNoteLogic;
+			this.listServiceRepository = listServiceRepository;
 		}
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo)
@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				return;
 
 			var products = catalogRepository.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList());
-			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
+			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			order.LineItems.ForEach(delegate(OrderLine item)
 			{
@@ -97,8 +97,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.ChildNutrition = prod.ChildNutrition;
 				}
 				
-				if (note.Any())
-					item.Notes = note.First().Note;
+				if (note != null)
+					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
 		}
 	}

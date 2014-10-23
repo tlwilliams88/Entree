@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
-    public class ListItem:BaseProductInfo, IComparable
+    public class ListItemModel:BaseProductInfo, IComparable
     {
         [DataMember(Name = "listitemid")]
-        public Guid ListItemId { get; set; }
+        public long ListItemId { get; set; }
         [DataMember(Name = "label")]
         public string Label { get; set; }
         [DataMember(Name = "parlevel")]
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         
 		public int CompareTo(object obj)
 		{
-			return this.Position.CompareTo(((ListItem)obj).Position);
+			return this.Position.CompareTo(((ListItemModel)obj).Position);
 		}
 	}
 }

@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
-	public interface IRecentlyViewedListLogic
-	{
-		void AddItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
-		void Clear(UserProfile user, UserSelectedContext catalogInfo);
-		List<RecentItem> Read(UserProfile user, UserSelectedContext catalogInfo);
-	}
+	//TODO:DELETE
+	//public interface IRecentlyViewedListLogic
+	//{
+	//	void AddItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
+	//	void Clear(UserProfile user, UserSelectedContext catalogInfo);
+	//	List<RecentItem> Read(UserProfile user, UserSelectedContext catalogInfo);
+	//}
 }
