@@ -89,6 +89,7 @@ angular.module('bekApp')
         $scope.sortOrder = false;
 
         $scope.selectedList = updatedList;
+        $scope.selectedList.isRenaming = false;
         $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
         $scope.listForm.$setPristine();
         $scope.displayMessage('success', 'Successfully saved list ' + list.name + '.');
@@ -100,6 +101,8 @@ angular.module('bekApp')
     $scope.renameList = function (listId, listName) {
       var list = angular.copy($scope.selectedList);
       list.name = listName;
+
+      // $scope.saveList(list);
 
       ListService.updateList(list).then(function(data) {
         $scope.selectedList.isRenaming = false;
@@ -493,9 +496,5 @@ angular.module('bekApp')
       $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
     }
     initPage();
-
-    OrderService.getChangeOrders().then(function(orders) {
-      $scope.changeOrders = orders;
-    });
 
   }]);
