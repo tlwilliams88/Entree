@@ -100,7 +100,7 @@ namespace KeithLink.Svc.InternalSvc
             foreach (var detail in confirmationDetail)
             {
                 // match up to incoming line items to CS line items
-                LineItem orderFormLineItem = lineItems.Where(x => x.Index == detail.RecordNumber).FirstOrDefault();
+                LineItem orderFormLineItem = lineItems.Where(x => x.Index == (detail.RecordNumber-1)).FirstOrDefault();
                 string confirmationStatus = detail.MainFrameStatus.Trim().ToUpper();
                 if (String.IsNullOrEmpty(confirmationStatus))
                 {
