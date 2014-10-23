@@ -1,16 +1,21 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ContextMenuModalController', ['$scope', '$modalInstance', '$state', '$q', 'ListService', 'CartService', 'lists', 'carts', 'item', 
-  function ($scope, $modalInstance, $state, $q, ListService, CartService, lists, carts, item) {
+.controller('ContextMenuModalController', ['$scope', '$modalInstance', '$state', '$q', 'ListService', 'CartService', 'OrderService', 'lists', 'carts', 'changeOrders', 'item', 
+  function ($scope, $modalInstance, $state, $q, ListService, CartService, OrderService, lists, carts, changeOrders, item) {
 
   $scope.lists = lists;
   $scope.carts = carts;
   $scope.item = item;
+  $scope.changeOrders = changeOrders;
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
+
+  /*************
+  LISTS
+  *************/
 
   $scope.addItemToFavorites = function(item) {
     var newItem = angular.copy(item);
@@ -60,6 +65,10 @@ angular.module('bekApp')
     });
   };
 
+  /*************
+  CARTS
+  *************/
+
   $scope.addItemToCart = function(cartId, item) {
     CartService.addItemToCart(cartId, item).then(function(data) {
       $modalInstance.close(item);
@@ -77,6 +86,25 @@ angular.module('bekApp')
       $scope.displayMessage('success', 'Successfully created new cart.');
     }, function() {
       $scope.displayMessage('error', 'Error creating new cart.');
+    });
+  };
+
+  /*************
+  CHANGE ORDERS
+  *************/
+
+  $scope.addItemToChangeOrder = function(order, item) {
+    var orderItem = {
+      quantity: 1,
+      itemnumber: item.itemnumber
+    };
+    order.lineItems.push(orderItem);
+
+    OrderService.updateOrder(order).then(function(data) {
+      $modalInstance.close(item);
+      $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
+    }, function() {
+      $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
     });
   };
 }]);

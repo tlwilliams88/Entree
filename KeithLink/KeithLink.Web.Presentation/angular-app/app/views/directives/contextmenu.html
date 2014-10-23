@@ -1,5 +1,5 @@
 <!-- Context Menu -->
-<span ng-mouseenter="openContextMenu($event, item, lists, carts)" ng-mouseleave="closeContextMenu()">
+<span ng-mouseenter="openContextMenu($event, item, lists, carts, changeOrders)" ng-mouseleave="closeContextMenu()">
   
   <span ng-transclude>
     
@@ -10,7 +10,7 @@
 
       <button type="button" favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
 
-      <button type="button" ng-click="addItemToReminderList(item)" class="btn btn-default text-uppercase">To Reminders</button>
+      <button type="button" ng-repeat="list in lists | sortLists" ng-click="addItemToReminderList(item)" ng-if="list.isSpecialList && !list.isFavoritesList" class="btn btn-default text-uppercase">To {{list.name}}</button>
       
       <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
         <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
@@ -35,6 +35,19 @@
           </div>
         </ul>
       </div>
+
+      <div ng-mouseenter="status.isopen3 = true;" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0">
+        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+          <span class="pull-right icon-arrow-right6"></span>Add to Change Order
+        </button>
+        <ul class="dropdown-menu" role="menu">
+          <div class="btn-group-vertical">
+            <button ng-repeat="list in lists | sortLists" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.ordernumber}}</button>
+          </div>
+        </ul>
+      </div>
+
+
     </div>
   </div>
 </span>

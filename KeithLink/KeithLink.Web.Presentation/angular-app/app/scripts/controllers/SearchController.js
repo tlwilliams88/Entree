@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService', 'BrandService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService, BrandService) {
+    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService', 'BrandService', 'OrderService',
+        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService, BrandService, OrderService) {
             // clear keyword search term at top of the page
             if ($scope.userBar) {
                 $scope.userBar.universalSearchTerm = '';
@@ -537,5 +537,9 @@ angular.module('bekApp')
 
             $scope.carts = CartService.carts;
             CartService.getCartHeaders();
+
+            OrderService.getChangeOrders().then(function(orders) {
+              $scope.changeOrders = orders;
+            });
         }
     ]);

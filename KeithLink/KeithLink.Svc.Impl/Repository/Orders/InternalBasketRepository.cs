@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Data;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
@@ -20,7 +21,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			var context = CommerceServer.Core.Runtime.Orders.OrderContext.Create(Configuration.CSSiteName);
 
 			var basket = context.GetBasket(userId, basketId);
-            basket.TrackingNumber = "12345";
+            
 			var purchaseOrder = basket.SaveAsOrder();
 
 			return purchaseOrder.TrackingNumber;

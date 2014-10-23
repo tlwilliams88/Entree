@@ -2113,7 +2113,8 @@ This file contains the Metadata Repository
               <PropertyMapping property="ReadOnly" csProperty="ReadOnly"/>
 							<PropertyMapping property="Shared" csProperty="Shared"/>
 							<PropertyMapping property="ListType" csProperty="ListType"/>
-							
+              <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
+
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2177,6 +2178,9 @@ This file contains the Metadata Repository
 					<Property name="BranchId" dataType="String" >
 						<DisplayName value="BranchId"/>
 					</Property>
+          <Property name="MasterNumber" dataType="String" >
+            <DisplayName value="MasterNumber"/>
+          </Property>
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
 					</Property>
@@ -2453,6 +2457,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
 							<PropertyMapping property="Category" csProperty="Category" />
               <PropertyMapping property="SubstitueItemNumber" csProperty="SubstitueItemNumber" />
+              <PropertyMapping property="MainFrameStatus" csProperty="MainFrameStatus" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2521,6 +2526,9 @@ This file contains the Metadata Repository
           <Property name="SubstitueItemNumber" dataType="String">
               <DisplayName value="SubstitueItemNumber"/>
 					</Property>
+          <Property name="MainFrameStatus" dataType="String">
+            <DisplayName value="MainFrameStatus"/>
+          </Property>
 
 				</Properties>
 

@@ -55,6 +55,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         public NewOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
         }
+
+        [HttpPost]
+        [ApiKeyedRoute("order/{orderNumber}/changeorder")]
+        public NewOrderReturn SaveOrder(string orderNumber)
+        {
+            return _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+        }
+
+        [HttpPut]
+        [ApiKeyedRoute("order/")]
+        public Order UpdateOrder(Order order, bool deleteOmitted = true)
+        {
+            return _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
+        }
         #endregion
     }
 }

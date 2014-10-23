@@ -53,8 +53,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                         	   u_is_po_required,u_is_power_menu,u_organization_type,u_national_or_regional_account_number,u_parent_organization
                                 FROM UserOrganizationObject uoo inner join OrganizationObject oo on uoo.u_org_id=oo.u_org_id WHERE uoo.u_user_id = '" + item.Value + "'";
 
-                CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources =
-                    new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
+                CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
                 String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
                 //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
                 using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))

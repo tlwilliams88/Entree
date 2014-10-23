@@ -35,5 +35,17 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "price")]
 		public double Price { get; set; }
+
+        [DataMember(Name = "quantityordered")]
+        public int QuantityOrdered { get; set; }
+
+        [DataMember(Name = "quantityshipped")]
+        public int QantityShipped { get; set; }
+
+        [DataMember(Name = "status")]
+        public string Status { get; set; }
+
+        [DataMember(Name = "mainframestatus")]
+        public string MainFrameStatus { get; set; }
 	}
 }

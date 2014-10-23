@@ -11,11 +11,27 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
     {
         public static string GetSiteName()
         {
-            if (CommerceOperationContext.CurrentInstance == null)
+            return System.Configuration.ConfigurationManager.AppSettings["CS_Sitename"];
+        }
+
+        static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection siteConfig = null;
+        public static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection GetCsConfig()
+        {
+            if (siteConfig == null)
             {
-                throw CommonExceptions.MissingOperationContext();
+                siteConfig = new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
             }
-            return CommerceOperationContext.CurrentInstance.SiteName;
+            return siteConfig;
+        }
+
+        static CommerceServer.Core.Runtime.Orders.OrderContext orderContext = null;
+        public static CommerceServer.Core.Runtime.Orders.OrderContext GetOrderContext()
+        {
+            if (orderContext == null)
+            {
+                orderContext = CommerceServer.Core.Runtime.Orders.OrderContext.Create(GetSiteName());
+            }
+            return orderContext;
         }
     }
 }

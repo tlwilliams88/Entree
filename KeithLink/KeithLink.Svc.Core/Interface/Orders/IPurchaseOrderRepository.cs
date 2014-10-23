@@ -11,5 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	{
 		PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber);
 		List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId);
+        string UpdatePurchaseOrder(PurchaseOrder order);
+        string SubmitChangeOrder(Guid userId, Guid orderGroupId);
 	}
 }

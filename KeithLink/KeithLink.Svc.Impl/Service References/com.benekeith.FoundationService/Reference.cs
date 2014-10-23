@@ -214,6 +214,8 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CommercePropertyItem", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
@@ -521,6 +523,83 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
                 if ((object.ReferenceEquals(this.ValueField, value) != true)) {
                     this.ValueField = value;
                     this.RaisePropertyChanged("Value");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PurchaseOrderLineItemUpdate", Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.FoundationSvc.Interface")]
+    [System.SerializableAttribute()]
+    public partial class PurchaseOrderLineItemUpdate : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemNumberField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int QuantityField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StatusField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ItemNumber {
+            get {
+                return this.ItemNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ItemNumberField, value) != true)) {
+                    this.ItemNumberField = value;
+                    this.RaisePropertyChanged("ItemNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Quantity {
+            get {
+                return this.QuantityField;
+            }
+            set {
+                if ((this.QuantityField.Equals(value) != true)) {
+                    this.QuantityField = value;
+                    this.RaisePropertyChanged("Quantity");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Status {
+            get {
+                return this.StatusField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
                 }
             }
         }
@@ -1962,6 +2041,8 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RequestTemplateResponse", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
@@ -2478,6 +2559,8 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RequestTemplateParameter", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
@@ -4449,6 +4532,8 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
@@ -4877,6 +4962,18 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveCartAsOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveCartAsOrderResponse")]
         System.Threading.Tasks.Task<string> SaveCartAsOrderAsync(System.Guid userId, System.Guid cartId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrderResponse")]
+        string SaveOrderAsChangeOrder(System.Guid userId, System.Guid cartId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrderResponse")]
+        System.Threading.Tasks.Task<string> SaveOrderAsChangeOrderAsync(System.Guid userId, System.Guid cartId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
+        string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
+        System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5026,6 +5123,22 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         public System.Threading.Tasks.Task<string> SaveCartAsOrderAsync(System.Guid userId, System.Guid cartId) {
             return base.Channel.SaveCartAsOrderAsync(userId, cartId);
+        }
+        
+        public string SaveOrderAsChangeOrder(System.Guid userId, System.Guid cartId) {
+            return base.Channel.SaveOrderAsChangeOrder(userId, cartId);
+        }
+        
+        public System.Threading.Tasks.Task<string> SaveOrderAsChangeOrderAsync(System.Guid userId, System.Guid cartId) {
+            return base.Channel.SaveOrderAsChangeOrderAsync(userId, cartId);
+        }
+        
+        public string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+            return base.Channel.UpdatePurchaseOrder(userId, orderId, requestedShipDate, itemUpdates);
+        }
+        
+        public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+            return base.Channel.UpdatePurchaseOrderAsync(userId, orderId, requestedShipDate, itemUpdates);
         }
     }
 }

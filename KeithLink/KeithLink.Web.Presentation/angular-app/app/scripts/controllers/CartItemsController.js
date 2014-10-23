@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'reminderList',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, reminderList) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'changeOrders',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, changeOrders) {
     
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,11 +17,12 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    $scope.reminderList = reminderList;
+    // $scope.reminderList = reminderList;
+    $scope.changeOrders = changeOrders;
     
-    $scope.goToCart = function(cart) {
-      if (cart) {
-        $state.go('menu.cart.items', {cartId: cart.id, renameCart: null});
+    $scope.goToCart = function(cartId, isChangeOrder) {
+      if (cartId) {
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: null, isChangeOrder: isChangeOrder});
       } else {
         $state.go('menu.cart');
       }
@@ -40,7 +41,11 @@ angular.module('bekApp')
     };
 
     $scope.sortByPrice = function(item) {
-      return item.each ? item.packageprice : item.caseprice;
+      if (item.price) {
+        return item.price;
+      } else {
+        return item.each ? item.packageprice : item.caseprice;
+      }
     };
 
     $scope.saveCart = function(cart) {
@@ -107,15 +112,43 @@ angular.module('bekApp')
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
-        subtotal +=( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
+        if (item.price) {
+          subtotal += (item.quantity || 0) * item.price;
+        } else {
+          subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
+        }
       });
       return subtotal;
     };
 
     $scope.deleteItem = function(item) {
-      var idx = $scope.currentCart.items.indexOf(item);
-      $scope.currentCart.items.splice(idx, 1);
+      var idx;
+      if ($scope.isChangeOrder) {
+        idx = $scope.currentCart.lineItems.indexOf(item);
+        $scope.currentCart.lineItems.splice(idx, 1);
+      } else {
+        idx = $scope.currentCart.items.indexOf(item);
+        $scope.currentCart.items.splice(idx, 1);
+      }
       $scope.cartForm.$setDirty();
+    };
+
+    /**********
+    CHANGE ORDERS
+    **********/
+    $scope.resubmitOrder = function(order) {
+      var changeOrder = angular.copy(order);
+
+      // delete items if quantity is 0
+      changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
+
+      OrderService.updateOrder(changeOrder).then(function() {
+        OrderService.resubmitOrder(changeOrder.ordernumber).then(function() {
+          $scope.displayMessage('success', 'Successfully submitted change order.');
+        }, function(error) {
+          $scope.displayMessage('error', 'Error re-submitting order.');
+        });
+      });
     };
 
     // INFINITE SCROLL
@@ -133,7 +166,7 @@ angular.module('bekApp')
         if (selectedCart.id === $stateParams.cartId) {
           $scope.currentCart = angular.copy(selectedCart);
         } else {
-          $scope.goToCart(selectedCart);
+          $scope.goToCart(selectedCart.id);
         }
       } else {
         $state.go('menu.cart');
@@ -145,7 +178,28 @@ angular.module('bekApp')
 
       $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     }
+
+    function setCurrentChangeOrder() {
+      var selectedChangeOrder = OrderService.getOrderDetails($stateParams.cartId);
+
+      selectedChangeOrder.then(function(order) {
+        if (order) {
+          $scope.currentCart = angular.copy(order);
+        } else {
+          $state.go('menu.cart');
+        }
+      }, function() {
+        $state.go('menu.cart');
+      });
+      
+    }
     
-    setCurrentCart();
+    if ($stateParams.isChangeOrder === 'true') {
+      setCurrentChangeOrder();
+      $scope.isChangeOrder = true;
+    } else {
+      setCurrentCart();
+      $scope.isChangeOrder = false;
+    }
 
   }]);
