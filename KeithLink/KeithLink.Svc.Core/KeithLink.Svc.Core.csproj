@@ -182,6 +182,7 @@
     <Compile Include="Models\EF\BaseEFModel.cs" />
     <Compile Include="Models\EF\List.cs" />
     <Compile Include="Models\EF\ListItem.cs" />
+    <Compile Include="Models\Lists\NewCSItem.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryFile.cs" />

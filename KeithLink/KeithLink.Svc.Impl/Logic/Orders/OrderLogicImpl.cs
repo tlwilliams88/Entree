@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private readonly IQueueRepository queueRepository;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogRepository catalogRepository,
-			IListServiceRepository listServiceRepository)
+			IListServiceRepository listServiceRepository, IQueueRepository queueRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogRepository = catalogRepository;
@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.ChildNutrition = prod.ChildNutrition;
 				}
 				
-				if (note != null)
+				if (note.Any())
 					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
 		}
