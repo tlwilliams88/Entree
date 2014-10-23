@@ -214,9 +214,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and item object
         updateItem: function(listId, item) {
-          return List.updateItem({
-            listId: listId
-          }, item).$promise.then(function(response) {
+          return List.updateItem({}, item).$promise.then(function(response) {
             // TODO: add label to Service.labels if it does not exist
             // TODO: replace item in Service.lists
             return response.data;
@@ -226,7 +224,6 @@ angular.module('bekApp')
         // accepts listId and listItemId for item to be deleted
         deleteItem: function(listId, listItemId) {
           return List.deleteItem({
-            listId: listId,
             listItemId: listItemId
           }).$promise.then(function(response) {
             var updatedList = Service.findListById(listId);
@@ -260,6 +257,7 @@ angular.module('bekApp')
         },
 
         // accepts listId (guid) and an array of items
+        // NOTE $resource does not accept deletes with payloads
         deleteMultipleItems: function(listId, items) {
 
           // create array of list item ids
@@ -289,14 +287,14 @@ angular.module('bekApp')
           });
         },
 
-        // accepts listId (guid)
-        // returns array of labels as strings that are found in the given list
-        getLabelsForList: function(listId) {
-          return $http.get('/list/' + listId + '/labels').then(function(response) {
-            // TODO: add new labels to Service.labels
-            return response.data;
-          });
-        },
+        // // accepts listId (guid)
+        // // returns array of labels as strings that are found in the given list
+        // getLabelsForList: function(listId) {
+        //   return $http.get('/list/' + listId + '/labels').then(function(response) {
+        //     // TODO: add new labels to Service.labels
+        //     return response.data;
+        //   });
+        // },
 
         /********************
         FAVORITES LIST
