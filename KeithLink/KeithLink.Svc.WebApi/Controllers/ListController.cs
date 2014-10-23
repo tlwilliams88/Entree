@@ -14,108 +14,100 @@ namespace KeithLink.Svc.WebApi.Controllers
 	[Authorize]
     public class ListController : BaseController {
         #region attributes
-        private readonly IListLogic listLogic;
+        private readonly IListServiceRepository listServiceRepository;
         #endregion
 
         #region ctor
-        public ListController(IListLogic listLogic, IUserProfileLogic profileLogic): base (profileLogic) {
-            this.listLogic = listLogic;
+		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository)
+			: base(profileLogic)
+		{
+            this.listServiceRepository = listServiceRepository;
         }
         #endregion
 
         #region methods
         [HttpGet]
 		[ApiKeyedRoute("list/")]
-        public List<UserList> List(bool header = false)
+        public List<ListModel> List(bool header = false)
         {
-			var model = listLogic.ReadAllLists(this.AuthenticatedUser, this.SelectedUserContext, header);
-            return model;
+			return listServiceRepository.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
         }
 		
         [HttpGet]
 		[ApiKeyedRoute("list/{listId}")]
-		public UserList List(Guid listId)
+		public ListModel List(long listId)
         {
-			return listLogic.ReadList(this.AuthenticatedUser, listId, this.SelectedUserContext);
+			return listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
         }
 
         [HttpGet]
 		[ApiKeyedRoute("list/labels")]
         public List<string> ListLabels()
         {
-			return listLogic.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
-        }
-
-        [HttpGet]
-		[ApiKeyedRoute("list/{listId}/labels")]
-		public List<string> ListLabels(Guid listId)
-        {
-			return listLogic.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			return listServiceRepository.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
         }
 
         [HttpPost]
 		[ApiKeyedRoute("list/")]
-		public NewItem List(UserList list)
+		public NewListItem List(ListModel list)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list) };
-			return newGuid;
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, Core.Models.EF.ListType.Custom) };
         }
 		
         [HttpPost]
 		[ApiKeyedRoute("list/{listId}/item")]
-		public NewItem AddItem(Guid listId, ListItem newItem)
+		public NewListItem AddItem(long listId, ListItemModel newItem)
         {
-			var newGuid = new NewItem() { ListItemId = listLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, listId, newItem) };
-			return newGuid;
+			return new NewListItem() { Id = listServiceRepository.AddItem(listId, newItem) };
         }
 
 		[HttpPost]
 		[ApiKeyedRoute("list/{listId}/items")]
-		public UserList AddItems(Guid listId, List<ListItem> newItems, bool allowDuplicates = false)
+		public ListModel AddItems(long listId, List<ListItemModel> newItems, bool allowDuplicates = false)
 		{
-			return listLogic.AddItems(AuthenticatedUser, this.SelectedUserContext, listId, newItems, false);
+			return listServiceRepository.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
 		}
 		
         [HttpPut]
-		[ApiKeyedRoute("list/{listId}/item")]
-		public void UpdateItem(Guid listId, ListItem updatedItem)
+		[ApiKeyedRoute("list/item")]
+		public void UpdateItem(ListItemModel updatedItem)
         {
-			listLogic.UpdateItem(this.AuthenticatedUser, listId, updatedItem, this.SelectedUserContext);
+			listServiceRepository.UpdateItem(updatedItem);
         }
 
 		[HttpPut]
 		[ApiKeyedRoute("list/")]
-		public void Put(UserList updatedList)
+		public void Put(ListModel updatedList)
 		{
-			listLogic.UpdateList(this.AuthenticatedUser, updatedList, this.SelectedUserContext);
+			listServiceRepository.UpdateList(updatedList);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}")]
-		public void DeleteList(Guid listId)
+		public void DeleteList(long listId)
 		{
-			listLogic.DeleteList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			listServiceRepository.DeleteList(listId);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("list/")]
-		public void DeleteList(List<Guid> listIds)
+		public void DeleteList(List<long> listIds)
 		{
-			listLogic.DeleteLists(this.AuthenticatedUser, this.SelectedUserContext, listIds);
+			listServiceRepository.DeleteLists(listIds);
 		}
 
 		[HttpDelete]
-		[ApiKeyedRoute("list/{listId}/item/{itemId}")]
-		public void DeleteItem(Guid listId, Guid itemId)
+		[ApiKeyedRoute("list/item/{itemId}")]
+		public void DeleteItem(long itemId)
 		{
-			listLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, listId, itemId);
+			listServiceRepository.DeleteItem(itemId);
 		}
 
 		[HttpDelete]
-		[ApiKeyedRoute("list/{listId}/item")]
-		public void DeleteItem(Guid listId, List<Guid> itemIds)
+		[ApiKeyedRoute("list/item")]
+		public void DeleteItem(List<long> itemIds)
 		{
-			listLogic.DeleteItems(this.AuthenticatedUser, this.SelectedUserContext, listId, itemIds);
+			listServiceRepository.DeleteItems(itemIds);
 		}
         #endregion
     }

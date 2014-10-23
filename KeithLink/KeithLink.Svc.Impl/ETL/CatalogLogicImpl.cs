@@ -81,25 +81,22 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IStagingRepository stagingRepository;
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
-        private readonly IListLogic listLogic;
         private readonly IUserProfileLogic userProfileLogic;
-        private readonly IItemNoteLogic noteLogic;
+		private readonly IInternalListLogic listLogic;
         
         #endregion
 
         #region " Methods / Functions "
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
             IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
-            IEventLogRepository eventLog, IListLogic listLogic, IUserProfileLogic userProfile,
-            IItemNoteLogic noteLogic)
+			IEventLogRepository eventLog, IUserProfileLogic userProfile, IInternalListLogic listLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
             this.elasticSearchRepository = elasticSearchRepository;
 			this.eventLog = eventLog;
-            this.listLogic = listLogic;
             this.userProfileLogic = userProfile;
-            this.noteLogic = noteLogic;
+			this.listLogic = listLogic;
         }
 
         public void ProcessStagedData()
@@ -185,30 +182,32 @@ namespace KeithLink.Svc.Impl.ETL
                     {
 						var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customerRow.CustomerBranch, CustomerId = customerRow.CustomerNumber };
 
-                        List<UserList> contractLists = GetContractLists(
+						//TODO: Switched back to just deleting list until logic can be corrected
+                        DeleteCurrentList(
                             (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
                             catalogInfo);
 
-                        List<ListItem> contractItems = GetContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId);
+                        List<ListItemModel> contractItems = GetContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId);
 
-                        if (contractLists.Count == 0)
-                        {
+                       
                             //create
-                            listLogic.CreateList(userId,
-                            catalogInfo,
-                            CreateUserList(customerRow.ContractId, true, true, contractItems)
-                            );
-                        }
-                        else if (contractLists.Count == 1)
-                        {
-                            //update
-                            contractLists[0].Items = contractItems;
-                            listLogic.UpdateList((KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0], contractLists[0], catalogInfo);
-                        }
-                        else if (contractLists.Count > 1)
-                        {
-                            //too many, error
-                        }
+							listLogic.CreateList(userId, catalogInfo, CreateUserList(customerRow.ContractId, true, true, contractItems), Core.Models.EF.ListType.Contract);
+							//listLogic.CreateList(userId,
+							//catalogInfo,
+							//CreateUserList(customerRow.ContractId, true, true, contractItems)
+							//);
+						//}
+						//else if (contractLists.Count == 1)
+						//{
+						//	//update
+						//	contractLists[0].Items = contractItems;
+						//	listLogic.UpdateList(contractLists[0]);
+						//	//listLogic.UpdateList((KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0], contractLists[0], catalogInfo);
+						//}
+						//else if (contractLists.Count > 1)
+						//{
+						//	//too many, error
+						//}
                     }
 				}
 			}
@@ -667,32 +666,28 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
-        private List<UserList> GetContractLists(
+        private void DeleteCurrentList(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
         {
-            List<UserList> userLists = new List<UserList>();
-            List<UserList> lists = listLogic.ReadAllLists(
-                userProfile,
-                catalogInfo,
-                true);
+            List<ListModel> userLists = new List<ListModel>();
+			List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Contract);
+			
 
-            foreach (UserList userList in lists)
+            foreach (ListModel userList in lists)
             {
                 if (userList.IsContractList == true)
                 {
-                    //listLogic.DeleteList(userProfile.UserId, userList.ListId);
-                    userLists.Add(userList);
+                    listLogic.DeleteList( userList.ListId);
                 }
             }
 
-            return userLists;
 
         }
 
-        private UserList CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItem> items)
+        private ListModel CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItemModel> items)
         {
-            UserList list = new UserList();
+            ListModel list = new ListModel();
             list.Name = "Contract - " + contractNumber;
             list.Items = items;
             list.IsContractList = isContractList;
@@ -700,21 +695,21 @@ namespace KeithLink.Svc.Impl.ETL
             return list;
         }
 
-       private List<ListItem> GetContractItems(
+       private List<ListItemModel> GetContractItems(
             string customerNumber,
             string branchId,
             string contractId
             )
         {
-            List<ListItem> contractItems = stagingRepository
+            List<ListItemModel> contractItems = stagingRepository
                             .ReadContractItems(customerNumber, branchId, contractId)
                             .AsEnumerable()
                             .Select(itemRow =>
-                                new ListItem
+                                new ListItemModel
                                 {
                                     ItemNumber = itemRow.GetString("ItemNumber"),
                                     Position = itemRow.GetInt("BidLineNumber"),
-                                    Label = itemRow.GetString("CategoryDescription")
+                                    Category = itemRow.GetString("CategoryDescription")
                                 }).ToList();
             return contractItems;
         }

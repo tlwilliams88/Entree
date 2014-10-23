@@ -57,5 +57,15 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 
 		}
-	}
+
+        public string UpdatePurchaseOrder(PurchaseOrder order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string SubmitChangeOrder(Guid userId, Guid orderGroupId)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

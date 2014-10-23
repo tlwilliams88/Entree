@@ -40,16 +40,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		[HttpPost]
 		[ApiKeyedRoute("cart/")]
-		public NewItem List(ShoppingCart cart)
+		public NewCSItem List(ShoppingCart cart)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
+			return new NewCSItem() { Id = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
 		}
 
 		[HttpPost]
 		[ApiKeyedRoute("cart/{cartId}/item")]
-		public NewItem AddItem(Guid cartId, ShoppingCartItem newItem)
+		public NewCSItem AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
-			return new NewItem() { ListItemId = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
+			return new NewCSItem() { Id = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
 		}
 
 		[HttpPut]

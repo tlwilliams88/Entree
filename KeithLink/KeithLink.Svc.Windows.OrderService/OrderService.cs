@@ -169,26 +169,42 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void MoveConfirmationsToCommerceServiceTick(object state) {
             if (!_confirmationMoverProcessing) {
                 _confirmationMoverProcessing = true;
-                
-                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
-                                                                    new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
 
-                ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
+                try
+                {
+                    ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
 
-                try {
-                    IS_OrderService.OrderServiceClient internalSvc = new IS_OrderService.OrderServiceClient();
-                    
-                    if ( internalSvc.OrderConfirmation( confirmation ) == false ) {
-                        // If it fails we need to put the message back in the queue
-                        confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default ); 
+                    ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
+                    if (confirmation != null)
+                    {
+                        try
+                        {
+                            IS_OrderService.OrderServiceClient internalSvc = new IS_OrderService.OrderServiceClient();
+
+                            if (internalSvc.OrderConfirmation(confirmation) == false)
+                            {
+                                // If it fails we need to put the message back in the queue
+                                confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //HandleConfirmationQueueProcessingerror(e);
+                            confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                        }
                     }
-                } catch (Exception e) {
-                    //HandleConfirmationQueueProcessingerror(e);
-                    confirmationLogic.PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
                 }
-
-                _confirmationMoverProcessing = false;
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error in MoveConfirmationsToCommerceServiceTick: " + ex.ToString());
+                    _log.WriteErrorLog("Error in MoveConfirmationsToCommerceServiceTick", ex);
+                }
+                finally
+                {
+                    _confirmationMoverProcessing = false;
+                }
             }
         }
 

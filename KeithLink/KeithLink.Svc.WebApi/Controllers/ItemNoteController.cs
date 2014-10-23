@@ -13,12 +13,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 	[Authorize]
     public class ItemNoteController : BaseController {
         #region attributes
-        private readonly IItemNoteLogic itemNoteLogic;
+        private readonly IListServiceRepository listServiceRepository;
+        
         #endregion
 
         #region ctor
-        public ItemNoteController(IItemNoteLogic itemNoteLogic,  IUserProfileLogic profileLogic) : base(profileLogic) {
-			this.itemNoteLogic = itemNoteLogic;
+        public ItemNoteController(IListServiceRepository listServiceRepository,  IUserProfileLogic profileLogic) : base(profileLogic) {
+			this.listServiceRepository = listServiceRepository;
         }
         #endregion
 
@@ -27,21 +28,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("itemnote/")]
 		public void AddItem(ItemNote newNote)
 		{
-			itemNoteLogic.AddNote(this.AuthenticatedUser, this.SelectedUserContext, newNote);
-		}
-
-		[HttpGet]
-		[ApiKeyedRoute("itemnote/")]
-		public List<ItemNote> Read()
-		{
-			return itemNoteLogic.ReadNotes(this.AuthenticatedUser, this.SelectedUserContext);
+			listServiceRepository.AddNote(this.AuthenticatedUser, this.SelectedUserContext, newNote);
 		}
 
 		[HttpDelete]
 		[ApiKeyedRoute("itemnote/{itemnumber}")]
 		public void Delete(string itemNumber)
 		{
-			itemNoteLogic.DeleteNote(this.AuthenticatedUser, this.SelectedUserContext, itemNumber);
+			listServiceRepository.DeleteNote(this.AuthenticatedUser, this.SelectedUserContext, itemNumber);
 		}
         #endregion
     }
