@@ -41,10 +41,6 @@ namespace KeithLink.Svc.InternalSvc
         {
             try
             {
-                bool waitForDebugger = true;
-                while (waitForDebugger)
-                    System.Threading.Thread.Sleep(1000);
-
                 LoadOrderContext();
 
                 if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
