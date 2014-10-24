@@ -56,6 +56,27 @@ namespace KeithLink.Svc.FoundationSvc
             return po.TrackingNumber;
         }
 
+        public void CleanUpChangeOrder(Guid userId, Guid cartId)
+        {
+            CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
+                GetPurchaseOrder(userId, cartId);
+
+            List<int> lineItemIndexesToRemove = new List<int>();
+
+            foreach (CommerceServer.Core.Runtime.Orders.LineItem li in po.OrderForms[0].LineItems)
+            {
+                if (li.Status == "deleted")
+                {
+                    lineItemIndexesToRemove.Add(li.Index);
+                }
+                li.Status = string.Empty;
+            }
+            foreach (int index in lineItemIndexesToRemove)
+                po.OrderForms[0].LineItems.Remove(index);
+
+            po.Save();
+        }
+
         private static CommerceServer.Core.Runtime.Orders.PurchaseOrder GetPurchaseOrder(Guid userId, Guid cartId)
         {
             CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();

@@ -172,6 +172,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             WriteOrderFileToQueue(userProfile, newOrderNumber, order);
 
+            client.CleanUpChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
+
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 

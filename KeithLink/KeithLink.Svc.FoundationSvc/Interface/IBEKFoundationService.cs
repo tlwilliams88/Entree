@@ -17,6 +17,9 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
 
         [OperationContract]
+        void CleanUpChangeOrder(Guid userId, Guid cartId);
+
+        [OperationContract]
         string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
 	}
 
