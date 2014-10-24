@@ -107,7 +107,7 @@ namespace KeithLink.Svc.Impl.ETL
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
                 var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
-                var contractTask = Task.Factory.StartNew(() => ImportContractLists());
+                var contractTask = Task.Factory.StartNew(() => ImportPrePopulatedLists());
                 
                 Task.WaitAll(catTask, esItemTask, esCatTask, esBrandTask, contractTask);
 				
@@ -154,67 +154,62 @@ namespace KeithLink.Svc.Impl.ETL
         {   
         }
 
-        public void ImportContractLists()
+        public void ImportPrePopulatedLists()
         {
-			//For performance debugging purposes
-			var startTime = DateTime.Now;
+            //For performance debugging purposes
+            var startTime = DateTime.Now;
 
             var users = stagingRepository.ReadCSUsers();
-			var processedCustomers = new List<string>();
+            var processedCustomers = new List<string>();
 
-			foreach (DataRow userRow in users.Rows)
-			{
-				Guid userId = userRow.GetGuid("u_user_id");
-				KeithLink.Svc.Core.Models.Profile.UserProfileReturn userProfiles = userProfileLogic.GetUserProfile(userId);
-				if(userProfileLogic.IsInternalAddress(userProfiles.UserProfiles[0].EmailAddress))
-					continue;
-				List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfiles.UserProfiles[0].UserCustomers;
-                
-				foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
-				{
-					//These list are shared across all users in the same customer, 
-					//so if the list has already been created for the customer, there is nothing to do
-					if (processedCustomers.Contains(customerRow.CustomerNumber))
-						break;
-					processedCustomers.Add(customerRow.CustomerNumber);
+            foreach (DataRow userRow in users.Rows)
+            {
+                try
+                {
+                    Guid userId = userRow.GetGuid("u_user_id");
+                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId).UserProfiles[0];
 
-                    if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
+                    if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
+                        continue;
+
+                    List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfile.UserCustomers;
+
+                    foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
                     {
-						var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customerRow.CustomerBranch, CustomerId = customerRow.CustomerNumber };
+                        //These list are shared across all users in the same customer, 
+                        //so if the list has already been created for the customer, there is nothing to do
+                        if (processedCustomers.Contains(customerRow.CustomerNumber))
+                            break;
+                        processedCustomers.Add(customerRow.CustomerNumber);
 
-						//TODO: Switched back to just deleting list until logic can be corrected
-                        DeleteCurrentList(
-                            (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0],
-                            catalogInfo);
+                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerRow.CustomerNumber, customerRow.CustomerBranch);
 
-                        List<ListItemModel> contractItems = GetContractItems(customerRow.CustomerNumber, customerRow.CustomerBranch, customerRow.ContractId);
+                        //delete contract lists
+                        DeleteContractLists(userProfile, userSelectedContext);
+                        //delete worksheet lists
+                        DeleteWorksheetLists(userProfile, userSelectedContext);
 
-                       
-                            //create
-							listLogic.CreateList(userId, catalogInfo, CreateUserList(customerRow.ContractId, true, true, contractItems), Core.Models.EF.ListType.Contract);
-							//listLogic.CreateList(userId,
-							//catalogInfo,
-							//CreateUserList(customerRow.ContractId, true, true, contractItems)
-							//);
-						//}
-						//else if (contractLists.Count == 1)
-						//{
-						//	//update
-						//	contractLists[0].Items = contractItems;
-						//	listLogic.UpdateList(contractLists[0]);
-						//	//listLogic.UpdateList((KeithLink.Svc.Core.Models.Profile.UserProfile)userProfiles.UserProfiles[0], contractLists[0], catalogInfo);
-						//}
-						//else if (contractLists.Count > 1)
-						//{
-						//	//too many, error
-						//}
+                        //create contract lists
+                        if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
+                        {
+                            CreateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
+                        }
+
+                        //worksheet Lists
+                        CreatetWorksheetLists(userProfile, userSelectedContext);
+
                     }
-				}
-			}
+                }
+                catch (Exception ex)
+                {
+                    eventLog.WriteErrorLog("Catalog Import Error", ex);
+                }
+                
+            }
 
-			eventLog.WriteInformationLog(string.Format("ImportContractLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+            eventLog.WriteInformationLog(string.Format("ImportContractLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
-
+        
         public void ImportItemsToElasticSearch()
         {
 			//For performance debugging purposes
@@ -666,40 +661,136 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
-        private void DeleteCurrentList(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        private void CreateContractLists(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
+            , string contractNumber)
         {
-            List<ListModel> userLists = new List<ListModel>();
-			List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Contract);
-			
+            #region old_contract_logic_updateNotCreate
+            //var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = divisionName, CustomerId = customerNumber };
 
-            foreach (ListModel userList in lists)
-            {
-                if (userList.IsContractList == true)
-                {
-                    listLogic.DeleteList( userList.ListId);
-                }
-            }
+            //List<ListModel> contractLists = GetContractLists(
+            //    userProfile,
+            //    catalogInfo);
 
+            //List<ListItemModel> contractItems = GetContractItems(customerNumber, divisionName, contractNumber);
+
+            //if (contractLists.Count == 0)
+            //{
+            //    //create
+            //    listLogic.CreateList(userProfile.UserId,
+            //    catalogInfo,
+            //    CreateUserList(contractNumber, ListType.Contract, true, contractItems)
+            //    );
+
+            //}
+            //else if (contractLists.Count == 1)
+            //{
+            //    //update
+            //    contractLists[0].Items = contractItems;
+            //    listLogic.UpdateList(userProfile, contractLists[0], catalogInfo);
+            //}
+            //else if (contractLists.Count > 1)
+            //{
+            //    //too many, error
+            //}
+            #endregion
+
+            ListModel listModel = CreateUserList(
+                contractNumber,
+                GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber),
+                Core.Models.EF.ListType.Contract,
+                true);
+
+            listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Contract);
 
         }
 
-        private ListModel CreateUserList(string contractNumber, bool isContractList, bool readOnly, List<ListItemModel> items)
+        private void CreatetWorksheetLists(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
+
+        {
+            ListModel listModel = CreateUserList(
+                "",
+                GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId),
+                Core.Models.EF.ListType.Worksheet,
+                true);
+
+            listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Worksheet);
+        }
+
+        private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)
+        {
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
+            userSelectedContext.BranchId = branchId;
+            userSelectedContext.CustomerId = customerNumber;
+            return userSelectedContext;
+        }
+
+        private void DeleteContractLists(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        {
+            //List<ListModel> userLists = new List<ListModel>();
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Contract);
+
+            foreach (ListModel userList in lists)
+            {
+                listLogic.DeleteList(userList.ListId);
+            }
+
+            //return userLists;
+
+        }
+
+        private void DeleteWorksheetLists(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        {
+            //List<ListModel> userLists = new List<ListModel>();
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Worksheet);
+
+            foreach (ListModel userList in lists)
+            {
+                listLogic.DeleteList(userList.ListId);
+            }
+
+            //return userLists;
+
+        }
+
+        private ListModel CreateUserList(string name, List<ListItemModel> items, Core.Models.EF.ListType listType, bool readOnly)
         {
             ListModel list = new ListModel();
-            list.Name = "Contract - " + contractNumber;
+            list.Name = GetListName(name, listType);
             list.Items = items;
-            list.IsContractList = isContractList;
             list.ReadOnly = readOnly;
             return list;
         }
 
-       private List<ListItemModel> GetContractItems(
-            string customerNumber,
-            string branchId,
-            string contractId
-            )
+        private string GetListName(string name, Core.Models.EF.ListType listType)
+        {
+            string listName = name;
+
+            switch (listType)
+            {
+                case Core.Models.EF.ListType.Contract:
+                    listName = "Contract - " + listName;
+                    break;
+                case Core.Models.EF.ListType.Worksheet:
+                    listName = "History";
+                    break;
+            }
+
+            return listName;
+        }
+
+        private List<ListItemModel> GetContractItems(
+             string customerNumber,
+             string branchId,
+             string contractId
+             )
         {
             List<ListItemModel> contractItems = stagingRepository
                             .ReadContractItems(customerNumber, branchId, contractId)
@@ -710,6 +801,22 @@ namespace KeithLink.Svc.Impl.ETL
                                     ItemNumber = itemRow.GetString("ItemNumber"),
                                     Position = itemRow.GetInt("BidLineNumber"),
                                     Category = itemRow.GetString("CategoryDescription")
+                                }).ToList();
+            return contractItems;
+        }
+
+        private List<ListItemModel> GetWorksheetItems(
+             string customerNumber,
+             string branchId
+             )
+        {
+            List<ListItemModel> contractItems = stagingRepository
+                            .ReadWorksheetItems(customerNumber, branchId)
+                            .AsEnumerable()
+                            .Select(itemRow =>
+                                new ListItemModel
+                                {
+                                    ItemNumber = itemRow.GetString("ItemNumber"),
                                 }).ToList();
             return contractItems;
         }

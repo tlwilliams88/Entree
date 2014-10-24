@@ -8,12 +8,12 @@
   DTS:DTSID="{C01635BB-E8CB-4128-B331-28D7E5E4DA81}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="SSIS.Package.3"
-  DTS:LastModifiedProductVersion="11.0.3436.0"
+  DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="167"
-  DTS:VersionGUID="{42ADA017-1F39-403C-8A01-1F7ACB93C108}">
+  DTS:VersionBuild="178"
+  DTS:VersionGUID="{18BD4A0D-606C-4BBE-B889-D54EC3ED3A58}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -729,6 +729,115 @@
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FF_CustomerWorksheet]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{43967E32-59DE-4A25-8160-0A0AA176BD90}"
+      DTS:ObjectName="FF_CustomerWorksheet">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="FixedWidth"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowsToSkip="1"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\test_contract\customerWorkSheet.SSIS">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="1"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:ObjectName="Action"
+              DTS:DTSID="{994ECC02-3C91-4A4F-B392-A7A48799ABB1}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="CompanyNumber"
+              DTS:DTSID="{0411E87F-6A45-4EBE-B9C7-AAF17C726047}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="DivisionNumber"
+              DTS:DTSID="{D8F9D9DE-D2D8-4D7E-8F91-C3F08A190898}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="DepartmentNumber"
+              DTS:DTSID="{7D0C9D65-B5FA-4FD4-A408-77E9A092B70E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="10"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:ObjectName="CustomerNumber"
+              DTS:DTSID="{2D3DC21D-9A17-45F6-9CF7-1D7F060095CD}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="10"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:ObjectName="ItemNumber"
+              DTS:DTSID="{19063C66-4574-4ABD-BDA4-DFED3F7D6704}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="1"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:ObjectName="BrokenCaseCode"
+              DTS:DTSID="{F1E53CF1-6A71-48A6-82F6-053ECB56055F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="10"
+              DTS:MaximumWidth="10"
+              DTS:DataType="129"
+              DTS:ObjectName="ItemPrice"
+              DTS:DTSID="{94F5AC9C-FD94-481E-B6C7-20168A3AD672}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="7"
+              DTS:MaximumWidth="7"
+              DTS:DataType="129"
+              DTS:ObjectName="QtyOrdered"
+              DTS:DTSID="{0EE21593-3386-4A57-A1C5-F22F3DC1ACA3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="8"
+              DTS:MaximumWidth="8"
+              DTS:DataType="129"
+              DTS:ObjectName="DateOfLastOrder"
+              DTS:DTSID="{547CE715-643A-4745-91E2-F1279F2D5F75}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="CrLf"
+              DTS:DTSID="{89AE5737-E113-4F35-A61B-0A945A133D0F}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[FF_PropCustomer]"
       DTS:CreationName="FLATFILE"
       DTS:DTSID="{e8877d59-0d55-4cb2-8b1e-9362ad94157d}"
@@ -892,11 +1001,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABnTg9lgO5OqCWqeWWxSZNUAAAAAASAAACgAAAAEAAAABZ8IRNgdAjdEgEBv3/kc3MIAAAAMk1ve3rTIEoUAAAA4V+UjzeXoqpbJjUy2R7zkLznXYo</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADB33+tP3WnGPnkX3FEbirzAAAAAASAAACgAAAAEAAAAD9LhPi5bDrJBakX6CEx2oAIAAAANOG2vb766LUUAAAAqgoWJpEkxyZWtBYiyu4orhKR0oI</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAq9Wyf1+sPU2oaOXzBDJwRgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA5UVStAPgbf0GRW8L2KeRtAAAAAASAAACgAAAAEAAAAJ1M3fi0sYiqJ3CRgcVGRRUIAAAA62LqvHxoEoAUAAAApvqeuMIa40EAb/vqwidd5uDitKA</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABONIJMe1BUbJ0SIa1lDdvXAAAAAASAAACgAAAAEAAAAE5LqPWgIu2cBZjbd7F/CX4IAAAAlBdPgxq3Z9oUAAAABnSTEE6WUDcjabidnDMg1Qk1h/8</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -908,7 +1017,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -928,7 +1037,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpmis7708;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1175,14 +1284,35 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -1303,105 +1433,34 @@
   </resheader>
 </root>]]></ProjectItem>
           <ProjectItem
-            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
-    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-         <Generator>ResXFileCodeGenerator</Generator>
-         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-             <AutoGen>True</AutoGen>
-         <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-         <Generator>SettingsSingleFileGenerator</Generator>
-         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-         <AutoGen>True</AutoGen>
-         <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptMain.cs">
-         <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptTask"
-                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
-                           ApplicationType="usd"
-                           Language="cs"
-                           TemplatesPath=""
-                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
-                           DebugInfoCommandLine=""
-                           DebugInfoWorkingDir=""
-                           IconImageList=""/>
-        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
-        </Host>
-        <ProjectClient>
-            <HostIdentifier>SSIS_ST110</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></ProjectItem>
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -1654,64 +1713,114 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
+    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -14847,7 +14956,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Mainframe Files"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="1">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -14857,35 +14966,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -15345,14 +15433,35 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
     }
 }]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -15569,7 +15678,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="4">
+      DTS:ThreadHint="5">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -15580,10 +15689,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
-          SendMailTask:From="CORPMIS7708@noreply.com"
+          SendMailTask:From="CORPMISDEV2C@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMIS7708"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMIS7708.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -15607,7 +15716,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Brand Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -15626,7 +15735,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Catalog Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -15645,7 +15754,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Contract Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -15662,7 +15771,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate GS1 Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -15674,16 +15783,669 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </DTS:Executable>
       </DTS:Executables>
     </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Worksheet Import Tasks"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3892B233-AF0E-4AEF-A637-AB88628A474C}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Worksheet Import Tasks">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Worksheet Import Tasks\WorkSheet Items"
+          DTS:CreationName="SSIS.Pipeline.3"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{7B104FC4-37F9-4F9D-875A-E86DA08E455D}"
+          DTS:ExecutableType="SSIS.Pipeline.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="WorkSheet Items"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData"
+                  componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="Bek_Commerce_AppData"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_WorksheetItems]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[Action]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="Action"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CompanyNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="CompanyNumber"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CompanyNumber]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DivisionNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="DivisionNumber"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DivisionNumber]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DepartmentNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="DepartmentNumber"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentNumber]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CustomerNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CustomerNumber"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CustomerNumber]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ItemNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="ItemNumber"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemNumber]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[BrokenCaseCode]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="BrokenCaseCode"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[BrokenCaseCode]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ItemPrice]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="ItemPrice"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemPrice]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[QtyOrdered]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="7"
+                          cachedName="QtyOrdered"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[QtyOrdered]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QtyOrdered]" />
+                        <inputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DateOfLastOrder]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="8"
+                          cachedName="DateOfLastOrder"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastOrder]"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Action" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CompanyNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CompanyNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DivisionNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="DivisionNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="DepartmentNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CustomerNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="ItemNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[BrokenCaseCode]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="BrokenCaseCode" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemPrice]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="ItemPrice" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[QtyOrdered]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="QtyOrdered" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastOrder]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          name="DateOfLastOrder" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet"
+                  componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="CustomerWorksheet"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FF_CustomerWorksheet]"
+                      connectionManagerRefId="Package.ConnectionManagers[FF_CustomerWorksheet]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          length="1"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]"
+                          name="Action"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
+                          length="3"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]"
+                          name="CompanyNumber"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
+                          length="3"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]"
+                          name="DivisionNumber"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
+                          length="3"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
+                          name="DepartmentNumber"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
+                          length="10"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]"
+                          name="CustomerNumber"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
+                          length="10"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]"
+                          name="ItemNumber"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
+                          length="1"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
+                          name="BrokenCaseCode"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
+                          length="10"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]"
+                          name="ItemPrice"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QtyOrdered]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QtyOrdered]"
+                          length="7"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QtyOrdered]"
+                          name="QtyOrdered"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
+                          length="8"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
+                          name="DateOfLastOrder"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CrLf]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
+                          length="2"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CrLf]"
+                          name="CrLf"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Action" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="CompanyNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="DivisionNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="DepartmentNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="CustomerNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="ItemNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="BrokenCaseCode" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
+                          codePage="1252"
+                          dataType="str"
+                          length="10"
+                          name="ItemPrice" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QtyOrdered]"
+                          codePage="1252"
+                          dataType="str"
+                          length="7"
+                          name="QtyOrdered" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          name="DateOfLastOrder" />
+                        <externalMetadataColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
+                          codePage="1252"
+                          dataType="str"
+                          length="2"
+                          name="CrLf" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Worksheet Import Tasks\WorkSheet Items.Paths[Flat File Source Output]"
+                  endId="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
   </DTS:Executables>
   <DTS:PrecedenceConstraints>
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint]"
       DTS:CreationName=""
-      DTS:DTSID="{176EEB60-8392-41FE-96D0-D2E5DAC8FBAF}"
-      DTS:From="Package\Truncate Stage Tables"
+      DTS:DTSID="{76628957-CD07-42D5-A337-D2E9BC6B2E16}"
+      DTS:From="Package\GS1 Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint"
-      DTS:To="Package\Catalog Import Tasks" />
+      DTS:To="Package\Worksheet Import Tasks" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
       DTS:CreationName=""
@@ -15719,10 +16481,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:To="Package\Send Fail Message"
       DTS:Value="1" />
     <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 13]"
+      DTS:CreationName=""
+      DTS:DTSID="{F77340B6-57CF-46F7-9A63-0E939E0D70B5}"
+      DTS:From="Package\Worksheet Import Tasks"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 13"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{7AB1CD0A-70FA-4542-87FA-1D780B1D2E90}"
-      DTS:From="Package\GS1 Import Tasks"
+      DTS:DTSID="{D3AFB263-8CBE-4159-B8BB-A8F202309292}"
+      DTS:From="Package\Worksheet Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
       DTS:To="Package\Process Staged Data" />
@@ -15834,7 +16605,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           PanelSize="689,206"
           Size="689,249"
           Id="Package\Catalog Import Tasks"
-          TopLeft="62,530.25" />
+          TopLeft="75,269.25" />
         <NodeLayout
           Size="158,42"
           Id="Package\GS1 Import Tasks\Product Allergen"
@@ -15854,10 +16625,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="694,66"
-          Size="694,109"
+          PanelSize="694,116"
+          Size="694,159"
           Id="Package\GS1 Import Tasks"
-          TopLeft="57.75,1036.75" />
+          TopLeft="76.75,795.75" />
         <NodeLayout
           Size="126,42"
           Id="Package\Import Contract Data\Bid Detail"
@@ -15884,7 +16655,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           PanelSize="729,161"
           Size="729,204"
           Id="Package\Import Contract Data"
-          TopLeft="59,803.5" />
+          TopLeft="77,555.5" />
         <NodeLayout
           Size="178,42"
           Id="Package\Process Staged Data"
@@ -15892,7 +16663,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <NodeLayout
           Size="196,42"
           Id="Package\Rename Mainframe Files"
-          TopLeft="639.5,307.75" />
+          TopLeft="710.5,104.75" />
         <NodeLayout
           Size="168,42"
           Id="Package\Send Fail Message"
@@ -15919,33 +16690,44 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           PanelSize="518,126"
           Size="518,169"
           Id="Package\Truncate Stage Tables"
-          TopLeft="68,330.5" />
+          TopLeft="81,48.5" />
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Worksheet Import Tasks\WorkSheet Items"
+          TopLeft="56,13" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="346,88"
+          Size="346,131"
+          Id="Package\Worksheet Import Tasks"
+          TopLeft="114,1007" />
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint]"
-          TopLeft="242,499.5">
+          TopLeft="423.75,954.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="164.5,30.75"
+              EndConnector="-193.083333333333,52.25"
               Start="0,0"
-              End="164.5,23.25">
+              End="-193.083333333333,44.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,8.3568129330254" />
+                    End="0,27.2056962025316" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,8.3568129330254"
-                    Point2="0,12.3568129330254"
-                    Point3="4,12.3568129330254" />
+                    Point1="0,27.2056962025316"
+                    Point2="0,31.2056962025316"
+                    Point3="-4,31.2056962025316" />
                   <mssgle:LineSegment
-                    End="160.5,12.3568129330254" />
+                    End="-189.083333333333,31.2056962025316" />
                   <mssgle:CubicBezierSegment
-                    Point1="160.5,12.3568129330254"
-                    Point2="164.5,12.3568129330254"
-                    Point3="164.5,16.3568129330254" />
+                    Point1="-189.083333333333,31.2056962025316"
+                    Point2="-193.083333333333,31.2056962025316"
+                    Point3="-193.083333333333,35.2056962025316" />
                   <mssgle:LineSegment
-                    End="164.5,23.25" />
+                    End="-193.083333333333,44.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -15956,30 +16738,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 1]"
-          TopLeft="406.5,779.25">
+          TopLeft="306,518.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-103.166666666667,24.25"
+              EndConnector="135.5,37.25"
               Start="0,0"
-              End="-103.166666666667,16.75">
+              End="135.5,29.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,10.5181357788119" />
+                    End="0,10.9517810599479" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,10.5181357788119"
-                    Point2="0,14.5181357788119"
-                    Point3="-4,14.5181357788119" />
+                    Point1="0,10.9517810599479"
+                    Point2="0,14.9517810599479"
+                    Point3="4,14.9517810599479" />
                   <mssgle:LineSegment
-                    End="-99.1666666666667,14.5181357788119" />
+                    End="131.5,14.9517810599479" />
                   <mssgle:CubicBezierSegment
-                    Point1="-99.1666666666667,14.5181357788119"
-                    Point2="-103.166666666667,14.5181357788119"
-                    Point3="-103.166666666667,18.5181357788119" />
+                    Point1="131.5,14.9517810599479"
+                    Point2="135.5,14.9517810599479"
+                    Point3="135.5,18.9517810599479" />
                   <mssgle:LineSegment
-                    End="-103.166666666667,16.75" />
+                    End="135.5,29.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16026,30 +16808,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 11]"
-          TopLeft="423.5,1007.5">
+          TopLeft="441.5,759.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-133.083333333333,29.25"
+              EndConnector="-132.083333333333,36.25"
               Start="0,0"
-              End="-133.083333333333,21.75">
+              End="-132.083333333333,28.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,13.5096319723979" />
+                    End="0,17.6999712478436" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,13.5096319723979"
-                    Point2="0,17.5096319723979"
-                    Point3="-4,17.5096319723979" />
+                    Point1="0,17.6999712478436"
+                    Point2="0,21.6999712478436"
+                    Point3="-4,21.6999712478436" />
                   <mssgle:LineSegment
-                    End="-129.083333333333,17.5096319723979" />
+                    End="-128.083333333333,21.6999712478436" />
                   <mssgle:CubicBezierSegment
-                    Point1="-129.083333333333,17.5096319723979"
-                    Point2="-133.083333333333,17.5096319723979"
-                    Point3="-133.083333333333,21.5096319723979" />
+                    Point1="-128.083333333333,21.6999712478436"
+                    Point2="-132.083333333333,21.6999712478436"
+                    Point3="-132.083333333333,25.6999712478436" />
                   <mssgle:LineSegment
-                    End="-133.083333333333,21.75" />
+                    End="-132.083333333333,28.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16060,66 +16842,102 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 12]"
-          TopLeft="543.666666666667,803.5">
+          TopLeft="806,657.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="447.333333333333,-165"
+              EndConnector="117,-40"
               Start="0,0"
-              End="447.333333333333,-157.5">
+              End="109.5,-40">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,-70.7397925402781" />
+                    End="54.5,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,-70.7397925402781"
-                    Point2="0,-74.7397925402781"
-                    Point3="4,-74.7397925402781" />
+                    Point1="54.5,0"
+                    Point2="58.5,0"
+                    Point3="58.5,-4" />
                   <mssgle:LineSegment
-                    End="443.333333333333,-74.7397925402781" />
+                    End="58.5,-36" />
                   <mssgle:CubicBezierSegment
-                    Point1="443.333333333333,-74.7397925402781"
-                    Point2="447.333333333333,-74.7397925402781"
-                    Point3="447.333333333333,-78.7397925402781" />
+                    Point1="58.5,-36"
+                    Point2="58.5,-40"
+                    Point3="62.5,-40" />
                   <mssgle:LineSegment
-                    End="447.333333333333,-157.5" />
+                    End="109.5,-40" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="208.425319010417,-69.7397925402781,30.4826953125,9.7490234375"
+              BoundingBox="43.25865234375,1,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 13]"
+          TopLeft="343.333333333333,1007">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="615.666666666667,-368.5"
+              Start="0,0"
+              End="615.666666666667,-361">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,-221.311954080359" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,-221.311954080359"
+                    Point2="0,-225.311954080359"
+                    Point3="4,-225.311954080359" />
+                  <mssgle:LineSegment
+                    End="611.666666666667,-225.311954080359" />
+                  <mssgle:CubicBezierSegment
+                    Point1="611.666666666667,-225.311954080359"
+                    Point2="615.666666666667,-225.311954080359"
+                    Point3="615.666666666667,-229.311954080359" />
+                  <mssgle:LineSegment
+                    End="615.666666666667,-361" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="292.591985677083,-220.311954080359,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="404.75,1145.75">
+          TopLeft="287,1138">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="473.166666666667,62.5"
+              EndConnector="590.916666666667,70.25"
               Start="0,0"
-              End="473.166666666667,55">
+              End="590.916666666667,62.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,33.1659242761693" />
+                    End="0,37.7744988864143" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,33.1659242761693"
-                    Point2="0,37.1659242761693"
-                    Point3="4,37.1659242761693" />
+                    Point1="0,37.7744988864143"
+                    Point2="0,41.7744988864143"
+                    Point3="4,41.7744988864143" />
                   <mssgle:LineSegment
-                    End="469.166666666667,37.1659242761693" />
+                    End="586.916666666667,41.7744988864143" />
                   <mssgle:CubicBezierSegment
-                    Point1="469.166666666667,37.1659242761693"
-                    Point2="473.166666666667,37.1659242761693"
-                    Point3="473.166666666667,41.1659242761693" />
+                    Point1="586.916666666667,41.7744988864143"
+                    Point2="590.916666666667,41.7744988864143"
+                    Point3="590.916666666667,45.7744988864143" />
                   <mssgle:LineSegment
-                    End="473.166666666667,55" />
+                    End="590.916666666667,62.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16130,109 +16948,109 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
-          TopLeft="327,499.5">
+          TopLeft="467.5,217.5">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="653.333333333333,97"
+              EndConnector="512.833333333333,379"
               Start="0,0"
-              End="653.333333333333,89.5">
+              End="512.833333333333,371.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,53.6509433962264" />
+                    End="0,157.667507659038" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,53.6509433962264"
-                    Point2="0,57.6509433962264"
-                    Point3="4,57.6509433962264" />
+                    Point1="0,157.667507659038"
+                    Point2="0,161.667507659038"
+                    Point3="4,161.667507659038" />
                   <mssgle:LineSegment
-                    End="649.333333333333,57.6509433962264" />
+                    End="508.833333333333,161.667507659038" />
                   <mssgle:CubicBezierSegment
-                    Point1="649.333333333333,57.6509433962264"
-                    Point2="653.333333333333,57.6509433962264"
-                    Point3="653.333333333333,61.6509433962264" />
+                    Point1="508.833333333333,161.667507659038"
+                    Point2="512.833333333333,161.667507659038"
+                    Point3="512.833333333333,165.667507659038" />
                   <mssgle:LineSegment
-                    End="653.333333333333,89.5" />
+                    End="512.833333333333,371.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="311.425319010417,62.6509433962264,30.4826953125,9.7490234375"
+              BoundingBox="241.175319010417,166.667507659038,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 4]"
-          TopLeft="751,654.75">
+          TopLeft="533,518.25">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="172,-37.25"
+              EndConnector="474,78.25"
               Start="0,0"
-              End="164.5,-37.25">
+              End="474,70.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="82,0" />
+                    End="0,27.4087749782798" />
                   <mssgle:CubicBezierSegment
-                    Point1="82,0"
-                    Point2="86,0"
-                    Point3="86,-4" />
+                    Point1="0,27.4087749782798"
+                    Point2="0,31.4087749782798"
+                    Point3="4,31.4087749782798" />
                   <mssgle:LineSegment
-                    End="86,-33.25" />
+                    End="470,31.4087749782798" />
                   <mssgle:CubicBezierSegment
-                    Point1="86,-33.25"
-                    Point2="86,-37.25"
-                    Point3="90,-37.25" />
+                    Point1="470,31.4087749782798"
+                    Point2="474,31.4087749782798"
+                    Point3="474,35.4087749782798" />
                   <mssgle:LineSegment
-                    End="164.5,-37.25" />
+                    End="474,70.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="70.75865234375,1,30.4826953125,9.7490234375"
+              BoundingBox="221.75865234375,36.4087749782798,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 5]"
-          TopLeft="404.75,1036.75">
+          TopLeft="538.083333333333,795.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="554.25,-398.25"
+              EndConnector="452.916666666667,-157.25"
               Start="0,0"
-              End="554.25,-390.75">
+              End="452.916666666667,-149.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,-274.775" />
+                    End="0,-67.2400092721372" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,-274.775"
-                    Point2="0,-278.775"
-                    Point3="4,-278.775" />
+                    Point1="0,-67.2400092721372"
+                    Point2="0,-71.2400092721372"
+                    Point3="4,-71.2400092721372" />
                   <mssgle:LineSegment
-                    End="550.25,-278.775" />
+                    End="448.916666666667,-71.2400092721372" />
                   <mssgle:CubicBezierSegment
-                    Point1="550.25,-278.775"
-                    Point2="554.25,-278.775"
-                    Point3="554.25,-282.775" />
+                    Point1="448.916666666667,-71.2400092721372"
+                    Point2="452.916666666667,-71.2400092721372"
+                    Point3="452.916666666667,-75.2400092721372" />
                   <mssgle:LineSegment
-                    End="554.25,-390.75" />
+                    End="452.916666666667,-149.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="261.88365234375,-273.775,30.4826953125,9.7490234375"
+              BoundingBox="211.216985677083,-66.2400092721372,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -16274,30 +17092,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 7]"
-          TopLeft="639.5,328.75">
+          TopLeft="710.5,129.375">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-53.5,86.25"
+              EndConnector="-111.5,0"
               Start="0,0"
-              End="-46,86.25">
+              End="-104,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="-22.75,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-22.75,0"
-                    Point2="-26.75,0"
-                    Point3="-26.75,4" />
-                  <mssgle:LineSegment
-                    End="-26.75,82.25" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-26.75,82.25"
-                    Point2="-26.75,86.25"
-                    Point3="-30.75,86.25" />
-                  <mssgle:LineSegment
-                    End="-46,86.25" />
+                    End="-104,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -16308,37 +17114,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="737.5,349.75">
+          TopLeft="808.5,146.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="296.166666666667,246.75"
+              EndConnector="225.166666666667,449.75"
               Start="0,0"
-              End="296.166666666667,239.25">
+              End="225.166666666667,442.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,142.653301886793" />
+                    End="0,263.304245283019" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,142.653301886793"
-                    Point2="0,146.653301886793"
-                    Point3="4,146.653301886793" />
+                    Point1="0,263.304245283019"
+                    Point2="0,267.304245283019"
+                    Point3="4,267.304245283019" />
                   <mssgle:LineSegment
-                    End="292.166666666667,146.653301886793" />
+                    End="221.166666666667,267.304245283019" />
                   <mssgle:CubicBezierSegment
-                    Point1="292.166666666667,146.653301886793"
-                    Point2="296.166666666667,146.653301886793"
-                    Point3="296.166666666667,150.653301886793" />
+                    Point1="221.166666666667,267.304245283019"
+                    Point2="225.166666666667,267.304245283019"
+                    Point3="225.166666666667,271.304245283019" />
                   <mssgle:LineSegment
-                    End="296.166666666667,239.25" />
+                    End="225.166666666667,442.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="132.841985677083,151.653301886793,30.4826953125,9.7490234375"
+              BoundingBox="97.3419856770834,272.304245283019,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -17429,6 +18235,69 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Import Contract Data\ProprietaryCustomer\BEK_Commerce_AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Worksheet Import Tasks\WorkSheet Items">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="176,42"
+          Id="Package\Worksheet Import Tasks\WorkSheet Items\CustomerWorksheet"
+          TopLeft="108,57" />
+        <NodeLayout
+          Size="200,42"
+          Id="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData"
+          TopLeft="120,176" />
+        <EdgeLayout
+          Id="Package\Worksheet Import Tasks\WorkSheet Items.Paths[Flat File Source Output]"
+          TopLeft="196,99">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="24,77"
+              Start="0,0"
+              End="24,69.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5"
+                    Point2="0,38.5"
+                    Point3="4,38.5" />
+                  <mssgle:LineSegment
+                    End="20,38.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="20,38.5"
+                    Point2="24,38.5"
+                    Point3="24,42.5" />
+                  <mssgle:LineSegment
+                    End="24,69.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
