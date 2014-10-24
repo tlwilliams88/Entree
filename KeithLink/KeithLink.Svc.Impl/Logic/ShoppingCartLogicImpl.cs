@@ -203,25 +203,6 @@ namespace KeithLink.Svc.Impl.Logic
 			return cart;
 		}
         
-		public NewOrderReturn SaveAsOrder(UserProfile user, Guid cartId)
-		{
-			//Check that RequestedShipDate
-			var basket = basketRepository.ReadBasket(user.UserId, cartId);
-
-			if (basket.RequestedShipDate == null)
-				throw new ApplicationException("Requested Ship Date is required before submitting an order");
-
-			//Save to Commerce Server
-			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-			var orderNumber = client.SaveCartAsOrder(user.UserId, cartId);
-
-			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(user.UserId, orderNumber);
-
-            WriteOrderFileToQueue(user, orderNumber.ToString(), newPurchaseOrder);
-
-			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
-		}
-
         private void WriteOrderFileToQueue(UserProfile user, string controlNumber, CS.PurchaseOrder newPurchaseOrder)
         {
             var newOrderFile = new OrderFile()
@@ -258,7 +239,7 @@ namespace KeithLink.Svc.Impl.Logic
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
-                    LineNumber = (short)(lineItem.Target.Properties["LinePosition"]),
+                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
                     ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
                     ReplacedOriginalItemNumber = string.Empty,

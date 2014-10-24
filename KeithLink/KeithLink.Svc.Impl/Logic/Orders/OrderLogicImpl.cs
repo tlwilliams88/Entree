@@ -50,6 +50,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
 			var returnOrder = ToOrder(order);
 			LookupProductDetails(userProfile, catalogInfo, returnOrder);
+
+            // handel special change order logic to hidd deleted line items
+            if (returnOrder.Status == "NewOrder" || returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
+                returnOrder.LineItems = returnOrder.LineItems.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
 
@@ -172,6 +176,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             WriteOrderFileToQueue(userProfile, newOrderNumber, order);
 
+            client.CleanUpChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
+
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
@@ -214,7 +220,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
-                    LineNumber = (short)(lineItem.Target.Properties["LinePosition"]),
+                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
                     ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
                     ReplacedOriginalItemNumber = string.Empty,

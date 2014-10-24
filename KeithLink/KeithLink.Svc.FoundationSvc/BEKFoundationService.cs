@@ -56,6 +56,27 @@ namespace KeithLink.Svc.FoundationSvc
             return po.TrackingNumber;
         }
 
+        public void CleanUpChangeOrder(Guid userId, Guid cartId)
+        {
+            CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
+                GetPurchaseOrder(userId, cartId);
+
+            List<int> lineItemIndexesToRemove = new List<int>();
+
+            foreach (CommerceServer.Core.Runtime.Orders.LineItem li in po.OrderForms[0].LineItems)
+            {
+                if (li.Status == "deleted")
+                {
+                    lineItemIndexesToRemove.Add(li.Index);
+                }
+                li.Status = string.Empty;
+            }
+            foreach (int index in lineItemIndexesToRemove)
+                po.OrderForms[0].LineItems.Remove(index);
+
+            po.Save();
+        }
+
         private static CommerceServer.Core.Runtime.Orders.PurchaseOrder GetPurchaseOrder(Guid userId, Guid cartId)
         {
             CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
@@ -69,8 +90,8 @@ namespace KeithLink.Svc.FoundationSvc
             po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
             int linePosition = 1; // main frame needs these to start at 1
             foreach (var li in lineItems)
-                if (linePosition < (int.Parse((string)li["LinePosition"])))
-                    linePosition = (int.Parse((string)li["LinePosition"]));
+                if (linePosition < (int)li["LinePosition"])
+                    linePosition = (int)li["LinePosition"];
             linePosition++;
 
             foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
@@ -93,7 +114,7 @@ namespace KeithLink.Svc.FoundationSvc
                     li["Each"] = false;
                     li["Notes"] = string.Empty;
                     li["LinePosition"] = linePosition;
-                    li.ProductCatalog = i.Catalog; // todo, wire up catalog...
+                    li.ProductCatalog = i.Catalog;
                     linePosition++;
                     po.OrderForms[0].LineItems.Add(li);
                 }
@@ -116,7 +137,7 @@ namespace KeithLink.Svc.FoundationSvc
                     cmd.Parameters.Add(parm);
                     conn.Open();
                     cmd.ExecuteNonQuery();
-                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("000000.##");
+                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
                 }
             }
             return controlNumber;
