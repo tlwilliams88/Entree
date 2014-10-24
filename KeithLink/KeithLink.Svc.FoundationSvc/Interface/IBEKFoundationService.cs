@@ -25,5 +25,6 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         public string ItemNumber { get; set; }
         public string Status { get; set; }
         public int Quantity { get; set; }
+        public string Catalog { get; set; }
     }
 }

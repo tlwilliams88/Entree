@@ -547,6 +547,9 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CatalogField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private string ItemNumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -562,6 +565,19 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Catalog {
+            get {
+                return this.CatalogField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CatalogField, value) != true)) {
+                    this.CatalogField = value;
+                    this.RaisePropertyChanged("Catalog");
+                }
             }
         }
         

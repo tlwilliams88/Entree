@@ -87,12 +87,19 @@ namespace KeithLink.Svc.InternalSvc
             // Perform the search.
             System.Data.DataSet results = manager.SearchPurchaseOrders(trackingNumberClause, options);
 
-            // Enumerate the results of the search.
-            Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
+            if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0)
+            {
+                // Enumerate the results of the search.
+                Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
 
-            // get the guids for the customers associated users and loop if necessary
-            PurchaseOrder po = orderContext.GetPurchaseOrder(soldToId, poNum);
-            return po;
+                // get the guids for the customers associated users and loop if necessary
+                PurchaseOrder po = orderContext.GetPurchaseOrder(soldToId, poNum);
+                return po;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         private static void SetCsLineInfo(string trimmedConfirmationStatus, LineItem[] lineItems, List<CsOrderLineUpdateInfo> confirmationDetail)
@@ -100,20 +107,26 @@ namespace KeithLink.Svc.InternalSvc
             foreach (var detail in confirmationDetail)
             {
                 // match up to incoming line items to CS line items
-                LineItem orderFormLineItem = lineItems.Where(x => x.Index == detail.RecordNumber).FirstOrDefault();
+                int index = detail.RecordNumber - 1;
+                if (index >= lineItems.Length)
+                    continue; // TODO: log this?  shouldn't happen, but who knows...
+
+                LineItem orderFormLineItem = lineItems.Where(x => Convert.ToInt32(x["LinePosition"])== (detail.RecordNumber)).FirstOrDefault();
                 string confirmationStatus = detail.MainFrameStatus.Trim().ToUpper();
+
+                orderFormLineItem["QuantityOrdered"] = detail.QuantityOrdered;
+                orderFormLineItem["QuantityShipped"] = detail.QuantityShipped;
+
                 if (String.IsNullOrEmpty(confirmationStatus))
                 {
                     orderFormLineItem["MainFrameStatus"] = "Filled";
                 }
                 if (confirmationStatus == "P") // partial ship
                 {
-                    orderFormLineItem.BackorderQuantity = detail.QuantityOrdered - detail.QuantityShipped;
                     orderFormLineItem["MainFrameStatus"] = "Partially Shipped";
                 }
                 else if (confirmationStatus == "O") // out of stock
                 {
-                    orderFormLineItem.BackorderQuantity = detail.QuantityOrdered - detail.QuantityShipped;
                     orderFormLineItem["MainFrameStatus"] = "Out of Stock";
                 }
                 else if (confirmationStatus == "R") // item replaced
