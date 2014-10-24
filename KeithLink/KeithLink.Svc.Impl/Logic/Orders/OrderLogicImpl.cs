@@ -50,6 +50,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
 			var returnOrder = ToOrder(order);
 			LookupProductDetails(userProfile, catalogInfo, returnOrder);
+
+            // handel special change order logic to hidd deleted line items
+            if (returnOrder.Status == "NewOrder" || returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
+                returnOrder.LineItems = returnOrder.LineItems.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
 
