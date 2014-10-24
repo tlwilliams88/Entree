@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', 'toaster', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, toaster, UserProfileService, UtilityService, List) {
 
       var filter = $filter('filter');
 
@@ -19,55 +19,11 @@ angular.module('bekApp')
         });
       }
 
-      function isFavoritesList(listName) {
-        return listName === 'Favorites';
-      }
-
-      function isReminderList(listName) {
-        return listName === 'Reminders';
-      }
-
-      // determine editing abilities for 'special' lists
-      // you cannot rename or delete special lists
-      // they also have custom fields for fields cannot be edited (label, par, etc.)
-      function flagSpecialLists(list) {
-        
-        if (isFavoritesList(list.name)) {
-          list.isFavoritesList = true;
-          list.cannotEditLabels = true;
-          list.cannotEditPar = true;
-          list.isSpecialList = true;
-          list.allowsDuplicates = false;
-        
-        } else if (isReminderList(list.name)) {
-          list.isReminderList = true;
-          list.cannotEditLabels = true;
-          list.cannotEditPar = false;
-          list.isSpecialList = true;
-          list.allowsDuplicates = false;
-        }
-      }
-      function flagLists() {
-        angular.forEach(Service.lists, function(list, index) {
-          flagSpecialLists(list);
-        });
-      }
-
-      // updates favorite status of given itemNumber in all lists
-      function updateListFavorites(itemNumber, isFavorite) {
-        angular.forEach(Service.lists, function(list, listIndex) {
-          angular.forEach(list.items, function(item, itemIndex) {
-            if (item.itemnumber === itemNumber) {
-              item.favorite = isFavorite;
-            }
-          });
-        });
-      }
-
       var Service = {
 
         lists: [],
         labels: [],
+        selectedList: {},
 
         // accepts "header: true" params to get only list names
         // return array of list objects
@@ -77,9 +33,6 @@ angular.module('bekApp')
           }
           return List.query(params).$promise.then(function(lists) {
             angular.copy(lists, Service.lists);
-            flagLists();
-
-            // TODO: get favorites list items if header param is true
             return lists;
           });
         },
@@ -94,26 +47,26 @@ angular.module('bekApp')
           return List.get({
             listId: listId,
           }).$promise.then(function(list) {
-            
+
             // update new list in cache object
             var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
-
-            // flag list if it is the Favorites List, used for display purposes            
-            flagSpecialLists(list);
-            
             if (existingList) {
               var idx = Service.lists.indexOf(existingList);
               angular.copy(list, Service.lists[idx]);
             } else {
               Service.lists.push(list);
             }
-  
+
+            angular.copy(list, Service.selectedList);
+
             return list;
           });
         },
 
         findListById: function(listId) {
-          var itemsFound = filter(Service.lists, {listid: listId});
+          var itemsFound = filter(Service.lists, function(list) {
+            return list.listid === listId;
+          });
           if (itemsFound.length === 1) {
             return itemsFound[0];
           }
@@ -143,7 +96,10 @@ angular.module('bekApp')
           newList.name = UtilityService.generateName('List', Service.lists);
 
           return List.save({}, newList).$promise.then(function(response) {
+            toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);
+          }, function() {
+            toaster.pop('error', null, 'Error creating list.');
           });
         },
 
@@ -159,7 +115,12 @@ angular.module('bekApp')
               }
             });
 
-            return Service.getList(response.listid);
+            return Service.getList(response.listid).then(function(list) {
+              toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
+              return list;
+            });
+          }, function() {
+            toaster.pop('error', null, 'Error saving list ' + list.name + '.');
           });
         },
 
@@ -174,13 +135,17 @@ angular.module('bekApp')
             if (idx > -1) {
               Service.lists.splice(idx, 1);
             }
-            return;
+
+            toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
+            return Service.getFavoritesList();
+          }, function() {
+            toaster.pop('error', null, 'Error deleting list.');
           });
         },
 
         deleteMultipleLists: function(listGuidArray) {
           return $http.delete('/list', {
-            headers:{'Content-Type': 'application/json'},
+            headers: {'Content-Type': 'application/json'},
             data: listGuidArray
           });
         },
@@ -202,13 +167,11 @@ angular.module('bekApp')
           }, item).$promise.then(function(response) {
             item.listitemid = response.listitemid;
             item.editPosition = 0;
-            
-            var updatedList = Service.findListById(listId);
-            if (updatedList && updatedList.items) {
-              updatedList.items.push(item);
-            }
 
-            return response.listitemid;
+            toaster.pop('success', null, 'Successfully added item to list.');
+            return item;
+          }, function() {
+            toaster.pop('error', null, 'Error adding item to list.');
           });
         },
 
@@ -222,20 +185,14 @@ angular.module('bekApp')
         },
 
         // accepts listId and listItemId for item to be deleted
-        deleteItem: function(listId, listItemId) {
+        deleteItem: function(listItemId) {
           return List.deleteItem({
             listItemId: listItemId
           }).$promise.then(function(response) {
-            var updatedList = Service.findListById(listId);
-            // TODO: clean this up
-            angular.forEach(updatedList.items, function(item, index) {
-              if (item.listitemid === listItemId) {
-                updatedList.items.splice(index, 1);
-              }
-            });
-
-            updateItemPositions(updatedList);
+            toaster.pop('success', null, 'Successfully deleted item from list.');
             return;
+          }, function() {
+            toaster.pop('error', null, 'Error deleting item from list.');
           });
         },
 
@@ -252,7 +209,11 @@ angular.module('bekApp')
           return List.addMultipleItems({
             listId: listId
           }, items).$promise.then(function() {
+            // TODO: favorite all items if favorites list
+            toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);
+          }, function() {
+            toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
           });
         },
 
@@ -269,10 +230,12 @@ angular.module('bekApp')
           return $http.delete('/list/' + listId + '/item', { 
             headers: {'Content-Type': 'application/json'},
             data: listItemIds 
+          }).then(function() {
+            // TODO: unfavorite all items if favorites list
+            toaster.pop('success', null, 'Successfully deleted ' + items.length + ' from list.');
+          }, function() {
+            toaster.pop('error', null, 'Error deleting ' + items.length + ' from list.');
           });
-          // return List.deleteMultipleItems({
-          //   listId: listId
-          // }, listItemIds).$promise;
         },
 
         /********************
@@ -287,83 +250,21 @@ angular.module('bekApp')
           });
         },
 
-        // // accepts listId (guid)
-        // // returns array of labels as strings that are found in the given list
-        // getLabelsForList: function(listId) {
-        //   return $http.get('/list/' + listId + '/labels').then(function(response) {
-        //     // TODO: add new labels to Service.labels
-        //     return response.data;
-        //   });
-        // },
-
         /********************
         FAVORITES LIST
         ********************/
 
         getFavoritesList: function() {
-          return filter(Service.lists, {isFavoritesList: true})[0];
-        },
-
-        // accepts item object
-        // returns new item list id
-        addItemToFavorites: function(item) {
-          var newItem = item,
-            favoritesList = Service.getFavoritesList(),
-            newListItemId;
-          
-          if (!item.favorite) {
-            return Service.addItem(favoritesList.listid, item).then(function(listitemid) {
-              newItem.favorite = true;
-              
-              // favorite the item in all other lists
-              updateListFavorites(newItem.itemnumber, true);
-
-              return listitemid;
-            });
-          } else {
-            var deferred = $q.defer();
-            deferred.resolve(item.listitemid);
-            return deferred.promise;
-          }
+          return filter(Service.lists, {isfavorite: true})[0];
         },
 
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
+          return Service.getList(favoritesList.listid).then(function() {
+            var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
 
-          return Service.deleteItem(favoritesList.listid, itemToDelete.listitemid).then(function() {
-            updateListFavorites(itemToDelete.itemnumber, false);
-            return;
-          });
-        },
-
-        addMultipleItemsToFavorites: function(items) {
-          var favoritesList = Service.getFavoritesList();
-          return Service.addMultipleItems(favoritesList.listid, items).then(function() {
-            angular.forEach(items, function(item, index) {
-              updateListFavorites(item.itemnumber, true);
-            });
-          });
-        },
-
-        // used to 'unstar mulitple' on list page
-        // finds the listitemids of the matching items in the favorites list so they can be deleted
-        removeMultipleItemsFromFavorites: function(items) {
-          var favoritesList = Service.getFavoritesList();
-
-          var itemsToRemove = [];
-          angular.forEach(items, function(item, index) {
-            var itemsFound = $filter('filter')(favoritesList.items, {itemnumber: item.itemnumber});
-            if (itemsFound.length > 0) {
-              itemsToRemove = itemsToRemove.concat(itemsFound);
-            }
-          });
-
-          return Service.deleteMultipleItems(favoritesList.listid, itemsToRemove).then(function() {
-            angular.forEach(items, function(item, index) {
-              updateListFavorites(item.itemnumber, false);
-            });
+            return Service.deleteItem(itemToDelete.listitemid);
           });
         },
 

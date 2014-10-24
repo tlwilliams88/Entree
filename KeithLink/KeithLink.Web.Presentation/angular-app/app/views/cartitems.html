@@ -24,7 +24,7 @@
             <tr ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.ordernumber}}</span></td>
               <td>{{order.itemcount}}</td>
-              <td>{{order.requestedshipdate | date:shortDate}}</td>
+              <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
             </tr>
           </table>
           
