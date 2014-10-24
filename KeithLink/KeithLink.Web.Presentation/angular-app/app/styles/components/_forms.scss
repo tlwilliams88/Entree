@@ -2,4 +2,9 @@ form.style-validation-errors {
 	input.ng-dirty.ng-invalid {
 		border: 1px solid $color-red !important;
   }
+  .form-error-message {
+    font-size: $font-size-base;
+    color: $color-red;
+    
+  }
 }
