@@ -214,7 +214,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
-                    LineNumber = (short)(lineItem.Target.Properties["LinePosition"]),
+                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
                     ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
                     ReplacedOriginalItemNumber = string.Empty,

@@ -116,7 +116,7 @@ namespace KeithLink.Svc.FoundationSvc
                     cmd.Parameters.Add(parm);
                     conn.Open();
                     cmd.ExecuteNonQuery();
-                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("000000.##");
+                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
                 }
             }
             return controlNumber;

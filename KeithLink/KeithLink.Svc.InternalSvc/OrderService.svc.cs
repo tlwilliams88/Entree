@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.InternalSvc.Interfaces;
 using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 using CommerceServer.Core.Runtime.Orders;
 using CommerceServer.Core.Orders;
@@ -19,9 +20,10 @@ namespace KeithLink.Svc.InternalSvc
 	// NOTE: In order to launch WCF Test Client for testing this service, please select PipelineService.svc or PipelineService.svc.cs at the Solution Explorer and start debugging.
 	public class OrderService : IOrderService
 	{
-		public OrderService()
+        private IEventLogRepository _eventLog;
+		public OrderService(IEventLogRepository eventLog)
 		{
-			
+            _eventLog = eventLog;
 		}
 
         static OrderContext orderContext = null;
@@ -31,34 +33,51 @@ namespace KeithLink.Svc.InternalSvc
 
 		public bool OrderConfirmation(ConfirmationFile confirmation)
 		{
-            LoadOrderContext();
-
-            if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
-                throw new ApplicationException("Confirmation Number is Required");
-            if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
-                throw new ApplicationException("Invoice number is required");
-            if (confirmation.Header.ConfirmationStatus == null)
-                throw new ApplicationException("Confirmation Status is Required");
-            
-            var poNum = confirmation.Header.ConfirmationNumber;
-            PurchaseOrder po = GetCsPurchaseOrderByNumber((int.Parse(poNum)).ToString());
-
-            if (po == null)
-            {
-                // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
-            }
-            else
-            {
-                string trimmedConfirmationStatus = SetCsHeaderInfo(confirmation, po);
-
-                LineItem[] lineItems = new LineItem[po.OrderForms.Count];
-                po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
-
-                SetCsLineInfo(trimmedConfirmationStatus, lineItems, GetCsLineUpdateInfo(confirmation));
-                po.Save();
-            }
+            System.Threading.Tasks.Task.Factory.StartNew(() => ProcessIncomingConfirmation(confirmation));
 			return true;
 		}
+
+        private void ProcessIncomingConfirmation(ConfirmationFile confirmation)
+        {
+            try
+            {
+                bool waitForDebugger = true;
+                while (waitForDebugger)
+                    System.Threading.Thread.Sleep(1000);
+
+                LoadOrderContext();
+
+                if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
+                    throw new ApplicationException("Confirmation Number is Required");
+                if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
+                    throw new ApplicationException("Invoice number is required");
+                if (confirmation.Header.ConfirmationStatus == null)
+                    throw new ApplicationException("Confirmation Status is Required");
+
+                var poNum = confirmation.Header.ConfirmationNumber;
+                PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
+                _eventLog.WriteInformationLog("Processing confirmation for control number: " + confirmation.Header.ConfirmationNumber + ", did " + (po == null ? " not " : "") + "get purchase order");
+
+                if (po == null)
+                {
+                    // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
+                }
+                else
+                {
+                    string trimmedConfirmationStatus = SetCsHeaderInfo(confirmation, po);
+
+                    LineItem[] lineItems = new LineItem[po.OrderForms.Count];
+                    po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+
+                    SetCsLineInfo(trimmedConfirmationStatus, lineItems, GetCsLineUpdateInfo(confirmation));
+                    po.Save();
+                }
+            }
+            catch (Exception ex)
+            {
+                _eventLog.WriteErrorLog("Error processing confirmation in internal service", ex);
+            }
+        }
 
         private static void LoadOrderContext()
         {
