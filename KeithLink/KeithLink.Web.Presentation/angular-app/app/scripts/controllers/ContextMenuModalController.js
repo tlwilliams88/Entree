@@ -18,7 +18,7 @@ angular.module('bekApp')
   *************/
 
   $scope.addItemToFavorites = function(item) {
-    ListService.addItem(favoritesList.listid, item).then(function() {
+    ListService.addItemToFavorites(item).then(function() {
       item.favorite = true;
       $modalInstance.close(item);
     });
