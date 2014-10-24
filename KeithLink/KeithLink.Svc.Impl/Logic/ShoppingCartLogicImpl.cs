@@ -28,20 +28,20 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPriceLogic priceLogic;
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IQueueRepository queueRepository;
-		private readonly IItemNoteLogic itemNoteLogic;
 		private readonly IBasketLogic basketLogic;
+		private readonly IListServiceRepository listServiceRepository;
         #endregion
 
         #region ctor
-        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic, 
-			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IItemNoteLogic itemNoteLogic, IBasketLogic basketLogic)
+        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogRepository catalogRepository, IPriceLogic priceLogic,
+			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepository, IBasketLogic basketLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogRepository = catalogRepository;
 			this.priceLogic = priceLogic;
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
-			this.itemNoteLogic = itemNoteLogic;
+			this.listServiceRepository = listServiceRepository;
 			this.basketLogic = basketLogic;
 		}
         #endregion
@@ -127,7 +127,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogRepository.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
-			var notes = itemNoteLogic.ReadNotes(user, catalogInfo);
+			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			cart.Items.ForEach(delegate(ShoppingCartItem item)
 			{
@@ -153,8 +153,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 					
 				}
-				if (note.Any())
-					item.Notes = note.First().Note;
+				if (note != null)
+					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
 
 		}
@@ -217,59 +217,64 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(user.UserId, orderNumber);
 
-			var newOrderFile = new OrderFile()
-			{
-				Header = new OrderHeader()
-				{
-					OrderingSystem = OrderSource.Entree,
-					Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
-					CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
-					DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-					PONumber = string.Empty,
-                    Specialinstructions = string.Empty,
-					ControlNumber = int.Parse(orderNumber),
-					OrderType = OrderType.NormalOrder,
-                    InvoiceNumber = string.Empty,
-					OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-					OrderSendDateTime = DateTime.Now,
-					UserId = user.EmailAddress.ToUpper(),
-					OrderFilled = false,
-                    FutureOrder = false
-				},
-				Details = new List<OrderDetail>()
-			};
-
-			foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-			{
-				var item = (CS.LineItem)lineItem.Target;
-
-				newOrderFile.Details.Add(new OrderDetail()
-				{
-					ItemNumber = item.ProductId,
-					OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
-					SellPrice = (double)item.PlacedPrice,
-                    Catchweight = (bool)item.CatchWeight,
-                    //Catchweight = false,
-					LineNumber = (short)(newOrderFile.Details.Count + 1),
-					ItemChange = LineType.Add,
-                    SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    ItemStatus = string.Empty
-				});
-							
-			}	
-
-			
-			System.IO.StringWriter sw = new System.IO.StringWriter();
-			System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
-
-			xs.Serialize(sw, newOrderFile);
-			
-			queueRepository.PublishToQueue(sw.ToString());
+            WriteOrderFileToQueue(user, orderNumber, newPurchaseOrder);
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
+
+        private void WriteOrderFileToQueue(UserProfile user, string orderNumber, CS.PurchaseOrder newPurchaseOrder)
+        {
+            var newOrderFile = new OrderFile()
+            {
+                Header = new OrderHeader()
+                {
+                    OrderingSystem = OrderSource.Entree,
+                    Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
+                    CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
+                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+                    PONumber = string.Empty,
+                    Specialinstructions = string.Empty,
+                    ControlNumber = int.Parse(orderNumber),
+                    OrderType = OrderType.NormalOrder,
+                    InvoiceNumber = string.Empty,
+                    OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    OrderSendDateTime = DateTime.Now,
+                    UserId = user.EmailAddress.ToUpper(),
+                    OrderFilled = false,
+                    FutureOrder = false
+                },
+                Details = new List<OrderDetail>()
+            };
+
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+
+                newOrderFile.Details.Add(new OrderDetail()
+                {
+                    ItemNumber = item.ProductId,
+                    OrderedQuantity = (short)item.Quantity,
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
+                    SellPrice = (double)item.PlacedPrice,
+                    Catchweight = (bool)item.CatchWeight,
+                    //Catchweight = false,
+                    LineNumber = (short)(newOrderFile.Details.Count),
+                    ItemChange = LineType.Add,
+                    SubOriginalItemNumber = string.Empty,
+                    ReplacedOriginalItemNumber = string.Empty,
+                    ItemStatus = string.Empty
+                });
+
+            }
+
+
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
+
+            xs.Serialize(sw, newOrderFile);
+
+            queueRepository.PublishToQueue(sw.ToString());
+        }
 		
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{

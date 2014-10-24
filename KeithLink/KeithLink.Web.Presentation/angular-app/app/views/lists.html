@@ -88,7 +88,7 @@
               <span class="icon-arrow-down6 text-light"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li ng-click="addItemsToList(list)" ng-repeat="list in lists | sortLists" ng-if="!list.read_only && selectedList.listid !== list.listid"><a href="">{{list.name}}</a></li>
+              <li ng-click="addItemsToList(list)" ng-repeat="list in lists | sortLists" ng-if="!list.read_only && selectedList.listid !== list.listid && !list.isSpecialList"><a href="">{{list.name}}</a></li>
               <li ng-click="createListWithItems()"><a>Create New List...</a></li>
             </ul>
           </div>
@@ -114,6 +114,7 @@
           <ul class="dropdown-menu" role="menu">
             <li ng-click="favoriteAll()"><a>Star Selected</a></li>
             <li ng-click="unfavoriteAll()"><a>Unstar Selected</a></li>
+            <li><a>Add Reminders</a></li>
           </ul>
         </div>
       </div>
@@ -135,11 +136,11 @@
     </div>
 
    <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" autocomplete="off">
-      <table class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+      <table class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
         <thead>
           <tr>
             <th class="nowrap input-col">
-              <input type="checkbox" ng-model="allSelected" ng-change="changeAll()" no-dirty-check>
+              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAll()" ng-if="!selectedList.read_only" no-dirty-check>
               <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
                 #
                 <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -184,18 +185,16 @@
           </tr> 
         </thead>
 
-        <div class="find-me">
-        <tbody ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
-          <tr 
-            ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }" 
+        <tbody ng-class="{ 'item-selected': item.isSelected }" 
             ng-repeat="item in (filteredItems = (selectedList.items | filter:search | limitTo:itemsToDisplay)) track by item.listitemid" 
             data-product="{{item}}" 
             data-drag="isDragEnabled()" 
             data-jqyoui-options="{helper:generateDragHelper, cursorAt: { top: -5, left: -5 }, cancel: '.bek-no-drag', handle: '.bek-drag-handle'}" 
             jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
+          <tr ng-class="{ odd : $odd, even: $even}">
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">
-              <input type="checkbox" class="bek-no-drag" ng-model="item.isSelected" no-dirty-check>
-              <span style="font-size:12px;">
+              <input type="checkbox" class="bek-no-drag" ng-if="!selectedList.read_only" ng-model="item.isSelected" no-dirty-check>
+              <span style="font-size:11px;">
                 {{item.position}}
               </span>
               <span favorite-item-click-handlers><span favorite-icons class="bek-no-drag"></span></span>
@@ -212,7 +211,7 @@
             <td class="hidden-sm hidden-xs bek-drag-handle">
               {{item.packsize}}
             </td>
-            <td class="hidden-drag hidden-xs hidden-sm bek-drag-handle">
+            <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
               {{item.quantityincart}}
             </td>
             <td ng-if="selectedList.is_contract_list" class="hidden-xs hidden-sm">
@@ -247,12 +246,12 @@
 
               <a ng-if="!selectedList.read_only" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
               
-              <span ng-if="filteredItems.length === selectedList.items.length" class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" style="cursor:move;"></span>
+              <span ng-if="filteredItems.length === selectedList.items.length - 1" class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" style="cursor:move;"></span>
               
               <a class="bek-no-drag"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
           </tr>
-          <!-- <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
             <td colspan="10">
               <table style="width:100%;">
                 <colgroup>
@@ -310,9 +309,8 @@
                 </tbody>
               </table>
             </td>
-          </tr> -->
+          </tr>
         </tbody>
-        </div>
 
         <tfoot ng-show="filteredItems.length === 0">
           <tr>

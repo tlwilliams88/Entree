@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
 	[DataContract]
-	public class NewItem
+	public class NewListItem
 	{
 		[DataMember(Name = "listitemid")]
-		public Guid? ListItemId { get; set; }
+		public long? Id { get; set; }
 	}
 }

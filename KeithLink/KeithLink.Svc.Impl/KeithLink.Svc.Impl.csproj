@@ -94,6 +94,14 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elasticsearch.Net.1.0.1\lib\Elasticsearch.Net.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -121,6 +129,7 @@
       <HintPath>..\packages\RestSharp.104.4.0\lib\net4\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
@@ -148,6 +157,7 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\Confirmations\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
@@ -158,6 +168,31 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Logic\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
+    <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
+      <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410230229455_Add Modified Date.cs" />
+    <Compile Include="Repository\EF\Migrations\201410230229455_Add Modified Date.Designer.cs">
+      <DependentUpon>201410230229455_Add Modified Date.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410230541553_Add Category.cs" />
+    <Compile Include="Repository\EF\Migrations\201410230541553_Add Category.Designer.cs">
+      <DependentUpon>201410230541553_Add Category.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.cs" />
+    <Compile Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.Designer.cs">
+      <DependentUpon>201410231630515_Make ListItem ItemNumber Required.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.cs" />
+    <Compile Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.Designer.cs">
+      <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.cs" />
+    <Compile Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.Designer.cs">
+      <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandUpdate.cs" />
@@ -186,6 +221,13 @@
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Confirmations\ConfirmationListenerRepositoryImpl.cs" />
     <Compile Include="Repository\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
+    <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
+    <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
+    <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
@@ -244,6 +286,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.PricingService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -277,6 +324,10 @@
     </None>
     <None Include="packages.config" />
     <None Include="Presentation.config" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.EF.List.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -335,6 +386,9 @@
     <None Include="Service References\com.benekeith.FoundationService\FoundationService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -343,6 +397,28 @@
     </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.ProcessRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
+    <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -386,6 +462,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
   </ItemGroup>
@@ -420,6 +497,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
   <ItemGroup>
@@ -437,7 +515,41 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
+      <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410230229455_Add Modified Date.resx">
+      <DependentUpon>201410230229455_Add Modified Date.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410230541553_Add Category.resx">
+      <DependentUpon>201410230541553_Add Category.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410231630515_Make ListItem ItemNumber Required.resx">
+      <DependentUpon>201410231630515_Make ListItem ItemNumber Required.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.resx">
+      <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.resx">
+      <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

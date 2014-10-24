@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$filter', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $filter, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, UserProfileService, UtilityService, List) {
 
       var filter = $filter('filter');
 
@@ -37,12 +37,14 @@ angular.module('bekApp')
           list.cannotEditLabels = true;
           list.cannotEditPar = true;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         
         } else if (isReminderList(list.name)) {
           list.isReminderList = true;
           list.cannotEditLabels = true;
           list.cannotEditPar = false;
           list.isSpecialList = true;
+          list.allowsDuplicates = false;
         }
       }
       function flagLists() {
@@ -176,8 +178,7 @@ angular.module('bekApp')
           });
         },
 
-        deleteMultipleLists: function(listGuidArray)
-        {
+        deleteMultipleLists: function(listGuidArray) {
           return $http.delete('/list', {
             headers:{'Content-Type': 'application/json'},
             data: listGuidArray
@@ -213,9 +214,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and item object
         updateItem: function(listId, item) {
-          return List.updateItem({
-            listId: listId
-          }, item).$promise.then(function(response) {
+          return List.updateItem({}, item).$promise.then(function(response) {
             // TODO: add label to Service.labels if it does not exist
             // TODO: replace item in Service.lists
             return response.data;
@@ -225,7 +224,6 @@ angular.module('bekApp')
         // accepts listId and listItemId for item to be deleted
         deleteItem: function(listId, listItemId) {
           return List.deleteItem({
-            listId: listId,
             listItemId: listItemId
           }).$promise.then(function(response) {
             var updatedList = Service.findListById(listId);
@@ -246,7 +244,7 @@ angular.module('bekApp')
         ********************/
 
         // accepts listId (guid) and an array of items to add
-        // ** Note this does not add duplicate item numbers to a list (10/3/14)
+        // params: allowDuplicates
         addMultipleItems: function(listId, items) {
           
           UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
@@ -259,6 +257,7 @@ angular.module('bekApp')
         },
 
         // accepts listId (guid) and an array of items
+        // NOTE $resource does not accept deletes with payloads
         deleteMultipleItems: function(listId, items) {
 
           // create array of list item ids
@@ -288,14 +287,14 @@ angular.module('bekApp')
           });
         },
 
-        // accepts listId (guid)
-        // returns array of labels as strings that are found in the given list
-        getLabelsForList: function(listId) {
-          return $http.get('/list/' + listId + '/labels').then(function(response) {
-            // TODO: add new labels to Service.labels
-            return response.data;
-          });
-        },
+        // // accepts listId (guid)
+        // // returns array of labels as strings that are found in the given list
+        // getLabelsForList: function(listId) {
+        //   return $http.get('/list/' + listId + '/labels').then(function(response) {
+        //     // TODO: add new labels to Service.labels
+        //     return response.data;
+        //   });
+        // },
 
         /********************
         FAVORITES LIST
@@ -312,10 +311,8 @@ angular.module('bekApp')
             favoritesList = Service.getFavoritesList(),
             newListItemId;
           
-          console.log(item.favorite);
           if (!item.favorite) {
-            console.log('adding item');
-            newListItemId = Service.addItem(favoritesList.listid, item).then(function(listitemid) {
+            return Service.addItem(favoritesList.listid, item).then(function(listitemid) {
               newItem.favorite = true;
               
               // favorite the item in all other lists
@@ -324,9 +321,10 @@ angular.module('bekApp')
               return listitemid;
             });
           } else {
-            newListItemId = item.listitemid;
+            var deferred = $q.defer();
+            deferred.resolve(item.listitemid);
+            return deferred.promise;
           }
-          return newListItemId;
         },
 
         // accepts item number to remove from favorites list
@@ -375,11 +373,6 @@ angular.module('bekApp')
 
         getReminderList: function() {
           return Service.getList('84f8a733-fdaf-42b7-9fc1-570aab4e3040');
-        },
-
-        addItemToListWithoutDuplicates: function(item) {
-          // Service.addMultipleItems('84f8a733-fdaf-42b7-9fc1-570aab4e3040')
-          console.log(item);
         }
 
 

@@ -22,6 +22,7 @@
     <MetadataSource Address="http://win2012bek:1000/Foundation/FoundationService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="FoundationService5.xsd" MetadataType="Schema" ID="627c1b12-6b46-4da8-a45f-b0105bf737fa" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd5" />
     <MetadataFile FileName="FoundationService.xsd" MetadataType="Schema" ID="762c7531-ad37-4b6d-bdcf-f60121cae19d" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd3" />
     <MetadataFile FileName="FoundationService.disco" MetadataType="Disco" ID="3c9fb348-22ec-4689-ac4c-b2ae01bd33ca" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?disco" />
     <MetadataFile FileName="FoundationService1.xsd" MetadataType="Schema" ID="accb7678-80e7-4e09-9097-5ef3d38fdb49" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd4" />

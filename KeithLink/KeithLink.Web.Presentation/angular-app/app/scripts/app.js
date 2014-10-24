@@ -161,13 +161,17 @@ angular
         carts: ['CartService', function (CartService){
           return CartService.getAllCarts();
         }],
-        reminderList: ['ListService', function(ListService) {
-          return ListService.getReminderList();
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
         }]
+        // ,
+        // reminderList: ['ListService', function(ListService) {
+        //   return ListService.getReminderList();
+        // }]
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId/?renameCart',
+      url: ':cartId/?renameCart&isChangeOrder',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
@@ -187,6 +191,9 @@ angular
         }],
         carts: ['CartService', function(CartService) {
           return CartService.getAllCarts();
+        }],
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
         }]
       }
     })

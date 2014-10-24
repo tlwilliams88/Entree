@@ -16,7 +16,7 @@
         <div class="order-item-title">Order #</div>
         <div class="order-item-value">{{order.ordernumber}}</div>
         <div class="order-item-title">Order Status</div>
-        <div class="order-item-value">PENDING</div>
+        <div class="order-item-value">{{order.status}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Order Date</div>
@@ -42,15 +42,15 @@
         <div class="order-item-title">Invoice Status</div>
         <div class="order-item-value">{{order.invoicestatus}}</div>
       </div>
-      <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
+      <!-- <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
         <input type="text" order-cutoff-date ng-model="cutoffdate">
       </form>
-      <div ng-if="changeOrderForm.$valid">
+      <div ng-if="order.ischangeorderallowed">
         <hr>
         <p class="text-green">You can make changes to this order until {{cutoffdate}}.</p>
         <button class="btn btn-lg btn-primary">Change Order</button>
         <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
-      </div>
+      </div> -->
     </div>
   </div>
 </div>
@@ -85,9 +85,17 @@
         <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="hidden-xs hidden-sm"></th>
-      <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
+      <!-- <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
         Qty
         <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th> -->
+      <th class="sort-col-header" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
+        Qty Ordered
+        <span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th>
+      <th class="sort-col-header" ng-click="sortBy='quantityshipped';sortOrder=!sortOrder;">
+        Qty Shipped
+        <span sort-icons field="'quantityshipped'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="hidden-xs hidden-sm sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder;">
         Each
@@ -100,6 +108,10 @@
       <th class="hidden-xs hidden-sm sort-col-header text-right" ng-click="sortBy='linetotal';sortOrder=!sortOrder;">
         Ext Price
         <span sort-icons field="'linetotal'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th>
+      <th class="sort-col-header text-right" ng-click="sortBy='status';sortOrder=!sortOrder;">
+        Status
+        <span sort-icons field="'status'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="large-icon icon-col">
         <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
@@ -143,12 +155,15 @@
       <td class="hidden-xs hidden-sm">{{item.brand}}</td>
       <td>{{item.name}}</td>
       <td class="hidden-xs hidden-sm" item-icons></td>
-      <td>{{item.quantity}}</td>
+      <!-- <td>{{item.quantity}}</td> -->
+      <td>{{item.quantityshipped}}</td>
+      <td>{{item.quantityordered}}</td>
       <td class="hidden-xs hidden-sm">
         {{item.each ? 'Y' : 'N'}}
       </td>
       <td class="hidden-xs hidden-sm text-right">{{item.price | currency}}</td>
       <td class="hidden-xs hidden-sm text-right">{{item.linetotal | currency}}</td>
+      <td>{{item.status}}</td>
       <td class="large-icon icon-col">
         <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
       </td>

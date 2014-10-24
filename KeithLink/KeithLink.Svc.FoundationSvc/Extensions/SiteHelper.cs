@@ -11,11 +11,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
     {
         public static string GetSiteName()
         {
-            if (CommerceOperationContext.CurrentInstance == null)
-            {
-                throw CommonExceptions.MissingOperationContext();
-            }
-            return CommerceOperationContext.CurrentInstance.SiteName;
+            return System.Configuration.ConfigurationManager.AppSettings["CS_Sitename"];
         }
 
         static CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection siteConfig = null;
@@ -26,6 +22,16 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                 siteConfig = new CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection(SiteHelper.GetSiteName());
             }
             return siteConfig;
+        }
+
+        static CommerceServer.Core.Runtime.Orders.OrderContext orderContext = null;
+        public static CommerceServer.Core.Runtime.Orders.OrderContext GetOrderContext()
+        {
+            if (orderContext == null)
+            {
+                orderContext = CommerceServer.Core.Runtime.Orders.OrderContext.Create(GetSiteName());
+            }
+            return orderContext;
         }
     }
 }

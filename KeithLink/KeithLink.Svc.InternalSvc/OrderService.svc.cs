@@ -33,12 +33,15 @@ namespace KeithLink.Svc.InternalSvc
 		{
             LoadOrderContext();
 
-            if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber) || String.IsNullOrEmpty(confirmation.Header.ConfirmationStatus)
-                || String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
-                throw new ApplicationException("confirmation number, status and invoice number are required");
+            if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
+                throw new ApplicationException("Confirmation Number is Required");
+            if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
+                throw new ApplicationException("Invoice number is required");
+            if (confirmation.Header.ConfirmationStatus == null)
+                throw new ApplicationException("Confirmation Status is Required");
             
             var poNum = confirmation.Header.ConfirmationNumber;
-            PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
+            PurchaseOrder po = GetCsPurchaseOrderByNumber((int.Parse(poNum)).ToString());
 
             if (po == null)
             {

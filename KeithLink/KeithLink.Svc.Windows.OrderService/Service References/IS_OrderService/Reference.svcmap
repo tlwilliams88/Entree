@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b2ab73db-f83e-4d12-863e-96a0fef546c3" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/OrderService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OrderService.xsd" MetadataType="Schema" ID="88789fa6-edd7-4353-b244-a5328ba9649e" SourceId="1" SourceUrl="http://corpmisdev2a.bekco.com:1317/OrderService.svc?xsd=xsd0" />
+    <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="fda89f8c-f73b-4b39-8300-ab9de2832b15" SourceId="1" SourceUrl="http://corpmisdev2a.bekco.com:1317/OrderService.svc?xsd=xsd2" />
+    <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="90b8d6ba-40c7-4a2e-a0e6-0d500f0bd419" SourceId="1" SourceUrl="http://corpmisdev2a.bekco.com:1317/OrderService.svc?wsdl" />
+    <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="5fdace56-8696-4315-8009-0707b954e14e" SourceId="1" SourceUrl="http://corpmisdev2a.bekco.com:1317/OrderService.svc?xsd=xsd1" />
+    <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="49c45dd0-f83d-4930-8af4-a0e443956da1" SourceId="1" SourceUrl="http://corpmisdev2a.bekco.com:1317/OrderService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

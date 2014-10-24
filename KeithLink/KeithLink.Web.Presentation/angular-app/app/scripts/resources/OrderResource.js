@@ -7,6 +7,16 @@ angular.module('bekApp')
 
       // defaults: GET, QUERY, SAVE
 
+      update: {
+        url: '/order',
+        method: 'PUT'
+      },
+
+      resubmitOrder: {
+        url: '/order/:orderNumber/changeorder',
+        method: 'POST'
+      }
+
     });
   
   }]);

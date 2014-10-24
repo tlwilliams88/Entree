@@ -42,5 +42,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name ="LineItems")]
 		public List<OrderLine> LineItems { get; set; }
+
+        [DataMember(Name = "CommerceId")]
+        public Guid CommerceId { get; set; }
 	}
 }

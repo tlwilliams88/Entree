@@ -19,18 +19,18 @@ namespace KeithLink.Svc.Impl.Logic
         private ICatalogRepository _catalogRepository;
         private IPriceLogic _priceLogic;
         private IProductImageRepository _imgRepository;
-        private IListLogic _listLogic;
 		private IDivisionRepository _divisionRepository;
         private ICategoryImageRepository _categoryImageRepository;
         private ICatalogCacheRepository _catalogCacheRepository;
+		private IListServiceRepository _listServiceRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListLogic listLogic, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
-            _listLogic = listLogic;
+			_listServiceRepository = listServiceRepository;
 			_divisionRepository = divisionRepository;
             _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
@@ -68,6 +68,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
 				ret.CasePriceNumeric = price.CasePrice;
 				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+                ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 			}
 			
             return ret;
@@ -175,6 +176,7 @@ namespace KeithLink.Svc.Impl.Logic
                 prod.CasePrice = String.Format("{0:C}", p.CasePrice);
                 prod.CasePriceNumeric = p.CasePrice;
                 prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
             if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
@@ -188,14 +190,29 @@ namespace KeithLink.Svc.Impl.Logic
 
 		private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
         {
-            if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile, catalogInfo.BranchId, new ProductsReturn() { Products = new List<Product>() { ret } }, catalogInfo);
+			if (profile != null)
+			{
+				var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
+				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+
+				ret.Favorite = list.Contains(ret.ItemNumber);
+				ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+			}
         }
 
 		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
-            if (profile != null)
-                _listLogic.MarkFavoriteProductsAndNotes(profile, branch, ret, catalogInfo);
+			if (profile != null)
+			{
+				var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
+				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+
+				ret.Products.ForEach(delegate (Product prod) 
+				{
+					prod.Favorite = favorites.Contains(prod.ItemNumber);
+					prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+				});
+			}
         }
 
 

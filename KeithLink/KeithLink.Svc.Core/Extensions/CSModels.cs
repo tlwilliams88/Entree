@@ -13,18 +13,19 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class CSModels
 	{
-		public static CS.LineItem ToLineItem(this ListItem listItem, string branchId)
+		public static CS.LineItem ToLineItem(this ListItemModel listItem, string branchId)
 		{
-			return new CS.LineItem() { 
-                Id = listItem.ListItemId.ToCommerceServerFormat(),  
-                CatalogName = branchId, 
-                ParLevel = listItem.ParLevel, 
-                LinePosition = listItem.Position.ToString(), 
-                Label = listItem.Label, 
-                ProductId = listItem.ItemNumber,
-                CatchWeight = listItem.CatchWeight,
-				Category = listItem.Category
-            };
+			//return new CS.LineItem() { 
+			//	Id = listItem.ListItemId.ToCommerceServerFormat(),  
+			//	CatalogName = branchId, 
+			//	ParLevel = listItem.ParLevel, 
+			//	LinePosition = listItem.Position.ToString(), 
+			//	Label = listItem.Label, 
+			//	ProductId = listItem.ItemNumber,
+			//	CatchWeight = listItem.CatchWeight,
+			//	Category = listItem.Category
+			//};
+			return null;
 		}
 
 		public static CS.LineItem ToLineItem(this ShoppingCartItem cartItem, string branchId)
