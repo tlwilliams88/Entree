@@ -3,18 +3,24 @@
     <div ng-hide="selectedList.isRenaming">
       <span>{{selectedList.name}}</span>
       <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.read_only && !selectedList.isfavorite">
-        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+        
+        <a ng-click="selectedList.isRenaming = true"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+        
         <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="{{'This will delete the list ' + selectedList.name + ' and all items within. Are you sure you want to delete this list?'}}"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
     <form name="renameListForm" class="style-validation-errors inline-header-form" ng-show="selectedList.isRenaming">
-      <input check-duplicate-field="name" collection="lists" type="text" focus-me="selectedList.isRenaming" required ng-model="editList.name" name="listName" id="listName" class="input-lg form-control" />
-      <button ng-disabled="renameListForm.$invalid" class="btn-no-style" type="submit" ng-click="renameList(selectedList.listid, editList.name); renameListForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
-      <a ng-click="selectedList.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
+      <input check-duplicate-field="name" collection="lists" type="text" focus-me="selectedList.isRenaming" required ng-model="selectedList.name" name="listName" id="listName" class="input-lg form-control" />
+      
+      <button ng-disabled="renameListForm.$invalid" class="btn-no-style" type="submit" ng-click="renameList(selectedList.listid, selectedList.name); renameListForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
+      
+      <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
+      
       <span class="form-error-message" ng-show="renameListForm.listName.$error.required">List name is required</span>
       <span class="form-error-message" ng-show="renameListForm.listName.$error.checkDuplicateField">Duplicate list name</span>
     </form>
+
   </div>
   <div header-buttons>
     <button ng-if="!selectedList.read_only" type="submit" class="btn-lg btn btn-primary" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save</button>

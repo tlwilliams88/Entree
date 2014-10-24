@@ -156,7 +156,7 @@ angular.module('bekApp')
 
         // accepts listId (guid) and item object
         // returns promise and listitemid
-        addItem: function (listId, item) {
+        addItem: function (listId, item, doNotDisplayMessage) {
           delete item.listitemid;
           item.position = 0;
           item.label = null;
@@ -168,7 +168,9 @@ angular.module('bekApp')
             item.listitemid = response.listitemid;
             item.editPosition = 0;
 
-            toaster.pop('success', null, 'Successfully added item to list.');
+            if (!doNotDisplayMessage) {
+              toaster.pop('success', null, 'Successfully added item to list.');
+            }
             return item;
           }, function() {
             toaster.pop('error', null, 'Error adding item to list.');
@@ -266,6 +268,10 @@ angular.module('bekApp')
 
             return Service.deleteItem(itemToDelete.listitemid);
           });
+        },
+
+        addItemToFavorites: function(item) {
+          return Service.addItem(Service.getFavoritesList().listid, item, true);
         },
 
         /********************

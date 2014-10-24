@@ -18,37 +18,28 @@ angular.module('bekApp')
   *************/
 
   $scope.addItemToFavorites = function(item) {
-    var newItem = angular.copy(item);
-    ListService.addItemToFavorites(newItem).then(function(data) {
+    ListService.addItem(favoritesList.listid, item).then(function() {
       item.favorite = true;
       $modalInstance.close(item);
-      $scope.displayMessage('success', 'Successfully added item to Favorites List.');
-    }, function() {
-      $scope.displayMessage('error', 'Error adding item to Favorites List.');
     });
   };
 
-  $scope.addItemToReminderList = function(item) {
-    ListService.addItemToListWithoutDuplicates(item).then(function(data) {
-      $modalInstance.close(item);
-      $scope.displayMessage('success', 'Successfully added item to Reminder List.');
-    }, function() {
-      $scope.displayMessage('error', 'Error adding item to Reminder List.');
-    });
-  };
+  // $scope.addItemToReminderList = function(item) {
+  //   ListService.addItemToListWithoutDuplicates(item).then(function(data) {
+  //     $modalInstance.close(item);
+  //     $scope.displayMessage('success', 'Successfully added item to Reminder List.');
+  //   }, function() {
+  //     $scope.displayMessage('error', 'Error adding item to Reminder List.');
+  //   });
+  // };
 
   $scope.addItemToList = function(listId, item) {
-    var newItem = angular.copy(item);
-
     $q.all([
       ListService.addItem(listId, item),
       ListService.addItemToFavorites(item)
     ]).then(function(data) {
       item.favorite = true;
       $modalInstance.close(item);
-      $scope.displayMessage('success', 'Successfully added item to list.');
-    }, function() {
-      $scope.displayMessage('error', 'Error adding item to list.');
     });
   };
 
@@ -59,9 +50,6 @@ angular.module('bekApp')
     ]).then(function(data) {
       $modalInstance.close(item);
       $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
-      $scope.displayMessage('success', 'Successfully created new list.');
-    }, function() {
-      $scope.displayMessage('error', 'Error creating new list.');
     });
   };
 

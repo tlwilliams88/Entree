@@ -93,10 +93,9 @@ angular.module('bekApp')
       $scope.saveList(list);
     };
 
-    $scope.startEditListName = function(listName) {
-      $scope.editList = {};
-      $scope.editList.name = angular.copy(listName);
-      $scope.selectedList.isRenaming = true;
+    $scope.cancelRenameList = function() {
+      $scope.selectedList.name = originalList.name;
+      $scope.selectedList.isRenaming = false;
     };
 
     /**********
