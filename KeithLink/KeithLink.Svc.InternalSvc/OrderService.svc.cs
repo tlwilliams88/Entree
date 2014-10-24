@@ -126,7 +126,7 @@ namespace KeithLink.Svc.InternalSvc
                 if (index >= lineItems.Length)
                     continue; // TODO: log this?  shouldn't happen, but who knows...
 
-                LineItem orderFormLineItem = lineItems.Where(x => Convert.ToInt32(x["LinePosition"])== (detail.RecordNumber)).FirstOrDefault();
+                LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (detail.RecordNumber)).FirstOrDefault();
                 string confirmationStatus = detail.MainFrameStatus.Trim().ToUpper();
 
                 orderFormLineItem["QuantityOrdered"] = detail.QuantityOrdered;

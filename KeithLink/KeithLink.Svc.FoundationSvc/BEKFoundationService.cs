@@ -90,8 +90,8 @@ namespace KeithLink.Svc.FoundationSvc
             po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
             int linePosition = 1; // main frame needs these to start at 1
             foreach (var li in lineItems)
-                if (linePosition < (int.Parse((string)li["LinePosition"])))
-                    linePosition = (int.Parse((string)li["LinePosition"]));
+                if (linePosition < (int)li["LinePosition"])
+                    linePosition = (int)li["LinePosition"];
             linePosition++;
 
             foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
@@ -114,7 +114,7 @@ namespace KeithLink.Svc.FoundationSvc
                     li["Each"] = false;
                     li["Notes"] = string.Empty;
                     li["LinePosition"] = linePosition;
-                    li.ProductCatalog = i.Catalog; // todo, wire up catalog...
+                    li.ProductCatalog = i.Catalog;
                     linePosition++;
                     po.OrderForms[0].LineItems.Add(li);
                 }
