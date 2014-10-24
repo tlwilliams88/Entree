@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
 
-            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
+            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
 
             WriteOrderFileToQueue(userProfile, newOrderNumber, order);
 
@@ -195,8 +195,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     PONumber = string.Empty,
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(controlNumber),
-                    OrderType = OrderType.NormalOrder,
-                    InvoiceNumber = string.Empty,
+                    OrderType = OrderType.ChangeOrder,
+                    InvoiceNumber = (string)newPurchaseOrder.Properties["MasterNumber"],
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
                     OrderSendDateTime = DateTime.Now,
                     UserId = user.EmailAddress.ToUpper(),
