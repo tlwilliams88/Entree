@@ -326,7 +326,7 @@ angular.module('bekApp')
 
       if (row.itemnumber) {
         itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1;
-        nameMatch = row.name.toLowerCase().indexOf(term || '') !== -1;
+        nameMatch = row.name && (row.name.toLowerCase().indexOf(term || '') !== -1);
         labelMatch = row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);  
       }
 
