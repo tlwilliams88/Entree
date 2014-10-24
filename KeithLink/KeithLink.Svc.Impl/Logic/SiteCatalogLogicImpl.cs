@@ -68,6 +68,7 @@ namespace KeithLink.Svc.Impl.Logic
 				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
 				ret.CasePriceNumeric = price.CasePrice;
 				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+                ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 			}
 			
             return ret;
@@ -175,6 +176,7 @@ namespace KeithLink.Svc.Impl.Logic
                 prod.CasePrice = String.Format("{0:C}", p.CasePrice);
                 prod.CasePriceNumeric = p.CasePrice;
                 prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
             if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first

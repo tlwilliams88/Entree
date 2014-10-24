@@ -108,7 +108,7 @@
               <li ng-click="addingNewLabel=true; showLabels=false;"><a>Add New Label...</a></li>
             </ul>
           </div>
-          <button type="button" class="multi-action-btn btn btn-default btn-lg" ng-click="deleteMultipleItems(selectedList)">
+          <button type="button" class="multi-action-btn btn btn-default btn-lg" ng-click="deleteMultipleItems(selectedList)" ng-if="!selectedList.read_only">
             <span class="icon-trash large-icon text-light"></span>
           </button>
         </div>
@@ -146,7 +146,7 @@
         <thead>
           <tr>
             <th class="nowrap input-col">
-              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" ng-if="!selectedList.read_only" no-dirty-check>
+              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
               <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
                 #
                 <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -199,7 +199,7 @@
             jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
           <tr ng-class="{ odd : $odd, even: $even}">
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">
-              <input type="checkbox" class="bek-no-drag" ng-if="!selectedList.read_only" ng-model="item.isSelected" no-dirty-check>
+              <input type="checkbox" class="bek-no-drag" ng-model="item.isSelected" no-dirty-check>
               <span style="font-size:11px;">
                 {{item.position}}
               </span>

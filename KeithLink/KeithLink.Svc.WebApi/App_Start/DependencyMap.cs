@@ -55,7 +55,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
+			builder.RegisterType<OrderQueueRepositoryImpl>().As<IOrderQueueRepository>();
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
