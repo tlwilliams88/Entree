@@ -49,7 +49,7 @@ namespace KeithLink.Svc.InternalSvc
         /*for testing only*/
         public bool ImportCatalogLists()
         {
-            Task.Factory.StartNew(() => this.categoryLogic.ImportContractLists());
+            Task.Factory.StartNew(() => this.categoryLogic.ImportPrePopulatedLists());
             return true;
         }
 
