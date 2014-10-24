@@ -24,6 +24,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly ICatalogLogic catalogLogic;
 		
 
+
 		public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
 			ICatalogLogic catalogLogic)
@@ -74,7 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			unitOfWork.SaveChanges();
 			return item.Id;
 		}
-		
+
 		public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
 		{
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet)).ToList();
@@ -88,18 +89,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet)).ToList();
 			}
 
-			
+
 			if (headerOnly)
-				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type== ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
+				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
 			else
 			{
 				var returnList = list.Select(b => b.ToListModel()).ToList();
+				var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+
 				returnList.ForEach(delegate(ListModel listItem)
 				{
-					LookupProductDetails(user, listItem, catalogInfo);
+					LookupProductDetails(user, listItem, catalogInfo, activeCart);
 				});
 				return returnList;
-			}			
+			}
 		}
 
 		public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
@@ -130,14 +133,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
+			//var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
+			//if (cachedList != null)
+			//	return cachedList;
+
 			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
 			if (list == null)
 				return null;
 
 			var returnList = list.ToListModel();
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
-			LookupProductDetails(user, returnList, catalogInfo);
+			LookupProductDetails(user, returnList, catalogInfo, activeCart);
+
+			//listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
 
 			return returnList;
 		}
@@ -159,10 +169,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-			list.Items.ToList().ForEach(delegate (ListItem item) {
+			list.Items.ToList().ForEach(delegate(ListItem item)
+			{
 				listItemRepository.Delete(item);
 			});
-			
+
 			listRepository.Delete(list);
 			unitOfWork.SaveChanges();
 		}
@@ -185,12 +196,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				{
 					listItemRepository.Delete(item);
 				});
-				
+
 
 			if (currentList.Items == null && userList.Items != null)
 				currentList.Items = new List<ListItem>();
 
-			
+
 			foreach (var updateItem in userList.Items)
 			{
 				if (string.IsNullOrEmpty(updateItem.ItemNumber))
@@ -211,7 +222,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			unitOfWork.SaveChanges();
 		}
 
-		
+
 		public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
 		{
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, true).Where(i => i.Type == ListType.Notes).FirstOrDefault();
@@ -278,10 +289,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 				else
 				{
-					if(list.Items.Count >= Configuration.RecentItemsToKeep)
+					if (list.Items.Count >= Configuration.RecentItemsToKeep)
 						listItemRepository.Delete(list.Items.OrderBy(i => i.ModifiedUtc).FirstOrDefault());
-					
-					list.Items.Add(new ListItem() { ItemNumber = itemNumber});
+
+					list.Items.Add(new ListItem() { ItemNumber = itemNumber });
 				}
 			}
 
@@ -317,23 +328,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			});
 
 		}
-		private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+		private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo, IEnumerable<KeithLink.Svc.Core.Models.Generated.Basket> activeCart)
 		{
 			if (list.Items == null)
 				return;
 
-			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
-			
+
 			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
-			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId));
+			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId)).FirstOrDefault();
 
-			list.Items.ForEach(delegate(ListItemModel listItem)
+			Parallel.ForEach(list.Items, listItem =>
 			{
-
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-				
+
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
@@ -348,11 +357,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.PackagePrice = prod.PackagePrice == null ? null : prod.PackagePrice.ToString();
 					listItem.CasePrice = prod.CaseCube == null ? null : prod.CasePrice.ToString();
 				}
-				if (favorites.Any())
+				if (favorites != null && favorites.Items != null)
 				{
-					listItem.Favorite = favorites.FirstOrDefault().Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
+					listItem.Favorite = favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
 				}
-				
+
 
 				if (activeCart.Any()) //Is there an active cart? If so get item counts
 				{
@@ -361,7 +370,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				if (notes != null && notes.Items != null)
 					listItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
-
 			});
 
 		}
@@ -370,7 +378,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
 
-			if(list == null)
+			if (list == null)
 				return null;
 
 			return list.SelectMany(i => i.Items.Select(x => x.ItemNumber)).ToList();
@@ -393,7 +401,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).ToList();
 
 			if (list == null)
-				return null;			
+				return null;
 
 			return list.Select(b => b.ToListModel()).ToList();
 		}
