@@ -89,6 +89,7 @@ namespace KeithLink.Svc.FoundationSvc
             CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
             CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
             po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+            po["RequestedShipDate"] = requestedShipDate;
             int linePosition = 1; // main frame needs these to start at 1
             foreach (var li in lineItems)
                 if (linePosition < (int)li["LinePosition"])
