@@ -180,24 +180,51 @@ angular
       }
     })
 
+    // .state('menu.cart', {
+    //   url: '/cart/',
+    //   templateUrl: 'views/cart.html',
+    //   controller: 'CartController',
+    //   data: {
+    //     authorize: 'canCreateOrders'
+    //   },
+    //   resolve: {
+    //     carts: ['CartService', function (CartService){
+    //       return CartService.getAllCarts();
+    //     }],
+    //     changeOrders: ['OrderService', function(OrderService) {
+    //       return OrderService.getChangeOrders();
+    //     }]
+    //     // ,
+    //     // reminderList: ['ListService', function(ListService) {
+    //     //   return ListService.getReminderList();
+    //     // }]
+    //   }
+    // })
+    // .state('menu.cart.items', {
+    //   url: ':cartId/?renameCart&isChangeOrder',
+    //   templateUrl: 'views/cartitems.html',
+    //   controller: 'CartItemsController',
+    //   data: {
+    //     authorize: 'canCreateOrders'
+    //   }
+    // })
+
     .state('menu.cart', {
       url: '/cart/',
-      templateUrl: 'views/cart.html',
-      controller: 'CartController',
+      // templateUrl: 'views/cart.html',
+      // controller: 'CartController',
+      abstract: true,
+      template: '<ui-view/>',
       data: {
         authorize: 'canCreateOrders'
       },
       resolve: {
         carts: ['CartService', function (CartService){
-          return CartService.getAllCarts();
+          return CartService.getCartHeaders();
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
         }]
-        // ,
-        // reminderList: ['ListService', function(ListService) {
-        //   return ListService.getReminderList();
-        // }]
       }
     })
     .state('menu.cart.items', {
@@ -206,8 +233,44 @@ angular
       controller: 'CartItemsController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'CartService', 'OrderService', function($state, $stateParams, carts, changeOrders, CartService, OrderService) {
+          // check for valid cartId or else redirect to homepage or auto create a cart?
+          var selectedCart = CartService.findCartById($stateParams.cartId);
+          if (selectedCart) {
+            console.log('valid cart');
+            $stateParams.isChangeOrder = false;
+            return CartService.getCart(selectedCart.id);
+          }
+          
+          var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, $stateParams.cartId);
+          if (selectedChangeOrder) {
+            console.log('valid change order');
+            $stateParams.isChangeOrder = true;
+            return selectedChangeOrder;
+          }
+
+          var defaultCart = CartService.getSelectedCart();
+          if (defaultCart) {
+            console.log('default cart');
+            $stateParams.isChangeOrder = false;
+            return CartService.getCart(defaultCart.id);
+          }
+
+          var defaultChangeOrder = changeOrders[0];
+          if (defaultChangeOrder) {
+            console.log('default change order');
+            $stateParams.isChangeOrder = true;
+            return defaultChangeOrder;
+          }
+
+          console.log('nothing');
+          $state.go('menu.home');
+        }]
       }
     })
+
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
@@ -325,6 +388,8 @@ angular
   $urlRouterProvider.when('/', '/register');
   $urlRouterProvider.when('/lists', '/lists/1');
   $urlRouterProvider.when('/lists/', '/lists/1');
+  $urlRouterProvider.when('/cart/', '/cart/1');
+  $urlRouterProvider.when('/cart/', '/cart/1');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
