@@ -122,6 +122,27 @@ angular
       }
     })
 
+    // .state('menu.lists', {
+    //   url: '/lists/:listId',
+    //   // abstract: true,
+    //   // template: '<ui-view/>',
+    //   templateUrl: 'views/lists.html',
+    //   controller: 'ListController',
+    //   data: {
+    //     authorize: 'canManageLists'
+    //   },
+    //   resolve: {
+    //     labels: ['ListService', function (ListService) {
+    //       return ListService.getAllLabels();
+    //     }],
+    //     lists: function() {
+    //       return ListService.getListHeaders();
+    //     },
+    //     selectedList: function() {
+    //       return ListService.getList($stateParams.listId);
+    //     }
+    //   }
+    // })
 
     .state('menu.lists', {
       url: '/lists/',
@@ -131,14 +152,11 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService) {
-          return $q.all([
-            ListService.getAllLists(),
-            ListService.getAllLabels()
-          ]);
+        lists: ['ListService', function (ListService) {
+          return ListService.getListHeaders();
         }],
-        carts: ['CartService', function(CartService) {
-          return CartService.getCartHeaders();
+        labels: ['ListService', function(ListService) {
+          return ListService.getAllLabels();
         }]
       }
     })
@@ -148,8 +166,20 @@ angular
       controller: 'ListController',
       data: {
         authorize: 'canManageLists'
+      },
+      resolve: {
+        originalList: [ '$stateParams', 'lists', 'ListService', function($stateParams, lists, ListService) {
+          // check for valid listId, go to favorites list by default
+          var selectedList = ListService.findListById($stateParams.listId);
+          if (!selectedList) {
+            selectedList = ListService.getFavoritesList();
+          }
+
+          return ListService.getList(selectedList.listid);
+        }]
       }
     })
+
     .state('menu.cart', {
       url: '/cart/',
       templateUrl: 'views/cart.html',

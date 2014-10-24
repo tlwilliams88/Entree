@@ -14,12 +14,9 @@ angular.module('bekApp')
 
         if (!processingAddItem) {
           processingAddItem = true;
-          
-          ListService.addItemToFavorites(newItem).then(function(data) {
+          var favoritesList = ListService.getFavoritesList();
+          ListService.addItem(favoritesList.listid, item).then(function() {
             item.favorite = true;
-            $scope.displayMessage('success', 'Successfully added item to Favorites List.');
-          }, function() {
-            $scope.displayMessage('error', 'Error adding item to Favorites List.');
           }).finally(function() {
             processingAddItem = false;
           });
@@ -35,11 +32,8 @@ angular.module('bekApp')
 
           ListService.removeItemFromFavorites(deletedItem.itemnumber).then(function(data) {
             item.favorite = false;
-            $scope.displayMessage('success', 'Successfully removed item from Favorites List.');
-          }, function() {
-            $scope.displayMessage('error', 'Error removing item from Favorites List.');
           }).finally(function() {
-            processingAddItem = false;
+            processingRemoveItem = false;
           });
         }
       };

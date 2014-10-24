@@ -7,7 +7,7 @@ angular.module('bekApp')
     angular.forEach(items, function(item) {
       
       // add display priority list of lists
-      if (item.isFavoritesList) {
+      if (item.isfavorite) {
         item.sortPriority = 1;
       } else if (item.is_contract_list) {
         item.sortPriority = 2;

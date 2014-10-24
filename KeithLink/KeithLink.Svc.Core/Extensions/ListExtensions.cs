@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Extensions
 				DisplayName = list.Name,
 				Type = KeithLink.Svc.Core.Models.EF.ListType.Custom,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel }).ToArray()
+				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes }).ToArray()
 			};
 		}
 
@@ -31,7 +31,7 @@ namespace KeithLink.Svc.Core.Extensions
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id }).ToList()
+				Items = list.Items == null ? null : list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position }).ToList()
 			};
 		}
 	}

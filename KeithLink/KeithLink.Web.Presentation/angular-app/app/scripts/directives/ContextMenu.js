@@ -14,25 +14,12 @@ angular.module('bekApp')
       *************/
 
       $scope.addItemToList = function(listId, item) {
-        var newItem = angular.copy(item);
-        
         $q.all([
           ListService.addItem(listId, item),
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           item.favorite = true;
           $scope.isContextMenuDisplayed = false;
-          $scope.displayMessage('success', 'Successfully added item to list.');
-        }, function() {
-          $scope.displayMessage('error', 'Error adding item to list.');
-        });
-      };
-
-      $scope.addItemToReminderList = function(item) {
-        ListService.addItemToListWithoutDuplicates(item).then(function(data) {
-          $scope.displayMessage('success', 'Successfully added item to Reminder List.');
-        }, function() {
-          $scope.displayMessage('error', 'Error adding item to Reminder List.');
         });
       };
 
@@ -42,9 +29,6 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
-          $scope.displayMessage('success', 'Successfully created new list.');
-        }, function() {
-          $scope.displayMessage('error', 'Error creating new list.');
         });
       };
 
@@ -99,7 +83,8 @@ angular.module('bekApp')
       };
 
       function isTouchDevice() {
-        return ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 || window.innerWidth <= 991;
+        // return ('ontouchstart' in window) || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0 || window.innerWidth <= 991;
+        return window.innerWidth <= 991;
       }
 
       $scope.openContextMenu = function (e, item, lists, carts, changeOrders) {
