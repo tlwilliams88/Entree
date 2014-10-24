@@ -10,6 +10,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Catalog" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ItemNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Price" type="xs:decimal" />
       <xs:element minOccurs="0" name="Quantity" type="xs:int" />
       <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
     </xs:sequence>

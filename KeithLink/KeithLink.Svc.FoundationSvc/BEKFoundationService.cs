@@ -23,7 +23,6 @@ namespace KeithLink.Svc.FoundationSvc
 		public string SaveCartAsOrder(Guid userId, Guid cartId)
 		{
             var context = Extensions.SiteHelper.GetOrderContext();
-			PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
 
 			var basket = context.GetBasket(userId, cartId);
 
@@ -33,6 +32,8 @@ namespace KeithLink.Svc.FoundationSvc
                 lineItem["LinePosition"] = startIndex;
                 startIndex++;
             }
+
+            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
 			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
             basket.TrackingNumber = GetNextControlNumber();
@@ -119,6 +120,10 @@ namespace KeithLink.Svc.FoundationSvc
                     po.OrderForms[0].LineItems.Add(li);
                 }
             }
+
+            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+            pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+
             po.Save();
             return po.TrackingNumber;
         }

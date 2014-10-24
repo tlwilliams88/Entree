@@ -553,6 +553,9 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         private string ItemNumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private decimal PriceField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int QuantityField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -590,6 +593,19 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
                 if ((object.ReferenceEquals(this.ItemNumberField, value) != true)) {
                     this.ItemNumberField = value;
                     this.RaisePropertyChanged("ItemNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal Price {
+            get {
+                return this.PriceField;
+            }
+            set {
+                if ((this.PriceField.Equals(value) != true)) {
+                    this.PriceField = value;
+                    this.RaisePropertyChanged("Price");
                 }
             }
         }
