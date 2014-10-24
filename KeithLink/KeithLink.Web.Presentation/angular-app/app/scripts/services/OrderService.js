@@ -28,8 +28,6 @@ angular.module('bekApp')
 
       getChangeOrders: function() {
         return Service.getAllOrders().then(function(orders) {
-          // orders[0].ischangeorderallowed = true;
-          // orders[0].items = orders[0].lineItems;
           return $filter('filter')(orders, {ischangeorderallowed: true});
         });
       },
@@ -37,13 +35,25 @@ angular.module('bekApp')
       resubmitOrder: function(orderNumber) {
         return Order.resubmitOrder({
           orderNumber: orderNumber
-        }, null).$promise;
+        }, null).$promise.then(function(order) {
+          return order.ordernumber;
+        });
       },
 
       updateOrder: function(order) {
         var params = {};
-        return Order.update(params, order).$promise;
-      }
+        return Order.update(params, order).$promise.then(function(order) {
+          console.log(order);
+          return order;
+        });
+      },
+
+      findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {
+        var itemsFound = $filter('filter')(changeOrders, {ordernumber: orderNumber});
+        if (itemsFound.length === 1) {
+          return itemsFound[0];
+        }
+      },
     };
  
     return Service;

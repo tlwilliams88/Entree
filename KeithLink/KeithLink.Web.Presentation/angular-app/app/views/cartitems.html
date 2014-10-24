@@ -21,10 +21,10 @@
 
           <table class="table no-margin" ng-if="changeOrders.length > 0">
             <caption class="text-left">Change Orders</caption>
-            <tr ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
+            <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.ordernumber}}</span></td>
               <td>{{order.itemcount}}</td>
-              <td>{{order.requestedshipdate | date:shortDate}}</td>
+              <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
             </tr>
           </table>
           

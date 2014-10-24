@@ -192,6 +192,10 @@
     <Compile Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.Designer.cs">
       <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.cs" />
+    <Compile Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.Designer.cs">
+      <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -548,6 +552,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.resx">
       <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.resx">
+      <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -2,23 +2,29 @@
   <div header-message>
     <div ng-hide="selectedList.isRenaming">
       <span>{{selectedList.name}}</span>
-      <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.read_only && !selectedList.isSpecialList">
-        <a ng-click="startEditListName(selectedList.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+      <div style="display:inline-block;" ng-show="selectedList" ng-if="!selectedList.read_only && !selectedList.isfavorite">
+        
+        <a ng-click="selectedList.isRenaming = true"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+        
         <a confirmed-click="deleteList(selectedList.listid)" class="hidden-print" ng-confirm-click="{{'This will delete the list ' + selectedList.name + ' and all items within. Are you sure you want to delete this list?'}}"><span class="large-icon text-light icon-trash"></span></a>
       </div>
     </div>
 
     <form name="renameListForm" class="style-validation-errors inline-header-form" ng-show="selectedList.isRenaming">
-      <input check-duplicate-field="name" collection="lists" type="text" focus-me="selectedList.isRenaming" required ng-model="editList.name" name="listName" id="listName" class="input-lg form-control" />
-      <button ng-disabled="renameListForm.$invalid" class="btn-no-style" type="submit" ng-click="renameList(selectedList.listid, editList.name); renameListForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
-      <a ng-click="selectedList.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
+      <input check-duplicate-field="name" collection="lists" type="text" focus-me="selectedList.isRenaming" required ng-model="selectedList.name" name="listName" id="listName" class="input-lg form-control" />
+      
+      <button ng-disabled="renameListForm.$invalid" class="btn-no-style" type="submit" ng-click="renameList(selectedList.listid, selectedList.name); renameListForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
+      
+      <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
+      
       <span class="form-error-message" ng-show="renameListForm.listName.$error.required">List name is required</span>
       <span class="form-error-message" ng-show="renameListForm.listName.$error.checkDuplicateField">Duplicate list name</span>
     </form>
+
   </div>
   <div header-buttons>
     <button ng-if="!selectedList.read_only" type="submit" class="btn-lg btn btn-primary" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save</button>
-    <button ng-if="!selectedList.read_only" class="btn-lg btn btn-default" ng-click="revertChanges(selectedList)" ng-disabled="listForm.$pristine">
+    <button ng-if="!selectedList.read_only" class="btn-lg btn btn-default" ng-click="undoChanges()" ng-disabled="listForm.$pristine">
       Cancel
     </button>
     <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
@@ -48,7 +54,7 @@
         <h3>Your Lists</h3>
 
         <div class="btn-group-vertical list-names text-blue">
-          <button type="button" ng-repeat="list in lists | sortLists | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemToList(list)'}">{{list.name}}</button>
+          <button type="button" ng-repeat="list in lists | sortLists | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">{{list.name}}</button>
         </div>
         <h5>
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a>
@@ -88,11 +94,11 @@
               <span class="icon-arrow-down6 text-light"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-              <li ng-click="addItemsToList(list)" ng-repeat="list in lists | sortLists" ng-if="!list.read_only && selectedList.listid !== list.listid && !list.isSpecialList"><a href="">{{list.name}}</a></li>
+              <li ng-click="addItemsToList(list)" ng-repeat="list in lists | sortLists" ng-if="!list.read_only && selectedList.listid !== list.listid && !list.isfavorite"><a href="">{{list.name}}</a></li>
               <li ng-click="createListWithItems()"><a>Create New List...</a></li>
             </ul>
           </div>
-          <div class="btn-group" dropdown is-open="showLabels" ng-if="!selectedList.read_only && !selectedList.cannotEditLabels">
+          <div class="btn-group" dropdown is-open="showLabels" ng-if="!selectedList.read_only && !selectedList.isfavorite">
             <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
               <span class="icon-tag large-icon text-light"></span>
               <span class="icon-arrow-down6 text-light"></span>
@@ -102,7 +108,7 @@
               <li ng-click="addingNewLabel=true; showLabels=false;"><a>Add New Label...</a></li>
             </ul>
           </div>
-          <button type="button" class="multi-action-btn btn btn-default btn-lg" ng-click="deleteMultipleItems(selectedList)">
+          <button type="button" class="multi-action-btn btn btn-default btn-lg" ng-click="deleteMultipleItems(selectedList)" ng-if="!selectedList.read_only">
             <span class="icon-trash large-icon text-light"></span>
           </button>
         </div>
@@ -114,7 +120,7 @@
           <ul class="dropdown-menu" role="menu">
             <li ng-click="favoriteAll()"><a>Star Selected</a></li>
             <li ng-click="unfavoriteAll()"><a>Unstar Selected</a></li>
-            <li><a>Add Reminders</a></li>
+            <!-- <li><a>Add Reminders</a></li> -->
           </ul>
         </div>
       </div>
@@ -131,7 +137,7 @@
         {{ (filteredItems | filter:{isSelected:'true'}).length }} Items Selected
       </div>
       <div class="text-right col-xs-7">
-        Showing {{filteredItems.length}} of {{selectedList.items.length}} Items    
+        Showing {{filteredItems.length}} of {{selectedList.items.length - 1}} Items    
       </div>
     </div>
 
@@ -140,7 +146,7 @@
         <thead>
           <tr>
             <th class="nowrap input-col">
-              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAll()" ng-if="!selectedList.read_only" no-dirty-check>
+              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
               <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
                 #
                 <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -168,7 +174,7 @@
               Category
               <span sort-icons field="'category'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
+            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.isfavorite" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
               Label
               <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
@@ -177,7 +183,7 @@
               <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
             <th class="hidden-sm hidden-xs"></th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.cannotEditPar" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
+            <th class="hidden-sm hidden-xs sort-col-header" ng-if="!selectedList.read_only && !selectedList.isfavorite" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
               PAR
               <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
@@ -193,7 +199,7 @@
             jqyoui-draggable="{onStart: 'setIsDragging(true)', onStop: 'setIsDragging(false)'}">
           <tr ng-class="{ odd : $odd, even: $even}">
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">
-              <input type="checkbox" class="bek-no-drag" ng-if="!selectedList.read_only" ng-model="item.isSelected" no-dirty-check>
+              <input type="checkbox" class="bek-no-drag" ng-model="item.isSelected" no-dirty-check>
               <span style="font-size:11px;">
                 {{item.position}}
               </span>
@@ -217,7 +223,7 @@
             <td ng-if="selectedList.is_contract_list" class="hidden-xs hidden-sm">
               {{item.category}}
             </td>
-            <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-hide="selectedList.read_only || selectedList.cannotEditLabels">
+            <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-hide="selectedList.read_only || selectedList.isfavorite">
               <div ng-hide="item.isEditing" class="bek-no-drag">
                 <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
                   <option value="">Select A Label...</option>
@@ -236,7 +242,7 @@
             <td class="hidden-sm hidden-xs hidden-drag">
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
-            <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-hide="selectedList.read_only || selectedList.cannotEditPar">
+            <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-hide="selectedList.read_only || selectedList.isfavorite">
               <ng-form name="parlevelForm" action="">
                 <input required id="parlevel" name="parlevel" type="text" allow-one-positive-decimal ng-model="item.parlevel" class="text-right input-number bek-no-drag" />
               </ng-form>
@@ -275,7 +281,7 @@
                     <td>Category</td>
                     <td>{{item.category}}</td>
                   </tr>
-                  <tr ng-if="!selectedList.read_only && !selectedList.cannotEditLabels">
+                  <tr ng-if="!selectedList.read_only && !selectedList.isfavorite">
                     <td>Label</td>
                     <td>
                       <div ng-hide="item.isEditing" class="form-control-group__input">
@@ -293,7 +299,7 @@
                       </ng-form>
                     </td>
                   </tr>
-                  <tr ng-if="!selectedList.read_only && !selectedList.cannotEditPar">
+                  <tr ng-if="!selectedList.read_only && !selectedList.isfavorite">
                     <td>PAR</td>
                     <td>
                       <ng-form name="parlevelForm_mobile" class="form-control-group__input">

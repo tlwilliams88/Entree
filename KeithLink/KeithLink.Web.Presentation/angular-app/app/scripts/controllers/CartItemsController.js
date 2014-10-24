@@ -8,9 +8,9 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'changeOrders',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, changeOrders) {
-    
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, changeOrders, originalBasket) {
+
     $scope.loadingResults = false;
     $scope.sortBy = null;
     $scope.sortOrder = false;
@@ -19,13 +19,12 @@ angular.module('bekApp')
     $scope.shipDates = CartService.shipDates;
     // $scope.reminderList = reminderList;
     $scope.changeOrders = changeOrders;
-    
-    $scope.goToCart = function(cartId, isChangeOrder) {
-      if (cartId) {
-        $state.go('menu.cart.items', {cartId: cartId, renameCart: null, isChangeOrder: isChangeOrder});
-      } else {
-        $state.go('menu.cart');
-      }
+    $scope.isChangeOrder = $stateParams.isChangeOrder;
+    $scope.currentCart = angular.copy(originalBasket);
+    $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    $scope.goToCart = function(cartId) {
+      $state.go('menu.cart.items', {cartId: cartId, renameCart: null});
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -102,7 +101,7 @@ angular.module('bekApp')
 
     $scope.deleteCart = function(cart) {
       CartService.deleteCart(cart.id).then(function() {
-        setCurrentCart();
+        $scope.goToCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
       }, function() {
         $scope.displayMessage('error', 'Error deleting cart.');
@@ -133,73 +132,52 @@ angular.module('bekApp')
       $scope.cartForm.$setDirty();
     };
 
-    /**********
+    /************
     CHANGE ORDERS
-    **********/
-    $scope.resubmitOrder = function(order) {
-      var changeOrder = angular.copy(order);
+    ************/
 
-      // delete items if quantity is 0
+    $scope.saveChangeOrder = function(order) {
+      var changeOrder = angular.copy(order);
       changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
 
-      OrderService.updateOrder(changeOrder).then(function() {
-        OrderService.resubmitOrder(changeOrder.ordernumber).then(function() {
+      return OrderService.updateOrder(changeOrder).then(function(order) {
+        $scope.currentCart = order;
+        return order.ordernumber;
+      });
+    }
+
+    $scope.resubmitOrder = function(order) {
+
+      $scope.saveChangeOrder(order)
+        .then(OrderService.resubmitOrder)
+        .then(function(orderNumber) {
+          // update changeOrders object
+          angular.forEach($scope.changeOrders, function(changeOrder) {
+            if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
+              changeOrder.ordernumber = orderNumber;
+            }
+          });
+          $scope.currentCart.ordernumber = orderNumber;
           $scope.displayMessage('success', 'Successfully submitted change order.');
         }, function(error) {
           $scope.displayMessage('error', 'Error re-submitting order.');
         });
-      });
     };
 
     // INFINITE SCROLL
     var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      if ($scope.currentCart && $scope.itemsToDisplay < $scope.currentCart.items.length) {
+      var items;
+      if ($scope.currentCart.lineItems) {
+        items = $scope.currentCart.lineItems.length;
+      } else {
+        items = $scope.currentCart.items.length;
+      }
+
+      if ($scope.currentCart && $scope.itemsToDisplay < items) {
         $scope.itemsToDisplay += itemsPerPage;
       }
     };
-
-    function setCurrentCart() {
-      var selectedCart = CartService.getSelectedCart($stateParams.cartId);
-      if (selectedCart) {
-        if (selectedCart.id === $stateParams.cartId) {
-          $scope.currentCart = angular.copy(selectedCart);
-        } else {
-          $scope.goToCart(selectedCart.id);
-        }
-      } else {
-        $state.go('menu.cart');
-      }
-      
-      if ($scope.currentCart && $stateParams.renameCart === 'true') {
-        $scope.startEditCartName($scope.currentCart.name);
-      }
-
-      $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
-    }
-
-    function setCurrentChangeOrder() {
-      var selectedChangeOrder = OrderService.getOrderDetails($stateParams.cartId);
-
-      selectedChangeOrder.then(function(order) {
-        if (order) {
-          $scope.currentCart = angular.copy(order);
-        } else {
-          $state.go('menu.cart');
-        }
-      }, function() {
-        $state.go('menu.cart');
-      });
-      
-    }
-    
-    if ($stateParams.isChangeOrder === 'true') {
-      setCurrentChangeOrder();
-      $scope.isChangeOrder = true;
-    } else {
-      setCurrentCart();
-      $scope.isChangeOrder = false;
-    }
 
   }]);
