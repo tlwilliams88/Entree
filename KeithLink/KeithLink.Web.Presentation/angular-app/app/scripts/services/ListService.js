@@ -65,7 +65,7 @@ angular.module('bekApp')
 
         findListById: function(listId) {
           var itemsFound = filter(Service.lists, function(list) {
-            return list.listid === listId;
+            return list.listid == listId;
           });
           if (itemsFound.length === 1) {
             return itemsFound[0];

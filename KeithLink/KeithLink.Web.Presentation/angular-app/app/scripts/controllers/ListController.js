@@ -161,9 +161,9 @@ angular.module('bekApp')
 
       UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
       
-      ListService.addMultipleItems(list.listid, items).then(function(data) {
+      ListService.addMultipleItems(list.listid, items).then(function(list) {
+        $scope.selectedList = list;
         $scope.showLists = false;
-        unselectAllDraggedItems();
       });
     };
 
