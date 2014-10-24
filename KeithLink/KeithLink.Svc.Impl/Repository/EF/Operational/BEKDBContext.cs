@@ -18,6 +18,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 
 		public DbSet<List> Lists { get; set; }
 		public DbSet<ListItem> ListItems { get; set; }
+		public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
+		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
