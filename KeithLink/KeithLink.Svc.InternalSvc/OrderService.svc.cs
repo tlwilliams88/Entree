@@ -111,20 +111,22 @@ namespace KeithLink.Svc.InternalSvc
                 if (index >= lineItems.Length)
                     continue; // TODO: log this?  shouldn't happen, but who knows...
 
-                LineItem orderFormLineItem = lineItems.Where(x => x.Index == (detail.RecordNumber-1)).FirstOrDefault();
+                LineItem orderFormLineItem = lineItems.Where(x => Convert.ToInt32(x["LinePosition"])== (detail.RecordNumber)).FirstOrDefault();
                 string confirmationStatus = detail.MainFrameStatus.Trim().ToUpper();
+
+                orderFormLineItem["QuantityOrdered"] = detail.QuantityOrdered;
+                orderFormLineItem["QuantityShipped"] = detail.QuantityShipped;
+
                 if (String.IsNullOrEmpty(confirmationStatus))
                 {
                     orderFormLineItem["MainFrameStatus"] = "Filled";
                 }
                 if (confirmationStatus == "P") // partial ship
                 {
-                    orderFormLineItem.BackorderQuantity = detail.QuantityOrdered - detail.QuantityShipped;
                     orderFormLineItem["MainFrameStatus"] = "Partially Shipped";
                 }
                 else if (confirmationStatus == "O") // out of stock
                 {
-                    orderFormLineItem.BackorderQuantity = detail.QuantityOrdered - detail.QuantityShipped;
                     orderFormLineItem["MainFrameStatus"] = "Out of Stock";
                 }
                 else if (confirmationStatus == "R") // item replaced

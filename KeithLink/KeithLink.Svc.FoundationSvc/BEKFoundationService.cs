@@ -27,7 +27,7 @@ namespace KeithLink.Svc.FoundationSvc
 
 			var basket = context.GetBasket(userId, cartId);
 
-            int startIndex = 1;
+            int startIndex = 1; // main frame needs these to start at 1
             foreach (CommerceServer.Core.Runtime.Orders.LineItem  lineItem in basket.OrderForms[0].LineItems)
             {
                 lineItem["LinePosition"] = startIndex;
@@ -36,6 +36,7 @@ namespace KeithLink.Svc.FoundationSvc
 			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
             basket.TrackingNumber = GetNextControlNumber();
+            basket["OriginalOrderNumber"] = basket.TrackingNumber;
 			var purchaseOrder = basket.SaveAsOrder();
 
 			return purchaseOrder.TrackingNumber;
@@ -61,19 +62,43 @@ namespace KeithLink.Svc.FoundationSvc
             return context.GetPurchaseOrder(userId, cartId);
         }
 
-
         public string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> lineItemUpdates)
         {
             CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
-            // make all updates
-            po.TrackingNumber = GetNextControlNumber();
+            CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
+            po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+            int linePosition = 1; // main frame needs these to start at 1
+            foreach (var li in lineItems)
+                if (linePosition < (int.Parse((string)li["LinePosition"])))
+                    linePosition = (int.Parse((string)li["LinePosition"]));
+            linePosition++;
 
             foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
             {
+                CommerceServer.Core.Runtime.Orders.LineItem lineItem = lineItems.Where(x => x.ProductId == i.ItemNumber).FirstOrDefault();
                 // find existing item based on item number
-
+                if (i.Status == "changed" && lineItem != null)
+                {
+                    lineItem.Quantity = i.Quantity;
+                    lineItem.Status = "changed";
+                }
+                if (i.Status == "deleted" && lineItem != null)
+                {
+                    lineItem.Status = "deleted";
+                }
+                if (i.Status == "added" && lineItem == null)
+                {
+                    CommerceServer.Core.Runtime.Orders.LineItem li = new CommerceServer.Core.Runtime.Orders.LineItem() { ProductId = i.ItemNumber, Quantity = i.Quantity, Status = "added" };
+                    li["CatchWeight"] = false;
+                    li["Each"] = false;
+                    li["Notes"] = string.Empty;
+                    li["LinePosition"] = linePosition;
+                    li.ProductCatalog = i.Catalog; // todo, wire up catalog...
+                    linePosition++;
+                    po.OrderForms[0].LineItems.Add(li);
+                }
             }
-
+            po.Save();
             return po.TrackingNumber;
         }
 
@@ -91,12 +116,10 @@ namespace KeithLink.Svc.FoundationSvc
                     cmd.Parameters.Add(parm);
                     conn.Open();
                     cmd.ExecuteNonQuery();
-                    controlNumber = cmd.Parameters[0].Value.ToString();
+                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("000000.##");
                 }
             }
             return controlNumber;
         }
-    }
-
-	
+    }	
 }

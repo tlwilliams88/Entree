@@ -124,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.LineItems)
             {
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
@@ -168,12 +168,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
 
-            WriteOrderFileToQueue(userProfile, orderNumber, order);
+            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
+
+            WriteOrderFileToQueue(userProfile, newOrderNumber, order);
 
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
-        private void WriteOrderFileToQueue(UserProfile user, string orderNumber, CS.PurchaseOrder newPurchaseOrder)
+        private void WriteOrderFileToQueue(UserProfile user, string controlNumber, CS.PurchaseOrder newPurchaseOrder)
         {
             var newOrderFile = new OrderFile()
             {
@@ -185,7 +187,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
                     PONumber = string.Empty,
                     Specialinstructions = string.Empty,
-                    ControlNumber = int.Parse(orderNumber),
+                    ControlNumber = int.Parse(controlNumber),
                     OrderType = OrderType.NormalOrder,
                     InvoiceNumber = string.Empty,
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
