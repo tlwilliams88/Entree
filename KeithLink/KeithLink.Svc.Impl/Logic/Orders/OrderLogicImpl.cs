@@ -81,7 +81,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				Quantity = (short)lineItem.Quantity,
 				Price = (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
-                QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"]
+                QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
+                Status = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"]
 			};
 		}
 

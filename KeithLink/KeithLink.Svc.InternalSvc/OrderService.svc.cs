@@ -62,7 +62,7 @@ namespace KeithLink.Svc.InternalSvc
                 {
                     string trimmedConfirmationStatus = SetCsHeaderInfo(confirmation, po);
 
-                    LineItem[] lineItems = new LineItem[po.OrderForms.Count];
+                    LineItem[] lineItems = new LineItem[po.LineItemCount];
                     po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
 
                     SetCsLineInfo(trimmedConfirmationStatus, lineItems, GetCsLineUpdateInfo(confirmation));
