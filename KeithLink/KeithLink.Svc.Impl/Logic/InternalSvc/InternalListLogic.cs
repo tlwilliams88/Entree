@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			
 			if (headerOnly)
-				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type== ListType.Favorite }).ToList();
+				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type== ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
 			else
 			{
 				var returnList = list.Select(b => b.ToListModel()).ToList();

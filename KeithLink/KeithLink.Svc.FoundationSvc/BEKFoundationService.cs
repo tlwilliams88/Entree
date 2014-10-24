@@ -23,7 +23,6 @@ namespace KeithLink.Svc.FoundationSvc
 		public string SaveCartAsOrder(Guid userId, Guid cartId)
 		{
             var context = Extensions.SiteHelper.GetOrderContext();
-			PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
 
 			var basket = context.GetBasket(userId, cartId);
 
@@ -33,6 +32,8 @@ namespace KeithLink.Svc.FoundationSvc
                 lineItem["LinePosition"] = startIndex;
                 startIndex++;
             }
+
+            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
 			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
             basket.TrackingNumber = GetNextControlNumber();
@@ -88,6 +89,7 @@ namespace KeithLink.Svc.FoundationSvc
             CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
             CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
             po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+            po["RequestedShipDate"] = requestedShipDate;
             int linePosition = 1; // main frame needs these to start at 1
             foreach (var li in lineItems)
                 if (linePosition < (int)li["LinePosition"])
@@ -119,6 +121,10 @@ namespace KeithLink.Svc.FoundationSvc
                     po.OrderForms[0].LineItems.Add(li);
                 }
             }
+
+            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+            pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+
             po.Save();
             return po.TrackingNumber;
         }
