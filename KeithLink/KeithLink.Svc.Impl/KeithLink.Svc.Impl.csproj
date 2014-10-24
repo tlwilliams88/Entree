@@ -196,6 +196,10 @@
     <Compile Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.Designer.cs">
       <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410242152293_Merge migration.cs" />
+    <Compile Include="Repository\EF\Migrations\201410242152293_Merge migration.Designer.cs">
+      <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -555,6 +559,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.resx">
       <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410242152293_Merge migration.resx">
+      <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
