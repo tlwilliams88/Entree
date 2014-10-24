@@ -18,7 +18,7 @@ namespace KeithLink.Svc.InternalSvc
         {
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
-            System.Threading.Tasks.Task.Factory.StartNew(() => this.QueueListener());
+            //System.Threading.Tasks.Task.Factory.StartNew(() => this.QueueListener());
         }
 
         protected void Session_Start(object sender, EventArgs e)
