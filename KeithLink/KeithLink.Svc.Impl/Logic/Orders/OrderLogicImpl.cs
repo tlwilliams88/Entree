@@ -22,14 +22,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private readonly ICatalogRepository catalogRepository;
 		private IListServiceRepository listServiceRepository;
 		private readonly IQueueRepository queueRepository;
+        private IPriceLogic priceLogic;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogRepository catalogRepository,
-			IListServiceRepository listServiceRepository, IQueueRepository queueRepository)
+			IListServiceRepository listServiceRepository, IQueueRepository queueRepository, IPriceLogic priceLogic)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogRepository = catalogRepository;
 			this.listServiceRepository = listServiceRepository;
             this.queueRepository = queueRepository;
+            this.priceLogic = priceLogic;
 		}
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo)
@@ -93,12 +95,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 			var products = catalogRepository.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList());
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+            var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
 			order.LineItems.ForEach(delegate(OrderLine item)
 			{
 
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
+                var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault(); 
+                var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
 					item.Name = prod.Name;
@@ -110,7 +114,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
 				}
-				
+                if (price != null)
+                {
+                    item.PackagePrice = price.PackagePrice.ToString();
+                    item.CasePrice = price.CasePrice.ToString();
+                }
 				if (note.Any())
 					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
@@ -122,6 +130,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber);
 
+            LookupProductDetails(user, catalogInfo, order);
             UpdateExistingOrderInfo(order, existingOrder);
             
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
@@ -129,14 +138,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.LineItems)
             {
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Price = (decimal)line.CasePriceNumeric });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
             return this.ReadOrder(user, catalogInfo, order.OrderNumber);
         }
 
-        private static void UpdateExistingOrderInfo(Order order, Order existingOrder)
+        private void UpdateExistingOrderInfo(Order order, Order existingOrder)
         {
             // work through adds, deletes, changes based on item number
             foreach (OrderLine newLine in order.LineItems)
@@ -173,7 +182,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
 
-            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
+            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
 
             WriteOrderFileToQueue(userProfile, newOrderNumber, order);
 
@@ -195,8 +204,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     PONumber = string.Empty,
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(controlNumber),
-                    OrderType = OrderType.NormalOrder,
-                    InvoiceNumber = string.Empty,
+                    OrderType = OrderType.ChangeOrder,
+                    InvoiceNumber = (string)newPurchaseOrder.Properties["MasterNumber"],
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
                     OrderSendDateTime = DateTime.Now,
                     UserId = user.EmailAddress.ToUpper(),
