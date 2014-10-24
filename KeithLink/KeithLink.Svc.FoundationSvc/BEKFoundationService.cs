@@ -27,6 +27,12 @@ namespace KeithLink.Svc.FoundationSvc
 
 			var basket = context.GetBasket(userId, cartId);
 
+            int startIndex = 1;
+            foreach (CommerceServer.Core.Runtime.Orders.LineItem  lineItem in basket.OrderForms[0].LineItems)
+            {
+                lineItem["LinePosition"] = startIndex;
+                startIndex++;
+            }
 			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
             basket.TrackingNumber = GetNextControlNumber();

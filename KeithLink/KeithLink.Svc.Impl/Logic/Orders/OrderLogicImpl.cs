@@ -76,6 +76,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				ItemNumber = lineItem.ProductId,
 				Quantity = (short)lineItem.Quantity,
 				Price = (double)lineItem.PlacedPrice,
+                QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
+                QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"]
 			};
 		}
 
@@ -210,7 +212,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     //Catchweight = false,
-                    LineNumber = (short)(newOrderFile.Details.Count + 1),
+                    LineNumber = (short)(lineItem.Target.Properties["LinePosition"]),
                     ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
                     ReplacedOriginalItemNumber = string.Empty,
