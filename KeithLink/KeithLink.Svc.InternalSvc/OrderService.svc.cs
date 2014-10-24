@@ -117,7 +117,7 @@ namespace KeithLink.Svc.InternalSvc
             }
         }
 
-        private static void SetCsLineInfo(string trimmedConfirmationStatus, LineItem[] lineItems, List<CsOrderLineUpdateInfo> confirmationDetail)
+        private void SetCsLineInfo(string trimmedConfirmationStatus, LineItem[] lineItems, List<CsOrderLineUpdateInfo> confirmationDetail)
         {
             foreach (var detail in confirmationDetail)
             {
@@ -131,7 +131,7 @@ namespace KeithLink.Svc.InternalSvc
 
                 orderFormLineItem["QuantityOrdered"] = detail.QuantityOrdered;
                 orderFormLineItem["QuantityShipped"] = detail.QuantityShipped;
-
+                _eventLog.WriteInformationLog("Setting main frame status");
                 if (String.IsNullOrEmpty(confirmationStatus))
                 {
                     orderFormLineItem["MainFrameStatus"] = "Filled";
@@ -164,6 +164,7 @@ namespace KeithLink.Svc.InternalSvc
                     orderFormLineItem["MainFrameStatus"] = "Item Subbed";
                     orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
                 }
+                _eventLog.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"]);
             }
         }
 
