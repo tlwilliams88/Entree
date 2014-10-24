@@ -21,7 +21,7 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           item.favorite = true;
-          $scope.displayedItems.isContextMenuDisplayed = false;
+          $scope.isContextMenuDisplayed = false;
           $scope.displayMessage('success', 'Successfully added item to list.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to list.');
@@ -54,7 +54,7 @@ angular.module('bekApp')
 
       $scope.addItemToCart = function(cartId, item) {
         CartService.addItemToCart(cartId, item).then(function(data) {
-          $scope.displayedItems.isContextMenuDisplayed = false;
+          $scope.isContextMenuDisplayed = false;
           $scope.displayMessage('success', 'Successfully added item to cart.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to cart.');
@@ -83,7 +83,7 @@ angular.module('bekApp')
         order.lineItems.push(orderItem);
 
         OrderService.updateOrder(order).then(function(data) {
-          $scope.displayedItems.isContextMenuDisplayed = false;
+          $scope.isContextMenuDisplayed = false;
           $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
