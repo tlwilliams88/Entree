@@ -2114,6 +2114,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Shared" csProperty="Shared"/>
 							<PropertyMapping property="ListType" csProperty="ListType"/>
               <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
+              <PropertyMapping property="OriginalOrderNumber" csProperty="OriginalOrderNumber"/>
 
             </PropertyMappings>
           </EntityMapping>
@@ -2180,6 +2181,9 @@ This file contains the Metadata Repository
 					</Property>
           <Property name="MasterNumber" dataType="String" >
             <DisplayName value="MasterNumber"/>
+          </Property>
+          <Property name="OriginalOrderNumber" dataType="String" >
+            <DisplayName value="OriginalOrderNumber"/>
           </Property>
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
@@ -2458,6 +2462,8 @@ This file contains the Metadata Repository
 							<PropertyMapping property="Category" csProperty="Category" />
               <PropertyMapping property="SubstitueItemNumber" csProperty="SubstitueItemNumber" />
               <PropertyMapping property="MainFrameStatus" csProperty="MainFrameStatus" />
+              <PropertyMapping property="QuantityOrdered" csProperty="QuantityOrdered" />
+              <PropertyMapping property="QuantityShipped" csProperty="QuantityShipped" />              
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2529,7 +2535,12 @@ This file contains the Metadata Repository
           <Property name="MainFrameStatus" dataType="String">
             <DisplayName value="MainFrameStatus"/>
           </Property>
-
+          <Property name="QuantityOrdered" dataType="String">
+            <DisplayName value="QuantityOrdered"/>
+          </Property>
+          <Property name="QuantityShipped" dataType="String">
+            <DisplayName value="QuantityShipped"/>
+          </Property>
 				</Properties>
 
         <Relationships>

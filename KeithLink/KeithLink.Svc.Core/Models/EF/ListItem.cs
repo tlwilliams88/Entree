@@ -15,5 +15,6 @@ namespace KeithLink.Svc.Core.Models.EF
 		public decimal Par { get; set; }
 		public string Note { get; set; }
 		public string Category { get; set; }
+		public int Position { get; set; }
 	}
 }

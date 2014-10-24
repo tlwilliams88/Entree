@@ -109,7 +109,7 @@
         Ext Price
         <span sort-icons field="'linetotal'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="sort-col-header text-right" ng-click="sortBy='status';sortOrder=!sortOrder;">
+      <th class="sort-col-header" ng-click="sortBy='status';sortOrder=!sortOrder;">
         Status
         <span sort-icons field="'status'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
@@ -156,8 +156,8 @@
       <td>{{item.name}}</td>
       <td class="hidden-xs hidden-sm" item-icons></td>
       <!-- <td>{{item.quantity}}</td> -->
-      <td>{{item.quantityshipped}}</td>
       <td>{{item.quantityordered}}</td>
+      <td>{{item.quantityshipped}}</td>
       <td class="hidden-xs hidden-sm">
         {{item.each ? 'Y' : 'N'}}
       </td>

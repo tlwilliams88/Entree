@@ -17,6 +17,9 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
 
         [OperationContract]
+        void CleanUpChangeOrder(Guid userId, Guid cartId);
+
+        [OperationContract]
         string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
 	}
 
@@ -25,5 +28,7 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         public string ItemNumber { get; set; }
         public string Status { get; set; }
         public int Quantity { get; set; }
+        public string Catalog { get; set; }
+        public decimal Price { get; set; }
     }
 }

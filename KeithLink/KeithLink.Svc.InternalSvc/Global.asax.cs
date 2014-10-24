@@ -48,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-
+            keepQueueListening = false;
         }
 
         protected void QueueListener()
