@@ -23,12 +23,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IBasketLogic basketLogic;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IListCacheRepository listCacheRepository;
+		private readonly IPriceLogic priceLogic;
 		
 
 
 		public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -36,6 +37,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.basketLogic = basketLogic;
 			this.catalogLogic = catalogLogic;
 			this.listCacheRepository = listCacheRepository;
+			this.priceLogic = priceLogic;
 		}
 
 		public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
@@ -100,27 +102,29 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				var returnList = list.Select(b => b.ToListModel()).ToList();
 				var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
+				var processedList = new List<ListModel>();
 				//Lookup product details for each item
 				returnList.ForEach(delegate(ListModel listItem)
 				{
 					var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listItem.ListId));
 					if (cachedList != null)
 					{
-						listItem = cachedList;
+						processedList.Add(cachedList);
 						return;
 					}
 
 					LookupProductDetails(user, listItem, catalogInfo);
+					processedList.Add(listItem);
 					listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", listItem.ListId), listItem);
 
 				});
 				//Mark favorites and add notes
-				returnList.ForEach(delegate(ListModel listItem)
+				processedList.ForEach(delegate(ListModel listItem)
 				{
 					MarkFavoritesAndAddNotes(user, listItem, catalogInfo, activeCart);
 				});
 
-				return returnList;
+				return processedList;
 			}
 		}
 
@@ -390,12 +394,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
-
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
 			
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-
+				var price = prices.Prices.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
@@ -407,9 +411,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
-					listItem.PackagePrice = prod.PackagePrice == null ? null : prod.PackagePrice.ToString();
-					listItem.CasePrice = prod.CaseCube == null ? null : prod.CasePrice.ToString();
-				}				
+					
+				}
+				if (price != null)
+				{
+					listItem.PackagePrice = price.PackagePrice == null ? null : price.PackagePrice.ToString();
+					listItem.CasePrice = price.CasePrice == null ? null : price.CasePrice.ToString();
+				}
 			});
 
 		}
