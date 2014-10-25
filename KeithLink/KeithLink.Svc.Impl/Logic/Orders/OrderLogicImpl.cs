@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Common;
@@ -23,15 +24,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private IListServiceRepository listServiceRepository;
 		private readonly IQueueRepository queueRepository;
         private IPriceLogic priceLogic;
+        private IEventLogRepository eventLogRepository;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogRepository catalogRepository,
-			IListServiceRepository listServiceRepository, IQueueRepository queueRepository, IPriceLogic priceLogic)
+			IListServiceRepository listServiceRepository, IQueueRepository queueRepository, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogRepository = catalogRepository;
 			this.listServiceRepository = listServiceRepository;
             this.queueRepository = queueRepository;
             this.priceLogic = priceLogic;
+            this.eventLogRepository = eventLogRepository;
 		}
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo)
@@ -171,6 +174,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (newLine == null)
                 {
                     existingLine.Status = "deleted";
+                    eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
                 }
             }
         }
