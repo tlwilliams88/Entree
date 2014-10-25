@@ -68,7 +68,9 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
             builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
-			
+			builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+			builder.RegisterType<OrderQueueRepositoryImpl>().As<IOrderQueueRepository>();
+			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
