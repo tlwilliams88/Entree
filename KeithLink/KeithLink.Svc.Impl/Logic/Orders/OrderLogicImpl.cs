@@ -20,17 +20,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 	public class OrderLogicImpl: IOrderLogic
 	{
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
-		private readonly ICatalogRepository catalogRepository;
+		private readonly ICatalogLogic catalogLogic;
 		private IListServiceRepository listServiceRepository;
 		private readonly IQueueRepository queueRepository;
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
 
-		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogRepository catalogRepository,
+		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic,
 			IListServiceRepository listServiceRepository, IQueueRepository queueRepository, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
-			this.catalogRepository = catalogRepository;
+			this.catalogLogic = catalogLogic;
 			this.listServiceRepository = listServiceRepository;
             this.queueRepository = queueRepository;
             this.priceLogic = priceLogic;
@@ -42,9 +42,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
 
 			var returnOrders = orders.Select(p => ToOrder(p)).ToList();
+			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            
 			returnOrders.ForEach(delegate(Order order)
 			{
-				LookupProductDetails(userProfile, catalogInfo, order);
+				LookupProductDetails(userProfile, catalogInfo, order, notes);
 			});
 
 			return returnOrders;
@@ -54,7 +56,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		{
 			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
 			var returnOrder = ToOrder(order);
-			LookupProductDetails(userProfile, catalogInfo, returnOrder);
+			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            
+			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
             // handel special change order logic to hidd deleted line items
             if (returnOrder.Status == "NewOrder" || returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
@@ -91,21 +95,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			};
 		}
 
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order)
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes)
 		{
 			if (order.LineItems == null)
 				return;
 
-			var products = catalogRepository.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList());
-			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
-            var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList(), user);
+			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
-			order.LineItems.ForEach(delegate(OrderLine item)
-			{
-
+			Parallel.ForEach(order.LineItems, item => {
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault(); 
-                var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
+				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
 					item.Name = prod.Name;
@@ -117,14 +118,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
 				}
-                if (price != null)
-                {
-                    item.PackagePrice = price.PackagePrice.ToString();
-                    item.CasePrice = price.CasePrice.ToString();
-                }
+				if (price != null)
+				{
+					item.PackagePrice = price.PackagePrice.ToString();
+					item.CasePrice = price.CasePrice.ToString();
+				}
 				if (note.Any())
 					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
 			});
+
 		}
 
 
@@ -132,8 +134,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		public Core.Models.Orders.Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems)
         {
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber);
-
-            LookupProductDetails(user, catalogInfo, order);
+			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+            
+            LookupProductDetails(user, catalogInfo, order, notes);
             UpdateExistingOrderInfo(order, existingOrder);
             
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
