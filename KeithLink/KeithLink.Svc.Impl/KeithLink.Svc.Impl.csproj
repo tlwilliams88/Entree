@@ -200,6 +200,10 @@
     <Compile Include="Repository\EF\Migrations\201410242152293_Merge migration.Designer.cs">
       <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.cs" />
+    <Compile Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.Designer.cs">
+      <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -233,6 +237,7 @@
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
@@ -562,6 +567,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410242152293_Merge migration.resx">
       <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.resx">
+      <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

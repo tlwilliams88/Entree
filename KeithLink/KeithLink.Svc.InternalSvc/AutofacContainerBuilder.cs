@@ -72,7 +72,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
 			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
-
+			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();

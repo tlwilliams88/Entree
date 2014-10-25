@@ -141,6 +141,7 @@
     <Compile Include="Interface\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
+    <Compile Include="Interface\Lists\IListCacheRepository.cs" />
     <Compile Include="Interface\Lists\IListItemRepository.cs" />
     <Compile Include="Interface\Lists\IListRepository.cs" />
     <Compile Include="Interface\Lists\IListServiceRepository.cs" />

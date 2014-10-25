@@ -22,18 +22,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListItemRepository listItemRepository;
 		private readonly IBasketLogic basketLogic;
 		private readonly ICatalogLogic catalogLogic;
+		private readonly IListCacheRepository listCacheRepository;
 		
 
 
 		public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
 			this.listItemRepository = listItemRepository;
 			this.basketLogic = basketLogic;
 			this.catalogLogic = catalogLogic;
+			this.listCacheRepository = listCacheRepository;
 		}
 
 		public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
@@ -73,6 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			list.Items.Add(item);
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
+			listCacheRepository.RemoveItem(string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return item.Id;
 		}
 
@@ -97,10 +100,26 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				var returnList = list.Select(b => b.ToListModel()).ToList();
 				var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
+				//Lookup product details for each item
 				returnList.ForEach(delegate(ListModel listItem)
 				{
-					LookupProductDetails(user, listItem, catalogInfo, activeCart);
+					var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listItem.ListId));
+					if (cachedList != null)
+					{
+						listItem = cachedList;
+						return;
+					}
+
+					LookupProductDetails(user, listItem, catalogInfo);
+					listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", listItem.ListId), listItem);
+
 				});
+				//Mark favorites and add notes
+				returnList.ForEach(delegate(ListModel listItem)
+				{
+					MarkFavoritesAndAddNotes(user, listItem, catalogInfo, activeCart);
+				});
+
 				return returnList;
 			}
 		}
@@ -121,21 +140,32 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
-
+			listCacheRepository.RemoveItem(string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return ReadList(user, catalogInfo, listId);
 		}
 
 		public void UpdateItem(ListItemModel item)
 		{
-			listItemRepository.Update(new ListItem() { Id = item.ListItemId, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel });
+			listItemRepository.Update(new ListItem() { Id = item.ListItemId, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel, Position = item.Position });
 			unitOfWork.SaveChanges();
+
+			var updatedItem = listItemRepository.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList).FirstOrDefault();
+
+			if(updatedItem != null && updatedItem.ParentList != null)
+				listCacheRepository.RemoveItem(string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
+			
 		}
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			//var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
-			//if (cachedList != null)
-			//	return cachedList;
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
+			if (cachedList != null)
+			{
+				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
+				return cachedList;
+			}
 
 			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
@@ -143,12 +173,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel();
-			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
-
-			LookupProductDetails(user, returnList, catalogInfo, activeCart);
-
-			//listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
-
+			
+			LookupProductDetails(user, returnList, catalogInfo);
+			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
+			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
 			return returnList;
 		}
 
@@ -160,9 +188,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public void DeleteItem(long Id)
 		{
-			var item = listItemRepository.ReadById(Id);
+			var item = listItemRepository.Read(i => i.Id.Equals(Id), l => l.ParentList).FirstOrDefault();
+			var listId = item.ParentList.Id;
 			listItemRepository.Delete(item);
 			unitOfWork.SaveChanges();
+			listCacheRepository.RemoveItem(string.Format("UserList_{0}", listId)); //Invalidate cache
 		}
 
 		public void DeleteList(long Id)
@@ -220,6 +250,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 
 			unitOfWork.SaveChanges();
+			listCacheRepository.RemoveItem(string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
 
@@ -328,17 +359,39 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			});
 
 		}
-		private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo, IEnumerable<KeithLink.Svc.Core.Models.Generated.Basket> activeCart)
+		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, IEnumerable<KeithLink.Svc.Core.Models.Generated.Basket> activeCart)
 		{
 			if (list.Items == null)
 				return;
 
+			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
+			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId)).FirstOrDefault();
+			Parallel.ForEach(list.Items, listItem =>
+			{
+				if (favorites != null && favorites.Items != null)
+				{
+					listItem.Favorite = favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
+				}
+
+
+				if (activeCart.Any()) //Is there an active cart? If so get item counts
+				{
+					listItem.QuantityInCart = activeCart.First().LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
+				}
+
+				if (notes != null && notes.Items != null)
+					listItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+			});
+
+		}
+		private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+		{
+			if (list.Items == null)
+				return;
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
 
-			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
-			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId)).FirstOrDefault();
-
+			
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
@@ -356,20 +409,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.CatchWeight = prod.CatchWeight;
 					listItem.PackagePrice = prod.PackagePrice == null ? null : prod.PackagePrice.ToString();
 					listItem.CasePrice = prod.CaseCube == null ? null : prod.CasePrice.ToString();
-				}
-				if (favorites != null && favorites.Items != null)
-				{
-					listItem.Favorite = favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
-				}
-
-
-				if (activeCart.Any()) //Is there an active cart? If so get item counts
-				{
-					listItem.QuantityInCart = activeCart.First().LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
-				}
-
-				if (notes != null && notes.Items != null)
-					listItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+				}				
 			});
 
 		}
