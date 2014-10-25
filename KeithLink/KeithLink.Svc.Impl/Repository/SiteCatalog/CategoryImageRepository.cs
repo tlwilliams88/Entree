@@ -29,9 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             {
                 StringBuilder queryString = new StringBuilder("CategoryImage/Get/");
                 queryString.Append(categoryId);
-
-                if (Configuration.MultiDocsUrl.EndsWith("/") == false) { queryString.Insert(0, "/"); }
-
+                
                 string endPoint = string.Concat(Configuration.MultiDocsUrl, queryString);
 
                 System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
@@ -39,8 +37,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     returnValue.CategoryImage = JsonConvert.DeserializeObject<CategoryImage>(response.Content.ReadAsStringAsync().Result);
-                    if (returnValue.CategoryImage != null && !String.IsNullOrEmpty(returnValue.CategoryImage.Url))
-                        returnValue.CategoryImage.Url = returnValue.CategoryImage.Url.Replace("http://testmultidocs.bekco.com/", Configuration.MultiDocsUrl);
+                    if (returnValue.CategoryImage != null && !String.IsNullOrEmpty(returnValue.CategoryImage.Url) && !String.IsNullOrEmpty(Configuration.MultiDocsProxyUrl))
+                        returnValue.CategoryImage.Url = returnValue.CategoryImage.Url.Replace(Configuration.MultiDocsUrl, Configuration.MultiDocsProxyUrl);
                 }
             }
 
