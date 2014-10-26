@@ -20,11 +20,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region attributes
         private IEventLogRepository _log;
         private ISocketConnectionRepository _mfConnection;
-        private IQueueRepository _orderQueue;
+        private IOrderQueueRepository _orderQueue;
         #endregion
 
         #region ctor
-        public OrderQueueLogicImpl(IEventLogRepository eventLog, IQueueRepository orderQueue, ISocketConnectionRepository mfCon)
+        public OrderQueueLogicImpl(IEventLogRepository eventLog, IOrderQueueRepository orderQueue, ISocketConnectionRepository mfCon)
         {
             _log = eventLog;
             _mfConnection = mfCon;

@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Models.EF
 {
 	public class OrderHistoryDetail: BaseEFModel
 	{
-		[MaxLength(1)]
+		[MaxLength(6)]
 		[Column(TypeName = "char")]		
 		public string ItemNumber { get; set; }
 		public int LineNumber { get; set; }

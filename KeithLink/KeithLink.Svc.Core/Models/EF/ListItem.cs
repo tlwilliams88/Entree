@@ -16,5 +16,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		public string Note { get; set; }
 		public string Category { get; set; }
 		public int Position { get; set; }
+
+		public List ParentList { get; set; }
 	}
 }

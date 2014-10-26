@@ -21,6 +21,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name="PackagePrice")]
         public double PackagePrice { get; set; }
+
+        [DataMember(Name="DeviatedCost")]
+        public bool DeviatedCost { get; set; }
         #endregion
     }
 }

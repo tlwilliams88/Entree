@@ -9,15 +9,21 @@ using System.Net.Http.Headers;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using Newtonsoft.Json;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class CategoryImageRepository : ICategoryImageRepository
     {
         #region attribute
+        IEventLogRepository eventLogRepo;
         #endregion
 
         #region ctor
+        public CategoryImageRepository(IEventLogRepository eventLogRepo)
+        {
+            this.eventLogRepo = eventLogRepo;
+        }
         #endregion
 
         #region methods/functions
@@ -29,18 +35,23 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             {
                 StringBuilder queryString = new StringBuilder("CategoryImage/Get/");
                 queryString.Append(categoryId);
-
-                if (Configuration.MultiDocsUrl.EndsWith("/") == false) { queryString.Insert(0, "/"); }
-
+                
                 string endPoint = string.Concat(Configuration.MultiDocsUrl, queryString);
 
-                System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
-
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    returnValue.CategoryImage = JsonConvert.DeserializeObject<CategoryImage>(response.Content.ReadAsStringAsync().Result);
-                    if (returnValue.CategoryImage != null && !String.IsNullOrEmpty(returnValue.CategoryImage.Url))
-                        returnValue.CategoryImage.Url = returnValue.CategoryImage.Url.Replace("http://testmultidocs.bekco.com/", Configuration.MultiDocsUrl);
+                    System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        returnValue.CategoryImage = JsonConvert.DeserializeObject<CategoryImage>(response.Content.ReadAsStringAsync().Result);
+                        if (returnValue.CategoryImage != null && !String.IsNullOrEmpty(returnValue.CategoryImage.Url) && !String.IsNullOrEmpty(Configuration.MultiDocsProxyUrl))
+                            returnValue.CategoryImage.Url = returnValue.CategoryImage.Url.Replace(Configuration.MultiDocsUrl, Configuration.MultiDocsProxyUrl);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepo.WriteErrorLog("Error loading category image for: " + categoryId, ex);
                 }
             }
 
