@@ -24,12 +24,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IListCacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
-		
+		private readonly IProductImageRepository productImageRepository;
 
 
 		public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -38,6 +38,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.catalogLogic = catalogLogic;
 			this.listCacheRepository = listCacheRepository;
 			this.priceLogic = priceLogic;
+			this.productImageRepository = productImageRepository;
 		}
 
 		public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
@@ -71,7 +72,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				ItemNumber = newItem.ItemNumber,
 				Label = newItem.Label,
-				Par = newItem.ParLevel
+				Par = newItem.ParLevel,
+				Position = newItem.Position
 			};
 
 			list.Items.Add(item);
@@ -155,9 +157,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var updatedItem = listItemRepository.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList).FirstOrDefault();
 
-			if(updatedItem != null && updatedItem.ParentList != null)
+			if (updatedItem != null && updatedItem.ParentList != null)
 				listCacheRepository.RemoveItem(string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
-			
+
 		}
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
@@ -177,7 +179,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel();
-			
+
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
@@ -247,6 +249,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					item.ItemNumber = updateItem.ItemNumber;
 					item.Label = updateItem.Label;
 					item.Par = updateItem.ParLevel;
+					item.Position = updateItem.Position;
 				}
 				else
 					currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
@@ -341,6 +344,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var list = listRepository.Read(i => i.UserId.Equals(user.UserId) && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
 			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber })).ToList();
 			PopulateProductDetails(catalogInfo, returnItems, user);
+			returnItems.ForEach(delegate(RecentItem item)
+			{
+				item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
+			});
 			return returnItems;
 
 		}
@@ -395,7 +402,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
 			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
-			
+
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
@@ -411,7 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
-					
+
 				}
 				if (price != null)
 				{
