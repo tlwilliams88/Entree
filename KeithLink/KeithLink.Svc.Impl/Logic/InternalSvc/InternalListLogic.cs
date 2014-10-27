@@ -342,13 +342,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			var list = listRepository.Read(i => i.UserId.Equals(user.UserId) && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
-			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber })).ToList();
+			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc })).ToList();
 			PopulateProductDetails(catalogInfo, returnItems, user);
 			returnItems.ForEach(delegate(RecentItem item)
 			{
 				item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
 			});
-			return returnItems;
+			return returnItems.OrderByDescending(l => l.ModifiedOn).ToList();
 
 		}
 
