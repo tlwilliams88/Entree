@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage',
-    function ($scope, $state, branches, AuthenticationService, AccessService, LocalStorage) {
+  .controller('MenuController', ['$scope', '$state', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
+    function ($scope, $state, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
