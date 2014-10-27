@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.SiteCatalog;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public List<ProductImage> Images { get; set; }
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
+		[JsonIgnore]
+		public DateTime ModifiedOn { get; set; }
 	}
 }
