@@ -30,13 +30,11 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      console.log('go to list');
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
-      console.log('go to new list');
       $scope.listForm.$setPristine();
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
@@ -49,16 +47,16 @@ angular.module('bekApp')
     CREATE LIST
     **********/
 
-    $scope.createList = function() {
-      ListService.createList().then(goToNewList);
+    $scope.createList = function(items) {
+      ListService.createList(items).then(goToNewList);
     };
 
-    $scope.createListWithItems = function() {
+    $scope.createListFromMultiSelect = function() {
       var items = angular.copy(getMultipleSelectedItems());
       $scope.createList(items);
     };
 
-    $scope.createListWithItem = function(event, helper) {
+    $scope.createListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createList(dragSelection);
     };
@@ -76,10 +74,6 @@ angular.module('bekApp')
     **********/
 
     $scope.saveList = function(list) {
-
-      if (!list.items[0].hasOwnProperty('position')) {
-        list.items.splice(0,1);
-      }
       var updatedList = angular.copy(list);
 
       angular.forEach(updatedList.items, function(item, itemIndex) {
@@ -140,7 +134,7 @@ angular.module('bekApp')
         item.label = label;
       });
       $scope.listForm.$setDirty();
-      $scope.showLabels = false;
+      $scope.multiSelect.showLabels = false;
     };
 
     $scope.applyNewLabel = function(label) {
@@ -163,12 +157,14 @@ angular.module('bekApp')
       if (!items) {
         items = angular.copy(getMultipleSelectedItems());
       }
-
-      UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
       
-      ListService.addMultipleItems(list.listid, items).then(function(list) {
-        $scope.selectedList = list;
-        $scope.showLists = false;
+      ListService.addMultipleItems(list.listid, items).then(function(updatedList) {
+        if ($scope.selectedList.listid === updatedList.listid) {
+          $scope.selectedList = list;
+        }
+
+        $scope.multiSelect.showLists = false;
+        unselectAllDraggedItems();
       });
     };
 
@@ -234,12 +230,12 @@ angular.module('bekApp')
     };
 
     $scope.generateDragHelper = function(event) {
-      var draggedRow = angular.element(event.target).closest('tr'),
+      var draggedRow = angular.element(event.target).closest('tbody'),
         multipleSelectedItems = getMultipleSelectedItems();
 
       var helperElement;
       if (multipleSelectedItems.length > 0 && draggedRow.hasClass('item-selected')) {
-        helperElement = angular.element('<div style="padding:10px;">' + multipleSelectedItems.length + ' Items</div>');
+        helperElement = angular.element('<div style="padding:10px;background-color:white;">' + multipleSelectedItems.length + ' Items</div>');
       } else {
         helperElement = angular.element(draggedRow).clone();
       }
@@ -259,9 +255,6 @@ angular.module('bekApp')
     };
 
     $scope.addItemFromDrag = function (event, helper, list) {
-      // event.preventDefault();
-      console.log('add from drag');
-      // event.stopPropagation();
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.addItemsToList(list, dragSelection);
     };
