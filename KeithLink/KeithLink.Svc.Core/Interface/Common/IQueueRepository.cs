@@ -5,7 +5,5 @@ namespace KeithLink.Svc.Core.Interface.Common {
         string ConsumeFromQueue();
 
         void PublishToQueue(string item);
-
-        void SetQueuePath(int pathEnum);
     }
 }

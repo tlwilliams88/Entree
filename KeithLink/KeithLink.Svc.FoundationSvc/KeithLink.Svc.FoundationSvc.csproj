@@ -192,7 +192,7 @@
     <Compile Include="Extensions\OrganizationResponseBuilder.cs" />
     <Compile Include="Extensions\OrganizationTranslator.cs" />
     <Compile Include="Extensions\UserOrganizationsProfileLoader.cs" />
-    <Compile Include="Extensions\UserOrganizationsTranslator.cs" />
+    <Compile Include="Interface\UserOrganizationsTranslator.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

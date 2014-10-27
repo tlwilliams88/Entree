@@ -132,22 +132,36 @@ angular.module('bekApp')
       $scope.cartForm.$setDirty();
     };
 
-    /**********
+    /************
     CHANGE ORDERS
-    **********/
-    $scope.resubmitOrder = function(order) {
-      var changeOrder = angular.copy(order);
+    ************/
 
-      // delete items if quantity is 0
+    $scope.saveChangeOrder = function(order) {
+      var changeOrder = angular.copy(order);
       changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
 
-      OrderService.updateOrder(changeOrder).then(function() {
-        OrderService.resubmitOrder(changeOrder.ordernumber).then(function() {
+      return OrderService.updateOrder(changeOrder).then(function(order) {
+        $scope.currentCart = order;
+        return order.ordernumber;
+      });
+    }
+
+    $scope.resubmitOrder = function(order) {
+
+      $scope.saveChangeOrder(order)
+        .then(OrderService.resubmitOrder)
+        .then(function(orderNumber) {
+          // update changeOrders object
+          angular.forEach($scope.changeOrders, function(changeOrder) {
+            if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
+              changeOrder.ordernumber = orderNumber;
+            }
+          });
+          $scope.currentCart.ordernumber = orderNumber;
           $scope.displayMessage('success', 'Successfully submitted change order.');
         }, function(error) {
           $scope.displayMessage('error', 'Error re-submitting order.');
         });
-      });
     };
 
     // INFINITE SCROLL

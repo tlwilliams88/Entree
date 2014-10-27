@@ -164,11 +164,11 @@ namespace KeithLink.Svc.InternalSvc
                     orderFormLineItem["MainFrameStatus"] = "Item Subbed";
                     orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
                 }
-                _eventLog.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"]);
+                _eventLog.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + confirmationStatus + "_");
             }
         }
 
-        private static string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po)
+        private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po)
         {
             // get header status into CS
             // values are " ", "P", "I", "D" = " " open, "P" Processing, "I" Invoicing, "D" Delete
@@ -193,6 +193,8 @@ namespace KeithLink.Svc.InternalSvc
 
             po["MasterNumber"] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
 
+            _eventLog.WriteInformationLog("Updating purchase order status with: " + po.Status + ", for confirmation status: _" + trimmedConfirmationStatus  + "_");
+
             return trimmedConfirmationStatus;
         }
 
@@ -203,7 +205,7 @@ namespace KeithLink.Svc.InternalSvc
             {
                 CsOrderLineUpdateInfo line = new CsOrderLineUpdateInfo()
                 {
-                    MainFrameStatus = detail.ConfirmationMessage.Trim(),
+                    MainFrameStatus = detail.ReasonNotShipped.Trim(),
                     SubstitueItemNumber = detail.ItemNumber,
                     QuantityOrdered = detail.QuantityOrdered,
                     QuantityShipped = detail.QuantityShipped,

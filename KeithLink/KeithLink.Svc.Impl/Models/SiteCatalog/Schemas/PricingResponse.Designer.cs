@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         
         private ItemsDataTable tableItems;
         
-        private _ItemDataTable table_Item;
+        private ItemDataTable tableItem;
         
         private PricesDataTable tablePrices;
         
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                     base.Tables.Add(new ItemsDataTable(ds.Tables["Items"]));
                 }
                 if ((ds.Tables["Item"] != null)) {
-                    base.Tables.Add(new _ItemDataTable(ds.Tables["Item"]));
+                    base.Tables.Add(new ItemDataTable(ds.Tables["Item"]));
                 }
                 if ((ds.Tables["Prices"] != null)) {
                     base.Tables.Add(new PricesDataTable(ds.Tables["Prices"]));
@@ -137,9 +137,9 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public _ItemDataTable _Item {
+        public ItemDataTable Item {
             get {
-                return this.table_Item;
+                return this.tableItem;
             }
         }
         
@@ -230,7 +230,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                     base.Tables.Add(new ItemsDataTable(ds.Tables["Items"]));
                 }
                 if ((ds.Tables["Item"] != null)) {
-                    base.Tables.Add(new _ItemDataTable(ds.Tables["Item"]));
+                    base.Tables.Add(new ItemDataTable(ds.Tables["Item"]));
                 }
                 if ((ds.Tables["Prices"] != null)) {
                     base.Tables.Add(new PricesDataTable(ds.Tables["Prices"]));
@@ -286,10 +286,10 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                     this.tableItems.InitVars();
                 }
             }
-            this.table_Item = ((_ItemDataTable)(base.Tables["Item"]));
+            this.tableItem = ((ItemDataTable)(base.Tables["Item"]));
             if ((initTable == true)) {
-                if ((this.table_Item != null)) {
-                    this.table_Item.InitVars();
+                if ((this.tableItem != null)) {
+                    this.tableItem.InitVars();
                 }
             }
             this.tablePrices = ((PricesDataTable)(base.Tables["Prices"]));
@@ -317,8 +317,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             base.Tables.Add(this.tableCustomer);
             this.tableItems = new ItemsDataTable();
             base.Tables.Add(this.tableItems);
-            this.table_Item = new _ItemDataTable();
-            base.Tables.Add(this.table_Item);
+            this.tableItem = new ItemDataTable();
+            base.Tables.Add(this.tableItem);
             this.tablePrices = new PricesDataTable();
             base.Tables.Add(this.tablePrices);
             global::System.Data.ForeignKeyConstraint fkc;
@@ -338,13 +338,13 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
             fkc = new global::System.Data.ForeignKeyConstraint("Items_Item", new global::System.Data.DataColumn[] {
                         this.tableItems.Items_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.table_Item.Items_IdColumn});
-            this.table_Item.Constraints.Add(fkc);
+                        this.tableItem.Items_IdColumn});
+            this.tableItem.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
             fkc.DeleteRule = global::System.Data.Rule.Cascade;
             fkc.UpdateRule = global::System.Data.Rule.Cascade;
             fkc = new global::System.Data.ForeignKeyConstraint("Item_Prices", new global::System.Data.DataColumn[] {
-                        this.table_Item.Item_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableItem.Item_IdColumn}, new global::System.Data.DataColumn[] {
                         this.tablePrices.Item_IdColumn});
             this.tablePrices.Constraints.Add(fkc);
             fkc.AcceptRejectRule = global::System.Data.AcceptRejectRule.None;
@@ -362,11 +362,11 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             this.Relations.Add(this.relationPricingResponse_Items);
             this.relationItems_Item = new global::System.Data.DataRelation("Items_Item", new global::System.Data.DataColumn[] {
                         this.tableItems.Items_IdColumn}, new global::System.Data.DataColumn[] {
-                        this.table_Item.Items_IdColumn}, false);
+                        this.tableItem.Items_IdColumn}, false);
             this.relationItems_Item.Nested = true;
             this.Relations.Add(this.relationItems_Item);
             this.relationItem_Prices = new global::System.Data.DataRelation("Item_Prices", new global::System.Data.DataColumn[] {
-                        this.table_Item.Item_IdColumn}, new global::System.Data.DataColumn[] {
+                        this.tableItem.Item_IdColumn}, new global::System.Data.DataColumn[] {
                         this.tablePrices.Item_IdColumn}, false);
             this.relationItem_Prices.Nested = true;
             this.Relations.Add(this.relationItem_Prices);
@@ -392,7 +392,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerialize_Item() {
+        private bool ShouldSerializeItem() {
             return false;
         }
         
@@ -467,7 +467,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         public delegate void ItemsRowChangeEventHandler(object sender, ItemsRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void _ItemRowChangeEventHandler(object sender, _ItemRowChangeEvent e);
+        public delegate void ItemRowChangeEventHandler(object sender, ItemRowChangeEvent e);
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         public delegate void PricesRowChangeEventHandler(object sender, PricesRowChangeEvent e);
@@ -479,11 +479,11 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class PricingResponseDataTable : global::System.Data.TypedTableBase<PricingResponseRow> {
             
+            private global::System.Data.DataColumn columnPricingResponse_Id;
+            
             private global::System.Data.DataColumn columnShipDate;
             
             private global::System.Data.DataColumn columnErrorMessage;
-            
-            private global::System.Data.DataColumn columnPricingResponse_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -520,6 +520,14 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PricingResponse_IdColumn {
+                get {
+                    return this.columnPricingResponse_Id;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn ShipDateColumn {
                 get {
                     return this.columnShipDate;
@@ -531,14 +539,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             public global::System.Data.DataColumn ErrorMessageColumn {
                 get {
                     return this.columnErrorMessage;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn PricingResponse_IdColumn {
-                get {
-                    return this.columnPricingResponse_Id;
                 }
             }
             
@@ -582,9 +582,9 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             public PricingResponseRow AddPricingResponseRow(string ShipDate, string ErrorMessage) {
                 PricingResponseRow rowPricingResponseRow = ((PricingResponseRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        null,
                         ShipDate,
-                        ErrorMessage,
-                        null};
+                        ErrorMessage};
                 rowPricingResponseRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPricingResponseRow);
                 return rowPricingResponseRow;
@@ -607,25 +607,26 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnPricingResponse_Id = base.Columns["PricingResponse_Id"];
                 this.columnShipDate = base.Columns["ShipDate"];
                 this.columnErrorMessage = base.Columns["ErrorMessage"];
-                this.columnPricingResponse_Id = base.Columns["PricingResponse_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnPricingResponse_Id = new global::System.Data.DataColumn("PricingResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnPricingResponse_Id);
                 this.columnShipDate = new global::System.Data.DataColumn("ShipDate", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnShipDate);
                 this.columnErrorMessage = new global::System.Data.DataColumn("ErrorMessage", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnErrorMessage);
-                this.columnPricingResponse_Id = new global::System.Data.DataColumn("PricingResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnPricingResponse_Id);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnPricingResponse_Id}, true));
                 this.columnPricingResponse_Id.AutoIncrement = true;
                 this.columnPricingResponse_Id.AllowDBNull = false;
                 this.columnPricingResponse_Id.Unique = true;
+                this.columnPricingResponse_Id.Namespace = "";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -759,6 +760,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class CustomerDataTable : global::System.Data.TypedTableBase<CustomerRow> {
             
+            private global::System.Data.DataColumn columnPricingResponse_Id;
+            
             private global::System.Data.DataColumn columnCompany;
             
             private global::System.Data.DataColumn columnDivision;
@@ -766,8 +769,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             private global::System.Data.DataColumn columnDepartment;
             
             private global::System.Data.DataColumn columnNumber;
-            
-            private global::System.Data.DataColumn columnPricingResponse_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -804,6 +805,14 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn PricingResponse_IdColumn {
+                get {
+                    return this.columnPricingResponse_Id;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn CompanyColumn {
                 get {
                     return this.columnCompany;
@@ -831,14 +840,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             public global::System.Data.DataColumn NumberColumn {
                 get {
                     return this.columnNumber;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn PricingResponse_IdColumn {
-                get {
-                    return this.columnPricingResponse_Id;
                 }
             }
             
@@ -879,16 +880,16 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public CustomerRow AddCustomerRow(string Company, string Division, string Department, string Number, PricingResponseRow parentPricingResponseRowByPricingResponse_Customer) {
+            public CustomerRow AddCustomerRow(PricingResponseRow parentPricingResponseRowByPricingResponse_Customer, string Company, string Division, string Department, string Number) {
                 CustomerRow rowCustomerRow = ((CustomerRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        null,
                         Company,
                         Division,
                         Department,
-                        Number,
-                        null};
+                        Number};
                 if ((parentPricingResponseRowByPricingResponse_Customer != null)) {
-                    columnValuesArray[4] = parentPricingResponseRowByPricingResponse_Customer[2];
+                    columnValuesArray[0] = parentPricingResponseRowByPricingResponse_Customer[0];
                 }
                 rowCustomerRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowCustomerRow);
@@ -912,16 +913,18 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnPricingResponse_Id = base.Columns["PricingResponse_Id"];
                 this.columnCompany = base.Columns["Company"];
                 this.columnDivision = base.Columns["Division"];
                 this.columnDepartment = base.Columns["Department"];
                 this.columnNumber = base.Columns["Number"];
-                this.columnPricingResponse_Id = base.Columns["PricingResponse_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnPricingResponse_Id = new global::System.Data.DataColumn("PricingResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnPricingResponse_Id);
                 this.columnCompany = new global::System.Data.DataColumn("Company", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCompany);
                 this.columnDivision = new global::System.Data.DataColumn("Division", typeof(string), null, global::System.Data.MappingType.Element);
@@ -930,8 +933,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 base.Columns.Add(this.columnDepartment);
                 this.columnNumber = new global::System.Data.DataColumn("Number", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNumber);
-                this.columnPricingResponse_Id = new global::System.Data.DataColumn("PricingResponse_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnPricingResponse_Id);
+                this.columnPricingResponse_Id.Namespace = "";
                 this.columnCompany.AllowDBNull = false;
                 this.columnDivision.AllowDBNull = false;
                 this.columnDepartment.AllowDBNull = false;
@@ -1166,7 +1168,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                         null,
                         null};
                 if ((parentPricingResponseRowByPricingResponse_Items != null)) {
-                    columnValuesArray[1] = parentPricingResponseRowByPricingResponse_Items[2];
+                    columnValuesArray[1] = parentPricingResponseRowByPricingResponse_Items[0];
                 }
                 rowItemsRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowItemsRow);
@@ -1206,6 +1208,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 this.columnItems_Id.AutoIncrement = true;
                 this.columnItems_Id.AllowDBNull = false;
                 this.columnItems_Id.Unique = true;
+                this.columnItems_Id.Namespace = "";
+                this.columnPricingResponse_Id.Namespace = "";
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1337,7 +1341,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class _ItemDataTable : global::System.Data.TypedTableBase<_ItemRow> {
+        public partial class ItemDataTable : global::System.Data.TypedTableBase<ItemRow> {
             
             private global::System.Data.DataColumn columnnumber;
             
@@ -1349,9 +1353,11 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             private global::System.Data.DataColumn columnItems_Id;
             
+            private global::System.Data.DataColumn columnDeviatedCost;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemDataTable() {
+            public ItemDataTable() {
                 this.TableName = "Item";
                 this.BeginInit();
                 this.InitClass();
@@ -1360,7 +1366,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal _ItemDataTable(global::System.Data.DataTable table) {
+            internal ItemDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -1377,7 +1383,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected _ItemDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected ItemDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -1424,6 +1430,14 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn DeviatedCostColumn {
+                get {
+                    return this.columnDeviatedCost;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -1433,52 +1447,53 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow this[int index] {
+            public ItemRow this[int index] {
                 get {
-                    return ((_ItemRow)(this.Rows[index]));
+                    return ((ItemRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event _ItemRowChangeEventHandler _ItemRowChanging;
+            public event ItemRowChangeEventHandler ItemRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event _ItemRowChangeEventHandler _ItemRowChanged;
+            public event ItemRowChangeEventHandler ItemRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event _ItemRowChangeEventHandler _ItemRowDeleting;
+            public event ItemRowChangeEventHandler ItemRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event _ItemRowChangeEventHandler _ItemRowDeleted;
+            public event ItemRowChangeEventHandler ItemRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Add_ItemRow(_ItemRow row) {
+            public void AddItemRow(ItemRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow Add_ItemRow(string number, decimal AllowanceTotal, string OutOfStock, ItemsRow parentItemsRowByItems_Item) {
-                _ItemRow row_ItemRow = ((_ItemRow)(this.NewRow()));
+            public ItemRow AddItemRow(string number, decimal AllowanceTotal, string OutOfStock, ItemsRow parentItemsRowByItems_Item, bool DeviatedCost) {
+                ItemRow rowItemRow = ((ItemRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         number,
                         AllowanceTotal,
                         OutOfStock,
                         null,
-                        null};
+                        null,
+                        DeviatedCost};
                 if ((parentItemsRowByItems_Item != null)) {
                     columnValuesArray[4] = parentItemsRowByItems_Item[0];
                 }
-                row_ItemRow.ItemArray = columnValuesArray;
-                this.Rows.Add(row_ItemRow);
-                return row_ItemRow;
+                rowItemRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowItemRow);
+                return rowItemRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                _ItemDataTable cln = ((_ItemDataTable)(base.Clone()));
+                ItemDataTable cln = ((ItemDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -1486,7 +1501,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new _ItemDataTable();
+                return new ItemDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1497,6 +1512,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 this.columnOutOfStock = base.Columns["OutOfStock"];
                 this.columnItem_Id = base.Columns["Item_Id"];
                 this.columnItems_Id = base.Columns["Items_Id"];
+                this.columnDeviatedCost = base.Columns["DeviatedCost"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1512,6 +1528,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 base.Columns.Add(this.columnItem_Id);
                 this.columnItems_Id = new global::System.Data.DataColumn("Items_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
                 base.Columns.Add(this.columnItems_Id);
+                this.columnDeviatedCost = new global::System.Data.DataColumn("DeviatedCost", typeof(bool), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnDeviatedCost);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnItem_Id}, true));
                 this.columnnumber.AllowDBNull = false;
@@ -1522,32 +1540,41 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 this.columnItem_Id.AutoIncrement = true;
                 this.columnItem_Id.AllowDBNull = false;
                 this.columnItem_Id.Unique = true;
+                this.columnItem_Id.Namespace = "";
+                this.columnItems_Id.Namespace = "";
+                this.ExtendedProperties.Add("Generator_RowClassName", "ItemRow");
+                this.ExtendedProperties.Add("Generator_RowEvArgName", "ItemRowChangeEvent");
+                this.ExtendedProperties.Add("Generator_RowEvHandlerName", "ItemRowChangeEventHandler");
+                this.ExtendedProperties.Add("Generator_TableClassName", "ItemDataTable");
+                this.ExtendedProperties.Add("Generator_TablePropName", "Item");
+                this.ExtendedProperties.Add("Generator_TableVarName", "tableItem");
+                this.ExtendedProperties.Add("Generator_UserTableName", "Item");
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow New_ItemRow() {
-                return ((_ItemRow)(this.NewRow()));
+            public ItemRow NewItemRow() {
+                return ((ItemRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new _ItemRow(builder);
+                return new ItemRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(_ItemRow);
+                return typeof(ItemRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this._ItemRowChanged != null)) {
-                    this._ItemRowChanged(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
+                if ((this.ItemRowChanged != null)) {
+                    this.ItemRowChanged(this, new ItemRowChangeEvent(((ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1555,8 +1582,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this._ItemRowChanging != null)) {
-                    this._ItemRowChanging(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
+                if ((this.ItemRowChanging != null)) {
+                    this.ItemRowChanging(this, new ItemRowChangeEvent(((ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1564,8 +1591,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this._ItemRowDeleted != null)) {
-                    this._ItemRowDeleted(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
+                if ((this.ItemRowDeleted != null)) {
+                    this.ItemRowDeleted(this, new ItemRowChangeEvent(((ItemRow)(e.Row)), e.Action));
                 }
             }
             
@@ -1573,14 +1600,14 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this._ItemRowDeleting != null)) {
-                    this._ItemRowDeleting(this, new _ItemRowChangeEvent(((_ItemRow)(e.Row)), e.Action));
+                if ((this.ItemRowDeleting != null)) {
+                    this.ItemRowDeleting(this, new ItemRowChangeEvent(((ItemRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Remove_ItemRow(_ItemRow row) {
+            public void RemoveItemRow(ItemRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -1607,7 +1634,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "_ItemDataTable";
+                attribute2.FixedValue = "ItemDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -1655,6 +1682,8 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
         public partial class PricesDataTable : global::System.Data.TypedTableBase<PricesRow> {
             
+            private global::System.Data.DataColumn columnItem_Id;
+            
             private global::System.Data.DataColumn columnNetCase;
             
             private global::System.Data.DataColumn columnNetEach;
@@ -1662,8 +1691,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             private global::System.Data.DataColumn columnGrossCase;
             
             private global::System.Data.DataColumn columnGrossEach;
-            
-            private global::System.Data.DataColumn columnItem_Id;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
@@ -1700,6 +1727,14 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn Item_IdColumn {
+                get {
+                    return this.columnItem_Id;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public global::System.Data.DataColumn NetCaseColumn {
                 get {
                     return this.columnNetCase;
@@ -1727,14 +1762,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             public global::System.Data.DataColumn GrossEachColumn {
                 get {
                     return this.columnGrossEach;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn Item_IdColumn {
-                get {
-                    return this.columnItem_Id;
                 }
             }
             
@@ -1775,16 +1802,16 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public PricesRow AddPricesRow(decimal NetCase, decimal NetEach, decimal GrossCase, decimal GrossEach, _ItemRow parent_ItemRowByItem_Prices) {
+            public PricesRow AddPricesRow(ItemRow parentItemRowByItem_Prices, decimal NetCase, decimal NetEach, decimal GrossCase, decimal GrossEach) {
                 PricesRow rowPricesRow = ((PricesRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
+                        null,
                         NetCase,
                         NetEach,
                         GrossCase,
-                        GrossEach,
-                        null};
-                if ((parent_ItemRowByItem_Prices != null)) {
-                    columnValuesArray[4] = parent_ItemRowByItem_Prices[3];
+                        GrossEach};
+                if ((parentItemRowByItem_Prices != null)) {
+                    columnValuesArray[0] = parentItemRowByItem_Prices[3];
                 }
                 rowPricesRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowPricesRow);
@@ -1808,16 +1835,18 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
+                this.columnItem_Id = base.Columns["Item_Id"];
                 this.columnNetCase = base.Columns["NetCase"];
                 this.columnNetEach = base.Columns["NetEach"];
                 this.columnGrossCase = base.Columns["GrossCase"];
                 this.columnGrossEach = base.Columns["GrossEach"];
-                this.columnItem_Id = base.Columns["Item_Id"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
+                this.columnItem_Id = new global::System.Data.DataColumn("Item_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
+                base.Columns.Add(this.columnItem_Id);
                 this.columnNetCase = new global::System.Data.DataColumn("NetCase", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnNetCase);
                 this.columnNetEach = new global::System.Data.DataColumn("NetEach", typeof(decimal), null, global::System.Data.MappingType.Element);
@@ -1826,8 +1855,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 base.Columns.Add(this.columnGrossCase);
                 this.columnGrossEach = new global::System.Data.DataColumn("GrossEach", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnGrossEach);
-                this.columnItem_Id = new global::System.Data.DataColumn("Item_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
-                base.Columns.Add(this.columnItem_Id);
+                this.columnItem_Id.Namespace = "";
                 this.columnNetCase.AllowDBNull = false;
                 this.columnNetEach.AllowDBNull = false;
                 this.columnGrossCase.AllowDBNull = false;
@@ -1974,6 +2002,17 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int PricingResponse_Id {
+                get {
+                    return ((int)(this[this.tablePricingResponse.PricingResponse_IdColumn]));
+                }
+                set {
+                    this[this.tablePricingResponse.PricingResponse_IdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string ShipDate {
                 get {
                     try {
@@ -2001,17 +2040,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 }
                 set {
                     this[this.tablePricingResponse.ErrorMessageColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int PricingResponse_Id {
-                get {
-                    return ((int)(this[this.tablePricingResponse.PricingResponse_IdColumn]));
-                }
-                set {
-                    this[this.tablePricingResponse.PricingResponse_IdColumn] = value;
                 }
             }
             
@@ -2078,6 +2106,22 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int PricingResponse_Id {
+                get {
+                    try {
+                        return ((int)(this[this.tableCustomer.PricingResponse_IdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PricingResponse_Id\' in table \'Customer\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCustomer.PricingResponse_IdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string Company {
                 get {
                     return ((string)(this[this.tableCustomer.CompanyColumn]));
@@ -2117,22 +2161,6 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 }
                 set {
                     this[this.tableCustomer.NumberColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int PricingResponse_Id {
-                get {
-                    try {
-                        return ((int)(this[this.tableCustomer.PricingResponse_IdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'PricingResponse_Id\' in table \'Customer\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tableCustomer.PricingResponse_IdColumn] = value;
                 }
             }
             
@@ -2226,12 +2254,12 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow[] GetItemRows() {
+            public ItemRow[] GetItemRows() {
                 if ((this.Table.ChildRelations["Items_Item"] == null)) {
-                    return new _ItemRow[0];
+                    return new ItemRow[0];
                 }
                 else {
-                    return ((_ItemRow[])(base.GetChildRows(this.Table.ChildRelations["Items_Item"])));
+                    return ((ItemRow[])(base.GetChildRows(this.Table.ChildRelations["Items_Item"])));
                 }
             }
         }
@@ -2239,25 +2267,25 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class _ItemRow : global::System.Data.DataRow {
+        public partial class ItemRow : global::System.Data.DataRow {
             
-            private _ItemDataTable table_Item;
+            private ItemDataTable tableItem;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal _ItemRow(global::System.Data.DataRowBuilder rb) : 
+            internal ItemRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.table_Item = ((_ItemDataTable)(this.Table));
+                this.tableItem = ((ItemDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string number {
                 get {
-                    return ((string)(this[this.table_Item.numberColumn]));
+                    return ((string)(this[this.tableItem.numberColumn]));
                 }
                 set {
-                    this[this.table_Item.numberColumn] = value;
+                    this[this.tableItem.numberColumn] = value;
                 }
             }
             
@@ -2265,10 +2293,10 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal AllowanceTotal {
                 get {
-                    return ((decimal)(this[this.table_Item.AllowanceTotalColumn]));
+                    return ((decimal)(this[this.tableItem.AllowanceTotalColumn]));
                 }
                 set {
-                    this[this.table_Item.AllowanceTotalColumn] = value;
+                    this[this.tableItem.AllowanceTotalColumn] = value;
                 }
             }
             
@@ -2276,10 +2304,10 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string OutOfStock {
                 get {
-                    return ((string)(this[this.table_Item.OutOfStockColumn]));
+                    return ((string)(this[this.tableItem.OutOfStockColumn]));
                 }
                 set {
-                    this[this.table_Item.OutOfStockColumn] = value;
+                    this[this.tableItem.OutOfStockColumn] = value;
                 }
             }
             
@@ -2287,10 +2315,10 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public int Item_Id {
                 get {
-                    return ((int)(this[this.table_Item.Item_IdColumn]));
+                    return ((int)(this[this.tableItem.Item_IdColumn]));
                 }
                 set {
-                    this[this.table_Item.Item_IdColumn] = value;
+                    this[this.tableItem.Item_IdColumn] = value;
                 }
             }
             
@@ -2299,14 +2327,30 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             public int Items_Id {
                 get {
                     try {
-                        return ((int)(this[this.table_Item.Items_IdColumn]));
+                        return ((int)(this[this.tableItem.Items_IdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
                         throw new global::System.Data.StrongTypingException("The value for column \'Items_Id\' in table \'Item\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.table_Item.Items_IdColumn] = value;
+                    this[this.tableItem.Items_IdColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool DeviatedCost {
+                get {
+                    try {
+                        return ((bool)(this[this.tableItem.DeviatedCostColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'DeviatedCost\' in table \'Item\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableItem.DeviatedCostColumn] = value;
                 }
             }
             
@@ -2324,13 +2368,25 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsItems_IdNull() {
-                return this.IsNull(this.table_Item.Items_IdColumn);
+                return this.IsNull(this.tableItem.Items_IdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetItems_IdNull() {
-                this[this.table_Item.Items_IdColumn] = global::System.Convert.DBNull;
+                this[this.tableItem.Items_IdColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsDeviatedCostNull() {
+                return this.IsNull(this.tableItem.DeviatedCostColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetDeviatedCostNull() {
+                this[this.tableItem.DeviatedCostColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2357,6 +2413,22 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             internal PricesRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
                 this.tablePrices = ((PricesDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public int Item_Id {
+                get {
+                    try {
+                        return ((int)(this[this.tablePrices.Item_IdColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'Item_Id\' in table \'Prices\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablePrices.Item_IdColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -2405,25 +2477,9 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int Item_Id {
+            public ItemRow ItemRow {
                 get {
-                    try {
-                        return ((int)(this[this.tablePrices.Item_IdColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'Item_Id\' in table \'Prices\' is DBNull.", e);
-                    }
-                }
-                set {
-                    this[this.tablePrices.Item_IdColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow ItemRow {
-                get {
-                    return ((_ItemRow)(this.GetParentRow(this.Table.ParentRelations["Item_Prices"])));
+                    return ((ItemRow)(this.GetParentRow(this.Table.ParentRelations["Item_Prices"])));
                 }
                 set {
                     this.SetParentRow(value, this.Table.ParentRelations["Item_Prices"]);
@@ -2549,22 +2605,22 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class _ItemRowChangeEvent : global::System.EventArgs {
+        public class ItemRowChangeEvent : global::System.EventArgs {
             
-            private _ItemRow eventRow;
+            private ItemRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRowChangeEvent(_ItemRow row, global::System.Data.DataRowAction action) {
+            public ItemRowChangeEvent(ItemRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public _ItemRow Row {
+            public ItemRow Row {
                 get {
                     return this.eventRow;
                 }

@@ -57,12 +57,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 // call the pricing service and get the response XML
                 PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
 
-                foreach (PricingResponseMain._ItemRow item in pricingResponse._Item) {
+                foreach (PricingResponseMain.ItemRow item in pricingResponse.Item) {
                     Price itemPrice = new Price();
 
                     itemPrice.BranchId = branchId;
                     itemPrice.CustomerNumber = customerNumber;
                     itemPrice.ItemNumber = item.number;
+                    itemPrice.DeviatedCost = item.DeviatedCost;
 
                     PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
 
