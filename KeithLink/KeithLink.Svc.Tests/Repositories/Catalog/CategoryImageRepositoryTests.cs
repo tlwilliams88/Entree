@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Test.Repositories.Catalog
         {
             string categoryId = "ap000";
 
-            CategoryImageRepository repo = new CategoryImageRepository();
+            CategoryImageRepository repo = new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests"));
 
             Assert.IsTrue(repo.GetImageByCategory(categoryId).CategoryImage.FileName.Contains(categoryId));
         }

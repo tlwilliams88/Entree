@@ -18,10 +18,11 @@ angular.module('bekApp')
 
     function resetPage(list) {
       $scope.selectedList = list;
-      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
+      // $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       $scope.sortList('position', false);
+      
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
       }
@@ -74,6 +75,9 @@ angular.module('bekApp')
 
     $scope.saveList = function(list) {
 
+      if (!list.items[0].hasOwnProperty('position')) {
+        list.items.splice(0,1);
+      }
       var updatedList = angular.copy(list);
 
       angular.forEach(updatedList.items, function(item, itemIndex) {
@@ -289,13 +293,21 @@ angular.module('bekApp')
     // sort list by column
     $scope.sortList = function(sortBy, sortOrder) {
       var sortField = sortBy;
+
+      if (!$scope.selectedList.items[0].hasOwnProperty('position')) {
+        $scope.selectedList.items.splice(0,1);
+      }
+
       $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
         // move items with position 0 to bottom of list
         if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
           return 1000;
         }
+
         return item[sortField];
       }, sortOrder);
+
+      $scope.selectedList.items.unshift({});
 
       $scope.sortBy = sortBy;
       updateItemPositions();

@@ -188,9 +188,21 @@
     <Compile Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.Designer.cs">
       <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.cs" />
+    <Compile Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.Designer.cs">
+      <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.cs" />
     <Compile Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.Designer.cs">
       <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410242152293_Merge migration.cs" />
+    <Compile Include="Repository\EF\Migrations\201410242152293_Merge migration.Designer.cs">
+      <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.cs" />
+    <Compile Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.Designer.cs">
+      <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -208,6 +220,11 @@
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ETL\CatalogLogicImpl.cs" />
+    <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -220,6 +237,7 @@
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
@@ -266,11 +284,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Models\Orders\Schemas\ShippingDateRequest.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -308,6 +321,20 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Caching.config" />
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>PricingResponse.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xss">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsx">
+      <DependentUpon>PricingResponse.xsd</DependentUpon>
+    </None>
     <None Include="packages.config" />
     <None Include="Presentation.config" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.EF.List.datasource" />
@@ -333,20 +360,6 @@
     </None>
     <None Include="Models\SiteCatalog\Schemas\PricingRequest.xss">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>PricingResponse.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xss">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
-    </None>
-    <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsx">
-      <DependentUpon>PricingResponse.xsd</DependentUpon>
     </None>
     <None Include="Models\Orders\Schemas\ShippingDateRequest.xsc">
       <DependentUpon>ShippingDateRequest.xsd</DependentUpon>
@@ -546,8 +559,17 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410231852419_Create_Order_Header_Tables.resx">
       <DependentUpon>201410231852419_Create_Order_Header_Tables.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410241416476_OrderHistory_rev1.resx">
+      <DependentUpon>201410241416476_OrderHistory_rev1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410240120381_Add_Position_To_ListItem.resx">
       <DependentUpon>201410240120381_Add_Position_To_ListItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410242152293_Merge migration.resx">
+      <DependentUpon>201410242152293_Merge migration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.resx">
+      <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Test.Logic
                 new ProductImageRepositoryImpl(),
 				new ListServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient()),
                 new DivisionRepositoryImpl(),
-                new CategoryImageRepository(),
+                new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
                 new NoCacheCatalogCacheRepositoryImpl()
                 );
         }

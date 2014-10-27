@@ -57,5 +57,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "sellsheet")]
         public string SellSheet { get; set; }
+
+        [DataMember(Name="deviatedcost")]
+        public string DeviatedCost { get; set; }
 	}
 }

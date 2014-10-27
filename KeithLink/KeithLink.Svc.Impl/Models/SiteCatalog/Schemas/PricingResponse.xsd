@@ -1,120 +1,120 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xs:schema id="PricingResponse" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-	<xs:annotation>
-		<xs:documentation>
-			Request Prices Response Schema for Power Net
-			Copyright 2009 Retalix. All rights reserved.
-		</xs:documentation>
-	</xs:annotation>
-
-  <xs:element name="PricingResponseMain" msdata:IsDataSet="true">
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="PricingResponseMain" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:simpleType name="companyType">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="customerType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="itemNumberType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="10" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="allowancePriceType">
+    <xs:restriction base="xs:decimal" />
+  </xs:simpleType>
+  <xs:simpleType name="yesNoType">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="pricesType">
+    <xs:restriction base="xs:decimal" />
+  </xs:simpleType>
+  <xs:element name="PricingResponse" msprop:Generator_TableClassName="PricingResponseDataTable" msprop:Generator_TableVarName="tablePricingResponse" msprop:Generator_RowChangedName="PricingResponseRowChanged" msprop:Generator_TablePropName="PricingResponse" msprop:Generator_RowDeletingName="PricingResponseRowDeleting" msprop:Generator_RowChangingName="PricingResponseRowChanging" msprop:Generator_RowEvHandlerName="PricingResponseRowChangeEventHandler" msprop:Generator_RowDeletedName="PricingResponseRowDeleted" msprop:Generator_RowClassName="PricingResponseRow" msprop:Generator_UserTableName="PricingResponse" msprop:Generator_RowEvArgName="PricingResponseRowChangeEvent">
     <xs:complexType>
-      <xs:choice minOccurs="1" maxOccurs="1">
-        <xs:element ref="PricingResponse"/>
-      </xs:choice>
+      <xs:sequence>
+        <xs:element name="ShipDate" msprop:Generator_ColumnVarNameInTable="columnShipDate" msprop:Generator_ColumnPropNameInRow="ShipDate" msprop:Generator_ColumnPropNameInTable="ShipDateColumn" msprop:Generator_UserColumnName="ShipDate" type="xs:string" minOccurs="0" />
+        <xs:element name="ErrorMessage" msprop:Generator_ColumnVarNameInTable="columnErrorMessage" msprop:Generator_ColumnPropNameInRow="ErrorMessage" msprop:Generator_ColumnPropNameInTable="ErrorMessageColumn" msprop:Generator_UserColumnName="ErrorMessage" type="xs:string" minOccurs="0" />
+        <xs:element name="Customer" msprop:Generator_TableClassName="CustomerDataTable" msprop:Generator_TableVarName="tableCustomer" msprop:Generator_RowChangedName="CustomerRowChanged" msprop:Generator_TablePropName="Customer" msprop:Generator_RowDeletingName="CustomerRowDeleting" msprop:Generator_RowChangingName="CustomerRowChanging" msprop:Generator_RowEvHandlerName="CustomerRowChangeEventHandler" msprop:Generator_RowDeletedName="CustomerRowDeleted" msprop:Generator_RowClassName="CustomerRow" msprop:Generator_UserTableName="Customer" msprop:Generator_RowEvArgName="CustomerRowChangeEvent" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Company" msprop:Generator_ColumnVarNameInTable="columnCompany" msprop:Generator_ColumnPropNameInRow="Company" msprop:Generator_ColumnPropNameInTable="CompanyColumn" msprop:Generator_UserColumnName="Company" type="companyType" />
+              <xs:element name="Division" msprop:Generator_ColumnVarNameInTable="columnDivision" msprop:Generator_ColumnPropNameInRow="Division" msprop:Generator_ColumnPropNameInTable="DivisionColumn" msprop:Generator_UserColumnName="Division" type="companyType" />
+              <xs:element name="Department" msprop:Generator_ColumnVarNameInTable="columnDepartment" msprop:Generator_ColumnPropNameInRow="Department" msprop:Generator_ColumnPropNameInTable="DepartmentColumn" msprop:Generator_UserColumnName="Department" type="companyType" />
+              <xs:element name="Number" msprop:Generator_ColumnVarNameInTable="columnNumber" msprop:Generator_ColumnPropNameInRow="Number" msprop:Generator_ColumnPropNameInTable="NumberColumn" msprop:Generator_UserColumnName="Number" type="customerType" />
+            </xs:sequence>
+            <xs:attribute name="PricingResponse_Id" msprop:Generator_ColumnVarNameInTable="columnPricingResponse_Id" msprop:Generator_ColumnPropNameInRow="PricingResponse_Id" msprop:Generator_ColumnPropNameInTable="PricingResponse_IdColumn" msprop:Generator_UserColumnName="PricingResponse_Id" type="xs:int" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Items" msprop:Generator_TableClassName="ItemsDataTable" msprop:Generator_TableVarName="tableItems" msprop:Generator_RowChangedName="ItemsRowChanged" msprop:Generator_TablePropName="Items" msprop:Generator_RowDeletingName="ItemsRowDeleting" msprop:Generator_RowChangingName="ItemsRowChanging" msprop:Generator_RowEvHandlerName="ItemsRowChangeEventHandler" msprop:Generator_RowDeletedName="ItemsRowDeleted" msprop:Generator_RowClassName="ItemsRow" msprop:Generator_UserTableName="Items" msprop:Generator_RowEvArgName="ItemsRowChangeEvent" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Item" msprop:Generator_TableClassName="ItemDataTable" msprop:Generator_TableVarName="tableItem" msprop:Generator_RowChangedName="ItemRowChanged" msprop:Generator_TablePropName="Item" msprop:Generator_RowDeletingName="ItemRowDeleting" msprop:Generator_RowChangingName="ItemRowChanging" msprop:Generator_RowEvHandlerName="ItemRowChangeEventHandler" msprop:Generator_RowDeletedName="ItemRowDeleted" msprop:Generator_RowClassName="ItemRow" msprop:Generator_UserTableName="Item" msprop:Generator_RowEvArgName="ItemRowChangeEvent" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AllowanceTotal" msprop:Generator_ColumnVarNameInTable="columnAllowanceTotal" msprop:Generator_ColumnPropNameInRow="AllowanceTotal" msprop:Generator_ColumnPropNameInTable="AllowanceTotalColumn" msprop:Generator_UserColumnName="AllowanceTotal" type="allowancePriceType" msdata:Ordinal="1" />
+                    <xs:element name="OutOfStock" msprop:Generator_ColumnVarNameInTable="columnOutOfStock" msprop:Generator_ColumnPropNameInRow="OutOfStock" msprop:Generator_ColumnPropNameInTable="OutOfStockColumn" msprop:Generator_UserColumnName="OutOfStock" type="yesNoType" msdata:Ordinal="2" />
+                    <xs:element name="DeviatedCost" msprop:Generator_ColumnVarNameInTable="columnDeviatedCost" msprop:Generator_ColumnPropNameInRow="DeviatedCost" msprop:Generator_ColumnPropNameInTable="DeviatedCostColumn" msprop:Generator_UserColumnName="DeviatedCost" type="xs:boolean" minOccurs="0" msdata:Ordinal="5" />
+                    <xs:element name="Prices" msprop:Generator_TableClassName="PricesDataTable" msprop:Generator_TableVarName="tablePrices" msprop:Generator_RowChangedName="PricesRowChanged" msprop:Generator_TablePropName="Prices" msprop:Generator_RowDeletingName="PricesRowDeleting" msprop:Generator_RowChangingName="PricesRowChanging" msprop:Generator_RowEvHandlerName="PricesRowChangeEventHandler" msprop:Generator_RowDeletedName="PricesRowDeleted" msprop:Generator_RowClassName="PricesRow" msprop:Generator_UserTableName="Prices" msprop:Generator_RowEvArgName="PricesRowChangeEvent" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="NetCase" msprop:Generator_ColumnVarNameInTable="columnNetCase" msprop:Generator_ColumnPropNameInRow="NetCase" msprop:Generator_ColumnPropNameInTable="NetCaseColumn" msprop:Generator_UserColumnName="NetCase" type="pricesType" />
+                          <xs:element name="NetEach" msprop:Generator_ColumnVarNameInTable="columnNetEach" msprop:Generator_ColumnPropNameInRow="NetEach" msprop:Generator_ColumnPropNameInTable="NetEachColumn" msprop:Generator_UserColumnName="NetEach" type="pricesType" />
+                          <xs:element name="GrossCase" msprop:Generator_ColumnVarNameInTable="columnGrossCase" msprop:Generator_ColumnPropNameInRow="GrossCase" msprop:Generator_ColumnPropNameInTable="GrossCaseColumn" msprop:Generator_UserColumnName="GrossCase" type="pricesType" />
+                          <xs:element name="GrossEach" msprop:Generator_ColumnVarNameInTable="columnGrossEach" msprop:Generator_ColumnPropNameInRow="GrossEach" msprop:Generator_ColumnPropNameInTable="GrossEachColumn" msprop:Generator_UserColumnName="GrossEach" type="pricesType" />
+                        </xs:sequence>
+                        <xs:attribute name="Item_Id" msprop:Generator_ColumnVarNameInTable="columnItem_Id" msprop:Generator_ColumnPropNameInRow="Item_Id" msprop:Generator_ColumnPropNameInTable="Item_IdColumn" msprop:Generator_UserColumnName="Item_Id" type="xs:int" use="prohibited" />
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="number" msprop:Generator_ColumnVarNameInTable="columnnumber" msprop:Generator_ColumnPropNameInRow="number" msprop:Generator_ColumnPropNameInTable="numberColumn" msprop:Generator_UserColumnName="number" type="itemNumberType" use="required" />
+                  <xs:attribute name="Item_Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnItem_Id" msprop:Generator_ColumnPropNameInRow="Item_Id" msprop:Generator_ColumnPropNameInTable="Item_IdColumn" msprop:Generator_UserColumnName="Item_Id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+                  <xs:attribute name="Items_Id" msprop:Generator_ColumnVarNameInTable="columnItems_Id" msprop:Generator_ColumnPropNameInRow="Items_Id" msprop:Generator_ColumnPropNameInTable="Items_IdColumn" msprop:Generator_UserColumnName="Items_Id" type="xs:int" use="prohibited" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="Items_Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnItems_Id" msprop:Generator_ColumnPropNameInRow="Items_Id" msprop:Generator_ColumnPropNameInTable="Items_IdColumn" msprop:Generator_UserColumnName="Items_Id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
+            <xs:attribute name="PricingResponse_Id" msprop:Generator_ColumnVarNameInTable="columnPricingResponse_Id" msprop:Generator_ColumnPropNameInRow="PricingResponse_Id" msprop:Generator_ColumnPropNameInTable="PricingResponse_IdColumn" msprop:Generator_UserColumnName="PricingResponse_Id" type="xs:int" use="prohibited" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="PricingResponse_Id" msdata:AutoIncrement="true" msprop:Generator_ColumnVarNameInTable="columnPricingResponse_Id" msprop:Generator_ColumnPropNameInRow="PricingResponse_Id" msprop:Generator_ColumnPropNameInTable="PricingResponse_IdColumn" msprop:Generator_UserColumnName="PricingResponse_Id" type="xs:int" msdata:AllowDBNull="false" use="prohibited" />
     </xs:complexType>
   </xs:element>
-  
-	<xs:element name="PricingResponse" msdata:IsDataSet="true">
-		<xs:complexType>
-			<xs:choice>
-				<xs:sequence>
-					<xs:element maxOccurs="1" minOccurs="1" ref="Customer" msdata:rowOrder="0"/>
-					<xs:element maxOccurs="1" minOccurs="0" name="ShipDate" type="xs:string" msdata:rowOrder="1"/>
-					<xs:element maxOccurs="1" minOccurs="1" ref="Items" msdata:rowOrder="2" />
-				</xs:sequence>
-				<xs:element maxOccurs="1" minOccurs="0" name="ErrorMessage" type="xs:string"/>
-			</xs:choice>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="Customer" msdata:IsDataSet="true">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="Company" type="companyType"/>
-				<xs:element name="Division" type="companyType"/>
-				<xs:element name="Department" type="companyType"/>
-				<xs:element name="Number" type="customerType"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="Items" msdata:IsDataSet="true">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="unbounded" minOccurs="1" ref="Item"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="Item" msdata:IsDataSet="true">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element maxOccurs="1" minOccurs="1" ref="Prices"/>
-				<xs:element maxOccurs="1" minOccurs="1" name="AllowanceTotal" type="allowancePriceType"/>
-				<xs:element maxOccurs="1" minOccurs="1" name="OutOfStock" type="yesNoType"/>
-			</xs:sequence>
-			<xs:attribute name="number" type="itemNumberType" use="required"/>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="Prices" msdata:IsDataSet="true">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element name="NetCase" type="pricesType"/>
-				<xs:element name="NetEach" type="pricesType"/>
-				<xs:element name="GrossCase" type="pricesType"/>
-				<xs:element name="GrossEach" type="pricesType"/>
-			</xs:sequence>
-		</xs:complexType>
-	</xs:element>
-
-	<!-- Power Net Specific data types -->
-	<xs:simpleType name="companyType">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[A-Z0-9\s]{3}"/>
-			<xs:whiteSpace value="preserve"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="customerType">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="([A-Z0-9\-])*"/>
-			<xs:minLength value="1"/>
-			<xs:maxLength value="10"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="yesNoType">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="N"/>
-			<xs:enumeration value="Y"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="itemNumberType">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="([A-Z0-9\-])*"/>
-			<xs:minLength value="1"/>
-			<xs:maxLength value="10"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="pricesType">
-		<xs:restriction base="xs:decimal">
-			<xs:totalDigits value="9"/>
-			<xs:fractionDigits value="4"/>
-			<xs:minInclusive value="0.0"/>
-			<xs:maxInclusive value="99999.9999"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="allowancePriceType">
-		<xs:restriction base="xs:decimal">
-			<xs:totalDigits value="9"/>
-			<xs:fractionDigits value="2"/>
-			<xs:minInclusive value="0.0"/>
-			<xs:maxInclusive value="9999999.99"/>
-		</xs:restriction>
-	</xs:simpleType>
+  <xs:element name="PricingResponseMain" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_DataSetName="PricingResponseMain" msprop:Generator_UserDSName="PricingResponseMain">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="PricingResponse" />
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Item_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Item" />
+      <xs:field xpath="@Item_Id" />
+    </xs:unique>
+    <xs:unique name="Items_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//Items" />
+      <xs:field xpath="@Items_Id" />
+    </xs:unique>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//PricingResponse" />
+      <xs:field xpath="@PricingResponse_Id" />
+    </xs:unique>
+    <xs:keyref name="PricingResponse_Items" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="Items" msprop:rel_Generator_ChildPropName="GetItemsRows" msprop:rel_Generator_UserRelationName="PricingResponse_Items" msprop:rel_Generator_RelationVarName="relationPricingResponse_Items" msprop:rel_Generator_UserParentTable="PricingResponse" msprop:rel_Generator_ParentPropName="PricingResponseRow">
+      <xs:selector xpath=".//Items" />
+      <xs:field xpath="@PricingResponse_Id" />
+    </xs:keyref>
+    <xs:keyref name="Items_Item" refer="Items_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="Item" msprop:rel_Generator_ChildPropName="GetItemRows" msprop:rel_Generator_UserRelationName="Items_Item" msprop:rel_Generator_RelationVarName="relationItems_Item" msprop:rel_Generator_UserParentTable="Items" msprop:rel_Generator_ParentPropName="ItemsRow">
+      <xs:selector xpath=".//Item" />
+      <xs:field xpath="@Items_Id" />
+    </xs:keyref>
+    <xs:keyref name="Item_Prices" refer="Item_Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="Prices" msprop:rel_Generator_ChildPropName="GetPricesRows" msprop:rel_Generator_UserRelationName="Item_Prices" msprop:rel_Generator_RelationVarName="relationItem_Prices" msprop:rel_Generator_UserParentTable="Item" msprop:rel_Generator_ParentPropName="ItemRow">
+      <xs:selector xpath=".//Prices" />
+      <xs:field xpath="@Item_Id" />
+    </xs:keyref>
+    <xs:keyref name="PricingResponse_Customer" refer="Constraint1" msdata:IsNested="true" msprop:rel_Generator_UserChildTable="Customer" msprop:rel_Generator_ChildPropName="GetCustomerRows" msprop:rel_Generator_UserRelationName="PricingResponse_Customer" msprop:rel_Generator_RelationVarName="relationPricingResponse_Customer" msprop:rel_Generator_UserParentTable="PricingResponse" msprop:rel_Generator_ParentPropName="PricingResponseRow">
+      <xs:selector xpath=".//Customer" />
+      <xs:field xpath="@PricingResponse_Id" />
+    </xs:keyref>
+  </xs:element>
 </xs:schema>

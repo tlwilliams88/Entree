@@ -87,8 +87,7 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
         public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
             string serializedConfirmation = SerializeConfirmation( file );
 
-            _confirmationQueue.SetQueuePath( (int) location );
-            _confirmationQueue.PublishToQueue( serializedConfirmation );
+            _confirmationQueue.PublishToQueue(serializedConfirmation);
         }
 
         /// <summary>
