@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="185"
-  DTS:VersionGUID="{12A9745E-90FC-4611-912E-718BCA1D1A79}">
+  DTS:VersionBuild="191"
+  DTS:VersionGUID="{D0278109-B5E1-4E62-BFC7-C51E17832585}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -858,7 +858,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{16D59A87-F0C5-4A93-B655-4902B9C371D4}"
+              DTS:DTSID="{5673EBFF-0DFD-4B58-8DE9-F0C64DF6B0EB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -866,7 +866,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CompanyNumber"
-              DTS:DTSID="{6C186A2E-BEC1-41DC-B569-80A1C2F5C2A9}"
+              DTS:DTSID="{7B2D80C9-532B-4C7D-99A6-B1FE140A84AF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -874,7 +874,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DivisionNumber"
-              DTS:DTSID="{A08D9A91-74FE-491D-96D8-E8AF64055B17}"
+              DTS:DTSID="{13E7A0CD-5645-4C51-AAEB-3E46CFC20D32}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -882,7 +882,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DepartmentNumber"
-              DTS:DTSID="{B98176D1-1D7A-4F8A-84F0-05EC3861685A}"
+              DTS:DTSID="{B6BDA340-0854-42AD-98A6-97B2D3C4FA70}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -890,7 +890,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{9803EF57-B691-44FE-AE15-E484E38E81E6}"
+              DTS:DTSID="{8C523C72-ABA4-4AB6-AA1F-78C7DC2818CE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -898,7 +898,7 @@
               DTS:MaximumWidth="9"
               DTS:DataType="129"
               DTS:ObjectName="OrderNumber"
-              DTS:DTSID="{224C9DA8-E588-49A0-87FD-29AD7AB3A293}"
+              DTS:DTSID="{65DA8484-E921-493D-B05A-623C928297B9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -906,7 +906,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="LineNumber"
-              DTS:DTSID="{CDCFC7FE-DBCF-43E8-AD2B-62385C8B57BF}"
+              DTS:DTSID="{D11230BE-F82D-4C01-B014-499821EB5A99}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -914,7 +914,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MemoBillCode"
-              DTS:DTSID="{A105B277-E734-4B0E-9E2D-BA8B4DF86E74}"
+              DTS:DTSID="{05DA75AC-6E33-4CFC-93E4-B7C146E621C2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -922,7 +922,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditOFlag"
-              DTS:DTSID="{7D88757B-0F3A-43E3-88DA-FBE335698869}"
+              DTS:DTSID="{05C9936D-25BD-481B-9EFE-7EDDC7DB00E8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -930,7 +930,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="TradeSWFlag"
-              DTS:DTSID="{6291E9DC-18E7-4EBC-B751-3558BCBA01D8}"
+              DTS:DTSID="{0D1D1578-0960-4F08-A074-D850DF4112E6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -938,7 +938,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="ShipDate"
-              DTS:DTSID="{F8B40BEE-3F7E-44B7-B9F6-6A4158ADE7F6}"
+              DTS:DTSID="{01848A7F-D9A8-4DB7-B3EB-5C49785A5773}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -946,7 +946,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="OrderDate"
-              DTS:DTSID="{88D74D5E-2CA1-438F-AAE9-C164D03F3945}"
+              DTS:DTSID="{E6D4B7E3-3B04-4313-972F-8DF9DAD23EE9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -954,7 +954,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="RouteNumber"
-              DTS:DTSID="{FCFAA63A-90EB-4CD0-9BBF-48A677186D2C}"
+              DTS:DTSID="{19AE097C-6CD6-4283-87D3-E6DA3573487A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -962,7 +962,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="StopNumber"
-              DTS:DTSID="{DA10E3DC-1CB7-47E8-9730-D639024E1494}"
+              DTS:DTSID="{4FD9898A-8B6A-4D8F-BFF5-A8EBE75FA644}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -970,7 +970,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WHNumber"
-              DTS:DTSID="{52302B34-B083-457D-AE22-572A91D04381}"
+              DTS:DTSID="{A916283A-F940-4907-9F63-DA402103F355}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -978,7 +978,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemNumber"
-              DTS:DTSID="{A6A0CA91-748D-4B87-A63B-57A47B06FFA5}"
+              DTS:DTSID="{83AB1ADA-FDA1-4924-8A36-BA7F2E31E517}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -986,7 +986,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="QuantityOrdered"
-              DTS:DTSID="{2191DBC1-8E80-4F2F-9178-CE511064C40B}"
+              DTS:DTSID="{B4F6DD39-139E-4BE1-A173-4581D55E30AC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -994,7 +994,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="QuantityShipped"
-              DTS:DTSID="{4E309AF2-D55A-4EF6-B8E8-66F66FEF6FFB}"
+              DTS:DTSID="{9AE7D64F-B8C8-4D7C-8EA6-BFAC020F2F7D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1002,7 +1002,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="BrokenCaseCode"
-              DTS:DTSID="{2ACF2A53-9400-4613-B723-C90BE4E69DC1}"
+              DTS:DTSID="{96A54870-9237-43DE-B8ED-BAC736F22913}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1010,7 +1010,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CatchWeightCode"
-              DTS:DTSID="{8545FA07-DD25-484D-B771-1A5AF5864DFD}"
+              DTS:DTSID="{435836DA-C828-4641-9C59-43DF769E507A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1018,7 +1018,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ExtCatchWeight"
-              DTS:DTSID="{C5B2BC92-7F78-4C72-B0A1-84AB34FA894F}"
+              DTS:DTSID="{53C0B850-0ADD-47A4-951C-3BBAE3B2A4D6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1026,7 +1026,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemPrice"
-              DTS:DTSID="{75CEBA56-94CF-40A5-9D75-0C11FF91FD36}"
+              DTS:DTSID="{636628B7-1114-4E00-B43B-535BAFE35EB4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1034,7 +1034,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="PriceBookNumber"
-              DTS:DTSID="{E48A20B6-D0E3-4657-8B3F-B242095DF22D}"
+              DTS:DTSID="{CA3B24A6-7C9F-4B75-A8B4-DA999B113252}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1042,7 +1042,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ItemPriceSRP"
-              DTS:DTSID="{0674E9BC-FEE7-42C6-B188-341FD84C293E}"
+              DTS:DTSID="{72D8DCE1-C237-4DD3-B237-EA47F0C9B900}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1050,7 +1050,7 @@
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:ObjectName="InvoiceNumber"
-              DTS:DTSID="{16C5BFF7-CFA3-4598-99B4-3170A7345BFA}"
+              DTS:DTSID="{62ABFC2B-73B0-4086-8322-D71F371EB025}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1058,7 +1058,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateOfLastOrder"
-              DTS:DTSID="{5369B929-7025-4705-AC5D-AB281241FD6F}"
+              DTS:DTSID="{753B4E40-1499-41C2-9909-80A17AEBCFEB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1066,7 +1066,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ExtSRPAmount"
-              DTS:DTSID="{A883DCA3-1EBE-4B5B-B9CD-32F246DE0678}"
+              DTS:DTSID="{641B4876-C51F-4958-BD4B-43B182446CCE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1074,7 +1074,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="ExtSalesGross"
-              DTS:DTSID="{9CD378E0-9C0C-43AD-B6C3-F5CE4CFA2AC6}"
+              DTS:DTSID="{F64FB98C-98EE-4BE6-9D99-5612C4B5C10B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1082,7 +1082,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="ExtSalesNet"
-              DTS:DTSID="{B11152F2-BE2F-4903-BCEA-2FD943AC2758}"
+              DTS:DTSID="{265AAC1E-935A-4892-9BA1-B834C81CDDBB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1090,7 +1090,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerGroup"
-              DTS:DTSID="{03DBDC06-9558-445F-A5BD-5109F8B31B2E}"
+              DTS:DTSID="{D1F56F0D-B669-4781-9190-5FD24FB67197}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1098,7 +1098,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{AD7C89C2-2303-4D85-911A-0E0E3835525A}"
+              DTS:DTSID="{41B33558-23AF-47BB-8C11-52A871D8F4CF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1106,7 +1106,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="VendorNumber"
-              DTS:DTSID="{C581F89E-D5B7-449D-8D92-D1DBF29FE3DA}"
+              DTS:DTSID="{F0790EBA-038E-40AD-84FC-466265F09777}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1114,7 +1114,7 @@
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:ObjectName="CustomerPO"
-              DTS:DTSID="{28D7DE84-1047-4A4D-94EE-70A992B3CA1B}"
+              DTS:DTSID="{29F109FC-5F51-4550-9CD2-F036E5DE6C2B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1122,7 +1122,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{3D4A0703-B0A2-4302-B714-2D8B13199777}"
+              DTS:DTSID="{A9270791-6B62-4F7A-BA28-1AB2CC3DED94}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1130,7 +1130,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CombStatementCustomer"
-              DTS:DTSID="{BCC3D0F9-1CC0-4C1C-ABD8-431380AA4408}"
+              DTS:DTSID="{0A91FD4B-D83C-4EAA-9E95-A30E19D08430}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1138,7 +1138,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="PriceBook"
-              DTS:DTSID="{A9EEA2DB-4071-4303-9854-AEB767962E43}"
+              DTS:DTSID="{65C11EAC-472B-4ED6-8A8C-784F8428D5C1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1146,14 +1146,14 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ClassCode"
-              DTS:DTSID="{E5A5D7FD-2920-48D3-AD9F-343AA9AE9046}"
+              DTS:DTSID="{4CBC1F48-26DA-4BC4-8498-988E678F9782}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
               DTS:ColumnWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{ECEE3F91-03B7-4376-B89F-74E9FE96E88F}"
+              DTS:DTSID="{55D702DD-3E82-4BB3-8F96-1717C787F914}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -1323,11 +1323,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABeOItPuugDCpM9isVhGgO1pU8Fx2lEBQ2LREo19dK7qAAAAAAOgAAAAAIAACAAAAAU5HNKFlA0Yf91YdbsW4RafIcVKU+Ym4ZQ7D+sBSD8ZBAAAAC84ktth+8DULkE5o76ankHQAAAAH8zpHFP58yzL6iytX2HWTvM97bfXGnOx3RPxHjHyPqcIxS3RM6B/EMncql89Nf60bIPFGzmHjoJP35yqOlm5tE</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAB6/BR3PRBcv4+1p6euDuR1OE3qT9tETmSG7BQbifk1QAAAAAAOgAAAAAIAACAAAADIit7FRJ4FFqxBkc4RBquGyY+yw/S4aBMOrSHaFBZUahAAAADPZF5vGsYHrIQguc12Pf3rQAAAAGV7EAZS1KAPafNg9x6G8COJ17Qm4zTMG10E2U8zHg2aoMNRPCoRa0CC1gTtFYmVgF3R+9//c4ic9Kbko4njVB0</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAApkxO/7aHObmVSYNCvqwVaflBV/3yEPxCL5BFHA1t5rwAAAAAOgAAAAAIAACAAAAC6WVzl3gbUwnRKfkGkQ0QkewTgdUI9CTawd3ElEBE3UxAAAAAAnpPsHgl5H9ZcE8/uFWDzQAAAAGWvuMkm8l1QHdr72yYq4/4QcvCJa1dK+hEbe3MXuW1Rl5xfDtRgNNTh5QpdWBqiO0qfOSOcSIOLok8zbYKRC1w</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACmmBBciHdLf80kduvNUYYxxAyRAyyybZ4UvWzNgLwMLwAAAAAOgAAAAAIAACAAAAC97qYwYIRlaKfv7e4htC64AELxUJB6Gf+BNtXM7OHslRAAAAAj1gi98isoBLSyLQuJWKq1QAAAACyHvjeguCD0lbtIKbWnCQ7djDA17necGE3veM5YMQAY6SvqdTf3X+1gVh6S1e2+ChrvpRCm6Ki6YDx9hr4CYSs</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1353,7 +1353,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAB4KWnaw84i9SPZEQoDE9QPYNffHUB+PKCRp/y9RdmBWgAAAAAOgAAAAAIAACAAAAAGpQPlODWyvYFbYm3A3Q53EK612Nu9bFmmFBKmWIVW7hAAAABLYDr0zZBkEXki7rv3zLQMQAAAAMSJWsKjXTw9ZoEXzspzKBL6BWZy0JP9cyf8rqVh0RTWQ7DQadXiH2B+0XIoYg578rP7LoKhn13xi1k9edlHsvU</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABdPe5Ggz45s1PnLS+QkLkxZYUbT0dS3gtEP/PXJQYmsQAAAAAOgAAAAAIAACAAAAD3TglHNfvEhBN+Q/XtHFBXR8jHmN3T6CtzMnT521hsDhAAAAAbTIOithHfM1Mvdcw98lvDQAAAAPazvP4y7lWFEjT0qNNeCogQlz5gKjzKX6LD24EPJCe/Nu2DIUqk5epGEhCXqEVo/emlId6CayX/Z0wou5PUHm8</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1368,7 +1368,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACxeMl4MjRfOaHwtYWbOVd1UNdB/DI6Us5oe9q1sa/KJAAAAAAOgAAAAAIAACAAAACXsOOE3Du4vFTjJBWDDINrrx9sNCXQ/OrmGX4L1hDAQRAAAACTeMFgoiwz6z/vFJAAtN8EQAAAAHGdI90gvLumLf+PjftF05FbEy2ZKj7UdrXIs1muRqrs/pqCPhhQKxdsJuAnZyKl+zZJzYidRfJVs7U3T5Ud6g0</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACtD2/wUmYlNImlWGw1srU+SqLz5jFpiUPCZ+uyHeKTqAAAAAAOgAAAAAIAACAAAABNOI9Ti677+LH4SOOAlm2vlZTLcAxEL2dCRMO2TS8HBhAAAAC81vkbM0bD/uFfN2so5aAGQAAAAHTVpLdtFCIAvHboOwsBxTC07NWoZafGBpqMjyjkEOpGWpNuDapRmzBN1xojtKkpXadEoLWHb/yx9WjRvI/4D9U</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1393,7 +1393,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACUWFjUW51ptjjbYEe+9b+5adfwWiO/NTsy9ol/nVRRUgAAAAAOgAAAAAIAACAAAABUg6Gfg07oK8zbgHyll5ihoqmVCD28MmFN/8sCsEBb/RAAAAANLeuzkVPCu7+TEyCdEqy9QAAAAKg21r5DAkKf+LzQcsXaZkdv91POcqfU+nNHv54PH1lLLgiL6N6GfRSP8HduR37IAZYo2AwsIkxefNYsfcj9Gig</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAADykuhLOTT4V5et83ayNfMhLFYtJyV0Cjgrbp3tS5RoqQAAAAAOgAAAAAIAACAAAAADTs0xsJyFUNoI9nDgbJEioCn9ApBvc50igWmjLJ2fSxAAAABd2f2l88FnOcjahQtusuF/QAAAAHvH/STwBMHXosQsf6dvMS8FqJpCMDTbs91wqmtHm7KK1uriXfx1LP3OrpQbJeGr1/GvwCIm82i7DTb/joqM6g4</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -10214,7 +10214,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="1"
                           cachedName="Action"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[Action]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CompanyNumber]"
                           cachedCodepage="1252"
@@ -10222,7 +10222,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="CompanyNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CompanyNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CompanyNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DivisionNumber]"
                           cachedCodepage="1252"
@@ -10230,7 +10230,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="DivisionNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DivisionNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DivisionNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DepartmentNumber]"
                           cachedCodepage="1252"
@@ -10238,7 +10238,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="DepartmentNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DepartmentNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DepartmentNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CustomerNumber]"
                           cachedCodepage="1252"
@@ -10246,7 +10246,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="CustomerNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CustomerNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ItemNumber]"
                           cachedCodepage="1252"
@@ -10254,7 +10254,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="ItemNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[BrokenCaseCode]"
                           cachedCodepage="1252"
@@ -10262,7 +10262,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="1"
                           cachedName="BrokenCaseCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[BrokenCaseCode]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[BrokenCaseCode]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ItemPrice]"
                           cachedCodepage="1252"
@@ -10270,7 +10270,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="ItemPrice"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemPrice]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPrice]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[DateOfLastOrder]"
                           cachedCodepage="1252"
@@ -10278,7 +10278,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="8"
                           cachedName="DateOfLastOrder"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastOrder]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DateOfLastOrder]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[OrderNumber]"
                           cachedCodepage="1252"
@@ -10286,7 +10286,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="9"
                           cachedName="OrderNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[OrderNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[LineNumber]"
                           cachedCodepage="1252"
@@ -10294,7 +10294,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="5"
                           cachedName="LineNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[LineNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[LineNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[LineNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[MemoBillCode]"
                           cachedCodepage="1252"
@@ -10302,7 +10302,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="MemoBillCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[MemoBillCode]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[MemoBillCode]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[MemoBillCode]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CreditOFlag]"
                           cachedCodepage="1252"
@@ -10310,7 +10310,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="1"
                           cachedName="CreditOFlag"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CreditOFlag]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CreditOFlag]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CreditOFlag]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[TradeSWFlag]"
                           cachedCodepage="1252"
@@ -10318,7 +10318,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="1"
                           cachedName="TradeSWFlag"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[TradeSWFlag]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[TradeSWFlag]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[TradeSWFlag]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ShipDate]"
                           cachedCodepage="1252"
@@ -10326,7 +10326,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="8"
                           cachedName="ShipDate"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ShipDate]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ShipDate]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ShipDate]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[OrderDate]"
                           cachedCodepage="1252"
@@ -10334,7 +10334,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="8"
                           cachedName="OrderDate"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[OrderDate]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderDate]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderDate]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[RouteNumber]"
                           cachedCodepage="1252"
@@ -10342,7 +10342,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="5"
                           cachedName="RouteNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[RouteNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[RouteNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[RouteNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[StopNumber]"
                           cachedCodepage="1252"
@@ -10350,7 +10350,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="StopNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[StopNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[StopNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[StopNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[WHNumber]"
                           cachedCodepage="1252"
@@ -10358,7 +10358,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="WHNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[WHNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[WHNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[WHNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[QuantityOrdered]"
                           cachedCodepage="1252"
@@ -10366,7 +10366,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="7"
                           cachedName="QuantityOrdered"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[QuantityOrdered]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityOrdered]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityOrdered]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[QuantityShipped]"
                           cachedCodepage="1252"
@@ -10374,7 +10374,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="7"
                           cachedName="QuantityShipped"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[QuantityShipped]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityShipped]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityShipped]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CatchWeightCode]"
                           cachedCodepage="1252"
@@ -10382,7 +10382,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="1"
                           cachedName="CatchWeightCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CatchWeightCode]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CatchWeightCode]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CatchWeightCode]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ExtCatchWeight]"
                           cachedCodepage="1252"
@@ -10390,7 +10390,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="12"
                           cachedName="ExtCatchWeight"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ExtCatchWeight]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtCatchWeight]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtCatchWeight]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[PriceBookNumber]"
                           cachedCodepage="1252"
@@ -10398,7 +10398,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="5"
                           cachedName="PriceBookNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[PriceBookNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBookNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBookNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ItemPriceSRP]"
                           cachedCodepage="1252"
@@ -10406,7 +10406,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="12"
                           cachedName="ItemPriceSRP"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ItemPriceSRP]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPriceSRP]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPriceSRP]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[InvoiceNumber]"
                           cachedCodepage="1252"
@@ -10414,7 +10414,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="20"
                           cachedName="InvoiceNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[InvoiceNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[InvoiceNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ExtSRPAmount]"
                           cachedCodepage="1252"
@@ -10422,7 +10422,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="12"
                           cachedName="ExtSRPAmount"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ExtSRPAmount]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSRPAmount]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSRPAmount]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ExtSalesGross]"
                           cachedCodepage="1252"
@@ -10430,7 +10430,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="16"
                           cachedName="ExtSalesGross"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ExtSalesGross]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesGross]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesGross]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ExtSalesNet]"
                           cachedCodepage="1252"
@@ -10438,7 +10438,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="16"
                           cachedName="ExtSalesNet"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ExtSalesNet]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesNet]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesNet]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CustomerGroup]"
                           cachedCodepage="1252"
@@ -10446,7 +10446,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="CustomerGroup"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CustomerGroup]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerGroup]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerGroup]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[SalesRep]"
                           cachedCodepage="1252"
@@ -10454,7 +10454,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="3"
                           cachedName="SalesRep"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[SalesRep]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[SalesRep]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[SalesRep]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[VendorNumber]"
                           cachedCodepage="1252"
@@ -10462,7 +10462,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="VendorNumber"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[VendorNumber]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[VendorNumber]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[VendorNumber]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CustomerPO]"
                           cachedCodepage="1252"
@@ -10470,7 +10470,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="20"
                           cachedName="CustomerPO"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CustomerPO]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerPO]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerPO]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ChainStoreCode]"
                           cachedCodepage="1252"
@@ -10478,7 +10478,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="ChainStoreCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ChainStoreCode]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ChainStoreCode]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ChainStoreCode]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CombStatementCustomer]"
                           cachedCodepage="1252"
@@ -10486,7 +10486,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="10"
                           cachedName="CombStatementCustomer"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[CombStatementCustomer]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CombStatementCustomer]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CombStatementCustomer]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[PriceBook]"
                           cachedCodepage="1252"
@@ -10494,7 +10494,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="7"
                           cachedName="PriceBook"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[PriceBook]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBook]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBook]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[ClassCode]"
                           cachedCodepage="1252"
@@ -10502,7 +10502,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedLength="5"
                           cachedName="ClassCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ClassCode]"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ClassCode]" />
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ClassCode]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -10757,12 +10757,12 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   </outputs>
                 </component>
                 <component
-                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet"
+                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice"
                   componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
                   contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
                   description="Flat File Source"
                   localeId="1033"
-                  name="CustomerWorksheet"
+                  name="KeithNet Invoice"
                   usesDispositions="true"
                   version="1">
                   <properties>
@@ -10777,25 +10777,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   </properties>
                   <connections>
                     <connection
-                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Connections[FlatFileConnection]"
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Connections[FlatFileConnection]"
                       connectionManagerID="Package.ConnectionManagers[FF_KeithNetInvoice]"
                       connectionManagerRefId="Package.ConnectionManagers[FF_KeithNetInvoice]"
                       name="FlatFileConnection" />
                   </connections>
                   <outputs>
                     <output
-                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output]"
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output]"
                       name="Flat File Source Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[Action]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[Action]"
                           length="1"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[Action]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[Action]"
                           name="Action"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10810,14 +10810,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CompanyNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CompanyNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CompanyNumber]"
                           name="CompanyNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10832,14 +10832,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DivisionNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DivisionNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DivisionNumber]"
                           name="DivisionNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10854,14 +10854,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DepartmentNumber]"
                           name="DepartmentNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10876,14 +10876,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerNumber]"
                           name="CustomerNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10898,14 +10898,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemNumber]"
                           name="ItemNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10920,14 +10920,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
                           length="1"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[BrokenCaseCode]"
                           name="BrokenCaseCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10942,14 +10942,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPrice]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPrice]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPrice]"
                           name="ItemPrice"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10964,14 +10964,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
                           length="8"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[DateOfLastOrder]"
                           name="DateOfLastOrder"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -10986,14 +10986,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[OrderNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[OrderNumber]"
                           length="9"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderNumber]"
                           name="OrderNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11008,14 +11008,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[LineNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[LineNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[LineNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[LineNumber]"
                           length="5"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[LineNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[LineNumber]"
                           name="LineNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11030,14 +11030,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[MemoBillCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[MemoBillCode]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[MemoBillCode]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[MemoBillCode]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[MemoBillCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[MemoBillCode]"
                           name="MemoBillCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11052,14 +11052,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CreditOFlag]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CreditOFlag]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CreditOFlag]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CreditOFlag]"
                           length="1"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CreditOFlag]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CreditOFlag]"
                           name="CreditOFlag"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11074,14 +11074,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[TradeSWFlag]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[TradeSWFlag]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[TradeSWFlag]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[TradeSWFlag]"
                           length="1"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[TradeSWFlag]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[TradeSWFlag]"
                           name="TradeSWFlag"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11096,14 +11096,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ShipDate]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ShipDate]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ShipDate]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ShipDate]"
                           length="8"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ShipDate]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ShipDate]"
                           name="ShipDate"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11118,14 +11118,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderDate]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderDate]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[OrderDate]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[OrderDate]"
                           length="8"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[OrderDate]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[OrderDate]"
                           name="OrderDate"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11140,14 +11140,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[RouteNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[RouteNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[RouteNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[RouteNumber]"
                           length="5"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[RouteNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[RouteNumber]"
                           name="RouteNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11162,14 +11162,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[StopNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[StopNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[StopNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[StopNumber]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[StopNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[StopNumber]"
                           name="StopNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11184,14 +11184,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[WHNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[WHNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[WHNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[WHNumber]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[WHNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[WHNumber]"
                           name="WHNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11206,14 +11206,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityOrdered]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityOrdered]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QuantityOrdered]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[QuantityOrdered]"
                           length="7"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityOrdered]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityOrdered]"
                           name="QuantityOrdered"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11228,14 +11228,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityShipped]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityShipped]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QuantityShipped]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[QuantityShipped]"
                           length="7"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[QuantityShipped]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[QuantityShipped]"
                           name="QuantityShipped"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11250,14 +11250,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CatchWeightCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CatchWeightCode]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CatchWeightCode]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CatchWeightCode]"
                           length="1"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CatchWeightCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CatchWeightCode]"
                           name="CatchWeightCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11272,14 +11272,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtCatchWeight]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtCatchWeight]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtCatchWeight]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtCatchWeight]"
                           length="12"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtCatchWeight]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtCatchWeight]"
                           name="ExtCatchWeight"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11294,14 +11294,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBookNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBookNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[PriceBookNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[PriceBookNumber]"
                           length="5"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBookNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBookNumber]"
                           name="PriceBookNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11316,14 +11316,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPriceSRP]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPriceSRP]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPriceSRP]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemPriceSRP]"
                           length="12"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ItemPriceSRP]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ItemPriceSRP]"
                           name="ItemPriceSRP"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11338,14 +11338,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[InvoiceNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[InvoiceNumber]"
                           length="20"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
                           name="InvoiceNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11360,14 +11360,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSRPAmount]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSRPAmount]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSRPAmount]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSRPAmount]"
                           length="12"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSRPAmount]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSRPAmount]"
                           name="ExtSRPAmount"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11382,14 +11382,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesGross]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesGross]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSalesGross]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSalesGross]"
                           length="16"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesGross]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesGross]"
                           name="ExtSalesGross"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11404,14 +11404,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesNet]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesNet]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSalesNet]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSalesNet]"
                           length="16"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ExtSalesNet]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ExtSalesNet]"
                           name="ExtSalesNet"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11426,14 +11426,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerGroup]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerGroup]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerGroup]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerGroup]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerGroup]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerGroup]"
                           name="CustomerGroup"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11448,14 +11448,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[SalesRep]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[SalesRep]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[SalesRep]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[SalesRep]"
                           length="3"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[SalesRep]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[SalesRep]"
                           name="SalesRep"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11470,14 +11470,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[VendorNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[VendorNumber]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[VendorNumber]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[VendorNumber]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[VendorNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[VendorNumber]"
                           name="VendorNumber"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11492,14 +11492,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerPO]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerPO]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerPO]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerPO]"
                           length="20"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CustomerPO]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerPO]"
                           name="CustomerPO"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11514,14 +11514,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ChainStoreCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ChainStoreCode]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ChainStoreCode]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ChainStoreCode]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ChainStoreCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ChainStoreCode]"
                           name="ChainStoreCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11536,14 +11536,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CombStatementCustomer]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CombStatementCustomer]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CombStatementCustomer]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CombStatementCustomer]"
                           length="10"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CombStatementCustomer]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CombStatementCustomer]"
                           name="CombStatementCustomer"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11558,14 +11558,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBook]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBook]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[PriceBook]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[PriceBook]"
                           length="7"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[PriceBook]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[PriceBook]"
                           name="PriceBook"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11580,14 +11580,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ClassCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ClassCode]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ClassCode]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ClassCode]"
                           length="5"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[ClassCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ClassCode]"
                           name="ClassCode"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11602,14 +11602,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </properties>
                         </outputColumn>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CRLF]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CRLF]"
                           codePage="1252"
                           dataType="str"
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
-                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
                           length="255"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].Columns[CRLF]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CRLF]"
                           name="CRLF"
                           truncationRowDisposition="FailComponent">
                           <properties>
@@ -11627,229 +11627,229 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       <externalMetadataColumns
                         isUsed="True">
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[Action]"
                           codePage="1252"
                           dataType="str"
                           length="1"
                           name="Action" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CompanyNumber]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="CompanyNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DivisionNumber]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="DivisionNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DepartmentNumber]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="DepartmentNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerNumber]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="CustomerNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemNumber]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="ItemNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[BrokenCaseCode]"
                           codePage="1252"
                           dataType="str"
                           length="1"
                           name="BrokenCaseCode" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemPrice]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="ItemPrice" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[DateOfLastOrder]"
                           codePage="1252"
                           dataType="str"
                           length="8"
                           name="DateOfLastOrder" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[OrderNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[OrderNumber]"
                           codePage="1252"
                           dataType="str"
                           length="9"
                           name="OrderNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[LineNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[LineNumber]"
                           codePage="1252"
                           dataType="str"
                           length="5"
                           name="LineNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[MemoBillCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[MemoBillCode]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="MemoBillCode" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CreditOFlag]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CreditOFlag]"
                           codePage="1252"
                           dataType="str"
                           length="1"
                           name="CreditOFlag" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[TradeSWFlag]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[TradeSWFlag]"
                           codePage="1252"
                           dataType="str"
                           length="1"
                           name="TradeSWFlag" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ShipDate]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ShipDate]"
                           codePage="1252"
                           dataType="str"
                           length="8"
                           name="ShipDate" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[OrderDate]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[OrderDate]"
                           codePage="1252"
                           dataType="str"
                           length="8"
                           name="OrderDate" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[RouteNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[RouteNumber]"
                           codePage="1252"
                           dataType="str"
                           length="5"
                           name="RouteNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[StopNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[StopNumber]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="StopNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[WHNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[WHNumber]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="WHNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QuantityOrdered]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[QuantityOrdered]"
                           codePage="1252"
                           dataType="str"
                           length="7"
                           name="QuantityOrdered" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[QuantityShipped]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[QuantityShipped]"
                           codePage="1252"
                           dataType="str"
                           length="7"
                           name="QuantityShipped" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CatchWeightCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CatchWeightCode]"
                           codePage="1252"
                           dataType="str"
                           length="1"
                           name="CatchWeightCode" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtCatchWeight]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtCatchWeight]"
                           codePage="1252"
                           dataType="str"
                           length="12"
                           name="ExtCatchWeight" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[PriceBookNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[PriceBookNumber]"
                           codePage="1252"
                           dataType="str"
                           length="5"
                           name="PriceBookNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ItemPriceSRP]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ItemPriceSRP]"
                           codePage="1252"
                           dataType="str"
                           length="12"
                           name="ItemPriceSRP" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[InvoiceNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[InvoiceNumber]"
                           codePage="1252"
                           dataType="str"
                           length="20"
                           name="InvoiceNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSRPAmount]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSRPAmount]"
                           codePage="1252"
                           dataType="str"
                           length="12"
                           name="ExtSRPAmount" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSalesGross]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSalesGross]"
                           codePage="1252"
                           dataType="str"
                           length="16"
                           name="ExtSalesGross" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ExtSalesNet]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ExtSalesNet]"
                           codePage="1252"
                           dataType="str"
                           length="16"
                           name="ExtSalesNet" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerGroup]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerGroup]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="CustomerGroup" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[SalesRep]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[SalesRep]"
                           codePage="1252"
                           dataType="str"
                           length="3"
                           name="SalesRep" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[VendorNumber]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[VendorNumber]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="VendorNumber" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CustomerPO]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CustomerPO]"
                           codePage="1252"
                           dataType="str"
                           length="20"
                           name="CustomerPO" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ChainStoreCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ChainStoreCode]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="ChainStoreCode" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CombStatementCustomer]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CombStatementCustomer]"
                           codePage="1252"
                           dataType="str"
                           length="10"
                           name="CombStatementCustomer" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[PriceBook]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[PriceBook]"
                           codePage="1252"
                           dataType="str"
                           length="7"
                           name="PriceBook" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[ClassCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[ClassCode]"
                           codePage="1252"
                           dataType="str"
                           length="5"
                           name="ClassCode" />
                         <externalMetadataColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
                           codePage="1252"
                           dataType="str"
                           length="255"
@@ -11857,27 +11857,27 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </externalMetadataColumns>
                     </output>
                     <output
-                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output]"
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output]"
                       isErrorOut="true"
                       name="Flat File Source Error Output">
                       <outputColumns>
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                           codePage="1252"
                           dataType="text"
                           description="Flat File Source Error Output Column"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                           name="Flat File Source Error Output Column" />
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                           dataType="i4"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                           name="ErrorCode"
                           specialFlags="1" />
                         <outputColumn
-                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                           dataType="i4"
-                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -11891,7 +11891,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   refId="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
                   endId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input]"
                   name="Flat File Source Output"
-                  startId="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet.Outputs[Flat File Source Output]" />
+                  startId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output]" />
               </paths>
             </pipeline>
           </DTS:ObjectData>
@@ -17612,7 +17612,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Mainframe Files"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -17621,6 +17621,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -17740,35 +17749,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -18082,6 +18062,35 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -18111,15 +18120,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -18336,7 +18336,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="6">
+      DTS:ThreadHint="5">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -18374,7 +18374,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Brand Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -18393,7 +18393,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Catalog Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -18412,7 +18412,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Contract Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -18429,7 +18429,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate GS1 Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -18448,7 +18448,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Invoice Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="5">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -19167,13 +19167,29 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:To="Package\Send Fail Message"
       DTS:Value="1" />
     <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 14]"
+      DTS:CreationName=""
+      DTS:DTSID="{38BDCEDA-97C4-43D3-AB42-000D30B2975E}"
+      DTS:From="Package\Truncate Stage Tables"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 14"
+      DTS:To="Package\Catalog Import Tasks" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 15]"
+      DTS:CreationName=""
+      DTS:DTSID="{5C1BD8BD-B1A1-4390-A0D9-D7AC4BA90820}"
+      DTS:From="Package\Customer Invoice Import Tasks"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 15"
+      DTS:To="Package\Process Staged Data" />
+    <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
-      DTS:DTSID="{D3AFB263-8CBE-4159-B8BB-A8F202309292}"
+      DTS:DTSID="{8937C3EA-E163-48EB-AE52-BB324728060E}"
       DTS:From="Package\Worksheet Import Tasks"
       DTS:LogicalAnd="True"
       DTS:ObjectName="Constraint 2"
-      DTS:To="Package\Process Staged Data" />
+      DTS:To="Package\Customer Invoice Import Tasks" />
     <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 3]"
       DTS:CreationName=""
@@ -19283,6 +19299,21 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Size="689,249"
           Id="Package\Catalog Import Tasks"
           TopLeft="427,287.25" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices"
+          TopLeft="34,23" />
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices"
+          TopLeft="218,26" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="439,105"
+          Size="439,148"
+          Id="Package\Customer Invoice Import Tasks"
+          TopLeft="461,1196" />
         <NodeLayout
           Size="158,42"
           Id="Package\GS1 Import Tasks\Product Allergen"
@@ -19594,40 +19625,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
-          Id="Package.PrecedenceConstraints[Constraint 2]"
-          TopLeft="639,1156">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="590.916666666667,70.25"
-              Start="0,0"
-              End="590.916666666667,62.75">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,37.7744988864143" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,37.7744988864143"
-                    Point2="0,41.7744988864143"
-                    Point3="4,41.7744988864143" />
-                  <mssgle:LineSegment
-                    End="586.916666666667,41.7744988864143" />
-                  <mssgle:CubicBezierSegment
-                    Point1="586.916666666667,41.7744988864143"
-                    Point2="590.916666666667,41.7744988864143"
-                    Point3="590.916666666667,45.7744988864143" />
-                  <mssgle:LineSegment
-                    End="590.916666666667,62.75" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-        <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 3]"
           TopLeft="712.5,253.5">
           <EdgeLayout.Curve>
@@ -19851,21 +19848,108 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
-        <NodeLayout
-          Size="161,42"
-          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices"
-          TopLeft="34,23" />
-        <NodeLayout
-          Size="162,42"
-          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices"
-          TopLeft="218,26" />
-        <ContainerLayout
-          HeaderHeight="43"
-          IsExpanded="True"
-          PanelSize="439,105"
-          Size="439,148"
-          Id="Package\Customer Invoice Import Tasks"
-          TopLeft="461,1196" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 14]"
+          TopLeft="620.333333333333,253.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="151.166666666667,33.75"
+              Start="0,0"
+              End="151.166666666667,26.25">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,9.55758976182012" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,9.55758976182012"
+                    Point2="0,13.5575897618201"
+                    Point3="4,13.5575897618201" />
+                  <mssgle:LineSegment
+                    End="147.166666666667,13.5575897618201" />
+                  <mssgle:CubicBezierSegment
+                    Point1="147.166666666667,13.5575897618201"
+                    Point2="151.166666666667,13.5575897618201"
+                    Point3="151.166666666667,17.5575897618201" />
+                  <mssgle:LineSegment
+                    End="151.166666666667,26.25" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="639,1156">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="41.5,40"
+              Start="0,0"
+              End="41.5,32.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,16" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,16"
+                    Point2="0,20"
+                    Point3="4,20" />
+                  <mssgle:LineSegment
+                    End="37.5,20" />
+                  <mssgle:CubicBezierSegment
+                    Point1="37.5,20"
+                    Point2="41.5,20"
+                    Point3="41.5,24" />
+                  <mssgle:LineSegment
+                    End="41.5,32.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 15]"
+          TopLeft="900,1270">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="269.25,-22.75"
+              Start="0,0"
+              End="261.75,-22.75">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="130.625,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="130.625,0"
+                    Point2="134.625,0"
+                    Point3="134.625,-4" />
+                  <mssgle:LineSegment
+                    End="134.625,-18.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="134.625,-18.75"
+                    Point2="134.625,-22.75"
+                    Point3="138.625,-22.75" />
+                  <mssgle:LineSegment
+                    End="261.75,-22.75" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
       </GraphLayout>
     </LayoutInfo>
   </Package>
@@ -20003,7 +20087,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Categories">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="127,42"
           Id="Package\Catalog Import Tasks\Stage Categories\PRODCAT"
@@ -20043,7 +20127,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -20312,6 +20398,149 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Catalog Import Tasks\Staging Brands\PRODCAT Brands">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="156,42"
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice"
+          TopLeft="108,57" />
+        <NodeLayout
+          Size="198,42"
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData"
+          TopLeft="120,176" />
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
+          TopLeft="186,99">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="33,77"
+              Start="0,0"
+              End="33,69.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,34.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,34.5"
+                    Point2="0,38.5"
+                    Point3="4,38.5" />
+                  <mssgle:LineSegment
+                    End="29,38.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="29,38.5"
+                    Point2="33,38.5"
+                    Point3="33,42.5" />
+                  <mssgle:LineSegment
+                    End="33,69.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="124,42"
+          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices\OLE KPay"
+          TopLeft="270,27" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices\KeithlinkAppData"
+          TopLeft="333,235" />
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices.Paths[OLE DB Source Output]"
+          TopLeft="332,69">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="81.5,166"
+              Start="0,0"
+              End="81.5,158.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,79" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,79"
+                    Point2="0,83"
+                    Point3="4,83" />
+                  <mssgle:LineSegment
+                    End="77.5,83" />
+                  <mssgle:CubicBezierSegment
+                    Point1="77.5,83"
+                    Point2="81.5,83"
+                    Point3="81.5,87" />
+                  <mssgle:LineSegment
+                    End="81.5,158.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices\KeithlinkAppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices\OLE KPay">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -20749,7 +20978,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package\Import Contract Data\Customer Bid">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="157,42"
           Id="Package\Import Contract Data\Customer Bid\FF_CustomerBid"
@@ -20789,7 +21018,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -20992,145 +21223,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="198,42"
-          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData"
-          TopLeft="120,176" />
-        <NodeLayout
-          Size="176,42"
-          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\CustomerWorksheet"
-          TopLeft="108,57" />
-        <EdgeLayout
-          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
-          TopLeft="196,99">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="23,77"
-              Start="0,0"
-              End="23,69.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,34.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,34.5"
-                    Point2="0,38.5"
-                    Point3="4,38.5" />
-                  <mssgle:LineSegment
-                    End="19,38.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="19,38.5"
-                    Point2="23,38.5"
-                    Point3="23,42.5" />
-                  <mssgle:LineSegment
-                    End="23,69.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="161,42"
-          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices\KeithlinkAppData"
-          TopLeft="333,235" />
-        <NodeLayout
-          Size="124,42"
-          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices\OLE KPay"
-          TopLeft="270,27" />
-        <EdgeLayout
-          Id="Package\Customer Invoice Import Tasks\KeithPay Invoices.Paths[OLE DB Source Output]"
-          TopLeft="332,69">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="81.5,166"
-              Start="0,0"
-              End="81.5,158.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,79" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,79"
-                    Point2="0,83"
-                    Point3="4,83" />
-                  <mssgle:LineSegment
-                    End="77.5,83" />
-                  <mssgle:CubicBezierSegment
-                    Point1="77.5,83"
-                    Point2="81.5,83"
-                    Point3="81.5,87" />
-                  <mssgle:LineSegment
-                    End="81.5,158.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices\KeithlinkAppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Customer Invoice Import Tasks\KeithPay Invoices\OLE KPay">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
