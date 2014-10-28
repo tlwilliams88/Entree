@@ -82,8 +82,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpDelete]
-        [ApiKeyedRoute("order/")]
-        public Models.OperationReturnModel<bool> CancelOrder(Guid orderId)
+        [ApiKeyedRoute("order/{commerceId}")]
+        public Models.OperationReturnModel<bool> CancelOrder(Guid commerceId)
         {
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;

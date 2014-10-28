@@ -26,11 +26,6 @@ namespace KeithLink.Svc.InternalSvc
             _eventLog = eventLog;
 		}
 
-        static OrderContext orderContext = null;
-        static OrderSiteAgent ordersAgent = null;
-        static OrderManagementContext context = null;
-        static PurchaseOrderManager manager = null;
-
 		public bool OrderConfirmation(ConfirmationFile confirmation)
 		{
             System.Threading.Tasks.Task.Factory.StartNew(() => ProcessIncomingConfirmation(confirmation));
@@ -41,8 +36,6 @@ namespace KeithLink.Svc.InternalSvc
         {
             try
             {
-                LoadOrderContext();
-
                 if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
                     throw new ApplicationException("Confirmation Number is Required");
                 if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
@@ -75,22 +68,11 @@ namespace KeithLink.Svc.InternalSvc
             }
         }
 
-        private static void LoadOrderContext()
-        {
-            if (orderContext == null)
-            {
-                var siteName = System.Configuration.ConfigurationManager.AppSettings["CS_Sitename"].ToString();
-                ordersAgent = new OrderSiteAgent(siteName);
-                context = OrderManagementContext.Create(ordersAgent);
-                manager = context.PurchaseOrderManager;
-                orderContext = CommerceServer.Core.Runtime.Orders.OrderContext.Create(siteName);
-            }
-        }
 
         private static PurchaseOrder GetCsPurchaseOrderByNumber(string poNum)
         {
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
-            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
             SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", poNum);
 
             // Create search options.
@@ -100,7 +82,7 @@ namespace KeithLink.Svc.InternalSvc
             options.SortProperties = "SoldToId";
             options.NumberOfRecordsToReturn = 1;
             // Perform the search.
-            System.Data.DataSet results = manager.SearchPurchaseOrders(trackingNumberClause, options);
+            System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(trackingNumberClause, options);
 
             if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0)
             {
@@ -108,7 +90,7 @@ namespace KeithLink.Svc.InternalSvc
                 Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
 
                 // get the guids for the customers associated users and loop if necessary
-                PurchaseOrder po = orderContext.GetPurchaseOrder(soldToId, poNum);
+                PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
                 return po;
             }
             else

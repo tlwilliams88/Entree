@@ -1,10 +1,16 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Impl.Logic.Confirmations;
+using KeithLink.Svc.InternalSvc.Interfaces;
+using CommerceServer.Core.Runtime.Orders;
+using CommerceServer.Core.Orders;
+using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +24,7 @@ namespace KeithLink.Svc.InternalSvc
     public class Global : System.Web.HttpApplication {
         #region attributes
         const int TIMER_DURATION_TICK = 2000;
-        const int TIMER_DURATION_START = 1000;
+        const int TIMER_DURATION_START = 30000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
         
@@ -26,6 +32,7 @@ namespace KeithLink.Svc.InternalSvc
         private bool _orderHistoryProcessing;
 
         private Timer _orderHistoryTimer;
+        static object confirmationLock = new object();
         #endregion
 
         #region ctor
@@ -42,6 +49,7 @@ namespace KeithLink.Svc.InternalSvc
             AutofacHostFactory.Container = container;
 
             //InitializeOrderUpdateTimer();
+            InitializeConfirmationMoverThread();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -123,6 +131,54 @@ namespace KeithLink.Svc.InternalSvc
                 _orderHistoryTimer.Dispose();
             }
         }
-        #endregion
-    }
+
+
+        private Timer _confirmationMover;
+        private void InitializeConfirmationMoverThread()
+        {
+            AutoResetEvent auto = new AutoResetEvent(true);
+            TimerCallback cb = new TimerCallback(MoveConfirmationsToCommerceServiceTick);
+
+            _confirmationMover = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
+        }
+
+        private void MoveConfirmationsToCommerceServiceTick(object state)
+        {
+            // what to do about re-entrant code checks here...  just lock?
+            lock (confirmationLock)
+            {
+                try
+                {
+                    ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>(),
+                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
+                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+
+                    ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
+                    if (confirmation != null)
+                    {
+                        try
+                        {
+                            if (this.ProcessIncomingConfirmation(confirmation) == false)
+                            {
+                                // If it fails we need to put the message back in the queue
+                                confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //HandleConfirmationQueueProcessingerror(e);
+                            confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    IEventLogRepository eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
+                    eventLogRepository.WriteErrorLog("Error in MoveConfirmationsToCommerceServiceTick", ex);
+                }
+            }
+        }
+	}
+
+    #endregion
 }

@@ -23,7 +23,6 @@ namespace KeithLink.Svc.Windows.OrderService {
         private EventLogRepositoryImpl _log;
 
         private static bool _allowOrderUpdateProcessing;
-        private static bool _confirmationMoverProcessing;
         private static bool _orderUpdateProcessing;
         private static bool _orderQueueProcessing;
         private static bool _successfulConnection;
@@ -32,7 +31,6 @@ namespace KeithLink.Svc.Windows.OrderService {
         private static UInt16 _unsentCount;
 
         private Timer _queueTimer;
-        private Timer _confirmationMover;
         private Timer _orderUpdateTimer;
         private Thread _confirmationThread;
 
@@ -50,7 +48,6 @@ namespace KeithLink.Svc.Windows.OrderService {
             _orderQueueProcessing = false;
             _successfulConnection = false;
             _unsentCount = 0;
-            _confirmationMoverProcessing = false;
             _orderUpdateProcessing = false;
 
             _allowOrderUpdateProcessing = true;
@@ -139,13 +136,6 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
-        private void InitializeConfirmationMoverThread() {
-            AutoResetEvent auto = new AutoResetEvent( true );
-            TimerCallback cb = new TimerCallback( MoveConfirmationsToCommerceServiceTick );
-
-            _confirmationMover = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK );
-        }
-
         private void InitializeConfirmationThread()
         {
             _confirmationThread = new Thread(ProcessConfirmations);
@@ -166,55 +156,12 @@ namespace KeithLink.Svc.Windows.OrderService {
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        private void MoveConfirmationsToCommerceServiceTick(object state) {
-            if (!_confirmationMoverProcessing) {
-                _confirmationMoverProcessing = true;
-
-                try
-                {
-                    ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
-                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
-
-                    ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
-                    if (confirmation != null)
-                    {
-                        try
-                        {
-                            IS_OrderService.OrderServiceClient internalSvc = new IS_OrderService.OrderServiceClient();
-
-                            if (internalSvc.OrderConfirmation(confirmation) == false)
-                            {
-                                // If it fails we need to put the message back in the queue
-                                confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            //HandleConfirmationQueueProcessingerror(e);
-                            confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error in MoveConfirmationsToCommerceServiceTick: " + ex.ToString());
-                    _log.WriteErrorLog("Error in MoveConfirmationsToCommerceServiceTick", ex);
-                }
-                finally
-                {
-                    _confirmationMoverProcessing = false;
-                }
-            }
-        }
-
         protected override void OnStart(string[] args) {
             _log.WriteInformationLog("Service starting");
 
             InitializeConfirmationThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
-            InitializeConfirmationMoverThread();
         }
 
         protected override void OnStop() {
