@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Extensions;
@@ -7,6 +8,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -210,5 +212,60 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region properties
         public bool AllowOrderProcessing { get; set; }
         #endregion
+
+
+        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType)
+        {
+            var newOrderFile = new OrderFile()
+            {
+                Header = new OrderHeader()
+                {
+                    OrderingSystem = OrderSource.Entree,
+                    Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
+                    CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
+                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+                    PONumber = string.Empty,
+                    Specialinstructions = string.Empty,
+                    ControlNumber = int.Parse(orderNumber),
+                    OrderType = orderType,
+                    InvoiceNumber = string.Empty,
+                    OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    OrderSendDateTime = DateTime.Now,
+                    UserId = orderingUserEmail.ToUpper(),
+                    OrderFilled = false,
+                    FutureOrder = false
+                },
+                Details = new List<OrderDetail>()
+            };
+
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+                if ((orderType == OrderType.ChangeOrder && (item.Status == null || String.IsNullOrEmpty(item.Status)))
+                    || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
+                    continue;
+
+                newOrderFile.Details.Add(new OrderDetail()
+                {
+                    ItemNumber = item.ProductId,
+                    OrderedQuantity = (short)item.Quantity,
+                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
+                    SellPrice = (double)item.PlacedPrice,
+                    Catchweight = (bool)item.CatchWeight,
+                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
+                    ItemChange = LineType.Add,
+                    SubOriginalItemNumber = string.Empty,
+                    ReplacedOriginalItemNumber = string.Empty,
+                    ItemStatus = orderType == OrderType.NormalOrder ? string.Empty : item.Status == "added" ? "A" : item.Status == "changed" ? "C" : "D"
+                });
+            }
+
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
+
+            xs.Serialize(sw, newOrderFile);
+
+            _orderQueue.PublishToQueue(sw.ToString());
+        }
     }
 }
