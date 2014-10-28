@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', 'toaster', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, toaster, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, List) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -91,6 +91,39 @@ angular.module('bekApp')
           }, function() {
             toaster.pop('error', null, 'Error creating list.');
           });
+        },
+
+        importList: function(file) {
+          var deferred = $q.defer();
+
+          $upload.upload({
+            url: '/import/list',
+            method: 'POST',
+            file: file, // or list of files ($files) for html5 only
+          }).then(function(response) {
+            var data = response.data;
+            if (data.success) {
+
+              deferred.resolve(data);
+
+              var list = {
+                listid: data.listid,
+                name: 'Imported List mk'
+              };
+              Service.lists.push(list);
+
+              if (data.warningmsg) {
+                toaster.pop('success', null, data.warningmsg);
+              } else {
+                toaster.pop('success', null, 'Successfully imported a new list.');
+              }
+            } else {
+              toaster.pop('error', null, data.errormsg);
+              deferred.reject(data.errormsg);
+            }
+          });
+
+          return deferred.promise;
         },
 
         // accepts list object
