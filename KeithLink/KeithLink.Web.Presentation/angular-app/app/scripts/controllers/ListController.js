@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', 'originalList', 'Constants', 'ListService', 'UtilityService', 
-    function($scope, $filter, $timeout, $state, $stateParams, originalList, Constants, ListService, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService) {
     
     var orderBy = $filter('orderBy');
 
@@ -350,6 +350,18 @@ angular.module('bekApp')
       if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
         $scope.itemsToDisplay += itemsPerPage;
       }
+    };
+
+    $scope.openListImportModal = function () {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/listimportmodal.html',
+        controller: 'ListImportModalController'
+      });
+
+      // modalInstance.result.then(function(item) {
+      //   $scope.item = item;
+      // });
     };
 
     resetPage(angular.copy(originalList));
