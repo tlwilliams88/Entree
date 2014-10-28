@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public DateTime RequestedShipDate { get; set; }
         
         [DataMember(Name = "ischangeorderallowed")]
-        public bool IsCangeOrderAllowed { get; set; }
+        public bool IsChangeOrderAllowed { get; set; }
 
 		[DataMember(Name ="LineItems")]
 		public List<OrderLine> LineItems { get; set; }

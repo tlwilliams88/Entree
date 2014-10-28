@@ -40,7 +40,24 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 					entry.Entity.ModifiedUtc = DateTime.UtcNow;
 				}
 			}
-			return base.SaveChanges();
+			try
+			{
+				return base.SaveChanges();
+			}
+			catch (System.Data.Entity.Validation.DbEntityValidationException e)
+			{
+				foreach (var eve in e.EntityValidationErrors)
+				{
+					Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
+						eve.Entry.Entity.GetType().Name, eve.Entry.State);
+					foreach (var ve in eve.ValidationErrors)
+					{
+						Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
+							ve.PropertyName, ve.ErrorMessage);
+					}
+				}
+				throw;
+			}
 		}
 	}
 }

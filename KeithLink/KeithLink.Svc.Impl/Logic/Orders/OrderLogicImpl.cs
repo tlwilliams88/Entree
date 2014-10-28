@@ -74,7 +74,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
-                IsCangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "NewOrder" || purchaseOrder.Status == "Submitted")),
+                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "NewOrder" || purchaseOrder.Status == "Submitted")),
                 Status = purchaseOrder.Status,
                 RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
 				LineItems = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),

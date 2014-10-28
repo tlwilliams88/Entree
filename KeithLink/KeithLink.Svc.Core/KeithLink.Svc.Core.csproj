@@ -139,6 +139,7 @@
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationQueueRepository.cs" />
+    <Compile Include="Interface\IImportLogic.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IListCacheRepository.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Models\EF\ListItem.cs" />
     <Compile Include="Models\EF\OrderHistoryDetail.cs" />
     <Compile Include="Models\EF\OrderHistoryHeader.cs" />
+    <Compile Include="Models\Lists\ListImportModel.cs" />
     <Compile Include="Models\Lists\NewCSItem.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />
