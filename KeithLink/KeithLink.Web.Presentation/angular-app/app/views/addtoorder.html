@@ -54,14 +54,14 @@
               <td>{{cart.items.length}}</td>
               <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
             </tr>
-            <tr ng-click="createNewCart()" ng-show="selectedCart.id">
+            <tr ng-click="createNewCart()" ng-show="selectedCart.id || selectedCart.ordernumber">
               <td colspan="3">Create a Cart...</td>
             </tr>
           </table>
 
           <table class="table no-margin" ng-if="changeOrders.length > 0">
             <caption class="text-left">Change Orders</caption>
-            <tr ng-click="selectCart(order)" ng-repeat="order in changeOrders">
+            <tr ng-click="selectChangeOrder(order)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.ordernumber}}</span></td>
               <td>{{order.itemcount}}</td>
               <td>{{order.requestedshipdate | date:shortDate}}</td>
@@ -94,7 +94,7 @@
 
       <div class="col-md-3 col-sm-6 col-xs-12 info-box">
         <span class="nav-description text-light">Cart Info</span>
-        <span class="nav-title">{{getItemCount(selectedCart.items || selectedCart.lineItems, selectedList.items) || '0'}} Items</span>
+        <span class="nav-title">{{getItemCount(selectedCart, selectedList) || '0'}} Items</span>
         <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items || selectedCart.lineItems, selectedList.items) | currency}}</span>
       </div>
 
@@ -320,7 +320,7 @@
     </tbody>
     <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items || filteredItems.length === 0) && selectedList">
       <tr>
-        <td colspan="15">
+        <td colspan="16">
           There are no products to display.
         </td>
       </tr>
