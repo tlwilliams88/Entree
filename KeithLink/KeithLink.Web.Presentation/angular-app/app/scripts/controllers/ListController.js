@@ -30,11 +30,13 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
+      console.log('go to list');
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
+      console.log('go to new list');
       $scope.listForm.$setPristine();
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
@@ -257,6 +259,9 @@ angular.module('bekApp')
     };
 
     $scope.addItemFromDrag = function (event, helper, list) {
+      // event.preventDefault();
+      console.log('add from drag');
+      // event.stopPropagation();
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.addItemsToList(list, dragSelection);
     };
@@ -294,7 +299,7 @@ angular.module('bekApp')
     $scope.sortList = function(sortBy, sortOrder) {
       var sortField = sortBy;
 
-      if (!$scope.selectedList.items[0].hasOwnProperty('position')) {
+      if ($scope.selectedList.items.length > 0 && !$scope.selectedList.items[0].hasOwnProperty('position')) {
         $scope.selectedList.items.splice(0,1);
       }
 

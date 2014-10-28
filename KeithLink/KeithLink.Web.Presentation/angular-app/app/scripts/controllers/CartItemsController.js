@@ -144,7 +144,7 @@ angular.module('bekApp')
         $scope.currentCart = order;
         return order.ordernumber;
       });
-    }
+    };
 
     $scope.resubmitOrder = function(order) {
 
