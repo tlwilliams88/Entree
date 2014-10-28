@@ -30,10 +30,11 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
 		private readonly IListServiceRepository listServiceRepository;
+        private readonly IOrderQueueLogic orderQueueLogic;
         #endregion
 
         #region ctor
-		public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
+        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic, IOrderQueueLogic orderQueueLogic,
 			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepository, IBasketLogic basketLogic)
 		{
 			this.basketRepository = basketRepository;
@@ -43,6 +44,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.queueRepository = queueRepository;
 			this.listServiceRepository = listServiceRepository;
 			this.basketLogic = basketLogic;
+            this.orderQueueLogic = orderQueueLogic;
 		}
         #endregion
 
@@ -206,56 +208,7 @@ namespace KeithLink.Svc.Impl.Logic
         
         private void WriteOrderFileToQueue(UserProfile user, string controlNumber, CS.PurchaseOrder newPurchaseOrder)
         {
-            var newOrderFile = new OrderFile()
-            {
-                Header = new OrderHeader()
-                {
-                    OrderingSystem = OrderSource.Entree,
-                    Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
-                    CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
-                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-                    PONumber = string.Empty,
-                    Specialinstructions = string.Empty,
-                    ControlNumber = int.Parse(controlNumber),
-                    OrderType = OrderType.NormalOrder,
-                    InvoiceNumber = string.Empty,
-                    OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    OrderSendDateTime = DateTime.Now,
-                    UserId = user.EmailAddress.ToUpper(),
-                    OrderFilled = false,
-                    FutureOrder = false
-                },
-                Details = new List<OrderDetail>()
-            };
-
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-            {
-                var item = (CS.LineItem)lineItem.Target;
-
-                newOrderFile.Details.Add(new OrderDetail()
-                {
-                    ItemNumber = item.ProductId,
-                    OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
-                    SellPrice = (double)item.PlacedPrice,
-                    Catchweight = (bool)item.CatchWeight,
-                    //Catchweight = false,
-                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
-                    ItemChange = LineType.Add,
-                    SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    ItemStatus = string.Empty
-                });
-
-            }
-
-
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
-
-            xs.Serialize(sw, newOrderFile);
-
-            queueRepository.PublishToQueue(sw.ToString());
+            
         }
 		
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
@@ -272,7 +225,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(basket.UserId.ToGuid(), orderNumber);
 
-            WriteOrderFileToQueue(user, orderNumber, newPurchaseOrder);
+            orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder);
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
