@@ -73,7 +73,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<OrderQueueRepositoryImpl>().As<IOrderQueueRepository>();
 			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
-
+			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
