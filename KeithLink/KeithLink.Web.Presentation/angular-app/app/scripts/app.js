@@ -24,6 +24,7 @@ angular
     'unsavedChanges',
     'toaster',
     'angular-loading-bar',
+    'angularFileUpload',
     'configenv'
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
@@ -53,6 +54,9 @@ angular
       resolve: {
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -122,28 +126,6 @@ angular
       }
     })
 
-    // .state('menu.lists', {
-    //   url: '/lists/:listId',
-    //   // abstract: true,
-    //   // template: '<ui-view/>',
-    //   templateUrl: 'views/lists.html',
-    //   controller: 'ListController',
-    //   data: {
-    //     authorize: 'canManageLists'
-    //   },
-    //   resolve: {
-    //     labels: ['ListService', function (ListService) {
-    //       return ListService.getAllLabels();
-    //     }],
-    //     lists: function() {
-    //       return ListService.getListHeaders();
-    //     },
-    //     selectedList: function() {
-    //       return ListService.getList($stateParams.listId);
-    //     }
-    //   }
-    // })
-
     .state('menu.lists', {
       url: '/lists/',
       abstract: true,
@@ -168,51 +150,14 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        originalList: [ '$stateParams', 'lists', 'ListService', function($stateParams, lists, ListService) {
-          // check for valid listId, go to favorites list by default
-          var selectedList = ListService.findListById($stateParams.listId);
-          if (!selectedList) {
-            selectedList = ListService.getFavoritesList();
-          }
-
-          return ListService.getList(selectedList.listid);
+        originalList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.selectDefaultList($stateParams.listId);
         }]
       }
     })
 
-    // .state('menu.cart', {
-    //   url: '/cart/',
-    //   templateUrl: 'views/cart.html',
-    //   controller: 'CartController',
-    //   data: {
-    //     authorize: 'canCreateOrders'
-    //   },
-    //   resolve: {
-    //     carts: ['CartService', function (CartService){
-    //       return CartService.getAllCarts();
-    //     }],
-    //     changeOrders: ['OrderService', function(OrderService) {
-    //       return OrderService.getChangeOrders();
-    //     }]
-    //     // ,
-    //     // reminderList: ['ListService', function(ListService) {
-    //     //   return ListService.getReminderList();
-    //     // }]
-    //   }
-    // })
-    // .state('menu.cart.items', {
-    //   url: ':cartId/?renameCart&isChangeOrder',
-    //   templateUrl: 'views/cartitems.html',
-    //   controller: 'CartItemsController',
-    //   data: {
-    //     authorize: 'canCreateOrders'
-    //   }
-    // })
-
     .state('menu.cart', {
       url: '/cart/',
-      // templateUrl: 'views/cart.html',
-      // controller: 'CartController',
       abstract: true,
       template: '<ui-view/>',
       data: {
@@ -235,38 +180,14 @@ angular
         authorize: 'canCreateOrders'
       },
       resolve: {
-        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'CartService', 'OrderService', function($state, $stateParams, carts, changeOrders, CartService, OrderService) {
-          // check for valid cartId or else redirect to homepage or auto create a cart?
-          var selectedCart = CartService.findCartById($stateParams.cartId);
-          if (selectedCart) {
-            console.log('valid cart');
-            $stateParams.isChangeOrder = false;
-            return CartService.getCart(selectedCart.id);
+        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+          if (selectedBasket) {
+            $stateParams.isChangeOrder = selectedBasket.isChangeOrder;
+            return selectedBasket.promise;
+          } else {
+            $state.go('menu.home');
           }
-          
-          var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, $stateParams.cartId);
-          if (selectedChangeOrder) {
-            console.log('valid change order');
-            $stateParams.isChangeOrder = true;
-            return selectedChangeOrder;
-          }
-
-          var defaultCart = CartService.getSelectedCart();
-          if (defaultCart) {
-            console.log('default cart');
-            $stateParams.isChangeOrder = false;
-            return CartService.getCart(defaultCart.id);
-          }
-
-          var defaultChangeOrder = changeOrders[0];
-          if (defaultChangeOrder) {
-            console.log('default change order');
-            $stateParams.isChangeOrder = true;
-            return defaultChangeOrder;
-          }
-
-          console.log('nothing');
-          $state.go('menu.home');
         }]
       }
     })
@@ -280,10 +201,10 @@ angular
       },
       resolve: {
         lists: ['ListService', function (ListService){
-          return ListService.getAllLists();
+          return ListService.getListHeaders();
         }],
         carts: ['CartService', function(CartService) {
-          return CartService.getAllCarts();
+          return CartService.getCartHeaders();
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
@@ -296,8 +217,14 @@ angular
       controller: 'AddToOrderController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.selectDefaultList($stateParams.listId);
+        }]
       }
     })
+
     .state('menu.order', {
       url: '/orders/',
       templateUrl: 'views/order.html',

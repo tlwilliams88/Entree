@@ -127,6 +127,7 @@
     <Compile Include="Extensions\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
+    <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\OrderDetailExtension.cs" />
     <Compile Include="Extensions\OrderHeaderExtension.cs" />
@@ -139,6 +140,10 @@
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Confirmations\IConfirmationQueueRepository.cs" />
+    <Compile Include="Interface\IImportLogic.cs" />
+    <Compile Include="Interface\Invoices\IInternalInvoiceLogic.cs" />
+    <Compile Include="Interface\Invoices\IInvoiceItemRepository.cs" />
+    <Compile Include="Interface\Invoices\IInvoiceRepository.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IListCacheRepository.cs" />
@@ -184,10 +189,15 @@
     <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
     <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\EF\BaseEFModel.cs" />
+    <Compile Include="Models\EF\Invoice.cs" />
+    <Compile Include="Models\EF\InvoiceItem.cs" />
     <Compile Include="Models\EF\List.cs" />
     <Compile Include="Models\EF\ListItem.cs" />
     <Compile Include="Models\EF\OrderHistoryDetail.cs" />
     <Compile Include="Models\EF\OrderHistoryHeader.cs" />
+    <Compile Include="Models\Invoices\InvoiceItemModel.cs" />
+    <Compile Include="Models\Invoices\InvoiceModel.cs" />
+    <Compile Include="Models\Lists\ListImportModel.cs" />
     <Compile Include="Models\Lists\NewCSItem.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />

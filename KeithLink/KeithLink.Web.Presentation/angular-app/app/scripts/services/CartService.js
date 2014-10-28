@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', '$q', 'UserProfileService', 'UtilityService', 'Cart', 
-    function ($http, $filter, $q, UserProfileService, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$filter', '$q', 'UtilityService', 'Cart', 
+    function ($http, $filter, $q, UtilityService, Cart) {
 
     var filter = $filter('filter');
 
@@ -45,19 +45,19 @@ angular.module('bekApp')
           var existingCart = UtilityService.findObjectByField(Service.carts, 'id', cart.id);
           if (existingCart) {
             var idx = Service.carts.indexOf(existingCart);
+            delete existingCart.items;
             angular.copy(cart, Service.carts[idx]);
           } else {
-            Service.carts.push(cart);
+            var newCart = angular.copy(cart);
+            delete newCart.items;
+            Service.carts.push(newCart);
           }
           return cart;
         });
       },
 
       findCartById: function(cartId) {
-        var itemsFound = filter(Service.carts, {id: cartId});
-        if (itemsFound.length === 1) {
-          return itemsFound[0];
-        }
+        return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
       /********************
@@ -93,9 +93,7 @@ angular.module('bekApp')
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
 
-        return Cart.save({}, newCart).$promise.then(function(response) {
-          return Service.getCart(response.listitemid);
-        });
+        return Cart.save({}, newCart);
       },
 
       // accepts cart object and params (deleteOmitted?)
