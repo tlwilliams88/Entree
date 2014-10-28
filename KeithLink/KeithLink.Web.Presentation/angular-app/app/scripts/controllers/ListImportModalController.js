@@ -17,7 +17,7 @@ angular.module('bekApp')
       })(i);
     }
   };
-
+  
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
