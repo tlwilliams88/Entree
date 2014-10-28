@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -162,6 +162,18 @@ angular.module('bekApp')
         }, function(error) {
           $scope.displayMessage('error', 'Error re-submitting order.');
         });
+    };
+
+    $scope.cancelOrder = function(changeOrder) {
+      OrderService.cancelOrder(changeOrder.commerceId).then(function() {
+        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceId', changeOrder.commerceId);
+        var idx = $scope.changeOrders.indexOf(changeOrderFound);
+        $scope.changeOrders.splice(idx, 1);
+        $scope.goToCart();
+        $scope.displayMessage('success', 'Successfully cancelled order ' + changeOrder.ordernumber + '.');
+      }, function(error) {
+        $scope.displayMessage('error', 'Error cancelling order ' + changeOrder.ordernumber + '.');
+      });
     };
 
     // INFINITE SCROLL

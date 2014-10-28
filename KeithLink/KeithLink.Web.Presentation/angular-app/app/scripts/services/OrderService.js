@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$filter', 'UtilityService', 'Order', 
-    function ($http, $filter, UtilityService, Order) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'Order', 
+    function ($http, $q, $filter, UtilityService, Order) {
     
     var Service = {
       
@@ -28,9 +28,16 @@ angular.module('bekApp')
       *************/
 
       getChangeOrders: function() {
-        return Service.getAllOrders().then(function(orders) {
-          return $filter('filter')(orders, {ischangeorderallowed: true});
+        var deferred = $q.defer();
+        $http.get('/order/changeorder').then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse);
+          } else {
+            $q.reject(data.errorMessage);
+          }
         });
+        return deferred.promise;
       },
 
       resubmitOrder: function(orderNumber) {
@@ -52,6 +59,12 @@ angular.module('bekApp')
       findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {
         return UtilityService.findObjectByField(changeOrders, 'ordernumber', orderNumber);
       },
+
+      cancelOrder: function(commerceId) {
+        return Order.delete({
+          orderNumber: commerceId
+        }).$promise;
+      }
     };
  
     return Service;
