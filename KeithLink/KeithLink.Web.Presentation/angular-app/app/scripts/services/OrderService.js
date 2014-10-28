@@ -8,7 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$filter', 'Order', function ($http, $filter, Order) {
+  .factory('OrderService', ['$http', '$filter', 'UtilityService', 'Order', 
+    function ($http, $filter, UtilityService, Order) {
     
     var Service = {
       
@@ -49,10 +50,7 @@ angular.module('bekApp')
       },
 
       findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {
-        var itemsFound = $filter('filter')(changeOrders, {ordernumber: orderNumber});
-        if (itemsFound.length === 1) {
-          return itemsFound[0];
-        }
+        return UtilityService.findObjectByField(changeOrders, 'ordernumber', orderNumber);
       },
     };
  

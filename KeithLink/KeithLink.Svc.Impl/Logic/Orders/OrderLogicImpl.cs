@@ -22,17 +22,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private IListServiceRepository listServiceRepository;
-		private readonly IQueueRepository queueRepository;
+		private readonly IOrderQueueLogic orderQueueLogic;
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic,
-			IListServiceRepository listServiceRepository, IQueueRepository queueRepository, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
+            IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogLogic = catalogLogic;
 			this.listServiceRepository = listServiceRepository;
-            this.queueRepository = queueRepository;
+            this.orderQueueLogic = orderQueueLogic;
             this.priceLogic = priceLogic;
             this.eventLogRepository = eventLogRepository;
 		}
@@ -191,67 +191,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
 
-            WriteOrderFileToQueue(userProfile, newOrderNumber, order);
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder);
 
             client.CleanUpChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
 
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
-        private void WriteOrderFileToQueue(UserProfile user, string controlNumber, CS.PurchaseOrder newPurchaseOrder)
+        public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId)
         {
-            var newOrderFile = new OrderFile()
-            {
-                Header = new OrderHeader()
-                {
-                    OrderingSystem = OrderSource.Entree,
-                    Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
-                    CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
-                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-                    PONumber = string.Empty,
-                    Specialinstructions = string.Empty,
-                    ControlNumber = int.Parse(controlNumber),
-                    OrderType = OrderType.ChangeOrder,
-                    InvoiceNumber = (string)newPurchaseOrder.Properties["MasterNumber"],
-                    OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    OrderSendDateTime = DateTime.Now,
-                    UserId = user.EmailAddress.ToUpper(),
-                    OrderFilled = false,
-                    FutureOrder = false
-                },
-                Details = new List<OrderDetail>()
-            };
-
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-            {
-                var item = (CS.LineItem)lineItem.Target;
-
-                if (item.Status == null || String.IsNullOrEmpty(item.Status))
-                    continue;
-
-                newOrderFile.Details.Add(new OrderDetail()
-                {
-                    ItemNumber = item.ProductId,
-                    OrderedQuantity = (short)item.Quantity,
-                    UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
-                    SellPrice = (double)item.PlacedPrice,
-                    Catchweight = (bool)item.CatchWeight,
-                    //Catchweight = false,
-                    LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
-                    ItemChange = LineType.Add,
-                    SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    ItemStatus = item.Status == "added" ? "A" : item.Status == "changed" ? "C" : "D"
-                });
-            }
-
-
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
-
-            xs.Serialize(sw, newOrderFile);
-
-            queueRepository.PublishToQueue(sw.ToString());
+            com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+            string newOrderNumber = client.CancelPurchaseOrder(userProfile.UserId, commerceId);
+            return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
+
     }
 }

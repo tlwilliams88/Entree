@@ -5012,6 +5012,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
         System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrderResponse")]
+        string CancelPurchaseOrder(System.Guid userId, System.Guid orderId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrderResponse")]
+        System.Threading.Tasks.Task<string> CancelPurchaseOrderAsync(System.Guid userId, System.Guid orderId);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5185,6 +5191,14 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             return base.Channel.UpdatePurchaseOrderAsync(userId, orderId, requestedShipDate, itemUpdates);
+        }
+        
+        public string CancelPurchaseOrder(System.Guid userId, System.Guid orderId) {
+            return base.Channel.CancelPurchaseOrder(userId, orderId);
+        }
+        
+        public System.Threading.Tasks.Task<string> CancelPurchaseOrderAsync(System.Guid userId, System.Guid orderId) {
+            return base.Channel.CancelPurchaseOrderAsync(userId, orderId);
         }
     }
 }

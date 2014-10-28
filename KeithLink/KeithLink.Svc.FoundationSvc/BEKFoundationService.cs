@@ -129,6 +129,15 @@ namespace KeithLink.Svc.FoundationSvc
             return po.TrackingNumber;
         }
 
+        public string CancelPurchaseOrder(Guid userId, Guid orderId)
+        {
+            CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
+            po.Status = "Cancelled";
+            po.TrackingNumber = GetNextControlNumber();
+            po.Save();
+            return po.TrackingNumber;
+        }
+
         private static string GetNextControlNumber()
         {
             string controlNumber = string.Empty;

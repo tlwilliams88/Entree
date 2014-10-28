@@ -1,13 +1,15 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'changeOrders', 
-    function ($scope, $state, $stateParams, $filter, carts, lists, Constants, CartService, ListService, OrderService, UtilityService, changeOrders) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'ResolveService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, Constants, CartService, ListService, OrderService, UtilityService, ResolveService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = changeOrders;
+    $scope.selectedList = selectedList;
+    $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
 
     $scope.sortBy = 'position';
     $scope.sortOrder = false;
@@ -28,15 +30,17 @@ angular.module('bekApp')
     };
 
     $scope.selectList = function(list) {
-      $scope.selectedList = angular.copy(list);
       $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.ordernumber || $scope.selectedCart.id, useParlevel: $scope.useParlevel });
-      if ($scope.addToOrderForm) {
-        $scope.addToOrderForm.$setPristine();
-      }
     };
 
     $scope.selectCart = function(cart) {
-      $scope.selectedCart = cart;
+      CartService.getCart(cart.id).then(function(cart) {
+        $scope.selectedCart = cart;
+      });
+    };
+
+    $scope.selectChangeOrder = function(changeOrder) {
+      $scope.selectedCart = OrderService.findChangeOrderByOrderNumber(changeOrders, changeOrder.ordernumber);
     };
 
     $scope.sortByPrice = function(item) {
@@ -47,7 +51,7 @@ angular.module('bekApp')
       var cart = {};
       cart.items = [];
       cart.id = 'New';
-      $scope.selectCart(cart);
+      $scope.selectedCart = cart;
     };
 
     function combineDuplicateItemNumbers(items) {
@@ -77,17 +81,6 @@ angular.module('bekApp')
 
     function updateCart(cart) {
       CartService.updateCart(cart, {deleteomitted: false}).then(function(cart) {
-        
-        // // add quantities to existing item numbers
-        // angular.forEach(cart.items, function(item, index) {
-        //   var matchingCartItems = $filter('filter')($scope.selectedCart.items, {itemnumber: item.itemnumber});
-        //   if (matchingCartItems.length === 0) {
-        //     $scope.selectedCart.items.push(item);
-        //   } else {
-        //     matchingCartItems[0].quantity += item.quantity;
-        //   }
-        // });
-
         $scope.selectedCart = cart;
 
         // reset quantities
@@ -104,9 +97,8 @@ angular.module('bekApp')
 
     function saveNewCart(items, shipDate) {
       CartService.createCart(items, shipDate).then(function(cart) {
-        $scope.selectCart(cart);
+        $scope.selectedCart = cart;
         $scope.addToOrderForm.$setPristine();
-        $scope.selectList($scope.selectedList);
         $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
       }, function() {
         $scope.displayMessage('error', 'Error adding items to cart.');
@@ -116,9 +108,8 @@ angular.module('bekApp')
     function addItemsToChangeOrder(items, order) {
       order.items = order.items.concat(items);
       OrderService.updateOrder(order).then(function(cart) {
-        $scope.selectCart(order);
+        $scope.selectedCart = cart;
         $scope.addToOrderForm.$setPristine();
-        $scope.selectList($scope.selectedList);
         $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.ordernumber + '.');
       }, function() {
         $scope.displayMessage('error', 'Error adding items to Order # ' + order.ordernumber + '.');
@@ -170,37 +161,41 @@ angular.module('bekApp')
       return subtotal;
     };
 
-    $scope.getItemCount = function(cartItems, listItems) {
-      var total = cartItems.length;
-      var uniqueItemNumbers = [];
-
-      listItems = $scope.getListItemsWithQuantity(listItems);
-      angular.forEach(listItems, function(item, index) {
-        // check if item already exists in the cart
-        var cartItemsWithSameItemNumber = $filter('filter')(cartItems, {itemnumber: item.itemnumber});
-        if (cartItemsWithSameItemNumber.length === 0 && uniqueItemNumbers.indexOf(item.itemnumber)) {
-          total++;
-          uniqueItemNumbers.push(item.itemnumber);
+    $scope.getItemCount = function(cart, list) {
+      if (cart && list) {
+        var cartItems;
+        if (cart.items) {
+          cartItems = cart.items;
+        } else {
+          cartItems = cart.lineItems;
         }
-      });
-      return total;
+
+        var listItems = list.items;
+
+        var total = cartItems.length;
+        var uniqueItemNumbers = [];
+
+        listItems = $scope.getListItemsWithQuantity(listItems);
+        angular.forEach(listItems, function(item, index) {
+          // check if item already exists in the cart
+          var cartItemsWithSameItemNumber = $filter('filter')(cartItems, {itemnumber: item.itemnumber});
+          if (cartItemsWithSameItemNumber.length === 0 && uniqueItemNumbers.indexOf(item.itemnumber)) {
+            total++;
+            uniqueItemNumbers.push(item.itemnumber);
+          }
+        });
+        return total;
+      }
     };
-    
-    // select default cart
-    var cart = CartService.getSelectedCart($stateParams.cartId, changeOrders);
-    if ($stateParams.cartId === 'New' || !cart) {
+
+    // select cart/changeOrder
+    var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+    if ($stateParams.cartId === 'New' || !selectedBasket) {
       $scope.createNewCart();
     } else {
-      $scope.selectCart(cart);
+      selectedBasket.promise.then(function(basket) {
+        $scope.selectedCart = basket;
+      });
     }
 
-    // select list
-    if ($stateParams.listId) {
-      $scope.selectedList = ListService.findListById($stateParams.listId);
-    }
-    if (!$scope.selectedList) {
-      $scope.selectList(ListService.getFavoritesList());
-    }
-
-    $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
   }]);

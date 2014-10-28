@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.IO;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -109,6 +110,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			listServiceRepository.DeleteItems(itemIds);
 		}
+
+		
         #endregion
     }
 }

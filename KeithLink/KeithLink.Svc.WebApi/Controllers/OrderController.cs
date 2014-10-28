@@ -83,11 +83,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpDelete]
         [ApiKeyedRoute("order/{commerceId}")]
-        public Models.OperationReturnModel<bool> CancelOrder(Guid commerceId)
+        public NewOrderReturn CancelOrder(Guid commerceId)
         {
-            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
-            return ret;
+            return _orderLogic.CancelOrder(this.AuthenticatedUser, this.SelectedUserContext, commerceId);
         }
         #endregion
     }
