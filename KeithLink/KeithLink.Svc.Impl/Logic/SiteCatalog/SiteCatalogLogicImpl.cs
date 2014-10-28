@@ -11,7 +11,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Extensions;
 
-namespace KeithLink.Svc.Impl.Logic
+namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
     public class SiteCatalogLogicImpl : ICatalogLogic
     {
