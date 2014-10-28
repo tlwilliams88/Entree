@@ -28,6 +28,7 @@ module.exports = function(config) {
       'app/lib/angular-unsavedChanges/unsavedChanges.js',
       'app/lib/angular-toaster/toaster.js',
       'app/lib/angular-loading-bar/loading-bar.js',
+      'app/lib/angular-file-upload/angular-file-upload.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',
