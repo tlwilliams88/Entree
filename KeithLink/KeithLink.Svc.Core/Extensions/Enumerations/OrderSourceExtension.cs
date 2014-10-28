@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Extensions {
+namespace KeithLink.Svc.Core.Extensions.Enumerations {
     public static class OrderSourceExtension {
 
         #region methods
@@ -20,6 +20,21 @@ namespace KeithLink.Svc.Core.Extensions {
                 default:
                     value = OrderSource.Other;
                     break;
+            }
+        }
+
+        public static string ToString(this OrderSource value) {
+            switch (value) {
+                case OrderSource.Entree:
+                    return "B";
+                case OrderSource.DSR:
+                    return "K";
+                case OrderSource.CustomerService:
+                    return string.Empty;
+                case OrderSource.Other:
+                    return string.Empty;
+                default:
+                    return string.Empty;
             }
         }
         #endregion

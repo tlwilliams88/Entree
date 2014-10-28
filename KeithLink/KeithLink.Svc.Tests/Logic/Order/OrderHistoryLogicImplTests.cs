@@ -1,5 +1,7 @@
-﻿using KeithLink.Svc.Impl.Logic.Orders;
+﻿using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,13 +10,16 @@ namespace KeithLink.Svc.Test.Logic.Order {
     public class OrderHistoryLogicImplTests {
         #region attributes
         private OrderHistoryLogicImpl _logic;
+        private IOrderHistoryHeaderRepsitory _headerRepo;
+        private IOrderHistoryDetailRepository _detailRepo;
+        private IUnitOfWork _unitOfWork;
 
         private const string TEST_FILE = "Assets\\hourlyupdate.txt";
         #endregion
 
         #region ctor
         public OrderHistoryLogicImplTests() {
-            _logic = new OrderHistoryLogicImpl();
+            _logic = new OrderHistoryLogicImpl(_headerRepo, _detailRepo, _unitOfWork);
         }
         #endregion
 

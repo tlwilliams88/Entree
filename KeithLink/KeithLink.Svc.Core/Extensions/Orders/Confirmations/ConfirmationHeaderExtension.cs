@@ -8,7 +8,7 @@ using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Common.Core.Parsing;
 
 
-namespace KeithLink.Svc.Core.Extensions
+namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
 {
     public static class ConfirmationHeaderExtension
     {

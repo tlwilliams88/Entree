@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.EF;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Models.EF
+namespace KeithLink.Svc.Core.Models.Orders.History.EF
 {
 	public class OrderHistoryDetail: BaseEFModel
 	{

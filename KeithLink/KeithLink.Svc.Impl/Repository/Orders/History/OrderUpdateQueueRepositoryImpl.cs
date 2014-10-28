@@ -47,12 +47,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
 
-                    model.QueueBind(Configuration.RabbitMQQueueHourlyUpdates, Configuration.RabbitMQExchangeConfirmation, string.Empty, new Dictionary<string, object>());
+                    model.QueueBind(Configuration.RabbitMQQueueHourlyUpdates, Configuration.RabbitMQExchangeHourlyUpdates, string.Empty, new Dictionary<string, object>());
 
                     IBasicProperties props = model.CreateBasicProperties();
                     props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(Configuration.RabbitMQExchangeConfirmation, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+                    model.BasicPublish(Configuration.RabbitMQExchangeHourlyUpdates, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
                 }
             }
         }

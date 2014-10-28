@@ -2,7 +2,7 @@
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Exceptions.Orders;
-using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;

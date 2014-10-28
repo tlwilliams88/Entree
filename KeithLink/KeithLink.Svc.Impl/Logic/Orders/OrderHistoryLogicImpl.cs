@@ -1,7 +1,10 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
-using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +16,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #region attributes
         private const int RECORDTYPE_LENGTH = 1;
         private const int RECORDTYPE_STARTPOS = 0;
+
+        private readonly IOrderHistoryDetailRepository _detailRepo;
+        private readonly IOrderHistoryHeaderRepsitory _headerRepo;
+        private readonly IUnitOfWork _unitOfWork;
+        #endregion
+
+        #region ctor
+        public OrderHistoryLogicImpl(IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IUnitOfWork unitOfWork) {
+            _headerRepo = headerRepo;
+            _detailRepo = detailRepo;
+            _unitOfWork = unitOfWork;
+        }
         #endregion
 
         #region methods
@@ -68,6 +83,20 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
 
             return retVal;
+        }
+
+        public void Save(OrderHistoryFile currentFile) {
+            EF.OrderHistoryHeader header = currentFile.Header.ToEntityFrameworkModel();
+
+            header.OrderDetails = new List<EF.OrderHistoryDetail>();
+
+            foreach (OrderHistoryDetail item in currentFile.Details) {
+                header.OrderDetails.Add(item.ToEntityFrameworkModel());
+            }
+
+            _headerRepo.CreateOrUpdate(header);
+
+            _unitOfWork.SaveChanges();
         }
         #endregion
     }

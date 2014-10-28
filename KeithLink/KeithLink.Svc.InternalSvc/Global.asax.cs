@@ -3,6 +3,7 @@ using Autofac.Integration.Wcf;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using System;
@@ -25,6 +26,9 @@ namespace KeithLink.Svc.InternalSvc
         private bool _keepQueueListening;
         private bool _orderHistoryProcessing;
 
+        private int _instanceCount;
+
+        private Thread _orderHistoryThread;
         private Timer _orderHistoryTimer;
         #endregion
 
@@ -42,6 +46,7 @@ namespace KeithLink.Svc.InternalSvc
             AutofacHostFactory.Container = container;
 
             //InitializeOrderUpdateTimer();
+            InitializeOrderUpdateThread();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -78,22 +83,35 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region methods
-        private void InitializeOrderUpdateTimer() {
-            AutoResetEvent auto = new AutoResetEvent(true);
-            TimerCallback cb = new TimerCallback(OrderHistoryQueueListener);
+        private void InitializeOrderUpdateThread() {
+            System.Diagnostics.Debugger.Launch();
 
-            _orderHistoryTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
+            ThreadStart start = new ThreadStart(OrderHistoryQueueListener);
+            _orderHistoryThread = new Thread(start);
+
+            _orderHistoryThread.Start();
         }
 
-        private void OrderHistoryQueueListener(object state) 
+        private void InitializeOrderUpdateTimer() {
+            AutoResetEvent auto = new AutoResetEvent(true);
+            //TimerCallback cb = new TimerCallback(OrderHistoryQueueListener);
+
+            System.Diagnostics.Debugger.Launch();
+
+            //_orderHistoryTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
+        }
+
+        private void OrderHistoryQueueListener() 
         {
             while (_keepQueueListening)
             {
                 if (_orderHistoryProcessing == false) {
                     _orderHistoryProcessing = true;
+                    _instanceCount++;
 
                     try {
                         IOrderHistoryQueueRepository historyQueue = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryQueueRepository>();
+                        IOrderHistoryLogic historyLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
 
                         string rawOrder = historyQueue.ConsumeFromQueue();
 
@@ -105,7 +123,10 @@ namespace KeithLink.Svc.InternalSvc
 
                             historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
+                            historyLogic.Save(historyFile);
+
                             rawOrder = historyQueue.ConsumeFromQueue();
+
                         }
                     } catch (Exception ex) {
                         IEventLogRepository eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
@@ -113,7 +134,10 @@ namespace KeithLink.Svc.InternalSvc
                     }
 
                     _orderHistoryProcessing = false;
+                    _instanceCount--;
                 }
+
+                System.Threading.Thread.Sleep(2000);
             }
         }
 

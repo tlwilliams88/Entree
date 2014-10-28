@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Models.Common;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Confirmations
 {
