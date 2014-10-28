@@ -21,6 +21,9 @@ namespace KeithLink.Svc.FoundationSvc.Interface
 
         [OperationContract]
         string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
+
+        [OperationContract]
+        string CancelPurchaseOrder(Guid userId, Guid orderId);
 	}
 
     public class PurchaseOrderLineItemUpdate
