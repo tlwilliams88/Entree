@@ -66,6 +66,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
 		}
 
+		[HttpPut]
+		[ApiKeyedRoute("cart/{cartId}/active")]
+		public void SetActive(Guid cartId)
+		{
+			shoppingCartLogic.SetActive(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+		}
+
 		[HttpDelete]
 		[ApiKeyedRoute("cart/{cartId}")]
 		public void DeleteList(Guid cartId)

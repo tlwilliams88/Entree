@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ListImportModalController', ['$scope', '$modalInstance', '$upload',
-  function ($scope, $modalInstance, $upload) {
+.controller('ListImportModalController', ['$scope', '$modalInstance', '$upload', '$state', 'ListService',
+  function ($scope, $modalInstance, $upload, $state, ListService) {
   
   $scope.upload = [];
   $scope.onFileSelect = function($files) {
@@ -10,19 +10,10 @@ angular.module('bekApp')
     for (var i = 0; i < $files.length; i++) {
       var file = $files[i];
       (function(index) {
-        $scope.upload[index] = $upload.upload({
-        url: '/import/list', //upload.php script, node.js route, or servlet url
-        method: 'POST',
-        file: file, // or list of files ($files) for html5 only
-      }).progress(function(evt) {
-        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-      }).success(function(data, status, headers, config) {
-        // file is uploaded successfully
-        console.log(data);
-      })
-      .error(function(data) {
-        console.log(data);
-      });
+          $scope.upload[index] = ListService.importList(file).then(function(data) {
+            $modalInstance.close(data);
+            $state.go('menu.lists.items', { listId: data.listid });
+          });
       })(i);
     }
   };

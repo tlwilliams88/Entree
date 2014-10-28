@@ -163,6 +163,7 @@
     <Compile Include="Logic\Confirmations\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
@@ -210,6 +211,10 @@
     <Compile Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.Designer.cs">
       <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.cs" />
+    <Compile Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.Designer.cs">
+      <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -243,6 +248,8 @@
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
@@ -576,6 +583,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410251626109_Add_List_Navigation_Property.resx">
       <DependentUpon>201410251626109_Add_List_Navigation_Property.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.resx">
+      <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

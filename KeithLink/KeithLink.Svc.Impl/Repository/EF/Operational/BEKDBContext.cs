@@ -20,13 +20,19 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<ListItem> ListItems { get; set; }
 		public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
 		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
+		public DbSet<Invoice> Invoices { get; set; }
+		public DbSet<InvoiceItem> InvoiceItems { get; set; }
+
 
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<List>().ToTable("Lists", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<ListItem>().ToTable("ListItems", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<OrderHistoryHeader>().ToTable("OrderHistoryHeader", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<OrderHistoryDetail>().ToTable("OrderHistoryDetail", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);			
+			modelBuilder.Entity<OrderHistoryDetail>().ToTable("OrderHistoryDetail", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<Invoice>().ToTable("Invoices", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
 		}
 
 		public override int SaveChanges()

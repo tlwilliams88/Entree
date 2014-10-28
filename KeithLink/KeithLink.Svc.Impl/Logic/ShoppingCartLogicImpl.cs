@@ -83,14 +83,20 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
 
-			if(cart.Active)
-				MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
-
-			newBasket.Active = cart.Active;
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
 			return basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
 		}
+
+		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
+		{
+			var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+			
+			MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
+			cart.Active = true;
+			basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
+		}
+
 		
         public void DeleteCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
@@ -260,13 +266,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			updateCart.DisplayName = cart.Name;
 			updateCart.Name = CartName(cart.Name, catalogInfo);
-
-			if (cart.Active && (updateCart.Active.HasValue && !updateCart.Active.Value))
-			{
-				MarkCurrentActiveCartAsInactive(user, catalogInfo, updateCart.BranchId); //TODO: FIX
-			}
-
-			updateCart.Active = cart.Active;
+						
 			updateCart.RequestedShipDate = cart.RequestedShipDate;
 
 			var itemsToRemove = new List<Guid>();
