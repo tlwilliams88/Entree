@@ -120,7 +120,7 @@ angular.module('bekApp')
 
         var cart = {
           id: cartId
-        }
+        };
 
         $scope.goToList($scope.selectedList, cart);
         $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
