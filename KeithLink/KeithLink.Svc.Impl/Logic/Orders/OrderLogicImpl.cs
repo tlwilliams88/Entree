@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
             // handel special change order logic to hidd deleted line items
-            if (returnOrder.Status == "NewOrder" || returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
+            if (returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
                 returnOrder.LineItems = returnOrder.LineItems.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
@@ -74,7 +74,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
-                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "NewOrder" || purchaseOrder.Status == "Submitted")),
+                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "Submitted")),
                 Status = purchaseOrder.Status,
                 RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
 				LineItems = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
@@ -202,6 +202,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         {
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.CancelPurchaseOrder(userProfile.UserId, commerceId);
+            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder);
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 

@@ -1,10 +1,16 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.InternalSvc.Interfaces;
+using CommerceServer.Core.Runtime.Orders;
+using CommerceServer.Core.Orders;
+using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,19 +24,21 @@ namespace KeithLink.Svc.InternalSvc
     public class Global : System.Web.HttpApplication {
         #region attributes
         const int TIMER_DURATION_TICK = 2000;
-        const int TIMER_DURATION_START = 1000;
+        const int TIMER_DURATION_START = 30000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
         
-        private bool _keepQueueListening;
         private bool _orderHistoryProcessing;
+        private bool _keepQueueListening = true;
+
+        IConfirmationLogic confirmationLogic;
 
         private Timer _orderHistoryTimer;
+        private System.Threading.Tasks.Task _processConfirmationsTask;
         #endregion
 
         #region ctor
         public Global() {
-            _keepQueueListening = true;
             _orderHistoryProcessing = false;
         }
         #endregion
@@ -42,6 +50,7 @@ namespace KeithLink.Svc.InternalSvc
             AutofacHostFactory.Container = container;
 
             //InitializeOrderUpdateTimer();
+            InitializeConfirmationMoverThread();
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -71,9 +80,13 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-            _keepQueueListening = false;
+            if (confirmationLogic != null)
+                confirmationLogic.Stop();
 
             TerminateOrderHistoryTimer();
+
+            if (_processConfirmationsTask != null)
+                _processConfirmationsTask.Wait(); // graceful shutdown
         }
         #endregion
 
@@ -123,6 +136,13 @@ namespace KeithLink.Svc.InternalSvc
                 _orderHistoryTimer.Dispose();
             }
         }
-        #endregion
-    }
+
+        private void InitializeConfirmationMoverThread()
+        {
+            confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
+            confirmationLogic.ListenForQueueMessages();
+        }
+	}
+
+    #endregion
 }
