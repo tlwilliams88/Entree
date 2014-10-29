@@ -40,6 +40,11 @@ angular.module('bekApp')
       submit: {
         url: '/order/:cartId',
         method: 'POST'
+      },
+
+      setActive: {
+        url: '/cart/:cartId/active',
+        method: 'PUT'
       }
 
     });

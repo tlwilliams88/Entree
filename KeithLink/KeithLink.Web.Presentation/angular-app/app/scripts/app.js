@@ -173,7 +173,7 @@ angular
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId/?renameCart&isChangeOrder',
+      url: ':cartId/?renameCart',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
@@ -183,8 +183,7 @@ angular
         originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
           if (selectedBasket) {
-            $stateParams.isChangeOrder = selectedBasket.isChangeOrder;
-            return selectedBasket.promise;
+            return selectedBasket;
           } else {
             $state.go('menu.home');
           }
@@ -221,6 +220,14 @@ angular
       resolve: {
         selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.selectDefaultList($stateParams.listId);
+        }],
+        selectedCart: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+          if (selectedBasket) {
+            return selectedBasket;
+          } else {
+            $state.go('menu.home');
+          }
         }]
       }
     })

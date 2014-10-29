@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ListImportModalController', ['$scope', '$modalInstance', '$upload', '$state', 'ListService',
-  function ($scope, $modalInstance, $upload, $state, ListService) {
+.controller('ListImportModalController', ['$scope', '$modalInstance', '$state', 'ListService',
+  function ($scope, $modalInstance, $state, ListService) {
   
   $scope.upload = [];
   $scope.onFileSelect = function($files) {
