@@ -128,6 +128,7 @@
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
+    <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Orders\OrderDetailExtension.cs" />
     <Compile Include="Extensions\Orders\OrderHeaderExtension.cs" />
@@ -138,10 +139,15 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
-    <Compile Include="Interface\Confirmations\IConfirmationLogic.cs" />
-    <Compile Include="Interface\Confirmations\IConfirmationQueueRepository.cs" />
+    <Compile Include="Interface\Orders\Confirmations\IConfirmationLogic.cs" />
+    <Compile Include="Interface\Orders\Confirmations\IConfirmationQueueRepository.cs" />
+    <Compile Include="Interface\IImportLogic.cs" />
+    <Compile Include="Interface\Invoices\IInternalInvoiceLogic.cs" />
+    <Compile Include="Interface\Invoices\IInvoiceItemRepository.cs" />
+    <Compile Include="Interface\Invoices\IInvoiceRepository.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
+    <Compile Include="Interface\Lists\IListCacheRepository.cs" />
     <Compile Include="Interface\Lists\IListItemRepository.cs" />
     <Compile Include="Interface\Lists\IListRepository.cs" />
     <Compile Include="Interface\Lists\IListServiceRepository.cs" />
@@ -181,15 +187,20 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
-    <Compile Include="Models\Confirmations\ConfirmationDetail.cs" />
-    <Compile Include="Models\Confirmations\ConfirmationFile.cs" />
-    <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
-    <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
+    <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
+    <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />
+    <Compile Include="Models\Orders\Confirmations\ConfirmationHeader.cs" />
+    <Compile Include="Models\Orders\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\EF\BaseEFModel.cs" />
+    <Compile Include="Models\EF\Invoice.cs" />
+    <Compile Include="Models\EF\InvoiceItem.cs" />
     <Compile Include="Models\EF\List.cs" />
     <Compile Include="Models\EF\ListItem.cs" />
     <Compile Include="Models\Orders\History\EF\OrderHistoryDetail.cs" />
     <Compile Include="Models\Orders\History\EF\OrderHistoryHeader.cs" />
+    <Compile Include="Models\Invoices\InvoiceItemModel.cs" />
+    <Compile Include="Models\Invoices\InvoiceModel.cs" />
+    <Compile Include="Models\Lists\ListImportModel.cs" />
     <Compile Include="Models\Lists\NewCSItem.cs" />
     <Compile Include="Models\Lists\RecentItem.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryDetail.cs" />

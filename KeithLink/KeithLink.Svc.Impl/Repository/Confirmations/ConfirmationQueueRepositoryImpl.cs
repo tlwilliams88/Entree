@@ -1,6 +1,6 @@
-﻿using KeithLink.Svc.Core.Interface.Confirmations;
+﻿using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Common;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

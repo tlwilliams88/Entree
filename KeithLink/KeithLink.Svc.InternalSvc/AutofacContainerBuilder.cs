@@ -10,7 +10,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Profile;
@@ -75,6 +75,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
 			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
+			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>(); 
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>(); 

@@ -321,6 +321,125 @@ CREATE TABLE [ETL].[Staging_BrandControlLabels](
 GO
 SET ANSI_PADDING OFF
 GO
+/****** Object:  Table [ETL].[Staging_KNet_Invoice]    Script Date: 10/28/2014 3:07:40 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [ETL].[Staging_KNet_Invoice](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[OrderNumber] [varchar](9) NULL,
+	[LineNumber] [varchar](5) NULL,
+	[MemoBillCode] [varchar](3) NULL,
+	[CreditOFlag] [varchar](1) NULL,
+	[TradeSWFlag] [varchar](1) NULL,
+	[ShipDate] [varchar](8) NULL,
+	[OrderDate] [varchar](8) NULL,
+	[RouteNumber] [varchar](5) NULL,
+	[StopNumber] [varchar](3) NULL,
+	[WHNumber] [varchar](3) NULL,
+	[ItemNumber] [varchar](10) NULL,
+	[QuantityOrdered] [varchar](7) NULL,
+	[QuantityShipped] [varchar](7) NULL,
+	[BrokenCaseCode] [varchar](1) NULL,
+	[CatchWeightCode] [varchar](1) NULL,
+	[ExtCatchWeight] [varchar](12) NULL,
+	[ItemPrice] [varchar](10) NULL,
+	[PriceBookNumber] [varchar](5) NULL,
+	[ItemPriceSRP] [varchar](12) NULL,
+	[InvoiceNumber] [varchar](20) NULL,
+	[DateOfLastOrder] [varchar](8) NULL,
+	[ExtSRPAmount] [varchar](12) NULL,
+	[ExtSalesGross] [varchar](16) NULL,
+	[ExtSalesNet] [varchar](16) NULL,
+	[CustomerGroup] [varchar](10) NULL,
+	[SalesRep] [varchar](3) NULL,
+	[VendorNumber] [varchar](10) NULL,
+	[CustomerPO] [varchar](20) NULL,
+	[ChainStoreCode] [varchar](10) NULL,
+	[CombStatementCustomer] [varchar](10) NULL,
+	[PriceBook] [varchar](7) NULL,
+	[ClassCode] [varchar](5) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+USE [BEK_Commerce_AppData]
+GO
+
+/****** Object:  Table [ETL].[Staging_KPay_Invoice]    Script Date: 10/28/2014 3:08:29 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [ETL].[Staging_KPay_Invoice](
+	[InvoiceNumber] [varchar](30) NOT NULL,
+	[Division] [char](5) NOT NULL,
+	[CustomerNumber] [char](6) NOT NULL,
+	[ItemSequence] [smallint] NOT NULL,
+	[InvoiceType] [char](3) NOT NULL,
+	[InvoiceDate] [datetime] NOT NULL,
+	[DueDate] [datetime] NOT NULL,
+	[AmountDue] [decimal](9, 2) NOT NULL,
+	[DeleteFlag] [bit] NOT NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+USE [BEK_Commerce_AppData]
+GO
+
+/****** Object:  Table [ETL].[Staging_WorksheetItems]    Script Date: 10/28/2014 3:08:41 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+SET ANSI_PADDING ON
+GO
+
+CREATE TABLE [ETL].[Staging_WorksheetItems](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[ItemNumber] [varchar](10) NULL,
+	[BrokenCaseCode] [varchar](1) NULL,
+	[ItemPrice] [varchar](10) NULL,
+	[QtyOrdered] [varchar](7) NULL,
+	[DateOfLastOrder] [varchar](8) NULL
+) ON [PRIMARY]
+
+GO
+
+SET ANSI_PADDING OFF
+GO
+
+
+
 /********************************************************************************************/
 
 
@@ -794,60 +913,4 @@ END
 GO
 
 
-SET ANSI_PADDING OFF
-GO
-USE [master]
-GO
-ALTER DATABASE [BEK_Commerce_AppData] SET  READ_WRITE 
-GO
 
-
-
--- Order History Schema --
-create schema Orders
-go
-
-create table Orders.OrderHistoryHeader (
-	OrderSystem			CHAR(1),
-	BranchId			CHAR(3)	NOT NULL,
-	CustomerNumber		CHAR(6),
-	InvoiceNumber		CHAR(8)	NOT NULL,
-	DeliveryDate		DATE,
-	PONumber			VARCHAR(20),
-	ControlNumber		CHAR(7),
-	OrderStatus			CHAR(1),
-	FutureItems			BIT,
-	ErrorStatus			BIT,
-	RouteNumber			CHAR(3),
-	StopNumber			CHAR(3)
-)
-go
-
-alter table Orders.OrderHistoryHeader add constraint [pkOrderHistoryHeader] primary key (
-	BranchId,
-	InvoiceNumber
-)
-go
-
-create table Orders.OrderHistoryDetail (
-	BranchId					CHAR(3)	NOT NULL,
-	InvoiceNumber				CHAR(8)	NOT NULL,
-	ItemNumber					CHAR(6),
-	LineNumber					INT		NOT NULL,
-	OrderQuantity				INT,
-	ShippedQuatity				INT,
-	UnitOfMeasure				CHAR(1),
-	CatchWeight					BIT,
-	ItemDeleted					BIT,
-	SubbedOriginalItemNumber	CHAR(6),
-	ReplacedOriginalItemNumber	CHAR(6),
-	ItemStatus					CHAR(1),
-	TotalShippedWeight			DECIMAL(7,2)
-)
-go
-
-alter table Orders.OrderHistoryDetail add constraint [pkOrderHistoryDetal] primary key (
-	Branchid,
-	InvoiceNumber,
-	LineNumber
-)

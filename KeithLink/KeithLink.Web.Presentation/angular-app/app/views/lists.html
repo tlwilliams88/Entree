@@ -29,6 +29,7 @@
     </button>
     <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
     <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+    <button class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button>
   </div>
 </div>
 
@@ -54,13 +55,13 @@
         <h3>Your Lists</h3>
 
         <div class="btn-group-vertical list-names text-blue">
-          <button type="button" ng-repeat="list in lists | sortLists | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">{{list.name}}</button>
+          <button type="button" ng-repeat="list in lists | sortLists | limitTo: itemsLimit()" ng-click="goToList(list)" ng-class="{'current-list' : list.listid == selectedList.listid}" class="btn-lg custom-lists__name btn btn-default btn-list" data-drop="isDragging && !list.read_only" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">{{list.name}}</button>
         </div>
         <h5>
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a>
         </h5>
         
-        <button type="button" ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListWithItem()'}" class="btn btn-default btn-list text-light btn-lg">Create A List</button>
+        <button type="button" ng-click="createList()" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'createListFromDrag()'}" class="btn btn-default btn-list text-light btn-lg">Create A List</button>
         
         <button ng-if="!selectedList.read_only" type="button" class="btn btn-icon btn-default large-icon btn-trash" ng-disabled="!isDragging" data-drop="isDragging" data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}"><span class="icon-trash"></span></button>
 
@@ -88,24 +89,24 @@
     <div class="row" ng-show="(filteredItems | filter:{isSelected:'true'}).length > 0">
       <div class="col-xs-12 col-sm-6">
         <div class="btn-group custom-lists__multi-actions">
-          <div class="btn-group" dropdown is-open="showLists">
+          <div class="btn-group" dropdown is-open="multiSelect.showLists">
             <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
               <span class="icon-folder large-icon text-light"></span>
               <span class="icon-arrow-down6 text-light"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               <li ng-click="addItemsToList(list)" ng-repeat="list in lists | sortLists" ng-if="!list.read_only && selectedList.listid !== list.listid && !list.isfavorite"><a href="">{{list.name}}</a></li>
-              <li ng-click="createListWithItems()"><a>Create New List...</a></li>
+              <li ng-click="createListFromMultiSelect()"><a>Create New List...</a></li>
             </ul>
           </div>
-          <div class="btn-group" dropdown is-open="showLabels" ng-if="!selectedList.read_only && !selectedList.isfavorite">
+          <div class="btn-group" dropdown is-open="multiSelect.showLabels" ng-if="!selectedList.read_only && !selectedList.isfavorite">
             <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
               <span class="icon-tag large-icon text-light"></span>
               <span class="icon-arrow-down6 text-light"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
               <li ng-repeat="label in labels" ng-click="addLabels(label)"><a>{{label}}</a></li>
-              <li ng-click="addingNewLabel=true; showLabels=false;"><a>Add New Label...</a></li>
+              <li ng-click="multiSelect.addingNewLabel=true; multiSelect.showLabels=false;"><a>Add New Label...</a></li>
             </ul>
           </div>
           <button type="button" class="multi-action-btn btn btn-default btn-lg" ng-click="deleteMultipleItems(selectedList)" ng-if="!selectedList.read_only">
@@ -124,10 +125,10 @@
           </ul>
         </div>
       </div>
-      <div class="col-xs-8 col-sm-4" ng-show="addingNewLabel">
-        <input type="text" class="input-lg form-control" ng-model="newLabel" focus-me="addingNewLabel" placeholder="Add New Label...">
+      <div class="col-xs-8 col-sm-4" ng-show="multiSelect.addingNewLabel">
+        <input type="text" class="input-lg form-control" ng-model="newLabel" focus-me="multiSelect.addingNewLabel" placeholder="Add New Label...">
       </div>
-      <div class="col-xs-4 col-sm-2" ng-show="addingNewLabel">
+      <div class="col-xs-4 col-sm-2" ng-show="multiSelect.addingNewLabel">
         <button type="button" class="btn-lg btn btn-primary" ng-disabled="!newLabel" ng-click="applyNewLabel(newLabel)">Apply</button>
       </div>
     </div><!-- end Multi-select menu -->

@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.LineNumber = value.LineNumber;
             retVal.OrderQuantity = value.OrderQuantity;
             retVal.ShippedQuantity = value.ShippedQuantity;
-            retVal.UnitOfMeasure = value.UnitOfMeasure.ToString();
+            retVal.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
             retVal.CatchWeight = value.CatchWeight;
             retVal.ItemDeleted = value.ItemDeleted;
             retVal.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;

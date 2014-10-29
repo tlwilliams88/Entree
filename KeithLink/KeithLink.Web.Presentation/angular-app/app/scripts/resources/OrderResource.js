@@ -5,7 +5,7 @@ angular.module('bekApp')
   function ($resource) {
     return $resource('/order/:orderNumber', { }, {
 
-      // defaults: GET, QUERY, SAVE
+      // defaults: GET, QUERY, SAVE, DELETE
 
       update: {
         url: '/order',

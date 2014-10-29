@@ -80,6 +80,7 @@ namespace KeithLink.Svc.Impl
         // Misc
         private const string KEY_APP_NAME = "AppName";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
+        private const string KEY_MULTIDOCS_PROXY_URL = "MultiDocsProxyUrl";
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
 		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
         private const string KEY_SITE_NAME = "CS_SiteName";
@@ -374,7 +375,24 @@ namespace KeithLink.Svc.Impl
         
         public static string MultiDocsUrl
         {
-            get { return GetValue(KEY_MULTIDOCS_URL, string.Empty); }
+            get 
+            { 
+                string configValue = GetValue(KEY_MULTIDOCS_URL, string.Empty);
+                if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
+                    configValue = configValue + "/";
+                return configValue;
+            }
+        }
+
+        public static string MultiDocsProxyUrl
+        {
+            get 
+            { 
+                string configValue = GetValue(KEY_MULTIDOCS_PROXY_URL, string.Empty);
+                if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
+                    configValue = configValue + "/";
+                return configValue;
+            }
         }
 
         public static string OrderUpdateWatchPath {

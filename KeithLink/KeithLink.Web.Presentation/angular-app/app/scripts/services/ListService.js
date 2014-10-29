@@ -8,10 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', 'toaster', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, toaster, UserProfileService, UtilityService, List) {
-
-      var filter = $filter('filter');
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'List',
+    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, List) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -23,7 +21,6 @@ angular.module('bekApp')
 
         lists: [],
         labels: [],
-        selectedList: {},
 
         // accepts "header: true" params to get only list names
         // return array of list objects
@@ -57,19 +54,12 @@ angular.module('bekApp')
               Service.lists.push(list);
             }
 
-            angular.copy(list, Service.selectedList);
-
             return list;
           });
         },
 
         findListById: function(listId) {
-          var itemsFound = filter(Service.lists, function(list) {
-            return list.listid == listId;
-          });
-          if (itemsFound.length === 1) {
-            return itemsFound[0];
-          }
+          return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
         },
 
         /********************
@@ -101,6 +91,39 @@ angular.module('bekApp')
           }, function() {
             toaster.pop('error', null, 'Error creating list.');
           });
+        },
+
+        importList: function(file) {
+          var deferred = $q.defer();
+
+          $upload.upload({
+            url: '/import/list',
+            method: 'POST',
+            file: file, // or list of files ($files) for html5 only
+          }).then(function(response) {
+            var data = response.data;
+            if (data.success) {
+
+              deferred.resolve(data);
+
+              var list = {
+                listid: data.listid,
+                name: 'Imported List mk'
+              };
+              Service.lists.push(list);
+
+              if (data.warningmsg) {
+                toaster.pop('success', null, data.warningmsg);
+              } else {
+                toaster.pop('success', null, 'Successfully imported a new list.');
+              }
+            } else {
+              toaster.pop('error', null, data.errormsg);
+              deferred.reject(data.errormsg);
+            }
+          });
+
+          return deferred.promise;
         },
 
         // accepts list object
@@ -257,14 +280,14 @@ angular.module('bekApp')
         ********************/
 
         getFavoritesList: function() {
-          return filter(Service.lists, {isfavorite: true})[0];
+          return UtilityService.findObjectByField(Service.lists, 'isfavorite', true);
         },
 
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
           return Service.getList(favoritesList.listid).then(function() {
-            var itemToDelete = filter(favoritesList.items, {itemnumber: itemNumber})[0];
+            var itemToDelete = $filter('filter')(favoritesList.items, {itemnumber: itemNumber})[0];
 
             return Service.deleteItem(itemToDelete.listitemid);
           });

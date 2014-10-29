@@ -23,6 +23,12 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PropCustomer].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\propCustomer.SSIS</ConfiguredValue>
   </Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_CustomerWorksheet].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerWorksheet.SSIS</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_KeithNetInvoice].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\keithNetInvoice.SSIS</ConfiguredValue>
+	</Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://corpkecdev1:9876/ETLService.svc?wsdl</ConfiguredValue>
   </Configuration>

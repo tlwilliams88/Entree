@@ -1,9 +1,9 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Logic.Confirmations;
-using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Confirmations;
 using KeithLink.Common.Impl.Logging;
 using System.IO;

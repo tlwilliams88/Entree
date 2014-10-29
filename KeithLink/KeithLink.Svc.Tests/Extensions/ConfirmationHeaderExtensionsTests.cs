@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using System.IO;
 

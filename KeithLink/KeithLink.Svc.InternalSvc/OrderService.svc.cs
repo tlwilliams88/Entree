@@ -1,5 +1,5 @@
 ﻿using KeithLink.Svc.InternalSvc.Interfaces;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 using CommerceServer.Core.Runtime.Orders;

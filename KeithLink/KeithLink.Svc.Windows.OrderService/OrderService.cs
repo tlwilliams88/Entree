@@ -3,7 +3,7 @@ using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Confirmations;

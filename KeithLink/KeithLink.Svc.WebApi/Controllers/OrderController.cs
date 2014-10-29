@@ -63,11 +63,29 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("order/changeorder")]
+        public Models.OperationReturnModel<List<Order>> GetChangeOrders()
+        {
+            List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
+
+            Models.OperationReturnModel<List<Order>> ret = new Models.OperationReturnModel<List<Order>>();
+            ret.SuccessResponse = changeOrders.Where(x => x.IsChangeOrderAllowed).ToList();
+            return ret;
+        }
+
         [HttpPut]
         [ApiKeyedRoute("order/")]
         public Order UpdateOrder(Order order, bool deleteOmitted = true)
         {
             return _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
+        }
+
+        [HttpDelete]
+        [ApiKeyedRoute("order/{commerceId}")]
+        public NewOrderReturn CancelOrder(Guid commerceId)
+        {
+            return _orderLogic.CancelOrder(this.AuthenticatedUser, this.SelectedUserContext, commerceId);
         }
         #endregion
     }

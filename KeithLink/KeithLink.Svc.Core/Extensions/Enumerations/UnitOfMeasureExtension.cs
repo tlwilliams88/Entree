@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Extensions.Enumerations {
     public static class UnitOfMeasureExtension {
-        public static string ToString(this UnitOfMeasure value){
+        public static string ToShortString(this UnitOfMeasure value){
             switch (value) {
                 case UnitOfMeasure.Case:
                     return "C";

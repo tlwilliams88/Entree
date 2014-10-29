@@ -9,7 +9,7 @@ using KeithLink.Svc.Core;
 
 
 
-namespace KeithLink.Svc.Core.Models.Confirmations
+namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 {
     [DataContract(Name = "ConfirmationDetail")]
     public class ConfirmationDetail

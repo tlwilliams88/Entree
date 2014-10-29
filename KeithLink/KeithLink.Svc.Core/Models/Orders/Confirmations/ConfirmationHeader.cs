@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 using System.IO;
 using KeithLink.Svc.Core;
 
-namespace KeithLink.Svc.Core.Models.Confirmations
+namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 {
     [DataContract(Name = "ConfirmationHeader")]
     public class ConfirmationHeader
