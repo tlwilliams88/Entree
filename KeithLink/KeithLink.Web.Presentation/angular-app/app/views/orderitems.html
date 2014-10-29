@@ -57,7 +57,7 @@
 
 <div class="row sub-content">
   <div class="col-xs-12 text-right">
-    Showing {{filteredItems.length}} of {{order.lineItems.length}} Items
+    Showing {{filteredItems.length}} of {{order.items.length}} Items
   </div>
 </div>
 
@@ -143,7 +143,7 @@
       </td>
     </tr> <!-- end Filter Row -->
 
-    <tr ng-repeat-start="item in (filteredItems = (order.lineItems | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+    <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
       <td>
         <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
       </td>
@@ -209,7 +209,7 @@
       </td>
     </tr>
   </tbody>
-  <tfoot ng-show="(order.lineItems.length === 0 || !order.lineItems || filteredItems.length === 0) && order">
+  <tfoot ng-show="(order.items.length === 0 || !order.items || filteredItems.length === 0) && order">
     <tr>
       <td colspan="15">
         There are no products to display.
