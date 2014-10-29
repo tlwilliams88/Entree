@@ -175,7 +175,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
                                                                        new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
-                confirmationLogic.Listen();
+                confirmationLogic.ListenForMainFrameCalls();
             }
             catch (Exception e) {
                 StringBuilder logMessage = new StringBuilder();

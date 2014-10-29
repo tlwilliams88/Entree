@@ -14,7 +14,7 @@ using System.Linq;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
-using KeithLink.Svc.Core.Extensions;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -23,6 +23,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region attributes
         private IEventLogRepository _log;
         private ISocketListenerRepository _socket;
+        private Task queueListenerTask;
+        private bool _keepQueueListening = true;
+        private int queueListenerSleepTimeMs = 2000;
 
         private IQueueRepository _confirmationQueue;
         #endregion
@@ -49,11 +52,55 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <summary>
         /// Begin listening for new confirmations
         /// </summary>
-        public void Listen()
+        public void ListenForMainFrameCalls()
         {
             _socket.Listen();
         }
 
+        public void ListenForQueueMessages()
+        {
+            this.queueListenerTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+        }
+
+        public void Stop()
+        {
+            _keepQueueListening = false;
+            if (queueListenerTask != null && queueListenerTask.Status == TaskStatus.Running)
+                queueListenerTask.Wait();
+        }
+
+        private void ListenForQueueMessagesInTask()
+        {
+            while (_keepQueueListening)
+            {
+                try
+                {
+                    System.Threading.Thread.Sleep(queueListenerSleepTimeMs);
+
+                    ConfirmationFile confirmation = GetFileFromQueue();
+                    if (confirmation != null)
+                    {
+                        try
+                        {
+                            if (ProcessIncomingConfirmation(confirmation) == false)
+                            {
+                                // If it fails we need to put the message back in the queue
+                                PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            //HandleConfirmationQueueProcessingerror(e);
+                            PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _log.WriteErrorLog("Error in MoveConfirmationsToCommerceServer", ex);
+                }
+            }
+        }
         /// <summary>
         /// Deserialize the confirmation
         /// </summary>

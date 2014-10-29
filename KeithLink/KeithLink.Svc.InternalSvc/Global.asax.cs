@@ -28,8 +28,10 @@ namespace KeithLink.Svc.InternalSvc
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
         
-        private bool _keepQueueListening;
         private bool _orderHistoryProcessing;
+        private bool _keepQueueListening = true;
+
+        IConfirmationLogic confirmationLogic;
 
         private Timer _orderHistoryTimer;
         private System.Threading.Tasks.Task _processConfirmationsTask;
@@ -37,7 +39,6 @@ namespace KeithLink.Svc.InternalSvc
 
         #region ctor
         public Global() {
-            _keepQueueListening = true;
             _orderHistoryProcessing = false;
         }
         #endregion
@@ -79,7 +80,8 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-            _keepQueueListening = false;
+            if (confirmationLogic != null)
+                confirmationLogic.Stop();
 
             TerminateOrderHistoryTimer();
 
@@ -137,44 +139,8 @@ namespace KeithLink.Svc.InternalSvc
 
         private void InitializeConfirmationMoverThread()
         {
-            _processConfirmationsTask = System.Threading.Tasks.Task.Factory.StartNew(() => MoveConfirmationsToCommerceServer());
-        }
-
-        private void MoveConfirmationsToCommerceServer()
-        {
-            while (_keepQueueListening)
-            {
-                try
-                {
-                        System.Threading.Thread.Sleep(TIMER_DURATION_TICK);
-                        ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>(),
-                                                                            new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
-                                                                            new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
-
-                        ConfirmationFile confirmation = confirmationLogic.GetFileFromQueue();
-                        if (confirmation != null)
-                        {
-                            try
-                            {
-                                if (confirmationLogic.ProcessIncomingConfirmation(confirmation) == false)
-                                {
-                                    // If it fails we need to put the message back in the queue
-                                    confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                //HandleConfirmationQueueProcessingerror(e);
-                                confirmationLogic.PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
-                            }
-                        }
-                    }
-                catch (Exception ex)
-                {
-                    IEventLogRepository eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
-                    eventLogRepository.WriteErrorLog("Error in MoveConfirmationsToCommerceServer", ex);
-                }
-            }
+            confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
+            confirmationLogic.ListenForQueueMessages();
         }
 	}
 
