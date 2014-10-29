@@ -49,6 +49,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			newList.UserId = userId;
 			newList.Type = type;
 			newList.Shared = true;
+            newList.ListItemHash = list.ListItemHash;
 			listRepository.CreateOrUpdate(newList);
 			unitOfWork.SaveChanges();
 			return newList.Id;
@@ -223,6 +224,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 
 			currentList.DisplayName = userList.Name;
+            currentList.ListItemHash = userList.ListItemHash;
 
 			if (userList.Items == null)
 				userList.Items = new List<ListItemModel>();
