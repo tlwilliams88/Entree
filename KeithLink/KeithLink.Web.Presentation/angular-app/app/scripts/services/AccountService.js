@@ -23,7 +23,6 @@ angular.module('bekApp')
         var deferred = $q.defer();
         $http.get('/profile/accounts').then(function(response) {
           var data = response.data;
-          console.log(data);
           if (data.successResponse) {
             angular.copy(data.successResponse.accounts, Service.accounts);
             deferred.resolve(data.successResponse.accounts);
@@ -45,7 +44,6 @@ angular.module('bekApp')
         var deferred = $q.defer();
         $http.post('/profile/account', account).then(function(response) {
           var data = response.data;
-          console.log(data);
           if (data.successResponse) {
             // TODO: return just new account id
             // TODO: add new account to cache lists

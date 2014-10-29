@@ -51,7 +51,6 @@ angular.module('bekApp')
       updateOrder: function(order) {
         var params = {};
         return Order.update(params, order).$promise.then(function(order) {
-          console.log(order);
           return order;
         });
       },

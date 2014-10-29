@@ -110,5 +110,10 @@ angular.module('bekApp')
         }
       }
     }
+
+    scope.$on('$destroy',function() {
+      // console.log('done!');
+      angular.element( window ).off( 'resize.Viewport' );
+    });
   };
   }]);
