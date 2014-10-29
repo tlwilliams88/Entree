@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // handel special change order logic to hidd deleted line items
             if (returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
-                returnOrder.LineItems = returnOrder.LineItems.Where(x => x.Status != "deleted").ToList();
+                returnOrder.Items = returnOrder.Items.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
 
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "Submitted")),
                 Status = purchaseOrder.Status,
                 RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
-				LineItems = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
+				Items = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(purchaseOrder.Id)
 			};
 		}
@@ -97,13 +97,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes)
 		{
-			if (order.LineItems == null)
+			if (order.Items == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.LineItems.Select(l => l.ItemNumber).ToList(), user);
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.Items.Select(l => l.ItemNumber).ToList(), user);
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
-			Parallel.ForEach(order.LineItems, item => {
+			Parallel.ForEach(order.Items, item => {
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
 				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
 				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
@@ -142,7 +142,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate> itemUpdates = new List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate>();
 
-            foreach (OrderLine line in existingOrder.LineItems)
+            foreach (OrderLine line in existingOrder.Items)
             {
                 itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Price = (decimal)line.CasePriceNumeric });
             }
@@ -154,9 +154,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private void UpdateExistingOrderInfo(Order order, Order existingOrder)
         {
             // work through adds, deletes, changes based on item number
-            foreach (OrderLine newLine in order.LineItems)
+            foreach (OrderLine newLine in order.Items)
             {
-                OrderLine existingLine = existingOrder.LineItems.Where(x => x.ItemNumber == newLine.ItemNumber).FirstOrDefault();
+                OrderLine existingLine = existingOrder.Items.Where(x => x.ItemNumber == newLine.ItemNumber).FirstOrDefault();
                 if (existingLine != null)
                 { // compare and update if necessary
                     if (existingLine.Quantity != newLine.Quantity)
@@ -167,13 +167,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
                 else
                 { // new line
-                    existingOrder.LineItems.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Status = "added" });
+                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Status = "added" });
                 }
             }
             // handle deletes
-            foreach (OrderLine existingLine in order.LineItems)
+            foreach (OrderLine existingLine in order.Items)
             {
-                OrderLine newLine = order.LineItems.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
+                OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
                 if (newLine == null)
                 {
                     existingLine.Status = "deleted";
