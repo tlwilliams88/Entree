@@ -228,7 +228,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,
-                    InvoiceNumber = string.Empty,
+                    InvoiceNumber = orderType == OrderType.NormalOrder ? string.Empty : (string)newPurchaseOrder.Properties["MasterNumber"],
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
                     OrderSendDateTime = DateTime.Now,
                     UserId = orderingUserEmail.ToUpper(),
@@ -241,7 +241,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
             {
                 var item = (CS.LineItem)lineItem.Target;
-                if ((orderType == OrderType.ChangeOrder && (item.Status == null || String.IsNullOrEmpty(item.Status)))
+                if ((orderType == OrderType.ChangeOrder && String.IsNullOrEmpty(item.Status))
                     || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
                     continue;
 

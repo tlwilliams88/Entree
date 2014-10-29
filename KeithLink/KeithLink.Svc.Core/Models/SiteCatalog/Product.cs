@@ -83,6 +83,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "isproprietary")]
 		public bool IsProprietary { get; set; }
+
+        [DataMember( Name = "orderhistory" )]
+        public Dictionary<DateTime, int> OrderHistory { get; set; }
         #endregion
         
 		[OnSerializing]

@@ -10,7 +10,5 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	[ServiceContract]
 	public interface IOrderService
 	{
-        [OperationContract]
-        bool OrderConfirmation(ConfirmationFile order);
 	}
 }

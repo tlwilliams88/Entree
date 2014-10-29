@@ -61,6 +61,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.CrossTier.dll</HintPath>
     </Reference>
+    <Reference Include="CommerceServer.Core.Orders.CrossTier, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Orders.CrossTier.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Core.Profiles.DataManagement, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Profiles.DataManagement.dll</HintPath>
@@ -153,14 +157,15 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
-    <Compile Include="Logic\Confirmations\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
+    <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
@@ -209,6 +214,10 @@
     <Compile Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.cs" />
     <Compile Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.Designer.cs">
       <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.cs" />
+    <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.Designer.cs">
+      <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -581,6 +590,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.resx">
       <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.resx">
+      <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

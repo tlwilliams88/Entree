@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'ResolveService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, Constants, CartService, ListService, OrderService, UtilityService, ResolveService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'ResolveService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, ResolveService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = changeOrders;
     $scope.selectedList = selectedList;
+    $scope.selectedCart = selectedCart;
     $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
+    $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
 
     $scope.sortBy = 'position';
     $scope.sortOrder = false;
@@ -29,19 +31,34 @@ angular.module('bekApp')
       });
     };
 
-    $scope.selectList = function(list) {
-      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.ordernumber || $scope.selectedCart.id, useParlevel: $scope.useParlevel });
+    function redirect(list, cart) {
+      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: cart.ordernumber || cart.id, useParlevel: $scope.useParlevel });
+    }
+
+    $scope.goToList = function(list, cart) {
+      if (cart.id) {
+        CartService.setActiveCart(cart.id).then(function() {
+          redirect(list, cart);
+        });
+      } else {
+        redirect(list, cart);
+      }
     };
 
-    $scope.selectCart = function(cart) {
-      CartService.getCart(cart.id).then(function(cart) {
-        $scope.selectedCart = cart;
-      });
-    };
+    // $scope.selectList = function(list) {
+    //   $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.ordernumber || $scope.selectedCart.id, useParlevel: $scope.useParlevel });
+    // };
 
-    $scope.selectChangeOrder = function(changeOrder) {
-      $scope.selectedCart = OrderService.findChangeOrderByOrderNumber(changeOrders, changeOrder.ordernumber);
-    };
+    // $scope.selectCart = function(cart) {
+    //   CartService.getCart(cart.id).then(function(cart) {
+    //     $scope.selectedCart = cart;
+    //     $scope.selectList($scope.selectedList);
+    //   });
+    // };
+
+    // $scope.selectChangeOrder = function(changeOrder) {
+    //   $scope.selectedCart = OrderService.findChangeOrderByOrderNumber(changeOrders, changeOrder.ordernumber);
+    // };
 
     $scope.sortByPrice = function(item) {
       return item.each ? item.packageprice : item.caseprice;
@@ -85,6 +102,7 @@ angular.module('bekApp')
 
         // reset quantities
         angular.forEach($scope.selectedList.items, function(item) {
+          item.quantityincart += item.quantity; 
           item.quantity = 0;
         });
 
@@ -96,9 +114,15 @@ angular.module('bekApp')
     }
 
     function saveNewCart(items, shipDate) {
-      CartService.createCart(items, shipDate).then(function(cart) {
-        $scope.selectedCart = cart;
+      CartService.createCart(items, shipDate).then(function(cartId) {
+        // $scope.selectedCart = cart;
         $scope.addToOrderForm.$setPristine();
+
+        var cart = {
+          id: cartId
+        }
+
+        $scope.goToList($scope.selectedList, cart);
         $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
       }, function() {
         $scope.displayMessage('error', 'Error adding items to cart.');
@@ -188,14 +212,14 @@ angular.module('bekApp')
       }
     };
 
-    // select cart/changeOrder
-    var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-    if ($stateParams.cartId === 'New' || !selectedBasket) {
-      $scope.createNewCart();
-    } else {
-      selectedBasket.promise.then(function(basket) {
-        $scope.selectedCart = basket;
-      });
-    }
+    // // select cart/changeOrder
+    // var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+    // if ($stateParams.cartId === 'New' || !selectedBasket) {
+    //   $scope.createNewCart();
+    // } else {
+    //   selectedBasket.promise.then(function(basket) {
+    //     $scope.selectedCart = basket;
+    //   });
+    // }
 
   }]);

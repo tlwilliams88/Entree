@@ -197,8 +197,38 @@ namespace KeithLink.Svc.Core
         public const int CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_INDEX = 141;
         public const int CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_LENGTH = 40;
 
+        public const string CONFIRMATION_DETAIL_FILLED_CODE = "";
+        public const string CONFIRMATION_DETAIL_FILLED_STATUS = "Filled";
+        public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE = "P";
+        public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS = "Partially Shipped";
+        public const string CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE = "O";
+        public const string CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS = "Out of Stock";
+        public const string CONFIRMATION_DETAIL_ITEM_REPLACED_CODE = "R";
+        public const string CONFIRMATION_DETAIL_ITEM_REPLACED_STATUS = "Item Replaced";
+        public const string CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE = "Z";
+        public const string CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_STATUS = "Item Replaced, Out of Stock";
+        public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE = "T";
+        public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS = "Partially Shipped, Item Replaced";
+        public const string CONFIRMATION_DETAIL_ITEM_SUBBED_CODE = "S";
+        public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
 
-        // Confrimation Parsing Layout : Footer
+        public const string CONFIRMATION_HEADER_IN_PROCESS_CODE = "P";
+        public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "InProcess";
+        public const string CONFIRMATION_HEADER_INVOICED_CODE = "I";
+        public const string CONFIRMATION_HEADER_INVOICED_STATUS = "Shipped";
+        public const string CONFIRMATION_HEADER_DELETED_CODE = "D";
+        public const string CONFIRMATION_HEADER_DELETED_STATUS = "Cancelled";
+        public const string CONFIRMATION_HEADER_REJECTED_CODE = "R";
+        public const string CONFIRMATION_HEADER_REJECTED_STATUS = "Rejected";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_EXCEPTIONS_STATUS = "ConfirmedWithChangesAndExceptions";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_EXCEPTIONS_STATUS = "ConfirmedWithExceptions";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_STATUS = "ConfirmedWithChanges";
+        public const string CONFIRMATION_HEADER_CONFIRMED_CODE = "";
+        public const string CONFIRMATION_HEADER_CONFIRMED_STATUS = "Confirmed";
+
+        public const string CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER = "OriginalOrderNumber";
+        public const string CS_PURCHASE_ORDER_MASTER_NUMBER = "MasterNumber";
+        public const string CS_LINE_ITEM_MAIN_FRAME_STATUS = "MainFrameStatus";
 
     }
 }

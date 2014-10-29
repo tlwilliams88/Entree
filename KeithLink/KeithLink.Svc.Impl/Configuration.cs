@@ -69,7 +69,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
-        private const string KEY_RABBITMQ_SERVER = "RabbitMQOrderServer";
+        private const string KEY_RABBITMQ_ORDER_SERVER = "RabbitMQOrderServer";
+        private const string KEY_RABBITMQ_CONFIRMATION_SERVER = "RabbitMQConfirmationServer";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
@@ -495,11 +496,20 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQServer
+        public static string RabbitMQOrderServer
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_SERVER, string.Empty);
+                return GetValue(KEY_RABBITMQ_ORDER_SERVER, string.Empty);
+            }
+        }
+
+
+        public static string RabbitMQConfirmationServer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_CONFIRMATION_SERVER, string.Empty);
             }
         }
 

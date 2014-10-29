@@ -59,6 +59,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
+            AddItemHistoryToProduct( ret );
 
 			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
 
@@ -90,6 +91,17 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 foreach (SubCategory sc in c.SubCategories)
                     sc.SearchName = GetCategorySearchName(sc.Name);
             }
+        }
+
+        private void AddItemHistoryToProduct( Product returnValue ) {
+            //TODO: Get history needed
+            // Magical EF stuffs
+
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 1 ), 1 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 2 ), 2 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 3 ), 4 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 4 ), 7 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 5 ), 10 );
         }
 
         private string GetCategorySearchName(string categoryName)

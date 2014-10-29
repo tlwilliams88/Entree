@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
+    [Serializable]
     public class ListItemModel:BaseProductInfo, IComparable
     {
         [DataMember(Name = "listitemid")]
