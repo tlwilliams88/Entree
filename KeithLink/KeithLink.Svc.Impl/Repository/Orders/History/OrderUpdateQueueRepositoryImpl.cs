@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
         #region methods
         public string ConsumeFromQueue() {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQOrderServer,
                 UserName = Configuration.RabbitMQUserNameConsumer,
                 Password = Configuration.RabbitMQUserPasswordConsumer,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History {
         /// <param name="item"></param>
         public void PublishToQueue(string item) {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQOrderServer,
                 UserName = Configuration.RabbitMQUserNamePublisher,
                 Password = Configuration.RabbitMQUserPasswordPublisher,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation

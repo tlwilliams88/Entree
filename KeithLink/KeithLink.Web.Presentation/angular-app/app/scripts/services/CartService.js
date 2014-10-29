@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', '$q', 'UtilityService', 'Cart', 
-    function ($http, $filter, $q, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$filter', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
+    function ($http, $filter, $q, $upload, toaster, UtilityService, Cart) {
 
     var filter = $filter('filter');
 
@@ -60,6 +60,40 @@ angular.module('bekApp')
         return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
+      importCart: function(file) {
+        var deferred = $q.defer();
+
+        $upload.upload({
+          url: '/import/list',
+          method: 'POST',
+          file: file, // or list of files ($files) for html5 only
+        }).then(function(response) {
+          var data = response.data;
+
+          if (data.success) {
+            var cart = {
+              id: data.listid, // ****
+              name: 'Imported Cart'
+            };
+            Service.carts.push(cart);
+
+            // display messages
+            if (data.warningmsg) {
+              toaster.pop('success', null, data.warningmsg);
+            } else {
+              toaster.pop('success', null, 'Successfully imported a new cart.');
+            }
+
+            deferred.resolve(data);
+          } else {
+            toaster.pop('error', null, data.errormsg);
+            deferred.reject(data.errormsg);
+          }
+        });
+
+        return deferred.promise;
+      },
+
       /********************
       EDIT CART
       ********************/
@@ -93,7 +127,11 @@ angular.module('bekApp')
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
 
-        return Cart.save({}, newCart);
+        return Cart.save({}, newCart).$promise.then(function(response) {
+          newCart.id = response.listitemid;
+          Service.carts.push(newCart);
+          return response.listitemid;
+        });
       },
 
       // accepts cart object and params (deleteOmitted?)
@@ -127,7 +165,6 @@ angular.module('bekApp')
 
       /********************
       EDIT SINGLE ITEM
-      TODO: currently I am not keeping the cached object in sync
       ********************/
 
       addItemToCart: function(cartId, item) {
@@ -174,6 +211,10 @@ angular.module('bekApp')
         return selectedCart;
       },
 
+      /********************
+      SUBMIT ORDERS
+      ********************/
+
       getShipDates: function() {
         var deferred = $q.defer();
         
@@ -205,6 +246,12 @@ angular.module('bekApp')
 
       submitOrder: function(cartId) {
         return Cart.submit({
+          cartId: cartId
+        }, null).$promise;
+      },
+
+      setActiveCart: function(cartId) {
+        return Cart.setActive({
           cartId: cartId
         }, null).$promise;
       }

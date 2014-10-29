@@ -8,6 +8,8 @@ namespace KeithLink.Svc.Core.Interface.Confirmations
 {
     public interface IConfirmationLogic
     {
-        void Listen();
+        void ListenForMainFrameCalls();
+        void ListenForQueueMessages();
+        void Stop();
     }
 }
