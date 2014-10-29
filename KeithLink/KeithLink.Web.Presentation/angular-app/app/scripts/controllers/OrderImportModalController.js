@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ListImportModalController', ['$scope', '$modalInstance', '$state', 'ListService',
-  function ($scope, $modalInstance, $state, ListService) {
+.controller('OrderImportModalController', ['$scope', '$modalInstance', '$state', 'CartService',
+  function ($scope, $modalInstance, $state, CartService) {
   
   $scope.upload = [];
   $scope.onFileSelect = function($files) {
@@ -11,8 +11,8 @@ angular.module('bekApp')
       var file = $files[i];
       /* jshint ignore:start */
       (function(index) {
-          $scope.upload[index] = ListService.importList(file).then(function(data) {
-            $state.go('menu.lists.items', { listId: data.listid }).then(function() {
+          $scope.upload[index] = CartService.importCart(file).then(function(data) {
+            $state.go('menu.cart.items', { cartId: data.id }).then(function() {
               $modalInstance.close(data);
             });
           });

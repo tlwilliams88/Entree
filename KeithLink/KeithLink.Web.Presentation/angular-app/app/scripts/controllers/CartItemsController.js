@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -194,6 +194,14 @@ angular.module('bekApp')
       if ($scope.currentCart && $scope.itemsToDisplay < items) {
         $scope.itemsToDisplay += itemsPerPage;
       }
+    };
+
+    $scope.openOrderImportModal = function () {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/orderimportmodal.html',
+        controller: 'OrderImportModalController'
+      });
     };
 
   }]);
