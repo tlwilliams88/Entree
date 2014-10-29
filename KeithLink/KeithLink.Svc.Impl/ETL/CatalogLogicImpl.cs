@@ -25,6 +25,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
+using System.Security.Cryptography;
 //using KeithLink.Svc.Core.Models.Profile.Customer;
 
 namespace KeithLink.Svc.Impl.ETL
@@ -184,19 +185,8 @@ namespace KeithLink.Svc.Impl.ETL
 
                         KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerRow.CustomerNumber, customerRow.CustomerBranch);
 
-                        //delete contract lists
-                        DeleteContractLists(userProfile, userSelectedContext);
-                        //delete worksheet lists
-                        DeleteWorksheetLists(userProfile, userSelectedContext);
-
-                        //create contract lists
-                        if (customerRow.ContractId != null && customerRow.ContractId.Trim() != "")
-                        {
-                            CreateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
-                        }
-
-                        //worksheet Lists
-                        CreatetWorksheetLists(userProfile, userSelectedContext);
+                        CreateOrUpdateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
+                        CreateOrUpdateWorksheetLists(userProfile, userSelectedContext);
 
                     }
                 }
@@ -661,64 +651,94 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
-        private void CreateContractLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
-            , string contractNumber)
+        private void CreateOrUpdateContractLists(
+   KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+   , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
+   , string contractNumber)
         {
-            #region old_contract_logic_updateNotCreate
-            //var catalogInfo = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext() { BranchId = divisionName, CustomerId = customerNumber };
 
-            //List<ListModel> contractLists = GetContractLists(
-            //    userProfile,
-            //    catalogInfo);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
 
-            //List<ListItemModel> contractItems = GetContractItems(customerNumber, divisionName, contractNumber);
+            //test hash
+            /*
+            if (!contractNumber.Equals(null) && !contractNumber.Equals(String.Empty))
+            {
+                Temp_GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
+            }
+            */
 
-            //if (contractLists.Count == 0)
-            //{
-            //    //create
-            //    listLogic.CreateList(userProfile.UserId,
-            //    catalogInfo,
-            //    CreateUserList(contractNumber, ListType.Contract, true, contractItems)
-            //    );
 
-            //}
-            //else if (contractLists.Count == 1)
-            //{
-            //    //update
-            //    contractLists[0].Items = contractItems;
-            //    listLogic.UpdateList(userProfile, contractLists[0], catalogInfo);
-            //}
-            //else if (contractLists.Count > 1)
-            //{
-            //    //too many, error
-            //}
-            #endregion
-
-            ListModel listModel = CreateUserList(
+            if (lists.Count == 0 && contractNumber != null && !contractNumber.Equals(String.Empty))
+            {
+                //create
+                ListModel listModel = CreateUserList(
                 contractNumber,
                 GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber),
                 Core.Models.EF.ListType.Contract,
                 true);
 
-            listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Contract);
+                listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Contract);
+            }
 
+
+            if (lists.Count == 1 && contractNumber != null && !contractNumber.Equals(String.Empty))
+            {
+                List<ListItemModel> newItems = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
+
+                if (lists[0].ListItemHash != GenerateMD5Hash(newItems))
+                {
+                    //run compare process
+                }
+
+                //listLogic.UpdateList(lists[0]);
+            }
+            else if (lists.Count == 1 && (contractNumber == null || contractNumber.Equals(String.Empty)))
+            {
+                listLogic.DeleteList(lists[0].ListId);
+            }
         }
 
-        private void CreatetWorksheetLists(
+        private void CreateOrUpdateWorksheetLists(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
-
         {
-            ListModel listModel = CreateUserList(
-                "",
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
+
+            //test hash
+            /*
+            if (!contractNumber.Equals(null) && !contractNumber.Equals(String.Empty))
+            {
+                Temp_GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
+            }
+            */
+
+            if (lists.Count == 0)
+            {
+                //create
+                ListModel listModel = CreateUserList(
+                String.Empty,
                 GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId),
                 Core.Models.EF.ListType.Worksheet,
                 true);
 
-            listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Worksheet);
+                listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Worksheet);
+            }
+
+
+            if (lists.Count == 1)
+            {
+                List<ListItemModel> newItems = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
+
+                if (lists[0].ListItemHash != GenerateMD5Hash(newItems))
+                {
+                    //run compare process
+                }
+
+                //listLogic.UpdateList(lists[0]);
+            }
+            
         }
+
 
         private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)
         {
@@ -728,44 +748,13 @@ namespace KeithLink.Svc.Impl.ETL
             return userSelectedContext;
         }
 
-        private void DeleteContractLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
-        {
-            //List<ListModel> userLists = new List<ListModel>();
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Contract);
-
-            foreach (ListModel userList in lists)
-            {
-                listLogic.DeleteList(userList.ListId);
-            }
-
-            //return userLists;
-
-        }
-
-        private void DeleteWorksheetLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile,
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
-        {
-            //List<ListModel> userLists = new List<ListModel>();
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, catalogInfo, Core.Models.EF.ListType.Worksheet);
-
-            foreach (ListModel userList in lists)
-            {
-                listLogic.DeleteList(userList.ListId);
-            }
-
-            //return userLists;
-
-        }
-
         private ListModel CreateUserList(string name, List<ListItemModel> items, Core.Models.EF.ListType listType, bool readOnly)
         {
             ListModel list = new ListModel();
             list.Name = GetListName(name, listType);
             list.Items = items;
             list.ReadOnly = readOnly;
+            list.ListItemHash = GenerateMD5Hash(items);
             return list;
         }
 
@@ -805,6 +794,32 @@ namespace KeithLink.Svc.Impl.ETL
             return contractItems;
         }
 
+        private List<ListItemModel> Temp_GetContractItems(
+             string customerNumber,
+             string branchId,
+             string contractId
+             )
+        {
+
+            List<ListItemModel> contractItems = stagingRepository
+                            .ReadContractItems(customerNumber, branchId, contractId)
+                            .AsEnumerable()
+                            .Select(itemRow =>
+                                new ListItemModel
+                                {
+                                    ItemNumber = itemRow.GetString("ItemNumber"),
+                                    Position = itemRow.GetInt("BidLineNumber"),
+                                    Category = itemRow.GetString("CategoryDescription")
+                                }).ToList();
+
+            string itemHash = GenerateMD5Hash(contractItems);
+
+            File.AppendAllText(@"c:\testHash.txt", itemHash + "\r\n");
+
+            return contractItems;
+        }
+
+
         private List<ListItemModel> GetWorksheetItems(
              string customerNumber,
              string branchId
@@ -819,6 +834,34 @@ namespace KeithLink.Svc.Impl.ETL
                                     ItemNumber = itemRow.GetString("ItemNumber"),
                                 }).ToList();
             return contractItems;
+        }
+
+        public string GenerateMD5Hash(object itemToHash)
+        {
+
+            StringBuilder sBuilder = new StringBuilder();
+            using (MD5 hash = MD5.Create())
+            {
+                byte[] b = hash.ComputeHash(ObjectToByteArray(itemToHash));
+                for (int i = 0; i < b.Length; i++)
+                {
+                    sBuilder.Append(b[i].ToString("x2"));
+                }
+            }
+
+            return sBuilder.ToString();
+        }
+
+        private byte[] ObjectToByteArray(object obj)
+        {
+            if (obj == null)
+                return null;
+            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            using (MemoryStream ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
         }
 
         #endregion
