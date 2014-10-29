@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -19,11 +19,14 @@ angular.module('bekApp')
     $scope.shipDates = CartService.shipDates;
     // $scope.reminderList = reminderList;
     $scope.changeOrders = changeOrders;
-    $scope.isChangeOrder = $stateParams.isChangeOrder;
+    $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
-    $scope.goToCart = function(cartId) {
+    $scope.goToCart = function(cartId, isChangeOrder) {
+      if (!isChangeOrder) {
+        CartService.setActiveCart(cartId);
+      }
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null});
     };
 
@@ -91,8 +94,9 @@ angular.module('bekApp')
     };
 
     $scope.createNewCart = function() {
-      CartService.createCart().then(function(response) {
-        $state.go('menu.cart.items', {cartId: response.id, renameCart: true});
+      CartService.createCart().then(function(cartId) {
+        CartService.setActiveCart(cartId);
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
         $scope.displayMessage('error', 'Error creating new cart.');
