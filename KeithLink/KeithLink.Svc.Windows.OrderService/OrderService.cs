@@ -5,7 +5,6 @@ using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Logic.Confirmations;
 using KeithLink.Svc.Impl.Repository.Orders.History;
 using System;
 using System.Data;

@@ -6,7 +6,7 @@ using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Impl.Logic.Confirmations;
+using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.InternalSvc.Interfaces;
 using CommerceServer.Core.Runtime.Orders;
 using CommerceServer.Core.Orders;

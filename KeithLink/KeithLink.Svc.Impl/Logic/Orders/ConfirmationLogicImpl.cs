@@ -16,7 +16,7 @@ using System.Text;
 using System.Xml.Serialization;
 using KeithLink.Svc.Core.Extensions;
 
-namespace KeithLink.Svc.Impl.Logic.Confirmations
+namespace KeithLink.Svc.Impl.Logic.Orders
 {
     public class ConfirmationLogicImpl : IConfirmationLogic
     {
