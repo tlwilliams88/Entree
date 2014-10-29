@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         #region methods
         public string ConsumeFromQueue() {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQOrderServer,
                 UserName = Configuration.RabbitMQUserNameConsumer,
                 Password = Configuration.RabbitMQUserPasswordConsumer,
                 VirtualHost = Configuration.RabbitMQVHostOrder
@@ -72,7 +72,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         public void PublishToQueue(string item) {
             // this connection uses different credentials than the other methods in this class
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQOrderServer,
                 UserName = Configuration.RabbitMQUserNamePublisher,
                 Password = Configuration.RabbitMQUserPasswordPublisher,
                 VirtualHost = Configuration.RabbitMQVHostOrder

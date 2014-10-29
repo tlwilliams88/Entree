@@ -5,9 +5,12 @@ using KeithLink.Svc.Core.Interface.Confirmations;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Confirmations;
 using KeithLink.Svc.Core.Events.EventArgs;
-using KeithLink.Svc.Core.Models.Generated;
+using CommerceServer.Core.Runtime.Orders;
+using KeithLink.Svc.Core.Extensions;
+using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.IO;
 using System.Text;
 using System.Xml.Serialization;
@@ -146,25 +149,7 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             return writer.ToString();
         }
 
-        List<CsOrderLineUpdateInfo> GetCsLineUpdateInfo(ConfirmationFile confirmationFile)
-        {
-            List<CsOrderLineUpdateInfo> ret = new List<CsOrderLineUpdateInfo>();
-            foreach (var detail in confirmationFile.Detail)
-            {
-                CsOrderLineUpdateInfo line = new CsOrderLineUpdateInfo()
-                {
-                    MainFrameStatus = detail.ReasonNotShipped.Trim(),
-                    SubstitueItemNumber = detail.ItemNumber,
-                    QuantityOrdered = detail.QuantityOrdered,
-                    QuantityShipped = detail.QuantityShipped,
-                    RecordNumber = int.Parse(detail.RecordNumber)
-                };
-                ret.Add(line);
-            }
-            return ret;
-        }
-
-        private bool ProcessIncomingConfirmation(ConfirmationFile confirmation)
+        public bool ProcessIncomingConfirmation(ConfirmationFile confirmation)
         {
             try
             {
@@ -185,12 +170,13 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
                 }
                 else
                 {
-                    string trimmedConfirmationStatus = SetCsHeaderInfo(confirmation, po);
-
                     LineItem[] lineItems = new LineItem[po.LineItemCount];
                     po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
 
-                    SetCsLineInfo(trimmedConfirmationStatus, lineItems, GetCsLineUpdateInfo(confirmation));
+                    SetCsLineInfo(lineItems, confirmation);
+
+                    SetCsHeaderInfo(confirmation, po, lineItems);
+
                     po.Save();
                 }
             }
@@ -232,85 +218,87 @@ namespace KeithLink.Svc.Impl.Logic.Confirmations
             }
         }
 
-        private void SetCsLineInfo(string trimmedConfirmationStatus, LineItem[] lineItems, List<CsOrderLineUpdateInfo> confirmationDetail)
+        private void SetCsLineInfo(LineItem[] lineItems, ConfirmationFile confirmation)
         {
-            foreach (var detail in confirmationDetail)
+            foreach (var detail in confirmation.Detail)
             {
-                // match up to incoming line items to CS line items
-                int index = detail.RecordNumber - 1;
-                if (index >= lineItems.Length)
-                    continue; // TODO: log this?  shouldn't happen, but who knows...
+                // match incoming line items to CS line items
+                int linePosition = Convert.ToInt32(detail.RecordNumber);
 
-                LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (detail.RecordNumber)).FirstOrDefault();
-                string confirmationStatus = detail.MainFrameStatus.Trim().ToUpper();
+                LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
 
-                orderFormLineItem["QuantityOrdered"] = detail.QuantityOrdered;
-                orderFormLineItem["QuantityShipped"] = detail.QuantityShipped;
-                _log.WriteInformationLog("Setting main frame status");
-                if (String.IsNullOrEmpty(confirmationStatus))
+                if (orderFormLineItem != null)
                 {
-                    orderFormLineItem["MainFrameStatus"] = "Filled";
+                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.SubstitueItemNumber());
+                    _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + detail.DisplayStatus() + "_");
                 }
-                if (confirmationStatus == "P") // partial ship
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Partially Shipped";
-                }
-                else if (confirmationStatus == "O") // out of stock
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Out of Stock";
-                }
-                else if (confirmationStatus == "R") // item replaced
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Item Replaced";
-                    orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
-                }
-                else if (confirmationStatus == "Z") // item replaced, but replacement currently out of stock
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Item Replaced, Out of Stock";
-                    orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
-                }
-                else if (confirmationStatus == "T") // Item replaced, partial fill
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Partially Shipped, Item Replaced";
-                    orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
-                }
-                else if (confirmationStatus == "S") // item subbed
-                {
-                    orderFormLineItem["MainFrameStatus"] = "Item Subbed";
-                    orderFormLineItem["SubstitueItemNumber"] = detail.SubstitueItemNumber;
-                }
-                _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + confirmationStatus + "_");
+                else
+                    _log.WriteWarningLog("No CS line found for MainFrame line " + linePosition + " on order: " + confirmation.Header.InvoiceNumber);
             }
         }
 
-        private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po)
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string substituteItemNumber)
         {
-            // get header status into CS
-            // values are " ", "P", "I", "D" = " " open, "P" Processing, "I" Invoicing, "D" Delete
+            orderFormLineItem["QuantityOrdered"] = quantityOrdered;
+            orderFormLineItem["QuantityShipped"] = quantityShipped;
+            orderFormLineItem["MainFrameStatus"] = displayStatus;
+            orderFormLineItem["SubstitueItemNumber"] = substituteItemNumber;
+        }
+
+        private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po, LineItem[] lineItems)
+        {
             string trimmedConfirmationStatus = confirmation.Header.ConfirmationStatus.Trim().ToUpper();
-            if (String.IsNullOrEmpty(trimmedConfirmationStatus))
-            {
-                po.Status = "NewOrder";
+            if (trimmedConfirmationStatus == Constants.CONFIRMATION_HEADER_CONFIRMED_CODE)
+            { // if confirmation status is blank, then look for exceptions across all line items, not just those in the change order
+                string origOrderNumber = (string)po[Constants.CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER];
+                string currOrderNumber = po.TrackingNumber;
+                bool isChangeOrder = origOrderNumber != currOrderNumber;
+                SetCsPoStatusFromLineItems(po, lineItems, isChangeOrder);
             }
-            else if (trimmedConfirmationStatus.Equals("P"))
+            else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_IN_PROCESS_CODE))
             {
-                po.Status = "Submitted";
+                po.Status = Constants.CONFIRMATION_HEADER_IN_PROCESS_STATUS;
             }
-            else if (trimmedConfirmationStatus.Equals("I"))
+            else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_INVOICED_CODE))
             {
-                po.Status = "InProcess";
+                po.Status = Constants.CONFIRMATION_HEADER_INVOICED_STATUS;
             }
-            else if (trimmedConfirmationStatus.Equals("D"))
+            else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_DELETED_CODE))
             {
-                po.Status = "Cancelled";
+                po.Status = Constants.CONFIRMATION_HEADER_DELETED_STATUS;
+            }
+            else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE))
+            {
+                po.Status = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
             }
 
-
-            po["MasterNumber"] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
+            po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
 
             _log.WriteInformationLog("Updating purchase order status with: " + po.Status + ", for confirmation status: _" + trimmedConfirmationStatus + "_");
 
             return trimmedConfirmationStatus;
+        }
+
+        private static void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder)
+        {
+            if (lineItems.Any(x => ((string)x[Constants.CS_LINE_ITEM_MAIN_FRAME_STATUS]) != Constants.CONFIRMATION_DETAIL_FILLED_STATUS))
+            { // exceptions
+                if (isChangeOrder)
+                    po.Status = Constants.CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_EXCEPTIONS_STATUS;
+                else
+                    po.Status = Constants.CONFIRMATION_HEADER_CONFIRMED_WITH_EXCEPTIONS_STATUS;
+            }
+            else
+            { // no exceptions
+                if (isChangeOrder)
+                {
+                    po.Status = Constants.CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_STATUS;
+                }
+                else
+                {
+                    po.Status = Constants.CONFIRMATION_HEADER_CONFIRMED_STATUS;
+                }
+            }
         }
 
         #endregion
