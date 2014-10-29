@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -23,34 +24,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			this.importLogic = importLogic;
         }
-
-		//[HttpPost]
-		//[ApiKeyedRoute("import/list")]
-		//public long? List()
-		//{
-		//	if (Request.Content.IsMimeMultipartContent())
-		//	{
-
-		//		Request.Content.ReadAsMultipartAsync<MultipartMemoryStreamProvider>(new MultipartMemoryStreamProvider()).ContinueWith((tsk) =>
-		//		{
-		//			MultipartMemoryStreamProvider prvdr = tsk.Result;
-
-		//			foreach (HttpContent ctnt in prvdr.Contents)
-		//			{
-		//				// You would get hold of the inner memory stream here
-		//				Stream stream = ctnt.ReadAsStreamAsync().Result;
-		//				var sr = new StreamReader(stream);
-		//				var myStr = sr.ReadToEnd();
-		//				importLogic.ImportList(myStr);
-		//				// do something witht his stream now
-		//			}
-		//		});
-		//	}
-		//	else
-		//		throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotAcceptable, "This request is not properly formatted"));
-		//	return 1;
-		//}
-
+		
 		[HttpPost]
 		[ApiKeyedRoute("import/list")]
 		public async Task<ListImportModel> List()
@@ -72,6 +46,48 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				return importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileContents);
 			}
+		}
+
+
+		[HttpPost]
+		[ApiKeyedRoute("import/order")]
+		public async Task<OrderImportModel> Order()
+		{
+			if (!Request.Content.IsMimeMultipartContent())
+				throw new InvalidOperationException();
+
+			String stringFileContent = null;
+			OrderImportOptions importOptions = null;
+
+			var provider = new MultipartMemoryStreamProvider();
+			await Request.Content.ReadAsMultipartAsync(provider);
+
+			foreach (var content in provider.Contents)
+			{
+				var file = content;
+				var paramName = file.Headers.ContentDisposition.Name.Trim('\"');
+				var buffer = await file.ReadAsByteArrayAsync();
+				var stream = new MemoryStream(buffer);
+
+				using (var s = new StreamReader(stream))
+				{
+					switch (paramName)
+					{
+						case "file":
+							stringFileContent = s.ReadToEnd();
+							break;
+						case "options":
+							importOptions = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderImportOptions>(s.ReadToEnd());
+							break;
+					}					
+				}
+			}
+
+			if (string.IsNullOrEmpty(stringFileContent) || importOptions == null)
+				return new OrderImportModel() { Success = false, ErrorMessage = "Invalid request" };
+
+			return new OrderImportModel();/// importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileContents);
+			//}
 		}
     }
 }

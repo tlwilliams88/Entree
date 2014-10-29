@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
@@ -16,11 +17,13 @@ namespace KeithLink.Svc.Impl.Logic
 	{
 		private IListServiceRepository listServiceRepository;
 		private ICatalogLogic catalogLogic;
+		private IEventLogRepository eventLogRepository;
 
-		public ImportLogicImpl(IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic)
+		public ImportLogicImpl(IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository)
 		{
 			this.listServiceRepository = listServiceRepository;
 			this.catalogLogic = catalogLogic;
+			this.eventLogRepository = eventLogRepository;
 		}
 
 		public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile)
@@ -59,8 +62,15 @@ namespace KeithLink.Svc.Impl.Logic
 			}
 			catch (Exception ex)
 			{
-				return new ListImportModel() { Success = false, ErrorMessage = ex.Message };
+				eventLogRepository.WriteErrorLog(string.Format("List Import Error for Customer {0}", catalogInfo.CustomerId), ex);
+				return new ListImportModel() { Success = false, ErrorMessage = "An error has occurred while processing the import file" };
 			}
+		}
+
+
+		public Core.Models.Orders.OrderImportModel ImportOrder(UserProfile user, UserSelectedContext catalogInfo, Core.Models.Orders.OrderImportOptions options, string fileContents)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

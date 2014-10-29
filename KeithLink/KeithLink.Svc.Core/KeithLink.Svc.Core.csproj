@@ -210,6 +210,8 @@
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Orders\OrderImportModel.cs" />
+    <Compile Include="Models\Orders\OrderImportOptions.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
