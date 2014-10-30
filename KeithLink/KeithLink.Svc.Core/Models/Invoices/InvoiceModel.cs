@@ -12,40 +12,16 @@ namespace KeithLink.Svc.Core.Models.Invoices
 	[DataContract(Name = "Invoice")]
 	public class InvoiceModel
 	{
-		[DataMember(Name = "invoiceid")]
-		public long InvoiceId { get; set; }
-
+		[DataMember (Name = "id")]
+		public long Id { get; set; }
+		[DataMember(Name = "customernumber")]
+		public string CustomerNumber { get; set; }
 		[DataMember(Name = "invoicenumber")]
 		public string InvoiceNumber { get; set; }
-		[DataMember(Name = "duedate")]
-		public DateTime? DueDate { get; set; }
 		[DataMember(Name = "shipdate")]
 		public DateTime? ShipDate { get; set; }
 		[DataMember(Name = "orderdate")]
 		public DateTime? OrderDate { get; set; }
-		[DataMember(Name = "routenumber")]
-		public int? RouteNumber { get; set; }
-		[DataMember(Name = "stopnumber")]
-		public int? StopNumber { get; set; }
-		[DataMember(Name = "datetimeoflastorder")]
-		public DateTime? DateTimeOfLastOrder { get; set; }
-
-		[DataMember(Name = "customernumber")]
-		public int CustomerNumber { get; set; }
-		[DataMember(Name = "division")]
-		public string Division { get; set; }
-		public string Company { get; set; }
-		public string Department { get; set; }
-		public string WHNumber { get; set; }
-		public int? OrderNumber { get; set; }
-		public string MemoBillCode { get; set; }
-		public string CreditHoldFlag { get; set; }
-		public string TradeSWFlag { get; set; }
-		public string CustomerGroup { get; set; }
-		public string SalesRep { get; set; }
-		public string ChainStoreCode { get; set; }
-
-		public InvoiceType InvoiceType { get; set; }
 
 		[DataMember(Name = "items")]
 		public List<InvoiceItemModel> Items { get; set; }

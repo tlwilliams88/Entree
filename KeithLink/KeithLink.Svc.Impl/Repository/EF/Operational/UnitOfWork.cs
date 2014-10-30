@@ -14,6 +14,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public UnitOfWork()
 		{
 			this.Context = new BEKDBContext();
+			this.Context.Configuration.LazyLoadingEnabled = true;
 		}
 
 		public UnitOfWork(string nameOrConnectionString)

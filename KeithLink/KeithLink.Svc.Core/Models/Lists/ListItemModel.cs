@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
-    [Serializable]
     public class ListItemModel:BaseProductInfo, IComparable
     {
         [DataMember(Name = "listitemid")]
@@ -28,7 +27,12 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public decimal? QuantityInCart { get; set; }
 		[DataMember(Name = "category")]
 		public string Category { get; set; }
-        
+
+        public DateTime CreatedUtc { get; set; }
+        public DateTime ModifiedUtc { get; set; }
+
+        public KeithLink.Svc.Core.Enumerations.List.ListItemStatus Status { get; set; }
+
 		public int CompareTo(object obj)
 		{
 			return this.Position.CompareTo(((ListItemModel)obj).Position);

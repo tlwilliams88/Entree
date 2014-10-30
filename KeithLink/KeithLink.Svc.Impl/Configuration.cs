@@ -86,6 +86,7 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_RECENT_ITEMS_TO_KEEP = "RecentItemsToKeep";
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
+        private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
 
 
         #endregion
@@ -546,6 +547,15 @@ namespace KeithLink.Svc.Impl
 				return ValueParsingUtil.ParseInt(value, DEFAULT_RECENT_ITEMS_TO_KEEP);
 			}
 		}
+
+        public static double ListItemsDaysNew
+        {
+            get
+            {
+                string value = GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
+                return ValueParsingUtil.ParseDouble(value, String.Empty);
+            }
+        }
 
         #endregion
     }

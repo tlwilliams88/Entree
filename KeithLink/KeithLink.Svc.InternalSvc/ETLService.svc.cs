@@ -32,6 +32,7 @@ namespace KeithLink.Svc.InternalSvc
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
             Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile());
+			Task.Factory.StartNew(() => invoiceLogic.ImportInvoices());
             return true;
         }
         
