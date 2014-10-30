@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var invoices = invoiceRepository.Read(x => x.CustomerNumber.Equals(customerId)).ToList();
 
-			return invoices.Select(i => i.ToInvoiceModel()).ToList();
+			return invoices.Select(i => i.ToInvoiceModel(true)).ToList();
 		}
 
 		public void DeleteInvoice(long Id)
