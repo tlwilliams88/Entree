@@ -219,6 +219,14 @@
     <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.Designer.cs">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.cs" />
+    <Compile Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.Designer.cs">
+      <DependentUpon>201410291832034_Remove_ListItemHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.cs" />
+    <Compile Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.Designer.cs">
+      <DependentUpon>201410291952472_add_ListItem_Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -593,6 +601,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.resx">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.resx">
+      <DependentUpon>201410291832034_Remove_ListItemHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.resx">
+      <DependentUpon>201410291952472_add_ListItem_Status.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -16,7 +16,6 @@ namespace KeithLink.Svc.Core.Models.EF
 		Worksheet
 	}
 
-
 	public class List: BaseEFModel
 	{
 		public Guid UserId { get; set; }
@@ -27,8 +26,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		public string AccountNumber { get; set; }
 		public bool Shared { get; set; }
 		public bool ReadOnly { get; set; }
-        public string ListItemHash { get; set; }
-
+        
 		public virtual ICollection<ListItem> Items { get; set; }
 	}
 }

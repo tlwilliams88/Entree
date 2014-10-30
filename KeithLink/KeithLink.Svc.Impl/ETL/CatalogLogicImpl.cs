@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -329,6 +330,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         #region Helper Methods
 
+        #region Catalog and ES Helpers
         private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
         {
             var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
@@ -633,7 +635,6 @@ namespace KeithLink.Svc.Impl.ETL
 		//	return new Allergen() { allergentype = row.GetString("AllergenTypeDesc"), level = row.GetString("LevelOfContainment") };
 		//}
 
-
         private static Diet MapDiet(DataRow row)
         {
             return new Diet() { DietType = row.GetString("DietType") };
@@ -651,46 +652,47 @@ namespace KeithLink.Svc.Impl.ETL
             };
         }
 
+        #endregion  
+
+        #region Contract and Worksheet Helpers
+
         private void CreateOrUpdateContractLists(
-   KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-   , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
-   , string contractNumber)
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
+            , string contractNumber)
         {
 
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
-
-            //test hash
-            /*
-            if (!contractNumber.Equals(null) && !contractNumber.Equals(String.Empty))
-            {
-                Temp_GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
-            }
-            */
-
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract, true);
 
             if (lists.Count == 0 && contractNumber != null && !contractNumber.Equals(String.Empty))
             {
-                //create
-                ListModel listModel = CreateUserList(
-                contractNumber,
-                GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber),
-                Core.Models.EF.ListType.Contract,
-                true);
-
-                listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Contract);
+                listLogic.CreateList(   
+                    userProfile.UserId 
+                    , userSelectedContext 
+                    , CreateUserList(
+                        contractNumber
+                        , GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber)
+                        , Core.Models.EF.ListType.Contract
+                        , true)
+                    , Core.Models.EF.ListType.Contract);
             }
-
-
+            
             if (lists.Count == 1 && contractNumber != null && !contractNumber.Equals(String.Empty))
             {
-                List<ListItemModel> newItems = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
+                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber));
+                Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
+                SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
+                SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-                if (lists[0].ListItemHash != GenerateMD5Hash(newItems))
+                if (!GenerateMD5Hash(existingItemNumbers).Equals(GenerateMD5Hash(newItemNumbers)))
                 {
-                    //run compare process
+                    CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
+                    CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
                 }
-
-                //listLogic.UpdateList(lists[0]);
+                else
+                {
+                    CompareListItemUpdatedDates(existingItemDictionary);
+                }
             }
             else if (lists.Count == 1 && (contractNumber == null || contractNumber.Equals(String.Empty)))
             {
@@ -702,43 +704,41 @@ namespace KeithLink.Svc.Impl.ETL
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
         {
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
-
-            //test hash
-            /*
-            if (!contractNumber.Equals(null) && !contractNumber.Equals(String.Empty))
-            {
-                Temp_GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
-            }
-            */
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet, true);
 
             if (lists.Count == 0)
             {
-                //create
-                ListModel listModel = CreateUserList(
-                String.Empty,
-                GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId),
-                Core.Models.EF.ListType.Worksheet,
-                true);
-
-                listLogic.CreateList(userProfile.UserId, userSelectedContext, listModel, Core.Models.EF.ListType.Worksheet);
+                listLogic.CreateList(
+                    userProfile.UserId
+                    , userSelectedContext
+                    , CreateUserList(
+                        String.Empty
+                        , GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId)
+                        , Core.Models.EF.ListType.Worksheet
+                        , true)
+                    , Core.Models.EF.ListType.Worksheet);
             }
-
 
             if (lists.Count == 1)
             {
-                List<ListItemModel> newItems = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
+                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId));
+                Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
+                SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
+                SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-                if (lists[0].ListItemHash != GenerateMD5Hash(newItems))
+                if (!GenerateMD5Hash(existingItemNumbers).Equals(GenerateMD5Hash(newItemNumbers)))
                 {
-                    //run compare process
+                    CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
+                    CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
                 }
-
-                //listLogic.UpdateList(lists[0]);
+                else
+                {
+                    CompareListItemUpdatedDates(existingItemDictionary);
+                } 
+                
             }
             
         }
-
 
         private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)
         {
@@ -754,7 +754,6 @@ namespace KeithLink.Svc.Impl.ETL
             list.Name = GetListName(name, listType);
             list.Items = items;
             list.ReadOnly = readOnly;
-            list.ListItemHash = GenerateMD5Hash(items);
             return list;
         }
 
@@ -793,32 +792,6 @@ namespace KeithLink.Svc.Impl.ETL
                                 }).ToList();
             return contractItems;
         }
-
-        private List<ListItemModel> Temp_GetContractItems(
-             string customerNumber,
-             string branchId,
-             string contractId
-             )
-        {
-
-            List<ListItemModel> contractItems = stagingRepository
-                            .ReadContractItems(customerNumber, branchId, contractId)
-                            .AsEnumerable()
-                            .Select(itemRow =>
-                                new ListItemModel
-                                {
-                                    ItemNumber = itemRow.GetString("ItemNumber"),
-                                    Position = itemRow.GetInt("BidLineNumber"),
-                                    Category = itemRow.GetString("CategoryDescription")
-                                }).ToList();
-
-            string itemHash = GenerateMD5Hash(contractItems);
-
-            File.AppendAllText(@"c:\testHash.txt", itemHash + "\r\n");
-
-            return contractItems;
-        }
-
 
         private List<ListItemModel> GetWorksheetItems(
              string customerNumber,
@@ -864,6 +837,95 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
+        private void CompareContractItems(
+            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
+            , string contractNumber)
+        {
+            //get existing contract items from list logic
+            //Dictionary<string, ListItemModel> existingContractItems = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract).Itesm;
+
+            //get new contract items from app_data
+
+            
+            Dictionary<string, ListItemModel> testDictionary = new Dictionary<string, ListItemModel>();
+            List<string> keys = testDictionary.Keys.ToList<string>();
+        }
+
+        private Dictionary<string, ListItemModel> CreateListItemDictionary(List<ListItemModel> listItems)
+        {
+            Dictionary<string, ListItemModel> itemDictionary = new Dictionary<string, ListItemModel>();
+            
+            foreach (ListItemModel lim in listItems)
+            {
+                itemDictionary.Add(lim.ItemNumber, lim);
+            }
+
+            return itemDictionary;
+        }
+
+        private void CompareNewToExistingListItems(ListModel list, Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
+        {
+            foreach (KeyValuePair<string, ListItemModel> kvp in newItemDictionary)
+            {
+                if (existingItemDictionary.ContainsKey(kvp.Key))
+                {
+                    if (existingItemDictionary[kvp.Key].Status == Core.Enumerations.List.ListItemStatus.Added &&
+                        existingItemDictionary[kvp.Key].ModifiedUtc.Day <= DateTime.Today.AddDays(Configuration.ListItemsDaysNew * -1).Day)
+                    {
+                        existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Current;
+                        listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
+                    }
+                    if (existingItemDictionary[kvp.Key].Status == Core.Enumerations.List.ListItemStatus.Deleted)
+                    {
+                        existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Added;
+                        listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
+                    }
+                }
+                else
+                {
+                    newItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Added;
+                    listLogic.AddItem(list.ListId, newItemDictionary[kvp.Key]);
+                }
+            }
+
+            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
+            {
+                if (!newItemDictionary.ContainsKey(kvp.Key))
+                {
+                    existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Deleted;
+                    listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
+                }
+            }
+        }
+
+        private void CompareExistingToNewListItems(Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
+        {
+            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
+            {
+                if (kvp.Value.Status == Core.Enumerations.List.ListItemStatus.Added &&
+                    kvp.Value.ModifiedUtc.Day <= DateTime.Today.AddDays(Configuration.ListItemsDaysNew * -1).Day)
+                {
+                    existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Current;
+                    listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
+                }
+            }
+        }
+
+        private void CompareListItemUpdatedDates(Dictionary<string, ListItemModel> existingItemDictionary)
+        {
+            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
+            {
+                if (kvp.Value.Status == Core.Enumerations.List.ListItemStatus.Added &&
+                    kvp.Value.ModifiedUtc.Day <= DateTime.Today.AddDays(Configuration.ListItemsDaysNew * -1).Day)
+                {
+                    existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Current;
+                    listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
+                }
+            }
+        }
+
+        #endregion
         #endregion
 
     }

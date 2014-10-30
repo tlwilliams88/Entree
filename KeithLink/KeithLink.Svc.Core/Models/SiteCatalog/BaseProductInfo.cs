@@ -8,8 +8,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
 	[DataContract]
-    [Serializable]
-	public class BaseProductInfo
+    public class BaseProductInfo
 	{
 		[DataMember(Name = "itemnumber")]
 		public string ItemNumber { get; set; }

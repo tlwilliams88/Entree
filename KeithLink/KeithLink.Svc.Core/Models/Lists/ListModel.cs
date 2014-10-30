@@ -31,9 +31,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "isworksheet")]
 		public bool IsWorksheet { get; set; }
 
-        public string ListItemHash { get; set; }
-
-		public string BranchId { get; set; }
+        public string BranchId { get; set; }
 		
 		//public string FormattedName(string branchId) 
 		//{ 

@@ -107,6 +107,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
     <Compile Include="Events\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
