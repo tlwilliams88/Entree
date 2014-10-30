@@ -255,6 +255,10 @@
     <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.Designer.cs">
       <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.cs" />
+    <Compile Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.Designer.cs">
+      <DependentUpon>201410302145006_Merge_EF_Models_JT_20141030.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -671,6 +675,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.resx">
       <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.resx">
+      <DependentUpon>201410302145006_Merge_EF_Models_JT_20141030.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
