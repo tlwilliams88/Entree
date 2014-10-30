@@ -12,7 +12,7 @@ angular.module('bekApp')
 
     var Service = {
       getProfile: function(email) {
-        var data = { 
+        var data = {
           params: {
             email: email
           }
@@ -35,7 +35,7 @@ angular.module('bekApp')
 
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
-          if (profile.rolename === 'guest') { 
+          if (profile.rolename === 'guest') {
             LocalStorage.setBranchId(profile.branchid);
             LocalStorage.setCurrentLocation(profile.branchid);
           } else {
@@ -89,7 +89,7 @@ angular.module('bekApp')
             // profile.role = 'Owner';
             $log.debug(profile);
             LocalStorage.setProfile(profile);
-            deferred.resolve(profile);  
+            deferred.resolve(profile);
           } else {
             deferred.reject(data.errorMessage);
           }
