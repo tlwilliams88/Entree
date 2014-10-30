@@ -1,11 +1,17 @@
 ﻿using Autofac;
 using Autofac.Integration.Wcf;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.InternalSvc.Interfaces;
+using CommerceServer.Core.Runtime.Orders;
+using CommerceServer.Core.Orders;
+using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,17 +24,8 @@ namespace KeithLink.Svc.InternalSvc
 {
     public class Global : System.Web.HttpApplication {
         #region attributes
-        const int TIMER_DURATION_TICK = 2000;
-        
-        private bool _keepQueueListening;
-
-        private Thread _orderHistoryThread;
-        #endregion
-
-        #region ctor
-        public Global() {
-            _keepQueueListening = true;
-        }
+        private IConfirmationLogic _confirmationLogic;
+        private IOrderHistoryLogic _orderHistoryLogic;
         #endregion
 
         #region events
@@ -37,7 +34,7 @@ namespace KeithLink.Svc.InternalSvc
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
 
-            //InitializeOrderUpdateTimer();
+            InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
         }
 
@@ -68,55 +65,34 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-            _keepQueueListening = false;
-
-            TerminateOrderHistoryTimer();
+            TerminateConfirmationThread();
+            TerminateOrderHistoryThread();
         }
         #endregion
 
         #region methods
+        private void InitializeConfirmationMoverThread() {
+            _confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
+            _confirmationLogic.ListenForQueueMessages();
+        }
+
         private void InitializeOrderUpdateThread() {
             System.Diagnostics.Debugger.Launch();
 
-            ThreadStart start = new ThreadStart(OrderHistoryQueueListener);
-            _orderHistoryThread = new Thread(start);
-
-            _orderHistoryThread.Start();
+            _orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
+            _orderHistoryLogic.ListenForQueueMessages();
         }
 
-        private void OrderHistoryQueueListener() 
-        {
-            while (_keepQueueListening)
-            {
-                
-                try {
-                    IOrderHistoryQueueRepository historyQueue = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryQueueRepository>();
-                    IOrderHistoryLogic historyLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
-
-                    string rawOrder = historyQueue.ConsumeFromQueue();
-
-                    while (rawOrder != null) {
-                        OrderHistoryFile historyFile = new OrderHistoryFile();
-
-                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder);
-                        System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
-
-                        historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
-
-                        historyLogic.Save(historyFile);
-
-                        rawOrder = historyQueue.ConsumeFromQueue();
-
-                    }
-                } catch (Exception ex) {
-                    IEventLogRepository eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
-                    eventLogRepository.WriteErrorLog("Error in Internal Service Queue Listener", ex);
-                }
-
-                System.Threading.Thread.Sleep(TIMER_DURATION_TICK);
-            }
+        private void TerminateConfirmationThread() {
+            if (_confirmationLogic != null)
+                _confirmationLogic.Stop();
         }
 
-        #endregion
-    }
+        private void TerminateOrderHistoryThread() {
+            if (_orderHistoryLogic != null)
+                _orderHistoryLogic.StopListening();
+        }
+	}
+
+    #endregion
 }

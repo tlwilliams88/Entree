@@ -96,7 +96,7 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
             }
             catch (Exception e)
             {
-                if ((_handler == null) == false & _handler.Connected)
+                if ((_handler != null) && _handler.Connected)
                 {
                     _handler.Shutdown(SocketShutdown.Both);
                     _handler.Close();

@@ -8,13 +8,14 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Repository.Confirmations;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Lists;
@@ -79,6 +80,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>(); 
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>(); 
+            builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
+            builder.RegisterType<ConfirmationListenerRepositoryImpl>().As<ISocketListenerRepository>();
+            builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();

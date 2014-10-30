@@ -62,10 +62,25 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             if (record.Length >= HEADER_STARTPOS_STPNUM + HEADER_LENGTH_STPNUM) { value.StopNumber = record.Substring(HEADER_STARTPOS_STPNUM, HEADER_LENGTH_STPNUM); }
         }
 
+        public static void MergeWithEntity(this OrderHistoryHeader value, ref EF.OrderHistoryHeader entity) {
+            entity.OrderSystem = value.OrderSystem.ToShortString();
+            entity.BranchId = value.BranchId;
+            entity.CustomerNumber = value.CustomerNumber;
+            entity.InvoiceNumber = value.InvoiceNumber;
+            entity.DeliveryDate = value.DeliveryDate;
+            entity.PONumber = value.PONumber;
+            entity.ControlNumber = value.ControlNumber;
+            entity.OrderSystem = value.OrderStatus;
+            entity.FutureItems = value.FutureItems;
+            entity.ErrorStatus = value.ErrorStatus;
+            entity.RouteNumber = value.RouteNumber;
+            entity.StropNumber = value.StopNumber;
+        }
+
         public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
             EF.OrderHistoryHeader retVal = new EF.OrderHistoryHeader();
 
-            retVal.OrderSystem = value.OrderSystem.ToString();
+            retVal.OrderSystem = value.OrderSystem.ToShortString();
             retVal.BranchId = value.BranchId;
             retVal.CustomerNumber = value.CustomerNumber;
             retVal.InvoiceNumber = value.InvoiceNumber;

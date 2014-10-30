@@ -12,5 +12,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         #region ctor
         public OrderHistoyrHeaderRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         #endregion
+
+        #region methods
+        public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
+            return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+        }
+        #endregion
     }
 }

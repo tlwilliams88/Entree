@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.Enumerations {
             }
         }
 
-        public static string ToString(this OrderSource value) {
+        public static string ToShortString(this OrderSource value) {
             switch (value) {
                 case OrderSource.Entree:
                     return "B";

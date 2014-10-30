@@ -19,29 +19,25 @@ angular.module('bekApp')
         // check valid cart id
         var selectedCart = CartService.findCartById(id);
         if (selectedCart) {
-          selectedBasket.isChangeOrder = false;
-          selectedBasket.promise = CartService.getCart(selectedCart.id);
+          selectedBasket = CartService.getCart(selectedCart.id);
         }
 
         // check valid change order number
         var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, id);
         if (!selectedCart && selectedChangeOrder) {
-          selectedBasket.isChangeOrder = true;
-          selectedBasket.promise = selectedChangeOrder;
+          selectedBasket = selectedChangeOrder;
         }
 
         // if invalid id, select a cart
         var defaultCart = CartService.getSelectedCart();
         if (!selectedCart && !selectedChangeOrder && defaultCart) {
-          selectedBasket.isChangeOrder = false;
-          selectedBasket.promise = CartService.getCart(defaultCart.id);
+          selectedBasket = CartService.getCart(defaultCart.id);
         }
 
         // default to change order if no carts exist
         var defaultChangeOrder = changeOrders[0];
         if (!selectedCart && !selectedChangeOrder && !defaultCart && defaultChangeOrder) {
-          selectedBasket.isChangeOrder = true;
-          selectedBasket.promise = defaultChangeOrder;
+          selectedBasket = defaultChangeOrder;
         }
 
         return selectedBasket;
