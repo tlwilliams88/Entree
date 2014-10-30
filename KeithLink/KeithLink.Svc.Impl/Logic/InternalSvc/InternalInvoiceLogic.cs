@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Common.Core.Extensions;
 
 using EntityFramework.BulkInsert.Extensions;
 using System.Transactions;
@@ -49,6 +50,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var returnInvoice = invoice.ToInvoiceModel();
 
 			return returnInvoice;
+		}
+
+		public List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo)
+		{
+			var customerId = catalogInfo.CustomerId.ToInt().Value;
+
+			var invoices = invoiceRepository.Read(x => x.CustomerNumber.Equals(customerId)).ToList();
+
+			return invoices.Select(i => i.ToInvoiceModel(true)).ToList();
 		}
 
 		public void DeleteInvoice(long Id)

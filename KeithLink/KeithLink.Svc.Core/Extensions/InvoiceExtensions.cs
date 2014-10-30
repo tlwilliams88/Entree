@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Core.Extensions
 			};
 		}
 
-		public static InvoiceModel ToInvoiceModel(this Invoice invoice)
+		public static InvoiceModel ToInvoiceModel(this Invoice invoice, bool headerOnly = false)
 		{
 			return new InvoiceModel()
 			{
@@ -83,7 +83,8 @@ namespace KeithLink.Svc.Core.Extensions
 				StopNumber = invoice.StopNumber.HasValue ? invoice.StopNumber.Value : 0,
 				TradeSWFlag = invoice.TradeSWFlag,
 				WHNumber = invoice.WHNumber,
-				Items = invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
+				Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
+					InvoiceItemId = i.Id,
 					AmountDue = i.AmountDue.HasValue ? i.AmountDue.Value : 0,
 					BrokenCaseCode = i.BrokenCaseCode,
 					CatchWeightCode = i.CatchWeightCode,
@@ -112,6 +113,7 @@ namespace KeithLink.Svc.Core.Extensions
 		{
 			return new KeithLink.Svc.Core.Models.EF.InvoiceItem()
 			{
+				Id = item.InvoiceItemId,
 				AmountDue = item.AmountDue,
 				BrokenCaseCode = item.BrokenCaseCode,
 				CatchWeightCode = item.CatchWeightCode,
