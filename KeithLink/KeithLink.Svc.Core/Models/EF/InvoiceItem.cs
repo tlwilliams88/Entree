@@ -31,6 +31,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		public string CustomerPO { get; set; }
 		public string CombinedStatmentCustomer { get; set; }
 		public string PriceBook { get; set; }
+		public string ItemNumber { get; set; }
 
 		public long InvoiceId { get; set; }
 

@@ -122,7 +122,8 @@ namespace KeithLink.Svc.Impl.ETL
 				QuantityOrdered = row.GetNullableInt("QuantityOrdered"),
 				QuantityShipped = row.GetNullableInt("QuantityShipped"),
 				VendorNumber = row.GetNullableInt("VendorNumber"),
-				InvoiceNumber = row.GetString("InvoiceNumber")
+				InvoiceNumber = row.GetString("InvoiceNumber"),
+				ItemNumber = row.GetString("ItemNumber")
 			};
 			return invoiceItemModel;
 		}

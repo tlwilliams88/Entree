@@ -53,6 +53,8 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string CombinedStatmentCustomer { get; set; }
 		[DataMember(Name = "pricebook")]
 		public string PriceBook { get; set; }
+		[DataMember(Name = "itemnumber")]
+		public string ItemNumber { get; set; }
 
 		
 		public string InvoiceNumber { get; set; }

@@ -104,7 +104,8 @@ namespace KeithLink.Svc.Core.Extensions
 					PriceBookNumber = i.PriceBookNumber,
 					QuantityOrdered = i.QuantityOrdered.HasValue ? i.QuantityOrdered.Value : 0,
 					QuantityShipped = i.QuantityShipped.HasValue ? i.QuantityShipped.Value : 0,
-					VendorNumber = i.VendorNumber.HasValue ? i.VendorNumber.Value : 0
+					VendorNumber = i.VendorNumber.HasValue ? i.VendorNumber.Value : 0,
+					ItemNumber = i.ItemNumber
 				}).ToList()
 			};
 		}
@@ -134,7 +135,8 @@ namespace KeithLink.Svc.Core.Extensions
 				QuantityOrdered = item.QuantityOrdered,
 				QuantityShipped = item.QuantityShipped,
 				VendorNumber = item.VendorNumber,
-				InvoiceNumber = item.InvoiceNumber
+				InvoiceNumber = item.InvoiceNumber,
+				ItemNumber = item.ItemNumber
 			};
 		}
 	}
