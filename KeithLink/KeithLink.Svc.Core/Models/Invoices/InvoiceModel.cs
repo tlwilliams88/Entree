@@ -34,17 +34,28 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public int CustomerNumber { get; set; }
 		[DataMember(Name = "division")]
 		public string Division { get; set; }
+		[DataMember(Name = "company")]
 		public string Company { get; set; }
+		[DataMember(Name = "department")]
 		public string Department { get; set; }
+		[DataMember(Name = "whnumber")]
 		public string WHNumber { get; set; }
+		[DataMember(Name = "ordernumber")]
 		public int? OrderNumber { get; set; }
+		[DataMember(Name = "memobillcode")]
 		public string MemoBillCode { get; set; }
+		[DataMember(Name = "creditholdflag")]
 		public string CreditHoldFlag { get; set; }
+		[DataMember(Name = "tradeswflag")]
 		public string TradeSWFlag { get; set; }
+		[DataMember(Name = "customergroup")]
 		public string CustomerGroup { get; set; }
+		[DataMember(Name = "salesrep")]
 		public string SalesRep { get; set; }
+		[DataMember(Name = "chainstorecode")]
 		public string ChainStoreCode { get; set; }
 
+		[DataMember(Name = "invoicetype")]
 		public InvoiceType InvoiceType { get; set; }
 
 		[DataMember(Name = "items")]
