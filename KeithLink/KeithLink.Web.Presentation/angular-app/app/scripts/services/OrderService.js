@@ -49,10 +49,10 @@ angular.module('bekApp')
       },
 
       updateOrder: function(order) {
-        var params = {};
-        return Order.update(params, order).$promise.then(function(order) {
-          return order;
-        });
+        // return $http.put('/order', order).then(function(response) {
+        //   return response.data;
+        // });
+        return Order.update(null, order).$promise;
       },
 
       findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {

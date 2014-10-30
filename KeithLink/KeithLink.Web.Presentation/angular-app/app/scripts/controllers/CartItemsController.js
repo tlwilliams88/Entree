@@ -115,11 +115,7 @@ angular.module('bekApp')
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
-        if (item.price) {
-          subtotal += (item.quantity || 0) * item.price;
-        } else {
-          subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
-        }
+        subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
       });
       return subtotal;
     };
@@ -140,6 +136,7 @@ angular.module('bekApp')
 
       return OrderService.updateOrder(changeOrder).then(function(order) {
         $scope.currentCart = order;
+        $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
         return order.ordernumber;
       });
     };
