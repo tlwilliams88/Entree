@@ -348,7 +348,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try
             {
-                _profileLogic.GetUsers(userFilter);
+                retVal.SuccessResponse = _profileLogic.GetUsers(userFilter);
             }
             catch (ApplicationException axe)
             {
