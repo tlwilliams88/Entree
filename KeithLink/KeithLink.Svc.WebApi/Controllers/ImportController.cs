@@ -86,7 +86,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			if (string.IsNullOrEmpty(stringFileContent) || importOptions == null)
 				return new OrderImportModel() { Success = false, ErrorMessage = "Invalid request" };
 
-			return new OrderImportModel();/// importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileContents);
+			return importLogic.ImportOrder(this.AuthenticatedUser, this.SelectedUserContext, importOptions, stringFileContent);
 			//}
 		}
     }
