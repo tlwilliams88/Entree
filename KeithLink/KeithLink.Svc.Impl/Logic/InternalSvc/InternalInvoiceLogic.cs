@@ -54,9 +54,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo)
 		{
-			var customerId = catalogInfo.CustomerId.ToInt().Value;
 
-			var invoices = invoiceRepository.Read(x => x.CustomerNumber.Equals(customerId)).ToList();
+			var invoices = invoiceRepository.Read(x => x.CustomerNumber.Equals(catalogInfo.CustomerId)).ToList();
 
 			return invoices.Select(i => i.ToInvoiceModel(true)).ToList();
 		}
@@ -110,7 +109,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				unitOfWork.Context.BulkInsert<Invoice>(invoiceEntities, 5000);
 
 				var insertedInvoices = unitOfWork.Context.Invoices.ToList();
-
+								
 				Parallel.ForEach(itemEntities, item =>
 				{
 					item.InvoiceId = insertedInvoices.Where(i => i.InvoiceNumber.Equals(item.InvoiceNumber)).FirstOrDefault().Id;
