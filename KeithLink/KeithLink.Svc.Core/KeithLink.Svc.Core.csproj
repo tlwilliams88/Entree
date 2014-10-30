@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
     <Compile Include="ETL\IInvoiceLogic.cs" />
     <Compile Include="Events\EventArgs\ExceptionEventArgs.cs" />
