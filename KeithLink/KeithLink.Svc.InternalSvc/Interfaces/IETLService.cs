@@ -19,5 +19,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool ImportCatalogLists();
         [OperationContract]
         bool UpdateCustomerOrganizations();
+		[OperationContract]
+		bool ImportInvoices();
     }
 }
