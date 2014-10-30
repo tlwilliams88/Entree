@@ -49,15 +49,18 @@
             <div class="col-md-6">
               <div class="listHeader">NA / RA Numbers</div>
               <ul class="list-group scrollable-list">
-                <li class="stripedLi noSelect" ng-repeat="group in regionGroups">
-                  <span ng-click="group.show = !group.show" class="list-group-item">
-                    <input type="checkbox" ng-click="toggleSelectCustomerGroup(group.customers);$event.stopPropagation();" class="inline-checkbox"/>
-                    {{group.groupNumber}}
-                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-left" ng-show="!group.show"></span>
-                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-down" ng-show="group.show"></span>
+                <li class="stripedLi noSelect" ng-repeat="customerPerGroup in customersToFilter() | filter:filterCustomers">
+                  <span class="list-group-item" ng-init="showGroup = true" ng-click="showGroup = !showGroup">
+                    <input type="checkbox" class="inline-checkbox" ng-init="groupChecked = false" ng-checked="groupChecked" ng-click="groupChecked = !groupChecked; selectAllCustomersInGroup(customerPerGroup.nationalOrRegionalAccountNumber, groupChecked);$event.stopPropagation();"/>
+                    {{customerPerGroup.nationalOrRegionalAccountNumber}}
+                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-left" ng-show="!showGroup"></span>
+                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-down" ng-show="showGroup"></span>
                   </span>
-                  <ul class="list-group child-list-group" ng-show="group.show" ng-repeat="customer in group.customers | filter:customerSearch">
-                    <li class="list-group-item"><input type="checkbox" ng-click="toggleSelectCustomer(customer);" class="inline-checkbox"/>{{customer.customerNumber}}</li>
+                  <ul class="list-group child-list-group" ng-show="showGroup">
+                    <li class="list-group-item" ng-repeat="customer in customers | filter:{nationalOrRegionalAccountNumber: customerPerGroup.nationalOrRegionalAccountNumber} | filter : customerSearch">
+                      <input type="checkbox" class="inline-checkbox" ng-checked="customer.selected" ng-click="customer.selected = !customer.selected; updateSelectedList();"/>
+                      {{customer.customerNumber}}
+                    </li>
                   </ul>
                 </li>
               </ul>
@@ -65,8 +68,8 @@
             <div class="col-md-6">
               <div class="listHeader">Customer Numbers</div>
               <ul class="list-group scrollable-list">
-                <li class="list-group-item" ng-repeat="customer in unassignedGroup | filter:customerSearch">
-                  <input type="checkbox" ng-click="toggleSelectCustomer(customer);" class="inline-checkbox"/>{{customer.customerNumber}}
+                <li class="list-group-item" ng-repeat="customer in customers | filter:filterOutGroups | filter:customerSearch">
+                  <input type="checkbox" ng-click="customer.selected = !customer.selected; updateSelectedList();" ng-checked="customer.selected" class="inline-checkbox"/>{{customer.customerNumber}}
                 </li>
               </ul>
             </div>
@@ -103,7 +106,7 @@
         <h3>Selected:</h3>
         <ul class="list-group scrollable-list">
           <li class="list-group-item" ng-repeat="customer in selectedCustomers">
-            <input type="checkbox" class="inline-checkbox" ng-click="toggleSelectCustomer(customer);"/>
+            <input type="checkbox" ng-checked="customer.selected" class="inline-checkbox" ng-click="customer.selected = !customer.selected; updateSelectedList();"/>
             {{customer.customerNumber}}
           </li>
         </ul>
