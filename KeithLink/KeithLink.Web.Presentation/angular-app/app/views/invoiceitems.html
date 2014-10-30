@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    Order Details
+    Invoice Details
   </div>
   <div header-buttons>
     <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
@@ -11,7 +11,7 @@
 <div class="row">
   <div class="col-sm-12 col-md-9 col-lg-8">
     <div class="info-box">
-      <h3 class="no-margin">ORDER INFORMATION</h3>
+      <h3 class="no-margin">INVOICE INFORMATION</h3>
       <div class="order-item">
         <div class="order-item-title">Order #</div>
         <div class="order-item-value-1">{{order.ordernumber}}</div>
@@ -147,7 +147,7 @@
       </td>
     </tr> <!-- end Filter Row -->
 
-    <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+    <tr ng-repeat-start="item in (filteredItems = (invoice.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
       <td>
         <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
       </td>
