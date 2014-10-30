@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
@@ -215,6 +216,14 @@
     <Compile Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.Designer.cs">
       <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410292043174_UpdatedInvoiceModels.cs" />
+    <Compile Include="Repository\EF\Migrations\201410292043174_UpdatedInvoiceModels.Designer.cs">
+      <DependentUpon>201410292043174_UpdatedInvoiceModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410292217178_UpdatedInvoiceModels2.cs" />
+		<Compile Include="Repository\EF\Migrations\201410292217178_UpdatedInvoiceModels2.Designer.cs">
+			<DependentUpon>201410292217178_UpdatedInvoiceModels2.cs</DependentUpon>
+		</Compile>
     <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.cs" />
     <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.Designer.cs">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
@@ -591,6 +600,12 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410281730154_Add Invoice entities.resx">
       <DependentUpon>201410281730154_Add Invoice entities.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410292043174_UpdatedInvoiceModels.resx">
+      <DependentUpon>201410292043174_UpdatedInvoiceModels.cs</DependentUpon>
+    </EmbeddedResource>
+		<EmbeddedResource Include="Repository\EF\Migrations\201410292217178_UpdatedInvoiceModels2.resx">
+			<DependentUpon>201410292217178_UpdatedInvoiceModels2.cs</DependentUpon>
+		</EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.resx">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </EmbeddedResource>

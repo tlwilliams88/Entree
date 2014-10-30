@@ -78,13 +78,16 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
 			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
+<<<<<<< HEAD
 			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
 			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
+=======
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<ConfirmationListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
-			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
+>>>>>>> 8dfa99095fd0a7d775055b2857a6db68c5375491
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();

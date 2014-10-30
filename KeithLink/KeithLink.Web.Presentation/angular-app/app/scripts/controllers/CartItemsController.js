@@ -125,14 +125,8 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
-      var idx;
-      if ($scope.isChangeOrder) {
-        idx = $scope.currentCart.lineItems.indexOf(item);
-        $scope.currentCart.lineItems.splice(idx, 1);
-      } else {
-        idx = $scope.currentCart.items.indexOf(item);
-        $scope.currentCart.items.splice(idx, 1);
-      }
+      var idx = $scope.currentCart.items.indexOf(item);
+      $scope.currentCart.items.splice(idx, 1);
       $scope.cartForm.$setDirty();
     };
 
@@ -142,7 +136,7 @@ angular.module('bekApp')
 
     $scope.saveChangeOrder = function(order) {
       var changeOrder = angular.copy(order);
-      changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
+      changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
 
       return OrderService.updateOrder(changeOrder).then(function(order) {
         $scope.currentCart = order;
@@ -169,8 +163,8 @@ angular.module('bekApp')
     };
 
     $scope.cancelOrder = function(changeOrder) {
-      OrderService.cancelOrder(changeOrder.commerceId).then(function() {
-        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceId', changeOrder.commerceId);
+      OrderService.cancelOrder(changeOrder.commerceid).then(function() {
+        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
         var idx = $scope.changeOrders.indexOf(changeOrderFound);
         $scope.changeOrders.splice(idx, 1);
         $scope.goToCart();
@@ -184,12 +178,7 @@ angular.module('bekApp')
     var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      var items;
-      if ($scope.currentCart.lineItems) {
-        items = $scope.currentCart.lineItems.length;
-      } else {
-        items = $scope.currentCart.items.length;
-      }
+      var items = $scope.currentCart.items.length;
 
       if ($scope.currentCart && $scope.itemsToDisplay < items) {
         $scope.itemsToDisplay += itemsPerPage;

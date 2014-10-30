@@ -1,143 +1,124 @@
 <div class="col-xs-12">
-    <h2>Add A User To Your Account</h2>
+  <h2>Add Users</h2>
 
-    <p>
-        Add a user to your account by completing all fields below. You may create a new profile or search for and add
-        previously registered users. You may return and edit this information at any time. Once the user profile is
-        created, an email will be sent to the new user (using the account ID entered) inviting them to login and
-        complete their profile. A confirmation email will be sent to the account administrator as well.
-    </p>
+  <p>
+    Add a user to your account by completing all fields below. You may create a new profile or search for and add
+    previously registered users. You may return and edit this information at any time. Once the user profile is
+    created, an email will be sent to the new user (using the account ID entered) inviting them to login and
+    complete their profile. A confirmation email will be sent to the account administrator as well.
+  </p>
 
-    <form action="" class="form-horizontal">
-        <div class="row">
-            <div class="col-md-6">
-                <h3>Add user</h3>
-
-                <div class="form-group">
-                    <label for="newUsername" class="col-sm-2 control-label">Username</label>
-
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="newUsername">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="password" class="col-sm-2 control-label">Password</label>
-
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="password">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="confirmPassword" class="col-sm-2 control-label">Confirm Password</label>
-
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="confirmPassword">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="userRole" class="col-sm-2 control-label">User Role</label>
-
-                    <div class="col-sm-10">
-                        <select name="userRole" id="userRole" class="form-control"></select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <h3>Find an existing user</h3>
-
-                <div class="form-group">
-                    <div class="col-xs-9">
-                        <input type="text" class="form-control" id="findUsername">
-                    </div>
-                    <div class="col-xs-3">
-                        <button class="btn btn-primary">Find User</button>
-                    </div>
-                </div>
-
-            </div>
+  <form action="" class="form-horizontal">
+    <div class="row">
+      <div class="col-md-6">
+        <h3>Add user</h3>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="newUsername" class="col-sm-2 control-label">Username</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="newUsername">
         </div>
-
-        <hr>
-
-        <div class="row">
-            <div class="col-sm-8">
-                <input type="text" class="form-control input-lg" placeholder="Search available customer numbers, custom groups, and account numbers">
-            </div>
+      </div>
+      <div class="col-md-6 form-group">
+        <label class="col-sm-12 col-sm-offset-2 col-md-offset-0 control-label userMessage" ng-show="isExistingUser">Existing User Account Found</label>
+        <label class="col-sm-12 col-sm-offset-2 col-md-offset-0 control-label userMessage" ng-show="!isExistingUser">Creating New User Account</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <label for="userRole" class="col-sm-2 control-label">User Role</label>
+        <div class="col-sm-10">
+          <select name="userRole" id="userRole" class="form-control">
+            <option ng-repeat="userRole in userRoles">{{userRole}}</option>
+          </select>
         </div>
-
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+      <div class="col-md-9">
         <div class="row">
-            <div class="col-md-4">
-                <h3>NA/RA:</h3>
-                <ul class="list-group scrollable-list">
-                    <li class="">
-                        <span class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Parent</span>
-                        <ul class="list-group child-list-group" style="padding-left: 35px;">
-                            <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Child</li>
-                            <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Child</li>
-                            <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Child</li>
-                            <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Child</li>
-                        </ul>
+          <div class="col-sm-12">
+            <input type="text" ng-model="customerSearch" class="form-control input-lg" placeholder="Search available customer numbers">
+          </div>
+        </div>
+        <div class="row">
+          <div class="top-buffer">
+            <div class="col-md-6">
+              <div class="listHeader">NA / RA Numbers</div>
+              <ul class="list-group scrollable-list">
+                <li class="stripedLi noSelect" ng-repeat="customerPerGroup in customersToFilter() | filter:filterCustomers">
+                  <span class="list-group-item" ng-init="showGroup = true" ng-click="showGroup = !showGroup">
+                    <input type="checkbox" class="inline-checkbox" ng-init="groupChecked = false" ng-checked="groupChecked" ng-click="groupChecked = !groupChecked; selectAllCustomersInGroup(customerPerGroup.nationalOrRegionalAccountNumber, groupChecked);$event.stopPropagation();"/>
+                    {{customerPerGroup.nationalOrRegionalAccountNumber}}
+                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-left" ng-show="!showGroup"></span>
+                    <span class="expandCollapseArrow glyphicon glyphicon-chevron-down" ng-show="showGroup"></span>
+                  </span>
+                  <ul class="list-group child-list-group" ng-show="showGroup">
+                    <li class="list-group-item" ng-repeat="customer in customers | filter:{nationalOrRegionalAccountNumber: customerPerGroup.nationalOrRegionalAccountNumber} | filter : customerSearch">
+                      <input type="checkbox" class="inline-checkbox" ng-checked="customer.selected" ng-click="customer.selected = !customer.selected; updateSelectedList();"/>
+                      {{customer.customerNumber}}
                     </li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="">
-                        <span class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Parent</span>
-                        <ul class="list-group child-list-group" style="padding-left: 35px;">
-                            <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Child</li>
-                        </ul>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <div class="listHeader">Customer Numbers</div>
+              <ul class="list-group scrollable-list">
+                <li class="list-group-item" ng-repeat="customer in customers | filter:filterOutGroups | filter:customerSearch">
+                  <input type="checkbox" ng-click="customer.selected = !customer.selected; updateSelectedList();" ng-checked="customer.selected" class="inline-checkbox"/>{{customer.customerNumber}}
+                </li>
+              </ul>
+            </div>
+            <!--<div class="col-md-4"> IF UNCOMMENTED CHANGE COLUMNS TO ALL BE MD4`
+              <div class="listHeader">Custom Groups</div>
+              <ul class="list-group scrollable-list">
+                <li class="">
+                  <span class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Group Title</span>
+                  <ul class="list-group child-list-group">
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer</li>
+                  </ul>
+                </li>
+                <li class="">
+                  <span class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Group Title</span>
+                  <ul class="list-group child-list-group" style="padding-left: 35px;">
+                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example Customer
                     </li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <h3>Customer #'s:</h3>
-                <ul class="list-group scrollable-list">
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                </ul>
-            </div>
-            <!--<div class="col-md-4">
-                <h3>Custom Groups:</h3>
-                <ul class="list-group scrollable-list">
-                    <li class="list-group-item">Example</li>
-                    <li class="list-group-item">Example</li>
-                    <li class="list-group-item">Example</li>
-                    <li class="list-group-item">Example</li>
-                    <li class="list-group-item">Example</li>
-                </ul>
+                  </ul>
+                </li>
+              </ul>
             </div>-->
-            <div class="col-md-4">
-                <h3>Selected:</h3>
-                <ul class="list-group scrollable-list">
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                    <li class="list-group-item"><input type="checkbox" class="inline-checkbox"/>Example</li>
-                </ul>
-            </div>
+          </div>
         </div>
-
-        <hr>
-
-        <div class="form-group button-row">
-            <div class="col-sm-6">
-                <button class="btn btn-lg btn-primary">Create User</button>
-                <a ui-sref="menu.admin.user">Cancel</a>
-            </div>
-        </div>
-
-    </form>
+      </div>
+      <div class="col-md-3">
+        <h3>Selected:</h3>
+        <ul class="list-group scrollable-list">
+          <li class="list-group-item" ng-repeat="customer in selectedCustomers">
+            <input type="checkbox" ng-checked="customer.selected" class="inline-checkbox" ng-click="customer.selected = !customer.selected; updateSelectedList();"/>
+            {{customer.customerNumber}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <hr>
+    <div class="form-group button-row">
+      <div class="col-sm-6">
+        <button class="btn btn-lg btn-primary" ng-show="!isExistingUser">Create User</button>
+        <button class="btn btn-lg btn-primary" ng-show="isExistingUser">Add User</button>
+        <a ui-sref="menu.admin.user">Cancel</a>
+      </div>
+    </div>
+  </form>
 </div>

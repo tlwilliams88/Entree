@@ -17,25 +17,23 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "invoicetype")]
 		public string InvoiceType { get; set; }
 		[DataMember(Name = "invoicedate")]
-		public DateTime InvoiceDate { get; set; }
+		public DateTime? InvoiceDate { get; set; }
 		[DataMember(Name = "amountdue")]
-		public decimal AmountDue { get; set; }
+		public decimal? AmountDue { get; set; }
 		[DataMember(Name = "deleteflag")]
-		public int DeleteFlag { get; set; }
-		[DataMember(Name = "linenumber")]
-		public int LineNumber { get; set; }
-		public int QuantityOrdered { get; set; }
-		public int QuantityShipped { get; set; }
+		public int? DeleteFlag { get; set; }
+		public int? QuantityOrdered { get; set; }
+		public int? QuantityShipped { get; set; }
 		public string BrokenCaseCode { get; set; }
 		public string CatchWeightCode { get; set; }
-		public decimal ExtCatchWeight { get; set; }
-		public decimal ItemPrice { get; set; }
+		public decimal? ExtCatchWeight { get; set; }
+		public decimal? ItemPrice { get; set; }
 		public string PriceBookNumber { get; set; }
-		public decimal ItemPriceSalesRep { get; set; }
-		public decimal ExtSalesRepAmount { get; set; }
-		public decimal ExtSalesGross { get; set; }
-		public decimal ExtSalesNet { get; set; }
-		public int VendorNumber { get; set; }
+		public decimal? ItemPriceSalesRep { get; set; }
+		public decimal? ExtSalesRepAmount { get; set; }
+		public decimal? ExtSalesGross { get; set; }
+		public decimal? ExtSalesNet { get; set; }
+		public int? VendorNumber { get; set; }
 		public string CustomerPO { get; set; }
 		public string CombinedStatmentCustomer { get; set; }
 		public string PriceBook { get; set; }
