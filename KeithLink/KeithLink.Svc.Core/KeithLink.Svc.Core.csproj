@@ -153,6 +153,7 @@
     <Compile Include="Interface\Invoices\IInternalInvoiceLogic.cs" />
     <Compile Include="Interface\Invoices\IInvoiceItemRepository.cs" />
     <Compile Include="Interface\Invoices\IInvoiceRepository.cs" />
+    <Compile Include="Interface\Invoices\IInvoiceServiceRepository.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IItemNoteLogic.cs" />
     <Compile Include="Interface\Lists\IListCacheRepository.cs" />

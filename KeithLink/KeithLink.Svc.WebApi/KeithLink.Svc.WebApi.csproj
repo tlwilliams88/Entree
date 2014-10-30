@@ -186,6 +186,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ItemNoteController.cs" />
     <Compile Include="Controllers\ListController.cs" />
     <Compile Include="Controllers\OrderController.cs" />

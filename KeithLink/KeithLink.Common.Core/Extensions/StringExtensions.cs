@@ -55,5 +55,14 @@ namespace KeithLink.Common.Core.Extensions
 				return null;
 			return parsedDecimal;
 		}
+
+		public static int? ToInt(this string value)
+		{
+			int parsedInt;
+
+			if (!int.TryParse(value, out parsedInt))
+				return null;
+			return parsedInt;
+		}
 	}
 }
