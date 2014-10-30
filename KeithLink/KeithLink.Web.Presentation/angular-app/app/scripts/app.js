@@ -126,6 +126,9 @@ angular
       }
     })
 
+    /**********
+    LISTS
+    **********/
     .state('menu.lists', {
       url: '/lists/',
       abstract: true,
@@ -156,6 +159,9 @@ angular
       }
     })
 
+    /**********
+    CART
+    **********/
     .state('menu.cart', {
       url: '/cart/',
       abstract: true,
@@ -173,7 +179,7 @@ angular
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId/?renameCart&isChangeOrder',
+      url: ':cartId/?renameCart',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
@@ -183,8 +189,7 @@ angular
         originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
           if (selectedBasket) {
-            $stateParams.isChangeOrder = selectedBasket.isChangeOrder;
-            return selectedBasket.promise;
+            return selectedBasket;
           } else {
             $state.go('menu.home');
           }
@@ -192,6 +197,9 @@ angular
       }
     })
 
+    /**********
+    ADD TO ORDER
+    **********/
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
@@ -221,10 +229,21 @@ angular
       resolve: {
         selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.selectDefaultList($stateParams.listId);
+        }],
+        selectedCart: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+          if (selectedBasket) {
+            return selectedBasket;
+          } else {
+            $state.go('menu.home');
+          }
         }]
       }
     })
 
+    /**********
+    ORDER HISTORY
+    **********/
     .state('menu.order', {
       url: '/orders/',
       templateUrl: 'views/order.html',
@@ -248,6 +267,57 @@ angular
       resolve: {
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
           return OrderService.getOrderDetails($stateParams.orderNumber);
+        }]
+      }
+    })
+
+    /**********
+    INVOICE
+    **********/
+    .state('menu.invoice', {
+      url: '/invoices/',
+      templateUrl: 'views/invoice.html',
+      controller: 'InvoiceController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoices: [ function() {
+          return [
+            {
+              referencenumber: 12345,
+              status: 'paid',
+              duedate: '2014-12-01',
+              amountdue: 1234.56,
+              image: 'http://'
+            }, {
+              referencenumber: 12345,
+              status: 'late',
+              duedate: '2014-12-01',
+              amountdue: 1234.56,
+            }, {
+              referencenumber: 12345,
+              status: 'open',
+              duedate: '2014-12-01',
+              amountdue: 1234.56,
+              image: 'http://'
+            }
+          ];
+        }],
+        accounts: [ function() {
+          return [{
+            id: 1,
+            name: 'Bank of America',
+            number: 'XXXX XXXX XXXX 4321'
+          }, {
+            id: 2,
+            name: 'Chase',
+            number: 'XXXX XXXX XXXX 4321'
+          }, {
+            id: 3,
+            name: 'Wells Fargo',
+            number: 'XXXX XXXX XXXX 4321'
+          }];
         }]
       }
     })

@@ -102,21 +102,23 @@ angular.module('bekApp')
             file: file, // or list of files ($files) for html5 only
           }).then(function(response) {
             var data = response.data;
+
             if (data.success) {
-
-              deferred.resolve(data);
-
+              // add new list to cache
               var list = {
                 listid: data.listid,
-                name: 'Imported List mk'
+                name: 'Imported List'
               };
               Service.lists.push(list);
 
+              // display messages
               if (data.warningmsg) {
-                toaster.pop('success', null, data.warningmsg);
+                toaster.pop('warning', null, data.warningmsg);
               } else {
                 toaster.pop('success', null, 'Successfully imported a new list.');
               }
+
+              deferred.resolve(data);
             } else {
               toaster.pop('error', null, data.errormsg);
               deferred.reject(data.errormsg);

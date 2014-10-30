@@ -20,8 +20,9 @@ angular.module('bekApp')
     });
 
     $scope.createNewCart = function() {
-      return CartService.createCart().then(function(cart) {
-        $state.go('menu.cart.items', {cartId: cart.id, renameCart: true});
+      return CartService.createCart().then(function(cartId) {
+        CartService.setActiveCart(cartId);
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
       });
     };
 

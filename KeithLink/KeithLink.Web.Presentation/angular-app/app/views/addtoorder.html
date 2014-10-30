@@ -35,7 +35,7 @@
         <span class="pull-right icon-arrow-down7 text-light"></span>
         <ul class="dropdown-menu" role="menu">
           <li ng-repeat="list in lists | sortLists" ng-show="list.listid !== selectedList.listid">
-            <a ng-click="selectList(list)">
+            <a ng-click="goToList(list, selectedCart)">
               {{list.name}}
             </a>
           </li>
@@ -49,7 +49,7 @@
         <div class="dropdown-menu">
           <table class="table no-margin">
             <caption class="text-left">Carts</caption>
-            <tr ng-repeat="cart in carts | orderBy:'name'" ng-click="selectCart(cart); showCarts=false" ng-hide="cart.id === selectedCart.id">
+            <tr ng-repeat="cart in carts | orderBy:'name'" ng-click="goToList(selectedList, cart); showCarts=false" ng-hide="cart.id === selectedCart.id">
               <td><span class="overflow">{{cart.name}}</span></td>
               <td>{{cart.items.length}}</td>
               <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
@@ -61,7 +61,7 @@
 
           <table class="table no-margin" ng-if="changeOrders.length > 0">
             <caption class="text-left">Change Orders</caption>
-            <tr ng-click="selectChangeOrder(order)" ng-repeat="order in changeOrders">
+            <tr ng-click="goToList(selectedList, order)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.ordernumber}}</span></td>
               <td>{{order.itemcount}}</td>
               <td>{{order.requestedshipdate | date:shortDate}}</td>
@@ -95,7 +95,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 info-box">
         <span class="nav-description text-light">Cart Info</span>
         <span class="nav-title">{{getItemCount(selectedCart, selectedList) || '0'}} Items</span>
-        <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items || selectedCart.lineItems, selectedList.items) | currency}}</span>
+        <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</span>
       </div>
 
     </div>
@@ -134,7 +134,7 @@
           Brand
           <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-xs hidden-sm">
+        <th class="hidden-xs hidden-sm" ng-hide="isChangeOrder || selectedCart.id === 'New'">
           # in Cart
         </th>
         <th class="hidden-xs hidden-sm" ng-show="useParlevel">
@@ -219,7 +219,7 @@
         <td class="hidden-xs hidden-sm">
           {{item.brand}}
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-xs hidden-sm" ng-hide="isChangeOrder || selectedCart.id === 'New'">
           {{item.quantityincart}}
         </td>
         <td ng-show="useParlevel" class="hidden-xs hidden-sm">
@@ -254,7 +254,7 @@
         </td>
       </tr>
       <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-        <td colspan="4">
+        <td colspan="5">
           <table>
             <colgroup>
               <col width="25%" />
@@ -276,7 +276,7 @@
               <td>Brand</td>
               <td>{{item.brand}}</td>
             </tr>
-            <tr>
+            <tr ng-hide="isChangeOrder || selectedCart.id === 'New'">
               <td># in Cart</td>
               <td>{{item.quantityincart}}</td>
             </tr>

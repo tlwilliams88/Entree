@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         #region methods
         public string ConsumeFromQueue() {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQConfirmationServer,
                 UserName = Configuration.RabbitMQUserNameConsumer,
                 Password = Configuration.RabbitMQUserPasswordConsumer,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Repository.Confirmations
         /// <param name="item"></param>
         public void PublishToQueue(string item) {
             ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQServer,
+                HostName = Configuration.RabbitMQConfirmationServer,
                 UserName = Configuration.RabbitMQUserNamePublisher,
                 Password = Configuration.RabbitMQUserPasswordPublisher,
                 VirtualHost = Configuration.RabbitMQVHostConfirmation

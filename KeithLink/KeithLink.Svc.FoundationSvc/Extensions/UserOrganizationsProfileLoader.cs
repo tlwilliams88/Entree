@@ -42,16 +42,12 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
             if (searchCriteria.Model.Properties.Count == 1)
             {
-                string query = string.Empty;
+                string sproc = string.Empty;
                 CommercePropertyItem item = searchCriteria.Model.Properties[0];
                 if (searchCriteria.Model.Properties[0].Key == "OrganizationId") // looking for users associated to org
-                    query = @"SELECT uoo.u_user_org_id,uoo.u_org_id,uo.u_user_id,uo.u_first_name,uo.u_last_name,uo.u_email_address
-                        FROM UserOrganizationObject uoo inner join UserObject uo 
-                        on uoo.u_user_id=uo.u_user_id WHERE uoo.u_org_id = '" + item.Value + "'";
+                    sproc = "[dbo].[sp_BEK_ReadUsersForOrg]";
                 else if (searchCriteria.Model.Properties[0].Key == "UserId") // looking for orgs associated to user
-                    query = @"SELECT u_user_org_id,u_user_id,oo.u_org_id,u_Name,u_customer_number,u_branch_number,u_contract_number,u_dsr_number,
-                        	   u_is_po_required,u_is_power_menu,u_organization_type,u_national_or_regional_account_number,u_parent_organization
-                                FROM UserOrganizationObject uoo inner join OrganizationObject oo on uoo.u_org_id=oo.u_org_id WHERE uoo.u_user_id = '" + item.Value + "'";
+                    sproc = "[dbo].[sp_BEK_ReadOrgsForUser]";
 
                 CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
                 String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
@@ -59,7 +55,12 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                 using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
                 {
                     conn.Open();
-                    using (System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(query, conn))
+                    System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand(sproc, conn);
+                    cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("@id", System.Data.OleDb.OleDbType.VarChar, 50));
+                    cmd.Parameters[0].Value = item.Value;
+                    cmd.Parameters[0].Direction = System.Data.ParameterDirection.Input;
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    using (System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(cmd))
                     {
                         System.Data.DataTable dt = new System.Data.DataTable();
                         adapter.Fill(dt);

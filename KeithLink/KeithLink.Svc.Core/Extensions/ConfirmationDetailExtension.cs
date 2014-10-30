@@ -94,6 +94,52 @@ namespace KeithLink.Svc.Core.Extensions
                 Line);
         }
 
-        
+        public static string DisplayStatus(this ConfirmationDetail value)
+        {
+            string confirmationStatus = value.ReasonNotShipped.Trim().ToUpper();
+
+            if (confirmationStatus.Trim() == Constants.CONFIRMATION_DETAIL_FILLED_CODE)
+            {
+                return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
+            }
+            if (confirmationStatus == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE) // partial ship
+            {
+                return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS;
+            }
+            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE) // out of stock
+            {
+                return Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS;
+            }
+            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE) // item replaced
+            {
+                return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_STATUS;
+            }
+            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE) // item replaced, but replacement currently out of stock
+            {
+                return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_STATUS;
+            }
+            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE) // Item replaced, partial fill
+            {
+                return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS;
+            }
+            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE) // item subbed
+            {
+                return Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS;
+            }
+            return string.Empty;
+        }
+
+        public static string SubstitueItemNumber(this ConfirmationDetail value)
+        {
+            string confirmationStatus = value.ReasonNotShipped.Trim().ToUpper();
+
+            if (value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE || 
+                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE ||
+                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE || 
+                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE)
+                return value.ItemNumber;
+
+            return string.Empty;
+        }
     }
 }

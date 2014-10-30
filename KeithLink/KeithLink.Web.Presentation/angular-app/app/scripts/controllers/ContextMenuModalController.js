@@ -86,7 +86,7 @@ angular.module('bekApp')
       quantity: 1,
       itemnumber: item.itemnumber
     };
-    order.lineItems.push(orderItem);
+    order.items.push(orderItem);
 
     OrderService.updateOrder(order).then(function(data) {
       $modalInstance.close(item);

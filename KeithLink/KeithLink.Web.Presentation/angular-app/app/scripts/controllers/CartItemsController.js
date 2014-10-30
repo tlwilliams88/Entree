@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $stateParams, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -19,11 +19,14 @@ angular.module('bekApp')
     $scope.shipDates = CartService.shipDates;
     // $scope.reminderList = reminderList;
     $scope.changeOrders = changeOrders;
-    $scope.isChangeOrder = $stateParams.isChangeOrder;
+    $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
-    $scope.goToCart = function(cartId) {
+    $scope.goToCart = function(cartId, isChangeOrder) {
+      if (!isChangeOrder) {
+        CartService.setActiveCart(cartId);
+      }
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null});
     };
 
@@ -91,8 +94,9 @@ angular.module('bekApp')
     };
 
     $scope.createNewCart = function() {
-      CartService.createCart().then(function(response) {
-        $state.go('menu.cart.items', {cartId: response.id, renameCart: true});
+      CartService.createCart().then(function(cartId) {
+        CartService.setActiveCart(cartId);
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
         $scope.displayMessage('error', 'Error creating new cart.');
@@ -121,14 +125,8 @@ angular.module('bekApp')
     };
 
     $scope.deleteItem = function(item) {
-      var idx;
-      if ($scope.isChangeOrder) {
-        idx = $scope.currentCart.lineItems.indexOf(item);
-        $scope.currentCart.lineItems.splice(idx, 1);
-      } else {
-        idx = $scope.currentCart.items.indexOf(item);
-        $scope.currentCart.items.splice(idx, 1);
-      }
+      var idx = $scope.currentCart.items.indexOf(item);
+      $scope.currentCart.items.splice(idx, 1);
       $scope.cartForm.$setDirty();
     };
 
@@ -138,7 +136,7 @@ angular.module('bekApp')
 
     $scope.saveChangeOrder = function(order) {
       var changeOrder = angular.copy(order);
-      changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
+      changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
 
       return OrderService.updateOrder(changeOrder).then(function(order) {
         $scope.currentCart = order;
@@ -165,8 +163,8 @@ angular.module('bekApp')
     };
 
     $scope.cancelOrder = function(changeOrder) {
-      OrderService.cancelOrder(changeOrder.commerceId).then(function() {
-        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceId', changeOrder.commerceId);
+      OrderService.cancelOrder(changeOrder.commerceid).then(function() {
+        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
         var idx = $scope.changeOrders.indexOf(changeOrderFound);
         $scope.changeOrders.splice(idx, 1);
         $scope.goToCart();
@@ -180,16 +178,19 @@ angular.module('bekApp')
     var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      var items;
-      if ($scope.currentCart.lineItems) {
-        items = $scope.currentCart.lineItems.length;
-      } else {
-        items = $scope.currentCart.items.length;
-      }
+      var items = $scope.currentCart.items.length;
 
       if ($scope.currentCart && $scope.itemsToDisplay < items) {
         $scope.itemsToDisplay += itemsPerPage;
       }
+    };
+
+    $scope.openOrderImportModal = function () {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/orderimportmodal.html',
+        controller: 'OrderImportModalController'
+      });
     };
 
   }]);
