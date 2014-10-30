@@ -26,6 +26,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Impl.Repository.Invoices;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -73,6 +76,10 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
 			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
+			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
+			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
+			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
