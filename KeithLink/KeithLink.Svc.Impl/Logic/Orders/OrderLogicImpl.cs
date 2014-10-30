@@ -60,8 +60,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             
 			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
-            // handel special change order logic to hidd deleted line items
-            if (returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
+            // handel special change order logic to hide deleted line items
+            if (returnOrder.IsChangeOrderAllowed) // change order eligible - remove lines marked as 'deleted'
                 returnOrder.Items = returnOrder.Items.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
@@ -74,9 +74,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
-                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "Submitted")),
+                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = purchaseOrder.Status,
-                RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
+                RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
 				Items = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(purchaseOrder.Id)
 			};
@@ -117,6 +117,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
+                    item.CatchWeight = prod.CatchWeight;
 				}
 				if (price != null)
 				{
@@ -144,7 +145,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.Items)
             {
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Price = (decimal)line.CasePriceNumeric });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight  });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 

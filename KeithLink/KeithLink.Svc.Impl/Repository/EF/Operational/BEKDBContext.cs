@@ -33,6 +33,12 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 		}
 
+		public void DeleteTable(string tableName)
+		{
+			Database.ExecuteSqlCommand("DELETE " + tableName);
+		}
+
+
 		public override int SaveChanges()
 		{
 			var changeSet = ChangeTracker.Entries<BaseEFModel>();

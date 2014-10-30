@@ -95,7 +95,7 @@
       <div class="col-md-3 col-sm-6 col-xs-12 info-box">
         <span class="nav-description text-light">Cart Info</span>
         <span class="nav-title">{{getItemCount(selectedCart, selectedList) || '0'}} Items</span>
-        <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items || selectedCart.lineItems, selectedList.items) | currency}}</span>
+        <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</span>
       </div>
 
     </div>
@@ -254,7 +254,7 @@
         </td>
       </tr>
       <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-        <td colspan="4">
+        <td colspan="5">
           <table>
             <colgroup>
               <col width="25%" />

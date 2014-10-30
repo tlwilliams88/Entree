@@ -103,6 +103,8 @@ namespace KeithLink.Svc.FoundationSvc
                 if (i.Status == "changed" && lineItem != null)
                 {
                     lineItem.Quantity = i.Quantity;
+                    lineItem["Each"] = i.Each;
+                    lineItem["CatchWeight"] = i.CatchWeight;
                     lineItem.Status = "changed";
                 }
                 if (i.Status == "deleted" && lineItem != null)
@@ -112,8 +114,8 @@ namespace KeithLink.Svc.FoundationSvc
                 if (i.Status == "added" && lineItem == null)
                 {
                     CommerceServer.Core.Runtime.Orders.LineItem li = new CommerceServer.Core.Runtime.Orders.LineItem() { ProductId = i.ItemNumber, Quantity = i.Quantity, Status = "added" };
-                    li["CatchWeight"] = false;
-                    li["Each"] = false;
+                    li["CatchWeight"] = i.CatchWeight;
+                    li["Each"] = i.Each;
                     li["Notes"] = string.Empty;
                     li["LinePosition"] = linePosition;
                     li.ProductCatalog = i.Catalog;

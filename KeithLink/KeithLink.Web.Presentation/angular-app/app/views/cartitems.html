@@ -26,6 +26,9 @@
               <td>{{order.itemcount}}</td>
               <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
             </tr>
+            <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
+              <td colspan="3">No other change orders.</td>
+            </tr>
           </table>
           
         </div>
@@ -51,6 +54,7 @@
       <div class="page-header__buttons">
         <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
         <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+        <button class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
         <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
@@ -70,25 +74,33 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+          <p ng-if="isChangeOrder">This is a change order. Updated prices will not be reflected until you re-submit the order.</p>
 
         </div>
       </div>
 
-      <div class="row">
-        <div ng-if="!isChangeOrder" class="col-sm-4 col-md-4 text-green currency-value">
+      <div class="row" ng-if="!isChangeOrder">
+        <div class="col-sm-4 col-md-4 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
-        <div ng-if="isChangeOrder" class="col-sm-4 col-md-4 text-green currency-value">
-          {{getSubtotal(currentCart.lineItems) | currency}}
-        </div>
 
-        <div ng-if="!isChangeOrder" class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+        <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
           
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
-        <div ng-if="isChangeOrder" class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
-          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.lineItems || currentCart.lineItems.length == 0)" ng-click="resubmitOrder(currentCart)" >Re-Submit Order</button>
+      </div>
+
+      <div class="row" ng-if="isChangeOrder">
+        <div class="col-sm-4 col-md-4 currency-value">
+          {{currentCart.ordertotal | currency}}
+        </div>
+      </div>
+      <div class="row" ng-if="isChangeOrder">
+        <div class="col-xs-12 hidden-print button-row">
+          <button class="btn-lg btn btn-primary" ng-disabled="cartform.$pristine" ng-click="saveChangeOrder(currentCart)" >Update Order</button>
+
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Re-Submit Order</button>
 
           <button class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to cancel order # ' + currentCart.ordernumber + '?'}}">Cancel Order</button>
         </div>
@@ -238,9 +250,8 @@
           </td>
         </tr> <!-- end Filter row -->
 
-        <tr ng-if="!isChangeOrder"
-            ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.cartitemid">
+        <tr ng-class="{ odd : $odd, even: $even }" 
+            ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay))">
           <td>
             <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
           </td>
@@ -273,13 +284,24 @@
               <label for="each"></label>
             </ng-form>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{item.each ? item.packageprice : item.caseprice | currency}}
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
           </td>
+
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.price | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+          </td>
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.linetotal | currency}}
+          </td>
+
+
           <td class="hidden-print large-icon icon-col">
             <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
@@ -314,120 +336,31 @@
                   <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
                 </td>
               </tr>
-              <tr>
+              
+              <tr ng-if="!isChangeOrder">
                 <td>Price</td>
                 <td>
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </td>
               </tr>
-              <tr>
+              <tr ng-if="!isChangeOrder">
                 <td>Ext Price</td>
                 <td>{{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</td>
               </tr>
-              <tr>
-                <td colspan="2" class="sub-content">
-                  <button ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-
-        <tr ng-if="isChangeOrder" ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat-start="item in (filteredItems = (currentCart.lineItems | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.itemnumber">
-          <td>
-            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print notes-col">
-            {{item.notes}}
-          </td>
-          <td class="hidden-sm hidden-xs">
-            <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
-            {{item.packsize}}
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
-            {{item.brand}}
-          </td>
-          <td>
-            {{item.name}}
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print " item-icons>
-          </td>
-          <td class="input-col nowrap">
-            <ng-form class="hidden-print" name="quantityForm">
-              <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
-              <div counter ng-model="item.quantity" min="0"></div>
-            </ng-form>
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print input-col">
-            <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
-              <input type="checkbox" ng-model="item.each" id="each" name="each" />
-              <label for="each"></label>
-            </ng-form>
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
-            <!-- {{item.each ? item.packageprice : item.caseprice | currency}} -->
-            {{item.price | currency}}
-            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-          </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
-            <!-- {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | 
-            currency}} -->
-            {{item.quantity * item.price | currency}}
-          </td>
-          <td class="hidden-print large-icon icon-col">
-            <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-            <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
-          </td>
-        </tr>
-
-        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-          <td colspan="4">
-            <table>
-              <colgroup>
-                <col width="25%" />
-                <col width="75%" />
-              </colgroup>
-              <tr>
-                <td>Notes</td>
-                <td>{{item.notes}}</td>
-              </tr>
-              <tr>
-                <td>Pack/Size</td>
-                <td>{{item.packsize}}</td>
-              </tr>
-              <tr>
-                <td>Brand</td>
-                <td>{{item.brand}}</td>
-              </tr>
-              <tr>
-                <td item-icons></td>
-              </tr>
-              <!-- <tr ng-if="item.packageprice !== '0'">
-                <td>Each</td>
-                <td>
-                  <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
-                </td>
-              </tr>
-              <tr> -->
+              
+              <tr ng-if="isChangeOrder">
                 <td>Price</td>
                 <td>
-                  <!-- {{item.each ? item.packageprice : item.caseprice | currency}} -->
                   {{item.price | currency}}
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </td>
               </tr>
-              <tr>
+              <tr ng-if="isChangeOrder">
                 <td>Ext Price</td>
-                <td>
-                  <!-- {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}} -->
-                  {{item.quantity * item.price | currency}}
-                </td>
+                <td>{{item.linetotal | currency}}</td>
               </tr>
+
               <tr>
                 <td colspan="2" class="sub-content">
                   <button ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
@@ -437,13 +370,9 @@
           </td>
         </tr>
 
-
       </tbody>
       <tfoot>
-        <tr ng-if="!isChangeOrder" ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-          <td colspan="12">No products found.</td>
-        </tr>
-        <tr ng-if="isChangeOrder" ng-show="(currentCart.lineItems.length === 0 || !currentCart.lineItems || filteredItems.length === 0) && currentCart">
+        <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
           <td colspan="12">No products found.</td>
         </tr>
       </tfoot>

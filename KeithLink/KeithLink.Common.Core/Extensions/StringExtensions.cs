@@ -46,5 +46,14 @@ namespace KeithLink.Common.Core.Extensions
 				return null;
 			return parsedDouble;
 		}
+
+		public static decimal? ToDecimal(this string value)
+		{
+			decimal parsedDecimal;
+
+			if (!decimal.TryParse(value, out parsedDecimal))
+				return null;
+			return parsedDecimal;
+		}
 	}
 }

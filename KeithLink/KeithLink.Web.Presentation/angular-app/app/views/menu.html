@@ -46,7 +46,7 @@
         <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
         </a>
-        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <a ng-if="canPayInvoices" ui-sref="menu.invoice" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
         </a>
         <a ng-if="canManageLists" ui-sref="menu.lists.items({listId: 0})" ng-class="{'is-selected': $state.includes('menu.lists')}" >
@@ -98,7 +98,7 @@
         <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
         </a>
-        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
+        <a ng-if="canPayInvoices" ui-sref="menu.invoice" ui-sref-active="is-selected" >
           <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
         </a>
         <a ng-if="canManageLists" ui-sref="menu.lists.items({listId: 0})" ng-class="{'is-selected': $state.includes('menu.lists')}" >
