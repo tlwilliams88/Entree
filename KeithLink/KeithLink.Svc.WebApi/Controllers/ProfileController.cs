@@ -342,7 +342,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute("profile/users")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<UserProfileReturn> GetUsers(UserFilterModel userFilter)
+        public OperationReturnModel<UserProfileReturn> GetUsers([FromUri] UserFilterModel userFilter)
         {
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
