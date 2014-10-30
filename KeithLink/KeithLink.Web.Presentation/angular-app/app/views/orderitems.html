@@ -9,38 +9,38 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-md-8 col-lg-7">
+  <div class="col-sm-12 col-md-9 col-lg-8">
     <div class="info-box">
       <h3 class="no-margin">ORDER INFORMATION</h3>
       <div class="order-item">
         <div class="order-item-title">Order #</div>
-        <div class="order-item-value">{{order.ordernumber}}</div>
+        <div class="order-item-value-1">{{order.ordernumber}}</div>
         <div class="order-item-title">Order Status</div>
-        <div class="order-item-value">{{order.status}}</div>
+        <div class="order-item-value-2">{{order.status}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Order Date</div>
-        <div class="order-item-value">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+        <div class="order-item-value-1">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
         <div class="order-item-title">Requested Ship Date</div>
-        <div class="order-item-value">{{order.requestedshipdate | date:'MM/dd/yyyy h:mma'}}</div>
+        <div class="order-item-value-2">{{order.requestedshipdate | date:'MM/dd/yyyy h:mma'}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Delivery Date</div>
-        <div class="order-item-value">{{order.deliveryDate || 'N/A'}}</div>
+        <div class="order-item-value-1">{{order.deliveryDate || 'N/A'}}</div>
         <div class="order-item-title">Delivered</div>
-        <div class="order-item-value"></div>
+        <div class="order-item-value-2">{{order.delivered || 'N/A'}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Total Cost</div>
-        <div class="order-item-value">{{order.ordertotal | currency}}</div>
+        <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
         <div class="order-item-title">Items</div>
-        <div class="order-item-value">{{order.itemcount}}</div>
+        <div class="order-item-value-2">{{order.itemcount}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Invoice #</div>
-        <div class="order-item-value">{{order.invoicenumber || 'N/A'}}</div>
+        <div class="order-item-value-1">{{order.invoicenumber || 'N/A'}}</div>
         <div class="order-item-title">Invoice Status</div>
-        <div class="order-item-value">{{order.invoicestatus}}</div>
+        <div class="order-item-value-2">{{order.invoicestatus || 'N/A'}}</div>
       </div>
       <!-- <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
         <input type="text" order-cutoff-date ng-model="cutoffdate">
@@ -57,7 +57,7 @@
 
 <div class="row sub-content">
   <div class="col-xs-12 text-right">
-    Showing {{filteredItems.length}} of {{order.lineItems.length}} Items
+    Showing {{filteredItems.length}} of {{order.items.length}} Items
   </div>
 </div>
 
@@ -86,15 +86,15 @@
       </th>
       <th class="hidden-xs hidden-sm"></th>
       <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
-        Qty Requested
+        # Requested
         <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="sort-col-header" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
-        Qty Ordered
+      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
+        # Ordered
         <span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="sort-col-header" ng-click="sortBy='quantityshipped';sortOrder=!sortOrder;">
-        Qty Shipped
+      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='quantityshipped';sortOrder=!sortOrder;">
+        # Shipped
         <span sort-icons field="'quantityshipped'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="hidden-xs hidden-sm sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder;">
@@ -143,7 +143,7 @@
       </td>
     </tr> <!-- end Filter Row -->
 
-    <tr ng-repeat-start="item in (filteredItems = (order.lineItems | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+    <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
       <td>
         <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
       </td>
@@ -156,8 +156,8 @@
       <td>{{item.name}}</td>
       <td class="hidden-xs hidden-sm" item-icons></td>
       <td>{{item.quantity}}</td>
-      <td>{{item.quantityordered}}</td>
-      <td>{{item.quantityshipped}}</td>
+      <td class="hidden-xs hidden-sm">{{item.quantityordered}}</td>
+      <td class="hidden-xs hidden-sm">{{item.quantityshipped}}</td>
       <td class="hidden-xs hidden-sm">
         {{item.each ? 'Y' : 'N'}}
       </td>
@@ -189,6 +189,14 @@
             <td>{{item.brand}}</td>
           </tr>
           <tr>
+            <td>Qty Ordered</td>
+            <td>{{item.quantityordered}}</td>
+          </tr>
+          <tr>
+            <td>Qty Shipped</td>
+            <td>{{item.quantityshipped}}</td>
+          </tr>
+          <tr>
             <td item-icons></td>
           </tr>
           <tr>
@@ -209,7 +217,7 @@
       </td>
     </tr>
   </tbody>
-  <tfoot ng-show="(order.lineItems.length === 0 || !order.lineItems || filteredItems.length === 0) && order">
+  <tfoot ng-show="(order.items.length === 0 || !order.items || filteredItems.length === 0) && order">
     <tr>
       <td colspan="15">
         There are no products to display.

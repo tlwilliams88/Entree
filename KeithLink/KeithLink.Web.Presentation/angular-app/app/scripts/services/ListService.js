@@ -113,7 +113,7 @@ angular.module('bekApp')
 
               // display messages
               if (data.warningmsg) {
-                toaster.pop('success', null, data.warningmsg);
+                toaster.pop('warning', null, data.warningmsg);
               } else {
                 toaster.pop('success', null, 'Successfully imported a new list.');
               }

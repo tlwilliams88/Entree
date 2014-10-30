@@ -36,6 +36,12 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 
 		}
 
+		public void DeleteTable(string tableName)
+		{
+			Database.ExecuteSqlCommand("DELETE " + tableName);
+		}
+
+
 		public override int SaveChanges()
 		{
 			var changeSet = ChangeTracker.Entries<BaseEFModel>();

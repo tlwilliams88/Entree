@@ -30,6 +30,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Impl.Repository.Invoices;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -80,9 +83,13 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>(); 
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>(); 
+			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
+			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
+			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<ConfirmationListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
+			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();

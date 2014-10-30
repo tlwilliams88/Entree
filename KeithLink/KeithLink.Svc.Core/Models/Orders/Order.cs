@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		public string InvoiceStatus { get; set; }
 				
 		[DataMember(Name = "itemcount")]
-		public int ItemCount { get { return this.LineItems.Sum(l => l.Quantity); } }
+		public int ItemCount { get { return this.Items.Sum(l => l.Quantity); } }
 
 		[DataMember(Name = "ordertotal")]
 		public double OrderTotal { get; set; }
@@ -40,10 +40,10 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "ischangeorderallowed")]
         public bool IsChangeOrderAllowed { get; set; }
 
-		[DataMember(Name ="LineItems")]
-		public List<OrderLine> LineItems { get; set; }
+		[DataMember(Name ="items")]
+		public List<OrderLine> Items { get; set; }
 
-        [DataMember(Name = "CommerceId")]
+        [DataMember(Name = "commerceid")]
         public Guid CommerceId { get; set; }
 	}
 }

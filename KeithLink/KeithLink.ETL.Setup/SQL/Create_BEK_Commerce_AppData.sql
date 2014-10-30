@@ -912,5 +912,114 @@ END
 
 GO
 
+/****** Object:  StoredProcedure [ETL].[ReadInvoices]    Script Date: 10/30/2014 1:51:20 AM ******/
+SET ANSI_NULLS ON
+GO
 
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Allen, Andrew>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadInvoices]
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	Select 'KeithNet' as Type,
+DivisionNumber,
+CustomerNumber,
+InvoiceNumber,
+LineNumber as LineItem,
+null as InvoiceType,
+null as InvoiceDate,
+null as DueDate,
+null as AmountDue,
+null as DeleteFlag,
+CompanyNumber,
+DepartmentNumber,
+OrderNumber,
+MemoBillCode,
+CreditOFlag,
+TradeSWFlag,
+ShipDate,
+OrderDate,
+RouteNumber,
+StopNumber,
+WHNumber,
+ItemNumber,
+QuantityOrdered,
+QuantityShipped,
+BrokenCaseCode,
+CatchWeightCode,
+ExtCatchWeight,
+ItemPrice,
+PriceBookNumber,
+ItemPriceSRP,
+DateOfLastOrder,
+ExtSRPAmount,
+ExtSalesGross,
+ExtSalesNet,
+CustomerGroup,
+SalesRep,
+VendorNumber,
+CustomerPO,
+ChainStoreCode,
+CombStatementCustomer,
+PriceBook,
+ClassCode from ETL.Staging_KNet_Invoice
+UNION
+Select 'KeithPay' as Type,
+Division as DivisionNumber,
+CustomerNumber,
+InvoiceNumber,
+ItemSequence as LineItem,
+InvoiceType,
+InvoiceDate,
+DueDate,
+AmountDue,
+DeleteFlag,
+null as CompanyNumber,
+null as DepartmentNumber,
+null as OrderNumber,
+null as MemoBillCode,
+null as CreditOFlag,
+null as TradeSWFlag,
+null as ShipDate,
+null as OrderDate,
+null as RouteNumber,
+null as StopNumber,
+null as WHNumber,
+null as ItemNumber,
+null as QuantityOrdered,
+null as QuantityShipped,
+null as BrokenCaseCode,
+null as CatchWeightCode,
+null as ExtCatchWeight,
+null as ItemPrice,
+null as PriceBookNumber,
+null as ItemPriceSRP,
+null as DateOfLastOrder,
+null as ExtSRPAmount,
+null as ExtSalesGross,
+null as ExtSalesNet,
+null as CustomerGroup,
+null as SalesRep,
+null as VendorNumber,
+null as CustomerPO,
+null as ChainStoreCode,
+null as CombStatementCustomer,
+null as PriceBook,
+null as ClassCode from ETL.Staging_KPay_Invoice
+order by InvoiceNumber, LineItem
+END
+
+GO
 

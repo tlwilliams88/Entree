@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$filter', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $filter, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -115,24 +115,14 @@ angular.module('bekApp')
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
-        if (item.price) {
-          subtotal += (item.quantity || 0) * item.price;
-        } else {
-          subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
-        }
+        subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
       });
       return subtotal;
     };
 
     $scope.deleteItem = function(item) {
-      var idx;
-      if ($scope.isChangeOrder) {
-        idx = $scope.currentCart.lineItems.indexOf(item);
-        $scope.currentCart.lineItems.splice(idx, 1);
-      } else {
-        idx = $scope.currentCart.items.indexOf(item);
-        $scope.currentCart.items.splice(idx, 1);
-      }
+      var idx = $scope.currentCart.items.indexOf(item);
+      $scope.currentCart.items.splice(idx, 1);
       $scope.cartForm.$setDirty();
     };
 
@@ -142,10 +132,11 @@ angular.module('bekApp')
 
     $scope.saveChangeOrder = function(order) {
       var changeOrder = angular.copy(order);
-      changeOrder.lineItems = $filter('filter')(changeOrder.lineItems, {quantity: '!0'});
+      changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
 
       return OrderService.updateOrder(changeOrder).then(function(order) {
         $scope.currentCart = order;
+        $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
         return order.ordernumber;
       });
     };
@@ -169,8 +160,8 @@ angular.module('bekApp')
     };
 
     $scope.cancelOrder = function(changeOrder) {
-      OrderService.cancelOrder(changeOrder.commerceId).then(function() {
-        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceId', changeOrder.commerceId);
+      OrderService.cancelOrder(changeOrder.commerceid).then(function() {
+        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
         var idx = $scope.changeOrders.indexOf(changeOrderFound);
         $scope.changeOrders.splice(idx, 1);
         $scope.goToCart();
@@ -184,16 +175,19 @@ angular.module('bekApp')
     var itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemsToDisplay = itemsPerPage;
     $scope.infiniteScrollLoadMore = function() {
-      var items;
-      if ($scope.currentCart.lineItems) {
-        items = $scope.currentCart.lineItems.length;
-      } else {
-        items = $scope.currentCart.items.length;
-      }
+      var items = $scope.currentCart.items.length;
 
       if ($scope.currentCart && $scope.itemsToDisplay < items) {
         $scope.itemsToDisplay += itemsPerPage;
       }
+    };
+
+    $scope.openOrderImportModal = function () {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/orderimportmodal.html',
+        controller: 'OrderImportModalController'
+      });
     };
 
   }]);
