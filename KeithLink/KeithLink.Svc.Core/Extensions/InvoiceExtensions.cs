@@ -55,7 +55,7 @@ namespace KeithLink.Svc.Core.Extensions
 						QuantityOrdered = i.QuantityOrdered,
 						QuantityShipped = i.QuantityShipped,
 						VendorNumber = i.VendorNumber
-					}).ToArray()
+					}).ToList()
 			};
 		}
 
@@ -105,6 +105,34 @@ namespace KeithLink.Svc.Core.Extensions
 					QuantityShipped = i.QuantityShipped.HasValue ? i.QuantityShipped.Value : 0,
 					VendorNumber = i.VendorNumber.HasValue ? i.VendorNumber.Value : 0
 				}).ToList()
+			};
+		}
+
+		public static InvoiceItem ToEFInvoiceItem(this InvoiceItemModel item)
+		{
+			return new KeithLink.Svc.Core.Models.EF.InvoiceItem()
+			{
+				AmountDue = item.AmountDue,
+				BrokenCaseCode = item.BrokenCaseCode,
+				CatchWeightCode = item.CatchWeightCode,
+				CombinedStatmentCustomer = item.CombinedStatmentCustomer,
+				CustomerPO = item.CustomerPO,
+				DeleteFlag = item.DeleteFlag,
+				ExtCatchWeight = item.ExtCatchWeight,
+				ExtSalesGross = item.ExtSalesGross,
+				ExtSalesNet = item.ExtSalesNet,
+				ExtSalesRepAmount = item.ExtSalesRepAmount,
+				InvoiceDate = item.InvoiceDate,
+				InvoiceType = item.InvoiceType,
+				ItemPrice = item.ItemPrice,
+				ItemPriceSalesRep = item.ItemPriceSalesRep,
+				LineItem = item.LineItem,
+				PriceBook = item.PriceBook,
+				PriceBookNumber = item.PriceBookNumber,
+				QuantityOrdered = item.QuantityOrdered,
+				QuantityShipped = item.QuantityShipped,
+				VendorNumber = item.VendorNumber,
+				InvoiceNumber = item.InvoiceNumber
 			};
 		}
 	}

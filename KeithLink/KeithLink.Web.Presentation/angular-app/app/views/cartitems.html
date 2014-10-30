@@ -26,6 +26,9 @@
               <td>{{order.itemcount}}</td>
               <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
             </tr>
+            <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
+              <td colspan="3">No other change orders.</td>
+            </tr>
           </table>
           
         </div>
@@ -71,21 +74,32 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+          <p ng-if="isChangeOrder">This is a change order. Updated prices will not be reflected until you re-submit the order.</p>
 
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" ng-if="!isChangeOrder">
         <div class="col-sm-4 col-md-4 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
 
-        <div ng-if="!isChangeOrder" class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+        <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
           
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
-        <div ng-if="isChangeOrder" class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+      </div>
+
+      <div class="row" ng-if="isChangeOrder">
+        <div class="col-sm-4 col-md-4 currency-value">
+          {{currentCart.ordertotal | currency}}
+        </div>
+      </div>
+      <div class="row" ng-if="isChangeOrder">
+        <div class="col-xs-12 hidden-print button-row">
+          <button class="btn-lg btn btn-primary" ng-disabled="cartform.$pristine" ng-click="saveChangeOrder(currentCart)" >Update Order</button>
+
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Re-Submit Order</button>
 
           <button class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to cancel order # ' + currentCart.ordernumber + '?'}}">Cancel Order</button>
@@ -270,13 +284,24 @@
               <label for="each"></label>
             </ng-form>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{item.each ? item.packageprice : item.caseprice | currency}}
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
           </td>
+
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.price | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+          </td>
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.linetotal | currency}}
+          </td>
+
+
           <td class="hidden-print large-icon icon-col">
             <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
@@ -311,17 +336,31 @@
                   <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
                 </td>
               </tr>
-              <tr>
+              
+              <tr ng-if="!isChangeOrder">
                 <td>Price</td>
                 <td>
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </td>
               </tr>
-              <tr>
+              <tr ng-if="!isChangeOrder">
                 <td>Ext Price</td>
                 <td>{{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</td>
               </tr>
+              
+              <tr ng-if="isChangeOrder">
+                <td>Price</td>
+                <td>
+                  {{item.price | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                </td>
+              </tr>
+              <tr ng-if="isChangeOrder">
+                <td>Ext Price</td>
+                <td>{{item.linetotal | currency}}</td>
+              </tr>
+
               <tr>
                 <td colspan="2" class="sub-content">
                   <button ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>

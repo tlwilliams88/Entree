@@ -30,13 +30,18 @@ namespace KeithLink.Svc.Impl.ETL
 			DateTime start = DateTime.Now;
 			DataTable invoices = stagingRepository.ReadInvoices();
 
-			BlockingCollection<InvoiceModel> invoicesForImport = new BlockingCollection<InvoiceModel>();
+			var invoicesForImport = new List<InvoiceModel>();
+			var invoiceItemsForImport = new List<InvoiceItemModel>();
 
 			var invoiceNumber = "";
 			InvoiceModel currInvoice = null;
+
+			internalInvoiceLogic.DeleteAll();
+
 			foreach (var row in invoices.AsEnumerable())
 			{
 				var currentInvoiceNumber = row.GetString("InvoiceNumber");
+
 				//create header invoice and invoice item
 				if (invoiceNumber != currentInvoiceNumber)
 				{
@@ -44,20 +49,16 @@ namespace KeithLink.Svc.Impl.ETL
 					currInvoice = CreateInvoiceModelFromStagedData(row);
 					invoicesForImport.Add(currInvoice);
 					currInvoice.Items = new List<InvoiceItemModel>();
-					currInvoice.Items.Add(CreateInvoiceItemModelFromStagedData(row));
+					invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
 				}
 					//create just invoice item
 				else
 				{
-					currInvoice.Items.Add(CreateInvoiceItemModelFromStagedData(row));
+					invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
 				}
 			}
 
-			foreach (var invoice in invoicesForImport)
-			{
-				internalInvoiceLogic.CreateInvoice(invoice, invoice.InvoiceType);
-			}
-
+			internalInvoiceLogic.BulkImport(invoicesForImport, invoiceItemsForImport);
 		}
 
         private InvoiceModel CreateInvoiceModelFromStagedData(DataRow row)
@@ -120,7 +121,8 @@ namespace KeithLink.Svc.Impl.ETL
 				PriceBookNumber = row.GetString("PriceBookNumber"),
 				QuantityOrdered = row.GetNullableInt("QuantityOrdered"),
 				QuantityShipped = row.GetNullableInt("QuantityShipped"),
-				VendorNumber = row.GetNullableInt("VendorNumber")
+				VendorNumber = row.GetNullableInt("VendorNumber"),
+				InvoiceNumber = row.GetString("InvoiceNumber")
 			};
 			return invoiceItemModel;
 		}

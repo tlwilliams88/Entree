@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,11 @@ namespace KeithLink.Svc.Core.Models.EF
 		public string CustomerPO { get; set; }
 		public string CombinedStatmentCustomer { get; set; }
 		public string PriceBook { get; set; }
+
+		public long InvoiceId { get; set; }
+
+		[NotMapped]
+		public string InvoiceNumber { get; set; }
 
 	}
 }
