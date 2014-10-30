@@ -102,6 +102,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework.BulkInsert">
+      <HintPath>..\packages\EntityFramework.BulkInsert-ef6.6.0.2.8\lib\Net45\EntityFramework.BulkInsert.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.MappingAPI">
+      <HintPath>..\packages\EntityFramework.MappingAPI.6.0.0.7\lib\net45\EntityFramework.MappingAPI.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
@@ -146,6 +152,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -231,6 +238,10 @@
     <Compile Include="Repository\EF\Migrations\201410301435528_Merge Models.cs" />
     <Compile Include="Repository\EF\Migrations\201410301435528_Merge Models.Designer.cs">
       <DependentUpon>201410301435528_Merge Models.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.cs" />
+    <Compile Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.Designer.cs">
+      <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -615,6 +626,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301435528_Merge Models.resx">
       <DependentUpon>201410301435528_Merge Models.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.resx">
+      <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

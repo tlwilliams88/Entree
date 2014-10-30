@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -37,6 +38,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string CustomerPO { get; set; }
 		public string CombinedStatmentCustomer { get; set; }
 		public string PriceBook { get; set; }
+
+		
+		public string InvoiceNumber { get; set; }
 
 	}
 }
