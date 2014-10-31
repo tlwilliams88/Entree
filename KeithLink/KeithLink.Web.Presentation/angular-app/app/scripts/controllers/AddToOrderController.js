@@ -120,7 +120,7 @@ angular.module('bekApp')
 
         var cart = {
           id: cartId
-        }
+        };
 
         $scope.goToList($scope.selectedList, cart);
         $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
@@ -187,13 +187,7 @@ angular.module('bekApp')
 
     $scope.getItemCount = function(cart, list) {
       if (cart && list) {
-        var cartItems;
-        if (cart.items) {
-          cartItems = cart.items;
-        } else {
-          cartItems = cart.lineItems;
-        }
-
+        var cartItems = cart.items;
         var listItems = list.items;
 
         var total = cartItems.length;

@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             this.eventLogRepository = eventLogRepository;
 		}
 
-		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo)
+		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
 		{
 			var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
 
@@ -47,12 +47,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			returnOrders.ForEach(delegate(Order order)
 			{
 				LookupProductDetails(userProfile, catalogInfo, order, notes);
+                if (omitDeletedItems)
+                    order.Items = order.Items.Where(x => x.Status != "deleted").ToList();
 			});
 
 			return returnOrders;
 		}
 
-		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber)
+		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true)
 		{
 			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
 			var returnOrder = ToOrder(order);
@@ -60,8 +62,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             
 			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
-            // handel special change order logic to hidd deleted line items
-            if (returnOrder.Status == "Submitted") // change order eligible - remove lines marked as 'deleted'
+            // handel special change order logic to hide deleted line items
+            if (returnOrder.IsChangeOrderAllowed && omitDeletedItems) // change order eligible - remove lines marked as 'deleted'
                 returnOrder.Items = returnOrder.Items.Where(x => x.Status != "deleted").ToList();
 			return returnOrder;
 		}
@@ -74,9 +76,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				OrderNumber = purchaseOrder.Properties["OrderNumber"].ToString(),
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
-                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status == "Submitted")),
+                IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = purchaseOrder.Status,
-                RequestedShipDate = DateTime.Now, // TODO: wire up actual requested ship date
+                RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
 				Items = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(purchaseOrder.Id)
 			};
@@ -91,7 +93,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				Price = (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
-                Status = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"]
+                Status = lineItem.Status,
+                MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
+                Each = (bool)lineItem.Properties["Each"]
 			};
 		}
 
@@ -117,6 +121,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
+                    item.CatchWeight = prod.CatchWeight;
 				}
 				if (price != null)
 				{
@@ -133,7 +138,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         
 		public Core.Models.Orders.Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems)
         {
-            Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber);
+            Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
             
             LookupProductDetails(user, catalogInfo, order, notes);
@@ -144,7 +149,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.Items)
             {
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Price = (decimal)line.CasePriceNumeric });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight  });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
@@ -171,7 +176,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
             }
             // handle deletes
-            foreach (OrderLine existingLine in order.Items)
+            foreach (OrderLine existingLine in existingOrder.Items)
             {
                 OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
                 if (newLine == null)

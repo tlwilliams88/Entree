@@ -27,7 +27,7 @@
 		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerWorksheet.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_KeithNetInvoice].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\keithNetInvoice.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\keithNetInvoice.SSIS</ConfiguredValue>
 	</Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://corpkecdev1:9876/ETLService.svc?wsdl</ConfiguredValue>
@@ -47,6 +47,10 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[SMTP].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;</ConfiguredValue>
   </Configuration>
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_KPay].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>Data Source=192.168.21.46;Initial Catalog=kpay;Provider=SQLNCLI11.1;User Id=ecom;Password=!2klkA5;Auto Translate=False;</ConfiguredValue>
+  </Configuration>
+
   <!---->
   <!--UNCOMMENT FOR QA
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">

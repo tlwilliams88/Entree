@@ -32,6 +32,7 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         public string Status { get; set; }
         public int Quantity { get; set; }
         public string Catalog { get; set; }
-        public decimal Price { get; set; }
+        public bool Each { get; set; }
+        public bool CatchWeight { get; set; }
     }
 }

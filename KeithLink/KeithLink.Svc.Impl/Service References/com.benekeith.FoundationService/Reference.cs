@@ -550,10 +550,13 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         private string CatalogField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ItemNumberField;
+        private bool CatchWeightField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private decimal PriceField;
+        private bool EachField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemNumberField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int QuantityField;
@@ -585,6 +588,32 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool CatchWeight {
+            get {
+                return this.CatchWeightField;
+            }
+            set {
+                if ((this.CatchWeightField.Equals(value) != true)) {
+                    this.CatchWeightField = value;
+                    this.RaisePropertyChanged("CatchWeight");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Each {
+            get {
+                return this.EachField;
+            }
+            set {
+                if ((this.EachField.Equals(value) != true)) {
+                    this.EachField = value;
+                    this.RaisePropertyChanged("Each");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public string ItemNumber {
             get {
                 return this.ItemNumberField;
@@ -593,19 +622,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
                 if ((object.ReferenceEquals(this.ItemNumberField, value) != true)) {
                     this.ItemNumberField = value;
                     this.RaisePropertyChanged("ItemNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public decimal Price {
-            get {
-                return this.PriceField;
-            }
-            set {
-                if ((this.PriceField.Equals(value) != true)) {
-                    this.PriceField = value;
-                    this.RaisePropertyChanged("Price");
                 }
             }
         }

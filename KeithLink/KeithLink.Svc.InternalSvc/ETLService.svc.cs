@@ -18,18 +18,21 @@ namespace KeithLink.Svc.InternalSvc
     {
         private readonly ICatalogLogic categoryLogic;
         private readonly ICustomerLogic customerLogic;
+		private readonly IInvoiceLogic invoiceLogic;
         
 
-        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic)
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, IInvoiceLogic invoiceLogic)
         {
             this.categoryLogic = categoryLogic;
             this.customerLogic = customerLogic;
+			this.invoiceLogic = invoiceLogic;
         }
 
         public bool ProcessStagedData()
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
             Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile());
+			Task.Factory.StartNew(() => invoiceLogic.ImportInvoices());
             return true;
         }
         
@@ -53,6 +56,11 @@ namespace KeithLink.Svc.InternalSvc
             return true;
         }
 
-            
-    }
+
+		public bool ImportInvoices()
+		{
+			Task.Factory.StartNew(() => invoiceLogic.ImportInvoices());
+			return true;
+		}
+	}
 }

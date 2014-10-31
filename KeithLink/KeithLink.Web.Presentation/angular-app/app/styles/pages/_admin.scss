@@ -1,3 +1,12 @@
+.noSelect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 .list-no-style {
   padding: 0;
   > li {
@@ -5,17 +14,47 @@
   }
 }
 
+.top-buffer {
+    margin-top: 20px;
+}
+
+.control-label.userMessage {
+    color: green;
+    text-align: left;
+}
+
 .scrollable-list {
     height: auto;
+    min-height: 40px;
     max-height: 250px;
     overflow-x: hidden;
     border: 1px solid #c3bc9c;
     background-color: rgba(195, 188, 156, 0.44);
 }
 
+.scrollable-list::-webkit-scrollbar {
+  width: 0;
+}
+
+div.listHeader {
+  padding: 5px;
+  width: 100%;
+  border: 1px solid #c3bc9c;
+  border-bottom: none;
+  background-color: rgba(195, 188, 156, 0.44);
+}
+
 .scrollable-list .list-group-item {
   border-left: none;
   border-right: none;
+}
+
+.scrollable-list .stripedLi:nth-child(odd) span{
+  background-color: rgb(250,249,244);
+}
+
+.scrollable-list .stripedLi:nth-child(odd) .child-list-group .list-group-item {
+  background-color: rgb(250,249,244);
 }
 
 .scrollable-list .list-group-item:first-child {
@@ -39,7 +78,13 @@ input.inline-checkbox {
   margin-right: 10px;
 }
 
-.child-list-group {
-  margin-bottom: 0;
+.expandCollapseArrow {
+  float:right;
+  cursor: pointer;
+  margin-top: 2px;
 }
 
+.child-list-group {
+  margin-bottom: 0;
+  padding-left: 35px;
+}

@@ -16,8 +16,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		long? AddItem(long listId, ListItemModel item);
 		ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
 
-		List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
-		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+		List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false);
+		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool returnAllItems = false);
 
 		List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
 
@@ -37,6 +37,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 		List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 
-		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool returnAllItems = false);
 	}
 }

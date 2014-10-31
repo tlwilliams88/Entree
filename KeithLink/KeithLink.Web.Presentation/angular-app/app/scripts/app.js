@@ -126,6 +126,9 @@ angular
       }
     })
 
+    /**********
+    LISTS
+    **********/
     .state('menu.lists', {
       url: '/lists/',
       abstract: true,
@@ -156,6 +159,9 @@ angular
       }
     })
 
+    /**********
+    CART
+    **********/
     .state('menu.cart', {
       url: '/cart/',
       abstract: true,
@@ -191,6 +197,9 @@ angular
       }
     })
 
+    /**********
+    ADD TO ORDER
+    **********/
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
@@ -232,6 +241,9 @@ angular
       }
     })
 
+    /**********
+    ORDER HISTORY
+    **********/
     .state('menu.order', {
       url: '/orders/',
       templateUrl: 'views/order.html',
@@ -255,6 +267,51 @@ angular
       resolve: {
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
           return OrderService.getOrderDetails($stateParams.orderNumber);
+        }]
+      }
+    })
+
+    /**********
+    INVOICE
+    **********/
+    .state('menu.invoice', {
+      url: '/invoices/',
+      templateUrl: 'views/invoice.html',
+      controller: 'InvoiceController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoices: [ 'InvoiceService', function(InvoiceService) {
+          return InvoiceService.getAllInvoices();
+        }],
+        accounts: [ function() {
+          return [{
+            id: 1,
+            name: 'Bank of America',
+            number: 'XXXX XXXX XXXX 4321'
+          }, {
+            id: 2,
+            name: 'Chase',
+            number: 'XXXX XXXX XXXX 4321'
+          }, {
+            id: 3,
+            name: 'Wells Fargo',
+            number: 'XXXX XXXX XXXX 4321'
+          }];
+        }]
+      }
+    })
+    .state('menu.invoiceitems', {
+      url: '/invoice/:invoiceId/',
+      templateUrl: 'views/invoiceitems.html',
+      controller: 'InvoiceItemsController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
         }]
       }
     })

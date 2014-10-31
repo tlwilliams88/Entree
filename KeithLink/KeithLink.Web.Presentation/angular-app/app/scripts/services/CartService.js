@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', '$q', 'UtilityService', 'Cart', 
-    function ($http, $filter, $q, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$filter', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
+    function ($http, $filter, $q, $upload, toaster, UtilityService, Cart) {
 
     var filter = $filter('filter');
 
@@ -58,6 +58,40 @@ angular.module('bekApp')
 
       findCartById: function(cartId) {
         return UtilityService.findObjectByField(Service.carts, 'id', cartId);
+      },
+
+      importCart: function(file) {
+        var deferred = $q.defer();
+
+        $upload.upload({
+          url: '/import/list',
+          method: 'POST',
+          file: file, // or list of files ($files) for html5 only
+        }).then(function(response) {
+          var data = response.data;
+
+          if (data.success) {
+            var cart = {
+              id: data.listid, // ****
+              name: 'Imported Cart'
+            };
+            Service.carts.push(cart);
+
+            // display messages
+            if (data.warningmsg) {
+              toaster.pop('success', null, data.warningmsg);
+            } else {
+              toaster.pop('success', null, 'Successfully imported a new cart.');
+            }
+
+            deferred.resolve(data);
+          } else {
+            toaster.pop('error', null, data.errormsg);
+            deferred.reject(data.errormsg);
+          }
+        });
+
+        return deferred.promise;
       },
 
       /********************

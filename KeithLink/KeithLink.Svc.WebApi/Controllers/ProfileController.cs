@@ -62,7 +62,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId, base.AuthenticatedUser != null);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -342,13 +342,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute("profile/users")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<UserProfileReturn> GetUsers(UserFilterModel userFilter)
+        public OperationReturnModel<UserProfileReturn> GetUsers([FromUri] UserFilterModel userFilter)
         {
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try
             {
-                _profileLogic.GetUsers(userFilter);
+                retVal.SuccessResponse = _profileLogic.GetUsers(userFilter);
             }
             catch (ApplicationException axe)
             {

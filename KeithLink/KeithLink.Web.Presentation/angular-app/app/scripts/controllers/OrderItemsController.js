@@ -1,20 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$stateParams', 'CartService', 'OrderService', 'order',
-  function ($scope, $stateParams, CartService, OrderService, order) {
+.controller('OrderItemsController', ['$scope', '$stateParams', 'order', 'OrderService',
+  function ($scope, $stateParams, order, OrderService) {
 
   $scope.order = order;
-
-  // CartService.getShipDates().then(function() {
-  //   var shipDateObject = CartService.findCutoffDate(order);
-  //   if (shipDateObject) {
-  //     $scope.cutoffdate = shipDateObject.cutoffdatetime;
-  //   }
-  // });
-
-  $scope.cancelOrder = function() {
-    console.log('hit cancel order endpoint');
-  };
 
 }]);

@@ -110,6 +110,11 @@ namespace KeithLink.Svc.Impl.ETL
             return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
         }
 
+		public DataTable ReadInvoices()
+		{
+			return PopulateDataTable("[ETL].[ReadInvoices]");
+		}
+
         public DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber)
         {
             var contractItems = new DataTable();

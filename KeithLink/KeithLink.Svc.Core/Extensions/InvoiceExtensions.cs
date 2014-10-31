@@ -13,82 +13,65 @@ namespace KeithLink.Svc.Core.Extensions
 		public static Invoice ToEFInvoice(this InvoiceModel invoice)
 		{
 			return new KeithLink.Svc.Core.Models.EF.Invoice(){
+				CustomerNumber = invoice.CustomerNumber,
+				InvoiceNumber = invoice.InvoiceNumber,
+				OrderDate = invoice.OrderDate,
+				ShipDate = invoice.ShipDate,
+				Id = invoice.Id,
 				Items = invoice.Items == null ? null : invoice.Items.Select(i =>
 					new KeithLink.Svc.Core.Models.EF.InvoiceItem(){
-						AmountDue = i.AmountDue,
-						BrokenCaseCode = i.BrokenCaseCode,
 						CatchWeightCode = i.CatchWeightCode,
-						CombinedStatmentCustomer = i.CombinedStatmentCustomer,
-						CustomerPO = i.CustomerPO,
-						DeleteFlag = i.DeleteFlag,
 						ExtCatchWeight = i.ExtCatchWeight,
-						ExtSalesGross = i.ExtSalesGross,
 						ExtSalesNet = i.ExtSalesNet,
-						ExtSalesRepAmount = i.ExtSalesRepAmount,
-						InvoiceDate = i.InvoiceDate,
-						InvoiceType = i.InvoiceType,
 						ItemPrice = i.ItemPrice,
-						ItemPriceSalesRep = i.ItemPriceSalesRep,
-						LineItem = i.LineItem,
-						LineNumber = i.LineNumber,
-						PriceBook = i.PriceBook,
-						PriceBookNumber = i.PriceBookNumber,
 						QuantityOrdered = i.QuantityOrdered,
 						QuantityShipped = i.QuantityShipped,
-						VendorNumber = i.VendorNumber
-					}).ToArray()
+						ClassCode = i.ClassCode,
+						Id = i.Id,
+						InvoiceNumber = i.InvoiceNumber,
+						ItemNumber = i.ItemNumber
+					}).ToList()
 			};
 		}
 
-		public static InvoiceModel ToInvoiceModel(this Invoice invoice)
+		public static InvoiceModel ToInvoiceModel(this Invoice invoice, bool headerOnly = false)
 		{
 			return new InvoiceModel()
 			{
-				ChainStoreCode = invoice.ChainStoreCode,
-				Company = invoice.Company,
-				CreditHoldFlag = invoice.CreditHoldFlag,
-				CustomerGroup = invoice.CustomerGroup,
 				CustomerNumber = invoice.CustomerNumber,
-				DateTimeOfLastOrder = invoice.DateTimeOfLastOrder,
-				Department = invoice.Department,
-				Division = invoice.Division,
-				DueDate = invoice.DueDate,
-				InvoiceId =invoice.Id,
 				InvoiceNumber = invoice.InvoiceNumber,
-				IsKeithNet = invoice.Type == InvoiceType.KeithNet,
-				IsKeithPay = invoice.Type == InvoiceType.KeithPay,
-				MemoBillCode = invoice.MemoBillCode,
 				OrderDate = invoice.OrderDate,
-				OrderNumber = invoice.OrderNumber,
-				RouteNumber = invoice.RouteNumber,
-				SalesRep = invoice.SalesRep,
 				ShipDate = invoice.ShipDate,
-				StopNumber = invoice.StopNumber,
-				TradeSWFlag = invoice.TradeSWFlag,
-				WHNumber = invoice.WHNumber,
-				Items = invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
-					AmountDue = i.AmountDue,
-					BrokenCaseCode = i.BrokenCaseCode,
+				Id = invoice.Id,
+				Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
 					CatchWeightCode = i.CatchWeightCode,
-					CombinedStatmentCustomer = i.CombinedStatmentCustomer,
-					CustomerPO = i.CustomerPO,
-					DeleteFlag = i.DeleteFlag,
-					ExtCatchWeight = i.ExtCatchWeight,
-					ExtSalesGross = i.ExtSalesGross,
-					ExtSalesNet = i.ExtSalesNet,
-					ExtSalesRepAmount = i.ExtSalesRepAmount,
-					InvoiceDate = i.InvoiceDate,
-					InvoiceType = i.InvoiceType,
-					ItemPrice = i.ItemPrice,
-					ItemPriceSalesRep = i.ItemPriceSalesRep,
-					LineItem = i.LineItem,
-					LineNumber = i.LineNumber,
-					PriceBook = i.PriceBook,
-					PriceBookNumber = i.PriceBookNumber,
-					QuantityOrdered = i.QuantityOrdered,
-					QuantityShipped = i.QuantityShipped,
-					VendorNumber = i.VendorNumber
+					ExtCatchWeight = i.ExtCatchWeight.HasValue ? i.ExtCatchWeight.Value : 0,
+					ExtSalesNet = i.ExtSalesNet.HasValue ? i.ExtSalesNet.Value : 0,
+					ItemPrice = i.ItemPrice.HasValue ? i.ItemPrice.Value : 0,
+					QuantityOrdered = i.QuantityOrdered.HasValue ? i.QuantityOrdered.Value : 0,
+					QuantityShipped = i.QuantityShipped.HasValue ? i.QuantityShipped.Value : 0,
+					ItemNumber = i.ItemNumber,
+					ClassCode = i.ClassCode,
+					InvoiceNumber = i.InvoiceNumber,
+					Id = i.Id
 				}).ToList()
+			};
+		}
+
+		public static InvoiceItem ToEFInvoiceItem(this InvoiceItemModel item)
+		{
+			return new KeithLink.Svc.Core.Models.EF.InvoiceItem()
+			{
+				Id = item.Id,
+				CatchWeightCode = item.CatchWeightCode,
+				ExtCatchWeight = item.ExtCatchWeight,
+				ExtSalesNet = item.ExtSalesNet,
+				ItemPrice = item.ItemPrice,
+				QuantityOrdered = item.QuantityOrdered,
+				QuantityShipped = item.QuantityShipped,
+				InvoiceNumber = item.InvoiceNumber,
+				ItemNumber = item.ItemNumber,
+				ClassCode = item.ClassCode
 			};
 		}
 	}
