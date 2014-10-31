@@ -97,11 +97,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             //TODO: Get history needed
             // Magical EF stuffs
 
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 1 ), 1 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 2 ), 2 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 3 ), 4 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 4 ), 7 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 5 ), 10 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 1 ).ToShortDateString(), 1 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 2 ).ToShortDateString(), 2 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 3 ).ToShortDateString(), 4 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 4 ).ToShortDateString(), 7 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 5 ).ToShortDateString(), 10 );
         }
 
         private string GetCategorySearchName(string categoryName)
