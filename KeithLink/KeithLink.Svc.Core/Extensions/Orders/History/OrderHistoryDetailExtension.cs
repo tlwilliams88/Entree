@@ -41,6 +41,20 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         #endregion
 
         #region methods
+        public static void MergeWithEntityFrameworkModel(this OrderHistoryDetail value, ref EF.OrderHistoryDetail entity) {
+            entity.ItemNumber = value.ItemNumber;
+            entity.LineNumber = value.LineNumber;
+            entity.OrderQuantity = value.OrderQuantity;
+            entity.ShippedQuantity = value.ShippedQuantity;
+            entity.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
+            entity.CatchWeight = value.CatchWeight;
+            entity.ItemDeleted = value.ItemDeleted;
+            entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            entity.ItemStatus = value.ItemStatus;
+            entity.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+        }
+
         public static void Parse(this OrderHistoryDetail value, string record) {
             if (record.Length >= DETAIL_STARTPOS_ITEMNUM + DETAIL_LENGTH_ITEMNUM) { value.ItemNumber = record.Substring(DETAIL_STARTPOS_ITEMNUM, DETAIL_LENGTH_ITEMNUM); }
 

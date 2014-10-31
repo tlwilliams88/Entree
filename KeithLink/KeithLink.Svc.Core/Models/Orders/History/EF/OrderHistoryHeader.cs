@@ -16,12 +16,14 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		public string OrderSystem { get; set; }
 		[MaxLength(3)]
 		[Column(TypeName = "char")]
+        [Index("IdxOrderHeader", 0)]
 		public string BranchId { get; set; }
 		[MaxLength(6)]
 		[Column(TypeName = "char")]
 		public string CustomerNumber { get; set; }
 		[MaxLength(8)]
 		[Column(TypeName = "char")]		
+        [Index("IdxOrderHeader", 1)]
 		public string InvoiceNumber { get; set; }
 		public DateTime? DeliveryDate { get; set; }
 		[MaxLength(20)]

@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.DeliveryDate = value.DeliveryDate;
             entity.PONumber = value.PONumber;
             entity.ControlNumber = value.ControlNumber;
-            entity.OrderSystem = value.OrderStatus;
+            entity.OrderStatus = value.OrderStatus;
             entity.FutureItems = value.FutureItems;
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
@@ -87,7 +87,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.DeliveryDate = value.DeliveryDate;
             retVal.PONumber = value.PONumber;
             retVal.ControlNumber = value.ControlNumber;
-            retVal.OrderSystem = value.OrderStatus;
+            retVal.OrderStatus = value.OrderStatus;
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;

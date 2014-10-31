@@ -130,16 +130,39 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void Save(OrderHistoryFile currentFile) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber);
-            EF.OrderHistoryHeader tempheader = headers.FirstOrDefault();
-
-            EF.OrderHistoryHeader header = currentFile.Header.ToEntityFrameworkModel();
-
-            header.OrderDetails = new List<EF.OrderHistoryDetail>();
-
-            foreach (OrderHistoryDetail item in currentFile.Details) {
-                header.OrderDetails.Add(item.ToEntityFrameworkModel());
+            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            if (header == null) { 
+                header = new EF.OrderHistoryHeader();
+                header.OrderDetails = new List<EF.OrderHistoryDetail>();
             }
+
+            currentFile.Header.MergeWithEntity(ref header);
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+                
+                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+                if (detail == null) {
+                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+                    tempDetail.BranchId = header.BranchId;
+                    tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+                } else {
+                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+                    detail.BranchId = header.BranchId;
+                    detail.InvoiceNumber = header.InvoiceNumber;
+                }
+            }
+
+            //EF.OrderHistoryHeader header = currentFile.Header.ToEntityFrameworkModel();
+
+            //header.OrderDetails = new List<EF.OrderHistoryDetail>();
+
+            //foreach (OrderHistoryDetail item in currentFile.Details) {
+            //    header.OrderDetails.Add(item.ToEntityFrameworkModel());
+            //}
 
             _headerRepo.CreateOrUpdate(header);
 

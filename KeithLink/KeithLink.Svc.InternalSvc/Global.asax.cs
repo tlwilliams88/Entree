@@ -77,7 +77,7 @@ namespace KeithLink.Svc.InternalSvc
         }
 
         private void InitializeOrderUpdateThread() {
-            System.Diagnostics.Debugger.Launch();
+            //System.Diagnostics.Debugger.Launch();
 
             _orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
             _orderHistoryLogic.ListenForQueueMessages();
