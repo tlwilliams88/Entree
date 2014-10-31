@@ -47,12 +47,23 @@
       </div>
    </div>
   </div>
-  <div class="col-xs-12 col-md-4">
-    <h4 class="no-margin-top">Item Notes
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4 class="no-margin-top">Order History</h4>
+    <div class="row">
+      <div class="col-xs-4 nowrap" ng-repeat="(key, value) in item.orderhistory">
+        {{key}} - {{value}}
+      </div>
+    </div>
+    <div ng-if="!item.orderhistory">
+      No order history.
+    </div>
+    <hr class="hidden-sm">
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4>Item Notes
       <a ng-click="openNotesModal(item)"><span class="icon-pencil large-icon"></span></a>
     </h4>
     <p>{{item.notes || 'None'}}</p>
-    <!-- <button class="btn btn-primary" ng-click="openNotesModal(item)"><span class="icon-pencil"></span> Edit Notes</button> -->
   </div>
 </div>
 
@@ -75,7 +86,7 @@
                 <td>Item #</td>
                 <td>{{item.itemnumber}}</td>
               </tr>
-              <tr class="event">
+              <tr class="even">
                 <td>GTIN</td>
                 <td>{{item.upc}}</td>
               </tr>
@@ -83,7 +94,7 @@
                 <td>Servings / Case</td>
                 <td>{{item.nutritional.servingsperpack}}</td>
               </tr>
-              <tr class="event">
+              <tr class="even">
                 <td>Portion Cost</td>
                 <td>{{item.packageprice}}</td>
               </tr>
@@ -96,43 +107,43 @@
                 <td>Portion Size</td>
                 <td>{{item.nutritional.servingsuggestion}}</td>
               </tr> -->
-              <tr class="event">
+              <!-- <tr class="even">
                 <td>Previous Orders</td>
                 <td></td>
-              </tr>
-              <tr class="odd">
+              </tr> -->
+              <tr class="even">
                 <td>Manufacturer</td>
                 <td>{{item.manufacturer_name}}</td>
               </tr>
-              <tr class="event">
+              <tr class="odd">
                 <td>Manufacturer Brand</td>
                 <td>{{item.manufacturer_brand}}</td>
               </tr>
-              <tr class="odd">
+              <tr class="even">
                 <td>Vendor</td>
                 <td>{{item.vendor_num}}</td>
               </tr>
-              <tr class="event">
+              <tr class="odd">
                 <td>Vendor Item #</td>
                 <td>{{item.manufacturer_number}}</td>
               </tr>
-              <tr class="odd">
+              <tr class="even">
                 <td>Category</td>
                 <td>{{item.categoryname}}</td>
               </tr>
-              <tr class="event">
+              <tr class="odd">
                 <td>Class</td>
                 <td>{{item.iclass}}</td>
               </tr>
-              <tr class="odd">
+              <tr class="even">
                 <td>Storage Instructions</td>
                 <td>{{item.nutritional.storagetemp}}</td>
               </tr>
-              <tr class="event">
+              <tr class="odd">
                 <td>Gross Wt</td>
                 <td>{{item.nutritional.grossweight}}</td>
               </tr>
-              <tr class="odd">
+              <tr class="even">
                 <td>Case Cube</td>
                 <td>{{item.icube}}</td>
               </tr>
@@ -147,7 +158,7 @@
               <col style="width: 85%">
             </colgroup>
             <tbody>
-              <tr class="event">
+              <tr class="even">
                 <td><strong>Diet Types</strong></td>
                 <td ng-if="item.nutritional.diet" class="text-capitalize">
                   <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
@@ -160,7 +171,7 @@
                 <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
                 <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
               </tr>
-              <tr class="event">
+              <tr class="even">
                 <td><strong>May Contain</strong></td>
                 <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
                 <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
@@ -170,7 +181,7 @@
                 <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
                 <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
               </tr>
-              <tr class="event">
+              <tr class="even">
                 <td><strong>Ingredients</strong></td>
                 <td>{{item.nutritional.ingredients}}</td>
               </tr>
