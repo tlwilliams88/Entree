@@ -99,7 +99,8 @@ namespace KeithLink.Svc.Impl.ETL
 				QuantityShipped = row.GetNullableInt("QuantityShipped"),
 				InvoiceNumber = row.GetString("InvoiceNumber"),
 				ItemNumber = row.GetString("ItemNumber"),
-				ClassCode = row.GetString("ClassCode")
+				ClassCode = row.GetString("ClassCode"),
+				LineNumber = row.GetString("LineNumber")
 			};
 			return invoiceItemModel;
 		}
