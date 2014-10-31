@@ -6,7 +6,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
         void CreateBekUserProfile(string emailAddress);
 
-        UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId);
+        UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId, bool allowPasswordGeneration = false);
 
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
