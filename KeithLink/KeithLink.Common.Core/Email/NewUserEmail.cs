@@ -14,7 +14,7 @@ namespace KeithLink.Common.Core.Email {
                 msg.CC.Add("gsalazar@credera.com"); msg.CC.Add("chendon@credera.com"); msg.CC.Add("rhedges@credera.com");
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
                 msg.Subject = EMAIL_WELCOME_SUBJECT;
-                msg.Priority = MailPriority.High;
+                msg.Priority = MailPriority.Normal;
 
                 StringBuilder body = new StringBuilder();
                 //body.AppendLine("An exception has occurred in the KeithLink Order Service.");
