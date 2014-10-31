@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
             this.stagingRepository = stagingRepository;
 			this.internalInvoiceLogic = internalInvoiceLogic;
+			this.eventLog = eventLog;
         }
 
 		public void ImportInvoices()
