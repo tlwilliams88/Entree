@@ -24,10 +24,11 @@ angular.module('bekApp')
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
     $scope.goToCart = function(cartId, isChangeOrder) {
-      if (!isChangeOrder) {
-        CartService.setActiveCart(cartId);
-      }
-      $state.go('menu.cart.items', {cartId: cartId, renameCart: null});
+      $state.go('menu.cart.items', {cartId: cartId, renameCart: null}).then(function() {
+        if (!isChangeOrder) {
+          CartService.setActiveCart(cartId);
+        }
+      });
     };
 
     $scope.startEditCartName = function(cartName) {

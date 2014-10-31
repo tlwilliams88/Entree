@@ -51,9 +51,9 @@
           <th class="input-col">
             <input type="checkbox">
           </th>
-          <th class="sort-col-header" ng-click="sortBy='referencenumber';sortOrder=!sortOrder;">
+          <th class="sort-col-header" ng-click="sortBy='invoicenumber';sortOrder=!sortOrder;">
             Reference #
-            <span sort-icons field="'referencenumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
           <th class="sort-col-header" ng-click="sortBy='status';sortOrder=!sortOrder;">
             Status
@@ -80,7 +80,7 @@
         <tr class="filter-row" ng-show="showFilter">
           <td></td>
           <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.referencenumber">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
           </td>
           <td class="input-col">
             <input type="text" placeholder="Filter..." ng-model="filterFields.status">
@@ -99,7 +99,7 @@
             <input ng-if="invoice.status === 'open' || invoice.status === 'late'" type="checkbox">
           </td>
           <td>
-            {{invoice.referencenumber}}
+            <a ui-sref="menu.invoiceitems({invoiceId: invoice.id})">{{invoice.invoicenumber}}</a>
           </td>
           <td class="highlight-text">
             {{invoice.status}}

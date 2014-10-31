@@ -10,16 +10,18 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
     public class InvoiceLogicImpl : KeithLink.Svc.Core.ETL.IInvoiceLogic
     {
-        private IStagingRepository stagingRepository;
-		private IInternalInvoiceLogic internalInvoiceLogic;
+        private readonly IStagingRepository stagingRepository;
+		private readonly IInternalInvoiceLogic internalInvoiceLogic;
+		private readonly IEventLogRepository eventLog;
 
 
-        public InvoiceLogicImpl(IStagingRepository stagingRepository, IInternalInvoiceLogic internalInvoiceLogic)
+		public InvoiceLogicImpl(IStagingRepository stagingRepository, IInternalInvoiceLogic internalInvoiceLogic, IEventLogRepository eventLog)
         {
             this.stagingRepository = stagingRepository;
 			this.internalInvoiceLogic = internalInvoiceLogic;
@@ -27,7 +29,7 @@ namespace KeithLink.Svc.Impl.ETL
 
 		public void ImportInvoices()
 		{
-			DateTime start = DateTime.Now;
+			DateTime startTime = DateTime.Now;
 			DataTable invoices = stagingRepository.ReadInvoices();
 
 			var invoicesForImport = new List<InvoiceModel>();
@@ -59,32 +61,19 @@ namespace KeithLink.Svc.Impl.ETL
 			}
 
 			internalInvoiceLogic.BulkImport(invoicesForImport, invoiceItemsForImport);
+
+			eventLog.WriteInformationLog(string.Format("ImportInvoices Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
 		}
 
         private InvoiceModel CreateInvoiceModelFromStagedData(DataRow row)
         {
             InvoiceModel invoiceModel = new InvoiceModel()
             {
-				ChainStoreCode = row.GetString("ChainStoreCode"),
-				Company = row.GetString("CompanyNumber"),
-				CreditHoldFlag = row.GetString("CreditOFlag"),
-				CustomerGroup = row.GetString("CustomerGroup"),
-				CustomerNumber = row.GetInt("CustomerNumber"),
-				DateTimeOfLastOrder = row["DateOfLastOrder"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["DateOfLastOrder"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
-				Department = row.GetString("DepartmentNumber"),
-				Division = row.GetString("DivisionNumber"),
-				DueDate = row.GetNullableDateTime("DueDate"),
+				CustomerNumber = row.GetString("CustomerNumber"),
 				InvoiceNumber = row.GetString("InvoiceNumber"),
-				MemoBillCode = row.GetString("MemoBillCode"),
-				OrderDate = row["OrderDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["OrderDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
-				OrderNumber = row.GetNullableInt("OrderNumber"),
-				RouteNumber = row.GetNullableInt("RouteNumber"),
-				SalesRep = row.GetString("SalesRep"),
 				ShipDate = row["ShipDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["ShipDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
-				StopNumber = row.GetNullableInt("StopNumber"),
-				TradeSWFlag = row.GetString("TradeSWFlag"),
-				InvoiceType = GetTypeFromString(row.GetString("Type")),
-				WHNumber = row.GetString("WHNumber")
+				OrderDate = row["OrderDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["OrderDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None)
+				
 
             };
 			return invoiceModel;
@@ -102,27 +91,15 @@ namespace KeithLink.Svc.Impl.ETL
 		{
 			InvoiceItemModel invoiceItemModel = new InvoiceItemModel()
 			{
-				AmountDue = row.GetNullableDecimal("AmountDue"),
-				BrokenCaseCode = row.GetString("BrokenCaseCode"),
-				CatchWeightCode = row.GetString("CatchWeightCode"),
-				CombinedStatmentCustomer = row.GetString("CombStatementCustomer"),
-				CustomerPO = row.GetString("CustomerPO"),
-				DeleteFlag = row.GetNullableInt("DeleteFlag"),
+				CatchWeightCode = row.GetString("CatchWeightCode").Equals("y", StringComparison.CurrentCultureIgnoreCase),
 				ExtCatchWeight = row.GetNullableDecimal("ExtCatchWeight"),
-				ExtSalesGross = row.GetNullableDecimal("ExtSalesGross"),
 				ExtSalesNet = row.GetNullableDecimal("ExtSalesNet"),
-				ExtSalesRepAmount = row.GetNullableDecimal("ExtSRPAmount"),
-				InvoiceDate = row.GetNullableDateTime("InvoiceDate"),
-				InvoiceType = row.GetString("InvoiceType"),
 				ItemPrice = row.GetNullableDecimal("ItemPrice"),
-				ItemPriceSalesRep = row.GetNullableDecimal("ItemPriceSRP"),
-				LineItem = row.GetInt("LineItem"),
-				PriceBook = row.GetString("PriceBook"),
-				PriceBookNumber = row.GetString("PriceBookNumber"),
 				QuantityOrdered = row.GetNullableInt("QuantityOrdered"),
 				QuantityShipped = row.GetNullableInt("QuantityShipped"),
-				VendorNumber = row.GetNullableInt("VendorNumber"),
-				InvoiceNumber = row.GetString("InvoiceNumber")
+				InvoiceNumber = row.GetString("InvoiceNumber"),
+				ItemNumber = row.GetString("ItemNumber"),
+				ClassCode = row.GetString("ClassCode")
 			};
 			return invoiceItemModel;
 		}

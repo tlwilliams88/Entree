@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Confirmations;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Lists;
@@ -47,6 +48,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<PipelineService>(); 
             builder.RegisterType<OrderService>();
 			builder.RegisterType<ListServcie>();
+			builder.RegisterType<InvoiceService>();
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
@@ -90,6 +92,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ConfirmationListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
 			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
+			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
+			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
 			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
@@ -97,6 +102,7 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
+			
 
 
             return builder.Build();

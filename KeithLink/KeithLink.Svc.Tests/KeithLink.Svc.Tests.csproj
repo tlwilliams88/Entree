@@ -78,7 +78,7 @@
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
-    <Compile Include="Logic\SiteCatalogLogicTests.cs" />
+    <Compile Include="Logic\SiteCatalog\SiteCatalogLogicTests.cs" />
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
     <Compile Include="MockRepository\BasketRepositoryMock.cs" />

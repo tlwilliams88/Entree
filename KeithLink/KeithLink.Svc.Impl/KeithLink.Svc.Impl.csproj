@@ -182,7 +182,7 @@
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
-    <Compile Include="Logic\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -235,6 +235,14 @@
     <Compile Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.Designer.cs">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.cs" />
+    <Compile Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.Designer.cs">
+      <DependentUpon>201410291832034_Remove_ListItemHash.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.cs" />
+    <Compile Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.Designer.cs">
+      <DependentUpon>201410291952472_add_ListItem_Status.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201410301435528_Merge Models.cs" />
     <Compile Include="Repository\EF\Migrations\201410301435528_Merge Models.Designer.cs">
       <DependentUpon>201410301435528_Merge Models.cs</DependentUpon>
@@ -246,6 +254,18 @@
     <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.cs" />
     <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.Designer.cs">
       <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.cs" />
+    <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.Designer.cs">
+      <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.cs" />
+    <Compile Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.Designer.cs">
+      <DependentUpon>201410302145006_Merge_EF_Models_JT_20141030.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.cs" />
+    <Compile Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.Designer.cs">
+      <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -282,6 +302,7 @@
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
@@ -346,6 +367,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -385,6 +411,7 @@
     <None Include="packages.config" />
     <None Include="Presentation.config" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.EF.List.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
@@ -458,6 +485,19 @@
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.ProcessRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
     <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
       <SubType>Designer</SubType>
@@ -522,6 +562,7 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
@@ -630,6 +671,12 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410291404378_Add_ListItemHash.resx">
       <DependentUpon>201410291404378_Add_ListItemHash.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410291832034_Remove_ListItemHash.resx">
+      <DependentUpon>201410291832034_Remove_ListItemHash.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410291952472_add_ListItem_Status.resx">
+      <DependentUpon>201410291952472_add_ListItem_Status.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301435528_Merge Models.resx">
       <DependentUpon>201410301435528_Merge Models.cs</DependentUpon>
     </EmbeddedResource>
@@ -639,6 +686,30 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410301857211_Add order history indexes.resx">
       <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.resx">
+      <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410302145006_Merge_EF_Models_JT_20141030.resx">
+      <DependentUpon>201410302145006_Merge_EF_Models_JT_20141030.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.resx">
+      <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
