@@ -271,6 +271,10 @@
     <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.Designer.cs">
       <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.Designer.cs">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -701,6 +705,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.resx">
       <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.resx">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

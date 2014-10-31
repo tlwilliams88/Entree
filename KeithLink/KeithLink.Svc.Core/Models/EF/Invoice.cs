@@ -17,8 +17,7 @@ namespace KeithLink.Svc.Core.Models.EF
 
 	public class Invoice: BaseEFModel
 	{
-		[MaxLength(10)]
-		[Column(TypeName = "char")]
+
 		public string CustomerNumber { get; set; }
 		public string InvoiceNumber { get; set; }
 		public DateTime? ShipDate { get; set; }
