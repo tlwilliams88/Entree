@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;

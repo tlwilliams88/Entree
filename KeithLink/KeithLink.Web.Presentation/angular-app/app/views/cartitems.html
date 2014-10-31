@@ -74,7 +74,6 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
-          <p ng-if="isChangeOrder">This is a change order. Updated prices will not be reflected until you re-submit the order.</p>
 
         </div>
       </div>
@@ -140,6 +139,8 @@
           <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
         </div>
       </div>
+
+      <p class="sub-content" ng-if="isChangeOrder">This is a change order. Updated prices will not be reflected until you re-submit the order.</p>
 
     </div>
   </div>

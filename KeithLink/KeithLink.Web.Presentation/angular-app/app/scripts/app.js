@@ -282,27 +282,8 @@ angular
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoices: [ function() {
-          return [
-            {
-              referencenumber: 12345,
-              status: 'paid',
-              duedate: '2014-12-01',
-              amountdue: 1234.56,
-              image: 'http://'
-            }, {
-              referencenumber: 12345,
-              status: 'late',
-              duedate: '2014-12-01',
-              amountdue: 1234.56,
-            }, {
-              referencenumber: 12345,
-              status: 'open',
-              duedate: '2014-12-01',
-              amountdue: 1234.56,
-              image: 'http://'
-            }
-          ];
+        invoices: [ 'InvoiceService', function(InvoiceService) {
+          return InvoiceService.getAllInvoices();
         }],
         accounts: [ function() {
           return [{
@@ -318,6 +299,19 @@ angular
             name: 'Wells Fargo',
             number: 'XXXX XXXX XXXX 4321'
           }];
+        }]
+      }
+    })
+    .state('menu.invoiceitems', {
+      url: '/invoice/:invoiceId/',
+      templateUrl: 'views/invoiceitems.html',
+      controller: 'InvoiceItemsController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
         }]
       }
     })

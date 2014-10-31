@@ -33,8 +33,16 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.LineItemCount];
                     po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
 
-                    foreach (var prop in e.Properties.Where(x => x.Value == null && !x.Key.EndsWith("Errors"))) // don't manually set error fields; only custom fields
+                    bool skip = true;
+                    foreach (var prop in e.Properties)
                     {
+                        if (skip)
+                        {
+                            if (prop.Key == "BranchId") // only start setting custom properties
+                                skip = false;
+                            if (skip)
+                                continue;
+                        }
                         if (po[prop.Key] != null)
                             prop.Value = po[prop.Key];
                     }
@@ -43,7 +51,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     {
                         List<CommercePropertyItem> items = l.Target.Properties.Where(x => x.Value == null).ToList();
                         CommerceServer.Core.Runtime.Orders.LineItem poLineItem = lineItems.Where(x => x.LineItemId.ToCommerceServerFormat() == l.Target.Id).FirstOrDefault();
-                        bool skip = true;
+                        skip = true;
                         foreach (var prop in l.Target.Properties.Where(x => x.Value == null))
                         {
                             if (skip)

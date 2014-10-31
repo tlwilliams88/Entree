@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Interface.Confirmations {
+namespace KeithLink.Svc.Core.Interface.Orders.Confirmations {
     public interface IConfirmationQueueRepository : IQueueRepository {
     }
 }

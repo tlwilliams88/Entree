@@ -1,12 +1,14 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Extensions {
+namespace KeithLink.Svc.Core.Extensions.Orders.History {
     public static class OrderHistoryDetailExtension {
         #region attributes
         private const int DETAIL_LENGTH_ITEMNUM = 6;
@@ -39,6 +41,20 @@ namespace KeithLink.Svc.Core.Extensions {
         #endregion
 
         #region methods
+        public static void MergeWithEntityFrameworkModel(this OrderHistoryDetail value, ref EF.OrderHistoryDetail entity) {
+            entity.ItemNumber = value.ItemNumber;
+            entity.LineNumber = value.LineNumber;
+            entity.OrderQuantity = value.OrderQuantity;
+            entity.ShippedQuantity = value.ShippedQuantity;
+            entity.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
+            entity.CatchWeight = value.CatchWeight;
+            entity.ItemDeleted = value.ItemDeleted;
+            entity.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            entity.ItemStatus = value.ItemStatus;
+            entity.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+        }
+
         public static void Parse(this OrderHistoryDetail value, string record) {
             if (record.Length >= DETAIL_STARTPOS_ITEMNUM + DETAIL_LENGTH_ITEMNUM) { value.ItemNumber = record.Substring(DETAIL_STARTPOS_ITEMNUM, DETAIL_LENGTH_ITEMNUM); }
 
@@ -80,6 +96,24 @@ namespace KeithLink.Svc.Core.Extensions {
                 double.TryParse(record.Substring(DETAIL_STARTPOS_WEIGHT, DETAIL_LENGTH_WEIGHT), out weight);
                 value.TotalShippedWeight = weight;
             }
+        }
+
+        public static EF.OrderHistoryDetail ToEntityFrameworkModel(this OrderHistoryDetail value) {
+            EF.OrderHistoryDetail retVal = new EF.OrderHistoryDetail();
+
+            retVal.ItemNumber = value.ItemNumber;
+            retVal.LineNumber = value.LineNumber;
+            retVal.OrderQuantity = value.OrderQuantity;
+            retVal.ShippedQuantity = value.ShippedQuantity;
+            retVal.UnitOfMeasure = value.UnitOfMeasure.ToShortString();
+            retVal.CatchWeight = value.CatchWeight;
+            retVal.ItemDeleted = value.ItemDeleted;
+            retVal.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            retVal.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            retVal.ItemStatus = value.ItemStatus;
+            retVal.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+
+            return retVal;
         }
         #endregion
     }

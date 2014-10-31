@@ -256,7 +256,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId, bool allowPasswordGeneration = false) {
+            // if password is null or empty, create a temproary password and email it to the user
+            bool generatedPassword = false;
+            if (String.IsNullOrEmpty(password) && allowPasswordGeneration)
+            {
+                generatedPassword = true;
+                password = "aAbBcC123ZZ";
+            }
             AssertGuestProfile(emailAddress, password);
 
             _extAd.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
@@ -274,6 +281,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
+            if (generatedPassword)
+                KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
+            
             return GetUserProfile(emailAddress);
         }
 

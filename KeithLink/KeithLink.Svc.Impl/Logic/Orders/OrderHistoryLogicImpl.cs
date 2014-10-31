@@ -1,7 +1,12 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
-using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Orders.History;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +18,63 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #region attributes
         private const int RECORDTYPE_LENGTH = 1;
         private const int RECORDTYPE_STARTPOS = 0;
+        private const int THREAD_SLEEP_DURATION = 2000;
+
+        private readonly IEventLogRepository _log;
+        private readonly IOrderHistoryDetailRepository _detailRepo;
+        private readonly IOrderHistoryHeaderRepsitory _headerRepo;
+        private readonly IOrderHistoryQueueRepository _queue;
+        private readonly IUnitOfWork _unitOfWork;
+
+        private bool _keepListening;
+        private Task _queueTask;
+        #endregion
+
+        #region ctor
+        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IOrderHistoryQueueRepository queueRepo,
+                                     IUnitOfWork unitOfWork) {
+            _log = logRepo;
+            _headerRepo = headerRepo;
+            _detailRepo = detailRepo;
+            _queue = queueRepo;
+            _unitOfWork = unitOfWork;
+
+            _keepListening = true;
+        }
         #endregion
 
         #region methods
+        public void ListenForQueueMessages() {
+            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+        }
+
+        private void ListenForQueueMessagesInTask() {
+            while (_keepListening) {
+                System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
+
+                try {
+                    string rawOrder = _queue.ConsumeFromQueue();
+
+                    while (rawOrder != null) {
+                        OrderHistoryFile historyFile = new OrderHistoryFile();
+
+                        System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
+                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder);
+
+                        historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
+
+                        Save(historyFile);
+
+                        rawOrder = _queue.ConsumeFromQueue();
+
+                    }
+                } catch (Exception ex) {
+                    _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
+                }
+            }
+
+        }
+
         public OrderHistoryFileReturn ParseMainframeFile(string filePath)
         {
             OrderHistoryFileReturn retVal = new OrderHistoryFileReturn();
@@ -68,6 +127,54 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
 
             return retVal;
+        }
+
+        public void Save(OrderHistoryFile currentFile) {
+            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            if (header == null) { 
+                header = new EF.OrderHistoryHeader();
+                header.OrderDetails = new List<EF.OrderHistoryDetail>();
+            }
+
+            currentFile.Header.MergeWithEntity(ref header);
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+                
+                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+                if (detail == null) {
+                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+                    tempDetail.BranchId = header.BranchId;
+                    tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+                } else {
+                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+                    detail.BranchId = header.BranchId;
+                    detail.InvoiceNumber = header.InvoiceNumber;
+                }
+            }
+
+            //EF.OrderHistoryHeader header = currentFile.Header.ToEntityFrameworkModel();
+
+            //header.OrderDetails = new List<EF.OrderHistoryDetail>();
+
+            //foreach (OrderHistoryDetail item in currentFile.Details) {
+            //    header.OrderDetails.Add(item.ToEntityFrameworkModel());
+            //}
+
+            _headerRepo.CreateOrUpdate(header);
+
+            _unitOfWork.SaveChanges();
+        }
+
+        public void StopListening() {
+            _keepListening = false;
+
+            if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
+                _queueTask.Wait();
+            }
         }
         #endregion
     }

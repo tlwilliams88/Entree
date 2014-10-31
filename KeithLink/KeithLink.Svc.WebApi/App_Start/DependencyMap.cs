@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
