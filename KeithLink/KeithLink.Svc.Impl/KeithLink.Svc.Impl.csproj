@@ -243,6 +243,10 @@
     <Compile Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.Designer.cs">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.cs" />
+    <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.Designer.cs">
+      <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -629,6 +633,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.resx">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.resx">
+      <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

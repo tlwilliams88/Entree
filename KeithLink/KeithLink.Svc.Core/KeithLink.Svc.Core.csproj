@@ -185,6 +185,7 @@
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
+    <Compile Include="Models\BranchSupport\BranchSupportModel.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
     <Compile Include="Models\CommerceEntities.cs">
@@ -198,6 +199,7 @@
     <Compile Include="Models\Confirmations\ConfirmationHeader.cs" />
     <Compile Include="Models\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\EF\BaseEFModel.cs" />
+    <Compile Include="Models\EF\BranchSupport.cs" />
     <Compile Include="Models\EF\Invoice.cs" />
     <Compile Include="Models\EF\InvoiceItem.cs" />
     <Compile Include="Models\EF\List.cs" />
