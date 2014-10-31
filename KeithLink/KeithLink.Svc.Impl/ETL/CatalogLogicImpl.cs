@@ -730,7 +730,7 @@ namespace KeithLink.Svc.Impl.ETL
                 SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
                 SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-				if (!CalculateMD5Hash(existingItemNumbers).Equals(GenerateMD5Hash(newItemNumbers)))
+				if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
                 {
                     CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
                     CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
