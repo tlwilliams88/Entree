@@ -4,17 +4,13 @@ angular.module('bekApp')
   .controller('AddUserDetailsController', ['$scope', 'UserProfileService', 'LocalStorage',
     function ($scope, UserProfileService, LocalStorage) {
 
-      /*Create vs Find User*/
-      $scope.isExistingUser = false;
-
-      /*Roles*/
+      /*------Init------*/
       //temporary hardcoded roles in use until a role endpoint is created
       $scope.userRoles = ["Owner", "Accounting", "Approver", "Buyer", "Guest"];
 
-      /*Customers*/
       $scope.customers = LocalStorage.getProfile().user_customers;
 
-      /*NA/RA grouping logic*/
+      /*------NA/RA grouping logic------*/
       var indexedGroups = [];
 
       //rechecks if group numbers have changed each time the page is refreshed
@@ -40,7 +36,7 @@ angular.module('bekApp')
         return !!$scope.isNullEmptyUndefined(customer.nationalOrRegionalAccountNumber);
       };
 
-      /*Selected customers logic*/
+      /*------Selected customers logic------*/
       $scope.selectedCustomers = [];
 
       //updates the selected list each time a selection has changed
@@ -63,11 +59,70 @@ angular.module('bekApp')
         $scope.updateSelectedList();
       };
 
-      /*Convenience Methods*/
+      /*------User Logic------*/
+      /*Create vs Find User*/
+      $scope.isExistingUser = false;
 
+      //checks if user exists
+      $scope.checkUser = function(){
+        //set email as a parameter
+        var data = {
+          params: {
+            email: $scope.currentUserEmail
+          }
+        };
+
+        //check if user exists in the database
+        UserProfileService.getAllUsers(data).then(
+          function(profile){
+            console.log(profile);
+            //if the user does exist update userExists flag to true, else keep it as false
+            if(!$scope.isNullEmptyUndefined(profile)){
+              console.log(profile); //$scope.currentSelectedUser = profile;
+              $scope.isExistingUser = true;
+            } else {
+              $scope.isExistingUser = false;
+            }
+          }, function(errorMessage){
+            console.log(errorMessage);
+          });
+      };
+
+      $scope.makeUser= function(existingProfile){
+        if(!$scope.isExistingUser){
+          //creates new user profile object
+          var newProfile = {};
+          newProfile.emailaddress = $scope.currentUserEmail;
+          //newProfile.branchId
+
+          //sends new User Profile to db and receives newly generated profile object
+          UserProfileService.createUser(newProfile).then(function(profile){
+            $scope.currentSelectedUser = profile;
+            updateExistingProfile();
+          },function(errorMessage){
+            console.log(errorMessage);
+          });
+        } else {
+          updateExistingProfile();
+        }
+      };
+
+      var updateExistingProfile = function(){
+        //updates existing users customers with currently selected customers
+        $scope.currentSelectedUser.rolename = $scope.currentUserRole;
+        $scope.currentSelectedUser.user_customers = $scope.selectedCustomers;
+        console.log($scope.currentSelectedUser); //UserProfileService.updateUser($scope.currentSelectedUser);
+      };
+
+      /*------Convenience Methods------*/
       //allows for proper checking of empty group numbers
       $scope.isNullEmptyUndefined = function(val){
         return !!(angular.isUndefined(val) || val === null || val.length == 0);
       };
+
+      $scope.testMethod = function(){
+        console.log('test');
+      }
+
     }]
   );

@@ -44,6 +44,18 @@ namespace KeithLink.Common.Core
             }
         }
 
+        public static double ParseDouble(string value, string defaultValue)
+        {
+            try
+            {
+                return double.Parse(value);
+            }
+            catch
+            {
+                return double.Parse(defaultValue);
+            }
+        }
+
         public static DateTime ParseDateTime(string value, string defaultValue)
         {
             try

@@ -168,6 +168,7 @@
             <th class="hidden-sm hidden-xs">
               Pack/Size
             </th>
+            <th class="hidden-xs hidden-sm"></th>
             <th class="hidden-xs hidden-sm">
               # in Cart
             </th>
@@ -218,6 +219,7 @@
             <td class="hidden-sm hidden-xs bek-drag-handle">
               {{item.packsize}}
             </td>
+            <td class="hidden-xs hidden-sm" item-icons></td>
             <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
               {{item.quantityincart}}
             </td>
@@ -277,6 +279,9 @@
                   <tr>
                     <td>Pack/Size</td>
                     <td>{{item.packsize}}</td>
+                  </tr>
+                  <tr>
+                    <td item-icons></td>
                   </tr>
                   <tr ng-if="selectedList.is_contract_list">
                     <td>Category</td>

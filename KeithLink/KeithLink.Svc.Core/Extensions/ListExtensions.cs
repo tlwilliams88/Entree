@@ -16,11 +16,11 @@ namespace KeithLink.Svc.Core.Extensions
 				DisplayName = list.Name,
 				Type = KeithLink.Svc.Core.Models.EF.ListType.Custom,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes }).ToArray()
+				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes, Status = i.Status }).ToArray()
 			};
 		}
 
-		public static ListModel ToListModel(this List list)
+		public static ListModel ToListModel(this List list, bool returnAllItems = false)
 		{
 			return new ListModel()
 			{
@@ -31,7 +31,9 @@ namespace KeithLink.Svc.Core.Extensions
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position }).ToList()
+                Items = list.Items == null ? null :
+                    returnAllItems == false ? list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).Where(i => i.Status.Equals(Core.Enumerations.List.ListItemStatus.Current)).ToList() :
+                    list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()
 			};
 		}
 	}
