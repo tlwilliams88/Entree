@@ -945,7 +945,8 @@ BEGIN
 	ExtCatchWeight,
 	ItemPrice,
 	ExtSalesNet,
-	ClassCode
+	ClassCode,
+	LineNumber
 FROM [ETL].[Staging_KNet_Invoice]
 ORDER BY InvoiceNumber
 END
