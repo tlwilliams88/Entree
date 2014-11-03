@@ -18,7 +18,7 @@
   overflow:  hidden;
   
   .notification__icon {
-    @include make-lg-column(3);
+    @include make-md-column(3);
     text-align: center;
     height: 100%;
     padding-bottom: 100%;
@@ -41,7 +41,7 @@
 
   .notification__message {
     width: inherit !important;
-    @include make-lg-column(9);
+    @include make-md-column(9);
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
     border-radius: 3px;
@@ -49,7 +49,7 @@
     background-color: $color-white;
     border: 1px solid $color-border;
     padding: 8px;
-    margin-left: -20px;
+    // margin-left: -20px;
 
     span.timestamp {
       color: $color-border;
@@ -61,10 +61,10 @@
       padding-top: 15px;
     }
     .notification__date {
-      @include make-lg-column(9);
+      @include make-md-column(9);
       margin-top: 15px;
       padding-left: 0;
-      margin-left: -20px;
+      // margin-left: -20px;
     }
   }
   &.notification--activity {
@@ -73,7 +73,6 @@
       padding-left: 9.5%;
 
       div.icon {
-        // margin-left: 20px;
         height: 25px;
         width: 25px;
         padding: 3px;
@@ -189,42 +188,3 @@ $order-col__background: #f1efe5;
     }
   }
 }
-  // .order-summary__order {
-  //   margin-right: 0;
-  //   border-left: 1px solid $color-border;
-    
-  //   &.order-summary__order--late {
-  //     border-left: 1px solid $color-border;  
-  //     border-top: 3px solid $color-red;
-  //   }
-  //   &.order-summary__order--paid {
-  //     border-left: 1px solid $color-border;
-  //     border-top: 3px solid $color-green;
-  //   }
-
-  //   // order table rows
-  //   > div {
-  //     padding: $gutter-size;
-  //   }
-
-  //   .right{
-  //     text-align: right;
-  //   }
-
-  //   .order-col {
-  //     border-right: none;
-  //     border-bottom: 1px solid $color-border;
-  //     padding: 10px $gutter-size;
-  //     text-align: left;
-
-  //     @include arrow('bottom','left', 10px, $order-col__background, $color-border, 1px);
-
-  //     .order-col__date {
-  //       text-align: right;
-  //     }
-  //     .order-col__text {
-  //       width: 100%;
-  //     }
-  //   }
-  // }
-// }

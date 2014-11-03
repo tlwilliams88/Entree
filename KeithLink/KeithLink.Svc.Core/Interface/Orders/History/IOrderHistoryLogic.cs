@@ -3,6 +3,8 @@ using System;
 
 namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IOrderHistoryLogic {
+        void ListenForMainFrameCalls();
+
         void ListenForQueueMessages();
 
         OrderHistoryFileReturn ParseMainframeFile(string rawFlatFile);

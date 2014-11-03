@@ -10,7 +10,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
-namespace KeithLink.Svc.Impl.Repository.Confirmations
+namespace KeithLink.Svc.Impl.Repository.Orders.Confirmations
 {
     public class ConfirmationQueueRepositoryImpl : IConfirmationQueueRepository
     {

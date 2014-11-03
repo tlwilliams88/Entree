@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -190,5 +190,9 @@ angular.module('bekApp')
         controller: 'ImportModalController'
       });
     };
+
+    if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
+      $scope.startEditCartName(originalBasket.name);
+    }
 
   }]);
