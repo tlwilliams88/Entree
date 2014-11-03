@@ -1,9 +1,15 @@
 <div page-header-bar>
   <div header-message>
     Your Invoices
-    <select name="" id="">
-      <option value="">All Invoices</option>
-    </select>
+    <div class="btn-group" dropdown is-open="status.isopen1">
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle">All Invoices <span class="icon-arrow-down6"></span></button>
+
+      <ul class="dropdown-menu">
+        <li><a href="">All Invoices</a></li>
+        <li><a href="">Past 3 Months</a></li>
+        <li><a href="">Open Invoices</a></li>
+      </ul>
+    </div>
   </div>
   <div header-buttons>
     <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
@@ -149,7 +155,7 @@
       
       <tfoot ng-show="invoices.length === 0">
         <tr>
-          <td>There are no invoices to display.</td>
+          <td colspan="8">There are no invoices to display.</td>
         </tr>
       </tfoot>
     </table>

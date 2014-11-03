@@ -10,8 +10,7 @@ namespace KeithLink.Svc.Core.Models.EF
 {
 	public class InvoiceItem: BaseEFModel
 	{
-		[MaxLength(6)]
-		[Column(TypeName = "char")]
+		[MaxLength(10)]
 		public string ItemNumber { get; set; }
 		public int? QuantityOrdered { get; set; }
 		public int? QuantityShipped { get; set; }
@@ -19,6 +18,8 @@ namespace KeithLink.Svc.Core.Models.EF
 		public decimal? ExtCatchWeight { get; set; }
 		public decimal? ItemPrice { get; set; }
 		public decimal? ExtSalesNet { get; set; }
+		[MaxLength(6)]
+		public string LineNumber { get; set; }
 		[MaxLength(2)]
 		[Column(TypeName = "char")]
 		public string ClassCode { get; set; }

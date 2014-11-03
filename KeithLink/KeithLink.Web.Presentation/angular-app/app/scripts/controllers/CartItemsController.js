@@ -187,7 +187,7 @@ angular.module('bekApp')
 
       var modalInstance = $modal.open({
         templateUrl: 'views/orderimportmodal.html',
-        controller: 'OrderImportModalController'
+        controller: 'ImportModalController'
       });
     };
 

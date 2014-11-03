@@ -356,12 +356,8 @@ angular.module('bekApp')
 
       var modalInstance = $modal.open({
         templateUrl: 'views/listimportmodal.html',
-        controller: 'ListImportModalController'
+        controller: 'ImportModalController'
       });
-
-      // modalInstance.result.then(function(item) {
-      //   $scope.item = item;
-      // });
     };
 
     resetPage(angular.copy(originalList));

@@ -182,15 +182,15 @@
           <th></th>
           <th class="sort-col-header" ng-click="sortTable('itemnumber')">
             Item #
-            <span sort-icons field="'itemnumber'" sortorder="asc" sortby="sortField"></span>
+            <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
             Brand
-            <span sort-icons field="'brand_description_not_analyzed'" sortorder="asc" sortby="sortField"></span>
+            <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th class="sort-col-header" ng-click="sortTable('name_not_analyzed')">
             Name
-            <span sort-icons field="'name_not_analyzed'" sortorder="asc" sortby="sortField"></span>
+            <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th class="hidden-sm hidden-xs">
             Pack/Size
@@ -198,7 +198,7 @@
           <th class="hidden-sm hidden-xs"></th>
           <th class="hidden-sm hidden-xs" ng-class="{'sort-col-header': totalItems < 201}" ng-click="sortTable('caseprice')">
             Price
-            <span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="asc" sortby="sortField"></span>
+            <span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th></th>
         </tr>
