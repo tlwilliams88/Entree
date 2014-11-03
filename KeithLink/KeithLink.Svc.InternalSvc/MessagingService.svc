@@ -1,0 +1,6 @@
+﻿<%@ ServiceHost 
+	Language="C#" 
+	Debug="true" 
+	Service="KeithLink.Svc.InternalSvc.InvoiceService, KeithLink.Svc.InternalSvc" 
+	CodeBehind="MessagingService.svc.cs" 
+	Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf" %>
