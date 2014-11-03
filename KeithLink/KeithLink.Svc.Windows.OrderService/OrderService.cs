@@ -183,23 +183,36 @@ namespace KeithLink.Svc.Windows.OrderService {
                 confirmationLogic.ListenForMainFrameCalls();
             }
             catch (Exception e) {
-                StringBuilder logMessage = new StringBuilder();
-                logMessage.AppendLine("Processing failed receiving confirmation. ");
-                Exception currentException = e;
-
-                while (currentException != null) {
-                    logMessage.AppendLine("Message:");
-                    logMessage.AppendLine(currentException.Message);
-                    logMessage.AppendLine();
-                    logMessage.AppendLine("Stack:");
-                    logMessage.AppendLine(currentException.StackTrace);
-
-                    currentException = currentException.InnerException;
-                }
+                string logMessage = "Processing failed receiving confirmation. Processing of confirmations will not continue. Please restart this service.";
                 
-                _log.WriteErrorLog(logMessage.ToString());
+                _log.WriteErrorLog(logMessage);
 
-                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage.ToString());
+                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
+            }
+        }
+
+        private void ProcessOrderHistoryListener() {
+            try {
+                UnitOfWork uow = new UnitOfWork();
+
+                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                                   new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl());
+                OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
+                                                                       new OrderHistoyrHeaderRepositoryImpl(uow),
+                                                                       new OrderHistoryDetailRepositoryImpl(uow),
+                                                                       new OrderUpdateQueueRepositoryImpl(),
+                                                                       uow,
+                                                                       confirmationLogic,
+                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+
+                logic.ListenForMainFrameCalls();
+            } catch (Exception e) {
+                string logMessage = "Processing failed receiving order updates. Processing of order updates will not continue. Please restart this service.";
+
+                _log.WriteErrorLog(logMessage);
+
+                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
             }
         }
 
