@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Models.Invoices
     {
 		[DataMember(Name="id")]
 		public long Id { get; set; }
+		[DataMember(Name = "linenumber")]
+		public string LineNumber { get; set; }
 		[DataMember(Name="itemnumber")]
 		public string ItemNumber { get; set; }
 		[DataMember(Name = "quantityordered")]
@@ -29,6 +31,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public decimal? ExtSalesNet { get; set; }
 		[DataMember(Name = "classcode")]
 		public string ClassCode { get; set; }
+
 
 		
 		public string InvoiceNumber { get; set; }
