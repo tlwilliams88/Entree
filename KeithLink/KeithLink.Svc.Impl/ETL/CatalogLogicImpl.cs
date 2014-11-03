@@ -26,8 +26,6 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
-using System.Security.Cryptography;
-//using KeithLink.Svc.Core.Models.Profile.Customer;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -106,12 +104,18 @@ namespace KeithLink.Svc.Impl.ETL
             try
             {
 				var catTask = Task.Factory.StartNew(() => ImportCatalog());
+
+				Task.WaitAll(catTask);
+
 				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
 				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
                 var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
+
+				Task.WaitAll(esItemTask, esCatTask, esBrandTask);
+
                 var contractTask = Task.Factory.StartNew(() => ImportPrePopulatedLists());
                 
-                Task.WaitAll(catTask, esItemTask, esCatTask, esBrandTask, contractTask);
+                Task.WaitAll(contractTask);
 				
             }
             catch (Exception ex) 
@@ -684,7 +688,7 @@ namespace KeithLink.Svc.Impl.ETL
                 SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
                 SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-                if (!GenerateMD5Hash(existingItemNumbers).Equals(GenerateMD5Hash(newItemNumbers)))
+				if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
                 {
                     CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
                     CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
@@ -726,7 +730,7 @@ namespace KeithLink.Svc.Impl.ETL
                 SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
                 SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-                if (!GenerateMD5Hash(existingItemNumbers).Equals(GenerateMD5Hash(newItemNumbers)))
+				if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
                 {
                     CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
                     CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
@@ -808,35 +812,7 @@ namespace KeithLink.Svc.Impl.ETL
                                 }).ToList();
             return contractItems;
         }
-
-        public string GenerateMD5Hash(object itemToHash)
-        {
-
-            StringBuilder sBuilder = new StringBuilder();
-            using (MD5 hash = MD5.Create())
-            {
-                byte[] b = hash.ComputeHash(ObjectToByteArray(itemToHash));
-                for (int i = 0; i < b.Length; i++)
-                {
-                    sBuilder.Append(b[i].ToString("x2"));
-                }
-            }
-
-            return sBuilder.ToString();
-        }
-
-        private byte[] ObjectToByteArray(object obj)
-        {
-            if (obj == null)
-                return null;
-            System.Runtime.Serialization.Formatters.Binary.BinaryFormatter bf = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            using (MemoryStream ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
-        }
-
+		        
         private void CompareContractItems(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext

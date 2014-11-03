@@ -3,7 +3,7 @@ using KeithLink.Svc.Core.Models.Orders;
 using System;
 using System.Text;
 
-namespace KeithLink.Svc.Core.Extensions {
+namespace KeithLink.Svc.Core.Extensions.Orders {
     public static class OrderHeaderExtension {
         public static string GetOrderSource(OrderSource value) {
             switch (value) {

@@ -11,7 +11,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Extensions;
 
-namespace KeithLink.Svc.Impl.Logic
+namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
     public class SiteCatalogLogicImpl : ICatalogLogic
     {
@@ -59,6 +59,7 @@ namespace KeithLink.Svc.Impl.Logic
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
+            AddItemHistoryToProduct( ret );
 
 			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
 
@@ -90,6 +91,17 @@ namespace KeithLink.Svc.Impl.Logic
                 foreach (SubCategory sc in c.SubCategories)
                     sc.SearchName = GetCategorySearchName(sc.Name);
             }
+        }
+
+        private void AddItemHistoryToProduct( Product returnValue ) {
+            //TODO: Get history needed
+            // Magical EF stuffs
+
+            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 1 ).ToShortDateString(), 1 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 2 ).ToShortDateString(), 2 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 3 ).ToShortDateString(), 4 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 4 ).ToShortDateString(), 7 );
+            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 5 ).ToShortDateString(), 10 );
         }
 
         private string GetCategorySearchName(string categoryName)

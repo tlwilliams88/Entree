@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
-namespace KeithLink.Svc.Core.Models.Confirmations
+namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 {
     [DataContract(Name = "ConfirmationFile")]
     public class ConfirmationFile

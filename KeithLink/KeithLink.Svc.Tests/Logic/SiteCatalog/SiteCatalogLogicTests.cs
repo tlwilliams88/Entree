@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Profile;
@@ -10,7 +11,7 @@ using KeithLink.Svc.Impl;
 using KeithLink.Svc.Test.MockRepository;
 using KeithLink.Svc.Impl.Repository.Lists;
 
-namespace KeithLink.Svc.Test.Logic
+namespace KeithLink.Svc.Test.Logic.SiteCatalog
 {
     [TestClass]
     public class SiteCatalogLogicTests
@@ -37,6 +38,11 @@ namespace KeithLink.Svc.Test.Logic
         {
 			//TODO: Add service endpoint to config
            // Assert.IsTrue(_logic.GetCategories(0, 100).Categories[0].CategoryImage.FileName.Length > 0);
+        }
+
+        [TestMethod]
+        public void ItemShouldShowLastFiveTimesItWasOrdered() {
+            
         }
     }
 }

@@ -182,7 +182,7 @@
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
-    <Compile Include="Logic\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -251,6 +251,10 @@
     <Compile Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.Designer.cs">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.cs" />
+    <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.Designer.cs">
+      <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.cs" />
     <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.Designer.cs">
       <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
@@ -262,6 +266,18 @@
     <Compile Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.cs" />
     <Compile Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.Designer.cs">
       <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.Designer.cs">
+      <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.Designer.cs">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.Designer.cs">
+      <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -303,6 +319,8 @@
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
@@ -677,6 +695,9 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.resx">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410301857211_Add order history indexes.resx">
+      <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.resx">
       <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
     </EmbeddedResource>
@@ -685,6 +706,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.resx">
       <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.resx">
+      <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.resx">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.resx">
+      <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

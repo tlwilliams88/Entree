@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.Confirmations;
+﻿using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public Product()
         {
             ProductImages = new List<ProductImage>();
+            OrderHistory = new Dictionary<string,int>();
         }
         #endregion
 
@@ -83,6 +84,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "isproprietary")]
 		public bool IsProprietary { get; set; }
+
+        [DataMember( Name = "orderhistory" )]
+        public Dictionary<string, int> OrderHistory { get; set; }
         #endregion
         
 		[OnSerializing]

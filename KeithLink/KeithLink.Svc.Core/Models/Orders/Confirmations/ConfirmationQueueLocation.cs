@@ -1,4 +1,4 @@
-﻿namespace KeithLink.Svc.Core.Models.Confirmations
+﻿namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 {
     public enum ConfirmationQueueLocation
     {

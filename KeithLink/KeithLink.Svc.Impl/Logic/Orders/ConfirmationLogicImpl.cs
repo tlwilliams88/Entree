@@ -1,12 +1,12 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Common;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Events.EventArgs;
 using CommerceServer.Core.Runtime.Orders;
-using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
