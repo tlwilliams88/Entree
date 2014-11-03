@@ -128,6 +128,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                     foreach (Guid c in custsToRemove)
                         _profileLogic.RemoveUserFromCustomer(c, profile.UserProfiles[0].UserId);
                 }
+
+                profile = _profileLogic.GetUserProfile(userInfo.Email);
+                retVal.SuccessResponse = profile;
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
