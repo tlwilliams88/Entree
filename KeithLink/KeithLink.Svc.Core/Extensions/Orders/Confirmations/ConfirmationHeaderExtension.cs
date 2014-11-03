@@ -12,6 +12,24 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
 {
     public static class ConfirmationHeaderExtension
     {
+        public static string GetDisplayStatus(this ConfirmationHeader value){
+            switch (value.ConfirmationStatus.Trim().ToUpper())
+	        {
+                case Constants.CONFIRMATION_HEADER_IN_PROCESS_CODE:
+                    return Constants.CONFIRMATION_HEADER_IN_PROCESS_STATUS;
+                case Constants.CONFIRMATION_HEADER_INVOICED_CODE:
+                    return Constants.CONFIRMATION_HEADER_INVOICED_STATUS;
+                case Constants.CONFIRMATION_HEADER_DELETED_CODE:
+                    return Constants.CONFIRMATION_HEADER_DELETED_STATUS;
+                case Constants.CONFIRMATION_HEADER_REJECTED_CODE:
+                    return Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+                case Constants.CONFIRMATION_HEADER_CONFIRMED_CODE:
+                    return Constants.CONFIRMATION_HEADER_CONFIRMED_STATUS;
+		        default:
+                    return string.Empty;
+	        }
+        }
+
         public static void Parse(this ConfirmationHeader value, string Line)
         {
             value.ConfirmationDate = DateTime.ParseExact(StringHelpers.GetField(

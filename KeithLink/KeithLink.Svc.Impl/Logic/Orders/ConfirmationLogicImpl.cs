@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         public void ListenForMainFrameCalls()
         {
-            _socket.Listen();
+            _socket.Listen(Configuration.MainframeConfirmationListeningPort);
         }
 
         public void ListenForQueueMessages()

@@ -94,43 +94,28 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
                 Line);
         }
 
-        public static string DisplayStatus(this ConfirmationDetail value)
-        {
-            string confirmationStatus = value.ReasonNotShipped.Trim().ToUpper();
-
-            if (confirmationStatus.Trim() == Constants.CONFIRMATION_DETAIL_FILLED_CODE)
-            {
-                return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
+        public static string DisplayStatus(this ConfirmationDetail value) {
+            switch (value.ReasonNotShipped.Trim().ToUpper()) {
+                case Constants.CONFIRMATION_DETAIL_FILLED_CODE:
+                    return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
+                case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE: // partial ship
+                    return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS;
+                case Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE: // out of stock
+                    return Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS;
+                case Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE: // item replaced
+                    return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_STATUS;
+                case Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE: // item replaced, but replacement currently out of stock
+                    return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_STATUS;
+                case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE: // Item replaced, partial fill
+                    return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS;
+                case Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE: // item subbed
+                    return Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS;
+                default:
+                    return string.Empty;
             }
-            if (confirmationStatus == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE) // partial ship
-            {
-                return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS;
-            }
-            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE) // out of stock
-            {
-                return Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS;
-            }
-            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE) // item replaced
-            {
-                return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_STATUS;
-            }
-            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE) // item replaced, but replacement currently out of stock
-            {
-                return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_STATUS;
-            }
-            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE) // Item replaced, partial fill
-            {
-                return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS;
-            }
-            else if (confirmationStatus == Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE) // item subbed
-            {
-                return Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS;
-            }
-            return string.Empty;
         }
 
-        public static string SubstitueItemNumber(this ConfirmationDetail value)
-        {
+        public static string SubstitueItemNumber(this ConfirmationDetail value) {
             string confirmationStatus = value.ReasonNotShipped.Trim().ToUpper();
 
             if (value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE || 
