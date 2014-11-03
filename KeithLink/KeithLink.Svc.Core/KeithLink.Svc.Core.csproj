@@ -140,6 +140,8 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Common\ITemplateQueueRepository.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
     <Compile Include="Extensions\Orders\OrderDetailExtension.cs" />
     <Compile Include="Extensions\Orders\OrderHeaderExtension.cs" />
     <Compile Include="Extensions\Orders\History\OrderHistoryDetailExtension.cs" />
