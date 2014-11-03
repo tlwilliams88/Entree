@@ -306,8 +306,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\Confirmations\ConfirmationListenerRepositoryImpl.cs" />
-    <Compile Include="Repository\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
@@ -321,6 +320,7 @@
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
