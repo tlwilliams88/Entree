@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
     <Compile Include="ETL\IInvoiceLogic.cs" />
@@ -149,6 +150,10 @@
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
+    <Compile Include="Interface\Messaging\ICustomerTopicRepository.cs" />
+    <Compile Include="Interface\Messaging\IInternalMessagingLogic.cs" />
+    <Compile Include="Interface\Messaging\IUserMessageRepository.cs" />
+    <Compile Include="Interface\Messaging\IUserTopicSubscriptionRepository.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\IImportLogic.cs" />
@@ -198,6 +203,9 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Messaging\EF\CustomerTopic.cs" />
+    <Compile Include="Models\Messaging\EF\UserMessage.cs" />
+    <Compile Include="Models\Messaging\EF\UserTopicSubscription.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationHeader.cs" />
