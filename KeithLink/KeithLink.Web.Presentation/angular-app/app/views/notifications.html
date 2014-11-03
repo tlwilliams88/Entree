@@ -1,0 +1,44 @@
+<div page-header-bar>
+  <div header-message>
+    Messages & Notifications
+  </div>
+  <div header-buttons>
+    <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    
+    <table class="table table-striped-rows table-border">
+      <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('ordernumber',sortOrder)">
+            Order #
+            <span sort-icons field="'ordernumber'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('from',sortOrder)">
+            From
+            <span sort-icons field="'from'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('subject',sortOrder)">
+            Subject
+            <span sort-icons field="'subject'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('type',sortOrder)">
+            Type
+            <span sort-icons field="'type'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('time',sortOrder)">
+            Time
+            <span sort-icons field="'time'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="hidden-print large-icon icon-col">
+            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+      </thead>  
+    </table>
+
+  </div>
+</div>
