@@ -53,6 +53,9 @@
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="AWSSDK">
+      <HintPath>..\..\..\..\Program Files (x86)\AWS SDK for .NET\bin\Net45\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
@@ -170,6 +173,7 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
@@ -319,6 +323,8 @@
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
