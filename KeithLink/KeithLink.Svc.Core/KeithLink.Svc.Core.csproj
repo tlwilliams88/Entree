@@ -141,6 +141,7 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IBranchSupportRepository.cs" />
     <Compile Include="Extensions\Orders\OrderDetailExtension.cs" />
     <Compile Include="Extensions\Orders\OrderHeaderExtension.cs" />
