@@ -16,10 +16,10 @@ namespace KeithLink.Svc.Windows.OrderService.IS_OrderService {
     public interface IOrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/OrderConfirmation", ReplyAction="http://tempuri.org/IOrderService/OrderConfirmationResponse")]
-        bool OrderConfirmation(KeithLink.Svc.Core.Models.Confirmations.ConfirmationFile order);
+        bool OrderConfirmation(KeithLink.Svc.Core.Models.Orders.Confirmations.ConfirmationFile order);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/OrderConfirmation", ReplyAction="http://tempuri.org/IOrderService/OrderConfirmationResponse")]
-        System.Threading.Tasks.Task<bool> OrderConfirmationAsync(KeithLink.Svc.Core.Models.Confirmations.ConfirmationFile order);
+        System.Threading.Tasks.Task<bool> OrderConfirmationAsync(KeithLink.Svc.Core.Models.Orders.Confirmations.ConfirmationFile order);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -48,12 +48,12 @@ namespace KeithLink.Svc.Windows.OrderService.IS_OrderService {
         public OrderServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
                 base(binding, remoteAddress) {
         }
-        
-        public bool OrderConfirmation(KeithLink.Svc.Core.Models.Confirmations.ConfirmationFile order) {
+
+        public bool OrderConfirmation(KeithLink.Svc.Core.Models.Orders.Confirmations.ConfirmationFile order) {
             return base.Channel.OrderConfirmation(order);
         }
-        
-        public System.Threading.Tasks.Task<bool> OrderConfirmationAsync(KeithLink.Svc.Core.Models.Confirmations.ConfirmationFile order) {
+
+        public System.Threading.Tasks.Task<bool> OrderConfirmationAsync(KeithLink.Svc.Core.Models.Orders.Confirmations.ConfirmationFile order) {
             return base.Channel.OrderConfirmationAsync(order);
         }
     }

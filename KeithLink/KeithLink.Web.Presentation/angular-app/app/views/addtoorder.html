@@ -1,10 +1,11 @@
 <div page-header-bar>
   <div header-message>
     Add To Order
-    <button class="btn-lg btn btn-primary pull-right-sm" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
-    {{addToOrderForm.$errors}}
+
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
   </div>
   <div header-buttons>
+    <button class="btn-lg btn btn-primary pull-right-sm" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
     <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
     <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
   </div>
@@ -55,7 +56,7 @@
               <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
             </tr>
             <tr ng-click="createNewCart()" ng-show="selectedCart.id || selectedCart.ordernumber">
-              <td colspan="3">Create a Cart...</td>
+              <td colspan="3">Add Items to New Cart...</td>
             </tr>
           </table>
 

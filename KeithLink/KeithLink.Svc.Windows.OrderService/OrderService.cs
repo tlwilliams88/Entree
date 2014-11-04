@@ -1,11 +1,16 @@
 ﻿using KeithLink.Common.Core.Email;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Exceptions.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Network;
+using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -173,8 +178,8 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void ProcessConfirmations() {
             try {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                       new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationListenerRepositoryImpl(),
-                                                                       new KeithLink.Svc.Impl.Repository.Confirmations.ConfirmationQueueRepositoryImpl());
+                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                       new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl());
                 confirmationLogic.ListenForMainFrameCalls();
             }
             catch (Exception e) {
@@ -222,7 +227,18 @@ namespace KeithLink.Svc.Windows.OrderService {
                     string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
 
                     foreach (string filePath in files) {
-                        OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl();
+                        UnitOfWork uow = new UnitOfWork();
+                        
+                        ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                                           new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                                           new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl());
+                        OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log, 
+                                                                               new OrderHistoyrHeaderRepositoryImpl(uow), 
+                                                                               new OrderHistoryDetailRepositoryImpl(uow), 
+                                                                               new OrderUpdateQueueRepositoryImpl(), 
+                                                                               uow, 
+                                                                               confirmationLogic, 
+                                                                               new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
 
                         OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 
@@ -291,7 +307,6 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _orderQueueProcessing = false;
             }
         }
-
 
         private void TerminateOrderUpdateTimer() {
             if (_orderUpdateTimer != null) {

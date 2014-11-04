@@ -162,6 +162,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Component\TokenReplacer.cs" />
+    <Compile Include="Component\TokenValuesCollection.cs" />
+    <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
@@ -170,6 +173,7 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
+    <Compile Include="Logic\EmailTemplateLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
@@ -186,6 +190,7 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Logic\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
+    <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -257,6 +262,9 @@
     <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.cs" />
     <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.Designer.cs">
       <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.cs" />
+    <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.Designer.cs">
+      <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.cs" />
     <Compile Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.Designer.cs">
@@ -273,6 +281,21 @@
     <Compile Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.cs" />
     <Compile Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.Designer.cs">
       <DependentUpon>201411032212155_Merge Models - Andrew 20141103.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.Designer.cs">
+      <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.Designer.cs">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.cs" />
+    <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.Designer.cs">
+      <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.cs" />
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.Designer.cs">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -301,12 +324,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\Confirmations\ConfirmationListenerRepositoryImpl.cs" />
-    <Compile Include="Repository\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Email\EmailTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
@@ -314,6 +337,9 @@
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
+    <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
@@ -708,6 +734,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.resx">
       <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410301857211_Add order history indexes.resx">
+      <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301941143_Add_ItemNumber_To_InvoiceItem.resx">
       <DependentUpon>201410301941143_Add_ItemNumber_To_InvoiceItem.cs</DependentUpon>
@@ -720,6 +748,17 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.resx">
       <DependentUpon>201411032212155_Merge Models - Andrew 20141103.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.resx">
+      <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311540205_Remove char from customernumber - invoice.resx">
+      <DependentUpon>201410311540205_Remove char from customernumber - invoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.resx">
+      <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.resx">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

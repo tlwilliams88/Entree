@@ -5,22 +5,26 @@ using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Core.Interface.Confirmations;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Repository.Confirmations;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
+using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
@@ -32,6 +36,10 @@ using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.BranchSupports;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Core.Interface.Component;
+using KeithLink.Svc.Impl.Repository.Email;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -82,11 +90,14 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
 			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
+            builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
+            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>(); 
+            builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>(); 
 			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
 			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
-            builder.RegisterType<ConfirmationListenerRepositoryImpl>().As<ISocketListenerRepository>();
+            builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
 			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
@@ -99,9 +110,13 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
-			
+
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
+			builder.RegisterType<EmailTemplateLogicImpl>().As<IEmailTemplateLogic>();
+			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
+			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+			builder.RegisterType<EmailTemplateRepositoryImpl>().As<IEmailTemplateRepository>();
 
             return builder.Build();
         }

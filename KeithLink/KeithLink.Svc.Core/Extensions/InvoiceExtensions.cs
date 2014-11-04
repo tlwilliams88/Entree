@@ -29,7 +29,8 @@ namespace KeithLink.Svc.Core.Extensions
 						ClassCode = i.ClassCode,
 						Id = i.Id,
 						InvoiceNumber = i.InvoiceNumber,
-						ItemNumber = i.ItemNumber
+						ItemNumber = i.ItemNumber,
+						LineNumber = i.LineNumber
 					}).ToList()
 			};
 		}
@@ -53,7 +54,8 @@ namespace KeithLink.Svc.Core.Extensions
 					ItemNumber = i.ItemNumber,
 					ClassCode = i.ClassCode,
 					InvoiceNumber = i.InvoiceNumber,
-					Id = i.Id
+					Id = i.Id,
+					LineNumber = i.LineNumber
 				}).ToList()
 			};
 		}
@@ -71,7 +73,8 @@ namespace KeithLink.Svc.Core.Extensions
 				QuantityShipped = item.QuantityShipped,
 				InvoiceNumber = item.InvoiceNumber,
 				ItemNumber = item.ItemNumber,
-				ClassCode = item.ClassCode
+				ClassCode = item.ClassCode,
+				LineNumber = item.LineNumber
 			};
 		}
 	}

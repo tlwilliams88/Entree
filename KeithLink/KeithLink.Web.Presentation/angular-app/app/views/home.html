@@ -190,35 +190,67 @@
   <div class="col-md-4 hidden-xs hidden-sm">
     <h3>Recent Activity</h3>
     
-    <div class="row notification">
-      <div class="col-lg-2">
-        item
+    <div class="notification notification--date">
+      <div class="notification__icon">
+        <span class="icon-record"></span>
       </div>
-      <div class="col-lg-10">
-        <div class="notification__message">
-          You | 8:45am
-        </div>
+      <div class="notification__date">Thursday, April 21, 2014</div>
+    </div>
+    <div class="notification notification--activity">
+      <div class="notification__icon">
+        <div class="icon"><span class="icon-dollar"></span></div>
+      </div>
+      <div class="notification__message">
+        You | <span class="timestamp">8:45am</span>
       </div>
     </div>
-    <div class="row notification">
-      <div class="col-lg-2">
-        item
+    <div class="notification notification--message">
+      <div class="notification__icon">
+        <img ng-src="{{userProfile.imageUrl}}" alt="">
       </div>
-      <div class="col-lg-10">
-        <div class="notification__message">
-          Created an Invoice | 8:30am
-        </div>
+      <div class="notification__message">
+        Created an Invoice | <span class="timestamp">8:45am</span>
       </div>
     </div>
-    <div class="row notification">
-      <div class="col-lg-2">
+    <div class="notification notification--activity">
+      <div class="notification__icon">
+        <div class="icon"><span class="icon-box"></span></div>
+      </div>
+      <div class="notification__message">
         item
       </div>
-      <div class="col-lg-10">
-        <div class="notification__message">
-          item
-        </div>
+    </div>
+    <div class="notification notification--date">
+      <div class="notification__icon">
+        <span class="icon-record"></span>
+      </div>
+      <div class="notification__date">Wednesday, April 20, 2014</div>
+    </div>
+    <div class="notification notification--activity">
+      <div class="notification__icon">
+        <div class="icon"><span class="icon-clipboard"></span></div>
+      </div>
+      <div class="notification__message">
+        Created an Order | <span class="timestamp">9:29am</span>
       </div>
     </div>
+    <div class="notification notification--message">
+      <div class="notification__icon">
+        <img ng-src="{{userProfile.salesRep.imageUrl}}" alt="">
+      </div>
+      <div class="notification__message">
+        Heather Hill | <span class="timestamp">8:44am</span>
+        <p><a href="">Set New Appointment</a></p>
+      </div>
+    </div>
+    <div class="notification notification--activity">
+      <div class="notification__icon">
+        <div class="icon"><span class="icon-checkmark"></span></div>
+      </div>
+      <div class="notification__message">
+        Paid Invoice <a href="">00005649</a> | <span class="timespan">8:30am</span>
+      </div>
+    </div>
+
   </div> <!-- end Recent Activity -->
 </div>

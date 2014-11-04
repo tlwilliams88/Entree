@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
@@ -79,6 +80,9 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
