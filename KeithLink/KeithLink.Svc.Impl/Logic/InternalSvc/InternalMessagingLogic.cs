@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Interface.Common;
 using AmazonSNS = Amazon.SimpleNotificationService;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
@@ -18,8 +19,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly ICustomerTopicRepository customerTopicRepository;
+        private readonly IGenericQueueRepository genericQueueRepository;
 
-        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository)
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IGenericQueueRepository genericQueueRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
@@ -27,6 +29,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
         {
+            // JUST SOME TESTS - TODO, move to appropriate location
+            genericQueueRepository.PublishToQueue("just a test", Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
+                Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+            return true;
             // find topics for customer; if not existing, then create
             CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(customerNumber, notificationType);
             if (topic == null)
@@ -102,6 +108,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public List<UserMessage> GetUserMessages(Guid userId)
         {
             throw new NotImplementedException();
+        }
+
+        public void PublishMessageToQueue()
+        {
+        }
+        public void ConsumeMessageFromQueue()
+        {
         }
     }
 }
