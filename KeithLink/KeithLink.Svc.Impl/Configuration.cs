@@ -55,7 +55,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
-        private const string KEY_MF_TRANSACTIONID = "MfTrans";
+        private const string KEY_MF_TRANS_ORDER = "MfTrans";
+        private const string KEY_MF_TRANS_HISTORY = "MfTransHistory";
 
         // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
@@ -367,11 +368,17 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string MainframeHistoryTransactionId {
+            get {
+                return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+            }
+        }
+
         public static string MainframeOrderTransactionId
         {
             get
             {
-                return GetValue(KEY_MF_TRANSACTIONID, string.Empty);
+                return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
             }
         }
 

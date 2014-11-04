@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private EventLogRepositoryImpl _log;
 
         private static bool _allowOrderUpdateProcessing;
+        private static bool _historyRequestProcessing;
         private static bool _orderUpdateProcessing;
         private static bool _orderQueueProcessing;
         private static bool _successfulConnection;
@@ -34,9 +35,10 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         private static UInt16 _unsentCount;
 
-        private Timer _queueTimer;
-        private Timer _orderUpdateTimer;
         private Thread _confirmationThread;
+        private Timer _historyRequestTimer;
+        private Timer _orderUpdateTimer;
+        private Timer _queueTimer;
 
         const int TIMER_DURATION_TICK = 2000;
         const int TIMER_DURATION_START = 1000;
@@ -146,6 +148,13 @@ namespace KeithLink.Svc.Windows.OrderService {
             _confirmationThread.Start();
         }
 
+        private void InitializeHistoryRequestTimer() {
+            TimerCallback cb = new TimerCallback(ProcessOrderHistoryRequestsTick);
+            AutoResetEvent auto = new AutoResetEvent(false);
+
+            _historyRequestTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
+        }
+
         private void InitializeOrderUpdateTimer() {
             AutoResetEvent auto = new AutoResetEvent(true);
             TimerCallback cb = new TimerCallback(ProcessOrderUpdatesTick);
@@ -164,11 +173,13 @@ namespace KeithLink.Svc.Windows.OrderService {
             _log.WriteInformationLog("Service starting");
 
             InitializeConfirmationThread();
+            InitializeHistoryRequestTimer();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
         }
 
         protected override void OnStop() {
+            TerminateHistoryRequestTimer();
             TerminateOrderUpdateTimer();
             TerminateQueueTimer();
 
@@ -213,6 +224,32 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _log.WriteErrorLog(logMessage);
 
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
+            }
+        }
+
+        private void ProcessOrderHistoryRequestsTick(object state) {
+            if (!_historyRequestProcessing) {
+                _historyRequestProcessing = true;
+
+                try {
+                    OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new OrderUpdateRequestQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
+
+                    requestLogic.ProcessRequests();
+
+                    _successfulConnection = true;
+                    _unsentCount = 0;
+                } catch (EarlySocketException earlyEx) {
+                    HandleEarlySocketException(earlyEx);
+                } catch (SocketResponseException responseEx) {
+                    HandleSocketResponseException(responseEx);
+                } catch (CancelledTransactionException cancelledEx) {
+                    HandleCancelledException(cancelledEx);
+                } catch (Exception ex) {
+                    _log.WriteErrorLog("Error processing order update requests", ex);
+                    KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
+                }
+
+                _historyRequestProcessing = false;
             }
         }
 
@@ -318,6 +355,13 @@ namespace KeithLink.Svc.Windows.OrderService {
                 }
 
                 _orderQueueProcessing = false;
+            }
+        }
+
+        private void TerminateHistoryRequestTimer() {
+            if (_historyRequestTimer != null) {
+                _historyRequestTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+                _historyRequestTimer.Dispose();
             }
         }
 
