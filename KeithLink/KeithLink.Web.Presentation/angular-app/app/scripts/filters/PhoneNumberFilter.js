@@ -42,13 +42,13 @@ angular.module('bekApp')
         return tel;
     }
 
-    if (country == 1) {
-      country = "";
+    if (country === 1) {
+      country = '';
     }
 
     number = number.slice(0, 3) + '-' + number.slice(3);
-    ext = ext ? " x" + ext : '';
+    ext = ext ? ' x' + ext : '';
 
-    return (country + " (" + city + ") " + number + ext).trim();
+    return (country + ' (' + city + ') ' + number + ext).trim();
   };
 });

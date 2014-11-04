@@ -176,7 +176,7 @@
       <span style="margin-top: 25px;" class="col-xs-6 text-right">{{totalItems}} results</span>
 		</div>
 		
-		<table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()">
+		<table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()" context-menu favorite-item-click-handlers>
 			<thead>
 				<tr>
           <th></th>
@@ -206,7 +206,7 @@
 			<tbody>
 				<tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }">
           <td class="large-icon icon-col">
-            <span favorite-item-click-handlers><span favorite-icons></span></span>
+            <span favorite-icons></span>
           </td>
           <td>
             <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
@@ -227,7 +227,7 @@
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span ng-if="canOrderProduct(item)" context-menu class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+            <span ng-if="canOrderProduct(item)" context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
 
             <a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>
