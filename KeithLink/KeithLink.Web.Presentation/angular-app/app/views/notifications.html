@@ -17,10 +17,6 @@
             Order #
             <span sort-icons field="'ordernumber'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('from',sortOrder)">
-            From
-            <span sort-icons field="'from'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
           <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('subject',sortOrder)">
             Subject
             <span sort-icons field="'subject'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -38,6 +34,35 @@
           </th>
         </tr>
       </thead>  
+
+      <tbody>
+        
+        <!-- Filter Row -->
+        <tr class="filter-row" ng-show="showFilter">
+          <td class="hidden-xs hidden-sm input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+          </td>
+          <td class="hidden-xs hidden-sm input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+          </td>
+          <td class="hidden-xs hidden-sm input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
+          </td>
+          <td class="hidden-xs hidden-sm"></td>
+          <td class="hidden-xs hidden-sm"></td>
+        </tr> <!-- end Filter Row -->
+
+        <tr ng-repeat="notification in notifications" ng-class="{ odd : $odd, even: $even }">
+          <td>{{notification.ordernumber}}</td>
+          <td>{{notification.message}}</td>
+          <td>{{notification.type}}</td>
+          <td>{{notification.datetime}}</td>
+          <td class="large-icon icon-col">
+            <a ng-click="showAdditionalInfo(notification)"><span class="text-light icon-ellipsis"></span></a>
+          </td>
+        </tr>
+
+      </tbody>
     </table>
 
   </div>
