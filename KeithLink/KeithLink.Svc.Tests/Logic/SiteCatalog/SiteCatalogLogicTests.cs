@@ -30,6 +30,7 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
                 new NoCacheCatalogCacheRepositoryImpl(),
+				new DivisionLogicImpl(new DivisionRepositoryImpl(), new DivisionServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient())),
                 new OrderHistoyrHeaderRepositoryImpl(new KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork())
                 );
         }

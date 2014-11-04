@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfBranchSupport">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BranchSupport" nillable="true" type="tns:BranchSupport" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBranchSupport" nillable="true" type="tns:ArrayOfBranchSupport" />
+  <xs:complexType name="BranchSupport">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="supportphonenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tollfreenumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BranchSupport" nillable="true" type="tns:BranchSupport" />
+</xs:schema>

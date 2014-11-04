@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
 		public DbSet<Invoice> Invoices { get; set; }
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
+		public DbSet<BranchSupport> BranchSupports { get; set; }
 		public DbSet<EmailTemplate> EmailTemplates { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -35,6 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<OrderHistoryDetail>().ToTable("OrderHistoryDetail", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Invoice>().ToTable("Invoices", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

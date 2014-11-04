@@ -1,5 +1,6 @@
 namespace KeithLink.Svc.Impl.Migrations
 {
+	using KeithLink.Svc.Core.Models.EF;
 	using System;
 	using System.Collections.Generic;
 	using System.Data.Entity;
@@ -33,6 +34,74 @@ namespace KeithLink.Svc.Impl.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+			context.BranchSupports.AddOrUpdate(
+				b => b.BranchId,
+				new BranchSupport
+				{
+					BranchName = "Amarillo",
+					BranchId = "FAM",
+					SupportPhoneNumber = "8064684555",
+					TollFreeNumber = "8006589790x4555",
+					Email = "Fam-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "Dallas/Fort Worth",
+					BranchId = "FDF",
+					SupportPhoneNumber = "8177596373",
+					TollFreeNumber = "8773186100x6373",
+					Email = "Fdf-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "Houston",
+					BranchId = "FHS",
+					SupportPhoneNumber = "8326525500",
+					TollFreeNumber = "8553275500x5500",
+					Email = "Fhs-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "Little Rock",
+					BranchId = "FLR",
+					SupportPhoneNumber = "5019785031",
+					TollFreeNumber = "8006882356x5031",
+					Email = "Flr-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "Little Rock",
+					BranchId = "FAR",
+					SupportPhoneNumber = "5019785031",
+					TollFreeNumber = "8006882356x5031",
+					Email = "Flr-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "New Mexico",
+					BranchId = "FAQ",
+					SupportPhoneNumber = "5056819950",
+					TollFreeNumber = "8006752949x2308",
+					Email = "Faq-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "Oklahoma",
+					BranchId = "FOK",
+					SupportPhoneNumber = "4057537911",
+					TollFreeNumber = "",
+					Email = "Fok-dis-mis@benekeith.com"
+				},
+				new BranchSupport
+				{
+					BranchName = "San Antonio",
+					BranchId = "FSA",
+					SupportPhoneNumber = "2105076151",
+					TollFreeNumber = "After Hours: 2105076471",
+					Email = "Fsa-dis-mis@benekeith.com"
+				}
+				);
         }
     }
 	internal class CustomSqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator

@@ -17,5 +17,6 @@ namespace KeithLink.Svc.Core.Interface
 		T ReadById(long Id);
 		IEnumerable<T> Read<TProperty>(Expression<Func<T, bool>> where, Expression<Func<T, TProperty>> include) where TProperty : class;
 		IEnumerable<T> Read(Expression<Func<T, bool>> where);
+		IEnumerable<T> ReadAll();
 	}
 }
