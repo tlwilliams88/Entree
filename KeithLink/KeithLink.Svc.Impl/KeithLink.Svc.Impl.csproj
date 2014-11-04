@@ -306,6 +306,7 @@
     <Compile Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.cs" />
     <Compile Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.Designer.cs">
       <DependentUpon>201411041805302_Messaging_v1_20142204.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.cs" />
     <Compile Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.Designer.cs">
       <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
@@ -779,6 +780,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.resx">
       <DependentUpon>201411041805302_Messaging_v1_20142204.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.resx">
       <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
     </EmbeddedResource>
