@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl
 			this.tokenReplacer = tokenReplacer;
         }
 
-		public void SendTemplateEmail(EmailTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens)
+		public void SendTemplateEmail(MessageTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens)
 		{
 			this.SendEmail(emails.ToList()
 				, ccAddresses != null ? ccAddresses.ToList() :  null
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl
 				, template.IsBodyHtml);
 		}
 
-		public void SendTemplateEmail(EmailTemplateModel template, List<string> emails, object tokens)
+		public void SendTemplateEmail(MessageTemplateModel template, List<string> emails, object tokens)
         {
 			SendTemplateEmail(template, emails, null, null, tokens);
         }

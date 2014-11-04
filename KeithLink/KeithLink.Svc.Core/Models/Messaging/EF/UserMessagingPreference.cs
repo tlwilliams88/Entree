@@ -13,9 +13,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
     public class UserMessagingPreference : BaseEFModel
     {
         public Guid UserId { get; set; }
-        MessageType MessageType { get; set; }
-        NotificationType NotificationType { get; set; }
-        bool Enabled { get; set; }
+        public NotificationType NotificationType { get; set; }
+        public Channel Channel { get; set; }
 
         [MaxLength(9)]
         [Column(TypeName = "varchar")]

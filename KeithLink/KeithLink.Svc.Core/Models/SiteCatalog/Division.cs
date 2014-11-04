@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -15,5 +16,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
+
+		[DataMember(Name = "branchsupport")]
+		public BranchSupportModel BranchSupport { get; set; }
 	}
 }

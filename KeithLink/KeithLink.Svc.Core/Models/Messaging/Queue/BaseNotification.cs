@@ -10,6 +10,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
     public abstract class BaseNotification
     {
         public string CustomerNumber { get; set; }
-        public abstract MessageType MessageType { get; }
+        public abstract NotificationType NotificationType { get; }
     }
 }

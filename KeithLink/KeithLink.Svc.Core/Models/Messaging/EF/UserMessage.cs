@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         [Column(TypeName = "varchar")]
         public string UserId { get; set; }
 
-        public MessageType MessageType { get; set; }
+        public NotificationType NotificationType { get; set; }
         public DateTime? MessageReadUtc { get; set; }
     }
 }

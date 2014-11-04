@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Enumerations.Messaging
 {
-	public enum MessageType
+    // flags (powers of 2)
+	public enum NotificationType
 	{
-		OrderConfirmation,
-		OrderUpdate,
+		OrderConfirmation = 1,
+		OrderUpdate = 2,
 	}
 
-    public enum NotificationType
+    public enum Channel : int
     {
-        Email,
-        MobilePush,
-        // SMS //FUTURE STATE
+        Email = 1,
+        MobilePush = 2,
+        Web = 4,
     }
 }
