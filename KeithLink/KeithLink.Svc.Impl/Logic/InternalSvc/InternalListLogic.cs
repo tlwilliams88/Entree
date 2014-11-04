@@ -403,7 +403,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		}
 		private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
 		{
-			if (list.Items == null)
+			if (list.Items == null || list.Items.Count == 0)
 				return;
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);

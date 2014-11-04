@@ -116,8 +116,12 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+			
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
 			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
