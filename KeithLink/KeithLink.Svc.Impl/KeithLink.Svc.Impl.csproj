@@ -283,6 +283,18 @@
     <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.Designer.cs">
       <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411032334202_Messaging_v1_20141103.cs" />
+    <Compile Include="Repository\EF\Migrations\201411032334202_Messaging_v1_20141103.Designer.cs">
+      <DependentUpon>201411032334202_Messaging_v1_20141103.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041627008_Messaging_v2_prefs.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041627008_Messaging_v2_prefs.Designer.cs">
+      <DependentUpon>201411041627008_Messaging_v2_prefs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.Designer.cs">
+      <DependentUpon>201411041629127_Messaging_v3_prefs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -721,6 +733,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.resx">
       <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411032334202_Messaging_v1_20141103.resx">
+      <DependentUpon>201411032334202_Messaging_v1_20141103.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041627008_Messaging_v2_prefs.resx">
+      <DependentUpon>201411041627008_Messaging_v2_prefs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.resx">
+      <DependentUpon>201411041629127_Messaging_v3_prefs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

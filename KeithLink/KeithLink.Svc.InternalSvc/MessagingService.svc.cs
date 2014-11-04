@@ -14,7 +14,7 @@ namespace KeithLink.Svc.InternalSvc
 	// NOTE: In order to launch WCF Test Client for testing this service, please select InvoiceService.svc or InvoiceService.svc.cs at the Solution Explorer and start debugging.
 	public class MessagingService : IMessagingService
 	{
-		private IInternalMessagingLogic messagingLogic;
+		private readonly IInternalMessagingLogic messagingLogic;
 
         public MessagingService(IInternalMessagingLogic messagingLogic)
 		{
@@ -23,7 +23,7 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool AddUserSubscription(Core.Enumerations.Messaging.MessageType messageType, Core.Enumerations.Messaging.NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint)
         {
-            throw new NotImplementedException();
+            return messagingLogic.AddUserSubscription(messageType, notificationType, userId, customerNumber, notificationEndpoint);
         }
 
         public bool RemoveUserSubscription(Core.Enumerations.Messaging.MessageType messageType, Core.Enumerations.Messaging.NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint)

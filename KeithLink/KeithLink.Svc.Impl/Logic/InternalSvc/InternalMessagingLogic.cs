@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IUnitOfWork unitOfWork;
 		private readonly ICustomerTopicRepository customerTopicRepository;
 
-        InternalMessagingLogic(IUnitOfWork unitOfWOrk, ICustomerTopicRepository customerTopicRepository)
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
 
             // look for existing subscription
-            if (!topic.Subscriptions.Any(s => s.NotificationType == notificationType && s.NotificationEndpoint == notificationEndpoint && s.UserId == userId))
+            if (topic.Subscriptions == null || !topic.Subscriptions.Any(s => s.NotificationType == notificationType && s.NotificationEndpoint == notificationEndpoint && s.UserId == userId))
             {
                 // add the subscription
                 CreateSubscriptionToTopic(notificationType, notificationEndpoint, topic, userId);
@@ -53,15 +53,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             if (notificationType != NotificationType.Email)
                 throw new NotImplementedException();
 
-            client.Subscribe(new Amazon.SimpleNotificationService.Model.SubscribeRequest
+            string subscriptionArn = client.Subscribe(new Amazon.SimpleNotificationService.Model.SubscribeRequest
             {
                 TopicArn = topic.ProviderTopicId,
                 Protocol = notificationType == NotificationType.Email ? "email" : "",
                 Endpoint = notificationEndpoint
-            });
+            }).SubscriptionArn;
 
-            topic.Subscriptions.Add(new UserTopicSubscription() { NotificationEndpoint = notificationEndpoint, UserId = userId, NotificationType = notificationType });
+            if (topic.Subscriptions == null) topic.Subscriptions = new List<UserTopicSubscription>();
+
+            topic.Subscriptions.Add(new UserTopicSubscription() { NotificationEndpoint = notificationEndpoint, UserId = userId, NotificationType = notificationType, ProviderSubscriptionId = subscriptionArn });
             customerTopicRepository.Update(topic);
+            unitOfWork.SaveChanges();
         }
 
         private CustomerTopic CreateTopic(Core.Enumerations.Messaging.MessageType messageType, string customerNumber, CustomerTopic topic)
@@ -87,6 +90,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             topic = new CustomerTopic() { CustomerNumber = customerNumber, MessageType = messageType, ProviderTopicId = topicArn };
             customerTopicRepository.Create(topic);
+            unitOfWork.SaveChanges();
             return topic;
         }
 

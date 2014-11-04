@@ -203,9 +203,16 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Messaging\EF\UserMessagingPreference.cs" />
+    <Compile Include="Models\Messaging\Provider\Channel.cs" />
+    <Compile Include="Models\Messaging\Provider\Message.cs" />
+    <Compile Include="Models\Messaging\Provider\Recipient.cs" />
+    <Compile Include="Models\Messaging\Queue\BaseNotification.cs" />
     <Compile Include="Models\Messaging\EF\CustomerTopic.cs" />
     <Compile Include="Models\Messaging\EF\UserMessage.cs" />
     <Compile Include="Models\Messaging\EF\UserTopicSubscription.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderConfirmationNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderUpdateNotification.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationHeader.cs" />
