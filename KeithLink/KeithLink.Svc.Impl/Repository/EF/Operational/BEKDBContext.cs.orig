@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Messaging.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,11 +25,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
 		public DbSet<Invoice> Invoices { get; set; }
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
-<<<<<<< HEAD
 		public DbSet<BranchSupport> BranchSupports { get; set; }
-=======
 		public DbSet<EmailTemplate> EmailTemplates { get; set; }
->>>>>>> 3b05ab75b59c315012335cd4a497f351b3e9065a
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -40,11 +38,16 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 <<<<<<< HEAD
 			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-=======
-
 			modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
->>>>>>> 3b05ab75b59c315012335cd4a497f351b3e9065a
 		}
+=======
+            modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+        }
+>>>>>>> dfe16722a16681d5a0fbeb9a790d40970000d88b
 
 		public void DeleteTable(string tableName)
 		{
