@@ -10,8 +10,8 @@ namespace KeithLink.Svc.Core.Interface.Email
 {
 	public interface IEmailClient
 	{
-		void SendTemplateEmail(EmailTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens);
-		void SendTemplateEmail(EmailTemplateModel template, List<string> emails, object tokens);
+		void SendTemplateEmail(MessageTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens);
+		void SendTemplateEmail(MessageTemplateModel template, List<string> emails, object tokens);
 		void SendEmail(List<string> toAddresses, List<string> ccAddresses, List<string> bccAddresses, string subject, string body, bool isBodyHtml = false);
 		void SendEmail(List<string> toAddresses, List<string> ccAddresses, List<string> bccAddresses, string fromAddress, string subject, string body, bool isBodyHtml = false);
 	}

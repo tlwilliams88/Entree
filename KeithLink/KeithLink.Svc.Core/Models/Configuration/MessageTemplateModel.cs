@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Configuration
 {
-	public class EmailTemplateModel
+	public class MessageTemplateModel
 	{
 		public long Id { get; set; }
 		public string TemplateKey { get; set; }

@@ -177,13 +177,13 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
-    <Compile Include="Logic\EmailTemplateLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
+    <Compile Include="Logic\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
@@ -311,6 +311,14 @@
     <Compile Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.Designer.cs">
       <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.Designer.cs">
+      <DependentUpon>201411041820219_EF model merge JT 20141104.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.Designer.cs">
+      <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -338,12 +346,12 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
+    <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
-    <Compile Include="Repository\Email\EmailTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
@@ -784,6 +792,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.resx">
       <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.resx">
+      <DependentUpon>201411041820219_EF model merge JT 20141104.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.resx">
+      <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

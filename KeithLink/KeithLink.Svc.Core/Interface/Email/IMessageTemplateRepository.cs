@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.Configuration;
+﻿using KeithLink.Svc.Core.Models.Configuration.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Email
 {
-	public interface IEmailTemplateLogic
+	public interface IMessageTemplateRepository: IBaseEFREpository<MessageTemplate>
 	{
-		EmailTemplateModel ReadForKey(string templateKey);
 	}
 }
