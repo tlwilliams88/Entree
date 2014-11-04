@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Models.EF;
+﻿using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -24,11 +26,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
 <<<<<<< HEAD
 		public DbSet<BranchSupport> BranchSupports { get; set; }
-
-
 =======
+		public DbSet<EmailTemplate> EmailTemplates { get; set; }
+>>>>>>> 3b05ab75b59c315012335cd4a497f351b3e9065a
         
->>>>>>> 2a6b8cfa87d9ac18eaa054b0683a2764762e6ee5
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<List>().ToTable("Lists", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -39,9 +40,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 <<<<<<< HEAD
 			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
 =======
->>>>>>> 2a6b8cfa87d9ac18eaa054b0683a2764762e6ee5
+
+			modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+>>>>>>> 3b05ab75b59c315012335cd4a497f351b3e9065a
 		}
 
 		public void DeleteTable(string tableName)
