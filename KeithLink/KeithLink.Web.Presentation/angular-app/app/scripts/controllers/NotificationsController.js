@@ -23,7 +23,7 @@ angular.module('bekApp')
     var modalInstance = $modal.open({
       templateUrl: 'views/notificationdetailsmodal.html',
       controller: 'NotificationDetailsModalController',
-      windowClass: 'notification-modal',
+      windowClass: 'color-background-modal',
       resolve: {
         notification: function() {
           return notification;
