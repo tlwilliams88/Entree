@@ -6,27 +6,29 @@ using Autofac;
 using Autofac.Integration.WebApi;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Core.Interface.Brand;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Brands;
+using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Repository.Lists;
-using KeithLink.Svc.Core.Interface;
-using KeithLink.Svc.Impl.Repository.Invoices;
-using KeithLink.Svc.Core.Interface.Invoices;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -78,6 +80,8 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+            builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
+            builder.RegisterType<OrderUpdateRequestQueueRepositoryImpl>().As<IOrderHistoryRequestQueueRepository>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
