@@ -36,6 +36,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private static UInt16 _unsentCount;
 
         private Thread _confirmationThread;
+        private Thread _historyResponseThread;
         private Timer _historyRequestTimer;
         private Timer _orderUpdateTimer;
         private Timer _queueTimer;
@@ -155,6 +156,11 @@ namespace KeithLink.Svc.Windows.OrderService {
             _historyRequestTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
+        private void InitializeHistoryResponseThread() {
+            _historyResponseThread = new Thread(ProcessOrderHistoryListener);
+            _historyResponseThread.Start();
+        }
+
         private void InitializeOrderUpdateTimer() {
             AutoResetEvent auto = new AutoResetEvent(true);
             TimerCallback cb = new TimerCallback(ProcessOrderUpdatesTick);
@@ -174,6 +180,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
             InitializeConfirmationThread();
             InitializeHistoryRequestTimer();
+            InitializeHistoryResponseThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
         }
