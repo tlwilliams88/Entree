@@ -40,7 +40,7 @@ angular.module('bekApp')
             $scope.hidden = true;
             $scope.sortField = '';
             $scope.sortDirection = '';
-            $scope.asc = true;
+            $scope.sortReverse = false;
             $scope.paramType = $stateParams.type;
             $scope.categoryName = '';
 
@@ -316,14 +316,14 @@ angular.module('bekApp')
                     if ($scope.sortField !== field) {
                         $scope.sortField = field;
                         $scope.sortDirection = 'asc';
-                        $scope.asc = true;
+                        $scope.sortReverse = false;
                     } else {
                         if ($scope.sortDirection === 'asc') {
                             $scope.sortDirection = 'desc';
-                            $scope.asc = false;
+                            $scope.sortReverse = true;
                         } else {
                             $scope.sortDirection = 'asc';
-                            $scope.asc = true;
+                            $scope.sortReverse = false;
                         }
                     }
                     loadProducts();

@@ -17,7 +17,16 @@ angular.module('bekApp')
     $scope.item.quantity = 1;
     
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
-      $scope.item.productimages = item.productimages;
+      $scope.item = item;
+      $scope.item.quantity = 1;
+      // $scope.item.orderhistory = {
+      //      "10/31/2014": 1,
+      //      "11/2/2014": 2,
+      //      "11/3/2014": 4,
+      //      "11/4/2014": 7,
+      //      "11/5/2014": 10
+      //  };
+      // $scope.item.orderhistory = null;
     });
 
     ProductService.saveRecentlyViewedItem(item.itemnumber);

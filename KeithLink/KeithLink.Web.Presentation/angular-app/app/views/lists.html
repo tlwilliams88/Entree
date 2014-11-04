@@ -34,10 +34,30 @@
 </div>
 
 <!-- Mobile subheader bar -->
-<div class="visible-xs visible-sm hidden-print row page-subheader-bar text-right;">
-  <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__filter">
+<div class="visible-xs visible-sm hidden-print row page-subheader-bar">
+
+  <button ng-if="!selectedList.read_only" type="submit" class="btn-no-style page-subheader-bar__button button-left" ng-disabled="listForm.$invalid || listForm.$pristine" ng-click="saveList(selectedList)">Save
+  </button>
+
+  <button ng-if="!selectedList.read_only" class="btn-no-style page-subheader-bar__button button-left" ng-click="undoChanges()" ng-disabled="listForm.$pristine">Cancel
+  </button>
+<!-- 
+  <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
     Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
+  </div> -->
+
+  <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
+    <button type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right">Lists <span class="icon-arrow-down5"></span></button>
+    <ul class="dropdown-menu" role="menu">
+      <li ng-repeat="list in lists | sortLists" ng-show="list.listid !== selectedList.listid">
+        <a ng-click="goToList(list, selectedCart)">
+          {{list.name}}
+        </a>
+      </li>
+      <li><a ng-click="createList()">Create a List...</a></li>
+    </ul>
   </div>
+
 </div>
 
 <div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
@@ -279,6 +299,10 @@
                   <tr>
                     <td>Pack/Size</td>
                     <td>{{item.packsize}}</td>
+                  </tr>
+                  <tr>
+                    <td># in Cart</td>
+                    <td>{{item.quantityincart}}</td>
                   </tr>
                   <tr>
                     <td item-icons></td>

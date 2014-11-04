@@ -84,14 +84,21 @@
       overflow-x: hidden;
       text-overflow: ellipsis;
     }
-    .page-subheader-bar__filter {
-      border-left: 1px solid #c3bc9c;
-      float: right;
+    .page-subheader-bar__button {
       font-weight: 400;
       cursor: pointer;
       line-height: 35px;
       text-align: center;
       width: 80px;
+      
+      &.button-left {
+        border-right: 1px solid #c3bc9c;
+        float: left;
       }
+      &.button-right {
+        border-left: 1px solid #c3bc9c;
+        float: right;
+      }
+    }
   }
 }
