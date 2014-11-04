@@ -22,6 +22,9 @@
         <a ng-click="$spMenu.hide()" ui-sref="menu.accountdetails">
           <li>Account Settings</li>
         </a>
+        <a ng-click="$spMenu.hide(); openTechnicalSupportModal()">
+          <li>Technical Support</li>
+        </a>
         <a ng-click="logout()">
           <li>Sign Out</li>
         </a>
@@ -165,6 +168,7 @@
                 <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.accountdetails">Account Settings</button>
+                  <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>
               </div>

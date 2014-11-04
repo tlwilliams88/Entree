@@ -19,11 +19,11 @@ namespace KeithLink.Svc.Test.Email
 		public void SendEmailTest()
 		{
 			EmailClientImpl emailClient = new EmailClientImpl(new TokenReplacer());
-			MessageTemplateLogicImpl messageTemplateLogic = new MessageTemplateLogicImpl(new MessageTemplateRepositoryImpl(new UnitOfWork()));
+			//MessageTemplateLogicImpl messageTemplateLogic = new MessageTemplateLogicImpl(new MessageTemplateRepositoryImpl(new UnitOfWork()));
 
-			var template = messageTemplateLogic.ReadForKey("testEmailTemplate");
+			//var template = messageTemplateLogic.ReadForKey("testEmailTemplate");
 
-			emailClient.SendTemplateEmail(template, new List<string>() { "jtirey@credera.com" }, null, new List<string> { "jtirey@credera.com" }, new { firstName = "Josh", lastName = "Tirey" });
+			//emailClient.SendTemplateEmail(template, new List<string>() { "jtirey@credera.com" }, null, new List<string> { "jtirey@credera.com" }, new { firstName = "Josh", lastName = "Tirey" });
 
 			Assert.IsTrue(true);
 
