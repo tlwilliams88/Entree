@@ -136,6 +136,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DivisionService.svc" />
     <Content Include="InvoiceService.svc" />
     <Content Include="ListServcie.svc" />
     <Content Include="OrderService.svc" />
@@ -148,6 +149,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
+    <Compile Include="DivisionService.svc.cs">
+      <DependentUpon>DivisionService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IDivisionService.cs" />
     <Compile Include="Interfaces\IInvoiceService.cs" />
     <Compile Include="Interfaces\IListServcie.cs" />
     <Compile Include="Interfaces\IOrderService.cs" />

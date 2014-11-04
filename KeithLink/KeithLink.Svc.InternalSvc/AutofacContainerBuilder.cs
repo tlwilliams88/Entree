@@ -31,6 +31,7 @@ using System.Web;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl.Repository.BranchSupports;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -46,6 +47,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
 			builder.RegisterType<ListServcie>();
 			builder.RegisterType<InvoiceService>();
+			builder.RegisterType<DivisionService>();
+
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
@@ -97,7 +100,8 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			
-
+			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
 
             return builder.Build();
         }

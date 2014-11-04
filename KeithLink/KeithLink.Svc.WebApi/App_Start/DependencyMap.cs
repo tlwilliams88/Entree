@@ -26,6 +26,7 @@ using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -77,10 +78,13 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
+			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
 
             // Build the container.
             var container = builder.Build();

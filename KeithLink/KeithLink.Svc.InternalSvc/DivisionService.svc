@@ -1,0 +1,7 @@
+﻿<%@ ServiceHost 
+	Language="C#" 
+	Debug="true" 
+	Service="KeithLink.Svc.InternalSvc.DivisionService, KeithLink.Svc.InternalSvc" 
+	CodeBehind="DivisionService.svc.cs"
+	Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf" 
+	 %>

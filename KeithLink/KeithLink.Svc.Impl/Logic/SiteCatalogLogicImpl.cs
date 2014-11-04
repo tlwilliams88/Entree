@@ -23,9 +23,10 @@ namespace KeithLink.Svc.Impl.Logic
         private ICategoryImageRepository _categoryImageRepository;
         private ICatalogCacheRepository _catalogCacheRepository;
 		private IListServiceRepository _listServiceRepository;
+		private IDivisionLogic _divisionLogic;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository, IDivisionLogic divisionLogic)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -34,6 +35,7 @@ namespace KeithLink.Svc.Impl.Logic
 			_divisionRepository = divisionRepository;
             _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
+			_divisionLogic = divisionLogic;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -218,9 +220,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<Division> GetDivisions()
 		{
-			var catalogs = _divisionRepository.GetDivisions();
-
-			return catalogs.Select(c => c.ToDivision()).ToList();
+			return _divisionLogic.GetDivisions();
 		}
 	}
 }

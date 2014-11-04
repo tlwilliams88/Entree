@@ -144,6 +144,7 @@
     <Compile Include="Extensions\OrderHistoryDetailExtension.cs" />
     <Compile Include="Extensions\OrderHistoryHeaderExtension.cs" />
     <Compile Include="Extensions\OrderSourceExtension.cs" />
+    <Compile Include="Interface\SiteCatalog\IBranchSupportRepository.cs" />
     <Compile Include="Interface\IBaseEFRepository.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
@@ -179,15 +180,17 @@
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
+    <Compile Include="Interface\SiteCatalog\IDivisionLogic.cs" />
+    <Compile Include="Interface\SiteCatalog\IInternalDivisionLogic.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogCacheRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICategoryImageRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IDivisionServiceRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
-    <Compile Include="Models\BranchSupport\BranchSupportModel.cs" />
     <Compile Include="Models\Brand\Brand.cs" />
     <Compile Include="Models\Brand\BrandsReturn.cs" />
     <Compile Include="Models\CommerceEntities.cs">
@@ -241,6 +244,7 @@
     <Compile Include="Models\SiteCatalog\BaseProductInfo.cs" />
     <Compile Include="Models\SiteCatalog\CategoryImage.cs" />
     <Compile Include="Models\SiteCatalog\CategoryImageReturn.cs" />
+    <Compile Include="Models\SiteCatalog\BranchSupportModel.cs" />
     <Compile Include="Models\SiteCatalog\Division.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
     <Compile Include="Models\Lists\NewItem.cs" />
