@@ -88,6 +88,14 @@ namespace KeithLink.Svc.Impl
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
 
+		//Email
+		private const string KEY_SMTP_HOST_NAME = "SMTPHostName";
+		private const string KEY_SMTP_SEND_PORT = "SMTPSendPort";
+		private const string DEFAULT_SMTP_SEND_PORT = "25";
+		private const string KEY_SERVICE_EMAIL_ADDRESS = "ServiceEmailAddress";
+		private const string KEY_SMTP_USERNAME = "SMTPUsername";
+		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
+
 
         #endregion
 
@@ -556,6 +564,35 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseDouble(value, String.Empty);
             }
         }
+
+		public static string SMTPHostName
+		{
+			get { return GetValue(KEY_SMTP_HOST_NAME, null); }
+		}
+
+		public static int SMTPSendPort
+		{
+			get
+			{
+				string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
+				return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
+			}
+		}
+
+		public static string SMTPUsername
+		{
+			get { return GetValue(KEY_SMTP_USERNAME, null); }
+		}
+
+		public static string SMTPPassword
+		{
+			get { return GetValue(KEY_SMTP_PASSWORD, null); }
+		}
+
+		public static string ServiceEmailAddress
+		{
+			get { return GetValue(KEY_SERVICE_EMAIL_ADDRESS, null); }
+		}
 
         #endregion
     }

@@ -144,6 +144,7 @@
     <Content Include="Global.asax" />
     <Content Include="PipelineService.svc" />
     <Content Include="StatusCheck.html" />
+    <Content Include="TestService.svc" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -156,6 +157,7 @@
     <Compile Include="InvoiceService.svc.cs">
       <DependentUpon>InvoiceService.svc</DependentUpon>
     </Compile>
+    <Compile Include="Interfaces\ITestService.cs" />
     <Compile Include="ListServcie.svc.cs">
       <DependentUpon>ListServcie.svc</DependentUpon>
     </Compile>
@@ -177,6 +179,9 @@
       <DependentUpon>PipelineService.svc</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestService.svc.cs">
+      <DependentUpon>TestService.svc</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
