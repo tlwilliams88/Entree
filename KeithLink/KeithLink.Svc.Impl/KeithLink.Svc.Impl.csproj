@@ -53,6 +53,10 @@
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
+    <Reference Include="AWSSDK, Version=2.3.5.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AWSSDK.2.3.5.0\lib\net45\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
@@ -162,6 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Component\TokenReplacer.cs" />
+    <Compile Include="Component\TokenValuesCollection.cs" />
+    <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
@@ -169,10 +176,14 @@
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
+    <Compile Include="Logic\DivisionLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
+    <Compile Include="Logic\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
@@ -183,6 +194,7 @@
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
+    <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
@@ -252,6 +264,10 @@
     <Compile Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.Designer.cs">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.cs" />
+    <Compile Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.Designer.cs">
+      <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.cs" />
     <Compile Include="Repository\EF\Migrations\201410301857211_Add order history indexes.Designer.cs">
       <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
@@ -268,6 +284,10 @@
     <Compile Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.Designer.cs">
       <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.cs" />
+    <Compile Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.Designer.cs">
+      <DependentUpon>201411032212155_Merge Models - Andrew 20141103.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.cs" />
     <Compile Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.Designer.cs">
       <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
@@ -279,6 +299,26 @@
     <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.cs" />
     <Compile Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.Designer.cs">
       <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.cs" />
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.Designer.cs">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.Designer.cs">
+      <DependentUpon>201411041805302_Messaging_v1_20142204.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.Designer.cs">
+      <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.Designer.cs">
+      <DependentUpon>201411041820219_EF model merge JT 20141104.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.cs" />
+    <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.Designer.cs">
+      <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -307,6 +347,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
+    <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
@@ -319,6 +360,8 @@
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />
@@ -349,6 +392,7 @@
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoCacheCatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoCachePriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
@@ -376,6 +420,11 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\com.benekeith.FoundationService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -430,6 +479,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -471,6 +521,16 @@
     </None>
     <None Include="Models\Orders\Schemas\ShippingDateResponse.xss">
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
+    </None>
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService2.xsd">
+      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService.wsdl" />
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.xsd">
@@ -576,6 +636,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
@@ -698,6 +759,9 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410301541340_Link to invoice from InvoiceItem.resx">
       <DependentUpon>201410301541340_Link to invoice from InvoiceItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201410302158283_AddBranchSupport.resx">
+      <DependentUpon>201410302158283_AddBranchSupport.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410301857211_Add order history indexes.resx">
       <DependentUpon>201410301857211_Add order history indexes.cs</DependentUpon>
     </EmbeddedResource>
@@ -710,6 +774,9 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201410302233325_Rework invoice entities.resx">
       <DependentUpon>201410302233325_Rework invoice entities.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411032212155_Merge Models - Andrew 20141103.resx">
+      <DependentUpon>201411032212155_Merge Models - Andrew 20141103.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410311514569_Merge model JT 20141031.resx">
       <DependentUpon>201410311514569_Merge model JT 20141031.cs</DependentUpon>
     </EmbeddedResource>
@@ -718,6 +785,21 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410311607174_InvoiceLineNumber.resx">
       <DependentUpon>201410311607174_InvoiceLineNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.resx">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041805302_Messaging_v1_20142204.resx">
+      <DependentUpon>201411041805302_Messaging_v1_20142204.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041708041_Merge migrations AA1104.resx">
+      <DependentUpon>201411041708041_Merge migrations AA1104.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041820219_EF model merge JT 20141104.resx">
+      <DependentUpon>201411041820219_EF model merge JT 20141104.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.resx">
+      <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -731,6 +813,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

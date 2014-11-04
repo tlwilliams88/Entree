@@ -162,7 +162,7 @@
       </div>
     </div>
 
-   <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" autocomplete="off">
+   <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" autocomplete="off" context-menu favorite-item-click-handlers>
       <table navigate-table="lists" class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
         <thead>
           <tr>
@@ -225,7 +225,7 @@
               <span style="font-size:11px;">
                 {{item.position}}
               </span>
-              <span favorite-item-click-handlers><span favorite-icons class="bek-no-drag"></span></span>
+              <span favorite-icons class="bek-no-drag"></span>
             </td>
             <td class="bek-drag-handle">
               <a class="bek-no-drag" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{item.itemnumber}}</a>
@@ -271,7 +271,7 @@
               </ng-form>
             </td>
             <td class="nowrap hidden-drag bek-no-drag large-icon icon-col">
-              <span context-menu class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+              <span context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
 
               <a ng-if="!selectedList.read_only" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
               
@@ -299,6 +299,10 @@
                   <tr>
                     <td>Pack/Size</td>
                     <td>{{item.packsize}}</td>
+                  </tr>
+                  <tr>
+                    <td># in Cart</td>
+                    <td>{{item.quantityincart}}</td>
                   </tr>
                   <tr>
                     <td item-icons></td>

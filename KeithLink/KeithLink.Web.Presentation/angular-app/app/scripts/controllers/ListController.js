@@ -8,7 +8,7 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService',
     function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService) {
     
     var orderBy = $filter('orderBy');

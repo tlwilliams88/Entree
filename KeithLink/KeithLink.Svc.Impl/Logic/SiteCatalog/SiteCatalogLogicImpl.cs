@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Profile;
@@ -23,9 +25,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private ICategoryImageRepository _categoryImageRepository;
         private ICatalogCacheRepository _catalogCacheRepository;
 		private IListServiceRepository _listServiceRepository;
+		private IDivisionLogic _divisionLogic;
+        private IOrderHistoryHeaderRepsitory _orderHistoryRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -34,6 +38,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			_divisionRepository = divisionRepository;
             _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
+			_divisionLogic = divisionLogic;
+            _orderHistoryRepository = orderHistoryRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -51,7 +57,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         private static string GetCategoriesCacheKey(int from, int size)
         {
-            return "CategoriesReturn_" + from + "_" + size;
+            return String.Format("CategoriesReturn_{0}_{1}", from, size);
         }
 
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile)
@@ -59,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
-            AddItemHistoryToProduct( ret );
+            AddItemHistoryToProduct( ret, catalogInfo );
 
 			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
 
@@ -93,15 +99,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private void AddItemHistoryToProduct( Product returnValue ) {
-            //TODO: Get history needed
-            // Magical EF stuffs
+        private void AddItemHistoryToProduct( Product returnValue, UserSelectedContext catalogInfo ) {
+            IEnumerable<OrderHistoryHeader> history = _orderHistoryRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, returnValue.ItemNumber );
 
-            returnValue.OrderHistory.Add( DateTime.Now.AddHours( 1 ).ToShortDateString(), 1 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 2 ).ToShortDateString(), 2 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 3 ).ToShortDateString(), 4 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 4 ).ToShortDateString(), 7 );
-            returnValue.OrderHistory.Add( DateTime.Now.AddDays( 5 ).ToShortDateString(), 10 );
+            foreach (OrderHistoryHeader h in history) {
+                foreach (OrderHistoryDetail d in h.OrderDetails.Where(x => x.ItemNumber.Equals(returnValue.ItemNumber))) {
+                    returnValue.OrderHistory.Add( h.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity );
+                }
+            }
         }
 
         private string GetCategorySearchName(string categoryName)
@@ -230,9 +235,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
 		public List<Division> GetDivisions()
 		{
-			var catalogs = _divisionRepository.GetDivisions();
-
-			return catalogs.Select(c => c.ToDivision()).ToList();
+			return _divisionLogic.GetDivisions();
 		}
 	}
 }

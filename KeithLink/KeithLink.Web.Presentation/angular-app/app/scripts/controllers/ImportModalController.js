@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$modalInstance', '$state', 'ListService', 'OrderService',
-  function ($scope, $modalInstance, $state, ListService, OrderService) {
+.controller('ImportModalController', ['$scope', '$modalInstance', '$state', 'ListService', 'CartService',
+  function ($scope, $modalInstance, $state, ListService, CartService) {
   
   $scope.upload = [];
   var files = [];
@@ -30,7 +30,7 @@ angular.module('bekApp')
         $modalInstance.close(data);
       });
     });
-  }
+  };
   
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');

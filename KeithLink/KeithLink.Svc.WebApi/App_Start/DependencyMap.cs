@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
@@ -80,12 +81,21 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+<<<<<<< HEAD
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             builder.RegisterType<OrderUpdateRequestQueueRepositoryImpl>().As<IOrderHistoryRequestQueueRepository>();
+=======
+			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
+>>>>>>> 664f0d5b6b1e1d961ee1eb3f4d01529f422b5c8f
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
+			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
 
             // Build the container.
             var container = builder.Build();

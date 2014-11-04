@@ -1,0 +1,19 @@
+ <div class="modal-header">
+    <div class="modal-close-button" ng-click="closeModal()"><span class="icon-cross large-icon"></span></div>
+    <h3 class="modal-title">Support Info for {{branch.name}} Branch</h3>
+</div>
+<div class="modal-body">
+
+  <h4>Phone Number</h4>
+  <a ng-href="{{'tel:' + branch.branchsupport.supportphonenumber}}">{{branch.branchsupport.supportphonenumber | phoneNumber}}</a>
+
+  <h4>Toll Free Number</h4>
+  <a ng-href="{{'tel:' + branch.branchsupport.tollfreenumber}}">{{branch.branchsupport.tollfreenumber | phoneNumber}}</a>
+
+  <h4>Email</h4>
+  <a ng-href="{{'mailto:' + branch.branchsupport.email}}">{{branch.branchsupport.email}}</a>
+
+</div>
+<!-- <div class="modal-footer">
+    <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div> -->

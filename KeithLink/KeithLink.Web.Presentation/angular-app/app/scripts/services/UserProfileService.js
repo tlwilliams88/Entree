@@ -10,6 +10,7 @@
 angular.module('bekApp')
   .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
 
+    //noinspection UnnecessaryLocalVariableJS
     var Service = {
       getProfile: function(email) {
         var data = {
@@ -54,7 +55,7 @@ angular.module('bekApp')
         $http.get('/profile/users', params).then(function(response) {
           var data = response.data;
           if (data.successResponse) {
-            deferred.resolve(data.successResponse.users);
+            deferred.resolve(data.successResponse.userProfiles);
           } else {
             deferred.reject(data.errorMessage);
           }
