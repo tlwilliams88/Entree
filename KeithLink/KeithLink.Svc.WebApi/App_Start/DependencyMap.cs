@@ -79,6 +79,9 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
 			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
+
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();

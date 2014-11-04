@@ -37,6 +37,10 @@ using System.Web;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Core.Interface.Component;
+using KeithLink.Svc.Impl.Repository.Email;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -111,6 +115,10 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 
+			builder.RegisterType<EmailTemplateLogicImpl>().As<IEmailTemplateLogic>();
+			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
+			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+			builder.RegisterType<EmailTemplateRepositoryImpl>().As<IEmailTemplateRepository>();
             return builder.Build();
         }
 

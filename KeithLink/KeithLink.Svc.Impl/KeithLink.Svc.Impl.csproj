@@ -165,6 +165,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
+    <Compile Include="Component\TokenReplacer.cs" />
+    <Compile Include="Component\TokenValuesCollection.cs" />
+    <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
@@ -172,6 +175,7 @@
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
+    <Compile Include="Logic\EmailTemplateLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
@@ -294,6 +298,9 @@
     <Compile Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.cs" />
     <Compile Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.Designer.cs">
       <DependentUpon>201411041629127_Messaging_v3_prefs.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.cs" />
+    <Compile Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.Designer.cs">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -327,6 +334,7 @@
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
     <Compile Include="Repository\EF\Operational\IUnitOfWork.cs" />
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
+    <Compile Include="Repository\Email\EmailTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
@@ -742,6 +750,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041629127_Messaging_v3_prefs.resx">
       <DependentUpon>201411041629127_Messaging_v3_prefs.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411031941236_Create_Email_Templates.resx">
+      <DependentUpon>201411031941236_Create_Email_Templates.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

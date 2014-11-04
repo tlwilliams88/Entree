@@ -278,8 +278,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				listRepository.Create(newNotes);
 			}
 			else
-				list.Items.Add(new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber });
+			{
+				var existingItem = list.Items.Where(i => i.ItemNumber.Equals(newNote.ItemNumber)).FirstOrDefault();
 
+				if(existingItem != null)
+				{
+					existingItem.Note = newNote.Note;
+					listItemRepository.Update(existingItem);
+				}
+				else
+				{
+					list.Items.Add(new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber });
+				}
+			}
 			unitOfWork.SaveChanges();
 
 		}

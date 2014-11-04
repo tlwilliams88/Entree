@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.EF;
+﻿using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using System;
@@ -24,6 +25,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
 		public DbSet<Invoice> Invoices { get; set; }
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
+		public DbSet<EmailTemplate> EmailTemplates { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -35,6 +37,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<EmailTemplate>().ToTable("EmailTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
