@@ -141,6 +141,8 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
+    <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IBranchSupportRepository.cs" />
     <Compile Include="Extensions\Orders\OrderDetailExtension.cs" />
     <Compile Include="Extensions\Orders\OrderHeaderExtension.cs" />
@@ -148,8 +150,6 @@
     <Compile Include="Extensions\Orders\History\OrderHistoryHeaderExtension.cs" />
     <Compile Include="Extensions\Enumerations\OrderSourceExtension.cs" />
     <Compile Include="Interface\Component\ITokenReplacer.cs" />
-    <Compile Include="Interface\Email\IEmailTemplateLogic.cs" />
-    <Compile Include="Interface\Email\IEmailTemplateRepository.cs" />
     <Compile Include="Interface\IBaseEFRepository.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
@@ -211,6 +211,8 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Configuration\EF\MessageTemplate.cs" />
+    <Compile Include="Models\Configuration\MessageTemplateModel.cs" />
     <Compile Include="Models\Messaging\EF\UserMessagingPreference.cs" />
     <Compile Include="Models\Messaging\Provider\Channel.cs" />
     <Compile Include="Models\Messaging\Provider\Message.cs" />
@@ -221,8 +223,6 @@
     <Compile Include="Models\Messaging\EF\UserTopicSubscription.cs" />
     <Compile Include="Models\Messaging\Queue\OrderConfirmationNotification.cs" />
     <Compile Include="Models\Messaging\Queue\OrderUpdateNotification.cs" />
-    <Compile Include="Models\Configuration\EF\EmailTemplate.cs" />
-    <Compile Include="Models\Configuration\EmailTemplateModel.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationHeader.cs" />

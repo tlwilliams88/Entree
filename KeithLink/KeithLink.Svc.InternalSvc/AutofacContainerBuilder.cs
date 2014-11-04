@@ -119,10 +119,10 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
-			builder.RegisterType<EmailTemplateLogicImpl>().As<IEmailTemplateLogic>();
+			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-			builder.RegisterType<EmailTemplateRepositoryImpl>().As<IEmailTemplateRepository>();
+			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
             return builder.Build();
         }
 

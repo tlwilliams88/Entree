@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.Email
 {
-	public class EmailTemplateRepositoryImpl: EFBaseRepository<EmailTemplate>, IEmailTemplateRepository
+	public class MessageTemplateRepositoryImpl: EFBaseRepository<MessageTemplate>, IMessageTemplateRepository
 	{
-		public EmailTemplateRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
+		public MessageTemplateRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         
 	}
 }
