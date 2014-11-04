@@ -11,6 +11,6 @@ namespace KeithLink.Svc.Core.Interface.Messaging
     public interface ICustomerTopicRepository : IBaseEFREpository<CustomerTopic>
     {
         List<CustomerTopic> ReadTopicsForCustomer(string customerNumber);
-        CustomerTopic ReadTopicForCustomerAndType(string customerNumber, MessageType messageType);
+        CustomerTopic ReadTopicForCustomerAndType(string customerNumber, NotificationType notificationType);
     }
 }

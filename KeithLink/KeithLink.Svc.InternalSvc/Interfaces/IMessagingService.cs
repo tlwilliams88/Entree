@@ -14,9 +14,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
     {
         // notificationEndpoint can be an email address or a device id
         [OperationContract]
-        bool AddUserSubscription(MessageType messageType, NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint);
+        bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         [OperationContract]
-        bool RemoveUserSubscription(MessageType messageType, NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint);
+        bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         [OperationContract]
         List<UserMessage> GetUserMessages(Guid userId);
     }

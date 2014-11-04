@@ -9,9 +9,9 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 {
     public class OrderConfirmationNotification : BaseNotification
     {
-        public override MessageType MessageType
+        public override NotificationType NotificationType
         {
-            get { return MessageType.OrderConfirmation; }
+            get { return NotificationType.OrderConfirmation; }
         }
     }
 }

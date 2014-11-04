@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.InternalSvc.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -21,12 +22,12 @@ namespace KeithLink.Svc.InternalSvc
 			this.messagingLogic = messagingLogic;
 		}
 
-        public bool AddUserSubscription(Core.Enumerations.Messaging.MessageType messageType, Core.Enumerations.Messaging.NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint)
+        public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
         {
-            return messagingLogic.AddUserSubscription(messageType, notificationType, userId, customerNumber, notificationEndpoint);
+            return messagingLogic.AddUserSubscription(notificationType, channel, userId, customerNumber, notificationEndpoint);
         }
 
-        public bool RemoveUserSubscription(Core.Enumerations.Messaging.MessageType messageType, Core.Enumerations.Messaging.NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint)
+        public bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
         {
             throw new NotImplementedException();
         }

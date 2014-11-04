@@ -21,6 +21,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         public string ProviderTopicId { get; set; }
 
         public virtual ICollection<UserTopicSubscription> Subscriptions { get; set; }
-        public MessageType MessageType { get; set; }
+        public NotificationType NotificationType { get; set; }
     }
 }

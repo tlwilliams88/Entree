@@ -19,9 +19,9 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             throw new NotImplementedException();
         }
 
-        public CustomerTopic ReadTopicForCustomerAndType(string customerNumber, MessageType messageType)
+        public CustomerTopic ReadTopicForCustomerAndType(string customerNumber, NotificationType notificationType)
         {
-            return Entities.Where(t => t.MessageType == messageType && t.CustomerNumber == customerNumber).FirstOrDefault();
+            return Entities.Where(t => t.NotificationType == notificationType && t.CustomerNumber == customerNumber).FirstOrDefault();
         }
     }
 }

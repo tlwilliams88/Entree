@@ -10,8 +10,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface IInternalMessagingLogic
     {
-        bool AddUserSubscription(MessageType messageType, NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint);
-        bool RemoveUserSubscription(MessageType messageType, NotificationType notificationType, Guid userId, string customerNumber, string notificationEndpoint);
+        bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
+        bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         List<UserMessage> GetUserMessages(Guid userId);
     }
 }
