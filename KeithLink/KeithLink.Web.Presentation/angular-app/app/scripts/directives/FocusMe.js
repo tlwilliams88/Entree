@@ -15,7 +15,7 @@ angular.module('bekApp')
       scope.$watch(model, function(value) {
         if(value === true) { 
           $timeout(function() {
-            // element[0].focus(); 
+            element[0].focus(); 
             element[0].select();
           });
         }

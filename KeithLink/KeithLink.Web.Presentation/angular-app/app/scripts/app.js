@@ -82,6 +82,14 @@ angular
         }]
       }
     })
+    .state('menu.notifications', {
+      url: '/notifications/',
+      templateUrl: 'views/notifications.html',
+      controller: 'NotificationsController',
+      data: {
+        authorize: 'isLoggedIn'
+      }
+    })
 
     /**********
     CATALOG

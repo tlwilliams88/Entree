@@ -39,6 +39,7 @@ angular.module('bekApp')
       $scope.addItemToCart = function(cartId, item) {
         CartService.addItemToCart(cartId, item).then(function(data) {
           $scope.isContextMenuDisplayed = false;
+          item.quantityincart += 1;
           $scope.displayMessage('success', 'Successfully added item to cart.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to cart.');

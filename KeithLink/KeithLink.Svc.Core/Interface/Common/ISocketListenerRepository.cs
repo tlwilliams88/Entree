@@ -17,6 +17,6 @@ namespace KeithLink.Svc.Core.Interface.Common
         event EventHandler OpeningPort;
         event EventHandler WaitingConnection;
 
-        void Listen();
+        void Listen(int port);
     }
 }

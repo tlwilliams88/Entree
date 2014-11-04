@@ -17,6 +17,15 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
             return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
         }
+
+        public IEnumerable<OrderHistoryHeader> GetLastFiveOrdersByItem( string branchId, string customerNumber, string itemNumber ) {
+            var query = (from x in Entities
+                         where x.BranchId.Equals(branchId) && x.CustomerNumber.Equals(customerNumber) && x.OrderDetails.Where(y => y.ItemNumber.Equals(itemNumber)).Count() > 0
+                         orderby x.DeliveryDate descending
+                         select x).Take( 5 );
+
+            return query.ToList();
+        }
         #endregion
     }
 }

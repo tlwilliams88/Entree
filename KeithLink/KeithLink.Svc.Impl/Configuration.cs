@@ -53,6 +53,7 @@ namespace KeithLink.Svc.Impl
         // Mainframe KEys
         private const string KEY_MF_ADDRESS = "MfAddress";
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
+        private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
         private const string KEY_MF_TRANSACTIONID = "MfTrans";
 
@@ -355,6 +356,12 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return int.Parse(GetValue(KEY_MF_CONFRIMATION_PORT, "4001"));
+            }
+        }
+
+        public static int MainframOrderHistoryListeningPort {
+            get {
+                return int.Parse(GetValue(KEY_MF_ORDERHISTORY_PORT, "4002"));
             }
         }
 

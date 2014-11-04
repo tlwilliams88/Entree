@@ -3,7 +3,6 @@
 angular.module('bekApp')
   .controller('AddUserDetailsController', ['$scope', 'UserProfileService', 'LocalStorage',
     function ($scope, UserProfileService, LocalStorage) {
-
       /*------Init------*/
       //temporary hardcoded roles in use until a role endpoint is created
       $scope.userRoles = ["Owner", "Accounting", "Approver", "Buyer", "Guest"];
@@ -75,10 +74,14 @@ angular.module('bekApp')
         //check if user exists in the database
         UserProfileService.getAllUsers(data).then(
           function(profile){
-            console.log(profile);
             //if the user does exist update userExists flag to true, else keep it as false
             if(!$scope.isNullEmptyUndefined(profile)){
-              console.log(profile); //$scope.currentSelectedUser = profile;
+
+              //RENAMING EMAIL ADDRESS BECAUSE RESPONSE RETURNS INCORRECT FIELD NAME
+              profile[0].email = profile[0].emailaddress;
+              delete profile[0].emailaddress;
+
+              $scope.currentSelectedUser = profile[0];
               $scope.isExistingUser = true;
             } else {
               $scope.isExistingUser = false;
@@ -88,17 +91,21 @@ angular.module('bekApp')
           });
       };
 
-      $scope.makeUser= function(existingProfile){
+      $scope.makeUser= function(){
         if(!$scope.isExistingUser){
           //creates new user profile object
           var newProfile = {};
-          newProfile.emailaddress = $scope.currentUserEmail;
-          //newProfile.branchId
+          newProfile.email = $scope.currentUserEmail;
+          if($scope.isNullEmptyUndefined($scope.selectedCustomers[0].customerBranch)){
+            newProfile.branchId = "";
+          } else {
+            newProfile.branchId = $scope.selectedCustomers[0].customerBranch;
+          }
 
           //sends new User Profile to db and receives newly generated profile object
           UserProfileService.createUser(newProfile).then(function(profile){
-            $scope.currentSelectedUser = profile;
-            updateExistingProfile();
+            $scope.currentSelectedUser = profile.userProfiles[0];
+          updateExistingProfile();
           },function(errorMessage){
             console.log(errorMessage);
           });
@@ -108,10 +115,24 @@ angular.module('bekApp')
       };
 
       var updateExistingProfile = function(){
+        //strip SELECTED property from object to prevent errors with API
+        var noSelectCustomers = [];
+        $scope.selectedCustomers.forEach(function(selectedCustomer){
+          delete selectedCustomer.selected;
+          noSelectCustomers.push(selectedCustomer);
+        });
+
         //updates existing users customers with currently selected customers
         $scope.currentSelectedUser.rolename = $scope.currentUserRole;
-        $scope.currentSelectedUser.user_customers = $scope.selectedCustomers;
-        console.log($scope.currentSelectedUser); //UserProfileService.updateUser($scope.currentSelectedUser);
+        $scope.currentSelectedUser.user_customers = noSelectCustomers;
+
+        //send updated profile to endpoint
+        UserProfileService.updateUser($scope.currentSelectedUser).then(function(){
+          $scope.displayMessage('success',"The user was successfully added.");
+          $scope.wipeForm();
+        },function(error){
+          $scope.displayMessage('error',"An error occurred: " + error);
+        });
       };
 
       /*------Convenience Methods------*/
@@ -120,9 +141,18 @@ angular.module('bekApp')
         return !!(angular.isUndefined(val) || val === null || val.length == 0);
       };
 
-      $scope.testMethod = function(){
-        console.log('test');
-      }
+      $scope.wipeForm = function(){
+        $scope.addUserForm.$setPristine(true);
+        $scope.currentUserEmail = "";
+        $scope.isExistingUser = false;
+        $scope.currentUserRole = $scope.userRoles[4];
+        $scope.currentSelectedUser = {};
+        $scope.selectedCustomers = [];
+        $scope.groupChecked = false;
+        $scope.customers.forEach(function(customer){
+          customer.selected = false;
+        });
+      };
 
     }]
   );
