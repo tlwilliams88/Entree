@@ -54,7 +54,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
 			builder.RegisterType<ListServcie>();
 			builder.RegisterType<InvoiceService>();
-			builder.RegisterType<TestService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
