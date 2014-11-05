@@ -136,6 +136,7 @@
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
+    <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
@@ -222,7 +223,9 @@
     <Compile Include="Models\Messaging\EF\CustomerTopic.cs" />
     <Compile Include="Models\Messaging\EF\UserMessage.cs" />
     <Compile Include="Models\Messaging\EF\UserTopicSubscription.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderChange.cs" />
     <Compile Include="Models\Messaging\Queue\OrderConfirmationNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderLineChange.cs" />
     <Compile Include="Models\Messaging\Queue\OrderUpdateNotification.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />

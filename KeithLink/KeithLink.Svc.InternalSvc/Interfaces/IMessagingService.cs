@@ -19,5 +19,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         [OperationContract]
         List<UserMessage> GetUserMessages(Guid userId);
+        [OperationContract]
+        void TestNotification();
     }
 }

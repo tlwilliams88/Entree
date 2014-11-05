@@ -11,6 +11,7 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using AmazonSNS = Amazon.SimpleNotificationService;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
@@ -20,19 +21,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IUnitOfWork unitOfWork;
 		private readonly ICustomerTopicRepository customerTopicRepository;
         private readonly IGenericQueueRepository genericQueueRepository;
+        private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
+        private Task listenForQueueMessagesTask;
 
-        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IGenericQueueRepository genericQueueRepository)
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository,
+            IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
+            this.genericQueueRepository = genericQueueRepository;
+            this.eventLogRepository = eventLogRepository;
         }
 
         public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
         {
-            // JUST SOME TESTS - TODO, move to appropriate location
-            genericQueueRepository.PublishToQueue("just a test", Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
-                Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
-            return true;
             // find topics for customer; if not existing, then create
             CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(customerNumber, notificationType);
             if (topic == null)
@@ -41,11 +43,35 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
 
             // look for existing subscription
-            if (topic.Subscriptions == null || !topic.Subscriptions.Any(s => s.NotificationType == channel && s.NotificationEndpoint == notificationEndpoint && s.UserId == userId))
+            if (topic.Subscriptions == null || !topic.Subscriptions.Any(s => s.Channel == channel && s.NotificationEndpoint == notificationEndpoint && s.UserId == userId))
             {
                 // add the subscription
                 CreateSubscriptionToTopic(channel, notificationEndpoint, topic, userId);
             }
+            return true;
+        }
+
+        public bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn)
+        {
+            CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(ocn.CustomerNumber, NotificationType.OrderConfirmation);
+            if (topic == null)
+            {
+                eventLogRepository.WriteInformationLog("no topic found for customer: " + ocn.CustomerNumber + ", event type: " + NotificationType.OrderConfirmation.ToString());
+                return true;
+            }
+
+            AmazonSNS.IAmazonSimpleNotificationService client =
+                Amazon.AWSClientFactory.CreateAmazonSimpleNotificationServiceClient(
+                    new Amazon.Runtime.BasicAWSCredentials("AKIAJ42DMK24ZMO56MYQ", "TwrfjLm5y1G4xcUvYMAgn+/+kXDuyNUZIRD7qvA0"), // TODO: Config
+                    Amazon.RegionEndpoint.USEast1);
+            
+            client.Publish(
+                new AmazonSNS.Model.PublishRequest(topic.ProviderTopicId, // topic arn
+                    "received order confirmation for " + ocn.CustomerNumber + ", order: " + ocn.OrderChange.OrderName, // topic message
+                    "BEK: Order Confirmation for " + ocn.CustomerNumber // topic subject
+                    )
+                );
+
             return true;
         }
 
@@ -68,7 +94,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             if (topic.Subscriptions == null) topic.Subscriptions = new List<UserTopicSubscription>();
 
-            topic.Subscriptions.Add(new UserTopicSubscription() { NotificationEndpoint = notificationEndpoint, UserId = userId, NotificationType = channel, ProviderSubscriptionId = subscriptionArn });
+            topic.Subscriptions.Add(new UserTopicSubscription() { NotificationEndpoint = notificationEndpoint, UserId = userId, Channel = channel, ProviderSubscriptionId = subscriptionArn });
             customerTopicRepository.Update(topic);
             unitOfWork.SaveChanges();
         }
@@ -115,6 +141,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
         public void ConsumeMessageFromQueue()
         {
+        }
+
+
+        public void ListenForNotificationMessagesOnQueue()
+        {
+            //listenForQueueMessagesTask = Task.Factory.StartNew(() => );
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
         }
     }
 }

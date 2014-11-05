@@ -164,7 +164,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 OrderLine existingLine = existingOrder.Items.Where(x => x.ItemNumber == newLine.ItemNumber).FirstOrDefault();
                 if (existingLine != null)
                 { // compare and update if necessary
-                    if (existingLine.Quantity != newLine.Quantity)
+                    if (existingLine.Quantity != newLine.Quantity || existingLine.Each != newLine.Each)
                     {
                         existingLine.Quantity = newLine.Quantity;
                         existingLine.Status = "changed";

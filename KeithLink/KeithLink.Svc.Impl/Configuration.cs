@@ -500,6 +500,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQQueueNotification
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
+            }
+        }
+
         public static string RabbitMQUserNameConsumer {
             get {
                 return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);

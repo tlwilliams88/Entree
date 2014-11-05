@@ -179,7 +179,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             try {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                       new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl());
+                                                                       new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl(),
+                                                                       new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
                 confirmationLogic.ListenForMainFrameCalls();
             }
             catch (Exception e) {
@@ -231,7 +232,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                         
                         ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                                            new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                           new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl());
+                                                                                           new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl(),
+                                                                                           new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
                         OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log, 
                                                                                new OrderHistoyrHeaderRepositoryImpl(uow), 
                                                                                new OrderHistoryDetailRepositoryImpl(uow), 

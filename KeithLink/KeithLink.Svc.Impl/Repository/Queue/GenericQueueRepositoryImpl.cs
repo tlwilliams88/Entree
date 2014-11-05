@@ -9,7 +9,7 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
-namespace KeithLink.Svc.Impl.Repository.Orders.Confirmations
+namespace KeithLink.Svc.Impl.Repository.Queue
 {
     public class GenericQueueRepositoryImpl : IGenericQueueRepository
     {
@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders.Confirmations
 
             using (IConnection connection = connectionFactory.CreateConnection()) {
                 using (IModel model = connection.CreateModel()) {
-                    BasicGetResult result = model.BasicGet(Configuration.RabbitMQQueueConfirmation, true);
+                    BasicGetResult result = model.BasicGet(queue, true);
                     
                     if (result == null) {
                         return null;
