@@ -53,10 +53,10 @@ angular
       controller: 'MenuController',
       resolve: {
         branches: ['BranchService', function(BranchService) {
-          return BranchService.getBranches();
+          return [];//BranchService.getBranches();
         }],
         shipDates: ['CartService', function(CartService) {
-          return CartService.getShipDates();
+          return [];//CartService.getShipDates();
         }]
       }
     })
@@ -349,7 +349,12 @@ angular
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
-      controller: 'EditUserDetailsController'
+      controller: 'EditUserDetailsController',
+      resolve: {
+        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
+        }]
+      }
     })
     .state('menu.admin.customer', {
       url: 'customers/',

@@ -93,15 +93,32 @@ angular.module('bekApp')
       updateUser: function(userProfile) {
         var deferred = $q.defer();
 
-        $http.put('/profile/user', userProfile).then(function(response) {
+        $http.put('/profile', userProfile).then(function(response) {
 
           var data = response.data;
 
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
-            // profile.role = 'Owner';
             $log.debug(profile);
             LocalStorage.setProfile(profile);
+            deferred.resolve(profile);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
+        });
+        return deferred.promise;
+      },
+
+      updateProfile: function(userProfile) {
+        var deferred = $q.defer();
+
+        $http.put('/profile', userProfile).then(function(response) {
+
+          var data = response.data;
+
+          if (data.successResponse) {
+            var profile = data.successResponse.userProfiles[0];
+            $log.debug(profile);
             deferred.resolve(profile);
           } else {
             deferred.reject(data.errorMessage);
