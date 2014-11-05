@@ -321,6 +321,14 @@
     <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.Designer.cs">
       <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.Designer.cs">
+      <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.cs" />
+    <Compile Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.Designer.cs">
+      <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -349,6 +357,8 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
@@ -390,6 +400,7 @@
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
@@ -818,6 +829,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.resx">
       <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.resx">
+      <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.resx">
+      <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

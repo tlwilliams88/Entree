@@ -7,8 +7,8 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 
 namespace KeithLink.Svc.Core.Interface.Messaging
 {
-    public interface IUserMessageRepository : IBaseEFREpository<UserMessage>
+    public interface IUserMessagingPreferenceRepository : IBaseEFREpository<UserMessagingPreference>
     {
-
+        //List<UserTopicSubscription> GetUserTopicSubscriptions(Guid userId);
     }
 }

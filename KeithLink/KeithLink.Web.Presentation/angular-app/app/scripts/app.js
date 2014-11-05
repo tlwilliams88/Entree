@@ -349,7 +349,12 @@ angular
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
-      controller: 'EditUserDetailsController'
+      controller: 'EditUserDetailsController',
+      resolve: {
+        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
+        }]
+      }
     })
     .state('menu.admin.customer', {
       url: 'customers/',

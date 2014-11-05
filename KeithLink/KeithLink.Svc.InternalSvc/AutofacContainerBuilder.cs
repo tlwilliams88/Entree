@@ -30,6 +30,7 @@ using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Queue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -113,6 +114,7 @@ namespace KeithLink.Svc.InternalSvc
 
             builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
@@ -129,6 +131,8 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
 
 			builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
 
             return builder.Build();
