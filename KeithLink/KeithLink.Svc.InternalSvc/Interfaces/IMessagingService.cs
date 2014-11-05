@@ -23,5 +23,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<UserMessage> GetUserMessages(Guid userId);
         [OperationContract]
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
+        [OperationContract]
+        void TestNotification();
     }
 }

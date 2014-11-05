@@ -15,9 +15,12 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         List<UserMessage> GetUserMessages(Guid userId);
+<<<<<<< HEAD
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
+=======
         bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn);
         void ListenForNotificationMessagesOnQueue();
         void Stop();
+>>>>>>> a60b01cb3ae33078adadf76adbd4730440f45f51
     }
 }

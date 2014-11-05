@@ -22,21 +22,29 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly ICustomerTopicRepository customerTopicRepository;
+<<<<<<< HEAD
         private readonly IUserMessageRepository userMessageRepository;
         private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
-        private readonly IGenericQueueRepository genericQueueRepository;
-        private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
-        private Task listenForQueueMessagesTask;
 
-        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
-            IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
             this.userMessageRepository = userMessageRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
+=======
+        private readonly IGenericQueueRepository genericQueueRepository;
+        private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
+        private Task listenForQueueMessagesTask;
+
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository,
+            IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
+        {
+            this.unitOfWork = unitOfWork;
+            this.customerTopicRepository = customerTopicRepository;
             this.genericQueueRepository = genericQueueRepository;
             this.eventLogRepository = eventLogRepository;
+>>>>>>> a60b01cb3ae33078adadf76adbd4730440f45f51
         }
 
         public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
@@ -142,24 +150,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             throw new NotImplementedException();
         }
 
-        public void PublishMessageToQueue()
-        {
-        }
-        public void ConsumeMessageFromQueue()
-        {
-        }
-
-
-        public void ListenForNotificationMessagesOnQueue()
-        {
-            //listenForQueueMessagesTask = Task.Factory.StartNew(() => );
-        }
-
-        public void Stop()
-        {
-            throw new NotImplementedException();
-        }
-
+<<<<<<< HEAD
         public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
         {
             var newUserMessage = userMessage.ToEFUserMessage();
@@ -204,5 +195,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
 
 
+=======
+        public void PublishMessageToQueue()
+        {
+        }
+        public void ConsumeMessageFromQueue()
+        {
+        }
+
+
+        public void ListenForNotificationMessagesOnQueue()
+        {
+            //listenForQueueMessagesTask = Task.Factory.StartNew(() => );
+        }
+
+        public void Stop()
+        {
+            throw new NotImplementedException();
+        }
+>>>>>>> a60b01cb3ae33078adadf76adbd4730440f45f51
     }
 }
