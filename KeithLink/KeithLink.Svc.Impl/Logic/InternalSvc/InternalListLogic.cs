@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false)
 		{
-			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet)).ToList();
+			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
 
 			if (list == null)
 				return null;
@@ -93,12 +93,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any())
 			{
 				this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-				list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet)).ToList();
+                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
 			}
 
+            if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
+                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
+                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
+            }
 
 			if (headerOnly)
-				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
+				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly, IsReminder = l.Type == ListType.Reminder }).ToList();
 			else
 			{
 				var returnList = list.Select(b => b.ToListModel(returnAllItems)).ToList();

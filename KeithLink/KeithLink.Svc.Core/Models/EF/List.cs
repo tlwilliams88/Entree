@@ -12,6 +12,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		Favorite,
 		Contract,
 		Recent,
+        Reminder,
 		Notes,
 		Worksheet
 	}
