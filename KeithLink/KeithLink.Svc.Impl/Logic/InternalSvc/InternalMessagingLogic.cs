@@ -11,6 +11,8 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
 using AmazonSNS = Amazon.SimpleNotificationService;
+using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -18,11 +20,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly ICustomerTopicRepository customerTopicRepository;
+        private readonly IUserMessageRepository userMessageRepository;
+        private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
 
-        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository)
+        public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
+            this.userMessageRepository = userMessageRepository;
+            this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
         }
 
         public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
@@ -103,5 +109,50 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
             throw new NotImplementedException();
         }
+
+        public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
+        {
+            var newUserMessage = userMessage.ToEFUserMessage();
+            newUserMessage.CustomerNumber = catalogInfo.CustomerId;
+            newUserMessage.UserId = userId.ToString();
+
+            userMessageRepository.CreateOrUpdate(newUserMessage);
+            unitOfWork.SaveChanges();
+            return newUserMessage.Id;
+        }
+
+        public UserMessagingPreferenceModel ReadUserMessagingPreference(long userMessagingPreferenceId)
+        {
+            var currentUserMessagingPreference = userMessagingPreferenceRepository.Read(u => u.Id.Equals(userMessagingPreferenceId)).FirstOrDefault();
+
+            if (currentUserMessagingPreference == null)
+                return null;
+
+            return new UserMessagingPreferenceModel()
+            {
+                Id = currentUserMessagingPreference.Id,
+                CustomerNumber = currentUserMessagingPreference.CustomerNumber,
+                Channel = currentUserMessagingPreference.Channel,
+                NotificationType = currentUserMessagingPreference.NotificationType,
+                UserId = currentUserMessagingPreference.UserId
+            };
+        }
+
+        public void UpdateUserMessagingPreference(UserMessagingPreferenceModel userMessagingPreference)
+        {
+            var currentUserMessagingPreference = userMessagingPreferenceRepository.Read(u => u.Id.Equals(userMessagingPreference.Id)).FirstOrDefault();
+
+            if (currentUserMessagingPreference == null)
+                return;
+
+            currentUserMessagingPreference.Channel = userMessagingPreference.Channel;
+            currentUserMessagingPreference.CustomerNumber = userMessagingPreference.CustomerNumber;
+            currentUserMessagingPreference.NotificationType = userMessagingPreference.NotificationType;
+            currentUserMessagingPreference.UserId = userMessagingPreference.UserId;
+
+            unitOfWork.SaveChanges();
+        }
+
+
     }
 }

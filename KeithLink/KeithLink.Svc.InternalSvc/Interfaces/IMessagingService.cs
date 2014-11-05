@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using System.ServiceModel;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.Messaging;
 
 namespace KeithLink.Svc.InternalSvc.Interfaces
 {
@@ -19,5 +21,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         [OperationContract]
         List<UserMessage> GetUserMessages(Guid userId);
+        [OperationContract]
+        long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
     }
 }

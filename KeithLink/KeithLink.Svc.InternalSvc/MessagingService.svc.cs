@@ -8,6 +8,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.Messaging;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -35,6 +37,11 @@ namespace KeithLink.Svc.InternalSvc
         public List<UserMessage> GetUserMessages(Guid userId)
         {
             throw new NotImplementedException();
+        }
+
+        public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
+        {
+            return messagingLogic.CreateUserMessage(userId, catalogInfo, userMessage);
         }
     }
 }
