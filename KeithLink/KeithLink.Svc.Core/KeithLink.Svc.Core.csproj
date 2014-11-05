@@ -141,6 +141,9 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
+    <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
     <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
     <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IBranchSupportRepository.cs" />

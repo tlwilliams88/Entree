@@ -55,7 +55,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
-        private const string KEY_MF_TRANSACTIONID = "MfTrans";
+        private const string KEY_MF_TRANS_ORDER = "MfTrans";
+        private const string KEY_MF_TRANS_HISTORY = "MfTransHistory";
 
         // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
@@ -64,14 +65,16 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
-        private const string KEY_RABBITMQ_ORDER_SERVER = "RabbitMQOrderServer";
-        private const string KEY_RABBITMQ_CONFIRMATION_SERVER = "RabbitMQConfirmationServer";
+        private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
+        private const string KEY_RABBITMQ_SERVER_ORDER = "RabbitMQOrderServer";
+        private const string KEY_RABBITMQ_SERVER_CONFIRMATION = "RabbitMQConfirmationServer";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
@@ -373,11 +376,17 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string MainframeHistoryTransactionId {
+            get {
+                return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+            }
+        }
+
         public static string MainframeOrderTransactionId
         {
             get
             {
-                return GetValue(KEY_MF_TRANSACTIONID, string.Empty);
+                return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
             }
         }
 
@@ -450,6 +459,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeOrderUpdateRequests {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST, string.Empty);
+            }
+        }
+
         public static string RabbitMQQueueConfirmation {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
@@ -481,6 +496,12 @@ namespace KeithLink.Svc.Impl
         public static string RabbitMQQueueOrderReprocess {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueOrderUpdateRequest {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
             }
         }
 
@@ -516,16 +537,15 @@ namespace KeithLink.Svc.Impl
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_ORDER_SERVER, string.Empty);
+                return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
             }
         }
-
 
         public static string RabbitMQConfirmationServer
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_CONFIRMATION_SERVER, string.Empty);
+                return GetValue(KEY_RABBITMQ_SERVER_CONFIRMATION, string.Empty);
             }
         }
 
