@@ -29,7 +29,7 @@ angular
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
   function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
-  
+
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
 
@@ -347,7 +347,7 @@ angular
       controller: 'AddUserDetailsController'
     })
     .state('menu.admin.edituser', {
-      url: 'users/:userId/',
+      url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController'
     })
@@ -378,7 +378,7 @@ angular
     });
 
   $stateProvider
-    .state('404', { 
+    .state('404', {
       url: '/404/',
       templateUrl: 'views/404.html'
     });
@@ -432,7 +432,7 @@ angular
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');
-        event.preventDefault(); 
+        event.preventDefault();
       }
     }
 
@@ -440,12 +440,12 @@ angular
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
-        $state.go('menu.home');  
+        $state.go('menu.home');
       } else {
         $state.go('menu.catalog.home');
       }
 
-      event.preventDefault(); 
+      event.preventDefault();
     }
 
   });

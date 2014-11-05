@@ -49,6 +49,18 @@ angular.module('bekApp')
         });
       },
 
+      getUserProfile: function(email) {
+        var data = {
+          params: {
+            email: email
+          }
+        };
+
+        return $http.get('/profile', data).then(function(response){
+          return response.data.userProfiles[0];
+        })
+      },
+
       // accountid, customerid , email
       getAllUsers: function(params) {
         var deferred = $q.defer();
