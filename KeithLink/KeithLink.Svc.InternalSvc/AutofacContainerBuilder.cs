@@ -127,6 +127,10 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
 			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+
+			builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+
             return builder.Build();
         }
 
