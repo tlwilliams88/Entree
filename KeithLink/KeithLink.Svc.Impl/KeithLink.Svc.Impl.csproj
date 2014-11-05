@@ -320,6 +320,10 @@
     <Compile Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.Designer.cs">
       <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.Designer.cs">
+      <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -348,6 +352,8 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
@@ -801,6 +807,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411041825296_Rename EmailTemplate to MessageTemplate.resx">
       <DependentUpon>201411041825296_Rename EmailTemplate to MessageTemplate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.resx">
+      <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

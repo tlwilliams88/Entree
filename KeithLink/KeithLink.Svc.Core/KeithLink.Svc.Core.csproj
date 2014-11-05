@@ -135,6 +135,7 @@
     <Compile Include="Exceptions\Profile\NoApiKeyProvidedException.cs" />
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
@@ -142,9 +143,12 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Models\Messaging\UserMessageModel.cs" />
+    <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
     <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
     <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
