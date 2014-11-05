@@ -186,6 +186,7 @@
     <Compile Include="Logic\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
@@ -365,6 +366,8 @@
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\OrderUpdateRequestQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />

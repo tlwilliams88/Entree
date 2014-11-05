@@ -89,9 +89,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QA", "QA", "{0AA5ACC1-A2AB-
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Windows.OrderService", "KeithLink.Svc.Windows.OrderService\KeithLink.Svc.Windows.OrderService.csproj", "{BE41C4EC-AA99-4E94-9698-E0690A24212A}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6E0FA18C-21B0-4862-ACBC-4B6D55516341} = {6E0FA18C-21B0-4862-ACBC-4B6D55516341}
-	EndProjectSection
 EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "KeithLink.Svc.Windows.OrderService.Setup", "KeithLink.Svc.Windows.OrderService.Setup\KeithLink.Svc.Windows.OrderService.Setup.wixproj", "{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -470,9 +467,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{8E94F58A-1F4C-4D4A-A0FC-BD6EDBC69575} = {D6B19051-C6BA-465B-9D93-B6E48E44667A}
+		{A5061D47-AD81-4C9D-B171-8D92F38DB60D} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
 		{562E7A83-563D-4848-AF64-7DCB432935E8} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
 		{42B2A7A5-6D71-4414-84EB-01C26D061183} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
-		{A5061D47-AD81-4C9D-B171-8D92F38DB60D} = {C44D1197-BF78-46D8-975D-CD5B10D9A4AA}
 		{878AA2E7-769B-409C-8285-3A7FACA750F9} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{E272DA17-C7F8-4F35-A4B0-E97D03D35754} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
 		{A9FEAA4D-D248-4807-85FB-B74569BAD847} = {14C0B446-B30D-4C46-93A4-025400F4DFDD}
@@ -492,7 +489,7 @@ Global
 		{07D30387-97D8-4A1C-A1C6-B81B01AEEB5C} = {0E4AE451-7F4A-4909-BF33-35C4CD010F9F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal
