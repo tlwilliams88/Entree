@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 'CartService', 'OrderService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService, CartService, OrderService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService) {
     
     var orderBy = $filter('orderBy');
 
@@ -362,12 +362,5 @@ angular.module('bekApp')
 
     resetPage(angular.copy(originalList));
     $scope.selectedList.isRenaming = $stateParams.renameList === 'true' ? true : false;
-
-    $scope.carts = CartService.carts;
-    CartService.getCartHeaders();
-
-    OrderService.getChangeOrders().then(function(orders) {
-      $scope.changeOrders = orders;
-    });
 
   }]);

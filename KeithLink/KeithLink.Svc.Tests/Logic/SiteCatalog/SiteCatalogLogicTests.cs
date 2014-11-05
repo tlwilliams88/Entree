@@ -5,6 +5,7 @@ using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Core.Interface;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl;
@@ -28,7 +29,9 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
 				new ListServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient()),
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
-                new NoCacheCatalogCacheRepositoryImpl()
+                new NoCacheCatalogCacheRepositoryImpl(),
+				new DivisionLogicImpl(new DivisionRepositoryImpl(), new DivisionServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient())),
+                new OrderHistoyrHeaderRepositoryImpl(new KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork())
                 );
         }
         #endregion

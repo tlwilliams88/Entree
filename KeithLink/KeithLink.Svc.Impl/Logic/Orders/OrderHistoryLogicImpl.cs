@@ -62,7 +62,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region events
-
         public void SocketFileReceived(object sender, ReceivedFileEventArgs e) {
             string[] lines = e.FileData.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 

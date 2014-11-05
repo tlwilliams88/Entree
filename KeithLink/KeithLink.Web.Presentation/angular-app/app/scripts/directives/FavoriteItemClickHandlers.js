@@ -16,6 +16,7 @@ angular.module('bekApp')
           processingAddItem = true;
           var favoritesList = ListService.getFavoritesList();
           ListService.addItem(favoritesList.listid, item).then(function() {
+            $scope.$broadcast('closeContextMenu');
             item.favorite = true;
           }).finally(function() {
             processingAddItem = false;
@@ -31,6 +32,7 @@ angular.module('bekApp')
           processingRemoveItem = true;
 
           ListService.removeItemFromFavorites(deletedItem.itemnumber).then(function(data) {
+            $scope.$broadcast('closeContextMenu');
             item.favorite = false;
           }).finally(function() {
             processingRemoveItem = false;
