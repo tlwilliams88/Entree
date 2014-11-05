@@ -53,10 +53,10 @@ angular
       controller: 'MenuController',
       resolve: {
         branches: ['BranchService', function(BranchService) {
-          return [];//BranchService.getBranches();
+          return BranchService.getBranches();
         }],
         shipDates: ['CartService', function(CartService) {
-          return [];//CartService.getShipDates();
+          return CartService.getShipDates();
         }]
       }
     })
