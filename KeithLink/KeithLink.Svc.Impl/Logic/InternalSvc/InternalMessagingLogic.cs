@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
@@ -23,6 +24,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
         private Task listenForQueueMessagesTask;
+        private bool doListenForMessagesInTask = true;
 
         public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository,
             IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
@@ -139,19 +141,43 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public void PublishMessageToQueue()
         {
         }
-        public void ConsumeMessageFromQueue()
+
+        public string ConsumeMessageFromQueue()
         {
+            return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
         }
 
 
         public void ListenForNotificationMessagesOnQueue()
         {
-            //listenForQueueMessagesTask = Task.Factory.StartNew(() => );
+           listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTask());
+        }
+
+        protected void ListenToQueueInTask()
+        {
+            while (doListenForMessagesInTask)
+            {
+                string msg = ConsumeMessageFromQueue();
+                if (msg != null)
+                {
+                    BaseNotification notification = NotificationExtension.Deserialize(msg);
+                    if (notification.NotificationType == NotificationType.OrderConfirmation)
+                    {
+                        OrderConfirmationNotification orderConfNotify = (OrderConfirmationNotification)notification;
+                        SendMessage(orderConfNotify);
+                    }
+                }
+            }
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            if (listenForQueueMessagesTask != null && doListenForMessagesInTask == true)
+            {
+                doListenForMessagesInTask = false;
+                listenForQueueMessagesTask.Wait();
+            }
         }
     }
 }
