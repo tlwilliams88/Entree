@@ -13,7 +13,9 @@ namespace KeithLink.Svc.Core.Models.EF
 		Contract,
 		Recent,
 		Notes,
-		Worksheet
+		Worksheet,
+        ContractItemsAdded,
+        ContractItemsDeleted
 	}
 
 	public class List: BaseEFModel
