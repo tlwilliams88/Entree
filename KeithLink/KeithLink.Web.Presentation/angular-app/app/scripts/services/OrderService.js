@@ -49,9 +49,6 @@ angular.module('bekApp')
       },
 
       updateOrder: function(order, params) {
-        // return $http.put('/order', order).then(function(response) {
-        //   return response.data;
-        // });
         return Order.update(params, order).$promise;
       },
 
@@ -63,7 +60,20 @@ angular.module('bekApp')
         return Order.delete({
           orderNumber: commerceId
         }).$promise;
+      },
+
+      /*************
+      ORDER HISTORY
+      *************/
+
+      refreshOrderHistory: function() {
+        return Order.getOrderHistory().$promise;
+      },
+
+      pollOrderHistory: function() {
+        return Order.pollOrderHistory().$promise;
       }
+
     };
  
     return Service;
