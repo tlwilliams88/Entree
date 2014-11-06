@@ -144,6 +144,48 @@
     </div>
   </div>
 
+  <div ng-if="reminderList && reminderList.items.length > 0" class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs">
+    <h4 class="no-margin">Reminder Items</h4>
+    <div class="reminder-items__table">
+      <table class="table table-border table-striped-rows">
+        <thead>
+          <tr>
+            <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+              Item #
+              <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+              Name
+              <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="reminderSortBy='totalPar';reminderSortOrder=!reminderSortOrder;">
+              PAR
+              <span sort-icons field="'totalPar'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="reminderSortBy='qtyInCart';reminderSortOrder=!reminderSortOrder;">
+              # in Cart
+              <span sort-icons field="'qtyInCart'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+            </th>
+          </tr>
+        </thead>
+        <tr ng-repeat="item in reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder"  ng-class="{ odd : $odd, even: $even }">
+          <td>
+            <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+          </td>
+          <td>
+            {{item.name}}
+          </td>
+          <td>
+            {{item.totalPar}}
+          </td>
+          <td>
+            {{item.qtyInCart}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
 </div>
 
 <div class="row sub-content">

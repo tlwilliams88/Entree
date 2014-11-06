@@ -7,4 +7,13 @@
   max-height: 150px;
   overflow-y: auto;
   margin-top: 10px;
+
+  .table > thead > tr > th, 
+  .table > thead > tr > td, 
+  .table > tbody > tr > th, 
+  .table > tbody > tr > td, 
+  .table > tfoot > tr > th, 
+  .table > tfoot > tr > td {
+    padding: 6px 5px;
+  }
 }
