@@ -94,6 +94,7 @@ angular.module('bekApp')
 
       $scope.deleteProfile = function () {
         //wipe customers out of user profile
+        $scope.profile.role = "guest";
         $scope.profile.customers = [];
 
         //push freshly wiped profile to database
