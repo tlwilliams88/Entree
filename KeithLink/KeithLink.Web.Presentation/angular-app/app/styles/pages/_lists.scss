@@ -1,8 +1,13 @@
 .lists {
-  width: 150px;
+  width: 160px;
+  .list-names button {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 .items {
-  width: calc(100% - 150px);
+  width: calc(100% - 160px);
+  padding-left: 0;
 }
 
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
