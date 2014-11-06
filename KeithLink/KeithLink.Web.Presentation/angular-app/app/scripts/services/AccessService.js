@@ -36,6 +36,14 @@ angular.module('bekApp')
         return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
       },
 
+      isBekAdmin: function() {
+        return false;
+      },
+
+      isCustomerAdmin: function() {
+        return false;
+      },
+
       // PRIVILEDGES
 
       canBrowseCatalog: function() {

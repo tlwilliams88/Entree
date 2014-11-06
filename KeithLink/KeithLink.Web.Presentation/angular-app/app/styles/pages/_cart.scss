@@ -4,8 +4,7 @@
 }
 
 .reminder-items__table {
-  max-height: 150px;
-  overflow-y: auto;
+  @include scroll-div-vertical(150px);
   margin-top: 10px;
 
   .table > thead > tr > th, 
