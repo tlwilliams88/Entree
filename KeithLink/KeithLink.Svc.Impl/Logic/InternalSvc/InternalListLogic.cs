@@ -72,7 +72,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listCacheRepository.RemoveItem(string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return item.Id;
 		}
-        
+
 		public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
 		{
 			var list = listRepository.ReadById(listId);
@@ -366,56 +366,46 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
-        public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false)
-		{
-			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
+        public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false) {
+            var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted)).ToList();
 
-			if (list == null)
-				return null;
+            if (list == null)
+                return null;
 
-			if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any())
-			{
-				this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
-			}
-
-            if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
-                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
-                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.Reminder)).ToList();
+            if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any()) {
+                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
+                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted)).ToList();
             }
 
-			if (headerOnly)
-				return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly, IsReminder = l.Type == ListType.Reminder }).ToList();
-			else
-			{
-				var returnList = list.Select(b => b.ToListModel(returnAllItems)).ToList();
-				var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
-				var processedList = new List<ListModel>();
-				//Lookup product details for each item
-				returnList.ForEach(delegate(ListModel listItem)
-				{
-					var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listItem.ListId));
-					if (cachedList != null)
-					{
-						processedList.Add(cachedList);
-						return;
-					}
+            if (headerOnly)
+                return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
+            else {
+                var returnList = list.Select(b => b.ToListModel(returnAllItems)).ToList();
+                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
-					LookupProductDetails(user, listItem, catalogInfo);
-					processedList.Add(listItem);
-					listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", listItem.ListId), listItem);
+                var processedList = new List<ListModel>();
+                //Lookup product details for each item
+                returnList.ForEach(delegate(ListModel listItem) {
+                    var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listItem.ListId));
+                    if (cachedList != null) {
+                        processedList.Add(cachedList);
+                        return;
+                    }
 
-				});
-				//Mark favorites and add notes
-				processedList.ForEach(delegate(ListModel listItem)
-				{
-					MarkFavoritesAndAddNotes(user, listItem, catalogInfo, activeCart);
-				});
+                    LookupProductDetails(user, listItem, catalogInfo);
+                    processedList.Add(listItem);
+                    listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", listItem.ListId), listItem);
 
-				return processedList;
-			}
-		}
+                });
+                //Mark favorites and add notes
+                processedList.ForEach(delegate(ListModel listItem) {
+                    MarkFavoritesAndAddNotes(user, listItem, catalogInfo, activeCart);
+                });
+
+                return processedList;
+            }
+        }
 		
         public void UpdateItem(ListItemModel item)
 		{

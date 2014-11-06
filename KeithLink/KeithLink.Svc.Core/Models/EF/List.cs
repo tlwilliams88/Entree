@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Models.EF
 		Recent,
 		Notes,
 		Worksheet,
+        ContractItemsAdded,
+        ContractItemsDeleted,
         Reminder
 	}
 

@@ -22,9 +22,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 			else
 				return this.Entities.Include(i => i.Items).Where(l => (l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId)) || (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)));
 		}
-
-
-
+        
 		public IEnumerable<List> ReadListForUser(Core.Models.Profile.UserProfile user, Core.Models.SiteCatalog.UserSelectedContext catalogInfo,  bool headerOnly)
 		{
 			if (headerOnly)

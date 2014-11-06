@@ -35,6 +35,7 @@ namespace KeithLink.Svc.Core.Extensions
                 CatalogName = branchId, 
                 Notes = cartItem.Notes, 
                 ProductId = cartItem.ItemNumber, 
+                DisplayName = cartItem.Name,
                 Quantity = cartItem.Quantity, 
                 Each = cartItem.Each,
                 CatchWeight = cartItem.CatchWeight

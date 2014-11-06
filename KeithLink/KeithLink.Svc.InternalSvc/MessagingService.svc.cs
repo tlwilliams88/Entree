@@ -8,6 +8,8 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.Messaging;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -22,6 +24,16 @@ namespace KeithLink.Svc.InternalSvc
 			this.messagingLogic = messagingLogic;
 		}
 
+
+        public void TestNotification()
+        {
+            // JUST SOME TESTS - TODO, move to appropriate location
+            string tmp = (new Impl.Repository.Queue.GenericQueueRepositoryImpl()).ConsumeFromQueue(Svc.Impl.Configuration.RabbitMQNotificationServer, Svc.Impl.Configuration.RabbitMQNotificationUserNameConsumer,
+                Svc.Impl.Configuration.RabbitMQNotificationUserPasswordConsumer, Svc.Impl.Configuration.RabbitMQVHostNotification, Svc.Impl.Configuration.RabbitMQQueueNotification);
+            Core.Models.Messaging.Queue.BaseNotification ocn2 = Svc.Core.Extensions.Messaging.NotificationExtension.Deserialize(tmp);
+            return;
+        }
+
         public bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint)
         {
             return messagingLogic.AddUserSubscription(notificationType, channel, userId, customerNumber, notificationEndpoint);
@@ -35,6 +47,11 @@ namespace KeithLink.Svc.InternalSvc
         public List<UserMessage> GetUserMessages(Guid userId)
         {
             throw new NotImplementedException();
+        }
+
+        public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
+        {
+            return messagingLogic.CreateUserMessage(userId, catalogInfo, userMessage);
         }
     }
 }
