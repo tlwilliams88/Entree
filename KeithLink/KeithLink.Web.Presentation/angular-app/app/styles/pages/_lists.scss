@@ -10,6 +10,8 @@
   padding-left: 0;
 }
 
+
+
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
   min-width: 105px;
@@ -110,6 +112,7 @@
 @media (max-width: $screen-sm-max) {
   .items {
     width: 100%;
+    padding-left: $gutter-size;
   }
   .custom-lists {
     position:absolute; 
