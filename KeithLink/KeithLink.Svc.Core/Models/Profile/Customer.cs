@@ -59,6 +59,9 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "accountId")]
         public Guid? AccountId { get; set; }
+
+		[DataMember(Name="lastorderupdate")]
+		public DateTime? LastOrderUpdate { get; set; }
     }
 
     public class CustomerAddUserModel

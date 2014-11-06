@@ -5,15 +5,24 @@ angular.module('bekApp')
     function ($scope, $stateParams, UserProfileService, LocalStorage, returnedProfile) {
       /*---convenience functions---*/
       var processProfile = function(newProfile){
-        //rename email field to correct response/request mismatch <---NEEDS ENDPOINT FIXES, TEMPORARY FIX
+        //rename email <----- NEEDS FIX ON RESPONSE TYPE
         newProfile.email = newProfile.emailaddress;
         delete newProfile.emailaddress;
+
+        //rename role <----- NEEDS FIX ON RESPONSE TYPE
+        newProfile.role = newProfile.rolename;
+        delete newProfile.rolename;
+
+        //rename customers <----- NEEDS FIX ON RESPONSE TYPE
+        newProfile.customers = newProfile.user_customers;
+        delete newProfile.user_customers;
+
         $scope.profile = newProfile;
 
         //if the user has customers assigned to them, go through the account customers and set matching
         //ones to true, otherwise set to false
-        if($scope.profile.user_customers){
-          $scope.profile.user_customers.forEach(function(profileCustomer){
+        if($scope.profile.customers){
+          $scope.profile.customers.forEach(function(profileCustomer){
             $scope.customers.forEach(function(accountCustomer){
               if(accountCustomer.customerId == profileCustomer.customerId){
                 accountCustomer.selected = true;
@@ -72,7 +81,7 @@ angular.module('bekApp')
         });
 
         //attaches only clean selected users to the profile object
-        $scope.profile.user_customers = cleanSelectedCustomers;
+        $scope.profile.customers = cleanSelectedCustomers;
 
         //pushes profile object to database
         UserProfileService.updateProfile($scope.profile).then(function(newProfile){
@@ -85,7 +94,7 @@ angular.module('bekApp')
 
       $scope.deleteProfile = function () {
         //wipe customers out of user profile
-        $scope.profile.user_customers = [];
+        $scope.profile.customers = [];
 
         //push freshly wiped profile to database
         UserProfileService.updateProfile($scope.profile).then(function(newProfile){
