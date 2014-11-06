@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
     <Compile Include="ETL\IInvoiceLogic.cs" />
@@ -134,21 +135,41 @@
     <Compile Include="Exceptions\Profile\NoApiKeyProvidedException.cs" />
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
+    <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
+    <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
+    <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
+    <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
+    <Compile Include="Models\Messaging\UserMessageModel.cs" />
+    <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
+    <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
+    <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
+    <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IBranchSupportRepository.cs" />
     <Compile Include="Extensions\Orders\OrderDetailExtension.cs" />
     <Compile Include="Extensions\Orders\OrderHeaderExtension.cs" />
     <Compile Include="Extensions\Orders\History\OrderHistoryDetailExtension.cs" />
     <Compile Include="Extensions\Orders\History\OrderHistoryHeaderExtension.cs" />
     <Compile Include="Extensions\Enumerations\OrderSourceExtension.cs" />
+    <Compile Include="Interface\Component\ITokenReplacer.cs" />
     <Compile Include="Interface\IBaseEFRepository.cs" />
     <Compile Include="Interface\Cart\IShoppingCartLogic.cs" />
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
+    <Compile Include="Interface\Messaging\ICustomerTopicRepository.cs" />
+    <Compile Include="Interface\Messaging\IInternalMessagingLogic.cs" />
+    <Compile Include="Interface\Messaging\IUserMessageRepository.cs" />
+    <Compile Include="Interface\Messaging\IUserTopicSubscriptionRepository.cs" />
+    <Compile Include="Interface\Email\IEmailClient.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\IImportLogic.cs" />
@@ -182,11 +203,14 @@
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileCacheRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
+    <Compile Include="Interface\SiteCatalog\IDivisionLogic.cs" />
+    <Compile Include="Interface\SiteCatalog\IInternalDivisionLogic.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogCacheRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICategoryImageRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
+    <Compile Include="Interface\SiteCatalog\IDivisionServiceRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />
@@ -198,11 +222,26 @@
       <DependentUpon>CommerceEntities.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Common\QueueReturn.cs" />
+    <Compile Include="Models\Configuration\EF\MessageTemplate.cs" />
+    <Compile Include="Models\Configuration\MessageTemplateModel.cs" />
+    <Compile Include="Models\Messaging\EF\UserMessagingPreference.cs" />
+    <Compile Include="Models\Messaging\Provider\Channel.cs" />
+    <Compile Include="Models\Messaging\Provider\Message.cs" />
+    <Compile Include="Models\Messaging\Provider\Recipient.cs" />
+    <Compile Include="Models\Messaging\Queue\BaseNotification.cs" />
+    <Compile Include="Models\Messaging\EF\CustomerTopic.cs" />
+    <Compile Include="Models\Messaging\EF\UserMessage.cs" />
+    <Compile Include="Models\Messaging\EF\UserTopicSubscription.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderChange.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderConfirmationNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderLineChange.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderUpdateNotification.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationDetail.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationFile.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationHeader.cs" />
     <Compile Include="Models\Orders\Confirmations\ConfirmationQueueLocation.cs" />
     <Compile Include="Models\EF\BaseEFModel.cs" />
+    <Compile Include="Models\EF\BranchSupport.cs" />
     <Compile Include="Models\EF\Invoice.cs" />
     <Compile Include="Models\EF\InvoiceItem.cs" />
     <Compile Include="Models\EF\List.cs" />
@@ -224,6 +263,7 @@
     <Compile Include="Models\Orders\OrderDetail.cs" />
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
+    <Compile Include="Models\Orders\OrderHistoryUpdateModel.cs" />
     <Compile Include="Models\Orders\OrderImportModel.cs" />
     <Compile Include="Models\Orders\OrderImportOptions.cs" />
     <Compile Include="Models\Profile\Account.cs" />
@@ -242,6 +282,7 @@
     <Compile Include="Models\SiteCatalog\BaseProductInfo.cs" />
     <Compile Include="Models\SiteCatalog\CategoryImage.cs" />
     <Compile Include="Models\SiteCatalog\CategoryImageReturn.cs" />
+    <Compile Include="Models\SiteCatalog\BranchSupportModel.cs" />
     <Compile Include="Models\SiteCatalog\Division.cs" />
     <Compile Include="Models\SiteCatalog\CategoriesReturn.cs" />
     <Compile Include="Models\Lists\NewItem.cs" />

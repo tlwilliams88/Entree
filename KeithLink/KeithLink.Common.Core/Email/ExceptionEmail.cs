@@ -66,7 +66,7 @@ namespace KeithLink.Common.Core.Email {
                 details.AppendLine(innerException.StackTrace);
                 details.AppendLine();
 
-                innerException = currentException.InnerException;
+                innerException = innerException.InnerException;
             }
 
             return details.ToString();

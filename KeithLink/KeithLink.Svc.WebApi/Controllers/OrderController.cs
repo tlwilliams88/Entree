@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Impl.Logic;
@@ -15,17 +16,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 	[Authorize]
     public class OrderController : BaseController {
         #region attributes
-        private readonly IShoppingCartLogic _shoppingCartLogic;
+        private readonly IOrderHistoryRequestLogic _historyRequestLogic;
 		private readonly IOrderLogic _orderLogic;
-        private IShipDateRepository _shipDayService;
+        private readonly IShipDateRepository _shipDayService;
+        private readonly IShoppingCartLogic _shoppingCartLogic;
+		private readonly IOrderServiceRepository _orderServiceRepository;
         #endregion
 
         #region ctor
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, 
-                               IUserProfileLogic profileLogic): base(profileLogic) {
-			_shoppingCartLogic = shoppingCartLogic;
+                               IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository): base(profileLogic) {
+            _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
+			_shoppingCartLogic = shoppingCartLogic;
+			this._orderServiceRepository = orderServiceRepository;
         }
         #endregion
 
@@ -49,6 +54,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
 		}
+
+        [HttpPost]
+        [ApiKeyedRoute("order/history")]
+        public void RequestOrderHistoryHeaders() {
+            _historyRequestLogic.RequestAllOrdersForCustomer(this.SelectedUserContext);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("order/history/{orderNumber}")]
+        public void RequestOrderHistory(string orderNumber) {
+            _historyRequestLogic.RequestOrderForCustomer(this.SelectedUserContext, orderNumber);
+        }
 
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
@@ -87,6 +104,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return _orderLogic.CancelOrder(this.AuthenticatedUser, this.SelectedUserContext, commerceId);
         }
+
+		[HttpGet]
+		[ApiKeyedRoute("order/lastupdate")]
+		public OrderHistoryUpdateModel LastUpdated()
+		{
+			return new OrderHistoryUpdateModel() { LastUpdated = _orderServiceRepository.ReadLatestUpdatedDate(this.SelectedUserContext) };
+		}
+
         #endregion
     }
 }

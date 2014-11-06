@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService', 'BrandService', 'OrderService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService, BrandService, OrderService) {
+    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'BrandService',
+        function($scope, $state, $stateParams, ProductService, CategoryService, BrandService) {
             // clear keyword search term at top of the page
             if ($scope.userBar) {
                 $scope.userBar.universalSearchTerm = '';
@@ -530,16 +530,5 @@ angular.module('bekApp')
                     return 'Non-Stock Item';
                 }
             }
-
-            // TODO: move into context menu controller
-            $scope.lists = ListService.lists;
-            ListService.getListHeaders();
-
-            $scope.carts = CartService.carts;
-            CartService.getCartHeaders();
-
-            OrderService.getChangeOrders().then(function(orders) {
-              $scope.changeOrders = orders;
-            });
         }
     ]);

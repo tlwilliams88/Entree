@@ -2,11 +2,13 @@
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Events.EventArgs;
 using CommerceServer.Core.Runtime.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using CommerceServer.Core;
 using System;
 using System.Collections.Generic;
@@ -23,6 +25,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region attributes
         private IEventLogRepository _log;
         private ISocketListenerRepository _socket;
+        private IGenericQueueRepository genericeQueueRepository;
         private Task queueListenerTask;
         private bool _keepQueueListening = true;
         private int queueListenerSleepTimeMs = 2000;
@@ -31,11 +34,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region constructor
-        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IQueueRepository confirmationQueue)
+        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository,
+            IQueueRepository confirmationQueue, IGenericQueueRepository internalMessagingLogic)
         {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             _confirmationQueue = confirmationQueue;
+            this.genericeQueueRepository = internalMessagingLogic;
 
             _socket.FileReceived            += SocketFileReceived;
             _socket.ClosedPort              += SocketPortClosed;
@@ -217,14 +222,30 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
                 else
                 {
-                    LineItem[] lineItems = new LineItem[po.LineItemCount];
-                    po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+                    // need to save away pre and post status info, then if different, add something to the messaging
+                    LineItem[] currLineItems = new LineItem[po.LineItemCount];
+                    LineItem[] origLineItems = new LineItem[po.LineItemCount];
+                    po.OrderForms[0].LineItems.CopyTo(currLineItems, 0);
+                    po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
+                    string originalStatus = po.Status;
 
-                    SetCsLineInfo(lineItems, confirmation);
+                    SetCsLineInfo(currLineItems, confirmation);
 
-                    SetCsHeaderInfo(confirmation, po, lineItems);
+                    SetCsHeaderInfo(confirmation, po, currLineItems);
 
                     po.Save();
+
+                    // use internal messaging logic to put order up message on the queue
+                    Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus);
+                    if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0)
+                    {
+                        Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+                        orderConfNotification.OrderChange = orderChange;
+                        orderConfNotification.CustomerNumber = (string)po["CustomerId"];
+                        genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer, 
+                            Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+                    }
                 }
             }
             catch (Exception ex)
@@ -233,6 +254,43 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 return false;
             }
             return true;
+        }
+
+        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, string originalStatus)
+        {
+            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            orderChange.OrderName = (string)po["DisplayName"];
+            orderChange.OriginalStatus = originalStatus;
+            orderChange.CurrentStatus = po.Status;
+            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+
+            foreach (LineItem origItem in origLineItems)
+            {
+                LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();
+                if (newItem != null)
+                {
+                    if (origItem["MainFrameStatus"] != newItem["MainFrameStatus"])
+                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = (string)newItem["MainFrameStatus"], OriginalStatus = (string)origItem["MainFrameStatus"], ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] });
+                }
+                else
+                {
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Removed", OriginalStatus = "", ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)origItem["QuantityOrdered"], QuantityShipped = (int)origItem["QuantityShipped"] }); // would we ever hit this?
+                }
+            }
+            foreach (LineItem newItem in currLineItems)
+            {
+                LineItem origItem = origLineItems.Where(o => o.ProductId == newItem.ProductId).FirstOrDefault();
+                if (origItem == null)
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Added", OriginalStatus = "", ItemNumber = newItem.ProductId, SubstitutedItemNumber = (string)newItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] }); // would we ever hit this?
+
+                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() { ItemNumber = (string)newItem.ProductId, 
+                    ItemDescription = newItem.DisplayName,
+                    SubstitutedItemNumber = newItem["SubstituteItemNumber"] == null ? string.Empty : (string)newItem["SubstituteItemNumber"], 
+                    QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"], 
+                    QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"] });
+            }
+            return orderChange;
         }
 
         private static PurchaseOrder GetCsPurchaseOrderByNumber(string poNum)

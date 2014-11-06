@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
@@ -20,6 +21,7 @@ using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
+using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
@@ -28,6 +30,7 @@ using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Queue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,6 +38,11 @@ using System.Web;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl.Repository.BranchSupports;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Core.Interface.Component;
+using KeithLink.Svc.Impl.Repository.Email;
 
 
 namespace KeithLink.Svc.InternalSvc
@@ -50,6 +58,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
 			builder.RegisterType<ListServcie>();
 			builder.RegisterType<InvoiceService>();
+			builder.RegisterType<DivisionService>();
+            builder.RegisterType<MessagingService>();
+
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
@@ -101,10 +112,28 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
+            builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
-			
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
+			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+			
+			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
+			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
+			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+
+			builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
 
             return builder.Build();
         }

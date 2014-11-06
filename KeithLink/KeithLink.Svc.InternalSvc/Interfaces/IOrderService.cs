@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.Orders.Confirmations;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	[ServiceContract]
 	public interface IOrderService
 	{
+		[OperationContract]
+		DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo);
 	}
 }

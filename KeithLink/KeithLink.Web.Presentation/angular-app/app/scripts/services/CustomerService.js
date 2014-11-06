@@ -16,9 +16,6 @@ angular.module('bekApp')
       getCustomers: function() {
 
         var params = {
-          params: {
-            customergroup: customergroup
-          }
         };
 
         var deferred = $q.defer();

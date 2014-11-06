@@ -55,7 +55,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
-        private const string KEY_MF_TRANSACTIONID = "MfTrans";
+        private const string KEY_MF_TRANS_ORDER = "MfTrans";
+        private const string KEY_MF_TRANS_HISTORY = "MfTransHistory";
 
         // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
@@ -64,19 +65,29 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION = "RabbitMQNotificationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
-        private const string KEY_RABBITMQ_ORDER_SERVER = "RabbitMQOrderServer";
-        private const string KEY_RABBITMQ_CONFIRMATION_SERVER = "RabbitMQConfirmationServer";
+        private const string KEY_RABBITMQ_QUEUE_NOTIFICATION = "RabbitMQNotificationQueue";
+        private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
+        private const string KEY_RABBITMQ_SERVER_ORDER = "RabbitMQOrderServer";
+        private const string KEY_RABBITMQ_SERVER_CONFIRMATION = "RabbitMQConfirmationServer";
+        private const string KEY_RABBITMQ_SERVER_NOTIFICATION = "RabbitMQNotificationServer";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHUSER = "RabbitMQOrderPublisherUserName";
+        private const string KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEPASS = "RabbitMQNotificationConsumerUserPassword";
+        private const string KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER = "RabbitMQNotificationConsumerUserName";
+        private const string KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS = "RabbitMQNotificationPublisherUserPassword";
+        private const string KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER = "RabbitMQNotificationPublisherUserName";
         private const string KEY_RABBITMQ_VHOST_CONFIRMATION = "RabbitMQConfirmationVHost";
+        private const string KEY_RABBITMQ_VHOST_NOTIFICATION = "RabbitMQNotificationVHost";
         private const string KEY_RABBITMQ_VHOST_ORDER = "RabbitMQOrderVHost";
 
         // Misc
@@ -88,6 +99,14 @@ namespace KeithLink.Svc.Impl
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
+
+		//Email
+		private const string KEY_SMTP_HOST_NAME = "SMTPHostName";
+		private const string KEY_SMTP_SEND_PORT = "SMTPSendPort";
+		private const string DEFAULT_SMTP_SEND_PORT = "25";
+		private const string KEY_SERVICE_EMAIL_ADDRESS = "ServiceEmailAddress";
+		private const string KEY_SMTP_USERNAME = "SMTPUsername";
+		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
 
         #endregion
@@ -365,11 +384,17 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string MainframeHistoryTransactionId {
+            get {
+                return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+            }
+        }
+
         public static string MainframeOrderTransactionId
         {
             get
             {
-                return GetValue(KEY_MF_TRANSACTIONID, string.Empty);
+                return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
             }
         }
 
@@ -436,9 +461,23 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeNotification
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION, string.Empty);
+            }
+        }
+
         public static string RabbitMQExchangeOrdersReprocess {
             get {
                 return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQExchangeOrderUpdateRequests {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST, string.Empty);
             }
         }
 
@@ -476,6 +515,19 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQQueueNotification
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
+            }
+        }
+        public static string RabbitMQQueueOrderUpdateRequest {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
+            }
+        }
+
         public static string RabbitMQUserNameConsumer {
             get {
                 return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);
@@ -504,20 +556,59 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQNotificationUserNameConsumer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQNotificationUserNamePublisher
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQNotificationUserPasswordConsumer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQNotificationUserPasswordPublisher
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS, string.Empty);
+            }
+        }
+
         public static string RabbitMQOrderServer
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_ORDER_SERVER, string.Empty);
+                return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
             }
         }
-
 
         public static string RabbitMQConfirmationServer
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_CONFIRMATION_SERVER, string.Empty);
+                return GetValue(KEY_RABBITMQ_SERVER_CONFIRMATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQNotificationServer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_SERVER_NOTIFICATION, string.Empty);
             }
         }
 
@@ -534,6 +625,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQVHostNotification
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_VHOST_NOTIFICATION, string.Empty);
             }
         }
 
@@ -563,6 +662,35 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseDouble(value, String.Empty);
             }
         }
+
+		public static string SMTPHostName
+		{
+			get { return GetValue(KEY_SMTP_HOST_NAME, null); }
+		}
+
+		public static int SMTPSendPort
+		{
+			get
+			{
+				string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
+				return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
+			}
+		}
+
+		public static string SMTPUsername
+		{
+			get { return GetValue(KEY_SMTP_USERNAME, null); }
+		}
+
+		public static string SMTPPassword
+		{
+			get { return GetValue(KEY_SMTP_PASSWORD, null); }
+		}
+
+		public static string ServiceEmailAddress
+		{
+			get { return GetValue(KEY_SERVICE_EMAIL_ADDRESS, null); }
+		}
 
         #endregion
     }

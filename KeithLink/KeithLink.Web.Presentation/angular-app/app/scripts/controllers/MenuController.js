@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
-    function ($scope, $state, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
+    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -62,6 +62,22 @@ angular.module('bekApp')
 
     $scope.print = function () {
       window.print(); 
+    };
+
+    $scope.openTechnicalSupportModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/technicalsupportmodal.html',
+        controller: 'TechnicalSupportModalController',
+        windowClass: 'color-background-modal',
+        resolve: {
+          branchId: function() {
+            return LocalStorage.getBranchId();
+          },
+          branches: function() {
+            return branches;
+          }
+        }
+      });
     };
 
     function refreshAccessPermissions() {
