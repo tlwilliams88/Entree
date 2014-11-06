@@ -22,5 +22,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
 
         public NotificationType NotificationType { get; set; }
         public DateTime? MessageReadUtc { get; set; }
+        public string Body { get; set; }
     }
 }

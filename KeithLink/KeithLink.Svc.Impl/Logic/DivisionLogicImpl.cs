@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var branchsupports = _divisionServiceRepository.ReadAllBranchSupports();
 			foreach (var division in divisions)
 			{
-				division.BranchSupport = branchsupports.Find(c => c.BranchId == division.Id);
+				division.BranchSupport = branchsupports.Find(c => c.BranchId.Equals(division.Id, StringComparison.InvariantCultureIgnoreCase));
 			}
 
 			return divisions;

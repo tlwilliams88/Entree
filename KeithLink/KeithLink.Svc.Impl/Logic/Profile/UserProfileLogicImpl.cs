@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Interface.Orders;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -19,17 +20,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IUserDomainRepository       _intAd;
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
+		private IOrderServiceRepository _orderServiceRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
+			_orderServiceRepository = orderServiceRepository;
         }
         #endregion
 
@@ -360,6 +363,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                  userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList();
             }
+
+			//Populate the Last order updated date for each customer
+			foreach (var customer in userCustomers)
+				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
+
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),

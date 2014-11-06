@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
     public class UserTopicSubscription : BaseEFModel
     {
         public Guid UserId { get; set; }
-        public Channel NotificationType { get; set; }
+        public Channel Channel { get; set; }
 
         [MaxLength(255)]
         [Column(TypeName = "varchar")]
