@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
         [DataMember(Name="itemchanges")]
         public List<OrderLineChange> ItemChanges { get; set; }
 
-        [DataMember(Name = "currOrderLines")]
+        [DataMember(Name = "items")]
         public List<OrderLineChange> Items { get; set; }
     }
 }

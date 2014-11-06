@@ -59,12 +59,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return true;
         }
 
-        public bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn)
+        public bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification)
         {
-            CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(ocn.CustomerNumber, NotificationType.OrderConfirmation);
+            CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(notification.CustomerNumber, NotificationType.OrderConfirmation);
             if (topic == null)
             {
-                eventLogRepository.WriteInformationLog("no topic found for customer: " + ocn.CustomerNumber + ", event type: " + NotificationType.OrderConfirmation.ToString());
+                topic = CreateTopic(notification.NotificationType, notification.CustomerNumber);
+                eventLogRepository.WriteInformationLog("no topic found for customer: " + notification.CustomerNumber + ", event type: " + notification.NotificationType.ToString());
                 return true;
             }
 
@@ -73,14 +74,50 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     new Amazon.Runtime.BasicAWSCredentials("AKIAJ42DMK24ZMO56MYQ", "TwrfjLm5y1G4xcUvYMAgn+/+kXDuyNUZIRD7qvA0"), // TODO: Config
                     Amazon.RegionEndpoint.USEast1);
             
+            string msg = GetMessageForNotification(notification);
+            string subject = GetMessageSubjectForNotification(notification);
             client.Publish(
                 new AmazonSNS.Model.PublishRequest(topic.ProviderTopicId, // topic arn
-                    "received order confirmation for " + ocn.CustomerNumber + ", order: " + ocn.OrderChange.OrderName, // topic message
-                    "BEK: Order Confirmation for " + ocn.CustomerNumber // topic subject
+                    msg, // message
+                    subject // subject
                     )
                 );
 
             return true;
+        }
+
+        private string GetMessageSubjectForNotification(BaseNotification notification)
+        {
+            if (notification.NotificationType == NotificationType.OrderConfirmation)
+            {
+                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
+                return "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + ocn.OrderChange.OrderName + ")";
+            }
+            return "unknown message type";
+        }
+
+        private string GetMessageForNotification(BaseNotification notification)
+        {
+            if (notification.NotificationType == NotificationType.OrderConfirmation)
+            {
+                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
+                string statusString = String.IsNullOrEmpty(ocn.OrderChange.OriginalStatus)
+                    ? "Order confirmed with status: " + ocn.OrderChange.CurrentStatus
+                    : "Order updated from status: " + ocn.OrderChange.OriginalStatus + " to " + ocn.OrderChange.CurrentStatus;
+
+                string orderLineChanges = string.Empty;
+                foreach (var line in ocn.OrderChange.ItemChanges)
+                    orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
+                        (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
+                        "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus) 
+                                                            ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
+
+                string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
+                foreach (var line in ocn.OrderChange.Items)
+                    originalOrderInfo += line.ItemNumber + ", " + line.ItemDescription + " (" + line.QuantityOrdered + ")" + System.Environment.NewLine;
+                return statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
+            }
+            return "unknown message type";
         }
 
         private void CreateSubscriptionToTopic(Channel channel, string notificationEndpoint, CustomerTopic topic, Guid userId)
@@ -164,15 +201,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
             while (doListenForMessagesInTask)
             {
-                string msg = ConsumeMessageFromQueue();
-                if (msg != null)
+                try
                 {
-                    BaseNotification notification = NotificationExtension.Deserialize(msg);
-                    if (notification.NotificationType == NotificationType.OrderConfirmation)
+                    System.Threading.Thread.Sleep(2000);
+                    string msg = ConsumeMessageFromQueue();
+                    if (msg != null)
                     {
-                        OrderConfirmationNotification orderConfNotify = (OrderConfirmationNotification)notification;
-                        SendMessage(orderConfNotify);
+                        BaseNotification notification = NotificationExtension.Deserialize(msg);
+                        if (notification.NotificationType == NotificationType.OrderConfirmation)
+                        {
+                            OrderConfirmationNotification orderConfNotify = (OrderConfirmationNotification)notification;
+                            SendMessage(orderConfNotify);
+                        }
                     }
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
                 }
             }
         }
