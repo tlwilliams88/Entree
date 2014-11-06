@@ -20,15 +20,17 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private readonly IOrderLogic _orderLogic;
         private readonly IShipDateRepository _shipDayService;
         private readonly IShoppingCartLogic _shoppingCartLogic;
+		private readonly IOrderServiceRepository _orderServiceRepository;
         #endregion
 
         #region ctor
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, 
-                               IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic): base(profileLogic) {
+                               IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository): base(profileLogic) {
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
 			_shoppingCartLogic = shoppingCartLogic;
+			this._orderServiceRepository = orderServiceRepository;
         }
         #endregion
 
@@ -102,6 +104,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return _orderLogic.CancelOrder(this.AuthenticatedUser, this.SelectedUserContext, commerceId);
         }
+
+		[HttpGet]
+		[ApiKeyedRoute("order/lastupdate")]
+		public OrderHistoryUpdateModel LastUpdated()
+		{
+			return new OrderHistoryUpdateModel() { LastUpdated = _orderServiceRepository.ReadLatestUpdatedDate(this.SelectedUserContext) };
+		}
+
         #endregion
     }
 }

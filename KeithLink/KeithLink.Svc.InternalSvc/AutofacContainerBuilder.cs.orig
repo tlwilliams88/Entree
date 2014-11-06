@@ -30,6 +30,7 @@ using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Queue;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -57,11 +58,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
 			builder.RegisterType<ListServcie>();
 			builder.RegisterType<InvoiceService>();
-<<<<<<< HEAD
 			builder.RegisterType<DivisionService>();
-=======
             builder.RegisterType<MessagingService>();
->>>>>>> dfe16722a16681d5a0fbeb9a790d40970000d88b
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -116,16 +114,30 @@ namespace KeithLink.Svc.InternalSvc
 
             builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+			
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
-			builder.RegisterType<EmailTemplateLogicImpl>().As<IEmailTemplateLogic>();
+			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-			builder.RegisterType<EmailTemplateRepositoryImpl>().As<IEmailTemplateRepository>();
+			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+<<<<<<< HEAD
+
+			builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+
+=======
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+>>>>>>> f2eca6ebeb8f8c0b73f76828763e56538125edfb
             return builder.Build();
         }
 

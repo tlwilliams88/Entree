@@ -4,12 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 
 namespace KeithLink.Svc.Core.Models.Messaging.Queue
 {
-    public abstract class BaseNotification
+    [DataContract]
+    public class BaseNotification
     {
+        [DataMember(Name="customernumber")]
         public string CustomerNumber { get; set; }
-        public abstract NotificationType NotificationType { get; }
+
+        [DataMember(Name = "notificationtype")]
+        public NotificationType NotificationType { get; set; }
     }
 }
