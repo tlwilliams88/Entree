@@ -1,14 +1,17 @@
-<div page-header-bar>
-  <div header-message>
-    Admin
-  </div>
-  <div header-buttons>
+<div ui-view>
+  <div page-header-bar>
+    <div header-message>
+      Admin
+    </div>
+    <div header-buttons>
 
+    </div>
   </div>
-</div>
-<div class="row" ui-view>
   <div class="col-md-12 page-subheader-bar__container">
-    <a ui-sref="menu.admin.edituser({email: emailAddress})">Edit User</a>
     <input type="email" ng-model="emailAddress" placeholder="enter email address">
+    <a ui-sref="menu.admin.edituser({email: emailAddress})">Edit User</a>
+    <hr>
+    <input type="text" ng-model="customerNumber" placeholder="enter customer number">
+    <a ui-sref="menu.admin.customer({customerNumber: customerNumber})">Go to Customer Profile</a>
   </div>
 </div>

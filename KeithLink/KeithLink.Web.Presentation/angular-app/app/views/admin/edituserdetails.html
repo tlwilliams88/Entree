@@ -1,3 +1,11 @@
+<div page-header-bar>
+  <div header-message>
+    User Profile Update
+  </div>
+  <div header-buttons>
+
+  </div>
+</div>
 <div class="col-xs-12">
   <form action="" class="form-horizontal">
     <h2>Viewing profile for:</h2>
@@ -61,7 +69,7 @@
             </tr>
             <tr ng-repeat="customer in customers | filter:filterFields | orderBy:sortBy:sortOrder" ng-class="{ odd : $odd, even: $even }">
               <td><input type="checkbox" ng-model="customer.selected"/></td>
-              <td><a class="btn-link" href="">{{customer.customerNumber}}</a></td>
+              <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">{{customer.customerNumber}}</a></td>
               <td>{{customer.customerName}}</td>
               <td>{{customer.nationalOrRegionalAccountNumber}}</td>
               <td></td>
