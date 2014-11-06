@@ -151,7 +151,7 @@
     </tr> <!-- end Filter Row -->
 
     <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
-      <td>
+      <td ng-class="{ 'red-border': item.substituteditemnumber }">
         <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
       </td>
       <td class="hidden-xs hidden-sm notes-col">{{item.notes}}</td>
