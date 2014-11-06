@@ -12,9 +12,9 @@ namespace KeithLink.Svc.Core.Models.EF
 		Favorite,
 		Contract,
 		Recent,
-        Reminder,
 		Notes,
-		Worksheet
+		Worksheet,
+        Reminder
 	}
 
 	public class List: BaseEFModel
