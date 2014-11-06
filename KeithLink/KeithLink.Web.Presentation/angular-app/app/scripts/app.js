@@ -360,14 +360,9 @@ angular
       }
     })
     .state('menu.admin.customer', {
-      url: 'customers/',
+      url: 'customers/:customerNumber/',
       templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
-      resolve: {
-        customers: [ 'CustomerService', function(CustomerService) {
-          return CustomerService.getCustomers();
-        }]
-      }
+      controller: 'CustomersController'
     })
     .state('menu.admin.account', {
       url: 'accounts/',

@@ -16,7 +16,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         bool UpdateElasticSearch();
         [OperationContract]
-        bool ImportCatalogLists();
+        bool ImportPrePopulatedLists();
         [OperationContract]
         bool UpdateCustomerOrganizations();
 		[OperationContract]
