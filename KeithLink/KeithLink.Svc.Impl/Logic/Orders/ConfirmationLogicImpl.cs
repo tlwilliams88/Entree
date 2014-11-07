@@ -140,8 +140,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <param name="location"></param>
         public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
             string serializedConfirmation = SerializeConfirmation( file );
-            genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
-                Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+            genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher,
+                Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeConfirmation);
         }
 
         /// <summary>
@@ -149,8 +149,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
+            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
+                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation);
             if (fileFromQueue == null)
                 return null; // a null return indicates no message on queue
             else if (String.IsNullOrEmpty(fileFromQueue))
