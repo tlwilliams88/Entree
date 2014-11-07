@@ -18,8 +18,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         List<UserMessage> GetUserMessages(Guid userId);
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
         List<UserMessageModel> ReadUserMessages(UserProfile user);
+        bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification);
         void UpdateUserMessages(List<UserMessageModel> userMessages);
-        bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn);
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 

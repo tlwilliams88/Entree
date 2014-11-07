@@ -14,5 +14,7 @@ namespace KeithLink.Svc.Core.Interface.Orders {
         OrderHistoryFile GetOrderHistory(string branchId, string customerNumber, string invoiceNumber);
 
         void SaveOrderHistoryFile(OrderHistoryFile file);
+
+		
     }
 }

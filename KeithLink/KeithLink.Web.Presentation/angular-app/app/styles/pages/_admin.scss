@@ -18,3 +18,33 @@
 .filterInputLeft .no-margin {
   margin: 0;
 }
+
+.preferencesTable {
+
+}
+
+.preferencesTable th {
+  padding: 5px 7px;
+}
+
+.preferencesTable td {
+  padding: 7px 7px;
+}
+
+.preferencesTable td.checkboxCenter {
+  text-align: center;
+}
+
+.smallerHeaderLinkText {
+  font-size: 16px;
+}
+
+.infiniteScroll {
+  @include scroll-div-vertical(201px);
+}
+
+.inlineOverride {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}

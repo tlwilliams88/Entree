@@ -1,0 +1,4 @@
+@mixin scroll-div-vertical($height) {
+  max-height: $height;
+  overflow-y: auto;
+}

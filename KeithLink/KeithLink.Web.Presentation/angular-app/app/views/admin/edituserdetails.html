@@ -1,3 +1,11 @@
+<div page-header-bar>
+  <div header-message>
+    Update User Profile
+  </div>
+  <div header-buttons>
+
+  </div>
+</div>
 <div class="col-xs-12">
   <form action="" class="form-horizontal">
     <h2>Viewing profile for:</h2>
@@ -12,12 +20,12 @@
           <label for="userRole" class="control-label">User Role</label>
         </div>
         <div class="col-md-8">
-          <select id="userRole" ng-options="role as role for role in roles" class="text-capitalize form-control" ng-model="profile.rolename" required></select>
+          <select id="userRole" ng-options="role as role for role in roles" class="text-capitalize form-control" ng-model="profile.role" required></select>
         </div>
       </div>
     </div>
     <hr>
-    <h2>Select items for the user</h2>
+    <h2>Assign Customers to the user:</h2>
     <div class="row top-buffer">
       <div class="col-md-8">
         <table class="table no-margin table-border table-striped-rows">
@@ -33,8 +41,8 @@
               <th class="sort-col-header" ng-click="sortBy='customerName';sortOrder=!sortOrder;">Customer Name
                 <span sort-icons field="'customerName'" sortorder="sortOrder" sortby="sortBy"></span>
               </th>
-              <th class="sort-col-header" ng-click="sortBy='accountNumber';sortOrder=!sortOrder;">Account Number
-                <span sort-icons field="'accountNumber'" sortorder="sortOrder" sortby="sortBy"></span>
+              <th class="sort-col-header" ng-click="sortBy='nationalOrRegionalAccountNumber';sortOrder=!sortOrder;">Account Number
+                <span sort-icons field="'nationalOrRegionalAccountNumber'" sortorder="sortOrder" sortby="sortBy"></span>
               </th>
               <th>
                 <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
@@ -56,12 +64,12 @@
                 <input type="text" placeholder="Filter..." ng-model="filterFields.nationalOrRegionalAccountNumber">
               </td>
               <td class="large-icon icon-col">
-                <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+                <a ng-click="filterFields = {};tempSelected = false;"><span class="text-light icon-cross3"></span></a>
               </td>
             </tr>
             <tr ng-repeat="customer in customers | filter:filterFields | orderBy:sortBy:sortOrder" ng-class="{ odd : $odd, even: $even }">
               <td><input type="checkbox" ng-model="customer.selected"/></td>
-              <td><a class="btn-link" href="">{{customer.customerNumber}}</a></td>
+              <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">{{customer.customerNumber}}</a></td>
               <td>{{customer.customerName}}</td>
               <td>{{customer.nationalOrRegionalAccountNumber}}</td>
               <td></td>
@@ -70,6 +78,10 @@
           <tfoot ng-show="customers.length === 0">
             <tr>
               <td>There are no customers to display.</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tfoot>
         </table>
@@ -80,7 +92,7 @@
         <div class="form-group button-row">
           <div class="col-sm-6">
             <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
-            <a ui-sref="menu.admin">Cancel</a>
+            <a ui-sref="menu.accountdetails">Cancel</a>
           </div>
         </div>
       </div>

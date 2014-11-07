@@ -182,6 +182,7 @@
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
@@ -324,25 +325,17 @@
     <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.Designer.cs">
       <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.cs" />
-    <Compile Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.Designer.cs">
-      <DependentUpon>201411062201202_fields added to usermessage.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.cs" />
+    <Compile Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.Designer.cs">
+      <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.cs" />
-    <Compile Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.Designer.cs">
-      <DependentUpon>201411062210498_removed duplicated createdutc field.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201411072118453_Message changes.cs" />
+    <Compile Include="Repository\EF\Migrations\201411072118453_Message changes.Designer.cs">
+      <DependentUpon>201411072118453_Message changes.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201411062215410_update field name usermessage.cs" />
-    <Compile Include="Repository\EF\Migrations\201411062215410_update field name usermessage.Designer.cs">
-      <DependentUpon>201411062215410_update field name usermessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.cs" />
-    <Compile Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.Designer.cs">
-      <DependentUpon>201411070643328_changed userid to guid usermessage.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.cs" />
-    <Compile Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.Designer.cs">
-      <DependentUpon>201411070715020_add ordernumber on usermessage.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201411072131044_added usermessage label.cs" />
+    <Compile Include="Repository\EF\Migrations\201411072131044_added usermessage label.Designer.cs">
+      <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -397,6 +390,7 @@
     <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
@@ -469,7 +463,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
+    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs" />
+    <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -514,6 +509,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -652,7 +648,21 @@
     <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd" />
+    <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
+    <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService31.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
@@ -701,6 +711,7 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
   </ItemGroup>
@@ -865,20 +876,14 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.resx">
       <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.resx">
-      <DependentUpon>201411062201202_fields added to usermessage.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.resx">
+      <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.resx">
-      <DependentUpon>201411062210498_removed duplicated createdutc field.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411072118453_Message changes.resx">
+      <DependentUpon>201411072118453_Message changes.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201411062215410_update field name usermessage.resx">
-      <DependentUpon>201411062215410_update field name usermessage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.resx">
-      <DependentUpon>201411070643328_changed userid to guid usermessage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.resx">
-      <DependentUpon>201411070715020_add ordernumber on usermessage.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411072131044_added usermessage label.resx">
+      <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -921,7 +926,17 @@
     <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
+    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap" />
+    <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

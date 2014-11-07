@@ -7,13 +7,13 @@ namespace KeithLink.Svc.Impl.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class updatefieldnameusermessage : IMigrationMetadata
+    public sealed partial class Add_Channel_To_User_Subscription : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(updatefieldnameusermessage));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Add_Channel_To_User_Subscription));
         
         string IMigrationMetadata.Id
         {
-            get { return "201411062215410_update field name usermessage"; }
+            get { return "201411052321101_Add_Channel_To_User_Subscription"; }
         }
         
         string IMigrationMetadata.Source

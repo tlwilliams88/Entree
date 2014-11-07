@@ -4,8 +4,8 @@ angular.module('bekApp')
 .directive('favoriteItemClickHandlers', [function(){
   return {
     restrict: 'A',
-    replace : true,
-    scope: true,
+    // replace : true,
+    // scope: true,
     controller: ['$scope', 'ListService', function($scope, ListService){
 
       var processingAddItem = false;

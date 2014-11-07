@@ -7,13 +7,13 @@ namespace KeithLink.Svc.Impl.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class changeduseridtoguidusermessage : IMigrationMetadata
+    public sealed partial class addedusermessagelabel : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(changeduseridtoguidusermessage));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(addedusermessagelabel));
         
         string IMigrationMetadata.Id
         {
-            get { return "201411070643328_changed userid to guid usermessage"; }
+            get { return "201411072131044_added usermessage label"; }
         }
         
         string IMigrationMetadata.Source

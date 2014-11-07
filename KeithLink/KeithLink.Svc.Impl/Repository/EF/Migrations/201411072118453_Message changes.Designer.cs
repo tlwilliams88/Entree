@@ -7,13 +7,13 @@ namespace KeithLink.Svc.Impl.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.1-30610")]
-    public sealed partial class removedduplicatedcreatedutcfield : IMigrationMetadata
+    public sealed partial class Messagechanges : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(removedduplicatedcreatedutcfield));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(Messagechanges));
         
         string IMigrationMetadata.Id
         {
-            get { return "201411062210498_removed duplicated createdutc field"; }
+            get { return "201411072118453_Message changes"; }
         }
         
         string IMigrationMetadata.Source

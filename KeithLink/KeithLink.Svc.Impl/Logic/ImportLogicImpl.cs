@@ -78,7 +78,8 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			var returnModel = new OrderImportModel();
 
-			var newCart = new ShoppingCart { Name = string.Format("Imported Order - {0}", DateTime.Now.ToString("g")), 
+			var newCart = new ShoppingCart { 
+                Name = string.Format("Imported Order - {0}", DateTime.Now.ToString("g")), 
 				BranchId = catalogInfo.BranchId };
 
 			var items = new List<ShoppingCartItem>();
@@ -87,11 +88,26 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				case FileFormat.CSV:
 					var rows = fileContents.Split('\n');
-					items = rows.Skip(options.IgnoreFirstLine ? 1 : 0).Select(i => i.Split(',')).Where(f => f[0] == "y").Select(l => new ShoppingCartItem() { ItemNumber = DetermineItemNumber(l, options), Quantity = DetermineQuantity(l, options) }).Where(x => !string.IsNullOrEmpty(x.ItemNumber)).ToList();
+					items = rows
+                        .Skip(options.IgnoreFirstLine ? 1 : 0)
+                        .Select(i => i.Split(','))
+                        .Where(f => f[0] == "y")
+                        .Select(l => new ShoppingCartItem() { 
+                            ItemNumber = DetermineItemNumber(l, options), 
+                            Quantity = DetermineQuantity(l, options) })
+                        .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
+                        .ToList();
 					break;
 				case FileFormat.Tab:
 					var tabrows = fileContents.Split('\n');
-					items = tabrows.Skip(options.IgnoreFirstLine ? 1 : 0).Select(i => i.Split((char)9)).Select(l => new ShoppingCartItem() { ItemNumber = DetermineItemNumber(l, options), Quantity = DetermineQuantity(l, options) }).Where(x => !string.IsNullOrEmpty(x.ItemNumber)).ToList();
+					items = tabrows
+                        .Skip(options.IgnoreFirstLine ? 1 : 0)
+                        .Select(i => i.Split((char)9))
+                        .Select(l => new ShoppingCartItem() { 
+                            ItemNumber = DetermineItemNumber(l, options), 
+                            Quantity = DetermineQuantity(l, options) })
+                        .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
+                        .ToList();
 					break;
 				case FileFormat.Excel:
 					break;

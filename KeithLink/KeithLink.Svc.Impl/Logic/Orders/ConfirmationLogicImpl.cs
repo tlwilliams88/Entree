@@ -30,16 +30,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private bool _keepQueueListening = true;
         private int queueListenerSleepTimeMs = 2000;
 
-        private IQueueRepository _confirmationQueue;
         #endregion
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository,
-            IQueueRepository confirmationQueue, IGenericQueueRepository internalMessagingLogic)
+            IGenericQueueRepository internalMessagingLogic)
         {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
-            _confirmationQueue = confirmationQueue;
             this.genericeQueueRepository = internalMessagingLogic;
 
             _socket.FileReceived            += SocketFileReceived;
@@ -142,8 +140,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <param name="location"></param>
         public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
             string serializedConfirmation = SerializeConfirmation( file );
-
-            _confirmationQueue.PublishToQueue(serializedConfirmation);
+            genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher,
+                Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeConfirmation);
         }
 
         /// <summary>
@@ -151,7 +149,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            string fileFromQueue = _confirmationQueue.ConsumeFromQueue();
+            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer,
+                Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueConfirmation);
             if (fileFromQueue == null)
                 return null; // a null return indicates no message on queue
             else if (String.IsNullOrEmpty(fileFromQueue))
@@ -241,6 +240,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     {
                         Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
                         orderConfNotification.OrderChange = orderChange;
+                        orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                         genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer, 
                             Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
                             Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
@@ -258,7 +258,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, string originalStatus)
         {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
-            orderChange.OrderName = originalStatus;
+            orderChange.OrderName = (string)po["DisplayName"];
+            orderChange.OriginalStatus = originalStatus;
             orderChange.CurrentStatus = po.Status;
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
@@ -269,19 +270,24 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (newItem != null)
                 {
                     if (origItem["MainFrameStatus"] != newItem["MainFrameStatus"])
-                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = (string)newItem["MainFrameStatus"], OriginalStatus = (string)origItem["MainFrameStatus"], OriginalItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] });
+                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = (string)newItem["MainFrameStatus"], OriginalStatus = (string)origItem["MainFrameStatus"], ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] });
                 }
                 else
                 {
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Removed", OriginalStatus = "", OriginalItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)origItem["QuantityOrdered"], QuantityShipped = (int)origItem["QuantityShipped"] }); // would we ever hit this?
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Removed", OriginalStatus = "", ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstituteItemNumber"], QuantityOrdered = (int)origItem["QuantityOrdered"], QuantityShipped = (int)origItem["QuantityShipped"] }); // would we ever hit this?
                 }
             }
             foreach (LineItem newItem in currLineItems)
             {
                 LineItem origItem = origLineItems.Where(o => o.ProductId == newItem.ProductId).FirstOrDefault();
                 if (origItem == null)
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Added", OriginalStatus = "", OriginalItemNumber = newItem.ProductId, SubstitutedItemNumber = (string)newItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] }); // would we ever hit this?
-                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() { OriginalItemNumber = (string)newItem.ProductId, SubstitutedItemNumber = (string)newItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] });
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Added", OriginalStatus = "", ItemNumber = newItem.ProductId, SubstitutedItemNumber = (string)newItem["SubstituteItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] }); // would we ever hit this?
+
+                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() { ItemNumber = (string)newItem.ProductId, 
+                    ItemDescription = newItem.DisplayName,
+                    SubstitutedItemNumber = newItem["SubstituteItemNumber"] == null ? string.Empty : (string)newItem["SubstituteItemNumber"], 
+                    QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"], 
+                    QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"] });
             }
             return orderChange;
         }

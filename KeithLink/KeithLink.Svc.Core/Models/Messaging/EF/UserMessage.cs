@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
 
         public Guid UserId { get; set; }
 
-        public string OrderNumber { get; set; }
+        public string Label { get; set; }
 
         public NotificationType NotificationType { get; set; }
         public DateTime? MessageReadUtc { get; set; }

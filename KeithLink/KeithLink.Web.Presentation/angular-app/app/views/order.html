@@ -1,8 +1,10 @@
 <div page-header-bar>
   <div header-message>
-    Order History
+    Order History 
+    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg btn btn-lg btn-success pull-right">Get Latest Updates</button>
   </div>
   <div header-buttons>
+    <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>

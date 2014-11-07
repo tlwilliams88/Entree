@@ -13,6 +13,7 @@ namespace KeithLink.Svc.Core.Models.Lists
     {
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
+
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -30,6 +31,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "isworksheet")]
 		public bool IsWorksheet { get; set; }
+
+        [DataMember(Name = "isreminder")]
+        public bool IsReminder { get; set; }
 
         public string BranchId { get; set; }
 		

@@ -19,8 +19,8 @@ namespace KeithLink.Svc.Core.Models.Messaging
         public Guid UserId { get; set; }
         [DataMember(Name = "customernumber")]
         public string CustomerNumber { get; set; }
-        [DataMember(Name = "ordernumber")]
-        public string OrderNumber { get; set; }
+        [DataMember(Name = "label")]
+        public string Label { get; set; }
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
         [DataMember(Name = "messagereadutc")]

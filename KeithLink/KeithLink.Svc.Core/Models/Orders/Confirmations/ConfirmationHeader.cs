@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
         public string InvoiceNumber { get; set; }
 
         [DataMember(Name = "ShipDate")]
-        public DateTime ShipDate { get; set; }
+        public DateTime? ShipDate { get; set; }
 
         [DataMember(Name = "RouteNumber")]
         public string RouteNumber { get; set; }

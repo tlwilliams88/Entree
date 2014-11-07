@@ -93,10 +93,12 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+			builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
             builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.MessagingService.MessagingServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.MessagingService.IMessagingService>();
+			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
 
 
             // Build the container.

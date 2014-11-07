@@ -8,6 +8,9 @@
       <xs:enumeration value="Recent" />
       <xs:enumeration value="Notes" />
       <xs:enumeration value="Worksheet" />
+      <xs:enumeration value="ContractItemsAdded" />
+      <xs:enumeration value="ContractItemsDeleted" />
+      <xs:enumeration value="Reminder" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ListType" nillable="true" type="tns:ListType" />

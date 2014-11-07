@@ -4,7 +4,7 @@ angular.module('bekApp')
 .directive('contextMenu', [ function(){
   return {
     restrict: 'A',
-    scope: true,
+    // scope: true,
     controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService',
     function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService){
 

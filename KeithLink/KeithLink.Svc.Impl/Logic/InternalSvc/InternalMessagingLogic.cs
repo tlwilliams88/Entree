@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
@@ -27,6 +28,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
         private Task listenForQueueMessagesTask;
+        private bool doListenForMessagesInTask = true;
 
         public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
             IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
@@ -57,12 +59,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return true;
         }
 
-        public bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn)
+        public bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification)
         {
-            CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(ocn.CustomerNumber, NotificationType.OrderConfirmation);
+            CustomerTopic topic = customerTopicRepository.ReadTopicForCustomerAndType(notification.CustomerNumber, NotificationType.OrderConfirmation);
             if (topic == null)
             {
-                eventLogRepository.WriteInformationLog("no topic found for customer: " + ocn.CustomerNumber + ", event type: " + NotificationType.OrderConfirmation.ToString());
+                topic = CreateTopic(notification.NotificationType, notification.CustomerNumber);
+                eventLogRepository.WriteInformationLog("no topic found for customer: " + notification.CustomerNumber + ", event type: " + notification.NotificationType.ToString());
                 return true;
             }
 
@@ -71,14 +74,50 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     new Amazon.Runtime.BasicAWSCredentials("AKIAJ42DMK24ZMO56MYQ", "TwrfjLm5y1G4xcUvYMAgn+/+kXDuyNUZIRD7qvA0"), // TODO: Config
                     Amazon.RegionEndpoint.USEast1);
             
+            string msg = GetMessageForNotification(notification);
+            string subject = GetMessageSubjectForNotification(notification);
             client.Publish(
                 new AmazonSNS.Model.PublishRequest(topic.ProviderTopicId, // topic arn
-                    "received order confirmation for " + ocn.CustomerNumber + ", order: " + ocn.OrderChange.OrderName, // topic message
-                    "BEK: Order Confirmation for " + ocn.CustomerNumber // topic subject
+                    msg, // message
+                    subject // subject
                     )
                 );
 
             return true;
+        }
+
+        private string GetMessageSubjectForNotification(BaseNotification notification)
+        {
+            if (notification.NotificationType == NotificationType.OrderConfirmation)
+            {
+                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
+                return "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + ocn.OrderChange.OrderName + ")";
+            }
+            return "unknown message type";
+        }
+
+        private string GetMessageForNotification(BaseNotification notification)
+        {
+            if (notification.NotificationType == NotificationType.OrderConfirmation)
+            {
+                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
+                string statusString = String.IsNullOrEmpty(ocn.OrderChange.OriginalStatus)
+                    ? "Order confirmed with status: " + ocn.OrderChange.CurrentStatus
+                    : "Order updated from status: " + ocn.OrderChange.OriginalStatus + " to " + ocn.OrderChange.CurrentStatus;
+
+                string orderLineChanges = string.Empty;
+                foreach (var line in ocn.OrderChange.ItemChanges)
+                    orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
+                        (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
+                        "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus) 
+                                                            ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
+
+                string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
+                foreach (var line in ocn.OrderChange.Items)
+                    originalOrderInfo += line.ItemNumber + ", " + line.ItemDescription + " (" + line.QuantityOrdered + ")" + System.Environment.NewLine;
+                return statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
+            }
+            return "unknown message type";
         }
 
         private void CreateSubscriptionToTopic(Channel channel, string notificationEndpoint, CustomerTopic topic, Guid userId)
@@ -145,19 +184,51 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public void PublishMessageToQueue()
         {
         }
-        public void ConsumeMessageFromQueue()
+
+        public string ConsumeMessageFromQueue()
         {
+            return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
         }
 
 
         public void ListenForNotificationMessagesOnQueue()
         {
-            //listenForQueueMessagesTask = Task.Factory.StartNew(() => );
+           listenForQueueMessagesTask = Task.Factory.StartNew(() => ListenToQueueInTask());
+        }
+
+        protected void ListenToQueueInTask()
+        {
+            while (doListenForMessagesInTask)
+            {
+                try
+                {
+                    System.Threading.Thread.Sleep(2000);
+                    string msg = ConsumeMessageFromQueue();
+                    if (msg != null)
+                    {
+                        BaseNotification notification = NotificationExtension.Deserialize(msg);
+                        if (notification.NotificationType == NotificationType.OrderConfirmation)
+                        {
+                            OrderConfirmationNotification orderConfNotify = (OrderConfirmationNotification)notification;
+                            SendMessage(orderConfNotify);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
+                }
+            }
         }
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            if (listenForQueueMessagesTask != null && doListenForMessagesInTask == true)
+            {
+                doListenForMessagesInTask = false;
+                listenForQueueMessagesTask.Wait();
+            }
         }
 
         public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)

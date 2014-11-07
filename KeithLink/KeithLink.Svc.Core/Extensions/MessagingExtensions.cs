@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Core.Extensions
                  NotificationType = userMessage.NotificationType,
                  Subject = userMessage.Subject,
                  Mandatory = userMessage.Mandatory,
-                 OrderNumber = userMessage.OrderNumber
+                 Label = userMessage.Label
             };
         }
 
@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Core.Extensions
                 MessageCreatedUtc = userMessage.CreatedUtc,
                 UserId = userMessage.UserId,
                 Id = userMessage.Id,
-                OrderNumber = userMessage.OrderNumber
+                Label = userMessage.Label
             };
         }
 

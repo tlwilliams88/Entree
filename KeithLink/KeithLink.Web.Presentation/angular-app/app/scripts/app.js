@@ -53,10 +53,10 @@ angular
       controller: 'MenuController',
       resolve: {
         branches: ['BranchService', function(BranchService) {
-          return [];//BranchService.getBranches();
+          return BranchService.getBranches();
         }],
         shipDates: ['CartService', function(CartService) {
-          return [];//CartService.getShipDates();
+          return CartService.getShipDates();
         }]
       }
     })
@@ -88,6 +88,11 @@ angular
       controller: 'NotificationsController',
       data: {
         authorize: 'isLoggedIn'
+      },
+      resolve: {
+        notifications: ['NotificationService', function(NotificationService) {
+          return NotificationService.getAllMessages();
+        }]
       }
     })
 
@@ -183,6 +188,9 @@ angular
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
+        }],
+        reminderList: ['ListService', function(ListService) {
+          return ListService.getReminderList();
         }]
       }
     })
@@ -357,14 +365,9 @@ angular
       }
     })
     .state('menu.admin.customer', {
-      url: 'customers/',
+      url: 'customers/:customerNumber/',
       templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
-      resolve: {
-        customers: [ 'CustomerService', function(CustomerService) {
-          return CustomerService.getCustomers();
-        }]
-      }
+      controller: 'CustomersController'
     })
     .state('menu.admin.account', {
       url: 'accounts/',
