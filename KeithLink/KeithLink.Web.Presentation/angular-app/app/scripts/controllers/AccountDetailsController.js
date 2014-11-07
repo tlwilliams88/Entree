@@ -10,14 +10,10 @@ angular.module('bekApp')
       //TEST DATA UNTIL ENDPOINT EXISTS
       $scope.users = [
         {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'},
-        {'email':'rhedges@credera.com','firstName':'Robert', 'lastName':'Hedges'}
+        {'email':'chendon@credera.com','firstName':'Clay', 'lastName':'Hendon'},
+        {'email':'aallen@credera.com','firstName':'Andrew', 'lastName':'Allen'},
+        {'email':'jshields@credera.com','firstName':'John', 'lastName':'Shields'},
+        {'email':'gsalazar@credera.com','firstName':'Gabe', 'lastName':'Salazar'}
       ];
       $scope.userExists = false;
 
