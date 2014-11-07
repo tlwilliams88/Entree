@@ -179,6 +179,10 @@ angular.module('bekApp')
       ListService.deleteMultipleItems(favoritesList.listid, items);
     };
 
+    $scope.addItemsToReminderList = function() {
+      $scope.addItemsToList(ListService.findReminderList());
+    }
+
     /********************
     DRAG HELPERS
     ********************/

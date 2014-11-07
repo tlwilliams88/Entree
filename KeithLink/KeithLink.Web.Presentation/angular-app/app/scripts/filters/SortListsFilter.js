@@ -13,7 +13,7 @@ angular.module('bekApp')
         item.sortPriority = 2;
       } else if (item.isworksheet) {
         item.sortPriority = 3;
-      } else if (item.isReminderList) {
+      } else if (item.isreminder) {
         item.sortPriority = 4;
       } else {
         item.sortPriority = 10;

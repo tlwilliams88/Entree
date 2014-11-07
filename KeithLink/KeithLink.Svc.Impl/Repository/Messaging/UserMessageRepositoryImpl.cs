@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using System.Data.Entity;
 
 namespace KeithLink.Svc.Impl.Repository.Messaging
 {
@@ -14,6 +15,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
     {
         public UserMessageRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
+        public IEnumerable<UserMessage> ReadUserMessages(Core.Models.Profile.UserProfile user)
+        {
+            return this.Entities.Where(a => a.UserId == user.UserId);
+        }
 
     }
 }

@@ -329,6 +329,14 @@
     <Compile Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.Designer.cs">
       <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411072118453_Message changes.cs" />
+    <Compile Include="Repository\EF\Migrations\201411072118453_Message changes.Designer.cs">
+      <DependentUpon>201411072118453_Message changes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411072131044_added usermessage label.cs" />
+    <Compile Include="Repository\EF\Migrations\201411072131044_added usermessage label.Designer.cs">
+      <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -357,6 +365,7 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
@@ -454,6 +463,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs" />
     <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -497,6 +507,8 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\Settings.settings">
@@ -614,6 +626,29 @@
     <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd" />
     <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
     <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
       <SubType>Designer</SubType>
@@ -675,6 +710,7 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
@@ -843,6 +879,12 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201411052321101_Add_Channel_To_User_Subscription.resx">
       <DependentUpon>201411052321101_Add_Channel_To_User_Subscription.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411072118453_Message changes.resx">
+      <DependentUpon>201411072118453_Message changes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411072131044_added usermessage label.resx">
+      <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
@@ -875,6 +917,16 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap" />
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
   </ItemGroup>
   <ItemGroup>

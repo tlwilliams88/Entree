@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Core.Interface.Messaging
 {
@@ -15,12 +16,17 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         bool AddUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         bool RemoveUserSubscription(NotificationType notificationType, Channel channel, Guid userId, string customerNumber, string notificationEndpoint);
         List<UserMessage> GetUserMessages(Guid userId);
-<<<<<<< HEAD
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
-=======
+<<<<<<< HEAD
+        List<UserMessageModel> ReadUserMessages(UserProfile user);
+        void UpdateUserMessages(List<UserMessageModel> userMessages);
         bool SendMessage(Core.Models.Messaging.Queue.OrderConfirmationNotification ocn);
+=======
+        bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification);
+>>>>>>> 813c7eee5d24aaa4dcd05eb0134bcbab1a198c94
         void ListenForNotificationMessagesOnQueue();
         void Stop();
->>>>>>> a60b01cb3ae33078adadf76adbd4730440f45f51
+
+        
     }
 }
