@@ -197,7 +197,6 @@ namespace KeithLink.Svc.Windows.OrderService {
             try {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                       new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl(),
                                                                        new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
                 confirmationLogic.ListenForMainFrameCalls();
             }
@@ -216,7 +215,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                   new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl(), new Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl() );
+                                                                                   new Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl() );
                 OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                        new OrderHistoyrHeaderRepositoryImpl(uow),
                                                                        new OrderHistoryDetailRepositoryImpl(uow),
@@ -289,7 +288,6 @@ namespace KeithLink.Svc.Windows.OrderService {
                         
                         ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                                            new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                           new KeithLink.Svc.Impl.Repository.Orders.Confirmations.ConfirmationQueueRepositoryImpl(),
                                                                                            new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
                         OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log, 
                                                                                new OrderHistoyrHeaderRepositoryImpl(uow), 

@@ -28,6 +28,10 @@ ng-class="{ odd : $odd, even: $even }"
   > tfoot > tr > td {
     &:first-child {
       border-left: 1px solid $color-border;
+
+      &.red-border {
+        border-left:3px solid $color-red;
+      }
     }
     &:last-child {
       border-right: 1px solid $color-border;

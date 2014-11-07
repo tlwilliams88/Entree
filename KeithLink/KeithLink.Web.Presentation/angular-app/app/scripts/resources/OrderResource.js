@@ -15,6 +15,21 @@ angular.module('bekApp')
       resubmitOrder: {
         url: '/order/:orderNumber/changeorder',
         method: 'POST'
+      },
+
+      getOrderHistory: {
+        url: '/order/history',
+        method: 'POST'
+      },
+
+      getOrderHistoryDetails: {
+        url: '/order/history/:invoiceNumber',
+        method: 'POST'
+      },
+
+      pollOrderHistory: {
+        url: '/order/lastupdate',
+        method: 'GET'
       }
 
     });

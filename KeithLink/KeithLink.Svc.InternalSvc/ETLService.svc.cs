@@ -30,36 +30,48 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessStagedData()
         {
-            Task.Factory.StartNew(() => categoryLogic.ProcessStagedData());
-            Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile());
-			Task.Factory.StartNew(() => invoiceLogic.ImportInvoices());
+            Task.Factory.StartNew(() => categoryLogic.ProcessStagedData()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception);  }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => invoiceLogic.ImportInvoices()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
             return true;
         }
         
         public bool UpdateElasticSearch()
         {
-            Task.Factory.StartNew(() => categoryLogic.ImportItemsToElasticSearch());
-			Task.Factory.StartNew(() => categoryLogic.ImportCategoriesToElasticSearch());
+            Task.Factory.StartNew(() => categoryLogic.ImportItemsToElasticSearch()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => categoryLogic.ImportCategoriesToElasticSearch()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
             return true;
         }
         
         public bool UpdateCustomerOrganizations()
         {
-            Task.Factory.StartNew(() => this.customerLogic.ImportCustomersToOrganizationProfile());
+            Task.Factory.StartNew(() => this.customerLogic.ImportCustomersToOrganizationProfile()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
             return true;
         }
 
         /*for testing only*/
-        public bool ImportCatalogLists()
+        public bool ImportPrePopulatedLists()
         {
-            Task.Factory.StartNew(() => this.categoryLogic.ImportPrePopulatedLists());
+            Task.Factory.StartNew(() => this.categoryLogic.ImportPrePopulatedLists()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
             return true;
         }
 
 
 		public bool ImportInvoices()
 		{
-			Task.Factory.StartNew(() => invoiceLogic.ImportInvoices());
+            Task.Factory.StartNew(() => invoiceLogic.ImportInvoices()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 			return true;
 		}
 	}

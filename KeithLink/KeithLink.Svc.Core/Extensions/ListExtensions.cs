@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Core.Extensions
 				IsContractList = list.Type == ListType.Contract,
 				IsFavorite = list.Type == ListType.Favorite,
 				IsWorksheet = list.Type == ListType.Worksheet,
+                IsReminder = list.Type == ListType.Reminder,
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
