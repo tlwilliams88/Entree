@@ -5,6 +5,8 @@
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage">
@@ -13,16 +15,35 @@
   <wsdl:message name="IOrderService_ReadLatestOrderModifiedDateForCustomer_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadLatestOrderModifiedDateForCustomerResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetLastFiveOrderHistory_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetLastFiveOrderHistory" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetLastFiveOrderHistory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetLastFiveOrderHistoryResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer" message="tns:IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomerResponse" message="tns:IOrderService_ReadLatestOrderModifiedDateForCustomer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetLastFiveOrderHistory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistory" message="tns:IOrderService_GetLastFiveOrderHistory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistoryResponse" message="tns:IOrderService_GetLastFiveOrderHistory_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
       <soap:operation soapAction="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetLastFiveOrderHistory">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetLastFiveOrderHistory" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

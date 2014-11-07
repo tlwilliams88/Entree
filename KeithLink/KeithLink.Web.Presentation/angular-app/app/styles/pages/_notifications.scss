@@ -1,0 +1,11 @@
+.table tbody > tr {
+  &.new-message td {
+    background-color: aliceblue;
+  }
+  &.mandatory td {
+    &:first-child {
+      border-left: 3px solid $color-red;
+    }
+    color: $color-red;
+  }  
+}

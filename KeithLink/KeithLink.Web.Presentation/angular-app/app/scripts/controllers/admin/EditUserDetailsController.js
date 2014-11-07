@@ -24,10 +24,12 @@ angular.module('bekApp')
         if($scope.profile.customers){
           $scope.profile.customers.forEach(function(profileCustomer){
             $scope.customers.forEach(function(accountCustomer){
-              if(accountCustomer.customerId == profileCustomer.customerId){
+              if(accountCustomer.customerNumber === profileCustomer.customerNumber){
                 accountCustomer.selected = true;
               } else {
-                accountCustomer.selected = false;
+                if(!accountCustomer.selected === true) {
+                  accountCustomer.selected = false;
+                }
               }
             });
           });
@@ -53,11 +55,13 @@ angular.module('bekApp')
       $scope.sortBy = 'customerNumber';
       $scope.sortOrder = true;
 
-      //get available roles <----NEEDS ENDPOINT
+      //$scope.roles = RoleService.getRoles(); //get available roles <----NEEDS ENDPOINT
+
       $scope.roles = ["owner", "accounting", "approver", "buyer", "guest"];
 
       //get customers from the account of the currently logged in user
-      $scope.customers = LocalStorage.getProfile().user_customers;
+      //$scope.customers = CustomerService.getAllCustomers(LocalStorage.getProfile().accountId);
+      $scope.customers = LocalStorage.getProfile().user_customers; // <--- NEEDS TO HIT CUSTOMER SERVICE ENDPOINT INSTEAD
 
       //get current user profile
       processProfile(returnedProfile);
@@ -71,35 +75,35 @@ angular.module('bekApp')
 
       /*---edit profile---*/
       $scope.updateProfile = function () {
-        //strips selected property out of customer objects and creates array of just selected customers
-        var cleanSelectedCustomers = [];
-        $scope.customers.forEach(function(selectedCustomer){
-          if(selectedCustomer.selected){
-            delete selectedCustomer.selected;
-            cleanSelectedCustomers.push(selectedCustomer);
+        //attaches only selected customers to profile object before it is pushed to the database
+        var selectedCustomers = [];
+        $scope.customers.forEach(function(customer){
+          if(customer.selected){
+            selectedCustomers.push(customer);
           }
         });
 
-        //attaches only clean selected users to the profile object
-        $scope.profile.customers = cleanSelectedCustomers;
+        $scope.profile.customers = selectedCustomers;
 
         //pushes profile object to database
         UserProfileService.updateProfile($scope.profile).then(function(newProfile){
           $scope.displayMessage('success',"The user was successfully updated.");
-          processProfile(newProfile);
+          //processProfile(newProfile); // <-- UNCOMMENT WHENEVER DATA SENT BACK IS FRESH
         },function(error){
           $scope.displayMessage('error',"An error occurred: " + error);
         });
       };
 
       $scope.deleteProfile = function () {
-        //wipe customers out of user profile
+        //wipe customers out of user profile and set profile to lowest permission role
+        $scope.profile.role = "guest";
         $scope.profile.customers = [];
 
         //push freshly wiped profile to database
         UserProfileService.updateProfile($scope.profile).then(function(newProfile){
+          //refreshes page with newest data
           processProfile(newProfile);
-          //displays message to user that the transaction was completeed successfully
+          //displays message to user that the transaction was completed successfully
           $scope.displayMessage('success',"The user was successfully deleted.");
         },function(error){
           $scope.displayMessage('error',"An error occurred: " + error);

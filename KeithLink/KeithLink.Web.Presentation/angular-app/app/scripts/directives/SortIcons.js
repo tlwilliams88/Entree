@@ -11,15 +11,18 @@
 angular.module('bekApp')
   .directive('sortIcons', [function() {
     return {
+      replace: true,
       scope: {
         sortorder: '=',
         sortby: '=',
         field: '='
       },
       restrict: 'A',
-      link: function (scope, element, attrs) {
-        
-      },
+      // link: function (scope, element, attrs) {
+      //   scope.sortorder = attrs.sortorder;
+      //   scope.sortby = attrs.sortby;
+      //   scope.field = attrs.field;
+      // },
       templateUrl: 'views/directives/sorticons.html'
     };
   }]);

@@ -88,6 +88,11 @@ angular
       controller: 'NotificationsController',
       data: {
         authorize: 'isLoggedIn'
+      },
+      resolve: {
+        notifications: ['NotificationService', function(NotificationService) {
+          return NotificationService.getAllMessages();
+        }]
       }
     })
 
