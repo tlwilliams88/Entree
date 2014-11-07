@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Orders.History;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -30,5 +31,44 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			else
 				return null;
 		}
+
+        public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
+            List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
+
+            IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader> history = orderHistoryRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber );
+
+            foreach (Core.Models.Orders.History.EF.OrderHistoryHeader h in history) {
+                OrderHistoryFile root = new OrderHistoryFile() {
+                    Header = new OrderHistoryHeader() {
+                        BranchId = h.BranchId,
+                        CustomerNumber = h.CustomerNumber,
+                        InvoiceNumber = h.CustomerNumber,
+                        DeliveryDate = h.DeliveryDate,
+                        PONumber = h.PONumber,
+                        ControlNumber = h.ControlNumber,
+                        OrderStatus = h.OrderStatus,
+                        FutureItems = h.FutureItems,
+                        ErrorStatus = h.ErrorStatus,
+                        RouteNumber = h.RouteNumber,
+                        StopNumber = h.StropNumber
+                    }
+                };
+
+                foreach (Core.Models.Orders.History.EF.OrderHistoryDetail d in h.OrderDetails.Where( x => x.ItemNumber.Equals( itemNumber ) )) {
+                    OrderHistoryDetail detail = new OrderHistoryDetail() {
+                        LineNumber = d.LineNumber,
+                        ItemNumber = d.ItemNumber,
+                        OrderQuantity = d.OrderQuantity,
+                        ShippedQuantity = d.ShippedQuantity,
+                    };
+
+                    root.Details.Add( detail );
+                }
+
+                returnValue.Add( root );
+            }
+
+            return returnValue;
+        }
 	}
 }

@@ -13,5 +13,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	{
 		[OperationContract]
 		DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo);
+
+        [OperationContract]
+        List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
 	}
 }

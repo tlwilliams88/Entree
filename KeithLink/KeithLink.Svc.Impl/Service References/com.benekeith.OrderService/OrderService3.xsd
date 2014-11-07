@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
+  <xs:complexType name="ArrayOfOrderHistoryFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHistoryFile" nillable="true" type="tns:OrderHistoryFile" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderHistoryFile" nillable="true" type="tns:ArrayOfOrderHistoryFile" />
+  <xs:complexType name="OrderHistoryFile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Details" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
+      <xs:element minOccurs="0" name="Header" nillable="true" type="tns:OrderHistoryHeader" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderHistoryFile" nillable="true" type="tns:OrderHistoryFile" />
+  <xs:complexType name="ArrayOfOrderHistoryDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHistoryDetail" nillable="true" type="tns:OrderHistoryDetail" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderHistoryDetail" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
+  <xs:complexType name="OrderHistoryDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CatchWeight" type="xs:boolean" />
+      <xs:element minOccurs="0" name="FutureItem" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ItemDeleted" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ItemNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LineNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="OrderQuantity" type="xs:int" />
+      <xs:element minOccurs="0" name="ReplacedOriginalItemNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SellPrice" type="xs:double" />
+      <xs:element minOccurs="0" name="ShippedQuantity" type="xs:int" />
+      <xs:element minOccurs="0" name="SubbedOriginalItemNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TotalShippedWeight" type="xs:double" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="UnitOfMeasure" type="q1:UnitOfMeasure" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderHistoryDetail" nillable="true" type="tns:OrderHistoryDetail" />
+  <xs:complexType name="OrderHistoryHeader">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="controlnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="errorstatus" type="xs:boolean" />
+      <xs:element minOccurs="0" name="futureitems" type="xs:boolean" />
+      <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="orderstatus" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q2:OrderSource" />
+      <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="routenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="stopnumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderHistoryHeader" nillable="true" type="tns:OrderHistoryHeader" />
+</xs:schema>

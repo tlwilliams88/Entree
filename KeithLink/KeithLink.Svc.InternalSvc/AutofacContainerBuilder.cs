@@ -135,6 +135,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
 
+            builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
+
             return builder.Build();
         }
 
