@@ -109,8 +109,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                     returnValue.OrderHistory.Add( h.Header.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity );
                 }
             }
-
-            
         }
 
         private string GetCategorySearchName(string categoryName)
