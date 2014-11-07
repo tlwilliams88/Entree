@@ -4,14 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Orders.History.EF;
+using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Core.Interface.Orders;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -26,10 +28,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private ICatalogCacheRepository _catalogCacheRepository;
 		private IListServiceRepository _listServiceRepository;
 		private IDivisionLogic _divisionLogic;
-        private IOrderHistoryHeaderRepsitory _orderHistoryRepository;
+        private IOrderServiceRepository _orderServiceRepository;
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderServiceRepository orderServiceRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -39,7 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
 			_divisionLogic = divisionLogic;
-            _orderHistoryRepository = orderHistoryRepository;
+            _orderServiceRepository = orderServiceRepository;
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -100,12 +102,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         private void AddItemHistoryToProduct( Product returnValue, UserSelectedContext catalogInfo ) {
-            return; // TODO: Refactor to use Order Svc
-            IEnumerable<OrderHistoryHeader> history = _orderHistoryRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, returnValue.ItemNumber );
+            List<Core.Models.Orders.History.OrderHistoryFile> history = _orderServiceRepository.GetLastFiveOrderHistory( catalogInfo, returnValue.ItemNumber );
 
-            foreach (OrderHistoryHeader h in history) {
-                foreach (OrderHistoryDetail d in h.OrderDetails.Where(x => x.ItemNumber.Equals(returnValue.ItemNumber))) {
-                    returnValue.OrderHistory.Add( h.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity );
+            foreach (OrderHistoryFile h in history) {
+                foreach (OrderHistoryDetail d in h.Details) {
+                    returnValue.OrderHistory.Add( h.Header.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity );
                 }
             }
         }

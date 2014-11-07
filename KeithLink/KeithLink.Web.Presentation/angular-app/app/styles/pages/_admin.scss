@@ -38,3 +38,13 @@
 .smallerHeaderLinkText {
   font-size: 16px;
 }
+
+.infiniteScroll {
+  @include scroll-div-vertical(201px);
+}
+
+.inlineOverride {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}

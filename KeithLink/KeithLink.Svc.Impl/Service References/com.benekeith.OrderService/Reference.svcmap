@@ -24,11 +24,13 @@
     <MetadataSource Address="http://localhost:1317/OrderService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="d9353dab-b0ef-4c9e-b60b-873c6376a6b9" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?disco" />
+    <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="b24b736c-2d27-4625-b8ae-052488d61fed" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd2" />
+    <MetadataFile FileName="OrderService3.xsd" MetadataType="Schema" ID="7d7b633f-9dce-4235-b522-6be95a4cc32b" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd3" />
+    <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="b0fab658-56dc-45dd-9262-efc128a15301" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd1" />
     <MetadataFile FileName="OrderService.xsd" MetadataType="Schema" ID="d7bec462-8e29-42ce-9e57-61f1e6941f14" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd0" />
     <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="1f7050d8-a253-4ed1-bfab-960e745148dd" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?wsdl" />
-    <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="b24b736c-2d27-4625-b8ae-052488d61fed" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd2" />
-    <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="b0fab658-56dc-45dd-9262-efc128a15301" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd1" />
+    <MetadataFile FileName="OrderService31.xsd" MetadataType="Schema" ID="e807eee1-b421-4c8a-9dc0-13a102ef566b" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd4" />
+    <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="d9353dab-b0ef-4c9e-b60b-873c6376a6b9" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

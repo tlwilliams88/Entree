@@ -141,6 +141,9 @@ namespace KeithLink.Svc.InternalSvc
 
 
 
+            builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
+
             return builder.Build();
         }
 
