@@ -164,11 +164,33 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
             var newUserMessage = userMessage.ToEFUserMessage();
             newUserMessage.CustomerNumber = catalogInfo.CustomerId;
-            newUserMessage.UserId = userId.ToString();
+            newUserMessage.UserId = userId;
 
             userMessageRepository.CreateOrUpdate(newUserMessage);
             unitOfWork.SaveChanges();
             return newUserMessage.Id;
+        }
+
+        public List<UserMessageModel> ReadUserMessages(UserProfile user)
+        {
+            var userMessages = userMessageRepository.ReadUserMessages(user).ToList();
+
+            if (userMessages == null)
+                return null;
+
+            return userMessages.Select(b => b.ToUserMessageModel()).ToList();
+
+        }
+
+        public void UpdateUserMessages(List<UserMessageModel> userMessages)
+        {
+            foreach (var userMessage in userMessages)
+            {
+                var currentUserMessage = userMessageRepository.Read(a => a.Id.Equals(userMessage.Id)).FirstOrDefault();
+                //update message read date
+                currentUserMessage.MessageReadUtc = userMessage.MessageReadUtc;
+            }
+            unitOfWork.SaveChanges();
         }
 
         public UserMessagingPreferenceModel ReadUserMessagingPreference(long userMessagingPreferenceId)

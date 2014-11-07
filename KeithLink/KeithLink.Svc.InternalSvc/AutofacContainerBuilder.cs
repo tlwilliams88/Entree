@@ -119,6 +119,9 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+
+            builder.RegisterType<MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.MessagingService.MessagingServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.MessagingService.IMessagingService>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();

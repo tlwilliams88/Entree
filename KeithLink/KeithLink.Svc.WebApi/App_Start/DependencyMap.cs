@@ -30,6 +30,8 @@ using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Core.Interface.Messaging;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -90,9 +92,12 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+            builder.RegisterType<MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
 			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.MessagingService.MessagingServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.MessagingService.IMessagingService>();
+
 
             // Build the container.
             var container = builder.Build();

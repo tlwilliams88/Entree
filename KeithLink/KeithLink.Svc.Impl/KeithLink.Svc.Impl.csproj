@@ -324,6 +324,26 @@
     <Compile Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.Designer.cs">
       <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.Designer.cs">
+      <DependentUpon>201411062201202_fields added to usermessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.cs" />
+    <Compile Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.Designer.cs">
+      <DependentUpon>201411062210498_removed duplicated createdutc field.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411062215410_update field name usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411062215410_update field name usermessage.Designer.cs">
+      <DependentUpon>201411062215410_update field name usermessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.Designer.cs">
+      <DependentUpon>201411070643328_changed userid to guid usermessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.Designer.cs">
+      <DependentUpon>201411070715020_add ordernumber on usermessage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -352,6 +372,7 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
@@ -448,6 +469,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.PricingService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -486,6 +512,8 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -602,6 +630,31 @@
     <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -647,6 +700,7 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
   </ItemGroup>
@@ -811,6 +865,21 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201411052218504_add Body to usermessage.resx">
       <DependentUpon>201411052218504_add Body to usermessage.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411062201202_fields added to usermessage.resx">
+      <DependentUpon>201411062201202_fields added to usermessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411062210498_removed duplicated createdutc field.resx">
+      <DependentUpon>201411062210498_removed duplicated createdutc field.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411062215410_update field name usermessage.resx">
+      <DependentUpon>201411062215410_update field name usermessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411070643328_changed userid to guid usermessage.resx">
+      <DependentUpon>201411070643328_changed userid to guid usermessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411070715020_add ordernumber on usermessage.resx">
+      <DependentUpon>201411070715020_add ordernumber on usermessage.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
@@ -838,6 +907,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

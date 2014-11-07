@@ -10,6 +10,7 @@ using System.ServiceModel;
 using System.Text;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -53,5 +54,16 @@ namespace KeithLink.Svc.InternalSvc
         {
             return messagingLogic.CreateUserMessage(userId, catalogInfo, userMessage);
         }
+
+        public List<UserMessageModel> ReadUserMessages(UserProfile user)
+        {
+            return messagingLogic.ReadUserMessages(user);
+        }
+
+        public void UpdateUserMessages(List<UserMessageModel> userMessages)
+        {
+            messagingLogic.UpdateUserMessages(userMessages);
+        }
+
     }
 }

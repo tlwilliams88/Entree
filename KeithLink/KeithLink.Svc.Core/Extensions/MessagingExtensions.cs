@@ -16,7 +16,27 @@ namespace KeithLink.Svc.Core.Extensions
             {
                  Body = userMessage.Body,
                  MessageReadUtc = userMessage.MessageReadUtc,
-                 NotificationType = userMessage.NotificationType
+                 NotificationType = userMessage.NotificationType,
+                 Subject = userMessage.Subject,
+                 Mandatory = userMessage.Mandatory,
+                 OrderNumber = userMessage.OrderNumber
+            };
+        }
+
+        public static UserMessageModel ToUserMessageModel(this UserMessage userMessage)
+        {
+            return new UserMessageModel()
+            {
+                Body = userMessage.Body,
+                MessageReadUtc = userMessage.MessageReadUtc,
+                NotificationType = userMessage.NotificationType,
+                CustomerNumber = userMessage.CustomerNumber,
+                Subject = userMessage.Subject,
+                Mandatory = userMessage.Mandatory,
+                MessageCreatedUtc = userMessage.CreatedUtc,
+                UserId = userMessage.UserId,
+                Id = userMessage.Id,
+                OrderNumber = userMessage.OrderNumber
             };
         }
 

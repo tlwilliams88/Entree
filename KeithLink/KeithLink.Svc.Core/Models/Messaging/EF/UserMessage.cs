@@ -16,12 +16,14 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         [Column(TypeName = "varchar")]
         public string CustomerNumber { get; set; }
 
-        [MaxLength(55)]
-        [Column(TypeName = "varchar")]
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
+
+        public string OrderNumber { get; set; }
 
         public NotificationType NotificationType { get; set; }
         public DateTime? MessageReadUtc { get; set; }
+        public string Subject { get; set; }
         public string Body { get; set; }
+        public bool Mandatory { get; set; }
     }
 }
