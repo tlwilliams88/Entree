@@ -183,6 +183,9 @@ angular
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
+        }],
+        reminderList: ['ListService', function(ListService) {
+          return ListService.getReminderList();
         }]
       }
     })
