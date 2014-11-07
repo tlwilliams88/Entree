@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	public interface IInternalOrderLogic
 	{
 		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+        List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
 	}
 }

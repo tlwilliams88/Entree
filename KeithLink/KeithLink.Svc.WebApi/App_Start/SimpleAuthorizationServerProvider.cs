@@ -13,7 +13,7 @@ namespace KeithLink.Svc.WebApi
         Core.Interface.Profile.IUserProfileRepository _userRepo;
         #endregion
 
-        #region
+        #region methods / functions
         /// <summary>
         /// handles the authentication of the user and creates the authentication token
         /// </summary>

@@ -14,6 +14,7 @@ using System.ServiceModel;
 using System.Text;
 using KeithLink.Svc.Core.Interface.Orders;
 
+using KeithLink.Svc.Core.Models.Orders.History;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -34,5 +35,9 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return orderLogic.ReadLatestUpdatedDate(catalogInfo);
 		}
+
+        public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
+            return orderLogic.GetLastFiveOrderHistory( catalogInfo, itemNumber );
+        }
 	}
 }
