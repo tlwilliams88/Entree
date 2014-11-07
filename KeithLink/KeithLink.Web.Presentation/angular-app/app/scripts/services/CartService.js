@@ -60,16 +60,17 @@ angular.module('bekApp')
         return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
-      importCart: function(file) {
+      importCart: function(file, options) {
         var deferred = $q.defer();
 
         $upload.upload({
-          url: '/import/list',
+          url: 'import/order',
           method: 'POST',
+          data: { options: options },
           file: file, // or list of files ($files) for html5 only
         }).then(function(response) {
           var data = response.data;
-
+          debugger;
           if (data.success) {
             var cart = {
               id: data.listid, // ****

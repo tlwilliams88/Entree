@@ -23,9 +23,12 @@ angular.module('bekApp')
     });
   };
 
-  $scope.startOrderUpload = function() {
+  $scope.startOrderUpload = function(options) {
     var file = files[0];
-    CartService.importCart(file).then(function(data) {
+    console.log(options);
+
+
+    CartService.importCart(file, options).then(function(data) {
       $state.go('menu.cart.items', { cartId: data.id }).then(function() {
         $modalInstance.close(data);
       });
