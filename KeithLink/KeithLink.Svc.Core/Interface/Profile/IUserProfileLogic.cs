@@ -10,10 +10,11 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
-        UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
+        //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
+        UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true);
 
         UserProfileReturn GetUserProfile(string emailAddress);
-        UserProfileReturn GetUserProfile(Guid userId);
+        UserProfileReturn GetUserProfile(Guid userId, bool includeLastOrderDate = true);
 
         bool IsInternalAddress(string emailAddress);
 
