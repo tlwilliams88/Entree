@@ -43,7 +43,10 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Impl.Repository.Email;
-
+using KeithLink.Svc.Impl.com.benekeith.OrderService;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -54,27 +57,27 @@ namespace KeithLink.Svc.InternalSvc
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ETLService>();
-            builder.RegisterType<PipelineService>(); 
+            builder.RegisterType<PipelineService>();
             builder.RegisterType<OrderService>();
-			builder.RegisterType<ListServcie>();
-			builder.RegisterType<InvoiceService>();
-			builder.RegisterType<DivisionService>();
+            builder.RegisterType<ListServcie>();
+            builder.RegisterType<InvoiceService>();
+            builder.RegisterType<DivisionService>();
             builder.RegisterType<MessagingService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
-			builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-			builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
-			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
-			builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-			builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
+            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
+            builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
+            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
-			builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
-            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            //2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
@@ -83,61 +86,67 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
+            // 2nd builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
-			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+            builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
             builder.RegisterType<OrderUpdateQueueRepositoryImpl>().As<IOrderHistoryQueueRepository>();
-            builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IConfirmationQueueRepository>();
+
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
-			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
-			builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-			builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
-			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
-			builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
+            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+            builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
+            builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
+            builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
+            builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>(); 
-            builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>(); 
-			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
-			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
-			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
+            builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
+            builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
+            builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<ConfirmationQueueRepositoryImpl>().As<IQueueRepository>();
-			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
-			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
-			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
-			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
+            builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
-			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
-			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
-			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+            builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
+            //added 11-6
             builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-
-			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
-			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-
-			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
-			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
-			
-			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();		
-			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
-			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
-			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-			builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
-
-			builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
-			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+
+            builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
+            //builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+            builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+
+            builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+            builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+
+            builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
+            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+            builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
+            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+            builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+
+            builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
+
+
+
+            builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
 
             return builder.Build();
         }
 
-		
-	}
+
+    }
 }

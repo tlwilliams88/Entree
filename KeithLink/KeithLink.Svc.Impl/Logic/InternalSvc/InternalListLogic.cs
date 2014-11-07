@@ -123,7 +123,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 				else
 				{
-					list.Items.Add(new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber });
+					var createNote = new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber, ParentList = list };
+					listItemRepository.Create(createNote);
 				}
 			}
 			unitOfWork.SaveChanges();
@@ -345,7 +346,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
+			var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Notes, i => i.Items).ToList();
 
 			if (list == null)
 				return null;

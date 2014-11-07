@@ -25,7 +25,7 @@
       </div>
     </div>
     <hr>
-    <h2>Select items for the user</h2>
+    <h2>Assign Customers to the user:</h2>
     <div class="row top-buffer">
       <div class="col-md-8">
         <table class="table no-margin table-border table-striped-rows">
@@ -78,6 +78,10 @@
           <tfoot ng-show="customers.length === 0">
             <tr>
               <td>There are no customers to display.</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tfoot>
         </table>
@@ -88,7 +92,7 @@
         <div class="form-group button-row">
           <div class="col-sm-6">
             <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
-            <a ui-sref="menu.admin">Cancel</a>
+            <a ui-sref="menu.accountdetails">Cancel</a>
           </div>
         </div>
       </div>
