@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'reminderList',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, reminderList) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,7 +17,7 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    // $scope.reminderList = reminderList;
+    $scope.reminderList = reminderList;
     $scope.changeOrders = changeOrders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);

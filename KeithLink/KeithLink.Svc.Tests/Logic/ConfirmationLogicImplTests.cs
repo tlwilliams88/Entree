@@ -22,7 +22,6 @@ namespace KeithLink.Svc.Test.Logic
         {
             ConfirmationLogicImpl logic = new ConfirmationLogicImpl(new EventLogRepositoryImpl("Entree Tests"),
                                                                     new SocketListenerRepositoryImpl(),
-                                                                    new ConfirmationQueueRepositoryImpl(),
                                                                     new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
 
             StreamReader testFile = new StreamReader(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));

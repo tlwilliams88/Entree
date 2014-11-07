@@ -7,6 +7,12 @@ angular.module('bekApp')
   $scope.upload = [];
   var files = [];
 
+  function goToImportedPage(routeName, routeParams) {
+    $state.go(routeName, routeParams).then(function() {
+      $modalInstance.close();
+    });
+  }
+
   $scope.onFileSelect = function($files) {
     files = [];
     for (var i = 0; i < $files.length; i++) {
@@ -17,18 +23,14 @@ angular.module('bekApp')
   $scope.startListUpload = function() {
     var file = files[0];
     ListService.importList(file).then(function(data) {
-      $state.go('menu.lists.items', { listId: data.listid }).then(function() {
-        $modalInstance.close(data);
-      });
+      goToImportedPage('menu.lists.items', { listId: data.listid });
     });
   };
 
   $scope.startOrderUpload = function() {
     var file = files[0];
     CartService.importCart(file).then(function(data) {
-      $state.go('menu.cart.items', { cartId: data.id }).then(function() {
-        $modalInstance.close(data);
-      });
+      goToImportedPage('menu.cart.items', { cartId: data.id });
     });
   };
   

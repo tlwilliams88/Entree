@@ -21,5 +21,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
 		}
+
+        public List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber ) {
+            return serviceClient.GetLastFiveOrderHistory( catalogInfo, itemNumber ).ToList();
+        }
 	}
 }
