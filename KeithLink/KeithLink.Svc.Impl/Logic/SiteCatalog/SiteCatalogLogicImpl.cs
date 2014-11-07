@@ -100,6 +100,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         private void AddItemHistoryToProduct( Product returnValue, UserSelectedContext catalogInfo ) {
+            return; // TODO: Refactor to use Order Svc
             IEnumerable<OrderHistoryHeader> history = _orderHistoryRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, returnValue.ItemNumber );
 
             foreach (OrderHistoryHeader h in history) {
