@@ -366,20 +366,39 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
+        public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
+            var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Reminder, i => i.Items);
+
+            if (list == null)
+                return null;
+
+            var returnList = list.Select(b => b.ToListModel(true)).ToList();
+
+            returnList.ForEach(delegate(ListModel listItem) {
+                LookupProductDetails(user, listItem, catalogInfo);
+            });
+
+            return returnList;
+        }
+
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false) {
-            var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted)).ToList();
+            var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
 
             if (list == null)
                 return null;
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted)).ToList();
+                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
             }
 
-
+            if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
+                this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
+                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
+            }
+ 
             if (headerOnly)
-                return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, ReadOnly = l.ReadOnly }).ToList();
+                return list.Select(l => new ListModel() { ListId = l.Id, Name = l.DisplayName, IsContractList = l.Type == ListType.Contract, IsFavorite = l.Type == ListType.Favorite, IsWorksheet = l.Type == ListType.Worksheet, IsReminder = l.Type == ListType.Reminder, ReadOnly = l.ReadOnly }).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(returnAllItems)).ToList();
                 var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));

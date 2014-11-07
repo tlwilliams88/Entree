@@ -32,6 +32,7 @@
       <xs:element minOccurs="0" name="DsrNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="IsPoRequired" type="xs:boolean" />
       <xs:element minOccurs="0" name="IsPowerMenu" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LastOrderUpdate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="NationalId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="NationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
     </xs:sequence>

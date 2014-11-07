@@ -16,25 +16,19 @@ namespace KeithLink.Svc.InternalSvc
 {
 	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "ListServcie" in code, svc and config file together.
 	// NOTE: In order to launch WCF Test Client for testing this service, please select ListServcie.svc or ListServcie.svc.cs at the Solution Explorer and start debugging.
-	public class ListServcie : IListServcie
-	{
-		private readonly IInternalListLogic listLogic;
+	public class ListServcie : IListServcie {
+        #region attributes
+        private readonly IInternalListLogic listLogic;
+        #endregion
 
-		public ListServcie(IInternalListLogic listLogic)
+        #region ctor
+        public ListServcie(IInternalListLogic listLogic)
 		{
 			this.listLogic = listLogic;
 		}
+        #endregion
 
-		public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly=false)
-		{
-			return listLogic.ReadUserList(user, catalogInfo, headerOnly);
-		}
-
-		public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
-		{
-			return listLogic.CreateList(userId, catalogInfo, list, type);
-		}
-
+        #region methods
 		public long? AddItem(long listId, ListItemModel item)
 		{
 			return listLogic.AddItem(listId, item);
@@ -44,17 +38,22 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return listLogic.AddItems(user, catalogInfo, listId, items);
 		}
-
-		public void UpdateItem(ListItemModel item)
+        
+		public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
 		{
-			listLogic.UpdateItem(item);
-		}
-
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
-		{
-			return listLogic.ReadList(user, catalogInfo, Id);
+			listLogic.AddNote(user, catalogInfo, newNote);
 		}
 		
+		public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
+		{
+			listLogic.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
+		}
+        
+        public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
+		{
+			return listLogic.CreateList(userId, catalogInfo, list, type);
+		}
+        
 		public void DeleteItem(long Id)
 		{
 			listLogic.DeleteItem(Id);
@@ -64,54 +63,60 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.DeleteList(Id);
 		}
-		
-		public void UpdateList(Core.Models.Lists.ListModel userList)
-		{
-			listLogic.UpdateList(userList);
-		}
-
-		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return listLogic.ReadListLabels(user, catalogInfo);
-		}
-		
-		public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
-		{
-			listLogic.AddNote(user, catalogInfo, newNote);
-		}
-
+        
 		public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
 		{
 			listLogic.DeleteNote(user, catalogInfo, ItemNumber);
 		}
-
-
-		public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
-		{
-			listLogic.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
-		}
-
-
-		public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return listLogic.ReadRecent(user, catalogInfo);
-		}
-
-
+        
 		public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			return listLogic.ReadFavorites(user, catalogInfo);
 		}
 
-		public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			return listLogic.ReadNotes(user, catalogInfo);
+			return listLogic.ReadList(user, catalogInfo, Id);
 		}
-
-
+        
 		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
 		{
 			return listLogic.ReadListByType(user, catalogInfo, type);
 		}
+		
+        public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
+		{
+			return listLogic.ReadListLabels(user, catalogInfo);
+		}
+        
+		public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
+		{
+			return listLogic.ReadNotes(user, catalogInfo);
+		}
+		
+        public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
+		{
+			return listLogic.ReadRecent(user, catalogInfo);
+		}
+
+        public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
+            return listLogic.ReadReminders(user, catalogInfo);
+        }
+        
+        public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly=false)
+		{
+			return listLogic.ReadUserList(user, catalogInfo, headerOnly);
+		}
+
+		public void UpdateItem(ListItemModel item)
+		{
+			listLogic.UpdateItem(item);
+		}
+		
+		public void UpdateList(Core.Models.Lists.ListModel userList)
+		{
+			listLogic.UpdateList(userList);
+		}
+        #endregion
 	}
 }

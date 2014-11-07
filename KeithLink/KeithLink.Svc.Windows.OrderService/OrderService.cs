@@ -30,7 +30,8 @@ namespace KeithLink.Svc.Windows.OrderService {
         private static bool _historyRequestProcessing;
         private static bool _orderUpdateProcessing;
         private static bool _orderQueueProcessing;
-        private static bool _successfulConnection;
+        private static bool _successfulHistoryConnection;
+        private static bool _successfulOrderConnection;
         private static bool _silenceOrderUpdateMessages;
 
         private static UInt16 _unsentCount;
@@ -53,7 +54,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
             _log = new EventLogRepositoryImpl(this.ServiceName);
             _orderQueueProcessing = false;
-            _successfulConnection = false;
+            _successfulHistoryConnection = false;
+            _successfulOrderConnection = false;
             _unsentCount = 0;
             _orderUpdateProcessing = false;
 
@@ -80,9 +82,13 @@ namespace KeithLink.Svc.Windows.OrderService {
             ExceptionEmail.Send(ex, msg.ToString());
         }
 
-        private void HandleEarlySocketException(Exception ex) {
-            if (_successfulConnection) {
-                _successfulConnection = false;
+        private void HandleEarlySocketException(Exception ex, bool historyConnection) {
+            if ((historyConnection && _successfulHistoryConnection) || (!historyConnection && _successfulOrderConnection)) {
+                if (historyConnection) {
+                    _successfulHistoryConnection = false;
+                } else {
+                    _successfulOrderConnection = false;
+                }
 
                 StringBuilder msg = new StringBuilder();
                 msg.AppendLine("Error beginning communications.");
@@ -123,9 +129,14 @@ namespace KeithLink.Svc.Windows.OrderService {
             ExceptionEmail.Send(ex, msg.ToString());
         }
 
-        private void HandleSocketResponseException(Exception ex) {
-            if (_successfulConnection && _unsentCount == 5) {
-                _successfulConnection = false;
+        private void HandleSocketResponseException(Exception ex, bool historyConnection) {
+            if (((historyConnection && _successfulHistoryConnection) || (!historyConnection  && _successfulOrderConnection)) && _unsentCount == 5) {
+                if (historyConnection) {
+                    _successfulHistoryConnection = false;
+                } else {
+                    _successfulOrderConnection = false;
+                }
+
 
                 StringBuilder msg = new StringBuilder();
                 msg.AppendLine();
@@ -244,12 +255,12 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     requestLogic.ProcessRequests();
 
-                    _successfulConnection = true;
+                    _successfulHistoryConnection = true;
                     _unsentCount = 0;
                 } catch (EarlySocketException earlyEx) {
-                    HandleEarlySocketException(earlyEx);
+                    HandleEarlySocketException(earlyEx, true);
                 } catch (SocketResponseException responseEx) {
-                    HandleSocketResponseException(responseEx);
+                    HandleSocketResponseException(responseEx, true);
                 } catch (CancelledTransactionException cancelledEx) {
                     HandleCancelledException(cancelledEx);
                 } catch (Exception ex) {
@@ -350,12 +361,12 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                    new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
                     orderQueue.ProcessOrders();
 
-                    _successfulConnection = true;
+                    _successfulOrderConnection = true;
                     _unsentCount = 0;
                 } catch(EarlySocketException earlyEx){
-                    HandleEarlySocketException(earlyEx);
+                    HandleEarlySocketException(earlyEx, false);
                 } catch(SocketResponseException responseEx){
-                    HandleSocketResponseException(responseEx);
+                    HandleSocketResponseException(responseEx, false);
                 } catch(CancelledTransactionException cancelledEx){
                     HandleCancelledException(cancelledEx);
                 } catch (Exception ex) {
