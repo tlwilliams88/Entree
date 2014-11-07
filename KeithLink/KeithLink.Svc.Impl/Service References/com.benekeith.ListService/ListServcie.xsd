@@ -1,24 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-  <xs:complexType name="ArrayOfUserList">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserList" nillable="true" type="tns:UserList" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfUserList" nillable="true" type="tns:ArrayOfUserList" />
-  <xs:complexType name="UserList">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
-      <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
-      <xs:element minOccurs="0" name="isworksheet" type="xs:boolean" />
-      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfListItem" />
-      <xs:element minOccurs="0" name="listid" type="xs:long" />
-      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="read_only" type="xs:boolean" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="UserList" nillable="true" type="tns:UserList" />
   <xs:complexType name="ArrayOfListItem">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ListItem" nillable="true" type="tns:ListItem" />
@@ -42,6 +24,25 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="ListItem" nillable="true" type="tns:ListItem" />
+  <xs:complexType name="UserList">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isreminder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isworksheet" type="xs:boolean" />
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfListItem" />
+      <xs:element minOccurs="0" name="listid" type="xs:long" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="read_only" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserList" nillable="true" type="tns:UserList" />
+  <xs:complexType name="ArrayOfUserList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserList" nillable="true" type="tns:UserList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserList" nillable="true" type="tns:ArrayOfUserList" />
   <xs:complexType name="ArrayOfrecentitem">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="recentitem" nillable="true" type="tns:recentitem" />
