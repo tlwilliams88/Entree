@@ -30,16 +30,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private bool _keepQueueListening = true;
         private int queueListenerSleepTimeMs = 2000;
 
-        private IQueueRepository _confirmationQueue;
         #endregion
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository,
-            IQueueRepository confirmationQueue, IGenericQueueRepository internalMessagingLogic)
+            IGenericQueueRepository internalMessagingLogic)
         {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
-            _confirmationQueue = confirmationQueue;
             this.genericeQueueRepository = internalMessagingLogic;
 
             _socket.FileReceived            += SocketFileReceived;
@@ -142,8 +140,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <param name="location"></param>
         public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
             string serializedConfirmation = SerializeConfirmation( file );
-
-            _confirmationQueue.PublishToQueue(serializedConfirmation);
+            genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
+                Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
         }
 
         /// <summary>
@@ -151,7 +149,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <returns></returns>
         public ConfirmationFile GetFileFromQueue() {
-            string fileFromQueue = _confirmationQueue.ConsumeFromQueue();
+            string fileFromQueue = genericeQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
             if (fileFromQueue == null)
                 return null; // a null return indicates no message on queue
             else if (String.IsNullOrEmpty(fileFromQueue))
