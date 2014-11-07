@@ -333,7 +333,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
-        public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile) {
+        public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true) {
             List<Customer> userCustomers;
             if (IsInternalAddress(csProfile.Email))
             {
@@ -364,9 +364,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                  userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList();
             }
 
-			//Populate the Last order updated date for each customer
-			foreach (var customer in userCustomers)
-				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
+            if (includeLastOrderDate)
+            {
+                //Populate the Last order updated date for each customer
+                foreach (var customer in userCustomers)
+                    customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
+            }
 
 
             return new UserProfile() {
@@ -432,7 +435,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn GetUserProfile(Guid userId) {
+        public UserProfileReturn GetUserProfile(Guid userId, bool includeLastOrderDate = true) {
             // search commerce server 
             Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(userId);
             
@@ -440,7 +443,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (csUserProfile == null) {
             } else {
-                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
+                retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeLastOrderDate));
             }
 
             return retVal;

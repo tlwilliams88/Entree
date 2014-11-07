@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Impl.ETL
                 try
                 {
                     Guid userId = userRow.GetGuid("u_user_id");
-                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId).UserProfiles[0];
+                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId, false).UserProfiles[0];
 
                     if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
                         continue;
