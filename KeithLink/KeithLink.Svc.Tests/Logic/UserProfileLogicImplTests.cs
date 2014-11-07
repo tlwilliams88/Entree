@@ -4,6 +4,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KeithLink.Svc.Impl.Repository.Orders;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -38,7 +39,7 @@ namespace KeithLink.Svc.Test.Logic {
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
 
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust);
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new OrderServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient()));
         }
         #endregion
 

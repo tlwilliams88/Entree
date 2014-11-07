@@ -1,9 +1,16 @@
 .lists {
-  width: 150px;
+  width: 160px;
+  .list-names button {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
 }
 .items {
-  width: calc(100% - 150px);
+  width: calc(100% - 160px);
+  padding-left: 0;
 }
+
+
 
 /* LEFT SIDE LIST NAVIGATION BUTTONS */
 .custom-lists .btn-list {
@@ -105,6 +112,7 @@
 @media (max-width: $screen-sm-max) {
   .items {
     width: 100%;
+    padding-left: $gutter-size;
   }
   .custom-lists {
     position:absolute; 

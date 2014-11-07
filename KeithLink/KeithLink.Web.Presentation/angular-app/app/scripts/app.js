@@ -29,7 +29,7 @@ angular
   ])
 .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
   function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
-  
+
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
 
@@ -88,6 +88,11 @@ angular
       controller: 'NotificationsController',
       data: {
         authorize: 'isLoggedIn'
+      },
+      resolve: {
+        notifications: ['NotificationService', function(NotificationService) {
+          return NotificationService.getAllMessages();
+        }]
       }
     })
 
@@ -183,6 +188,9 @@ angular
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
+        }],
+        reminderList: ['ListService', function(ListService) {
+          return ListService.getReminderList();
         }]
       }
     })
@@ -347,19 +355,19 @@ angular
       controller: 'AddUserDetailsController'
     })
     .state('menu.admin.edituser', {
-      url: 'users/:userId/',
+      url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
-      controller: 'EditUserDetailsController'
-    })
-    .state('menu.admin.customer', {
-      url: 'customers/',
-      templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
+      controller: 'EditUserDetailsController',
       resolve: {
-        customers: [ 'CustomerService', function(CustomerService) {
-          return CustomerService.getCustomers();
+        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
         }]
       }
+    })
+    .state('menu.admin.customer', {
+      url: 'customers/:customerNumber/',
+      templateUrl: 'views/admin/customers.html',
+      controller: 'CustomersController'
     })
     .state('menu.admin.account', {
       url: 'accounts/',
@@ -378,7 +386,7 @@ angular
     });
 
   $stateProvider
-    .state('404', { 
+    .state('404', {
       url: '/404/',
       templateUrl: 'views/404.html'
     });
@@ -432,7 +440,7 @@ angular
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');
-        event.preventDefault(); 
+        event.preventDefault();
       }
     }
 
@@ -440,12 +448,12 @@ angular
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
-        $state.go('menu.home');  
+        $state.go('menu.home');
       } else {
         $state.go('menu.catalog.home');
       }
 
-      event.preventDefault(); 
+      event.preventDefault();
     }
 
   });

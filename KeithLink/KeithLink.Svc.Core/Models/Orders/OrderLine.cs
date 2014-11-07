@@ -47,5 +47,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "mainframestatus")]
         public string MainFrameStatus { get; set; }
+
+        [DataMember(Name = "substituteditemnumber")]
+        public string SubstitutedItemNumber { get; set; }
 	}
 }

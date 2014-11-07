@@ -84,6 +84,9 @@ angular.module('bekApp')
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
       
+      $scope.isBekAdmin = AccessService.isBekAdmin();
+      $scope.isCustomerAdmin = AccessService.isCustomerAdmin();
+
       $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
       $scope.canManageLists = AccessService.canManageLists();
       $scope.canCreateOrders = AccessService.canCreateOrders();
