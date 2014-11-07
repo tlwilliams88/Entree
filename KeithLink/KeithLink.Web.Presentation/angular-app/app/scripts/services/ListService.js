@@ -304,7 +304,17 @@ angular.module('bekApp')
         ********************/
 
         getReminderList: function() {
-          return Service.getList('95');
+          return List.getReminderList().$promise.then(function(lists) {
+            if (lists.length === 1) {
+              return lists[0];  
+            } else {
+              return {};
+            }
+          });
+        },
+
+        findReminderList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'isreminder', true);
         }
 
 
