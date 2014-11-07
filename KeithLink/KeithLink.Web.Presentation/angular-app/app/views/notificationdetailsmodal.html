@@ -4,13 +4,12 @@
 </div>
 <div class="modal-body">
 
-  <h3>Timestamp</h3>
-  <p>{{notification.datetime}}</p>
+  <h3>{{notification.messagecreatedutc}}</h3>
 
-  <h3>Subject</h3>
-  <p>{{notification.extmessage}}</p>
+  <h4>Subject: {{notification.subject}}</h4>
+  <p ng-class="{ 'text-red': notification.mandatory }">{{notification.body}}</p>
 
 </div>
-<!-- <div class="modal-footer">
-    <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
-</div> -->
+<div class="modal-footer">
+  <button class="btn btn-lg btn-primary pull-left">View All Orders</button>
+</div>
