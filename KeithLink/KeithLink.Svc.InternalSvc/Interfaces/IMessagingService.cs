@@ -8,6 +8,7 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 using System.ServiceModel;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.InternalSvc.Interfaces
 {
@@ -23,6 +24,10 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<UserMessage> GetUserMessages(Guid userId);
         [OperationContract]
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
+        [OperationContract]
+        List<UserMessageModel> ReadUserMessages(UserProfile user);
+        [OperationContract]
+        void UpdateUserMessages(List<UserMessageModel> userMessages);
         [OperationContract]
         void TestNotification();
     }

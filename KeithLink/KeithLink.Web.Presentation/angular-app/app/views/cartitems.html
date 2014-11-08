@@ -158,14 +158,6 @@
               Name
               <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
             </th>
-            <th class="sort-col-header" ng-click="reminderSortBy='totalPar';reminderSortOrder=!reminderSortOrder;">
-              PAR
-              <span sort-icons field="'totalPar'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
-            </th>
-            <th class="sort-col-header" ng-click="reminderSortBy='qtyInCart';reminderSortOrder=!reminderSortOrder;">
-              # in Cart
-              <span sort-icons field="'qtyInCart'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
-            </th>
           </tr>
         </thead>
         <tr ng-repeat="item in reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder"  ng-class="{ odd : $odd, even: $even }">
@@ -174,12 +166,6 @@
           </td>
           <td>
             {{item.name}}
-          </td>
-          <td>
-            {{item.totalPar}}
-          </td>
-          <td>
-            {{item.qtyInCart}}
           </td>
         </tr>
       </table>

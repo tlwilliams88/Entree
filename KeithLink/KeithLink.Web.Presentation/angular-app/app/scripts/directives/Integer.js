@@ -9,7 +9,7 @@ angular.module('bekApp')
     restrict: 'A',
     link: function(scope, elm, attrs, ctrl) {
       ctrl.$parsers.unshift(checkValidity);
-      ctrl.$formatters.unshift(checkValidity);
+      // ctrl.$formatters.unshift(checkValidity);
 
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){

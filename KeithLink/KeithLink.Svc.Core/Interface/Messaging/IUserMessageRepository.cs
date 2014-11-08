@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface IUserMessageRepository : IBaseEFREpository<UserMessage>
     {
-
+        IEnumerable<UserMessage> ReadUserMessages(Core.Models.Profile.UserProfile user);
     }
 }

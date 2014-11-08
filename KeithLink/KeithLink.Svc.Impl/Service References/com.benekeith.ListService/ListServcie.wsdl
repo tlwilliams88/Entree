@@ -11,17 +11,11 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
-  <wsdl:message name="IListServcie_ReadUserList_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadUserList" />
+  <wsdl:message name="IListServcie_AddItems_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddItems" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadUserList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadUserListResponse" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_CreateList_InputMessage">
-    <wsdl:part name="parameters" element="tns:CreateList" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_CreateList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CreateListResponse" />
+  <wsdl:message name="IListServcie_AddItems_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddItemsResponse" />
   </wsdl:message>
   <wsdl:message name="IListServcie_AddItem_InputMessage">
     <wsdl:part name="parameters" element="tns:AddItem" />
@@ -29,29 +23,23 @@
   <wsdl:message name="IListServcie_AddItem_OutputMessage">
     <wsdl:part name="parameters" element="tns:AddItemResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_UpdateItem_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateItem" />
+  <wsdl:message name="IListServcie_AddNote_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddNote" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_UpdateItem_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateItemResponse" />
+  <wsdl:message name="IListServcie_AddNote_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddNoteResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_AddItems_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddItems" />
+  <wsdl:message name="IListServcie_AddRecentlyViewedItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddRecentlyViewedItem" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_AddItems_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddItemsResponse" />
+  <wsdl:message name="IListServcie_AddRecentlyViewedItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddRecentlyViewedItemResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadList_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadList" />
+  <wsdl:message name="IListServcie_CreateList_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateList" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadListResponse" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_ReadListLabels_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadListLabels" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_ReadListLabels_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadListLabelsResponse" />
+  <wsdl:message name="IListServcie_CreateList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateListResponse" />
   </wsdl:message>
   <wsdl:message name="IListServcie_DeleteItem_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteItem" />
@@ -65,35 +53,11 @@
   <wsdl:message name="IListServcie_DeleteList_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteListResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_UpdateList_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateList" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_UpdateList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateListResponse" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_AddNote_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddNote" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_AddNote_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddNoteResponse" />
-  </wsdl:message>
   <wsdl:message name="IListServcie_DeleteNote_InputMessage">
     <wsdl:part name="parameters" element="tns:DeleteNote" />
   </wsdl:message>
   <wsdl:message name="IListServcie_DeleteNote_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteNoteResponse" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_AddRecentlyViewedItem_InputMessage">
-    <wsdl:part name="parameters" element="tns:AddRecentlyViewedItem" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_AddRecentlyViewedItem_OutputMessage">
-    <wsdl:part name="parameters" element="tns:AddRecentlyViewedItemResponse" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_ReadRecent_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadRecent" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_ReadRecent_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadRecentResponse" />
   </wsdl:message>
   <wsdl:message name="IListServcie_ReadFavorites_InputMessage">
     <wsdl:part name="parameters" element="tns:ReadFavorites" />
@@ -101,11 +65,11 @@
   <wsdl:message name="IListServcie_ReadFavorites_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadFavoritesResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadNotes_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadNotes" />
+  <wsdl:message name="IListServcie_ReadList_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadList" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_ReadNotes_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadNotesResponse" />
+  <wsdl:message name="IListServcie_ReadList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadListResponse" />
   </wsdl:message>
   <wsdl:message name="IListServcie_ReadListByType_InputMessage">
     <wsdl:part name="parameters" element="tns:ReadListByType" />
@@ -113,34 +77,68 @@
   <wsdl:message name="IListServcie_ReadListByType_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadListByTypeResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_ReadListLabels_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadListLabels" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadListLabels_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadListLabelsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadNotes_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadNotes" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadNotes_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadNotesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadRecent_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadRecent" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadRecent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadRecentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadReminders_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadReminders" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadReminders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadRemindersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadUserList_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadUserList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_UpdateItem_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateItem" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_UpdateItem_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_UpdateList_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_UpdateList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
-    <wsdl:operation name="ReadUserList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadUserList" message="tns:IListServcie_ReadUserList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadUserListResponse" message="tns:IListServcie_ReadUserList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="CreateList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/CreateList" message="tns:IListServcie_CreateList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/CreateListResponse" message="tns:IListServcie_CreateList_OutputMessage" />
+    <wsdl:operation name="AddItems">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddItemsResponse" message="tns:IListServcie_AddItems_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="AddItem">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItem" message="tns:IListServcie_AddItem_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddItemResponse" message="tns:IListServcie_AddItem_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateItem">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/UpdateItem" message="tns:IListServcie_UpdateItem_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/UpdateItemResponse" message="tns:IListServcie_UpdateItem_OutputMessage" />
+    <wsdl:operation name="AddNote">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddNote" message="tns:IListServcie_AddNote_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddNoteResponse" message="tns:IListServcie_AddNote_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="AddItems">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddItemsResponse" message="tns:IListServcie_AddItems_OutputMessage" />
+    <wsdl:operation name="AddRecentlyViewedItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddRecentlyViewedItem" message="tns:IListServcie_AddRecentlyViewedItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddRecentlyViewedItemResponse" message="tns:IListServcie_AddRecentlyViewedItem_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ReadList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadList" message="tns:IListServcie_ReadList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListResponse" message="tns:IListServcie_ReadList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="ReadListLabels">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadListLabels" message="tns:IListServcie_ReadListLabels_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListLabelsResponse" message="tns:IListServcie_ReadListLabels_OutputMessage" />
+    <wsdl:operation name="CreateList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/CreateList" message="tns:IListServcie_CreateList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/CreateListResponse" message="tns:IListServcie_CreateList_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DeleteItem">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/DeleteItem" message="tns:IListServcie_DeleteItem_InputMessage" />
@@ -150,52 +148,55 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/DeleteList" message="tns:IListServcie_DeleteList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/DeleteListResponse" message="tns:IListServcie_DeleteList_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/UpdateList" message="tns:IListServcie_UpdateList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/UpdateListResponse" message="tns:IListServcie_UpdateList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="AddNote">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddNote" message="tns:IListServcie_AddNote_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddNoteResponse" message="tns:IListServcie_AddNote_OutputMessage" />
-    </wsdl:operation>
     <wsdl:operation name="DeleteNote">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/DeleteNote" message="tns:IListServcie_DeleteNote_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/DeleteNoteResponse" message="tns:IListServcie_DeleteNote_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="AddRecentlyViewedItem">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddRecentlyViewedItem" message="tns:IListServcie_AddRecentlyViewedItem_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/AddRecentlyViewedItemResponse" message="tns:IListServcie_AddRecentlyViewedItem_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="ReadRecent">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadRecent" message="tns:IListServcie_ReadRecent_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadRecentResponse" message="tns:IListServcie_ReadRecent_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReadFavorites">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadFavorites" message="tns:IListServcie_ReadFavorites_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadFavoritesResponse" message="tns:IListServcie_ReadFavorites_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ReadNotes">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadNotes" message="tns:IListServcie_ReadNotes_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadNotesResponse" message="tns:IListServcie_ReadNotes_OutputMessage" />
+    <wsdl:operation name="ReadList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadList" message="tns:IListServcie_ReadList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListResponse" message="tns:IListServcie_ReadList_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReadListByType">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadListByType" message="tns:IListServcie_ReadListByType_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListByTypeResponse" message="tns:IListServcie_ReadListByType_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ReadListLabels">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadListLabels" message="tns:IListServcie_ReadListLabels_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadListLabelsResponse" message="tns:IListServcie_ReadListLabels_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadNotes">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadNotes" message="tns:IListServcie_ReadNotes_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadNotesResponse" message="tns:IListServcie_ReadNotes_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadRecent">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadRecent" message="tns:IListServcie_ReadRecent_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadRecentResponse" message="tns:IListServcie_ReadRecent_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadReminders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadReminders" message="tns:IListServcie_ReadReminders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadRemindersResponse" message="tns:IListServcie_ReadReminders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadUserList" message="tns:IListServcie_ReadUserList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadUserListResponse" message="tns:IListServcie_ReadUserList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateItem">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/UpdateItem" message="tns:IListServcie_UpdateItem_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/UpdateItemResponse" message="tns:IListServcie_UpdateItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/UpdateList" message="tns:IListServcie_UpdateList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/UpdateListResponse" message="tns:IListServcie_UpdateList_OutputMessage" />
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="ReadUserList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadUserList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="CreateList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/CreateList" style="document" />
+    <wsdl:operation name="AddItems">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/AddItems" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -212,8 +213,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateItem">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/UpdateItem" style="document" />
+    <wsdl:operation name="AddNote">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/AddNote" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -221,8 +222,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="AddItems">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/AddItems" style="document" />
+    <wsdl:operation name="AddRecentlyViewedItem">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/AddRecentlyViewedItem" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -230,17 +231,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ReadList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ReadListLabels">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadListLabels" style="document" />
+    <wsdl:operation name="CreateList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/CreateList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -266,44 +258,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/UpdateList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="AddNote">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/AddNote" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
     <wsdl:operation name="DeleteNote">
       <soap:operation soapAction="http://tempuri.org/IListServcie/DeleteNote" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="AddRecentlyViewedItem">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/AddRecentlyViewedItem" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ReadRecent">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadRecent" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -320,8 +276,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ReadNotes">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadNotes" style="document" />
+    <wsdl:operation name="ReadList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -331,6 +287,69 @@
     </wsdl:operation>
     <wsdl:operation name="ReadListByType">
       <soap:operation soapAction="http://tempuri.org/IListServcie/ReadListByType" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadListLabels">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadListLabels" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadNotes">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadNotes" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadRecent">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadRecent" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadReminders">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadReminders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadUserList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateItem">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/UpdateItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/UpdateList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -41,6 +41,12 @@ angular.module('bekApp')
         method: 'POST'
       },
 
+      getReminderList: {
+        url: '/list/reminders',
+        method: 'GET',
+        isArray: true
+      }
+
       // postData is an array of listitemids as strings
       // NOTE $resource does not accept deletes with payloads
       // deleteMultipleItems: {

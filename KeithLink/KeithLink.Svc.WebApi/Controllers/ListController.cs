@@ -48,6 +48,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("list/reminders")]
+        public List<ListModel> ListReminders() {
+            return listServiceRepository.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
+        }
+
         [HttpPost]
 		[ApiKeyedRoute("list/")]
 		public NewListItem List(ListModel list)
