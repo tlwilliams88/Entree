@@ -12516,21 +12516,21 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
-	    /// Gets or sets the SubstitueItemNumber property.
+	    /// Gets or sets the SubstitutedItemNumber property.
 	    /// </summary>
 	    /// <value>
-	    /// The SubstitueItemNumber property from the property collection.
+	    /// The SubstitutedItemNumber property from the property collection.
 	    /// </value>
-		public virtual string SubstitueItemNumber
+		public virtual string SubstitutedItemNumber
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.SubstitueItemNumber) as string;
+				return this._commerceEntity.GetPropertyValue(PropertyName.SubstitutedItemNumber) as string;
 			}
 	
 			set
 			{
-				this._commerceEntity.SetPropertyValue(PropertyName.SubstitueItemNumber, value);
+				this._commerceEntity.SetPropertyValue(PropertyName.SubstitutedItemNumber, value);
 			}
 		}
 	
@@ -13054,7 +13054,7 @@ namespace KeithLink.Svc.Core.Models.Generated
 			/// <summary>
 	        /// Constant for accessing SubstitueItemNumber property.
 	        /// </summary>
-			public const string SubstitueItemNumber = "SubstitueItemNumber";
+			public const string SubstitutedItemNumber = "SubstitutedItemNumber";
 	
 			/// <summary>
 	        /// Constant for accessing MainFrameStatus property.

@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				OrderTotal = purchaseOrder.Properties["Total"].ToString().ToDouble().Value,
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
                 IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
-                Status = purchaseOrder.Status,
+                Status = System.Text.RegularExpressions.Regex.Replace(purchaseOrder.Status, "([a-z])([A-Z])", "$1 $2"),
                 RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
 				Items = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(purchaseOrder.Id)
@@ -94,7 +94,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 Status = lineItem.Status,
-
+                SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
 			};
@@ -123,6 +123,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
                     item.CatchWeight = prod.CatchWeight;
+                    item.TempZone = prod.TempZone;
 				}
 				if (price != null)
 				{
@@ -168,6 +169,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     if (existingLine.Quantity != newLine.Quantity || existingLine.Each != newLine.Each)
                     {
                         existingLine.Quantity = newLine.Quantity;
+                        existingLine.Each = newLine.Each;
                         existingLine.Status = "changed";
                     }
                 }

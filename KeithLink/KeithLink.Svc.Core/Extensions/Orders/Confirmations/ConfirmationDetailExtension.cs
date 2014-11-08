@@ -170,14 +170,17 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
             }
         }
 
-        public static string SubstitueItemNumber(this ConfirmationDetail value) {
-            string confirmationStatus = value.ReasonNotShipped.Trim().ToUpper();
+        public static string SubstitutedItemNumber(this ConfirmationDetail incomingDetail, CommerceServer.Core.Runtime.Orders.LineItem lineItem) {
+            string confirmationStatus = incomingDetail.ReasonNotShipped.Trim().ToUpper();
 
-            if (value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE || 
-                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE ||
-                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE || 
-                value.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE)
-                return value.ItemNumber;
+            if ((incomingDetail.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE || 
+                incomingDetail.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE ||
+                incomingDetail.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE || 
+                incomingDetail.ReasonNotShipped == Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE)
+                // check incoming confirmation item number against current item number; 
+                // if current item number doesn't match incoming, then move current to substituted
+                && !incomingDetail.ItemNumber.Trim().Equals(lineItem.ProductId.Trim(), StringComparison.InvariantCultureIgnoreCase))
+                return lineItem.ProductId;
 
             return string.Empty;
         }
