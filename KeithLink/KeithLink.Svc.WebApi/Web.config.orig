@@ -248,8 +248,11 @@
 			<endpoint address="http://localhost:1317/ListServcie.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IListServcie" contract="com.benekeith.ListService.IListServcie" name="BasicHttpBinding_IListServcie" />
 			<endpoint address="http://localhost:1317/InvoiceService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IListServcie" contract="com.benekeith.InvoiceService.IInvoiceService" name="BasicHttpBinding_IListServcie" />
 			<endpoint address="http://localhost:1317/DivisionService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IListServcie" contract="com.benekeith.DivisionService.IDivisionService" name="BasicHttpBinding_IListServcie" />
+<<<<<<< HEAD
       <endpoint address="http://localhost:1317/MessagingService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IListServcie" contract="com.benekeith.MessagingService.IMessagingService" name="BasicHttpBinding_IListServcie" />
+=======
 			<endpoint address="http://localhost:1317/OrderService.svc" binding="basicHttpBinding" bindingConfiguration="BasicHttpBinding_IOrderService" contract="com.benekeith.OrderService.IOrderService" name="BasicHttpBinding_IOrderService" />
+>>>>>>> 813c7eee5d24aaa4dcd05eb0134bcbab1a198c94
     </client>
   </system.serviceModel>
   <system.runtime.serialization>

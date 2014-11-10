@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	[DataContract]
     public class BaseProductInfo
 	{
+
 		[DataMember(Name = "itemnumber")]
 		public string ItemNumber { get; set; }
 
@@ -60,5 +61,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name="deviatedcost")]
         public string DeviatedCost { get; set; }
-	}
+
+        [DataMember(Name = "temp_zone")]
+        public string TempZone { get; set; }
+    }
 }

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="cea8a75b-44c0-40e6-a359-8365d2fe7a70" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/MessagingService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="MessagingService.xsd" MetadataType="Schema" ID="0dfb7ceb-e4fc-49fe-ad69-3e45f2acc5e4" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd5" />
+    <MetadataFile FileName="MessagingService1.xsd" MetadataType="Schema" ID="6c6c66e1-8e35-4d05-9820-0681af9b742a" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd0" />
+    <MetadataFile FileName="MessagingService2.xsd" MetadataType="Schema" ID="ecc39dfc-30bd-4f27-81b8-c29b017e01df" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd6" />
+    <MetadataFile FileName="MessagingService3.xsd" MetadataType="Schema" ID="8e40f11f-1dec-4cd3-8e09-8eda82046f4d" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd7" />
+    <MetadataFile FileName="MessagingService4.xsd" MetadataType="Schema" ID="5811c8d6-df22-4d34-a695-ddc1fea9be87" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd3" />
+    <MetadataFile FileName="MessagingService.disco" MetadataType="Disco" ID="77192912-cd25-411e-9ba5-d9f12aaac1ef" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?disco" />
+    <MetadataFile FileName="MessagingService5.xsd" MetadataType="Schema" ID="a3fb5061-2292-45b1-86b1-036e9923b4a2" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd2" />
+    <MetadataFile FileName="MessagingService.wsdl" MetadataType="Wsdl" ID="cd7104a4-6c01-4bbc-b195-47148a971351" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?wsdl" />
+    <MetadataFile FileName="MessagingService6.xsd" MetadataType="Schema" ID="e6fbeb69-2f1d-4eaf-a138-ba44f0a91ac9" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd4" />
+    <MetadataFile FileName="MessagingService7.xsd" MetadataType="Schema" ID="89e08a80-e818-40a8-a7f0-7a4169b09868" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="MessagingService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IMessagingService_AddUserSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_AddUserSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUserSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_RemoveUserSubscription_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserSubscription" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_RemoveUserSubscription_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUserSubscriptionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_CreateUserMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserMessage" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_CreateUserMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_UpdateUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_UpdateUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUserMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_TestNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:TestNotification" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_TestNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TestNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUnreadMessagesCount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnreadMessagesCount" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUnreadMessagesCount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnreadMessagesCountResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IMessagingService">
+    <wsdl:operation name="AddUserSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/AddUserSubscription" message="tns:IMessagingService_AddUserSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/AddUserSubscriptionResponse" message="tns:IMessagingService_AddUserSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserSubscription">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/RemoveUserSubscription" message="tns:IMessagingService_RemoveUserSubscription_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/RemoveUserSubscriptionResponse" message="tns:IMessagingService_RemoveUserSubscription_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/GetUserMessages" message="tns:IMessagingService_GetUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/GetUserMessagesResponse" message="tns:IMessagingService_GetUserMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUserMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateUserMessage" message="tns:IMessagingService_CreateUserMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/CreateUserMessageResponse" message="tns:IMessagingService_CreateUserMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessages" message="tns:IMessagingService_ReadUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessagesResponse" message="tns:IMessagingService_ReadUserMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/UpdateUserMessages" message="tns:IMessagingService_UpdateUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/UpdateUserMessagesResponse" message="tns:IMessagingService_UpdateUserMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TestNotification">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/TestNotification" message="tns:IMessagingService_TestNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/TestNotificationResponse" message="tns:IMessagingService_TestNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnreadMessagesCount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount" message="tns:IMessagingService_GetUnreadMessagesCount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse" message="tns:IMessagingService_GetUnreadMessagesCount_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddUserSubscription">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/AddUserSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUserSubscription">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/RemoveUserSubscription" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/GetUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUserMessage">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/CreateUserMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/UpdateUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TestNotification">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/TestNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnreadMessagesCount">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCount" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MessagingService">
+    <wsdl:port name="BasicHttpBinding_IMessagingService" binding="tns:BasicHttpBinding_IMessagingService">
+      <soap:address location="http://localhost:1317/MessagingService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

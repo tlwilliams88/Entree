@@ -2460,7 +2460,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="Each" csProperty="Each"/>
               <PropertyMapping property="CatchWeight" csProperty="CatchWeight"/>
 							<PropertyMapping property="Category" csProperty="Category" />
-              <PropertyMapping property="SubstitueItemNumber" csProperty="SubstitueItemNumber" />
+              <PropertyMapping property="SubstitutedItemNumber" csProperty="SubstitudedItemNumber" />
               <PropertyMapping property="MainFrameStatus" csProperty="MainFrameStatus" />
               <PropertyMapping property="QuantityOrdered" csProperty="QuantityOrdered" />
               <PropertyMapping property="QuantityShipped" csProperty="QuantityShipped" />              
@@ -2529,8 +2529,8 @@ This file contains the Metadata Repository
           <Property name="Category" dataType="String">
             <DisplayName value="Category"/>
           </Property>
-          <Property name="SubstitueItemNumber" dataType="String">
-              <DisplayName value="SubstitueItemNumber"/>
+          <Property name="SubstitutedItemNumber" dataType="String">
+              <DisplayName value="SubstitutedItemNumber"/>
 					</Property>
           <Property name="MainFrameStatus" dataType="String">
             <DisplayName value="MainFrameStatus"/>

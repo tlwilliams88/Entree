@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="userprofile">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rolename" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="user_customers" nillable="true" type="tns:ArrayOfCustomer" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="userprofile" nillable="true" type="tns:userprofile" />
+  <xs:complexType name="ArrayOfCustomer">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Customer" nillable="true" type="tns:Customer" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfCustomer" nillable="true" type="tns:ArrayOfCustomer" />
+  <xs:complexType name="Customer">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AccountId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="ContractId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerBranch" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerId" type="ser:guid" />
+      <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CustomerNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DsrNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsPoRequired" type="xs:boolean" />
+      <xs:element minOccurs="0" name="IsPowerMenu" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LastOrderUpdate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="NationalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Customer" nillable="true" type="tns:Customer" />
+</xs:schema>
