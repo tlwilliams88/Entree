@@ -30,5 +30,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             serviceClient.UpdateUserMessages(userMessages.ToArray());
         }
 
+        public int GetUnreadMessagesCount(UserProfile user)
+        {
+            return serviceClient.GetUnreadMessagesCount(user);
+        }
+
 	}
 }

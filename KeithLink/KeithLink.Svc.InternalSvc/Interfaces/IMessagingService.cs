@@ -30,5 +30,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         void UpdateUserMessages(List<UserMessageModel> userMessages);
         [OperationContract]
         void TestNotification();
+        [OperationContract]
+        int GetUnreadMessagesCount(UserProfile user);
     }
 }
