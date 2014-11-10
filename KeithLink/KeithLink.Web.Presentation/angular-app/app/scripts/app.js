@@ -418,8 +418,8 @@ angular
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
@@ -457,4 +457,9 @@ angular
     }
 
   });
+
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    NotificationService.getUnreadMessageCount();
+  });
+
 }]);
