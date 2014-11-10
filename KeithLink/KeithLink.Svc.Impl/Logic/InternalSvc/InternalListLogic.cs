@@ -239,6 +239,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
+                    listItem.TempZone = prod.TempZone;
 
 				}
 				if (price != null)
