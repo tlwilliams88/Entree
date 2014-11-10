@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'ResolveService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, ResolveService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
@@ -205,15 +205,5 @@ angular.module('bekApp')
         return total;
       }
     };
-
-    // // select cart/changeOrder
-    // var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-    // if ($stateParams.cartId === 'New' || !selectedBasket) {
-    //   $scope.createNewCart();
-    // } else {
-    //   selectedBasket.promise.then(function(basket) {
-    //     $scope.selectedCart = basket;
-    //   });
-    // }
 
   }]);

@@ -124,7 +124,7 @@ angular.module('bekApp')
 
         newCart.requestedshipdate = shipDate;
         // default to next ship date
-        if (!newCart.requestedshipdate && Service.shipDates) {
+        if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
 
