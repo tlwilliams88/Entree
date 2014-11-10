@@ -61,6 +61,14 @@ $sidebar-nav__text--selected: $color-white;
         text-align: center;
         font-size: 16px;
       }
+      
+      .badge {
+        float: right;
+        background-color: $color-red;
+        border-radius: 20px;
+        padding: 2px 7px;
+        color: $color-white;
+      }
     }
     
     .is-selected li {
