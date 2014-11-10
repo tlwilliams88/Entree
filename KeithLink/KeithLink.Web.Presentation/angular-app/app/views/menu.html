@@ -58,7 +58,7 @@
         <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
-        <a ui-sref="menu.accountdetails" ui-sref-active="is-selected" >
+        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
             <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
           </a>
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" ui-sref-active="is-selected" >
@@ -110,7 +110,7 @@
         <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
-        <a ui-sref="menu.accountdetails" ui-sref-active="is-selected" >
+        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
       </ul>
