@@ -111,9 +111,17 @@ $order-col__background: #f1efe5;
 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
+
+    .highlight-col {
+      color: $color-green;
+    }
   }
   &.order-summary__order--late {
     border-left: 3px solid $color-red;
+
+    .highlight-col {
+      color: $color-red;
+    }
   }
   
   // order table columns

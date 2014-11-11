@@ -80,530 +80,13 @@ GO
 CREATE SCHEMA [ETL]
 GO
 /****** Object:  UserDefinedFunction [ETL].[initcap]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE function [ETL].[initcap] (@text varchar(4000))
-returns varchar(4000)
-as
-
-begin
-	declare 	@counter int, 
-		@length int,
-		@char char(1),
-		@textnew varchar(4000)
-	if(@text = '')
-	begin
-		return @text
-	end
-
-	set @text		= rtrim(@text)
-	set @text		= lower(@text)
-	set @length 	= len(@text)
-	set @counter 	= 1
-
-	set @text = upper(left(@text, 1) ) + right(@text, @length - 1) 
-
-	while @counter <> @length --+ 1
-	begin
-		select @char = substring(@text, @counter, 1)
-
-		IF @char = space(1)  or @char =  '_' or @char = ','  or @char = '.' or @char = '\'
- or @char = '/' or @char = '(' or @char = ')'
-		begin
-			set @textnew = left(@text, @counter)  + upper(substring(@text, 
-@counter+1, 1)) + right(@text, (@length - @counter) - 1)
-			set @text	 = @textnew
-		end
-
-		set @counter = @counter + 1
-	end
-
-	return @text
-end
-
-GO
-/****** Object:  Table [ETL].[Staging_Branch]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_Branch](
-	[BranchId] [char](10) NULL,
-	[LocationTypeId] [bigint] NULL,
-	[Description] [varchar](50) NULL
-) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_Category](
-	[CategoryId] [char](6) NULL,
-	[CategoryName] [varchar](50) NULL,
-	[PPICode] [char](8) NULL
-) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [ETL].[Staging_Customer]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_Customer](
-	[Action] [varchar](1) NULL,
-	[CO] [varchar](3) NULL,
-	[DIV] [varchar](3) NULL,
-	[DEPT] [varchar](3) NULL,
-	[CustomerNumber] [varchar](10) NULL,
-	[CustomerName] [varchar](40) NULL,
-	[Address1] [varchar](25) NULL,
-	[Address2] [varchar](25) NULL,
-	[City] [varchar](30) NULL,
-	[State] [varchar](3) NULL,
-	[ZipCode] [varchar](10) NULL,
-	[WHSNNumber] [varchar](3) NULL,
-	[Telephone] [varchar](10) NULL,
-	[SalesRep] [varchar](3) NULL,
-	[ChainStoreCode] [varchar](10) NULL,
-	[TermCode] [varchar](3) NULL,
-	[CreditLimit] [varchar](7) NULL,
-	[CreditHoldFlag] [varchar](1) NULL,
-	[StoreNumber] [varchar](10) NULL,
-	[ContractOnly] [varchar](1) NULL,
-	[LocationAuth] [varchar](1) NULL,
-	[DateOfLastPayment] [date] NULL,
-	[AmountDue] [varchar](16) NULL,
-	[CurrentBalance] [varchar](16) NULL,
-	[PDACXAge1] [varchar](16) NULL,
-	[PDACXAge2] [varchar](16) NULL,
-	[PDACXAge3] [varchar](16) NULL,
-	[PDACXAge4] [varchar](16) NULL,
-	[ActiveFlag] [varchar](1) NULL,
-	[MondayRoutNum] [varchar](5) NULL,
-	[MondayStopNum] [varchar](3) NULL,
-	[TuesdayRoutNum] [varchar](5) NULL,
-	[TuesdayStopNum] [varchar](3) NULL,
-	[WednesdayRoutNum] [varchar](5) NULL,
-	[WednesdayStopNum] [varchar](3) NULL,
-	[ThursdayRoutNum] [varchar](5) NULL,
-	[ThursdayStopNum] [varchar](3) NULL,
-	[FridayRoutNum] [varchar](5) NULL,
-	[FridayStopNum] [varchar](3) NULL,
-	[SaturdayRoutNum] [varchar](5) NULL,
-	[SaturdayStopNum] [varchar](3) NULL,
-	[SundayRoutNum] [varchar](5) NULL,
-	[SundayStopNum] [varchar](3) NULL,
-	[CSR] [varchar](3) NULL,
-	[Contract] [varchar](10) NULL,
-	[PORequiredFlag] [varchar](1) NULL,
-	[JDCNTY1] [varchar](3) NULL,
-	[JDCNTY2] [varchar](3) NULL,
-	[PowerMenu] [varchar](1) NULL
-) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [ETL].[Staging_ItemData]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_ItemData](
-	[BranchId] [char](3) NOT NULL,
-	[ItemId] [char](6) NOT NULL,
-	[Name] [varchar](30) NULL,
-	[Description] [varchar](30) NULL,
-	[Brand] [varchar](8) NULL,
-	[Pack] [char](4) NULL,
-	[Size] [varchar](8) NULL,
-	[UPC] [varchar](14) NULL,
-	[MfrNumber] [varchar](10) NULL,
-	[MfrName] [varchar](30) NULL,
-	[Cases] [int] NULL,
-	[Package] [int] NULL,
-	[PreferredItemCode] [char](1) NULL,
-	[CategoryId] [char](6) NULL,
-	[ItemType] [char](1) NULL,
-	[Status1] [char](1) NULL,
-	[Status2] [char](1) NULL,
-	[ICSEOnly] [char](1) NULL,
-	[SpecialOrderItem] [char](1) NULL,
-	[Vendor1] [char](6) NULL,
-	[Vendor2] [char](6) NULL,
-	[Class] [char](2) NULL,
-	[CatMgr] [char](2) NULL,
-	[HowPrice] [char](1) NULL,
-	[Buyer] [char](2) NULL,
-	[Kosher] [char](1) NULL,
-	[PVTLbl] [char](1) NULL,
-	[MaxSmrt] [char](2) NULL,
-	[OrderTiHi] [int] NULL,
-	[TiHi] [int] NULL,
-	[DateDiscontinued] [int] NULL,
-	[Dtelstal] [int] NULL,
-	[DTELstPO] [int] NULL,
-	[GrossWeight] [int] NULL,
-	[NetWeight] [int] NULL,
-	[ShelfLife] [int] NULL,
-	[DateSensitiveType] [char](1) NULL,
-	[Country] [char](10) NULL,
-	[Length] [int] NULL,
-	[Width] [int] NULL,
-	[Height] [int] NULL,
-	[Cube] [int] NULL,
-	[MinTemp] [int] NULL,
-	[MaxTemp] [int] NULL,
-	[GDSNSync] [char](1) NULL,
-	[GuaranteedDays] [int] NULL,
-	[MasterPack] [int] NULL,
-	[ReplacementItem] [char](6) NULL,
-	[ReplacedItem] [char](6) NULL,
-	[TempZone] [char](1) NULL,
-	[CNDoc] [char](1) NULL,
-	[HACCP] [char](1) NULL,
-	[HACCPDoce] [char](5) NULL,
-	[FDAProductFlag] [char](1) NULL,
-	[FPLength] [int] NULL,
-	[FPWidth] [int] NULL,
-	[FPHeight] [int] NULL,
-	[FPGrossWt] [int] NULL,
-	[FPNetWt] [int] NULL,
-	[FPCube] [int] NULL,
-	[NonStock] [char](1) NULL
-) ON [PRIMARY]
-
-GO
-/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_Brands](
-	[Brand] [varchar](20) NULL,
-	[ControlLabel] [varchar](10) NULL,
-	[ExtendedDescription] [varchar](30) NULL
-) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [ETL].[Staging_Category]    Script Date: 7/21/2014 12:40:09 PM ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-SET ANSI_PADDING ON
-GO
-CREATE TABLE [ETL].[Staging_BrandControlLabels](
-	[ControlLabel] [varchar](10) NULL,
-	[ExtendedDescription] [varchar](30) NULL
-) ON [PRIMARY]
-
-GO
-SET ANSI_PADDING OFF
-GO
-/****** Object:  Table [ETL].[Staging_KNet_Invoice]    Script Date: 10/28/2014 3:07:40 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [ETL].[Staging_KNet_Invoice](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[CustomerNumber] [varchar](10) NULL,
-	[OrderNumber] [varchar](9) NULL,
-	[LineNumber] [varchar](5) NULL,
-	[MemoBillCode] [varchar](3) NULL,
-	[CreditOFlag] [varchar](1) NULL,
-	[TradeSWFlag] [varchar](1) NULL,
-	[ShipDate] [varchar](8) NULL,
-	[OrderDate] [varchar](8) NULL,
-	[RouteNumber] [varchar](5) NULL,
-	[StopNumber] [varchar](3) NULL,
-	[WHNumber] [varchar](3) NULL,
-	[ItemNumber] [varchar](10) NULL,
-	[QuantityOrdered] [varchar](7) NULL,
-	[QuantityShipped] [varchar](7) NULL,
-	[BrokenCaseCode] [varchar](1) NULL,
-	[CatchWeightCode] [varchar](1) NULL,
-	[ExtCatchWeight] [varchar](12) NULL,
-	[ItemPrice] [varchar](10) NULL,
-	[PriceBookNumber] [varchar](5) NULL,
-	[ItemPriceSRP] [varchar](12) NULL,
-	[InvoiceNumber] [varchar](20) NULL,
-	[DateOfLastOrder] [varchar](8) NULL,
-	[ExtSRPAmount] [varchar](12) NULL,
-	[ExtSalesGross] [varchar](16) NULL,
-	[ExtSalesNet] [varchar](16) NULL,
-	[CustomerGroup] [varchar](10) NULL,
-	[SalesRep] [varchar](3) NULL,
-	[VendorNumber] [varchar](10) NULL,
-	[CustomerPO] [varchar](20) NULL,
-	[ChainStoreCode] [varchar](10) NULL,
-	[CombStatementCustomer] [varchar](10) NULL,
-	[PriceBook] [varchar](7) NULL,
-	[ClassCode] [varchar](5) NULL
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
 USE [BEK_Commerce_AppData]
 GO
-
-/****** Object:  Table [ETL].[Staging_KPay_Invoice]    Script Date: 10/28/2014 3:08:29 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadBranches]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [ETL].[Staging_KPay_Invoice](
-	[InvoiceNumber] [varchar](30) NOT NULL,
-	[Division] [char](5) NOT NULL,
-	[CustomerNumber] [char](6) NOT NULL,
-	[ItemSequence] [smallint] NOT NULL,
-	[InvoiceType] [char](3) NOT NULL,
-	[InvoiceDate] [datetime] NOT NULL,
-	[DueDate] [datetime] NOT NULL,
-	[AmountDue] [decimal](9, 2) NOT NULL,
-	[DeleteFlag] [bit] NOT NULL
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-
-USE [BEK_Commerce_AppData]
-GO
-
-/****** Object:  Table [ETL].[Staging_WorksheetItems]    Script Date: 10/28/2014 3:08:41 PM ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-SET ANSI_PADDING ON
-GO
-
-CREATE TABLE [ETL].[Staging_WorksheetItems](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[CustomerNumber] [varchar](10) NULL,
-	[ItemNumber] [varchar](10) NULL,
-	[BrokenCaseCode] [varchar](1) NULL,
-	[ItemPrice] [varchar](10) NULL,
-	[QtyOrdered] [varchar](7) NULL,
-	[DateOfLastOrder] [varchar](8) NULL
-) ON [PRIMARY]
-
-GO
-
-SET ANSI_PADDING OFF
-GO
-
-
-
-/********************************************************************************************/
-
-
-SET ANSI_NULLS ON
-
-SET QUOTED_IDENTIFIER ON
-
-SET ANSI_PADDING ON
-
-IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES 
-					WHERE TABLE_SCHEMA = 'dbo' 
-					AND  TABLE_NAME = 'Log'))
-BEGIN
-
-	CREATE TABLE [dbo].[Log](
-		[Id] [int] IDENTITY(1,1) NOT NULL,
-		[Date] [datetime] NOT NULL,
-		[Thread] [varchar](255) NOT NULL,
-		[Host] [varchar] (255) NOT NULL,
-		[User] [varchar] (255) NOT NULL,
-		[Application] [varchar] (255) NOT NULL,
-		[Level] [varchar](50) NOT NULL,
-		[Logger] [varchar](255) NOT NULL,
-		[Message] [varchar](MAX) NOT NULL,
-		[Exception] [varchar](MAX) NULL
-	) ON [PRIMARY]
-
-	SET ANSI_PADDING OFF
-
-	CREATE UNIQUE CLUSTERED INDEX PK_Log ON [Log] 
-		([Id]) 
-
-	CREATE INDEX IX_Log_Date
-		ON [dbo].[Log] ([Date]);
-
-END
-
-/*** Add GS1 Tables **/
-USE BEK_Commerce_AppData;
-
-CREATE TABLE ETL.Staging_FSE_ProductSpec (
-	Gtin char(14) 
-	, PackageGtin char(14)
-	, BekItemNumber char(6)
-	, Active bit
-	, ProductType varchar(20)
-	, ProductShortDesc varchar(70)
-	, ProductAdditionalDesc varchar(max)
-	, ManufacturerItemNumber varchar(30)
-	, UnitsPerCase int
-	, UnitMeasure decimal(20,3)
-	, UnitMeasureUOM varchar(3)
-	, GrossWeight decimal(20,3)
-	, NetWeight decimal(20,3)
-	, Length decimal(20,3)
-	, Width decimal(20,3)
-	, Height decimal(20,3)
-	, Volume decimal(20,3)
-	, TiHi varchar(250)
-	, Shelf int
-	, StorageTemp varchar(35)
-	, ServingsPerPack int
-	, ServingSuggestion varchar(max)
-	, MoreInformation varchar(35)
-	, MarketingMessage varchar(max)
-	, ServingSize decimal(20,3)
-	, ServingSizeUOM varchar(3)
-	, Ingredients varchar(max)
-	, Brand varchar(35)
-	, BrandOwner varchar(max)
-	, CountryOfOrigin varchar(100)
-	, ContryOfOriginName varchar(100)
-	, PreparationInstructions varchar(max)
-	, HandlingInstruction varchar(max)
-);
-GO
-
-CREATE TABLE ETL.Staging_FSE_ProductNutrition (
-	Gtin char(14) 
-	, NutrientTypeCode varchar(100)
-	, NutrientTypeDesc varchar(150)
-	, MeasurmentTypeId varchar(5)
-	, MeasurementValue decimal(20,3)
-	, DailyValue varchar(100)
-);
-GO
-
-CREATE TABLE ETL.Staging_FSE_ProductDiet (
-	Gtin char(14)
-	, DietType varchar(25)
-	, Value char(1)
-);
-
-GO
-
-CREATE TABLE ETL.Staging_FSE_ProductAllergens (
-	Gtin char(14)
-	, AllergenTypeCode varchar(2)
-	, AllergenTypeDesc varchar(50)
-	, LevelOfContainment varchar(20)
-);
-GO
-
-CREATE TABLE [ETL].[Staging_ProprietaryItem](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[ProprietaryNumber] [varchar](10) NULL,
-	[ItemNumber] [varchar](10) NULL
-) ON [PRIMARY]
-
-GO
-
-CREATE TABLE [ETL].[Staging_ProprietaryCustomer](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[ProprietaryNumber] [varchar](10) NULL,
-	[CustomerNumber] [varchar](10) NULL
-) ON [PRIMARY]
-
-GO
-
-CREATE TABLE [ETL].[Staging_BidContractHeader](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[BidNumber] [varchar](10) NULL,
-	[BidDescription] [varchar](40) NULL
-) ON [PRIMARY]
-
-GO
-
-
-CREATE TABLE [ETL].[Staging_BidContractDetail](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[BidNumber] [varchar](10) NULL,
-	[ItemNumber] [varchar](10) NULL,
-	[BidLineNumber] [varchar](5) NULL,
-	[CategoryNumber] [varchar](5) NULL,
-	[CategoryDescription] [varchar](40) NULL,
-	[ForceEachOrCaseOnly] [varchar](1) NULL
-) ON [PRIMARY]
-
-GO
-
-CREATE TABLE [ETL].[Staging_CustomerBid](
-	[Action] [varchar](1) NULL,
-	[CompanyNumber] [varchar](3) NULL,
-	[DivisionNumber] [varchar](3) NULL,
-	[DepartmentNumber] [varchar](3) NULL,
-	[CustomerNumber] [varchar](10) NULL,
-	[PriorityNumber] [varchar](3) NULL,
-	[BidNumber] [varchar](10) NULL
-) ON [PRIMARY]
-
-GO
-
 CREATE PROCEDURE [ETL].[ReadBranches]
 	
 AS
@@ -617,18 +100,87 @@ BEGIN
 END
 
 
+
+
 GO
-/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadBrandControlLabels]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadBrandControlLabels]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT
+		b.ControlLabel,
+		b.ExtendedDescription
+	FROM
+		ETL.Staging_BRandControlLabels b
+END
+
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadCustomers]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
 
 -- =============================================
 -- Author:		<Author,,Name>
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
+CREATE PROCEDURE [ETL].[ReadCustomers]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT 
+		CO AS BranchNumber,
+		CustomerNumber,
+		CustomerName,
+		Address1,
+		Address2,
+		City,
+		[State],
+		ZipCode,
+		Telephone,
+		SalesRep as DsrNumber,
+		ChainStoreCode as NationalOrRegionalAccountNumber,
+		[Contract] as ContractNumber,
+		PORequiredFlag,
+		PowerMenu,
+		ContractOnly
+	FROM 
+		[ETL].Staging_Customer
+END
+
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE PROCEDURE [ETL].[ReadFullItemData]
 	
 AS
@@ -704,7 +256,47 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadInvoices]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [ETL].[ReadInvoices]
+
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	SELECT
+	CustomerNumber,
+	InvoiceNumber,
+	ShipDate, 
+	OrderDate,
+	ItemNumber,
+	QuantityOrdered,
+	QuantityShipped,
+	CatchWeightCode,
+	ExtCatchWeight,
+	ItemPrice,
+	ExtSalesNet,
+	ClassCode,
+	LineNumber
+FROM [ETL].[Staging_KNet_Invoice]
+ORDER BY InvoiceNumber
+END
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -714,7 +306,7 @@ GO
 -- Create date: <Create Date,,>
 -- Description:	<Description,,>
 -- =============================================
-CREATE PROCEDURE [ETL].[ReadItemGS1Data]
+Create PROCEDURE [ETL].[ReadItemGS1Data]
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
@@ -754,8 +346,9 @@ BEGIN
 		a.AllergenTypeDesc IS NOT NULL
 END
 
+
 GO
-/****** Object:  StoredProcedure [ETL].[ReadItemsByBranch]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadItemsByBranch]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -793,8 +386,10 @@ BEGIN
 END
 
 
+
+
 GO
-/****** Object:  StoredProcedure [ETL].[ReadParentCategories]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadParentCategories]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -825,8 +420,35 @@ END
 
 
 
+
+
 GO
-/****** Object:  StoredProcedure [ETL].[ReadSubCategories]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[ReadProprietaryItems]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [ETL].[ReadProprietaryItems]
+	
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+	SELECT
+		DISTINCT
+		c.CustomerNumber,
+		i.ItemNumber
+	FROM
+		ETL.Staging_ProprietaryItem i INNER JOIN
+		ETL.Staging_ProprietaryCustomer c on i.ProprietaryNumber = c.ProprietaryNumber
+	Order By
+		i.ItemNumber
+END
+
+GO
+/****** Object:  StoredProcedure [ETL].[ReadSubCategories]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -856,100 +478,750 @@ BEGIN
 		CategoryId not like '%000'
 END
 
-
-
 GO
-
-/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 8/12/2014 2:56:51 PM ******/
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectContractItems]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
--- =============================================
--- Author:		<Author,,Name>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE PROCEDURE [ETL].[ReadBrandControlLabels]
+
+CREATE PROCEDURE [ETL].[usp_ECOM_SelectContractItems]
+	@CustomerNumber varchar(10)
+	, @DivisionName char(3)
+	, @ContractNumber varchar(10)
+ AS
+
+/*******************************************************************
+* PROCEDURE: usp_ECOM_SelectDistinctCustomerContracts
+* PURPOSE: Select distinct customer contracts by division
+* NOTES: {special set up or requirements, etc.}
+* CREATED:	Jason McMillan 9/30/14
+* MODIFIED 
+* DATE		AUTHOR			DESCRIPTION
+*-------------------------------------------------------------------
+* {date}	{developer}	{brief modification description}
+*******************************************************************/
+
+SELECT
+	c.CustomerNumber
+	, c.CustomerName
+	, c.ContractOnly
+	, LTRIM(RTRIM(c.[Contract])) 'Contract'
+	, LTRIM(RTRIM(cb.BidNumber)) 'BidNumber'
+	, bh.CompanyNumber
+	, bh.DivisionNumber 'DivisionName'
+	, bh.DepartmentNumber
+	, bh.BidDescription
+	, LTRIM(RTRIM(bd.ItemNumber)) 'ItemNumber'
+	, bd.BidLineNumber
+	, bd.CategoryNumber
+	, bd.CategoryDescription
+FROM
+	ETL.Staging_Customer c 
+	INNER JOIN ETL.Staging_CustomerBid cb on c.CustomerNumber = cb.CustomerNumber 
+		AND c.DIV = cb.DivisionNumber
+		AND c.CO = cb.CompanyNumber
+		AND c.DEPT = DepartmentNumber
+	INNER JOIN ETL.Staging_BidContractHeader bh ON cb.BidNumber = bh.BidNumber 
+		AND cb.DivisionNumber = bh.DivisionNumber
+		AND cb.CompanyNumber = bh.CompanyNumber
+		AND cb.DepartmentNumber = bh.DepartmentNumber
+	INNER JOIN ETL.Staging_BidContractDetail bd ON bh.BidNumber = bd.BidNumber 
+		AND cb.DivisionNumber = bh.DivisionNumber
+		AND bh.CompanyNumber = bd.CompanyNumber
+		AND bh.DepartmentNumber = bd.DepartmentNumber
+WHERE
+	LTRIM(RTRIM(bh.BidNumber)) = @ContractNumber
+	AND LTRIM(RTRIM(c.CustomerNumber)) = @CustomerNumber
+	AND LTRIM(RTRIM(cb.DivisionNumber)) = @DivisionName
+ORDER BY
+	bd.BidLineNumber ASC
+
+
+/*
+EXEC ETL.usp_ECOM_SelectContractItems '415101', 'FAM', 'D415101'
+*/
+
+
+
+GO
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectCSUsers]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [ETL].[usp_ECOM_SelectCSUsers]
 AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
 
-    -- Insert statements for procedure here
-	SELECT DISTINCT
-		b.ControlLabel,
-		b.ExtendedDescription
-	FROM
-		ETL.Staging_BrandControlLabels b
-END
+/*******************************************************************
+* PROCEDURE: usp_ECOM_SelectCSUsers
+* PURPOSE: Select distinct commerce server users and email addresses
+* NOTES: {special set up or requirements, etc.}
+* CREATED:	Jason McMillan 2014-10-10
+* MODIFIED 
+* DATE		AUTHOR			DESCRIPTION
+*-------------------------------------------------------------------
+* {date}	{developer}	{brief modification description}
+*******************************************************************/
+
+SET NOCOUNT ON
+
+SELECT
+	DISTINCT
+	u_user_id
+FROM
+	[BEK_Commerce_profiles]..[UserObject]
+
 
 GO
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectDistinctCustomerContracts]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [ETL].[ReadProprietaryItems]
+CREATE PROCEDURE [ETL].[usp_ECOM_SelectDistinctCustomerContracts] 
+	@CustomerNumber varchar(10)
+	, @DivisionName char(3)
+	AS
+
+/*******************************************************************
+* PROCEDURE: usp_ECOM_SelectDistinctCustomerContracts
+* PURPOSE: Select distinct customer contracts by division
+* NOTES: {special set up or requirements, etc.}
+* CREATED:	Jason McMillan 9/30/14
+* MODIFIED 
+* DATE		AUTHOR			DESCRIPTION
+*-------------------------------------------------------------------
+* {date}	{developer}	{brief modification description}
+*******************************************************************/
+
+SET NOCOUNT ON;
+
+SELECT
+	DISTINCT
+	LTRIM(RTRIM(c.CustomerNumber)) 'CustomerNumber'
+	, LTRIM(RTRIM(cb.BidNumber)) 'ContractNumber'
+	, cb.DivisionNumber 'DivisionName'
+FROM
+	ETL.Staging_Customer c 
+	INNER JOIN ETL.Staging_CustomerBid cb on c.CustomerNumber = cb.CustomerNumber
+WHERE
+	LTRIM(RTRIM(c.CustomerNumber)) = @CustomerNumber
+	AND cb.DivisionNumber = @DivisionName
+
+	
+
+GO
+/****** Object:  StoredProcedure [Orders].[GetNextControlNumber]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [Orders].[GetNextControlNumber]
 	
 AS
 BEGIN
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+	declare @maxVal int;
+	declare @currVal int;
+	declare @beginVal int;
 
-	SELECT
-		DISTINCT
-		c.CustomerNumber,
-		i.ItemNumber
-	FROM
-		ETL.Staging_ProprietaryItem i INNER JOIN
-		ETL.Staging_ProprietaryCustomer c on i.ProprietaryNumber = c.ProprietaryNumber
-	Order By
-		i.ItemNumber
+    BEGIN TRANSACTION;
+    -- Increment the counter 
+    UPDATE IdentityCounter SET CurrentId = CurrentId + 1 WHERE CounterName='ControlNumber'
+
+    -- Let's get the current value
+    SELECT @maxVal = EndId, @currVal=CurrentId,@beginVal=StartId FROM [Orders].[IdentityCounter] WHERE CounterName='ControlNumber'
+	IF (@currVal > @maxVal)
+		BEGIN
+			SET @currVal = @beginVal
+			UPDATE IdentityCounter SET CurrentId=@currVal WHERE CounterName='ControlNumber'
+		END
+	
+    COMMIT;
+	return @currVal
 END
 
-GO
 
-/****** Object:  StoredProcedure [ETL].[ReadInvoices]    Script Date: 10/30/2014 1:51:20 AM ******/
+
+GO
+/****** Object:  UserDefinedFunction [ETL].[initcap]    Script Date: 11/11/2014 9:17:13 AM ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+CREATE function [ETL].[initcap] (@text varchar(4000))
+returns varchar(4000)
+as
 
--- =============================================
--- Author:		<Allen, Andrew>
--- Create date: <Create Date,,>
--- Description:	<Description,,>
--- =============================================
-CREATE PROCEDURE [ETL].[ReadInvoices]
+begin
+	declare 	@counter int, 
+		@length int,
+		@char char(1),
+		@textnew varchar(4000)
+	if(@text = '')
+	begin
+		return @text
+	end
 
-AS
-BEGIN
-	-- SET NOCOUNT ON added to prevent extra result sets from
-	-- interfering with SELECT statements.
-	SET NOCOUNT ON;
+	set @text		= rtrim(@text)
+	set @text		= lower(@text)
+	set @length 	= len(@text)
+	set @counter 	= 1
 
-    -- Insert statements for procedure here
-		SELECT
-	CustomerNumber,
-	InvoiceNumber,
-	ShipDate, 
-	OrderDate,
-	ItemNumber,
-	QuantityOrdered,
-	QuantityShipped,
-	CatchWeightCode,
-	ExtCatchWeight,
-	ItemPrice,
-	ExtSalesNet,
-	ClassCode,
-	LineNumber
-FROM [ETL].[Staging_KNet_Invoice]
-ORDER BY InvoiceNumber
-END
+	set @text = upper(left(@text, 1) ) + right(@text, @length - 1) 
+
+	while @counter <> @length --+ 1
+	begin
+		select @char = substring(@text, @counter, 1)
+
+		IF @char = space(1)  or @char =  '_' or @char = ','  or @char = '.' or @char = '\'
+ or @char = '/' or @char = '(' or @char = ')'
+		begin
+			set @textnew = left(@text, @counter)  + upper(substring(@text, 
+@counter+1, 1)) + right(@text, (@length - @counter) - 1)
+			set @text	 = @textnew
+		end
+
+		set @counter = @counter + 1
+	end
+
+	return @text
+end
+
+
 
 GO
+/****** Object:  Table [ETL].[Staging_BidContractDetail]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_BidContractDetail](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[BidNumber] [varchar](10) NULL,
+	[ItemNumber] [varchar](10) NULL,
+	[BidLineNumber] [varchar](5) NULL,
+	[CategoryNumber] [varchar](5) NULL,
+	[CategoryDescription] [varchar](40) NULL,
+	[ForceEachOrCaseOnly] [varchar](1) NULL
+) ON [PRIMARY]
 
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_BidContractHeader]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_BidContractHeader](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[BidNumber] [varchar](10) NULL,
+	[BidDescription] [varchar](40) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Branch]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Branch](
+	[BranchId] [char](10) NULL,
+	[LocationTypeId] [bigint] NULL,
+	[Description] [varchar](50) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_BrandControlLabels]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_BrandControlLabels](
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Brands]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Brands](
+	[Brand] [varchar](20) NULL,
+	[ControlLabel] [varchar](10) NULL,
+	[ExtendedDescription] [varchar](30) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Category](
+	[CategoryId] [char](6) NULL,
+	[CategoryName] [varchar](50) NULL,
+	[PPICode] [char](8) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_Customer]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Customer](
+	[Action] [varchar](1) NULL,
+	[CO] [varchar](3) NULL,
+	[DIV] [varchar](3) NULL,
+	[DEPT] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[CustomerName] [varchar](40) NULL,
+	[Address1] [varchar](25) NULL,
+	[Address2] [varchar](25) NULL,
+	[City] [varchar](30) NULL,
+	[State] [varchar](3) NULL,
+	[ZipCode] [varchar](10) NULL,
+	[WHSNNumber] [varchar](3) NULL,
+	[Telephone] [varchar](10) NULL,
+	[SalesRep] [varchar](3) NULL,
+	[ChainStoreCode] [varchar](10) NULL,
+	[TermCode] [varchar](3) NULL,
+	[CreditLimit] [varchar](7) NULL,
+	[CreditHoldFlag] [varchar](1) NULL,
+	[StoreNumber] [varchar](10) NULL,
+	[ContractOnly] [varchar](1) NULL,
+	[LocationAuth] [varchar](1) NULL,
+	[DateOfLastPayment] [varchar](50) NULL,
+	[AmountDue] [varchar](16) NULL,
+	[CurrentBalance] [varchar](16) NULL,
+	[PDACXAge1] [varchar](16) NULL,
+	[PDACXAge2] [varchar](16) NULL,
+	[PDACXAge3] [varchar](16) NULL,
+	[PDACXAge4] [varchar](16) NULL,
+	[ActiveFlag] [varchar](1) NULL,
+	[MondayRoutNum] [varchar](5) NULL,
+	[MondayStopNum] [varchar](3) NULL,
+	[TuesdayRoutNum] [varchar](5) NULL,
+	[TuesdayStopNum] [varchar](3) NULL,
+	[WednesdayRoutNum] [varchar](5) NULL,
+	[WednesdayStopNum] [varchar](3) NULL,
+	[ThursdayRoutNum] [varchar](5) NULL,
+	[ThursdayStopNum] [varchar](3) NULL,
+	[FridayRoutNum] [varchar](5) NULL,
+	[FridayStopNum] [varchar](3) NULL,
+	[SaturdayRoutNum] [varchar](5) NULL,
+	[SaturdayStopNum] [varchar](3) NULL,
+	[SundayRoutNum] [varchar](5) NULL,
+	[SundayStopNum] [varchar](3) NULL,
+	[CSR] [varchar](3) NULL,
+	[Contract] [varchar](10) NULL,
+	[PORequiredFlag] [varchar](1) NULL,
+	[JDCNTY1] [varchar](3) NULL,
+	[JDCNTY2] [varchar](3) NULL,
+	[PowerMenu] [varchar](1) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_CustomerBid]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_CustomerBid](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[PriorityNumber] [varchar](3) NULL,
+	[BidNumber] [varchar](10) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_FSE_ProductAllergens]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_FSE_ProductAllergens](
+	[Gtin] [char](14) NULL,
+	[AllergenTypeCode] [varchar](2) NULL,
+	[AllergenTypeDesc] [varchar](50) NULL,
+	[LevelOfContainment] [varchar](20) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_FSE_ProductDiet]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_FSE_ProductDiet](
+	[Gtin] [char](14) NULL,
+	[DietType] [varchar](25) NULL,
+	[Value] [char](1) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_FSE_ProductNutrition]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_FSE_ProductNutrition](
+	[Gtin] [char](14) NULL,
+	[NutrientTypeCode] [varchar](100) NULL,
+	[NutrientTypeDesc] [varchar](150) NULL,
+	[MeasurmentTypeId] [varchar](5) NULL,
+	[MeasurementValue] [decimal](20, 3) NULL,
+	[DailyValue] [varchar](100) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_FSE_ProductSpec]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_FSE_ProductSpec](
+	[Gtin] [char](14) NULL,
+	[PackageGtin] [char](14) NULL,
+	[BekItemNumber] [char](6) NULL,
+	[Active] [bit] NULL,
+	[ProductType] [varchar](20) NULL,
+	[ProductShortDesc] [varchar](70) NULL,
+	[ProductAdditionalDesc] [varchar](max) NULL,
+	[ManufacturerItemNumber] [varchar](30) NULL,
+	[UnitsPerCase] [int] NULL,
+	[UnitMeasure] [decimal](20, 3) NULL,
+	[UnitMeasureUOM] [varchar](3) NULL,
+	[GrossWeight] [decimal](20, 3) NULL,
+	[NetWeight] [decimal](20, 3) NULL,
+	[Length] [decimal](20, 3) NULL,
+	[Width] [decimal](20, 3) NULL,
+	[Height] [decimal](20, 3) NULL,
+	[Volume] [decimal](20, 3) NULL,
+	[TiHi] [varchar](250) NULL,
+	[Shelf] [int] NULL,
+	[StorageTemp] [varchar](35) NULL,
+	[ServingsPerPack] [int] NULL,
+	[ServingSuggestion] [varchar](max) NULL,
+	[MoreInformation] [varchar](35) NULL,
+	[MarketingMessage] [varchar](max) NULL,
+	[ServingSize] [decimal](20, 3) NULL,
+	[ServingSizeUOM] [varchar](3) NULL,
+	[Ingredients] [varchar](max) NULL,
+	[Brand] [varchar](35) NULL,
+	[BrandOwner] [varchar](max) NULL,
+	[CountryOfOrigin] [varchar](100) NULL,
+	[ContryOfOriginName] [varchar](100) NULL,
+	[PreparationInstructions] [varchar](max) NULL,
+	[HandlingInstruction] [varchar](max) NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_ItemData]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_ItemData](
+	[BranchId] [char](3) NOT NULL,
+	[ItemId] [char](6) NOT NULL,
+	[Name] [varchar](30) NULL,
+	[Description] [varchar](30) NULL,
+	[Brand] [varchar](8) NULL,
+	[Pack] [char](4) NULL,
+	[Size] [varchar](8) NULL,
+	[UPC] [varchar](14) NULL,
+	[MfrNumber] [varchar](10) NULL,
+	[MfrName] [varchar](30) NULL,
+	[Cases] [int] NULL,
+	[Package] [int] NULL,
+	[PreferredItemCode] [char](1) NULL,
+	[CategoryId] [char](6) NULL,
+	[ItemType] [char](1) NULL,
+	[Status1] [char](1) NULL,
+	[Status2] [char](1) NULL,
+	[ICSEOnly] [char](1) NULL,
+	[SpecialOrderItem] [char](1) NULL,
+	[Vendor1] [char](6) NULL,
+	[Vendor2] [char](6) NULL,
+	[Class] [char](2) NULL,
+	[CatMgr] [char](2) NULL,
+	[HowPrice] [char](1) NULL,
+	[Buyer] [char](2) NULL,
+	[Kosher] [char](1) NULL,
+	[PVTLbl] [char](1) NULL,
+	[MaxSmrt] [char](2) NULL,
+	[OrderTiHi] [int] NULL,
+	[TiHi] [int] NULL,
+	[DateDiscontinued] [int] NULL,
+	[Dtelstal] [int] NULL,
+	[DTELstPO] [int] NULL,
+	[GrossWeight] [int] NULL,
+	[NetWeight] [int] NULL,
+	[ShelfLife] [int] NULL,
+	[DateSensitiveType] [char](1) NULL,
+	[Country] [char](10) NULL,
+	[Length] [int] NULL,
+	[Width] [int] NULL,
+	[Height] [int] NULL,
+	[Cube] [int] NULL,
+	[MinTemp] [int] NULL,
+	[MaxTemp] [int] NULL,
+	[GDSNSync] [char](1) NULL,
+	[GuaranteedDays] [int] NULL,
+	[MasterPack] [int] NULL,
+	[ReplacementItem] [char](6) NULL,
+	[ReplacedItem] [char](6) NULL,
+	[TempZone] [char](1) NULL,
+	[CNDoc] [char](1) NULL,
+	[HACCP] [char](1) NULL,
+	[HACCPDoce] [char](5) NULL,
+	[FDAProductFlag] [char](1) NULL,
+	[FPLength] [int] NULL,
+	[FPWidth] [int] NULL,
+	[FPHeight] [int] NULL,
+	[FPGrossWt] [int] NULL,
+	[FPNetWt] [int] NULL,
+	[FPCube] [int] NULL,
+	[NonStock] [char](1) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_KNet_Invoice]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_KNet_Invoice](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[OrderNumber] [varchar](9) NULL,
+	[LineNumber] [varchar](5) NULL,
+	[MemoBillCode] [varchar](3) NULL,
+	[CreditOFlag] [varchar](1) NULL,
+	[TradeSWFlag] [varchar](1) NULL,
+	[ShipDate] [varchar](8) NULL,
+	[OrderDate] [varchar](8) NULL,
+	[RouteNumber] [varchar](5) NULL,
+	[StopNumber] [varchar](3) NULL,
+	[WHNumber] [varchar](3) NULL,
+	[ItemNumber] [varchar](10) NULL,
+	[QuantityOrdered] [varchar](7) NULL,
+	[QuantityShipped] [varchar](7) NULL,
+	[BrokenCaseCode] [varchar](1) NULL,
+	[CatchWeightCode] [varchar](1) NULL,
+	[ExtCatchWeight] [varchar](12) NULL,
+	[ItemPrice] [varchar](10) NULL,
+	[PriceBookNumber] [varchar](5) NULL,
+	[ItemPriceSRP] [varchar](12) NULL,
+	[InvoiceNumber] [varchar](20) NULL,
+	[DateOfLastOrder] [varchar](8) NULL,
+	[ExtSRPAmount] [varchar](12) NULL,
+	[ExtSalesGross] [varchar](16) NULL,
+	[ExtSalesNet] [varchar](16) NULL,
+	[CustomerGroup] [varchar](10) NULL,
+	[SalesRep] [varchar](3) NULL,
+	[VendorNumber] [varchar](10) NULL,
+	[CustomerPO] [varchar](20) NULL,
+	[ChainStoreCode] [varchar](10) NULL,
+	[CombStatementCustomer] [varchar](10) NULL,
+	[PriceBook] [varchar](7) NULL,
+	[ClassCode] [varchar](5) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_OpenDetailAR]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_OpenDetailAR](
+	[Action] [varchar](50) NULL,
+	[Company] [varchar](50) NULL,
+	[Division] [varchar](50) NULL,
+	[Department] [varchar](3) NULL,
+	[Customer] [varchar](10) NULL,
+	[OriginalInvoiceNumber] [varchar](20) NULL,
+	[InvoiceNumber] [varchar](20) NULL,
+	[AC] [varchar](1) NULL,
+	[ChangeDate] [varchar](8) NULL,
+	[ReclineNumber] [varchar](9) NULL,
+	[InvoiceType] [varchar](1) NULL,
+	[DateOfLastOrder] [varchar](8) NULL,
+	[InvoiceAmount] [varchar](16) NULL,
+	[CheckNumber] [varchar](9) NULL,
+	[AdjustCode] [varchar](3) NULL,
+	[InvoiceReference] [varchar](20) NULL,
+	[InvoiceDue] [varchar](8) NULL,
+	[CombinedStmt] [varchar](10) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_PaidDetail]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_PaidDetail](
+	[Action] [varchar](50) NULL,
+	[AdjustCode] [varchar](50) NULL,
+	[Company] [varchar](50) NULL,
+	[Division] [varchar](50) NULL,
+	[Department] [varchar](3) NULL,
+	[Customer] [varchar](10) NULL,
+	[InvoiceNumber] [varchar](20) NULL,
+	[ReclineNumber] [varchar](9) NULL,
+	[InvoiceType] [varchar](1) NULL,
+	[DateOfLastOrder] [varchar](8) NULL,
+	[InvoiceAmount] [varchar](16) NULL,
+	[CheckNumber] [varchar](9) NULL,
+	[InvoiceReference] [varchar](20) NULL,
+	[InvoiceDue] [varchar](8) NULL,
+	[CombinedStmt] [varchar](10) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_ProprietaryCustomer]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_ProprietaryCustomer](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[ProprietaryNumber] [varchar](10) NULL,
+	[CustomerNumber] [varchar](10) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_ProprietaryItem]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_ProprietaryItem](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[ProprietaryNumber] [varchar](10) NULL,
+	[ItemNumber] [varchar](10) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_WorksheetItems]    Script Date: 11/11/2014 9:17:13 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_WorksheetItems](
+	[Action] [varchar](1) NULL,
+	[CompanyNumber] [varchar](3) NULL,
+	[DivisionNumber] [varchar](3) NULL,
+	[DepartmentNumber] [varchar](3) NULL,
+	[CustomerNumber] [varchar](10) NULL,
+	[ItemNumber] [varchar](10) NULL,
+	[BrokenCaseCode] [varchar](1) NULL,
+	[ItemPrice] [varchar](10) NULL,
+	[QtyOrdered] [varchar](7) NULL,
+	[DateOfLastOrder] [varchar](8) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
