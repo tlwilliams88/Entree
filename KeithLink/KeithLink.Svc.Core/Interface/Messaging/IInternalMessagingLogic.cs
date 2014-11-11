@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 
-        
+
+
+        int GetUnreadMessagesCount(UserProfile user);
     }
 }

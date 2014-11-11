@@ -41,6 +41,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             messagingServiceRepository.UpdateUserMessages(updatedUserMessages);
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("usermessages/unreadcount")]
+        public int unreadmessagescount()
+        {
+            return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser);
+        }
+
 		
         #endregion
     }

@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
-    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -20,6 +20,8 @@ angular.module('bekApp')
     $scope.branches = branches;
     refreshAccessPermissions();
     $scope.currentLocation = LocalStorage.getCurrentLocation();
+
+    $scope.userBar.userNotifications = NotificationService.userNotifications;
 
     // for guest users
     $scope.changeBranch = function() {

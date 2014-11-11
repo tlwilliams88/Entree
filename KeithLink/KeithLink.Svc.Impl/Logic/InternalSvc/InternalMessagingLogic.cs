@@ -297,5 +297,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
 
 
+        public int GetUnreadMessagesCount(UserProfile user)
+        {
+            int count = userMessageRepository.GetUnreadMessagesCount(user);
+
+            return count;
+        }
+
+
     }
 }

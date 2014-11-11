@@ -54,6 +54,12 @@
   <wsdl:message name="IMessagingService_TestNotification_OutputMessage">
     <wsdl:part name="parameters" element="tns:TestNotificationResponse" />
   </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUnreadMessagesCount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnreadMessagesCount" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_GetUnreadMessagesCount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUnreadMessagesCountResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMessagingService">
     <wsdl:operation name="AddUserSubscription">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/AddUserSubscription" message="tns:IMessagingService_AddUserSubscription_InputMessage" />
@@ -82,6 +88,10 @@
     <wsdl:operation name="TestNotification">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/TestNotification" message="tns:IMessagingService_TestNotification_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/TestNotificationResponse" message="tns:IMessagingService_TestNotification_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUnreadMessagesCount">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount" message="tns:IMessagingService_GetUnreadMessagesCount_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse" message="tns:IMessagingService_GetUnreadMessagesCount_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
@@ -142,6 +152,15 @@
     </wsdl:operation>
     <wsdl:operation name="TestNotification">
       <soap:operation soapAction="http://tempuri.org/IMessagingService/TestNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUnreadMessagesCount">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCount" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

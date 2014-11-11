@@ -8,54 +8,36 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('NotificationService', [
-    function () {
+  .factory('NotificationService', [ '$http', 'Notification',
+    function ($http, Notification) {
     
     var Service = {
-      
-      getUnreadMessageCount: function() {
+      userNotifications: { }, // must be an object
 
+      getUnreadMessageCount: function() {
+        return $http.get('/usermessages/unreadcount').then(function(response) {
+          angular.copy({ unread: response.data }, Service.userNotifications); // convert int to object
+          return response.data;
+        });
       },
 
       getAllMessages: function() {
-        return [{
-          id: '12345',
-          userid: '12345',
-          customernumber: '12345',
-          notificationtype: 'Order',
-          messagereadutc: '2014-03-15',
-          messagecreatedutc: '2014-12-15',
-          ordernumber: '12345',
-          subject: 'Order # 23453 was shipped.',
-          body: 'Additional info',
-          mandatory: false
-        }, {
-          id: '12345',
-          userid: '12345',
-          customernumber: '12345',
-          notificationtype: 'Invoice',
-          messagereadutc: '2014-03-15',
-          messagecreatedutc: '2014-01-15',
-          ordernumber: '12345',
-          subject: 'Invoice # 12343 is late.',
-          body: 'Additional info',
-          mandatory: true
-        }, {
-          id: '12345',
-          userid: '12345',
-          customernumber: '12345',
-          notificationtype: 'Order',
-          messagereadutc: null,
-          messagecreatedutc: '2014-03-15',
-          ordernumber: '12345',
-          subject: 'Order # 23453 was shipped.',
-          body: 'Additional info',
-          mandatory: false
-        }];
+        return Notification.query().$promise;
       },
 
-      updateMessages: function() {
+      updateUnreadMessages: function(messages) {
+        var unreadMessages = [];
 
+        angular.forEach(messages, function(message) {
+          if (!message.messagereadutc) {
+            message.messagereadutc = new Date();
+            unreadMessages.push(message);
+          }
+        });
+
+        return Notification.update(unreadMessages).$promise.then(function() {
+          angular.copy({ unread: '0' }, Service.userNotifications);
+        });
       }
     };
  
