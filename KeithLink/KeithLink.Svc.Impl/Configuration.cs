@@ -89,6 +89,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_VHOST_CONFIRMATION = "RabbitMQConfirmationVHost";
         private const string KEY_RABBITMQ_VHOST_NOTIFICATION = "RabbitMQNotificationVHost";
         private const string KEY_RABBITMQ_VHOST_ORDER = "RabbitMQOrderVHost";
+        private const string KEY_RUN_INTERNAL_SERVICE_QUEUES = "RunInternalServiceQueues";
 
         // Misc
         private const string KEY_APP_NAME = "AppName";
@@ -625,6 +626,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
+            }
+        }
+
+        public static bool RunInternalServiceQueues
+        {
+            get
+            {
+                return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
             }
         }
 
