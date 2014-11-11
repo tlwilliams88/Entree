@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Interface.Profile
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
+        void ClearCustomerCache();
     }
 }

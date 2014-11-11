@@ -35,9 +35,12 @@ namespace KeithLink.Svc.InternalSvc
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
 
-            InitializeConfirmationMoverThread();
-            InitializeNotificationsThread();
-            InitializeOrderUpdateThread();
+            if (Svc.Impl.Configuration.RunInternalServiceQueues)
+            {
+                InitializeConfirmationMoverThread();
+                InitializeNotificationsThread();
+                InitializeOrderUpdateThread();
+            }
         }
 
         protected void Session_Start(object sender, EventArgs e)
