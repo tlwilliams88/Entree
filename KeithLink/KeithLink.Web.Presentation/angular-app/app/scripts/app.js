@@ -27,8 +27,8 @@ angular
     'angularFileUpload',
     'configenv'
   ])
-.config(['$stateProvider', '$compileProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
-  function($stateProvider, $compileProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+.config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $compileProvider, $tooltipProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
@@ -434,6 +434,9 @@ angular
   $httpProvider.useApplyAsync(true);
 
   $compileProvider.debugInfoEnabled(false);
+
+  // fix for ngAnimate and ui-bootstrap tooltips
+  $tooltipProvider.options({animation: false});
 
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',

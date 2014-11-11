@@ -216,8 +216,8 @@ angular.module('bekApp')
         $scope.cartForm.$setDirty();
         $scope.changeAllSelectedItems(items, false);
 
-      };      
-    }
+      }    
+    };
 
 
 

@@ -58,7 +58,7 @@ angular.module('bekApp')
 
         return $http.get('/profile', data).then(function(response){
           return response.data.userProfiles[0];
-        })
+        });
       },
 
       // accountid, customerid , email

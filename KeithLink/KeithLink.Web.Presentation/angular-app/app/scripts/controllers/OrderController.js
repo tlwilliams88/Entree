@@ -41,7 +41,7 @@ angular.module('bekApp')
       } else {
         // update order history
         OrderService.getAllOrders().then(function(orders) {
-          $scope.displayMessage('success', 'Successfully received lastest order updates.')
+          $scope.displayMessage('success', 'Successfully received lastest order updates.');
           $scope.orders = orders;
         });
 
@@ -53,6 +53,6 @@ angular.module('bekApp')
     OrderService.refreshOrderHistory().then(function(response) {
       poller();  
     });
-  }
+  };
   
 }]);

@@ -181,7 +181,7 @@ angular.module('bekApp')
 
     $scope.addItemsToReminderList = function() {
       $scope.addItemsToList(ListService.findReminderList());
-    }
+    };
 
     /********************
     DRAG HELPERS
