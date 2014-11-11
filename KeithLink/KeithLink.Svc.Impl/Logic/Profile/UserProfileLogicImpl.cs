@@ -231,8 +231,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public AccountReturn CreateAccount(string name) {
             // call CS account repository -- hard code it for now
-            _accountRepo.CreateAccount(name);
-            return new AccountReturn();
+            Guid newAcctId = _accountRepo.CreateAccount(name);
+            return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
         /// <summary>
@@ -754,6 +754,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (Guid g in usersToDelete)
                 _accountRepo.RemoveUserFromAccount(accountId, g);
 
+            // refresh cache; need to reload customers
+            _customerRepo.ClearCustomerCache();
             return true;
         }
     }

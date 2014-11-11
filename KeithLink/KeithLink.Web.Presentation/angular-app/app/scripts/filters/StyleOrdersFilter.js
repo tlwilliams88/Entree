@@ -16,12 +16,13 @@ angular.module('bekApp')
       //     break;
       // }
 
+      // add css class to orders based on their invoice status
       switch(order.invoicestatus) {
         case 'Late':
-          order.highlight = 'red';
+          order.highlightClass = 'order-summary__order--late';
           break;
         case 'Paid':
-          order.highlight = 'green';
+          order.highlightClass = 'order-summary__order--paid';
           break;
       }
 

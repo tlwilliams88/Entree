@@ -162,8 +162,8 @@
       </div>
     </div>
 
-   <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors" autocomplete="off" context-menu favorite-item-click-handlers>
-      <table navigate-table="lists" class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
+   <form unsaved-warning-form novalidate name="listForm" class="style-validation-errors list-form" autocomplete="off" context-menu favorite-item-click-handlers>
+      <table navigate-table="lists" class="custom-lists__table table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.list-form'" ui-sortable="{ handle: '.bek-sortable-handle', stop: stopReorder, tolerance: 'pointer', containment: 'document' }" ng-model="selectedList.items">
         <thead>
           <tr>
             <th class="nowrap input-col">
