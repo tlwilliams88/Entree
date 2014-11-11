@@ -463,7 +463,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs" />
+    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -648,7 +652,9 @@
     <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
     <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
       <SubType>Designer</SubType>
@@ -917,16 +923,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap" />
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
   </ItemGroup>
   <ItemGroup>
@@ -937,6 +933,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>

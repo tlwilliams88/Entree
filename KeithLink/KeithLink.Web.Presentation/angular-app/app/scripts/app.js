@@ -52,11 +52,9 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
+        // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
-        }],
-        shipDates: ['CartService', function(CartService) {
-          return CartService.getShipDates();
         }]
       }
     })
@@ -191,6 +189,9 @@ angular
         }],
         reminderList: ['ListService', function(ListService) {
           return ListService.getReminderList();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -232,6 +233,9 @@ angular
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -354,6 +358,11 @@ angular
       templateUrl: 'views/admin/adduserdetails.html',
       controller: 'AddUserDetailsController'
     })
+    .state('menu.admin.accountadmin',{
+      url: '/admin/account',
+      templateUrl: 'views/admin/accountadmin.html',
+      controller: 'AccountAdminController'
+    })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
@@ -418,8 +427,8 @@ angular
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
@@ -457,4 +466,9 @@ angular
     }
 
   });
+
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    NotificationService.getUnreadMessageCount();
+  });
+
 }]);

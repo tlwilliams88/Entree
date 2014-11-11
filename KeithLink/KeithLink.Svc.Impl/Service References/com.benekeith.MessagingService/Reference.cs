@@ -56,6 +56,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.MessagingService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/TestNotification", ReplyAction="http://tempuri.org/IMessagingService/TestNotificationResponse")]
         System.Threading.Tasks.Task TestNotificationAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
+        int GetUnreadMessagesCount(KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
+        System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -139,6 +145,14 @@ namespace KeithLink.Svc.Impl.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task TestNotificationAsync() {
             return base.Channel.TestNotificationAsync();
+        }
+        
+        public int GetUnreadMessagesCount(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.GetUnreadMessagesCount(user);
+        }
+        
+        public System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.GetUnreadMessagesCountAsync(user);
         }
     }
 }

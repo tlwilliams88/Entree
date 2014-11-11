@@ -160,14 +160,23 @@
             </th>
           </tr>
         </thead>
-        <tr ng-repeat="item in reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder"  ng-class="{ odd : $odd, even: $even }">
-          <td>
-            <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
-          </td>
-          <td>
-            {{item.name}}
-          </td>
-        </tr>
+        <tbody>
+          <tr ng-repeat="item in (reminderItems = (reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder))"  ng-class="{ odd : $odd, even: $even }">
+            <td>
+              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+            </td>
+            <td>
+              {{item.name}}
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="reminderItems.length === 0 || !reminderItems">
+          <tr>
+            <td colspan="2">
+              There are no missing reminder items for this cart.
+            </td>
+          </tr>
+        </tfoot>
       </table>
     </div>
   </div>

@@ -65,5 +65,10 @@ namespace KeithLink.Svc.InternalSvc
             messagingLogic.UpdateUserMessages(userMessages);
         }
 
+        public int GetUnreadMessagesCount(UserProfile user)
+        {
+            return messagingLogic.GetUnreadMessagesCount(user);
+        }
+
     }
 }

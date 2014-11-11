@@ -64,7 +64,7 @@
       </div>
     </div>
 
-    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4">
+    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="{ 'order-summary__order--paid': order.highlight === 'green', 'order-summary__order--late': order.highlight === 'red'}">
       <div class="row no-margin">
         <div class="col-md-3 order-col">
           <span>ORDER #</span>
@@ -77,10 +77,10 @@
         <div class="col-md-2 table-col">
           {{order.ordertotal | currency}}
         </div>
-        <div class="col-md-3 table-col">
+        <div class="nowrap col-md-3 table-col" ng-class="{'text-red': order.highlight === 'red', 'text-green': order.highlight === 'green'}">
           {{order.status}}
         </div>
-        <div class="col-md-2 table-col">
+        <div class="col-md-2 table-col" ng-class="{'text-red': order.highlight === 'red', 'text-green': order.highlight === 'green'}">
           {{order.invoicestatus || 'N/A'}}
         </div>
       </div>
@@ -95,7 +95,7 @@
         <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
       </div>
     </div>
-    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1">
+    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1 | styleOrders" ng-class="{ 'order-summary__order--paid': order.highlight === 'green', 'order-summary__order--late': order.highlight === 'red'}">
       <div class="order-col">
         <div class="row">
           <div class="col-xs-6">
@@ -128,7 +128,7 @@
           <div class="item-title">
             Status
           </div>
-          <div class="item-value">
+          <div class="item-value" ng-class="{'text-red': order.highlight === 'red', 'text-green': order.highlight === 'green'}">
             {{order.status}}
           </div>
         </div>
@@ -136,7 +136,7 @@
           <div class="item-title">
             Payment Status
           </div>
-          <div class="item-value">
+          <div class="item-value" ng-class="{'text-red': order.highlight === 'red', 'text-green': order.highlight === 'green'}">
             {{order.invoicestatus || 'N/A'}}
           </div>
         </div>

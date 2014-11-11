@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+to be used in conjunction with contextMenuTemplate directive
+*/
+
 angular.module('bekApp')
 .directive('contextMenu', [ function(){
   return {
