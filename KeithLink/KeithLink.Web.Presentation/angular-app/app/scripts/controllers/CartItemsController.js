@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'reminderList',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, reminderList) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'reminderList', 'mandatoryList',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, reminderList, mandatoryList) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -18,6 +18,7 @@ angular.module('bekApp')
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
     $scope.reminderList = reminderList;
+    $scope.mandatoryList = mandatoryList;
     $scope.changeOrders = changeOrders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
@@ -191,8 +192,39 @@ angular.module('bekApp')
       });
     };
 
+    /*************************
+    REMINDER / MANDATORY ITEMS
+    *************************/
+
+    $scope.changeAllSelectedItems = function(items, selectAll) {
+      angular.forEach(items, function(item, index) {
+        item.isSelected = selectAll;
+      });
+    };
+
+    $scope.addSelectedToCart = function(items) {
+      if (items && items.length > 0) {
+        items = $filter('filter')(items, {isSelected: true});
+       
+        // set quantity
+        items.forEach(function(item) {
+          item.quantity = item.parlevel || 1;
+        });
+
+        $scope.currentCart.items = $scope.currentCart.items.concat(items);
+
+        $scope.cartForm.$setDirty();
+        $scope.changeAllSelectedItems(items, false);
+
+      };      
+    }
+
+
+
+    // on page load
     if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
       $scope.startEditCartName(originalBasket.name);
     }
+
 
   }]);

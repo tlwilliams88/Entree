@@ -23,7 +23,7 @@ angular.module('bekApp')
   var data = { response: {}, calls: 0 };
   var poller = function() {
     OrderService.pollOrderHistory().then(function(response) {
-      console.log(response.lastupdated);
+      // console.log('poll');
       data.calls++;
       
       if (currentCustomer.lastOrderUpdate === response.lastupdated) {
@@ -31,6 +31,7 @@ angular.module('bekApp')
 
         if (data.calls > 5) {
           // stop polling after x-number calls
+          // $timeout.cancel(colorRowTimer);
           $scope.displayMessage('error', 'No updates made. Try again later.');
         } else {
           // keep polling

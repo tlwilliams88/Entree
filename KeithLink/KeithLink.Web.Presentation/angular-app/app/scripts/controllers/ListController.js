@@ -285,9 +285,11 @@ angular.module('bekApp')
     $scope.stopReorder = function (e, ui) {
       ui.item.addClass('bek-reordered-item');
 
-      $timeout(function() {
+      var colorRowTimer = $timeout(function() {
         ui.item.removeClass('bek-reordered-item');
+        $timeout.cancel(colorRowTimer);
       }, 500);
+
 
       updateItemPositions();
     };

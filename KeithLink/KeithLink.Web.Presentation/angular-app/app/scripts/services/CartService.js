@@ -95,6 +95,28 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
+      // gets the default selected cart
+      getSelectedCart: function(cartId) {
+        var selectedCart;
+        if (cartId) {
+          selectedCart = Service.findCartById(cartId);
+        }
+        // go to active cart
+        if (!selectedCart) {
+          angular.forEach(Service.carts, function(cart, index) {
+            if (cart.active) {
+              selectedCart = cart;
+            }
+          });
+        }
+        // go to first cart in list
+        if (!selectedCart && Service.carts && Service.carts.length > 0) {
+          selectedCart = Service.carts[0];
+        }
+
+        return selectedCart;
+      },
+
       /********************
       EDIT CART
       ********************/
@@ -143,6 +165,11 @@ angular.module('bekApp')
         });
       },
 
+      addItemsToCart: function(cart, items) {
+        cart.items = items;
+        return Service.updateCart(cart, {deleteomitted: false});
+      },
+
       // accepts cartId (guid)
       deleteCart: function(cartId) {
         return Cart.delete({ 
@@ -188,28 +215,6 @@ angular.module('bekApp')
         return Cart.deleteItem({ cartId: cartId }).$promise.then(function(response) {
           return response;
         });
-      },
-
-      // gets the default selected cart
-      getSelectedCart: function(cartId) {
-        var selectedCart;
-        if (cartId) {
-          selectedCart = Service.findCartById(cartId);
-        }
-        // go to active cart
-        if (!selectedCart) {
-          angular.forEach(Service.carts, function(cart, index) {
-            if (cart.active) {
-              selectedCart = cart;
-            }
-          });
-        }
-        // go to first cart in list
-        if (!selectedCart && Service.carts && Service.carts.length > 0) {
-          selectedCart = Service.carts[0];
-        }
-
-        return selectedCart;
       },
 
       /********************

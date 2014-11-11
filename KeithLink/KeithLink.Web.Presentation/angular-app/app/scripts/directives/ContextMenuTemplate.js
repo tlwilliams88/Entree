@@ -21,7 +21,7 @@ angular.module('bekApp')
             controller: 'ContextMenuModalController',
             // inserts modal on the scope where the context menu click handlers are so the modal has access to those methods,
             // otherwise it would be inserted on the rootscope
-            scope: angular.element('[context-menu]').scope(),
+            scope: scope, //angular.element('[context-menu]').scope(),
             resolve: {
               item: function() {
                 return item;

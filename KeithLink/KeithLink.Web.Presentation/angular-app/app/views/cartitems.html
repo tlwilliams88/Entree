@@ -74,6 +74,8 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+          <p class="text-red" ng-show="mandatoryItems && mandatoryItems.length > 0">Cart is missing some mandatory items.</p>
+          {{cartForm.mandatoryItems}}
 
         </div>
       </div>
@@ -96,7 +98,7 @@
         </div>
 
         <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
-          <button class="btn-lg btn btn-primary" ng-disabled="cartform.$pristine" ng-click="saveChangeOrder(currentCart)" >Update</button>
+          <button class="btn-lg btn btn-primary" ng-disabled="cartform.$pristine" ng-click="saveChangeOrder(currentCart)">Update</button>
 
           <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Re-Submit</button>
 
@@ -144,41 +146,104 @@
     </div>
   </div>
 
-  <div ng-if="reminderList && reminderList.items.length > 0" class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs">
-    <h4 class="no-margin">Reminder Items</h4>
-    <div class="reminder-items__table">
-      <table class="table table-border table-striped-rows">
-        <thead>
-          <tr>
-            <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
-              Item #
-              <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
-            </th>
-            <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
-              Name
-              <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr ng-repeat="item in (reminderItems = (reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder))"  ng-class="{ odd : $odd, even: $even }">
-            <td>
-              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
-            </td>
-            <td>
-              {{item.name}}
-            </td>
-          </tr>
-        </tbody>
-        <tfoot ng-show="reminderItems.length === 0 || !reminderItems">
-          <tr>
-            <td colspan="2">
-              There are no missing reminder items for this cart.
-            </td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
+  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
+    <tabset class="tabset critical-items__tabset">
+
+      <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0">
+        <input name="mandatoryItems" type="hidden">
+
+        <table class="table table-striped-rows">
+          <thead>
+            <tr>
+              <th class="input-col">
+                <input type="checkbox" ng-model="mandatoryList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(mandatoryItems, mandatoryList.allSelected)">
+              </th>
+              <th class="sort-col-header" ng-click="mandatorySortBy='itemnumber';mandatorySortOrder=!mandatorySortOrder;">
+                Item #
+                <span sort-icons field="'itemnumber'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+              </th>
+              <th class="sort-col-header" ng-click="mandatorySortBy='name';mandatorySortOrder=!mandatorySortOrder;">
+                Name
+                <span sort-icons field="'name'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+              </th>
+              <th>
+                Qty
+              </th>
+              <th class="input-col">
+                <a class="pull-right" ng-show="mandatoryItems && mandatoryItems.length > 0" ng-click="addSelectedToCart(mandatoryItems)"><span class="icon-plus3 large-icon"></span> Add</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in (mandatoryItems = (mandatoryList.items | meetsMinimumQuantity:currentCart.items | orderBy:mandatorySortBy:mandatorySortOrder))"  ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }">
+              <td class="input-col">
+                <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
+              </td>
+              <td>
+                <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+              </td>
+              <td>
+                {{item.name}}
+              </td>
+              <td colspan="2">
+                {{item.parlevel}}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot ng-show="mandatoryItems.length === 0 || !mandatoryItems">
+            <tr>
+              <td colspan="5">
+                There are no missing mandatory items for this cart.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </tab>
+
+      <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0">
+        <table class="table table-striped-rows">
+          <thead>
+            <tr>
+              <th class="input-col">
+                <input type="checkbox" ng-model="reminderList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(reminderItems, reminderList.allSelected)">
+              </th>
+              <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+                Item #
+                <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+              </th>
+              <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+                Name
+                <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+              </th>
+              <th class="input-col">
+                <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"><span class="icon-plus3 large-icon"></span> Add</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in (reminderItems = (reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder))"  ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }">
+              <td class="input-col">
+                <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
+              </td>
+              <td>
+                <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+              </td>
+              <td colspan="2">
+                {{item.name}}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot ng-show="reminderItems.length === 0 || !reminderItems">
+            <tr>
+              <td colspan="5">
+                There are no missing reminder items for this cart.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </tab>
+     
+    </tabset>
   </div>
 
 </div>
