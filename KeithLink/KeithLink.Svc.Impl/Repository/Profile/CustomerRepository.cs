@@ -111,7 +111,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
                         IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
                         NationalOrRegionalAccountNumber = org.NationalOrRegionalAccountNumber,
-                        AccountId = !String.IsNullOrEmpty(org.ParentOrganizationId) ? Guid.Parse(org.ParentOrganizationId) : new Nullable<Guid>()
+                        AccountId = !String.IsNullOrEmpty(org.ParentOrganizationId) ? Guid.Parse(org.ParentOrganizationId) : new Nullable<Guid>(),
+                        // TODO - fill this in from real data source
+                        Phone = "303-422-7765",
+                        Email = "test@test.com",
+                        PointOfContact = "test@test.com",
+                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" }
                     });
                 }
             }

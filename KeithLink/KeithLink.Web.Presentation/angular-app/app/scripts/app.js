@@ -359,6 +359,11 @@ angular
       templateUrl: 'views/admin/adduserdetails.html',
       controller: 'AddUserDetailsController'
     })
+    .state('menu.admin.accountadmin',{
+      url: '/admin/account',
+      templateUrl: 'views/admin/accountadmin.html',
+      controller: 'AccountAdminController'
+    })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',

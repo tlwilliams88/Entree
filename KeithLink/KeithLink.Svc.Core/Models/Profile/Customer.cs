@@ -25,6 +25,7 @@ namespace KeithLink.Svc.Core.Models.Profile
         }
     }
 
+    [DataContract(Name = "customer")]
     public class Customer
     {
         [DataMember(Name = "customerNumber")]
@@ -62,6 +63,18 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		[DataMember(Name="lastorderupdate")]
 		public DateTime? LastOrderUpdate { get; set; }
+
+        [DataMember(Name="address")]
+        public Address Address { get; set; }
+
+        [DataMember(Name="phone")]
+        public string Phone { get; set; }
+
+        [DataMember(Name = "email")]
+        public string Email { get; set; }
+
+        [DataMember(Name = "pointofcontact")]
+        public string PointOfContact { get; set; }
     }
 
     public class CustomerAddUserModel
