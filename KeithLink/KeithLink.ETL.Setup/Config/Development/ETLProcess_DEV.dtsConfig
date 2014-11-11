@@ -35,6 +35,9 @@
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PaidDetail].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
 	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Terms].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
+	</Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://corpkecdev1:9876/ETLService.svc?wsdl</ConfiguredValue>
   </Configuration>
@@ -83,6 +86,9 @@
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PaidDetail].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
 	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Terms].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
+	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>http://corpkecdev1:9876/ETLService.svc?wsdl</ConfiguredValue>
 	</Configuration>
@@ -125,6 +131,9 @@
 		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\openDetailAR.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_PaidDetail].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Terms].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
