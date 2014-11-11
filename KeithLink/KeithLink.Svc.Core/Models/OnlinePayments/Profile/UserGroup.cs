@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Profile {
         public string BranchId { get; set; }
 
         [Key, Column(TypeName="char"), MaxLength(6)]
-        public string CustoemrNumber { get; set; }
+        public string CustomerNumber { get; set; }
 
         public bool? InquireOnly { get; set; }
     }

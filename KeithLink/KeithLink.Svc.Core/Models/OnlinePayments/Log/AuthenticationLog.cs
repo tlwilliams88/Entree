@@ -8,7 +8,7 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Log {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long LogId { get; set; }
 
-        [Required]
+        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime AuthenticationTime { get; set; }
 
         [MaxLength(128)]
