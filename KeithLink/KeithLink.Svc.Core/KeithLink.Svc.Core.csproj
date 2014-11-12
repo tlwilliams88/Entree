@@ -148,6 +148,7 @@
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
     <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />

@@ -16,7 +16,6 @@ namespace KeithLink.Svc.Core.Extensions
 				CustomerNumber = invoice.CustomerNumber,
 				InvoiceNumber = invoice.InvoiceNumber,
 				OrderDate = invoice.OrderDate,
-				ShipDate = invoice.ShipDate,
 				Id = invoice.Id,
 				Items = invoice.Items == null ? null : invoice.Items.Select(i =>
 					new KeithLink.Svc.Core.Models.EF.InvoiceItem(){
@@ -42,7 +41,6 @@ namespace KeithLink.Svc.Core.Extensions
 				CustomerNumber = invoice.CustomerNumber,
 				InvoiceNumber = invoice.InvoiceNumber,
 				OrderDate = invoice.OrderDate,
-				ShipDate = invoice.ShipDate,
 				Id = invoice.Id,
 				Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
 					CatchWeightCode = i.CatchWeightCode,

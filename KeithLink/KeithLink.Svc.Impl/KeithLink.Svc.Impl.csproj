@@ -337,6 +337,14 @@
     <Compile Include="Repository\EF\Migrations\201411072131044_added usermessage label.Designer.cs">
       <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411112209413_Additional Invoice fields.cs" />
+    <Compile Include="Repository\EF\Migrations\201411112209413_Additional Invoice fields.Designer.cs">
+      <DependentUpon>201411112209413_Additional Invoice fields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411112222437_Add Term.cs" />
+    <Compile Include="Repository\EF\Migrations\201411112222437_Add Term.Designer.cs">
+      <DependentUpon>201411112222437_Add Term.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -890,6 +898,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411072131044_added usermessage label.resx">
       <DependentUpon>201411072131044_added usermessage label.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411112209413_Additional Invoice fields.resx">
+      <DependentUpon>201411112209413_Additional Invoice fields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411112222437_Add Term.resx">
+      <DependentUpon>201411112222437_Add Term.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
