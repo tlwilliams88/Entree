@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+﻿using KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
 using System;
 using System.Collections.Generic;
 

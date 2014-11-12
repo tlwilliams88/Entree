@@ -1,9 +1,8 @@
-﻿using KeithLink.Svc.Core.Models.OnlinePayments;
-using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
-using KeithLink.Svc.Core.Models.OnlinePayments.Log;
-using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
-using KeithLink.Svc.Core.Models.OnlinePayments.Profile;
+﻿using KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Log.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Profile.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -18,12 +17,12 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
 
         //void OnModelCreating(DbModelBuilder modelBuilder);
 
-        DbContext Context { get; set; }
+        DbContext Context { get; }
         DbSet<AchRoleEmail> AchRoleEmails { get; set; }
         DbSet<ApplicationLog> ApplicationLogs { get; set; }
         DbSet<ApplicationUser> ApplicationUsers { get; set; }
         DbSet<AuthenticationLog> AuthenticationLogs { get; set; }
-        DbSet<KeithLink.Svc.Core.Models.OnlinePayments.Customer.Customer> Customers { get; set; }
+        DbSet<KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF.Customer> Customers { get; set; }
         DbSet<CustomerBank> CustomerBanks { get; set; }
         DbSet<Branch> Branches { get; set; }
         DbSet<Dsr> DSRs { get; set; }

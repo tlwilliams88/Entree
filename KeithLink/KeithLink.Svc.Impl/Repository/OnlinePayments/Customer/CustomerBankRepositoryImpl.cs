@@ -1,6 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;

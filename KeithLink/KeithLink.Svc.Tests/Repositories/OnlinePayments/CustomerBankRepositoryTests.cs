@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+﻿using KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -15,6 +15,7 @@ namespace KeithLink.Svc.Test.Repositories.OnlinePayments {
 
         #region ctor
         public CustomerBankRepositoryTests() {
+            //_dbContext = new KPayDBContext("KPAYDBContext");
             _dbContext = new KPayDBContext("KPAYDBContext");
             _bankRepo = new CustomerBankRepositoryImpl(_dbContext);
         }

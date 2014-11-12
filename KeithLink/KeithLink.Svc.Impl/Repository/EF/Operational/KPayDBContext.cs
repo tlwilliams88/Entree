@@ -1,10 +1,9 @@
 ﻿using KeithLink.Svc.Core.Interface.OnlinePayments;
-using KeithLink.Svc.Core.Models.OnlinePayments;
-using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
-using KeithLink.Svc.Core.Models.OnlinePayments.Log;
-using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
-using KeithLink.Svc.Core.Models.OnlinePayments.Profile;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Log.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Profile.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -173,9 +172,6 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbContext Context {
             get {
                 return this;
-            } 
-            set {
-                //this = value;
             } 
         }
         public DbSet<AchRoleEmail> AchRoleEmails { get; set; }
