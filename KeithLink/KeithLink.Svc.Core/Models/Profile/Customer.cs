@@ -75,6 +75,21 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "pointofcontact")]
         public string PointOfContact { get; set; }
+
+        [DataMember(Name = "currentbalance")]
+        public Decimal? CurrentBalance { get; set; }
+
+        [DataMember(Name = "balanceage1")]
+        public Decimal? BalanceAge1 { get; set; }
+
+        [DataMember(Name = "balanceage2")]
+        public Decimal? BalanceAge2 { get; set; }
+
+        [DataMember(Name = "balanceage3")]
+        public Decimal? BalanceAge3 { get; set; }
+
+        [DataMember(Name = "balanceage4")]
+        public Decimal? BalanceAge4 { get; set; }
     }
 
     public class CustomerAddUserModel

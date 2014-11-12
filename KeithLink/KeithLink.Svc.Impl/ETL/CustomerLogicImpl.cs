@@ -33,10 +33,12 @@ namespace KeithLink.Svc.Impl.ETL
             DataTable customers = stagingRepository.ReadCustomers();
 
             BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
+            BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
 
             Parallel.ForEach(customers.AsEnumerable(), row =>
             {
                 orgsForImport.Add(CreateOrganizationFromStagedData(row));
+                addressesForImport.Add(CreateAddressFromStagedData(row));
             });
 
             // Get Existing Organizations from CS
@@ -66,14 +68,59 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
                     prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
                     prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
-                    // prof.Properties["GeneralInfo.national_account_id"].Value = ; // not available in current data feeds
+                    prof.Properties["GeneralInfo.term_code"].Value = org.TermCode;
+                    prof.Properties["GeneralInfo.amount_due"].Value = org.AmountDue;
+                    prof.Properties["GeneralInfo.credit_limit"].Value = org.CreditLimit;
+                    prof.Properties["GeneralInfo.credit_hold_flag"].Value = org.CreditHoldFlag;
+                    prof.Properties["GeneralInfo.date_of_last_payment"].Value = org.DateOfLastPayment;
+                    prof.Properties["GeneralInfo.current_balance"].Value = org.CurrentBalance;
+                    prof.Properties["GeneralInfo.balance_age_1"].Value = org.BalanceAge1;
+                    prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
+                    prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
+                    prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
 
-                    // Update the profile with the property values.
+                    Profile addressProfile = null;
+                    if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
+                    { // create a new address
+                        string newAddressId = (Guid.NewGuid()).ToCommerceServerFormat();
+                        addressProfile = ctxt.CreateProfile(newAddressId, "Address");
+                        prof.Properties["GeneralInfo.preferred_address"].Value = newAddressId;
+                    }
+                    else
+                    { // update existing address
+                        addressProfile = ctxt.GetProfile((string)prof.Properties["GeneralInfo.preferred_address"].Value, "Address");
+                    }
+
+                    AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber).FirstOrDefault();
+                    addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
+                    addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
+                    addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
+                    addressProfile.Properties["GeneralInfo.city"].Value = address.City;
+                    addressProfile.Properties["GeneralInfo.region_code"].Value = address.StateProvinceCode;
+                    addressProfile.Properties["GeneralInfo.postal_code"].Value = address.ZipPostalCode;
+                    addressProfile.Properties["GeneralInfo.tel_number"].Value = address.Telephone;
+                    addressProfile.Update();
+
                     prof.Update();
                 });
 
             TimeSpan took = DateTime.Now - start;
             return;
+        }
+
+        private AddressProfiles CreateAddressFromStagedData(DataRow row)
+        {
+            return new AddressProfiles()
+            {
+                Description = row.GetString("CustomerNumber"), // use the customer number in description to look up the addy when creating the profile
+                AddressName = "Preferred",
+                Line1 = row.GetString("Address1"),
+                Line2 = row.GetString("Address2"),
+                City = row.GetString("City"),
+                StateProvinceCode = row.GetString("State"),
+                ZipPostalCode = row.GetString("ZipCode"),
+                Telephone = row.GetString("Telephone")
+            };
         }
 
         private Organization CreateOrganizationFromStagedData(DataRow row)
@@ -87,8 +134,19 @@ namespace KeithLink.Svc.Impl.ETL
                 NationalOrRegionalAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
                 ContractNumber = row.GetString("ContractNumber"),
                 IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
-                IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu"))
+                IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu")),
+                TermCode = row.GetString("TermCode"),
+                CreditLimit = row.GetNullableDecimal("CreditLimit"),
+                CreditHoldFlag = row.GetString("CreditHoldFlag"),
+                DateOfLastPayment = row.GetNullableDateTime("DateOfLastPayment"),
+                AmountDue = row.GetNullableDecimal("AmountDue"),
+                CurrentBalance = row.GetNullableDecimal("CurrentBalance"),
+                BalanceAge1 = row.GetNullableDecimal("BalanceAge1"),
+                BalanceAge2 = row.GetNullableDecimal("BalanceAge2"),
+                BalanceAge3 = row.GetNullableDecimal("BalanceAge3"),
+                BalanceAge4 = row.GetNullableDecimal("BalanceAge4")
                 // NationalAccountId = row.Get // this will come from a separate file
+                // TODO, add address info
             };
             return org;
         }
