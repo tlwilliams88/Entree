@@ -208,18 +208,15 @@ angular.module('bekApp')
        
         // set quantity
         items.forEach(function(item) {
-          item.quantity = item.parlevel || 1;
+          item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
         });
 
         $scope.currentCart.items = $scope.currentCart.items.concat(items);
 
         $scope.cartForm.$setDirty();
         $scope.changeAllSelectedItems(items, false);
-
       }    
     };
-
-
 
     // on page load
     if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
