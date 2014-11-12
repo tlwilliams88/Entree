@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -10,8 +11,11 @@ namespace KeithLink.Svc.Core.Models.EF
 {
 	public enum InvoiceType
 	{
+		[Description("Invoice")]
 		Invoice,
+		[Description("Credit Memo")]
 		CreditMemo,
+		[Description("Adjustment")]
 		Adjustment
 	}
 
