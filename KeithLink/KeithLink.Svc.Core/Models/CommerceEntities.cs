@@ -6493,6 +6493,196 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the TermCode property.
+	    /// </summary>
+	    /// <value>
+	    /// The TermCode property from the property collection.
+	    /// </value>
+		public virtual string TermCode
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.TermCode) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.TermCode, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the AmountDue property.
+	    /// </summary>
+	    /// <value>
+	    /// The AmountDue property from the property collection.
+	    /// </value>
+		public virtual decimal? AmountDue
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.AmountDue) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.AmountDue, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the CreditLimit property.
+	    /// </summary>
+	    /// <value>
+	    /// The CreditLimit property from the property collection.
+	    /// </value>
+		public virtual decimal? CreditLimit
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CreditLimit) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CreditLimit, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the CreditHoldFlag property.
+	    /// </summary>
+	    /// <value>
+	    /// The CreditHoldFlag property from the property collection.
+	    /// </value>
+		public virtual string CreditHoldFlag
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CreditHoldFlag) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CreditHoldFlag, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the DateOfLastPayment property.
+	    /// </summary>
+	    /// <value>
+	    /// The DateOfLastPayment property from the property collection.
+	    /// </value>
+		public virtual DateTime? DateOfLastPayment
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.DateOfLastPayment) as DateTime?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.DateOfLastPayment, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the CurrentBalance property.
+	    /// </summary>
+	    /// <value>
+	    /// The CurrentBalance property from the property collection.
+	    /// </value>
+		public virtual decimal? CurrentBalance
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.CurrentBalance) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.CurrentBalance, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the BalanceAge1 property.
+	    /// </summary>
+	    /// <value>
+	    /// The BalanceAge1 property from the property collection.
+	    /// </value>
+		public virtual decimal? BalanceAge1
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.BalanceAge1) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.BalanceAge1, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the BalanceAge2 property.
+	    /// </summary>
+	    /// <value>
+	    /// The BalanceAge2 property from the property collection.
+	    /// </value>
+		public virtual decimal? BalanceAge2
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.BalanceAge2) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.BalanceAge2, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the BalanceAge3 property.
+	    /// </summary>
+	    /// <value>
+	    /// The BalanceAge3 property from the property collection.
+	    /// </value>
+		public virtual decimal? BalanceAge3
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.BalanceAge3) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.BalanceAge3, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the BalanceAge4 property.
+	    /// </summary>
+	    /// <value>
+	    /// The BalanceAge4 property from the property collection.
+	    /// </value>
+		public virtual decimal? BalanceAge4
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.BalanceAge4) as decimal?;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.BalanceAge4, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProfileSystemuserIdChangedBy property.
 	    /// </summary>
 	    /// <value>
@@ -6615,6 +6805,56 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string NationalAccountId = "NationalAccountId";
 	
 			/// <summary>
+	        /// Constant for accessing TermCode property.
+	        /// </summary>
+			public const string TermCode = "TermCode";
+	
+			/// <summary>
+	        /// Constant for accessing AmountDue property.
+	        /// </summary>
+			public const string AmountDue = "AmountDue";
+	
+			/// <summary>
+	        /// Constant for accessing CreditLimit property.
+	        /// </summary>
+			public const string CreditLimit = "CreditLimit";
+	
+			/// <summary>
+	        /// Constant for accessing CreditHoldFlag property.
+	        /// </summary>
+			public const string CreditHoldFlag = "CreditHoldFlag";
+	
+			/// <summary>
+	        /// Constant for accessing DateOfLastPayment property.
+	        /// </summary>
+			public const string DateOfLastPayment = "DateOfLastPayment";
+	
+			/// <summary>
+	        /// Constant for accessing CurrentBalance property.
+	        /// </summary>
+			public const string CurrentBalance = "CurrentBalance";
+	
+			/// <summary>
+	        /// Constant for accessing BalanceAge1 property.
+	        /// </summary>
+			public const string BalanceAge1 = "BalanceAge1";
+	
+			/// <summary>
+	        /// Constant for accessing BalanceAge2 property.
+	        /// </summary>
+			public const string BalanceAge2 = "BalanceAge2";
+	
+			/// <summary>
+	        /// Constant for accessing BalanceAge3 property.
+	        /// </summary>
+			public const string BalanceAge3 = "BalanceAge3";
+	
+			/// <summary>
+	        /// Constant for accessing BalanceAge4 property.
+	        /// </summary>
+			public const string BalanceAge4 = "BalanceAge4";
+	
+			/// <summary>
 	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
 	        /// </summary>
 			public const string ProfileSystemuserIdChangedBy = "ProfileSystem.user_id_changed_by";
@@ -6626,7 +6866,40 @@ namespace KeithLink.Svc.Core.Models.Generated
 	
 		}
 	#endregion
+	
+		#region Relationship Name Projection
+		/// <summary>
+	    /// Relationship name constants. 
+	    /// </summary>
+		public static class RelationshipName 
+		{
+			/// <summary>
+	        /// Constant for accessing the PreferredAddress relationship.
+	        /// </summary>
+			public const string PreferredAddress = "PreferredAddress";
+		}
+		#endregion
+	
+		#region Relationships
+		/// <summary>
+	    /// PreferredAddress Relationship.
+	    /// </summary>
+		public AddressProfiles PreferredAddress
+		{
+			get
+			{
+				var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.PreferredAddress) as CommerceRelationship;
+					
+				if(relationship == null)
+				{
+					return null;
+				}
 		
+				return (AddressProfiles)relationship.Target;
+			}
+		}
+	
+		#endregion	
 	
 		#region CommerceEntity Properties
 		/// <summary>
@@ -9780,6 +10053,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the OriginalOrderNumber property.
+	    /// </summary>
+	    /// <value>
+	    /// The OriginalOrderNumber property from the property collection.
+	    /// </value>
+		public virtual string OriginalOrderNumber
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.OriginalOrderNumber) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.OriginalOrderNumber, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the DisplayName property.
 	    /// </summary>
 	    /// <value>
@@ -10194,6 +10486,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing MasterNumber property.
 	        /// </summary>
 			public const string MasterNumber = "MasterNumber";
+	
+			/// <summary>
+	        /// Constant for accessing OriginalOrderNumber property.
+	        /// </summary>
+			public const string OriginalOrderNumber = "OriginalOrderNumber";
 	
 			/// <summary>
 	        /// Constant for accessing DisplayName property.
@@ -12554,6 +12851,44 @@ namespace KeithLink.Svc.Core.Models.Generated
 		}
 	
 		/// <summary>
+	    /// Gets or sets the QuantityOrdered property.
+	    /// </summary>
+	    /// <value>
+	    /// The QuantityOrdered property from the property collection.
+	    /// </value>
+		public virtual string QuantityOrdered
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.QuantityOrdered) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.QuantityOrdered, value);
+			}
+		}
+	
+		/// <summary>
+	    /// Gets or sets the QuantityShipped property.
+	    /// </summary>
+	    /// <value>
+	    /// The QuantityShipped property from the property collection.
+	    /// </value>
+		public virtual string QuantityShipped
+		{
+			get
+			{
+				return this._commerceEntity.GetPropertyValue(PropertyName.QuantityShipped) as string;
+			}
+	
+			set
+			{
+				this._commerceEntity.SetPropertyValue(PropertyName.QuantityShipped, value);
+			}
+		}
+	
+		/// <summary>
 	    /// Gets or sets the ProductCategory property.
 	    /// </summary>
 	    /// <value>
@@ -13052,7 +13387,7 @@ namespace KeithLink.Svc.Core.Models.Generated
 			public const string Category = "Category";
 	
 			/// <summary>
-	        /// Constant for accessing SubstitueItemNumber property.
+	        /// Constant for accessing SubstitutedItemNumber property.
 	        /// </summary>
 			public const string SubstitutedItemNumber = "SubstitutedItemNumber";
 	
@@ -13060,6 +13395,16 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing MainFrameStatus property.
 	        /// </summary>
 			public const string MainFrameStatus = "MainFrameStatus";
+	
+			/// <summary>
+	        /// Constant for accessing QuantityOrdered property.
+	        /// </summary>
+			public const string QuantityOrdered = "QuantityOrdered";
+	
+			/// <summary>
+	        /// Constant for accessing QuantityShipped property.
+	        /// </summary>
+			public const string QuantityShipped = "QuantityShipped";
 	
 			/// <summary>
 	        /// Constant for accessing ProductCategory property.

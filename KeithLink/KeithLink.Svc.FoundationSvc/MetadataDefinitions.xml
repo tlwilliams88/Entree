@@ -1646,6 +1646,16 @@ This file contains the Metadata Repository
               <PropertyMapping property="BranchNumber"						csProperty="GeneralInfo.branch_number" />
               <PropertyMapping property="OrganizationType"						csProperty="GeneralInfo.organization_type" />
               <PropertyMapping property="ParentOrganizationId"						csProperty="GeneralInfo.parent_organization" />
+              <PropertyMapping property="TermCode"						csProperty="GeneralInfo.term_code" />
+              <PropertyMapping property="AmountDue"						csProperty="GeneralInfo.amount_due" />
+              <PropertyMapping property="CreditLimit"						csProperty="GeneralInfo.credit_limit" />
+              <PropertyMapping property="CreditHoldFlag"						csProperty="GeneralInfo.credit_hold_flag" />
+              <PropertyMapping property="DateOfLastPayment"						csProperty="GeneralInfo.date_of_last_payment" />
+              <PropertyMapping property="CurrentBalance"						csProperty="GeneralInfo.current_balance" />
+              <PropertyMapping property="BalanceAge1"						csProperty="GeneralInfo.balance_age_1" />
+              <PropertyMapping property="BalanceAge2"						csProperty="GeneralInfo.balance_age_2" />
+              <PropertyMapping property="BalanceAge3"						csProperty="GeneralInfo.balance_age_3" />
+              <PropertyMapping property="BalanceAge4"						csProperty="GeneralInfo.balance_age_4" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
             </PropertyMappings>
@@ -1653,6 +1663,7 @@ This file contains the Metadata Repository
         </EntityMappings>
 
         <Relationships>
+          <Relationship name="PreferredAddress" type="Relationship" modelName="Address" isMultipleItems="false" csArea="Profiles" />
         </Relationships>
 
       </CommerceEntity>
