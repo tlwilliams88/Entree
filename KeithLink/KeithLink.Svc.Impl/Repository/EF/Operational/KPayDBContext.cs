@@ -17,9 +17,15 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Repository.EF.Operational {
     public class KPayDBContext : DbContext, IKPayDBContext {
         #region ctor
-        public KPayDBContext() { }
-        public KPayDBContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
-        public KPayDBContext(DbConnection existingConnection) : base(existingConnection, true) { }
+        public KPayDBContext() {
+            Database.SetInitializer<KPayDBContext>(null);
+        }
+        public KPayDBContext(string nameOrConnectionString) : base(nameOrConnectionString) {
+            Database.SetInitializer<KPayDBContext>(null);
+        }
+        public KPayDBContext(DbConnection existingConnection) : base(existingConnection, true) {
+            Database.SetInitializer<KPayDBContext>(null);
+        }
         #endregion
 
         #region methods
@@ -81,12 +87,12 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
                 .ToTable("CustomerBank")
                 .MapToStoredProcedures(s => {
                     s.Delete(d => d.HasName("procDeleteCustomerBankAccount")
-                                   .Parameter(p => p.BranchId, "Division")
+                                   .Parameter(p => p.Division, "Division")
                                    .Parameter(p => p.CustomerNumber, "CustNum")
                                    .Parameter(p => p.AccountNumber, "AcctNum")
                             );
                     s.Insert(i => i.HasName("procInsertCustomerBankAccount")
-                                   .Parameter(p => p.BranchId, "Division")
+                                   .Parameter(p => p.Division, "Division")
                                    .Parameter(p => p.CustomerNumber, "CustNum")
                                    .Parameter(p => p.AccountNumber, "AcctNum")
                                    .Parameter(p => p.TransitNumber, "Transit")
@@ -164,6 +170,14 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         #endregion
 
         #region properties
+        public DbContext Context {
+            get {
+                return this;
+            } 
+            set {
+                //this = value;
+            } 
+        }
         public DbSet<AchRoleEmail> AchRoleEmails { get; set; }
         public DbSet<ApplicationLog> ApplicationLogs { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }

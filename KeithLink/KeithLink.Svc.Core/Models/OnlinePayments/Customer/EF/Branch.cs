@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KeithLink.Svc.Core.Models.OnlinePayments {
+namespace KeithLink.Svc.Core.Models.OnlinePayments.EF {
     [Table("Division")]
     public class Branch {
         [Key, Column("Division", TypeName = "char"), MaxLength(5)]

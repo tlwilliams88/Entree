@@ -23,7 +23,9 @@ namespace KeithLink.Svc.Test.Repositories.OnlinePayments {
         #region methods
         [TestMethod]
         public void SuccessfullyGetCustomerBanks() {
-            IEnumerable<CustomerBank> banks = _bankRepo.ReadForCustomer("FAM04", "700353");
+            List<CustomerBank> banks = _bankRepo.GetAllCustomerBanks("FAM04", "700353");
+
+            Assert.IsTrue(banks.Count > 0);
         }
         #endregion
     }

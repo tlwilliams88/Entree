@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
 
         //void OnModelCreating(DbModelBuilder modelBuilder);
 
+        DbContext Context { get; set; }
         DbSet<AchRoleEmail> AchRoleEmails { get; set; }
         DbSet<ApplicationLog> ApplicationLogs { get; set; }
         DbSet<ApplicationUser> ApplicationUsers { get; set; }
@@ -31,6 +32,5 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
         DbSet<ProcessLog> ProcessLogs { get; set; }
         DbSet<State> States { get; set; }
         DbSet<UserGroup> UserGroups { get; set; }
-        
     }
 }
