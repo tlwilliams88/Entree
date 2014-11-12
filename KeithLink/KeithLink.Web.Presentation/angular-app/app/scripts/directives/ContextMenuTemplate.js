@@ -17,7 +17,7 @@ angular.module('bekApp')
       scope.openContextMenu = function (e, item) {
         if (isTouchDevice()) {
           modalInstance = $modal.open({
-            templateUrl: 'views/contextmenumodal.html',
+            templateUrl: 'views/modals/contextmenumodal.html',
             controller: 'ContextMenuModalController',
             // inserts modal on the scope where the context menu click handlers are so the modal has access to those methods,
             // otherwise it would be inserted on the rootscope

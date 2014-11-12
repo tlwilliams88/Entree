@@ -187,7 +187,7 @@ angular.module('bekApp')
     $scope.openOrderImportModal = function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/orderimportmodal.html',
+        templateUrl: 'views/modals/orderimportmodal.html',
         controller: 'ImportModalController'
       });
     };
@@ -214,6 +214,8 @@ angular.module('bekApp')
         $scope.currentCart.items = $scope.currentCart.items.concat(items);
 
         $scope.cartForm.$setDirty();
+        $scope.reminderList.allSelected = false;
+        $scope.mandatoryList.allSelected = false;
         $scope.changeAllSelectedItems(items, false);
       }    
     };

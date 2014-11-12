@@ -52,9 +52,9 @@
 
     <div class="pull-right">
       <div class="page-header__buttons">
-        <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-        <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
-        <button class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
+        <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+        <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+        <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
         <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
