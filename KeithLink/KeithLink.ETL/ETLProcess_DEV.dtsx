@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="236"
-  DTS:VersionGUID="{81E2AAA4-DB6C-43D2-9F8A-F24FE0C4796C}">
+  DTS:VersionBuild="243"
+  DTS:VersionGUID="{F4939802-31BA-49B2-9DE2-49165F5AEE0E}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -1606,6 +1606,105 @@
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FF_Terms]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{8F8B9411-7B4A-4E2E-A06F-5CD4887D1CD3}"
+      DTS:ObjectName="FF_Terms">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="FixedWidth"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowsToSkip="1"
+          DTS:HeaderRowDelimiter="_x000D__x000A_"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\20141111-010315.20141111-005316.JCTRMAP">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="1"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:ObjectName="Action"
+              DTS:DTSID="{93C5B94A-D313-438C-99DF-51F2A8132A49}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Company"
+              DTS:DTSID="{C9526345-F419-4137-BF6F-73E1C84CA76C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Code"
+              DTS:DTSID="{28AE9090-F206-4A0E-9373-57B2589021BB}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="25"
+              DTS:MaximumWidth="25"
+              DTS:DataType="129"
+              DTS:ObjectName="Description"
+              DTS:DTSID="{BE26A042-8FB1-40E3-B19D-5E9297C13A08}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Age1"
+              DTS:DTSID="{49C2EF85-44C4-4428-80CB-16D72B3FC5D9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Age2"
+              DTS:DTSID="{4785A5DD-E832-49BF-9D66-554D8E3203AE}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Age3"
+              DTS:DTSID="{24A3074D-B910-4502-A1B9-F6899E0577D5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="3"
+              DTS:MaximumWidth="3"
+              DTS:DataType="129"
+              DTS:ObjectName="Age4"
+              DTS:DTSID="{9EA03DAB-B65F-40F4-BE72-7A044ABB8DC5}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="1"
+              DTS:MaximumWidth="1"
+              DTS:DataType="129"
+              DTS:ObjectName="Prox"
+              DTS:DTSID="{6A844E95-0C8F-4757-8129-4A1C1D0478C4}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="CRLF"
+              DTS:DTSID="{64451063-AD5D-4387-9DF7-6007BDDEA2C3}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
       DTS:refId="Package.ConnectionManagers[HTTP_ETLWebService]"
       DTS:CreationName="HTTP"
       DTS:DTSID="{4BB88A81-8888-496B-A098-F127240AFCB1}"
@@ -1618,11 +1717,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAB3C6QRMTK/A/heaBpkGe+24DbUteDajaYjQa7q9acVPgAAAAAOgAAAAAIAACAAAABTIpBD3B15pNeaXy/k2A4F9tkG3NLu6kanhl4Er/EJbxAAAAD5aCQru61Ec2aTHEO7LkBpQAAAAHYM9vPGpY1xDKUEuRyfvrBoAfIC0fTvsELooepqOFV4iLjjkgOGfmJqMVGpl3p7JqVHsfS6kO1JSalbn9J5WOk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAD1JSPyewg948gHmkQqOcMUCkUlwEFdIpxlgWJPzjmbCAAAAAAOgAAAAAIAACAAAAAkGRfP4kGONwHuOxAjmIahbkawbiewqCzNi18oiDt7NRAAAAA0HrHUym+e5V3+1mbL4/oFQAAAAMrdLhDuSjy0aVVVZKhsblUsDuYIjeNNwji4A9Ic4IKBAGvKV9OvL/0iwNOY1X1gChAKjCNBQg5jGGvtObJ/Ruk</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAATix4YheLJ5ZxHPn39E0L8eUO29acHjAVhpq5LCCdxugAAAAAOgAAAAAIAACAAAACmND3+eLUfACso96D3vBctNG2frnSgf5BmhCOqRCujiRAAAADiIuze9Yw8eY9FDjgEKO+fQAAAANSzP036T3GOYnpGWtcFy2Ztb8Bp+iFpNELY0wmCPoxS/o4gN8OcKUb37Us6HuTIDc272ncHnPbJH5p4Sr3lP3A</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABb9CXxDhOJaCGU3aDS/aeL/IPV+c85uP05VERmhFZu6wAAAAAOgAAAAAIAACAAAAActNhuNQtTvQMXkIbgTfq8X/mhAB7KAiVWTbzq+pP1FxAAAAClqO5Q7tZvMtc4HIsSruMYQAAAAGjtnvo8II4FfcGRNjYYA0+8Weu4Bxus3Qh9PDeNjAse1FJ7g2+yD3ysKuXyCG6LcoofxsHEez8GJanFJQfvXjY</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1648,7 +1747,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABxAADqHpNimVppwZUw89zvC7GE0RmReNtiM94k5E+ogAAAAAAOgAAAAAIAACAAAABXEu46fqpodgZbsDf893ofbxPtKsgym9LMkRBaVRCFMBAAAABXRAz4mZkJ86MdMwqvn/01QAAAAIRafI+tBmphcxOypmbxwGzqkTI61FwAqiAxBXnaZ8vEavGenHpird9j6XYzYOjAS7ZP23BaeALaSW1fYdqBauw</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACi4icrJlaHc3E6c28G/UNKm5tkHe07xahAenpz8BXN0wAAAAAOgAAAAAIAACAAAAD8sAgT8IYV6hVkVsayh506JLiRiJ0iob2PwjQb+fRWUBAAAACo9M56mckAlhv+stwL5CFHQAAAALCuVGKXdZKLMMoGvzPiGuc8h9ARtrOL4lIygwk8bxp6xZ+sXcXpVdWjdjRKNMqOx3N36bFNUDlUMbod9d5lBKg</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1663,7 +1762,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAgaAzOARRE59UiQHdCoHom2UjnNjp0UIoUzfN2pxm38QAAAAAOgAAAAAIAACAAAADYKqY7kNvZNQ3WKvY2BhxVdfthWcVlLdNgu6TsspUWCxAAAACNPJtP3UAUGgmps2FE3q9cQAAAAH622kBbr4ZDjGSDJJCmFqyIlinQt8+pGBARSNYVIrgpFZwOdk0p57slCoMAIDLiCmRmAQTTOqryGQ9ljV3jbzU</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACX3ns2BJnIURAS952mgjZ2RBxJOzKfeWnAylwzxIR01AAAAAAOgAAAAAIAACAAAABsZWjgtLg4vCmsSYPr+kYi9479vye/EwN1xMSXDa7dShAAAAB909bdH+Zb9lYu82RSNxAmQAAAACHLXbRoeHhyKoF8jwNA/XRcLp+NX8ZcuyVwAdyAtkLUeMl8Yw5hQM8F/YqsyWo4m91jdbII+PvVIaNkkG8jFyI</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1688,7 +1787,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACTuM2HWrusnzjDVTZ7RBeGNH22OyIWqmP8pAQLmrQPHgAAAAAOgAAAAAIAACAAAACVlgRYMh+l1JEUFCzIDGSnD8kk0EZxuPjP7qqxk3xyJRAAAAC8IdQvJEKCPj0xPjnKxgvPQAAAAA11H5ihNvmu5LrFgUfTkAZnnccq5/jJ3HGZf8Q11XMiwOWR+bkFmf574Yx+WQLuf65SqXB/2WGTWeApNuEqd0E</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAYOTocU4Z9qE0PQE5+gcYaXkekdmly8KExlwuSm6qpewAAAAAOgAAAAAIAACAAAADca6rophxbEo3YaKOwUXdLdecFizmk/q2ufs/51hTThxAAAAAaeRTVYokJVe/hPHjokY1QQAAAACtfEuCFZwTqPW7pRstkTeRaZqgzEovGDrGUDcwRxEVWUprFQQXdXW4Aa7eMGQD3bb1nt7WoWMUzBcowc+MibGk</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1926,35 +2025,14 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2075,34 +2153,105 @@ using System.Runtime.CompilerServices;
   </resheader>
 </root>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
+    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -2355,114 +2504,64 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
-    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-         <Generator>ResXFileCodeGenerator</Generator>
-         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-             <AutoGen>True</AutoGen>
-         <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-         <Generator>SettingsSingleFileGenerator</Generator>
-         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-         <AutoGen>True</AutoGen>
-         <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptMain.cs">
-         <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptTask"
-                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
-                           ApplicationType="usd"
-                           Language="cs"
-                           TemplatesPath=""
-                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
-                           DebugInfoCommandLine=""
-                           DebugInfoWorkingDir=""
-                           IconImageList=""/>
-        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
-        </Host>
-        <ProjectClient>
-            <HostIdentifier>SSIS_ST110</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></ProjectItem>
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -10434,6 +10533,605 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <DTS:Variables />
       <DTS:Executables>
         <DTS:Executable
+          DTS:refId="Package\Customer Invoice Import Tasks\Customer Terms"
+          DTS:CreationName="SSIS.Pipeline.3"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{B9A4248C-F6CE-45D3-9781-47F583A71672}"
+          DTS:ExecutableType="SSIS.Pipeline.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Customer Terms"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
+                  componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FF_Terms]"
+                      connectionManagerRefId="Package.ConnectionManagers[FF_Terms]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          length="1"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Action]"
+                          name="Action"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Company]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Company]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Company]"
+                          name="Company"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Code]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Code]"
+                          name="Code"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Description]"
+                          length="25"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Description]"
+                          name="Description"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age1]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age1]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age1]"
+                          name="Age1"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age2]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age2]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age2]"
+                          name="Age2"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age3]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age3]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age3]"
+                          name="Age3"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age4]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age4]"
+                          length="3"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age4]"
+                          name="Age4"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Prox]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Prox]"
+                          length="1"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Prox]"
+                          name="Prox"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[CRLF]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
+                          length="255"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[CRLF]"
+                          name="CRLF"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Action" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Company]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Company" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="25"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age1" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age2" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age3" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Age4]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age4" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Prox]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Prox" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
+                          codePage="1252"
+                          dataType="str"
+                          length="255"
+                          name="CRLF" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
+                  componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_Terms]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Action]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="Action"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Action]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Company]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Company"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Company]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Company]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Code"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Code]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Description]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="25"
+                          cachedName="Description"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Description]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Description]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Age1]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Age1"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age1]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age1]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Age2]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Age2"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age2]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age2]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Age3]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Age3"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age3]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age3]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Age4]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="Age4"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age4]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Age4]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Prox]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="1"
+                          cachedName="Prox"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Prox]"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output].Columns[Prox]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Action" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Company]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Company" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Code" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="25"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age1" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age2" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age3" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Age4]"
+                          codePage="1252"
+                          dataType="str"
+                          length="3"
+                          name="Age4" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Prox]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="Prox" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Customer Invoice Import Tasks\Customer Terms.Paths[Flat File Source Output]"
+                  endId="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Customer Invoice Import Tasks\KeithNet Invoices"
           DTS:CreationName="SSIS.Pipeline.3"
           DTS:Description="Data Flow Task"
@@ -10815,6 +11513,27 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedName="ClassCode"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ClassCode]"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ClassCode]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[OriginalInvoice]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="OriginalInvoice"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[OriginalInvoiceNumber]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[OriginalInvoice]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CreditAdjustment]"
+                          cachedDataType="wstr"
+                          cachedLength="1"
+                          cachedName="CreditAdjustment"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[AC]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[CreditAdjustment]" />
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[AdjustmentDate]"
+                          cachedDataType="wstr"
+                          cachedLength="20"
+                          cachedName="AdjustmentDate"
+                          externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ChangeDate]"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[AdjustmentDate]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -11040,6 +11759,24 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="str"
                           length="5"
                           name="ClassCode" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[OriginalInvoiceNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="20"
+                          name="OriginalInvoiceNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[AC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="1"
+                          name="AC" />
+                        <externalMetadataColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ChangeDate]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          name="ChangeDate" />
                       </externalMetadataColumns>
                     </input>
                   </inputs>
@@ -11061,6 +11798,181 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                           dataType="i4"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column"
+                  componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input].Columns[InvoiceNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="InvoiceNumber"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(InvoiceNumber)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input].Columns[CustomerNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="CustomerNumber"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerNumber]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CustomerNumber]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(CustomerNumber)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[OriginalInvoice]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="20"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[OriginalInvoice]"
+                          name="OriginalInvoice"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM]([FINDSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},"-",1) != 0 ? ([SUBSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},1,[FINDSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},"-",1) - 1)) : #{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(FINDSTRING(InvoiceNumber,"-",1) != 0 ? (SUBSTRING(InvoiceNumber,1,FINDSTRING(InvoiceNumber,"-",1) - 1)) : InvoiceNumber)</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[CreditAdjustment]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="1"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[CreditAdjustment]"
+                          name="CreditAdjustment"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[FINDSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},"-C-",1) != 0 ? "C" : [FINDSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},"-A-",1) != 0 ? "A" : ""</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">FINDSTRING(InvoiceNumber,"-C-",1) != 0 ? "C" : FINDSTRING(InvoiceNumber,"-A-",1) != 0 ? "A" : ""</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[AdjustmentDate]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          length="50"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[AdjustmentDate]"
+                          name="AdjustmentDate"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[FINDSTRING](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]},"-",1) != 0 ? [REVERSE](([SUBSTRING]([REVERSE](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]}),1,[FINDSTRING]([REVERSE](#{Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[InvoiceNumber]}),"-",1) - 1))) : ""</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">FINDSTRING(InvoiceNumber,"-",1) != 0 ? REVERSE((SUBSTRING(REVERSE(InvoiceNumber),1,FINDSTRING(REVERSE(InvoiceNumber),"-",1) - 1))) : ""</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
                           name="ErrorColumn"
                           specialFlags="2" />
                       </outputColumns>
@@ -12200,8 +13112,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               </components>
               <paths>
                 <path
-                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
+                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Derived Column Output]"
                   endId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
+                  endId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Inputs[Derived Column Input]"
                   name="Flat File Source Output"
                   startId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output]" />
               </paths>
@@ -12241,7 +13158,50 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           cachedDataType="str"
                           cachedLength="20"
                           cachedName="InvoiceNumber"
-                          lineageId="Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source.Outputs[Flat File Source Output].Columns[InvoiceNumber]" />
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source.Outputs[Flat File Source Output].Columns[InvoiceNumber]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(InvoiceNumber)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Open Detail AR\Derived Column.Inputs[Derived Column Input].Columns[Customer]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="Customer"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source.Outputs[Flat File Source Output].Columns[Customer]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source.Outputs[Flat File Source Output].Columns[Customer]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(Customer)</property>
+                          </properties>
+                        </inputColumn>
                       </inputColumns>
                       <externalMetadataColumns />
                     </input>
@@ -13253,6 +14213,107 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               version="1">
               <components>
                 <component
+                  refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column"
+                  componentClassID="{49928E82-9C4E-49F0-AABE-3812B82707EC}"
+                  contactInfo="Derived Column;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;0"
+                  description="Creates new column values by applying expressions to transformation input columns. Create new columns or overwrite existing ones. For example, concatenate the values from the 'first name' and 'last name' column to make a 'full name' column."
+                  name="Derived Column"
+                  usesDispositions="true">
+                  <inputs>
+                    <input
+                      refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input]"
+                      description="Input to the Derived Column Transformation"
+                      name="Derived Column Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input].Columns[InvoiceNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="20"
+                          cachedName="InvoiceNumber"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source.Outputs[Flat File Source Output].Columns[InvoiceNumber]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source.Outputs[Flat File Source Output].Columns[InvoiceNumber]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(InvoiceNumber)</property>
+                          </properties>
+                        </inputColumn>
+                        <inputColumn
+                          refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input].Columns[Customer]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="10"
+                          cachedName="Customer"
+                          errorOrTruncationOperation="Computation"
+                          errorRowDisposition="FailComponent"
+                          lineageId="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source.Outputs[Flat File Source Output].Columns[Customer]"
+                          truncationRowDisposition="FailComponent"
+                          usageType="readWrite">
+                          <properties>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Expression"
+                              name="Expression">[TRIM](#{Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source.Outputs[Flat File Source Output].Columns[Customer]})</property>
+                            <property
+                              containsID="true"
+                              dataType="System.String"
+                              description="Derived Column Friendly Expression"
+                              expressionType="Notify"
+                              name="FriendlyExpression">TRIM(Customer)</property>
+                          </properties>
+                        </inputColumn>
+                      </inputColumns>
+                      <externalMetadataColumns />
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Output]"
+                      description="Default Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      name="Derived Column Output"
+                      synchronousInputId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input]">
+                      <externalMetadataColumns />
+                    </output>
+                    <output
+                      refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Error Output]"
+                      description="Error Output of the Derived Column Transformation"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="Derived Column Error Output"
+                      synchronousInputId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
                   refId="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source"
                   componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
                   contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
@@ -14081,8 +15142,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               </components>
               <paths>
                 <path
-                  refId="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Flat File Source Output]"
+                  refId="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Derived Column Output]"
                   endId="Package\Customer Invoice Import Tasks\Paid Detail\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Derived Column Output"
+                  startId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Outputs[Derived Column Output]" />
+                <path
+                  refId="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Flat File Source Output]"
+                  endId="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column.Inputs[Derived Column Input]"
                   name="Flat File Source Output"
                   startId="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source.Outputs[Flat File Source Output]" />
               </paths>
@@ -19294,6 +20360,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -19412,35 +20487,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -19757,6 +20803,35 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -19786,15 +20861,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -20096,7 +21162,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Contract Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -20113,7 +21179,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate GS1 Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="5">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -20132,14 +21198,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Invoice Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
               SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
-              SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_KNet_Invoice];&#xA;TRUNCATE TABLE [ETL].[Staging_OpenDetailAR];&#xA;TRUNCATE TABLE [ETL].[Staging_PaidDetail];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_OpenDetailAR];&#xA;TRUNCATE TABLE [ETL].[Staging_PaidDetail];&#xA;TRUNCATE TABLE [ETL].[Staging_Terms];" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
@@ -20151,7 +21217,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Worksheet Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -21012,11 +22078,15 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="129,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail"
           TopLeft="188,10" />
+        <NodeLayout
+          Size="157,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms"
+          TopLeft="64,88" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="516,135"
-          Size="516,178"
+          PanelSize="516,185"
+          Size="516,228"
           Id="Package\Customer Invoice Import Tasks"
           TopLeft="460,1196" />
         <NodeLayout
@@ -21074,7 +22144,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Id="Package\Process Staged Data"
           TopLeft="1169.25,1226.25" />
         <NodeLayout
-          Size="196,42"
+          Size="194,42"
           Id="Package\Rename Mainframe Files"
           TopLeft="1183.5,125.75" />
         <NodeLayout
@@ -21369,13 +22439,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 15]"
-          TopLeft="976,1285">
+          TopLeft="976,1310">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="193.25,-37.75"
+              EndConnector="193.25,-62.75"
               Start="0,0"
-              End="185.75,-37.75">
+              End="185.75,-62.75">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -21386,13 +22456,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                     Point2="96.625,0"
                     Point3="96.625,-4" />
                   <mssgle:LineSegment
-                    End="96.625,-33.75" />
+                    End="96.625,-58.75" />
                   <mssgle:CubicBezierSegment
-                    Point1="96.625,-33.75"
-                    Point2="96.625,-37.75"
-                    Point3="100.625,-37.75" />
+                    Point1="96.625,-58.75"
+                    Point2="96.625,-62.75"
+                    Point3="100.625,-62.75" />
                   <mssgle:LineSegment
-                    End="185.75,-37.75" />
+                    End="185.75,-62.75" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -21615,13 +22685,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 8]"
-          TopLeft="1281.5,167.75">
+          TopLeft="1280.5,167.75">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="117.5,446.75"
+              EndConnector="118.5,446.75"
               Start="0,0"
-              End="117.5,439.25">
+              End="118.5,439.25">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -21632,20 +22702,20 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
                     Point2="0,293.1796875"
                     Point3="4,293.1796875" />
                   <mssgle:LineSegment
-                    End="113.5,293.1796875" />
+                    End="114.5,293.1796875" />
                   <mssgle:CubicBezierSegment
-                    Point1="113.5,293.1796875"
-                    Point2="117.5,293.1796875"
-                    Point3="117.5,297.1796875" />
+                    Point1="114.5,293.1796875"
+                    Point2="118.5,293.1796875"
+                    Point3="118.5,297.1796875" />
                   <mssgle:LineSegment
-                    End="117.5,439.25" />
+                    End="118.5,439.25" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="43.50865234375,298.1796875,30.4826953125,9.7490234375"
+              BoundingBox="44.00865234375,298.1796875,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -22147,7 +23217,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="156,42"
           Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice"
@@ -22155,41 +23225,77 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
         <NodeLayout
           Size="198,42"
           Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData"
-          TopLeft="120,176" />
+          TopLeft="428,261" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column"
+          TopLeft="172,135" />
         <EdgeLayout
           Id="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Flat File Source Output]"
           TopLeft="186,99">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="33,77"
+              EndConnector="63,36"
               Start="0,0"
-              End="33,69.5">
+              End="63,28.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,34.5" />
+                    End="0,14" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,34.5"
-                    Point2="0,38.5"
-                    Point3="4,38.5" />
+                    Point1="0,14"
+                    Point2="0,18"
+                    Point3="4,18" />
                   <mssgle:LineSegment
-                    End="29,38.5" />
+                    End="59,18" />
                   <mssgle:CubicBezierSegment
-                    Point1="29,38.5"
-                    Point2="33,38.5"
-                    Point3="33,42.5" />
+                    Point1="59,18"
+                    Point2="63,18"
+                    Point3="63,22" />
                   <mssgle:LineSegment
-                    End="33,69.5" />
+                    End="63,28.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\KeithNet Invoices.Paths[Derived Column Output]"
+          TopLeft="249,177">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="278,84"
+              Start="0,0"
+              End="278,76.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,38" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,38"
+                    Point2="0,42"
+                    Point3="4,42" />
+                  <mssgle:LineSegment
+                    End="274,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="274,42"
+                    Point2="278,42"
+                    Point3="278,46" />
+                  <mssgle:LineSegment
+                    End="278,76.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -22212,7 +23318,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Customer Invoice Import Tasks\Open Detail AR">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="151,42"
           Id="Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source"
@@ -22256,9 +23362,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -22292,9 +23396,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -22317,7 +23419,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Customer Invoice Import Tasks\Paid Detail">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="171,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail\OLE DB Destination"
@@ -22326,40 +23428,76 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="151,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source"
           TopLeft="358,100" />
+        <NodeLayout
+          Size="154,42"
+          Id="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column"
+          TopLeft="270,246" />
         <EdgeLayout
           Id="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Flat File Source Output]"
           TopLeft="433.5,142">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="149,150"
+              EndConnector="-86.5,104"
               Start="0,0"
-              End="149,142.5">
+              End="-86.5,96.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,71" />
+                    End="0,48" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,71"
-                    Point2="0,75"
-                    Point3="4,75" />
+                    Point1="0,48"
+                    Point2="0,52"
+                    Point3="-4,52" />
                   <mssgle:LineSegment
-                    End="145,75" />
+                    End="-82.5,52" />
                   <mssgle:CubicBezierSegment
-                    Point1="145,75"
-                    Point2="149,75"
-                    Point3="149,79" />
+                    Point1="-82.5,52"
+                    Point2="-86.5,52"
+                    Point3="-86.5,56" />
                   <mssgle:LineSegment
-                    End="149,142.5" />
+                    End="-86.5,96.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Derived Column Output]"
+          TopLeft="424,267">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="73,46"
+              Start="0,0"
+              End="65.5,46">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="32.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="32.5,0"
+                    Point2="36.5,0"
+                    Point3="36.5,4" />
+                  <mssgle:LineSegment
+                    End="36.5,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="36.5,42"
+                    Point2="36.5,46"
+                    Point3="40.5,46" />
+                  <mssgle:LineSegment
+                    End="65.5,46" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -22934,7 +24072,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Import Contract Data\ProprietaryCustomer">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="164,42"
           Id="Package\Import Contract Data\ProprietaryCustomer\FF_PropCustomer"
@@ -22974,9 +24112,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23049,6 +24185,69 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
+          TopLeft="521,108" />
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
+          TopLeft="675,344" />
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\Customer Terms.Paths[Flat File Source Output]"
+          TopLeft="596.5,150">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164,194"
+              Start="0,0"
+              End="164,186.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,93" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,93"
+                    Point2="0,97"
+                    Point3="4,97" />
+                  <mssgle:LineSegment
+                    End="160,97" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160,97"
+                    Point2="164,97"
+                    Point3="164,101" />
+                  <mssgle:LineSegment
+                    End="164,186.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>

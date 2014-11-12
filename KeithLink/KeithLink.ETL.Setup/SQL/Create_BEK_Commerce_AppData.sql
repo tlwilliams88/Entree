@@ -82,7 +82,7 @@ GO
 /****** Object:  UserDefinedFunction [ETL].[initcap]    Script Date: 7/21/2014 12:40:09 PM ******/
 USE [BEK_Commerce_AppData]
 GO
-/****** Object:  StoredProcedure [ETL].[ReadBranches]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadBranches]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -103,7 +103,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadBrandControlLabels]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadBrandControlLabels]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -131,7 +131,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadCustomers]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadCustomers]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -175,7 +175,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadFullItemData]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -256,7 +256,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadInvoices]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadInvoices]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -296,7 +296,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadItemGS1Data]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -348,7 +348,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadItemsByBranch]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadItemsByBranch]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -389,7 +389,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadParentCategories]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadParentCategories]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -423,7 +423,7 @@ END
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadProprietaryItems]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadProprietaryItems]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -448,7 +448,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [ETL].[ReadSubCategories]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[ReadSubCategories]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -479,7 +479,7 @@ BEGIN
 END
 
 GO
-/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectContractItems]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectContractItems]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -545,7 +545,7 @@ EXEC ETL.usp_ECOM_SelectContractItems '415101', 'FAM', 'D415101'
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectCSUsers]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectCSUsers]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -575,7 +575,7 @@ FROM
 
 
 GO
-/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectDistinctCustomerContracts]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [ETL].[usp_ECOM_SelectDistinctCustomerContracts]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -614,7 +614,7 @@ WHERE
 	
 
 GO
-/****** Object:  StoredProcedure [Orders].[GetNextControlNumber]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  StoredProcedure [Orders].[GetNextControlNumber]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -649,7 +649,7 @@ END
 
 
 GO
-/****** Object:  UserDefinedFunction [ETL].[initcap]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  UserDefinedFunction [ETL].[initcap]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -696,7 +696,7 @@ end
 
 
 GO
-/****** Object:  Table [ETL].[Staging_BidContractDetail]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_BidContractDetail]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -719,7 +719,7 @@ CREATE TABLE [ETL].[Staging_BidContractDetail](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_BidContractHeader]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_BidContractHeader]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -738,7 +738,7 @@ CREATE TABLE [ETL].[Staging_BidContractHeader](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_Branch]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_Branch]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -754,7 +754,7 @@ CREATE TABLE [ETL].[Staging_Branch](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_BrandControlLabels]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_BrandControlLabels]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -769,7 +769,7 @@ CREATE TABLE [ETL].[Staging_BrandControlLabels](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_Brands]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_Brands]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -785,7 +785,7 @@ CREATE TABLE [ETL].[Staging_Brands](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_Category]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_Category]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -801,7 +801,7 @@ CREATE TABLE [ETL].[Staging_Category](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_Customer]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_Customer]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -863,7 +863,7 @@ CREATE TABLE [ETL].[Staging_Customer](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_CustomerBid]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_CustomerBid]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -883,7 +883,7 @@ CREATE TABLE [ETL].[Staging_CustomerBid](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_FSE_ProductAllergens]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_FSE_ProductAllergens]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -900,7 +900,7 @@ CREATE TABLE [ETL].[Staging_FSE_ProductAllergens](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_FSE_ProductDiet]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_FSE_ProductDiet]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -916,7 +916,7 @@ CREATE TABLE [ETL].[Staging_FSE_ProductDiet](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_FSE_ProductNutrition]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_FSE_ProductNutrition]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -935,7 +935,7 @@ CREATE TABLE [ETL].[Staging_FSE_ProductNutrition](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_FSE_ProductSpec]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_FSE_ProductSpec]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -981,7 +981,7 @@ CREATE TABLE [ETL].[Staging_FSE_ProductSpec](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_ItemData]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_ItemData]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1055,7 +1055,7 @@ CREATE TABLE [ETL].[Staging_ItemData](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_KNet_Invoice]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_KNet_Invoice]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1087,7 +1087,10 @@ CREATE TABLE [ETL].[Staging_KNet_Invoice](
 	[ItemPrice] [varchar](10) NULL,
 	[PriceBookNumber] [varchar](5) NULL,
 	[ItemPriceSRP] [varchar](12) NULL,
+	[OriginalInvoiceNumber] [varchar](20) NULL,
 	[InvoiceNumber] [varchar](20) NULL,
+	[AC] [varchar](1) NULL,
+	[ChangeDate] [varchar](8) NULL,
 	[DateOfLastOrder] [varchar](8) NULL,
 	[ExtSRPAmount] [varchar](12) NULL,
 	[ExtSalesGross] [varchar](16) NULL,
@@ -1105,7 +1108,7 @@ CREATE TABLE [ETL].[Staging_KNet_Invoice](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_OpenDetailAR]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_OpenDetailAR]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1136,7 +1139,7 @@ CREATE TABLE [ETL].[Staging_OpenDetailAR](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_PaidDetail]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_PaidDetail]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1164,7 +1167,7 @@ CREATE TABLE [ETL].[Staging_PaidDetail](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_ProprietaryCustomer]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_ProprietaryCustomer]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1183,7 +1186,7 @@ CREATE TABLE [ETL].[Staging_ProprietaryCustomer](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_ProprietaryItem]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_ProprietaryItem]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1202,7 +1205,29 @@ CREATE TABLE [ETL].[Staging_ProprietaryItem](
 GO
 SET ANSI_PADDING OFF
 GO
-/****** Object:  Table [ETL].[Staging_WorksheetItems]    Script Date: 11/11/2014 9:17:13 AM ******/
+/****** Object:  Table [ETL].[Staging_Terms]    Script Date: 11/11/2014 2:10:33 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_Terms](
+	[Action] [varchar](1) NULL,
+	[Company] [varchar](3) NULL,
+	[Code] [varchar](3) NULL,
+	[Description] [varchar](25) NULL,
+	[Age1] [varchar](3) NULL,
+	[Age2] [varchar](3) NULL,
+	[Age3] [varchar](3) NULL,
+	[Age4] [varchar](3) NULL,
+	[Prox] [varchar](1) NULL
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+/****** Object:  Table [ETL].[Staging_WorksheetItems]    Script Date: 11/11/2014 2:10:33 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1225,3 +1250,4 @@ CREATE TABLE [ETL].[Staging_WorksheetItems](
 GO
 SET ANSI_PADDING OFF
 GO
+

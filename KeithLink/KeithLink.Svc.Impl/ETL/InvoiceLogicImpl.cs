@@ -79,14 +79,7 @@ namespace KeithLink.Svc.Impl.ETL
             };
 			return invoiceModel;
         }
-
-		private static InvoiceType GetTypeFromString(string value)
-		{
-			if (value == "KeithNet")
-				return InvoiceType.KeithNet;
-			else
-				return InvoiceType.KeithPay;
-		}
+			
 
 		private InvoiceItemModel CreateInvoiceItemModelFromStagedData(DataRow row)
 		{
