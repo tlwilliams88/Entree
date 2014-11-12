@@ -27,8 +27,8 @@ angular
     'angularFileUpload',
     'configenv'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
-  function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+.config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $compileProvider, $tooltipProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
@@ -190,6 +190,9 @@ angular
         }],
         reminderList: ['ListService', function(ListService) {
           return ListService.getReminderList();
+        }],
+        mandatoryList: ['ListService', function(ListService) {
+          return ListService.getMandatoryList();
         }],
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
@@ -427,6 +430,14 @@ angular
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
+  // group multiple aysnc methods together to only run through one digest cycle
+  $httpProvider.useApplyAsync(true);
+
+  $compileProvider.debugInfoEnabled(false);
+
+  // fix for ngAnimate and ui-bootstrap tooltips
+  $tooltipProvider.options({animation: false});
+
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
   function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
@@ -469,7 +480,9 @@ angular
   });
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    NotificationService.getUnreadMessageCount();
+    if (AccessService.isLoggedIn()) {
+      NotificationService.getUnreadMessageCount();
+    }
   });
 
 }]);

@@ -95,8 +95,8 @@
     background-color: $color-white !important;
   }
 }
-.item-selected > tr > td, .bek-reordered-item td  {
-  background-color: #f8f8c4 !important;
+.bek-reordered-item td  {
+  background-color: $color-yellow !important;
 }
 // // prevents weird page jumping when reordering items that are scrolled down the page
 // .bek-reorder-overflow {

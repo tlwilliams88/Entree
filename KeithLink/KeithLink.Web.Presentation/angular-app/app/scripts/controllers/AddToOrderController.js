@@ -96,8 +96,9 @@ angular.module('bekApp')
       return itemFound;
     }
 
-    function updateCart(cart) {
-      CartService.updateCart(cart, {deleteomitted: false}).then(function(cart) {
+    function updateCart(cart, items) {
+      var updatedCart = angular.copy(cart);
+      CartService.addItemsToCart(updatedCart, items).then(function(cart) {
         $scope.selectedCart = cart;
 
         // reset quantities
@@ -107,7 +108,7 @@ angular.module('bekApp')
         });
 
         $scope.addToOrderForm.$setPristine();
-        $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
+        $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + cart.name + '.');
       }, function() {
         $scope.displayMessage('error', 'Error adding items to cart.');
       });
@@ -156,9 +157,7 @@ angular.module('bekApp')
 
           // add items to existing cart
           if (cart && cart.id && cart.id !== 'New') {
-            var updatedCart = angular.copy(cart);
-            updatedCart.items = itemsToAdd;
-            updateCart(updatedCart);
+            updateCart(cart, itemsToAdd);
           
           // create new cart
           } else { 
