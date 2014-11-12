@@ -145,6 +145,8 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
+    <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
+    <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
@@ -356,7 +358,12 @@
       <Name>KeithLink.Common.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interface\OnlinePayments\Invoice\" />
+    <Folder Include="Interface\OnlinePayments\Log\" />
+    <Folder Include="Interface\OnlinePayments\Payment\" />
+    <Folder Include="Interface\OnlinePayments\Profile\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

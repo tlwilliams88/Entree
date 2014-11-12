@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment {
     public class LastConfirmation {
-        [Required]
+        [Key, Required]
         public long ConfirmationId { get; set; }
     }
 }

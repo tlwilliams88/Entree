@@ -5,19 +5,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Invoice {
     public class Invoice {
-        [Key, Column(TypeName="char"), MaxLength(30)]
+        [Key, Column(TypeName="char", Order=1), MaxLength(30)]
         public string InvoiceNumber { get; set; }
 
-        [Key, Column("Division", TypeName="char"), MaxLength(5)]
+        [Key, Column("Division", TypeName="char", Order=2), MaxLength(5)]
         public string BranchId { get; set; }
 
-        [Key, Column(TypeName="char"), MaxLength(5)]
+        [Key, Column(TypeName="char", Order=3), MaxLength(5)]
         public string CustomerNumber { get; set; }
 
-        [Key]
+        [Key, Column(Order=4)]
         public Int16 ItemSequence { get; set; }
 
-        [Key, Column(TypeName="char"), MaxLength(3)]
+        [Key, Column(TypeName="char", Order=5), MaxLength(3)]
         public string InvoiceType { get; set; }
 
         [Required]

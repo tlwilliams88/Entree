@@ -5,13 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Customer {
     public class Customer {
-        //[Key, Column("Division", TypeName = "char"), MaxLength(5)]
-        //public string BranchId { get; set; }
+        [Key, Column("Division", TypeName = "char", Order = 1), MaxLength(5)]
+        public string BranchId { get; set; }
 
-        [ForeignKey("Division")]
-        public Branch Branch { get; set; }
+        //[ForeignKey("Division")]
+        //public Branch Branch { get; set; }
 
-        [Key, Column(TypeName = "char"), MaxLength(6)]
+        [Key, Column(TypeName = "char", Order = 2), MaxLength(6)]
         public string CustomerNumber { get; set; }
 
         [MaxLength(50), Required]
@@ -35,8 +35,8 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Customer {
         [MaxLength(30)]
         public string CreditEmailRole { get; set; }
 
-        [ForeignKey("DsrNumber")]
-        public Dsr Dsr { get; set; }
+        [Required, MaxLength(8)]
+        public string DsrNumber { get; set; }
 
         [Required]
         public bool Active { get; set; }

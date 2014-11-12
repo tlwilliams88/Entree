@@ -5,22 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment {
     public class PaymentTransaction {
-        [Key, Column("Division", TypeName="char"), MaxLength(5)]
+        [Key, Column("Division", TypeName="char", Order=1), MaxLength(5)]
         public string BranchId { get; set; }
 
-        [Key, Column(TypeName="char"), MaxLength(6)]
+        [Key, Column(TypeName="char", Order = 2), MaxLength(6)]
         public string CustomerNumber { get; set; }
 
-        [Key, MaxLength(30)]
+        [Key, Column(Order=3), MaxLength(30)]
         public string InvoiceNumber { get; set; }
 
-        [Key, MaxLength(17)]
+        [Key, Column(Order=4), MaxLength(17)]
         public string AccountNumber { get; set; }
 
-        [Key, MaxLength(30)]
+        [Key, Column(Order=5), MaxLength(30)]
         public string UserName { get; set; }
 
-        [Key]
+        [Key, Column(Order=6)]
         public DateTime PaymentDate { get; set; }
 
         [Required]

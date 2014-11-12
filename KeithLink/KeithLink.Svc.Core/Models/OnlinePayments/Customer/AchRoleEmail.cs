@@ -5,10 +5,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Customer {
     public class AchRoleEmail {
-        [Key, MaxLength(30)]
+        [Key, Column(Order=1), MaxLength(30)]
         public string RoleName { get; set; }
 
-        [Key, MaxLength(40)]
+        [Key, Column(Order=2), MaxLength(40)]
         public string Name { get; set; }
 
         [MaxLength(70), Required]

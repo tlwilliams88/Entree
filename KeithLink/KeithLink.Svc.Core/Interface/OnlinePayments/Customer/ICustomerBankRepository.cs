@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.OnlinePayments.Customer {
-    public interface ICustomerBankRepo {
+    public interface ICustomerBankRepository {
         IEnumerable<CustomerBank> ReadForCustomer(string branchId, string customerNumber);
     }
 }

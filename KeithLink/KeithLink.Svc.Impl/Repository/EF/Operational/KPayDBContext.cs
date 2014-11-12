@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.OnlinePayments;
+﻿using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Models.OnlinePayments;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Models.OnlinePayments.Log;
@@ -14,7 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational {
-    public class KPayDBContext : DbContext {
+    public class KPayDBContext : DbContext, IKPayDBContext {
         #region ctor
         public KPayDBContext() { }
         public KPayDBContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
