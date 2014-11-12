@@ -6,8 +6,8 @@
   </div>
   <div header-buttons>
     <button class="btn-lg btn btn-primary pull-right-sm" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
-    <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-    <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+    <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+    <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
   </div>
 </div>
 

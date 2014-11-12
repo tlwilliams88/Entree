@@ -10,18 +10,14 @@ angular.module('bekApp')
       // check if item is in the cart
       var matchingCartItems = $filter('filter')(cartItems, { itemnumber: listItem.itemnumber });
 
-      // check if item in cart has a zero quantity
-      var itemHasQuantitty = false;
-      // listItem.qtyInCart = 0;
+      // find the total quantity of items in the cart
+      listItem.qtyInCart = 0;
       angular.forEach(matchingCartItems, function(cartItem) {
-        if (cartItem.quantity > 0) {
-          itemHasQuantitty = true;
-          // listItem.qtyInCart += cartItem.quantity;
-        }
+        listItem.qtyInCart += cartItem.quantity;
       });
 
-
-      if (!itemHasQuantitty) {
+      // check if quantity in cart meets the parlevel if there is a parlevel
+      if (listItem.qtyInCart < listItem.parlevel || (listItem.parlevel === 0 && listItem.qtyInCart === 0)) {
         filteredList.push(listItem);
       }
 

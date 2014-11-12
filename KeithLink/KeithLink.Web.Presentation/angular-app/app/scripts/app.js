@@ -56,7 +56,7 @@ angular
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
         }]
-        // get SHIP DATES: I put this here so I could set the default ship date of new carts
+        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home

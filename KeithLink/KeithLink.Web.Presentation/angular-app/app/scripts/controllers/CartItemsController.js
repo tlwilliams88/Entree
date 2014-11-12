@@ -187,7 +187,7 @@ angular.module('bekApp')
     $scope.openOrderImportModal = function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/orderimportmodal.html',
+        templateUrl: 'views/modals/orderimportmodal.html',
         controller: 'ImportModalController'
       });
     };
@@ -208,18 +208,17 @@ angular.module('bekApp')
        
         // set quantity
         items.forEach(function(item) {
-          item.quantity = item.parlevel || 1;
+          item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
         });
 
         $scope.currentCart.items = $scope.currentCart.items.concat(items);
 
         $scope.cartForm.$setDirty();
+        $scope.reminderList.allSelected = false;
+        $scope.mandatoryList.allSelected = false;
         $scope.changeAllSelectedItems(items, false);
-
       }    
     };
-
-
 
     // on page load
     if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
