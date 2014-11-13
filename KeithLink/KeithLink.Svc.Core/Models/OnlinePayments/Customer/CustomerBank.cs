@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Customer {
     public class CustomerBank {
-        public string Division { get; set; }
+        public string BranchId { get; set; }
 
         public string CustomerNumber { get; set; }
 

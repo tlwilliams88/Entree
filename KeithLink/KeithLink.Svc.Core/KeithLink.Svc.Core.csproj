@@ -138,6 +138,7 @@
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
+    <Compile Include="Extensions\OnlinePayments\Customer\CustomerBankExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.OnlinePayments.Customer {
     public interface ICustomerBankRepository {
-        List<CustomerBank> ReadForCustomer(string branchId, string customerNumber);
+        List<CustomerBank> GetAllCustomerBanks(string division, string customerNumber);
+
+        CustomerBank GetBankAccount(string division, string customerNumber, string accountNumber);
     }
 }

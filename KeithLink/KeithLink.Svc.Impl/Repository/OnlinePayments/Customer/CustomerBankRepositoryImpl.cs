@@ -21,12 +21,8 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Customer {
         #endregion
 
         #region methods
-        public List<CustomerBank> ReadForCustomer(string branchId, string customerNumber) {
-            return _dbContext.CustomerBanks.Where<CustomerBank>(b => b.Division.Equals(branchId) && b.CustomerNumber.Equals(customerNumber)).ToList();
-        }
-
-        public List<CustomerBank> GetAllCustomerBanks(string branchId, string customerNumber) {
-            SqlParameter branchParm = new SqlParameter("@Division", branchId);
+        public List<CustomerBank> GetAllCustomerBanks(string division, string customerNumber) {
+            SqlParameter branchParm = new SqlParameter("@Division", division);
             SqlParameter custParm = new SqlParameter("@CustNum", customerNumber);
 
             return _dbContext.Context.Database.SqlQuery<CustomerBank>(
@@ -34,6 +30,19 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Customer {
                         branchParm, 
                         custParm
                     ).ToList();
+        }
+
+        public CustomerBank GetBankAccount(string division, string customerNumber, string accountNumber) {
+            SqlParameter branchParm = new SqlParameter("@Division", division);
+            SqlParameter custParm = new SqlParameter("@CustNum", customerNumber);
+            SqlParameter acctParm = new SqlParameter("@AcctNum", accountNumber);
+
+            return _dbContext.Context.Database.SqlQuery<CustomerBank>(
+                    "procGetBankAccount @Division, @CustNum, @AcctNum",
+                    branchParm, 
+                    custParm,
+                    acctParm
+                ).FirstOrDefault();
         }
         #endregion
     }
