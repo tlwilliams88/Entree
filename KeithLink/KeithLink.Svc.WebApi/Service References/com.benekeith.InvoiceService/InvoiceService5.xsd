@@ -18,8 +18,8 @@
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfInvoiceItem" />
       <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="statuddescription" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q1:InvoiceStatus" />
+      <xs:element minOccurs="0" name="statusdescription" nillable="true" type="xs:string" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q2:InvoiceType" />
       <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
     </xs:sequence>
