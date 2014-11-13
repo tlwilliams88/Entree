@@ -26,12 +26,12 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
                 new ElasticSearchCatalogRepositoryImpl(),
                 new PriceLogicImpl(new PriceRepositoryImpl(), new NoCachePriceCacheRepositoryImpl()),
                 new ProductImageRepositoryImpl(),
-				new ListServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient()),
+				new NoListServiceRepositoryImpl(),
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
                 new NoCacheCatalogCacheRepositoryImpl(),
-				new DivisionLogicImpl(new DivisionRepositoryImpl(), new DivisionServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient())),
-                new Impl.Repository.Orders.OrderServiceRepositoryImpl(new Impl.com.benekeith.OrderService.OrderServiceClient())
+				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
+                new Impl.Repository.Orders.NoOrderServiceRepositoryImpl()
                 );
         }
         #endregion

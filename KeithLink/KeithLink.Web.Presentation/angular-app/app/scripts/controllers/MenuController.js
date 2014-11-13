@@ -68,7 +68,7 @@ angular.module('bekApp')
 
     $scope.openTechnicalSupportModal = function() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/technicalsupportmodal.html',
+        templateUrl: 'views/modals/technicalsupportmodal.html',
         controller: 'TechnicalSupportModalController',
         windowClass: 'color-background-modal',
         resolve: {

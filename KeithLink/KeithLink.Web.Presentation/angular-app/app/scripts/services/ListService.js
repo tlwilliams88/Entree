@@ -318,7 +318,7 @@ angular.module('bekApp')
         },
 
         getMandatoryList: function() {
-          return Service.getReminderList();
+          return Service.getList('95');
         }
 
 

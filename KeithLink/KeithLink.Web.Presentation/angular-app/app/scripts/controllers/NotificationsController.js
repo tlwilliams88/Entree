@@ -13,7 +13,7 @@ angular.module('bekApp')
 
   $scope.showAdditionalInfo = function(notification) {
     var modalInstance = $modal.open({
-      templateUrl: 'views/notificationdetailsmodal.html',
+      templateUrl: 'views/modals/notificationdetailsmodal.html',
       controller: 'NotificationDetailsModalController',
       windowClass: 'color-background-modal',
       resolve: {

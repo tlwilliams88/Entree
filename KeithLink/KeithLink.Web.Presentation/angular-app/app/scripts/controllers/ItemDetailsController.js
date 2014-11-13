@@ -30,7 +30,7 @@ angular.module('bekApp')
     $scope.openNotesModal = function (item) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/itemnotesmodal.html',
+        templateUrl: 'views/modals/itemnotesmodal.html',
         controller: 'ItemNotesModalController',
         resolve: {
           item: function() {

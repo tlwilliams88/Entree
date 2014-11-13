@@ -11,28 +11,21 @@
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <div class="col-md-12 form-group">
-        <label class="control-label">Point of Contact:</label> {{customer.pointOfContact}}broussard32
+        <label class="control-label">Email:</label> {{customer.email}}
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <div class="col-md-12 form-group">
-        <label class="control-label">Email:</label> {{customer.email}}clay@torchys.com
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-6 col-md-6">
-      <div class="col-md-12 form-group">
-        <label class="control-label">Phone:</label> {{customer.phone}}555-555-5555
+        <label class="control-label">Phone:</label> {{customer.phone}}
       </div>
     </div>
   </div>
   <div class="row">
     <div class="col-lg-6 col-md-6">
       <div class="col-md-12">
-        <label class="control-label">Address:</label> {{customer.address}}123 Main St. Dallas, TX 75001
+        <label class="control-label">Address:</label> {{customer.address.street}} {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}
       </div>
     </div>
   </div>

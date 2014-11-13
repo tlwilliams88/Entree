@@ -27,9 +27,9 @@
     <button ng-if="!selectedList.read_only" class="btn-lg btn btn-default" ng-click="undoChanges()" ng-disabled="listForm.$pristine">
       Cancel
     </button>
-    <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-    <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
-    <button class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button>
+    <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+    <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+    <button title="Import" class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button>
   </div>
 </div>
 

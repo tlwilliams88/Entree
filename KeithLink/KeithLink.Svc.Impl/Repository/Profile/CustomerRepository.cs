@@ -130,7 +130,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         Phone = "303-422-7765",
                         Email = "test@test.com",
                         PointOfContact = "test@test.com",
-                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" }
+                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
+                        CurrentBalance = org.CurrentBalance,
+                        BalanceAge1 = org.BalanceAge1,
+                        BalanceAge2 = org.BalanceAge2,
+                        BalanceAge3 = org.BalanceAge3,
+                        BalanceAge4 = org.BalanceAge4
                     });
                 }
             }

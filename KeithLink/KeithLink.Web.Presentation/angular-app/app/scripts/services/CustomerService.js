@@ -13,16 +13,17 @@ angular.module('bekApp')
     var categories;
 
     var Service = {
-      getCustomers: function() {
-
-        var params = {
-        };
-
+      getCustomers: function(accountId) {
         var deferred = $q.defer();
 
-        $http.get('/profile/customers', params).then(function(response) {
+        var data = {
+            params: {
+              accountid: accountId
+            }
+          };
+
+        $http.get('/profile/customers', data).then(function(response) {
           var data = response.data;
-          console.log(data);
           if (data.successResponse) {
             deferred.resolve(data.successResponse.customers);
           } else {

@@ -52,9 +52,9 @@
 
     <div class="pull-right">
       <div class="page-header__buttons">
-        <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-        <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
-        <button class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
+        <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+        <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+        <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
         <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
@@ -74,8 +74,7 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
-          <p class="text-red" ng-show="mandatoryItems && mandatoryItems.length > 0">Cart is missing some mandatory items.</p>
-          {{cartForm.mandatoryItems}}
+          <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
 
         </div>
       </div>
@@ -150,7 +149,7 @@
     <tabset class="tabset critical-items__tabset">
 
       <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0">
-        <input name="mandatoryItems" type="hidden">
+        <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
 
         <table class="table table-striped-rows">
           <thead>
@@ -169,6 +168,9 @@
               <th>
                 Qty
               </th>
+              <th>
+                # in Cart
+              </th>
               <th class="input-col">
                 <a class="pull-right" ng-show="mandatoryItems && mandatoryItems.length > 0" ng-click="addSelectedToCart(mandatoryItems)"><span class="icon-plus3 large-icon"></span> Add</a>
               </th>
@@ -185,8 +187,11 @@
               <td>
                 {{item.name}}
               </td>
-              <td colspan="2">
+              <td>
                 {{item.parlevel}}
+              </td>
+              <td colspan="2">
+                {{item.qtyInCart}}
               </td>
             </tr>
           </tbody>
