@@ -82,6 +82,11 @@ ng-class="{ odd : $odd, even: $even }"
   > tbody + tbody {
     border-top: none;
   }
+
+  .item-selected > tr > td, 
+  .item-selected > td {
+    background-color: $color-yellow !important;
+  }
 }
 
 // inputs 

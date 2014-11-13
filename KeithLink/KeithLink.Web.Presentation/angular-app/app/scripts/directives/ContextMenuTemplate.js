@@ -1,5 +1,9 @@
 'use strict';
 
+/*
+to be used in conjunction with contextMenu directive
+*/
+
 angular.module('bekApp')
 .directive('contextMenuTemplate', [ '$modal',
   function($modal){
@@ -13,9 +17,11 @@ angular.module('bekApp')
       scope.openContextMenu = function (e, item) {
         if (isTouchDevice()) {
           modalInstance = $modal.open({
-            templateUrl: 'views/contextmenumodal.html',
+            templateUrl: 'views/modals/contextmenumodal.html',
             controller: 'ContextMenuModalController',
-            scope: angular.element('[context-menu]').scope(),
+            // inserts modal on the scope where the context menu click handlers are so the modal has access to those methods,
+            // otherwise it would be inserted on the rootscope
+            scope: scope, //angular.element('[context-menu]').scope(),
             resolve: {
               item: function() {
                 return item;

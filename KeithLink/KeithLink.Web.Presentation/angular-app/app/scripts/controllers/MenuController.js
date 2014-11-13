@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService',
-    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -20,6 +20,8 @@ angular.module('bekApp')
     $scope.branches = branches;
     refreshAccessPermissions();
     $scope.currentLocation = LocalStorage.getCurrentLocation();
+
+    $scope.userBar.userNotifications = NotificationService.userNotifications;
 
     // for guest users
     $scope.changeBranch = function() {
@@ -66,7 +68,7 @@ angular.module('bekApp')
 
     $scope.openTechnicalSupportModal = function() {
       var modalInstance = $modal.open({
-        templateUrl: 'views/technicalsupportmodal.html',
+        templateUrl: 'views/modals/technicalsupportmodal.html',
         controller: 'TechnicalSupportModalController',
         windowClass: 'color-background-modal',
         resolve: {

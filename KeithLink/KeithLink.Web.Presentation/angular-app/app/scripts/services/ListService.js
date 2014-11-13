@@ -299,11 +299,25 @@ angular.module('bekApp')
           return Service.addItem(Service.getFavoritesList().listid, item, true);
         },
 
-        /********************
+        /*****************************
         REMINDER/MANDATORY ITEMS LISTS
-        ********************/
+        *****************************/
 
         getReminderList: function() {
+          return List.getReminderList().$promise.then(function(lists) {
+            if (lists.length === 1) {
+              return lists[0];  
+            } else {
+              return {};
+            }
+          });
+        },
+
+        findReminderList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'isreminder', true);
+        },
+
+        getMandatoryList: function() {
           return Service.getList('95');
         }
 

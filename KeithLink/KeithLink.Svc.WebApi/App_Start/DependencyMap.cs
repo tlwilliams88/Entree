@@ -30,6 +30,8 @@ using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Core.Interface.Messaging;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -80,7 +82,6 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
-			builder.RegisterType<InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             builder.RegisterType<OrderUpdateRequestQueueRepositoryImpl>().As<IOrderHistoryRequestQueueRepository>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
@@ -88,13 +89,17 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
 
-			builder.RegisterType<ListServiceRepositoryImpl>().As<IListServiceRepository>();
-			builder.RegisterType<DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
-			builder.RegisterType<OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.Impl.com.benekeith.ListService.IListServcie>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.InvoiceService.IInvoiceService>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.DivisionService.IDivisionService>();
-			builder.RegisterType<KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.Impl.com.benekeith.OrderService.IOrderService>();
+			builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
+			builder.RegisterType<Repository.SiteCatalog.DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+            builder.RegisterType<Repository.Messaging.MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+			builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.WebApi.com.benekeith.ListService.IListServcie>();
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.InvoiceService.IInvoiceService>();
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.DivisionService.IDivisionService>();
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.MessagingService.MessagingServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.MessagingService.IMessagingService>();
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.OrderService.IOrderService>();
+
 
             // Build the container.
             var container = builder.Build();

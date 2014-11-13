@@ -111,14 +111,22 @@ $order-col__background: #f1efe5;
 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
+
+    .highlight-col {
+      color: $color-green;
+    }
   }
   &.order-summary__order--late {
     border-left: 3px solid $color-red;
+
+    .highlight-col {
+      color: $color-red;
+    }
   }
   
   // order table columns
   .table-col {
-    padding: 34px;
+    padding: 34px 0;
   }
 
   .order-col {
@@ -146,6 +154,19 @@ $order-col__background: #f1efe5;
     // border: 1px solid $color-border;
     border-top: none;
 
+    &.order-summary__order--late {
+      border-left: none;
+      .order-col {
+        border-top: 3px solid $color-red;
+      }
+    }
+    &.order-summary__order--paid {
+      border-left: none;
+      .order-col {
+        border-top: 3px solid $color-green;
+      }
+    }
+    
     .order-col {
       border-bottom: 1px solid $color-border;
       border-top: 1px solid $color-border;
@@ -158,14 +179,7 @@ $order-col__background: #f1efe5;
       .order-col__date {
         text-align: right;
         font-size: 14px;
-        margin-top: 10px;
-      }
-
-      &.order-summary__order--late {
-        border-top: 3px solid $color-red;
-      }
-      &.order-summary__order--paid {
-        border-top: 3px solid $color-green;
+        // margin-top: 10px;
       }
     }
     .order-details {

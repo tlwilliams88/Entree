@@ -3,16 +3,36 @@
   right: 0;
 }
 
-.reminder-items__table {
-  @include scroll-div-vertical(150px);
-  margin-top: 10px;
+.critical-items__tabset {
+  .nav-tabs li a {
+    padding: 8px 15px;
+    font-weight: 600;
+  }
+  .nav-tabs li.active a, .nav-tabs li.active a:hover {
+    padding-top: 6px;
+    // background-color: $background;
+    border-bottom: 1px solid $color-border;
+  }
 
-  .table > thead > tr > th, 
-  .table > thead > tr > td, 
-  .table > tbody > tr > th, 
-  .table > tbody > tr > td, 
-  .table > tfoot > tr > th, 
-  .table > tfoot > tr > td {
-    padding: 6px 5px;
+  .tab-content {
+    @include scroll-div-vertical(150px);
+    // margin-top: 10px;
+
+    .table {
+      margin-bottom: 0;
+
+      > thead > tr > th, 
+      > thead > tr > td, 
+      > tbody > tr > th, 
+      > tbody > tr > td, 
+      > tfoot > tr > th, 
+      > tfoot > tr > td {
+        padding: 6px 5px;
+
+        &.input-col {
+          padding: 3px 5px;
+        }
+      }
+    }
   }
 }

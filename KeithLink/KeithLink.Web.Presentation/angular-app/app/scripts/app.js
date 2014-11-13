@@ -27,8 +27,8 @@ angular
     'angularFileUpload',
     'configenv'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
-  function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+.config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $compileProvider, $tooltipProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
@@ -52,12 +52,11 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
+        // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
-        }],
-        shipDates: ['CartService', function(CartService) {
-          return CartService.getShipDates();
         }]
+        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home
@@ -191,6 +190,12 @@ angular
         }],
         reminderList: ['ListService', function(ListService) {
           return ListService.getReminderList();
+        }],
+        mandatoryList: ['ListService', function(ListService) {
+          return ListService.getMandatoryList();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -232,6 +237,9 @@ angular
         }],
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
+        }],
+        shipDates: ['CartService', function(CartService) {
+          return CartService.getShipDates();
         }]
       }
     })
@@ -354,6 +362,11 @@ angular
       templateUrl: 'views/admin/adduserdetails.html',
       controller: 'AddUserDetailsController'
     })
+    .state('menu.admin.accountadmin',{
+      url: 'account/',
+      templateUrl: 'views/admin/accountadmin.html',
+      controller: 'AccountAdminController'
+    })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
@@ -417,9 +430,17 @@ angular
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
+  // group multiple aysnc methods together to only run through one digest cycle
+  $httpProvider.useApplyAsync(true);
+
+  $compileProvider.debugInfoEnabled(false);
+
+  // fix for ngAnimate and ui-bootstrap tooltips
+  $tooltipProvider.options({animation: false});
+
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
@@ -457,4 +478,11 @@ angular
     }
 
   });
+
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    if (AccessService.isLoggedIn()) {
+      NotificationService.getUnreadMessageCount();
+    }
+  });
+
 }]);

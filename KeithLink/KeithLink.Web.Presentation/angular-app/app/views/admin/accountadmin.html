@@ -1,0 +1,137 @@
+<div page-header-bar>
+  <div header-message>
+    Account Administration
+  </div>
+  <div header-buttons></div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-inline top-buffer">
+      <div class="form-group">
+        <span class="text-red" ng-show="userExists">This user already exists, please contact Ben E. Keith Customer Service to add this user to your account</span>
+        <br ng-show="userExists">
+        <input type="email" class="inlineOverride form-control" placeholder="Enter email address" ng-model="addNewUserEmail"/>
+        <button class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h2>Assigned User Profiles</h2>
+
+    <div class="infiniteScroll">
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortBy2='emailaddress';sortOrder2=!sortOrder2;">Username
+            <span sort-icons field="'emailaddress'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='firstname';sortOrder2=!sortOrder2;">First Name
+            <span sort-icons field="'firstname'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='lastname';sortOrder2=!sortOrder2;">Last Name
+            <span sort-icons field="'lastname'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='rolename';sortOrder2=!sortOrder2;">Role
+            <span sort-icons field="'rolename'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="large-icon">
+            <a ng-click="showFilter2 = !showFilter2;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="filter-row" ng-show="showFilter2">
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.emailaddress">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.firstname">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.lastname">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.rolename">
+          </td>
+          <td class="large-icon icon-col">
+            <a ng-click="filterFields2 = {}"><span class="text-light icon-cross3"></span></a>
+          </td>
+        </tr>
+        <tr ng-repeat="user in users | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
+            ng-class="{ odd : $odd, even: $even }">
+          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: user.emailaddress})">{{user.emailaddress}}</a></td>
+          <td>{{user.firstname}}</td>
+          <td>{{user.lastname}}</td>
+          <td class="text-capitalize">{{user.rolename}}</td>
+          <td></td>
+        </tr>
+        </tbody>
+        <tfoot ng-show="users.length === 0">
+        <tr>
+          <td>There are no users to display.</td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <h2>Assigned Customer Accounts</h2>
+
+    <div class="infiniteScroll">
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortBy='customerNumber';sortOrder=!sortOrder;">Customer Number
+            <span sort-icons field="'customerNumber'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy='customerName';sortOrder=!sortOrder;">Customer Name
+            <span sort-icons field="'customerName'" sortorder="sortOrder" sortby="sortBy"></span>
+          </th>
+          <th></th>
+          <th class="large-icon">
+            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="filter-row" ng-show="showFilter">
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.customerNumber">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields.customerName">
+          </td>
+          <td></td>
+          <td class="large-icon icon-col">
+            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+          </td>
+        </tr>
+        <tr ng-repeat="customer in customers | filter:filterFields | orderBy:sortBy:sortOrder"
+            ng-class="{ odd : $odd, even: $even }">
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">{{customer.customerNumber}}</a>
+          </td>
+          <td>{{customer.customerName}}</td>
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})"><span
+            class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
+          <td></td>
+        </tr>
+        </tbody>
+        <tfoot ng-show="customers.length === 0">
+        <tr>
+          <td>There are no customers to display.</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

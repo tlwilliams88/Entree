@@ -52,7 +52,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                         List<CommercePropertyItem> items = l.Target.Properties.Where(x => x.Value == null).ToList();
                         CommerceServer.Core.Runtime.Orders.LineItem poLineItem = lineItems.Where(x => x.LineItemId.ToCommerceServerFormat() == l.Target.Id).FirstOrDefault();
                         skip = true;
-                        foreach (var prop in l.Target.Properties.Where(x => x.Value == null))
+                        foreach (var prop in l.Target.Properties)
                         {
                             if (skip)
                             {

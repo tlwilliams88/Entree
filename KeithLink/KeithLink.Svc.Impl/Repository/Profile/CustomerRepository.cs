@@ -61,7 +61,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         DsrNumber = org.DsrNumber,
                         IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
                         IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
-                        NationalId = org.NationalAccountId
+                        NationalId = org.NationalAccountId,
+                        // TODO - fill this in from real data source
+                        Phone = "303-422-7765",
+                        Email = "test@test.com",
+                        PointOfContact = "test@test.com",
+                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
+                        CurrentBalance = org.CurrentBalance,
+                        BalanceAge1 = org.BalanceAge1,
+                        BalanceAge2 = org.BalanceAge2,
+                        BalanceAge3 = org.BalanceAge3,
+                        BalanceAge4 = org.BalanceAge4
                     });
                 });
 
@@ -70,6 +80,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return  customersList;
         }
 
+        public void ClearCustomerCache()
+        {
+            _customerCacheRepository.RemoveItem(GetCacheKey("allCustomers"));
+        }
 
         public void AddUserToCustomer(Guid customerId, Guid userId)
         {
@@ -111,7 +125,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
                         IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
                         NationalOrRegionalAccountNumber = org.NationalOrRegionalAccountNumber,
-                        AccountId = !String.IsNullOrEmpty(org.ParentOrganizationId) ? Guid.Parse(org.ParentOrganizationId) : new Nullable<Guid>()
+                        AccountId = !String.IsNullOrEmpty(org.ParentOrganizationId) ? Guid.Parse(org.ParentOrganizationId) : new Nullable<Guid>(),
+                        // TODO - fill this in from real data source
+                        Phone = "303-422-7765",
+                        Email = "test@test.com",
+                        PointOfContact = "test@test.com",
+                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
+                        CurrentBalance = org.CurrentBalance,
+                        BalanceAge1 = org.BalanceAge1,
+                        BalanceAge2 = org.BalanceAge2,
+                        BalanceAge3 = org.BalanceAge3,
+                        BalanceAge4 = org.BalanceAge4
                     });
                 }
             }

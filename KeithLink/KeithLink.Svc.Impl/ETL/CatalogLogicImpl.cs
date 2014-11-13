@@ -173,7 +173,7 @@ namespace KeithLink.Svc.Impl.ETL
                 try
                 {
                     Guid userId = userRow.GetGuid("u_user_id");
-                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId).UserProfiles[0];
+                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId, false).UserProfiles[0];
 
                     if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
                         continue;
@@ -710,7 +710,6 @@ namespace KeithLink.Svc.Impl.ETL
                     listLogic.UpdateList(lists[0]);
 
                 }
-                
             }
             else if (lists.Count == 1 && (contractNumber == null || contractNumber.Equals(String.Empty)))
             {
@@ -739,10 +738,18 @@ namespace KeithLink.Svc.Impl.ETL
 
             if (lists.Count == 1)
             {
-                lists[0].Items = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
-                listLogic.UpdateList(lists[0]);
+                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId));
+                Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
+                SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
+                SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
+
+                if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
+                {
+                    lists[0].Items = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
+                    listLogic.UpdateList(lists[0]);
+
+                }
             }
-            
         }
 
         private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)

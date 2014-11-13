@@ -14,9 +14,10 @@ angular.module('bekApp')
       var model = $parse(attrs.focusMe);
       scope.$watch(model, function(value) {
         if(value === true) { 
-          $timeout(function() {
+          var setFocusTimer = $timeout(function() {
             element[0].focus(); 
             element[0].select();
+            $timeout.cancel(setFocusTimer);
           });
         }
       });

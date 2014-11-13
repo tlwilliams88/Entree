@@ -60,16 +60,17 @@ angular.module('bekApp')
         return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
-      importCart: function(file) {
+      importCart: function(file, options) {
         var deferred = $q.defer();
 
         $upload.upload({
-          url: '/import/list',
+          url: 'import/order',
           method: 'POST',
+          data: { options: options },
           file: file, // or list of files ($files) for html5 only
         }).then(function(response) {
           var data = response.data;
-
+          debugger;
           if (data.success) {
             var cart = {
               id: data.listid, // ****
@@ -92,6 +93,28 @@ angular.module('bekApp')
         });
 
         return deferred.promise;
+      },
+
+      // gets the default selected cart
+      getSelectedCart: function(cartId) {
+        var selectedCart;
+        if (cartId) {
+          selectedCart = Service.findCartById(cartId);
+        }
+        // go to active cart
+        if (!selectedCart) {
+          angular.forEach(Service.carts, function(cart, index) {
+            if (cart.active) {
+              selectedCart = cart;
+            }
+          });
+        }
+        // go to first cart in list
+        if (!selectedCart && Service.carts && Service.carts.length > 0) {
+          selectedCart = Service.carts[0];
+        }
+
+        return selectedCart;
       },
 
       /********************
@@ -123,7 +146,7 @@ angular.module('bekApp')
 
         newCart.requestedshipdate = shipDate;
         // default to next ship date
-        if (!newCart.requestedshipdate && Service.shipDates) {
+        if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
 
@@ -140,6 +163,11 @@ angular.module('bekApp')
         return Cart.update(params, cart).$promise.then(function(response) {
           return Service.getCart(response.id);
         });
+      },
+
+      addItemsToCart: function(cart, items) {
+        cart.items = items;
+        return Service.updateCart(cart, {deleteomitted: false});
       },
 
       // accepts cartId (guid)
@@ -187,28 +215,6 @@ angular.module('bekApp')
         return Cart.deleteItem({ cartId: cartId }).$promise.then(function(response) {
           return response;
         });
-      },
-
-      // gets the default selected cart
-      getSelectedCart: function(cartId) {
-        var selectedCart;
-        if (cartId) {
-          selectedCart = Service.findCartById(cartId);
-        }
-        // go to active cart
-        if (!selectedCart) {
-          angular.forEach(Service.carts, function(cart, index) {
-            if (cart.active) {
-              selectedCart = cart;
-            }
-          });
-        }
-        // go to first cart in list
-        if (!selectedCart && Service.carts && Service.carts.length > 0) {
-          selectedCart = Service.carts[0];
-        }
-
-        return selectedCart;
       },
 
       /********************

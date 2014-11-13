@@ -58,11 +58,11 @@
         <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
-        <a ui-sref="menu.accountdetails" ui-sref-active="is-selected" >
+        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
             <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
           </a>
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div>Notifications</li>
+          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div><span ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0" class="badge">{{userBar.userNotifications.unread}}</span>Notifications</li>
         </a>
       </div>
     </ul>
@@ -110,7 +110,7 @@
         <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
         </a>
-        <a ui-sref="menu.accountdetails" ui-sref-active="is-selected" >
+        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
           <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
         </a>
       </ul>
@@ -161,7 +161,10 @@
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right nowrap">
           <div ng-if="isLoggedIn">
-            <a ui-sref="menu.notifications" class="text-regular"><span ng-if="isOrderEntryCustomer" class="icon-bell user-bar__notification"></span></a>
+            <a ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
+              <span ng-if="isOrderEntryCustomer" class="icon-bell"></span>
+              <span class="badge" ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0">{{userBar.userNotifications.unread}}</span>
+            </span></a>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span>

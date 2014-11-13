@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'ResolveService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, ResolveService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService) {
     
     $scope.carts = carts;
     $scope.lists = lists;
@@ -96,8 +96,9 @@ angular.module('bekApp')
       return itemFound;
     }
 
-    function updateCart(cart) {
-      CartService.updateCart(cart, {deleteomitted: false}).then(function(cart) {
+    function updateCart(cart, items) {
+      var updatedCart = angular.copy(cart);
+      CartService.addItemsToCart(updatedCart, items).then(function(cart) {
         $scope.selectedCart = cart;
 
         // reset quantities
@@ -107,7 +108,7 @@ angular.module('bekApp')
         });
 
         $scope.addToOrderForm.$setPristine();
-        $scope.displayMessage('success', 'Successfully added ' + cart.items.length + ' Items to Cart ' + cart.name + '.');
+        $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + cart.name + '.');
       }, function() {
         $scope.displayMessage('error', 'Error adding items to cart.');
       });
@@ -156,9 +157,7 @@ angular.module('bekApp')
 
           // add items to existing cart
           if (cart && cart.id && cart.id !== 'New') {
-            var updatedCart = angular.copy(cart);
-            updatedCart.items = itemsToAdd;
-            updateCart(updatedCart);
+            updateCart(cart, itemsToAdd);
           
           // create new cart
           } else { 
@@ -205,15 +204,5 @@ angular.module('bekApp')
         return total;
       }
     };
-
-    // // select cart/changeOrder
-    // var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-    // if ($stateParams.cartId === 'New' || !selectedBasket) {
-    //   $scope.createNewCart();
-    // } else {
-    //   selectedBasket.promise.then(function(basket) {
-    //     $scope.selectedCart = basket;
-    //   });
-    // }
 
   }]);

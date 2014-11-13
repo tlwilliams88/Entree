@@ -179,6 +179,10 @@ angular.module('bekApp')
       ListService.deleteMultipleItems(favoritesList.listid, items);
     };
 
+    $scope.addItemsToReminderList = function() {
+      $scope.addItemsToList(ListService.findReminderList());
+    };
+
     /********************
     DRAG HELPERS
     ********************/
@@ -281,9 +285,11 @@ angular.module('bekApp')
     $scope.stopReorder = function (e, ui) {
       ui.item.addClass('bek-reordered-item');
 
-      $timeout(function() {
+      var colorRowTimer = $timeout(function() {
         ui.item.removeClass('bek-reordered-item');
+        $timeout.cancel(colorRowTimer);
       }, 500);
+
 
       updateItemPositions();
     };
@@ -355,7 +361,7 @@ angular.module('bekApp')
     $scope.openListImportModal = function () {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/listimportmodal.html',
+        templateUrl: 'views/modals/listimportmodal.html',
         controller: 'ImportModalController'
       });
     };

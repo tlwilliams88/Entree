@@ -1,8 +1,12 @@
 .lists {
   width: 160px;
-  .list-names button {
-    padding-left: 10px;
-    padding-right: 10px;
+  .list-names {
+    max-width: 100%;
+
+    button {
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
 }
 .items {
@@ -39,9 +43,6 @@
       border: 1px solid $color-blue;
     }
   }
-}
-.list-names {
-  max-width: 100%;  
 }
 
 
@@ -94,13 +95,25 @@
     background-color: $color-white !important;
   }
 }
-.item-selected > tr > td, .bek-reordered-item td  {
-  background-color: #f8f8c4 !important;
+.bek-reordered-item td  {
+  background-color: $color-yellow !important;
 }
 // // prevents weird page jumping when reordering items that are scrolled down the page
 // .bek-reorder-overflow {
 //   overflow: auto;
 // }
+
+@media (min-width: $screen-sm-min) {
+  .list-names {
+    max-height: 463px;
+    overflow-y: auto;
+  }
+  .list-form {
+    max-height: 523px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
 
 // highlight row when hovering on desktop only
 @media (min-width: $screen-md-min) {
