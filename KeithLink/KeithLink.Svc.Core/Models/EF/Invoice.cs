@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Enumerations;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -9,22 +10,6 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.EF
 {
-	public enum InvoiceType
-	{
-		[Description("Invoice")]
-		Invoice,
-		[Description("Credit Memo")]
-		CreditMemo,
-		[Description("Adjustment")]
-		Adjustment
-	}
-
-	public enum InvoiceStatus
-	{
-		Open,
-		Paid
-	}
-
 	public class Invoice: BaseEFModel
 	{
 		public string CustomerNumber { get; set; }
@@ -36,7 +21,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		public InvoiceType Type { get; set; }
 		public decimal Amount { get; set; }
 		public InvoiceStatus Status { get; set; }
-
+		public DateTime? DueDate { get; set; }
 
 		public virtual ICollection<InvoiceItem> Items { get; set; }
 	}

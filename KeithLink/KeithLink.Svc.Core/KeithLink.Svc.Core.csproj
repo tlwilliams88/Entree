@@ -115,6 +115,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\Invoice.cs" />
     <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />

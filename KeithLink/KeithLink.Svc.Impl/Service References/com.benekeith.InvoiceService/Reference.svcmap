@@ -30,6 +30,8 @@
     <MetadataFile FileName="InvoiceService.wsdl" MetadataType="Wsdl" ID="5a8f0790-a141-4587-91ac-5231d4294752" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?wsdl" />
     <MetadataFile FileName="InvoiceService2.xsd" MetadataType="Schema" ID="01c336bb-70af-45b5-9438-de7d28342545" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd1" />
     <MetadataFile FileName="InvoiceService3.xsd" MetadataType="Schema" ID="d1ac42c2-e6fd-43f9-97e8-b6704f259635" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd2" />
+    <MetadataFile FileName="InvoiceService5.xsd" MetadataType="Schema" ID="3d2f4547-40df-420b-92a1-e9938714951a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd5" />
+    <MetadataFile FileName="InvoiceService4.xsd" MetadataType="Schema" ID="a1037e9a-66bb-414a-9dfb-eb5e90d7e531" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Models.EF;
+﻿using KeithLink.Svc.Core.Enumerations;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Invoices;
 using System;
 using System.Collections.Generic;
@@ -17,6 +19,10 @@ namespace KeithLink.Svc.Core.Extensions
 				InvoiceNumber = invoice.InvoiceNumber,
 				OrderDate = invoice.OrderDate,
 				Id = invoice.Id,
+				Type = invoice.Type,
+				Amount = invoice.Amount,
+				BranchId = invoice.BranchId,
+				InvoiceDate = invoice.InvoiceDate,
 				Items = invoice.Items == null ? null : invoice.Items.Select(i =>
 					new KeithLink.Svc.Core.Models.EF.InvoiceItem(){
 						CatchWeightCode = i.CatchWeightCode,
@@ -36,12 +42,19 @@ namespace KeithLink.Svc.Core.Extensions
 
 		public static InvoiceModel ToInvoiceModel(this Invoice invoice, bool headerOnly = false)
 		{
+			
 			return new InvoiceModel()
 			{
 				CustomerNumber = invoice.CustomerNumber,
 				InvoiceNumber = invoice.InvoiceNumber,
 				OrderDate = invoice.OrderDate,
+				Type = invoice.Type,
+				InvoiceDate = invoice.InvoiceDate,
 				Id = invoice.Id,
+				Amount = invoice.Amount,
+				DueDate = invoice.DueDate,
+				Status = invoice.Status,
+				TypeDescription = EnumUtils<InvoiceType>.GetDescription(invoice.Type, ""),
 				Items = headerOnly ? new List<InvoiceItemModel>() : invoice.Items == null ? null : invoice.Items.Select(i => new InvoiceItemModel() {
 					CatchWeightCode = i.CatchWeightCode,
 					ExtCatchWeight = i.ExtCatchWeight.HasValue ? i.ExtCatchWeight.Value : 0,

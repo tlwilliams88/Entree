@@ -109,10 +109,19 @@ namespace KeithLink.Svc.Impl.ETL
         {
             return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
         }
-
-		public DataTable ReadInvoices()
+		
+		public void ProcessInvoices()
 		{
-			return PopulateDataTable("[ETL].[ReadInvoices]");
+			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			{
+				using (var cmd = new SqlCommand("[ETL].[ProcessStagedInvoices]", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.CommandTimeout = 0;
+					conn.Open();
+					cmd.ExecuteNonQuery();
+				}
+			}
 		}
 
         public DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber)

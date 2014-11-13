@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.InternalSvc.Interfaces;
 using System;
@@ -22,14 +23,15 @@ namespace KeithLink.Svc.InternalSvc
 			this.invoiceLogic = invoiceLogic;
 		}
 
-		public List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo)
+		public List<InvoiceModel> ReadInvoices(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			return invoiceLogic.ReadInvoices(catalogInfo);
+			var returnvalue =  invoiceLogic.ReadInvoices(user, catalogInfo);
+			return returnvalue;
 		}
 
-		public InvoiceModel ReadInvoice(long Id)
+		public InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			return invoiceLogic.ReadInvoice(Id);
+			return invoiceLogic.ReadInvoice(user, catalogInfo, Id);
 		}
 	}
 }

@@ -37,9 +37,9 @@ namespace KeithLink.Svc.InternalSvc
 
             if (Svc.Impl.Configuration.RunInternalServiceQueues)
             {
-                InitializeConfirmationMoverThread();
-                InitializeNotificationsThread();
-                InitializeOrderUpdateThread();
+				//InitializeConfirmationMoverThread();
+				//InitializeNotificationsThread();
+				//InitializeOrderUpdateThread();
             }
         }
 

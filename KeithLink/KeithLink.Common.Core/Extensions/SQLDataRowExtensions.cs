@@ -80,9 +80,24 @@ namespace KeithLink.Common.Core.Extensions
             return row[colName] == DBNull.Value ? Guid.Empty : Guid.Parse(row[colName].ToString());
         }
 
-        public static DateTime? GetNullableDateTime(this DataRow row, string colName)
+        public static DateTime? GetNullableDateTime(this DataRow row, string colName, string format = "")
         {
-            return row[colName] == DBNull.Value ? null : (DateTime?)row[colName];
+
+			if(row[colName] == DBNull.Value)
+				return null;
+
+
+			DateTime returnValue;
+			if (!string.IsNullOrEmpty(format))
+			{
+				if (DateTime.TryParseExact(row[colName].ToString(), "yyyyMMdd", new System.Globalization.CultureInfo("en-US"), System.Globalization.DateTimeStyles.None, out returnValue))
+					return returnValue;
+			}
+			else
+				if (DateTime.TryParse(row[colName].ToString(), out returnValue))
+					return returnValue;
+
+			return null;
         }
 
         public static double? GetNullableDouble(this DataRow row, string colName)

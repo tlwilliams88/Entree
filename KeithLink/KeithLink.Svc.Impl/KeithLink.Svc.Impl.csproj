@@ -174,7 +174,6 @@
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
-    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
@@ -345,6 +344,10 @@
     <Compile Include="Repository\EF\Migrations\201411112222437_Add Term.cs" />
     <Compile Include="Repository\EF\Migrations\201411112222437_Add Term.Designer.cs">
       <DependentUpon>201411112222437_Add Term.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411130021476_Add Invoice DueDate.cs" />
+    <Compile Include="Repository\EF\Migrations\201411130021476_Add Invoice DueDate.Designer.cs">
+      <DependentUpon>201411130021476_Add Invoice DueDate.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -615,6 +618,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService5.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
@@ -905,6 +914,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411112222437_Add Term.resx">
       <DependentUpon>201411112222437_Add Term.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411130021476_Add Invoice DueDate.resx">
+      <DependentUpon>201411130021476_Add Invoice DueDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
