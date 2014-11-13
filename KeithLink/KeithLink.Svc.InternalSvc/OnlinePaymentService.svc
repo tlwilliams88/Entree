@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="C#" Debug="true" Service="KeithLink.Svc.InternalSvc.OnlinePaymentService" CodeBehind="OnlinePaymentService.svc.cs" %>

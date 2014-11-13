@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="94a58335-77bf-4ae4-9111-b7657b68c859" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Impl" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Impl" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/CustomerBankService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CustomerBankService.xsd" MetadataType="Schema" ID="f1288fa0-32cb-4624-a97a-83737f7977dc" SourceId="1" SourceUrl="http://localhost:1317/CustomerBankService.svc?xsd=xsd2" />
+    <MetadataFile FileName="CustomerBankService.disco" MetadataType="Disco" ID="8d10ec09-a89c-4139-9404-449d32ac5b5d" SourceId="1" SourceUrl="http://localhost:1317/CustomerBankService.svc?disco" />
+    <MetadataFile FileName="CustomerBankService1.xsd" MetadataType="Schema" ID="edfe1ec8-25c1-426f-8d8d-3642a891d981" SourceId="1" SourceUrl="http://localhost:1317/CustomerBankService.svc?xsd=xsd1" />
+    <MetadataFile FileName="CustomerBankService.wsdl" MetadataType="Wsdl" ID="e482a0e6-1572-4592-822f-88ea80985a62" SourceId="1" SourceUrl="http://localhost:1317/CustomerBankService.svc?wsdl" />
+    <MetadataFile FileName="CustomerBankService2.xsd" MetadataType="Schema" ID="19137138-1ab9-436b-bc15-6716b8c7b72c" SourceId="1" SourceUrl="http://localhost:1317/CustomerBankService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
