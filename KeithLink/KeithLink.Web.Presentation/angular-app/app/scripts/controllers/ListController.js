@@ -366,6 +366,22 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openReplicateListModal = function (list) {
+
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/replicatelistmodal.html',
+        controller: 'ReplicateListModalController',
+        resolve: {
+          list: function() {
+            return list;
+          },
+          customers: ['LocalStorage', function(LocalStorage) {
+            return LocalStorage.getProfile().user_customers;
+          }]
+        }
+      });
+    };
+
     resetPage(angular.copy(originalList));
     $scope.selectedList.isRenaming = $stateParams.renameList === 'true' ? true : false;
 

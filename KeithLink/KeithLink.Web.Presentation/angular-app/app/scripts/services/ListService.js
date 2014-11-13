@@ -319,6 +319,18 @@ angular.module('bekApp')
 
         getMandatoryList: function() {
           return Service.getList('95');
+        },
+
+        /***************
+        SHARING/COPYING
+        ***************/
+
+        shareList: function(listId, customerNumber) {
+          console.log('shared - listId: ' + listId + ', customerNumber: ' + customerNumber);
+        },
+
+        copyList: function(listId, customerNumber) {
+          console.log('copied - listId: ' + listId + ', customerNumber: ' + customerNumber);
         }
 
 

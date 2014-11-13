@@ -1,0 +1,16 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Share or Copy {{list.name}} List</h3>
+</div>
+<div class="modal-body">
+
+  <form name="duplicateListForm">
+    <select ng-options="customer.customerNumber as customer.customerName for customer in customers" ng-model="duplicateList.customerNumber" required name="customerNumber">
+      <option>Select a Customer</option>
+    </select>  
+  </form>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn-lg btn btn-primary" ng-click="shareList(list.listid, duplicateList.customerNumber)">Share</button>
+    <button type="button" class="btn-lg btn btn-primary" ng-click="copyList(list.listid, duplicateList.customerNumber)">Copy</button>
+</div>
