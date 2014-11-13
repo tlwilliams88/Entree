@@ -1,7 +1,0 @@
-﻿<%@ ServiceHost 
-    Language="C#" 
-    Debug="true" 
-    Service="KeithLink.Svc.InternalSvc.CustomerBankService, KeithLink.Svc.InternalSvc" 
-    CodeBehind="CustomerBankService.svc.cs" 
-	Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf" 
-%>

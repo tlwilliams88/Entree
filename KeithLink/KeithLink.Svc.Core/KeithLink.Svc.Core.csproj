@@ -148,8 +148,8 @@
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
-    <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankServiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
+    <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Models\EF\Term.cs" />

@@ -380,7 +380,7 @@
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
-    <Compile Include="Repository\OnlinePayments\Customer\NoCustomerBankServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />

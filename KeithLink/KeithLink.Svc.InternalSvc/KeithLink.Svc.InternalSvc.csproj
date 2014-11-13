@@ -140,11 +140,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomerBankService.svc" />
     <Content Include="DivisionService.svc" />
     <Content Include="MessagingService.svc" />
     <Content Include="InvoiceService.svc" />
     <Content Include="ListServcie.svc" />
+    <Content Include="OnlinePaymentService.svc" />
     <Content Include="OrderService.svc" />
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
@@ -156,14 +156,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
-    <Compile Include="CustomerBankService.svc.cs">
-      <DependentUpon>CustomerBankService.svc</DependentUpon>
-    </Compile>
     <Compile Include="DivisionService.svc.cs">
       <DependentUpon>DivisionService.svc</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\IDivisionService.cs" />
-    <Compile Include="Interfaces\OnlinePayments\Customer\ICustomerBankService.cs" />
+    <Compile Include="Interfaces\IOnlinePaymentService.cs" />
     <Compile Include="MessagingService.svc.cs">
       <DependentUpon>MessagingService.svc</DependentUpon>
     </Compile>
@@ -176,6 +173,9 @@
     </Compile>
     <Compile Include="ListServcie.svc.cs">
       <DependentUpon>ListServcie.svc</DependentUpon>
+    </Compile>
+    <Compile Include="OnlinePaymentService.svc.cs">
+      <DependentUpon>OnlinePaymentService.svc</DependentUpon>
     </Compile>
     <Compile Include="OrderService.svc.cs">
       <DependentUpon>OrderService.svc</DependentUpon>

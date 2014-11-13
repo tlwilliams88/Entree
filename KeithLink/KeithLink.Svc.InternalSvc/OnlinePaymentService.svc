@@ -1,1 +1,7 @@
-﻿<%@ ServiceHost Language="C#" Debug="true" Service="KeithLink.Svc.InternalSvc.OnlinePaymentService" CodeBehind="OnlinePaymentService.svc.cs" %>
+﻿<%@ ServiceHost 
+    Language="C#" 
+    Debug="true" 
+    Service="KeithLink.Svc.InternalSvc.OnlinePaymentService, KeithLink.Svc.InternalSvc" 
+    CodeBehind="OnlinePaymentService.svc.cs" 
+	Factory="Autofac.Integration.Wcf.AutofacServiceHostFactory, Autofac.Integration.Wcf" 
+%>

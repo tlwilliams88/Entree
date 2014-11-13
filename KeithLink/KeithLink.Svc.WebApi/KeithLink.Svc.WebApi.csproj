@@ -170,13 +170,6 @@
     <Content Include="Global.asax" />
     <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
-    <None Include="Service References\com.benekeith.CustomerBankService\CustomerBankService.disco" />
-    <None Include="Service References\com.benekeith.CustomerBankService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.CustomerBankService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.CustomerBankService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -205,10 +198,30 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.wsdl" />
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
     <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
     <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.disco" />
+    <None Include="Service References\com.benekeith.OnlinePaymentService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.OnlinePaymentService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.OnlinePaymentService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -229,12 +242,12 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
-    <Compile Include="Controllers\CustomerBankController.cs" />
     <Compile Include="Controllers\MessagingController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ItemNoteController.cs" />
     <Compile Include="Controllers\ListController.cs" />
+    <Compile Include="Controllers\OnlinePaymentController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RecentItemController.cs" />
@@ -253,14 +266,9 @@
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\OnlinePayments\Customer\CustomerBankServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.CustomerBankService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -281,6 +289,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\com.benekeith.OnlinePaymentService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -297,16 +310,6 @@
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <Content Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
     <Content Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
-    <None Include="Service References\com.benekeith.CustomerBankService\CustomerBankService.wsdl" />
-    <None Include="Service References\com.benekeith.CustomerBankService\CustomerBankService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.CustomerBankService\CustomerBankService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.CustomerBankService\CustomerBankService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -432,11 +435,11 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.CustomerBankService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
   </ItemGroup>
   <PropertyGroup>

@@ -34,6 +34,7 @@ using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Network;
+using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
@@ -134,10 +135,10 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 
             // customer bank - JA - 11/13
-            builder.RegisterType<CustomerBankService>();
+            builder.RegisterType<OnlinePaymentService>();
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
-            builder.RegisterType<NoCustomerBankServiceRepositoryImpl>().As<ICustomerBankServiceRepository>();
+            builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
 
             return builder.Build();
         }

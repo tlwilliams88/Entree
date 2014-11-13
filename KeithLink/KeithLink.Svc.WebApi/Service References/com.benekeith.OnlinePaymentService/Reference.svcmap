@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="ee6e94c1-515c-4c68-842b-ea287e1350d9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Impl" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Impl" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/OnlinePaymentService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OnlinePaymentService.xsd" MetadataType="Schema" ID="51e48ee4-eab0-4722-8fe7-4fb9f907ad61" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="OnlinePaymentService1.xsd" MetadataType="Schema" ID="9283bcb4-ca21-426c-a38c-dbbe6f6d4002" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="OnlinePaymentService.disco" MetadataType="Disco" ID="1ace617f-cab8-4f1e-be79-437f3d050b59" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?disco" />
+    <MetadataFile FileName="OnlinePaymentService2.xsd" MetadataType="Schema" ID="4b6f80ee-010c-4bbd-b668-7287a32e5ac2" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="OnlinePaymentService.wsdl" MetadataType="Wsdl" ID="48aa72af-5880-4482-94ed-3a11806df8b7" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?wsdl" />
+    <MetadataFile FileName="OnlinePaymentService3.xsd" MetadataType="Schema" ID="fb0c9359-2ee8-4d56-913b-0d9cc00505a5" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
