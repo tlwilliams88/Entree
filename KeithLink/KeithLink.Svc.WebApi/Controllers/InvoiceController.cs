@@ -24,14 +24,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("invoice/")]
 		public List<InvoiceModel> invoice()
 		{
-			return invoiceServiceRepository.ReadInvoices(this.SelectedUserContext);
+			return invoiceServiceRepository.ReadInvoices(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("invoice/{id}")]
 		public InvoiceModel invoice(long id)
 		{
-			return invoiceServiceRepository.ReadInvoice(id);
+			return invoiceServiceRepository.ReadInvoice(this.AuthenticatedUser, this.SelectedUserContext, id);
 		}
 
     }

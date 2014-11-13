@@ -2,7 +2,7 @@
  * angular-ui-bootstrap
  * http://angular-ui.github.io/bootstrap/
 
- * Version: 0.12.0-SNAPSHOT - 2014-11-11
+ * Version: 0.11.2 - 2014-09-26
  * License: MIT
  */
 angular.module("ui.bootstrap", ["ui.bootstrap.tpls", "ui.bootstrap.transition","ui.bootstrap.collapse","ui.bootstrap.accordion","ui.bootstrap.alert","ui.bootstrap.bindHtml","ui.bootstrap.buttons","ui.bootstrap.carousel","ui.bootstrap.dateparser","ui.bootstrap.position","ui.bootstrap.datepicker","ui.bootstrap.dropdown","ui.bootstrap.modal","ui.bootstrap.pagination","ui.bootstrap.tooltip","ui.bootstrap.popover","ui.bootstrap.progressbar","ui.bootstrap.rating","ui.bootstrap.tabs","ui.bootstrap.timepicker","ui.bootstrap.typeahead"]);
@@ -301,7 +301,6 @@ angular.module('ui.bootstrap.alert', [])
 
 .controller('AlertController', ['$scope', '$attrs', function ($scope, $attrs) {
   $scope.closeable = 'close' in $attrs;
-  this.close = $scope.close;
 }])
 
 .directive('alert', function () {
@@ -316,18 +315,7 @@ angular.module('ui.bootstrap.alert', [])
       close: '&'
     }
   };
-})
-
-.directive('dismissOnTimeout', ['$timeout', function($timeout) {
-  return {
-    require: 'alert',
-    link: function(scope, element, attrs, alertCtrl) {
-      $timeout(function(){
-        alertCtrl.close();
-      }, parseInt(attrs.dismissOnTimeout, 10));
-    }
-  };
-}]);
+});
 
 angular.module('ui.bootstrap.bindHtml', [])
 
@@ -423,11 +411,11 @@ angular.module('ui.bootstrap.buttons', [])
 *
 */
 angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
-.controller('CarouselController', ['$scope', '$timeout', '$interval', '$transition', function ($scope, $timeout, $interval, $transition) {
+.controller('CarouselController', ['$scope', '$timeout', '$transition', function ($scope, $timeout, $transition) {
   var self = this,
     slides = self.slides = $scope.slides = [],
     currentIndex = -1,
-    currentInterval, isPlaying;
+    currentTimeout, isPlaying;
   self.currentSlide = null;
 
   var destroyed = false;
@@ -522,22 +510,22 @@ angular.module('ui.bootstrap.carousel', ['ui.bootstrap.transition'])
   function restartTimer() {
     resetTimer();
     var interval = +$scope.interval;
-    if (!isNaN(interval) && interval > 0) {
-      currentInterval = $interval(timerFn, interval);
+    if (!isNaN(interval) && interval>=0) {
+      currentTimeout = $timeout(timerFn, interval);
     }
   }
 
   function resetTimer() {
-    if (currentInterval) {
-      $interval.cancel(currentInterval);
-      currentInterval = null;
+    if (currentTimeout) {
+      $timeout.cancel(currentTimeout);
+      currentTimeout = null;
     }
   }
 
   function timerFn() {
-    var interval = +$scope.interval;
-    if (isPlaying && !isNaN(interval) && interval > 0) {
+    if (isPlaying) {
       $scope.next();
+      restartTimer();
     } else {
       $scope.pause();
     }
@@ -1659,10 +1647,6 @@ angular.module('ui.bootstrap.dropdown', [])
   };
 
   var closeDropdown = function( evt ) {
-    // This method may still be called during the same mouse event that
-    // unbound this event handler. So check openScope before proceeding.
-    if (!openScope) { return; }
-
     var toggleElement = openScope.getToggleElement();
     if ( evt && toggleElement && toggleElement[0].contains(evt.target) ) {
         return;
@@ -1748,6 +1732,7 @@ angular.module('ui.bootstrap.dropdown', [])
 
 .directive('dropdown', function() {
   return {
+    restrict: 'CA',
     controller: 'DropdownController',
     link: function(scope, element, attrs, dropdownCtrl) {
       dropdownCtrl.init( element );
@@ -1757,6 +1742,7 @@ angular.module('ui.bootstrap.dropdown', [])
 
 .directive('dropdownToggle', function() {
   return {
+    restrict: 'CA',
     require: '?^dropdown',
     link: function(scope, element, attrs, dropdownCtrl) {
       if ( !dropdownCtrl ) {
@@ -1889,7 +1875,7 @@ angular.module('ui.bootstrap.modal', ['ui.bootstrap.transition'])
 
           /**
            * Auto-focusing of a freshly-opened modal element causes any child elements
-           * with the autofocus attribute to lose focus. This is an issue on touch
+           * with the autofocus attribute to loose focus. This is an issue on touch
            * based devices which will show and then hide the onscreen keyboard.
            * Attempts to refocus the autofocus element via JavaScript will not reopen
            * the onscreen keyboard. Fixed by updated the focusing logic to only autofocus
@@ -2459,9 +2445,9 @@ angular.module( 'ui.bootstrap.tooltip', [ 'ui.bootstrap.position', 'ui.bootstrap
    *     $tooltipProvider.options( { placement: 'left' } );
    *   });
    */
-	this.options = function( value ) {
-		angular.extend( globalOptions, value );
-	};
+  this.options = function( value ) {
+    angular.extend( globalOptions, value );
+  };
 
   /**
    * This allows you to extend the set of trigger mappings available. E.g.:
@@ -3007,19 +2993,14 @@ angular.module('ui.bootstrap.tabs', [])
 
   ctrl.removeTab = function removeTab(tab) {
     var index = tabs.indexOf(tab);
-    //Select a new tab if the tab to be removed is selected and not destroyed
-    if (tab.active && tabs.length > 1 && !destroyed) {
+    //Select a new tab if the tab to be removed is selected
+    if (tab.active && tabs.length > 1) {
       //If this is the last tab, select the previous tab. else, the next tab.
       var newActiveIndex = index == tabs.length - 1 ? index - 1 : index + 1;
       ctrl.select(tabs[newActiveIndex]);
     }
     tabs.splice(index, 1);
   };
-
-  var destroyed;
-  $scope.$on('$destroy', function() {
-    destroyed = true;
-  });
 }])
 
 /**
@@ -3564,8 +3545,6 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
       var appendToBody =  attrs.typeaheadAppendToBody ? originalScope.$eval(attrs.typeaheadAppendToBody) : false;
 
-      var focusFirst = originalScope.$eval(attrs.typeaheadFocusFirst) !== false;
-
       //INTERNAL VARIABLES
 
       //model setter executed upon match selection
@@ -3638,7 +3617,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           if (onCurrentRequest && hasFocus) {
             if (matches.length > 0) {
 
-              scope.activeIdx = focusFirst ? 0 : -1;
+              scope.activeIdx = 0;
               scope.matches.length = 0;
 
               //transform labels
@@ -3732,7 +3711,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
         if (inputFormatter) {
 
-          locals.$model = modelValue;
+          locals['$model'] = modelValue;
           return inputFormatter(originalScope, locals);
 
         } else {
@@ -3779,11 +3758,6 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           return;
         }
 
-        // if there's nothing selected (i.e. focusFirst) and enter is hit, don't do anything
-        if (scope.activeIdx == -1 && (evt.which === 13 || evt.which === 9)) {
-          return;
-        }
-
         evt.preventDefault();
 
         if (evt.which === 40) {
@@ -3791,7 +3765,7 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
           scope.$digest();
 
         } else if (evt.which === 38) {
-          scope.activeIdx = (scope.activeIdx > 0 ? scope.activeIdx : scope.matches.length) - 1;
+          scope.activeIdx = (scope.activeIdx ? scope.activeIdx : scope.matches.length) - 1;
           scope.$digest();
 
         } else if (evt.which === 13 || evt.which === 9) {
@@ -3823,13 +3797,10 @@ angular.module('ui.bootstrap.typeahead', ['ui.bootstrap.position', 'ui.bootstrap
 
       originalScope.$on('$destroy', function(){
         $document.unbind('click', dismissClickHandler);
-        if (appendToBody) {
-          $popup.remove();
-        }
       });
 
       var $popup = $compile(popUpEl)(scope);
-      if (appendToBody) {
+      if ( appendToBody ) {
         $document.find('body').append($popup);
       } else {
         element.after($popup);
@@ -3907,14 +3878,13 @@ angular.module("template/accordion/accordion-group.html", []).run(["$templateCac
     "<div class=\"panel panel-default\">\n" +
     "  <div class=\"panel-heading\">\n" +
     "    <h4 class=\"panel-title\">\n" +
-    "      <a href class=\"accordion-toggle\" ng-click=\"toggleOpen()\" accordion-transclude=\"heading\"><span ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
+    "      <a class=\"accordion-toggle\" ng-click=\"toggleOpen()\" accordion-transclude=\"heading\"><span ng-class=\"{'text-muted': isDisabled}\">{{heading}}</span></a>\n" +
     "    </h4>\n" +
     "  </div>\n" +
     "  <div class=\"panel-collapse\" collapse=\"!isOpen\">\n" +
     "	  <div class=\"panel-body\" ng-transclude></div>\n" +
     "  </div>\n" +
-    "</div>\n" +
-    "");
+    "</div>");
 }]);
 
 angular.module("template/accordion/accordion.html", []).run(["$templateCache", function($templateCache) {
@@ -4020,7 +3990,7 @@ angular.module("template/datepicker/popup.html", []).run(["$templateCache", func
     "<ul class=\"dropdown-menu\" ng-style=\"{display: (isOpen && 'block') || 'none', top: position.top+'px', left: position.left+'px'}\" ng-keydown=\"keydown($event)\">\n" +
     "	<li ng-transclude></li>\n" +
     "	<li ng-if=\"showButtonBar\" style=\"padding:10px 9px 2px\">\n" +
-    "		<span class=\"btn-group pull-left\">\n" +
+    "		<span class=\"btn-group\">\n" +
     "			<button type=\"button\" class=\"btn btn-sm btn-info\" ng-click=\"select('today')\">{{ getText('current') }}</button>\n" +
     "			<button type=\"button\" class=\"btn btn-sm btn-danger\" ng-click=\"select(null)\">{{ getText('clear') }}</button>\n" +
     "		</span>\n" +
@@ -4146,7 +4116,7 @@ angular.module("template/rating/rating.html", []).run(["$templateCache", functio
 angular.module("template/tabs/tab.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("template/tabs/tab.html",
     "<li ng-class=\"{active: active, disabled: disabled}\">\n" +
-    "  <a href ng-click=\"select()\" tab-heading-transclude>{{heading}}</a>\n" +
+    "  <a ng-click=\"select()\" tab-heading-transclude>{{heading}}</a>\n" +
     "</li>\n" +
     "");
 }]);

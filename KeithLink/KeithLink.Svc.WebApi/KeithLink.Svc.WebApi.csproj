@@ -173,31 +173,35 @@
     <Content Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
+    <Content Include="Service References\com.benekeith.DivisionService\Reference.svcmap"/>
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
+    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <Content Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
-    <Content Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
-    <Content Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
+    <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <Content Include="Service References\com.benekeith.ListService\ListServcie.disco" />
-    <Content Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
-    <Content Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.ListService\Reference.svcmap">
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
+    <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
-    <Content Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
-    <Content Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
-    <Content Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
+    </None>
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
+    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.wsdl" />
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.xsd">
       <SubType>Designer</SubType>
@@ -308,8 +312,7 @@
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <Content Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
-    <Content Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
+    <None Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -319,6 +322,8 @@
     <None Include="Service References\com.benekeith.DivisionService\DivisionService2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -331,7 +336,12 @@
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -355,6 +365,7 @@
     </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
     <Content Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
     <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
       <SubType>Designer</SubType>
     </None>

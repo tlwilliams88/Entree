@@ -138,7 +138,7 @@ namespace KeithLink.Svc.Impl.ETL
                 TermCode = row.GetString("TermCode"),
                 CreditLimit = row.GetNullableDecimal("CreditLimit"),
                 CreditHoldFlag = row.GetString("CreditHoldFlag"),
-                DateOfLastPayment = row.GetNullableDateTime("DateOfLastPayment"),
+                DateOfLastPayment = row.GetNullableDateTime("DateOfLastPayment", "yyyyMMdd"),
                 AmountDue = row.GetNullableDecimal("AmountDue"),
                 CurrentBalance = row.GetNullableDecimal("CurrentBalance"),
                 BalanceAge1 = row.GetNullableDecimal("BalanceAge1"),

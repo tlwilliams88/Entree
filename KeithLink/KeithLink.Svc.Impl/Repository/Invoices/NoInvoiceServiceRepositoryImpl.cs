@@ -15,14 +15,14 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
 		{
 		}
 
-		public List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo)
+		public List<InvoiceModel> ReadInvoices(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)
 		{
-            throw new NotImplementedException();
+			throw new NotImplementedException();
 		}
 
-		public InvoiceModel ReadInvoice(long Id)
-        {
-            throw new NotImplementedException();
+		public InvoiceModel ReadInvoice(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo, long Id)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

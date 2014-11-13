@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="17ad1782-5de3-4772-88b9-de21d552072b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="592dddd6-bb0e-45ca-a0a3-98cbb851572e" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -15,10 +15,7 @@
     <UseSerializerForFaults>true</UseSerializerForFaults>
     <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
     <ReferencedAssemblies>
-      <ReferencedAssembly AssemblyName="KeithLink.Common.Core" />
-      <ReferencedAssembly AssemblyName="KeithLink.Common.Impl" />
       <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
-      <ReferencedAssembly AssemblyName="KeithLink.Svc.Impl" />
     </ReferencedAssemblies>
     <ReferencedDataContractTypes />
     <ServiceContractMappings />
@@ -27,12 +24,14 @@
     <MetadataSource Address="http://localhost:1317/InvoiceService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="InvoiceService.disco" MetadataType="Disco" ID="eec27e1a-1ee7-44d1-8f8a-2ef0ffd01ba8" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?disco" />
-    <MetadataFile FileName="InvoiceService.xsd" MetadataType="Schema" ID="564540f1-3107-405b-a0fd-18598134e971" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd0" />
-    <MetadataFile FileName="InvoiceService1.xsd" MetadataType="Schema" ID="5bc3f19a-05ed-4aa2-8d66-da66625d79d8" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd3" />
-    <MetadataFile FileName="InvoiceService.wsdl" MetadataType="Wsdl" ID="0f6bafbe-d21c-4080-8afd-124382234621" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?wsdl" />
-    <MetadataFile FileName="InvoiceService2.xsd" MetadataType="Schema" ID="1e938f3b-f9d4-4c4e-ad10-f58d72b7ec65" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd1" />
-    <MetadataFile FileName="InvoiceService3.xsd" MetadataType="Schema" ID="e62ce632-1f72-4fc5-b7d4-337cd9598f81" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd2" />
+    <MetadataFile FileName="InvoiceService.disco" MetadataType="Disco" ID="56d9b4ee-9bb9-4406-afe8-f3917d544737" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?disco" />
+    <MetadataFile FileName="InvoiceService.xsd" MetadataType="Schema" ID="e74880ce-11c5-4b25-980e-c0b87c0c0a0a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd0" />
+    <MetadataFile FileName="InvoiceService1.xsd" MetadataType="Schema" ID="2a8a8bf8-c9e3-4d48-b34e-c1eaaa83834a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd3" />
+    <MetadataFile FileName="InvoiceService.wsdl" MetadataType="Wsdl" ID="1b4fdf57-ccd1-4f4c-bf63-c66242e22c47" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?wsdl" />
+    <MetadataFile FileName="InvoiceService2.xsd" MetadataType="Schema" ID="e1fcc5b7-eb42-467c-b570-a942bdd095ec" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd1" />
+    <MetadataFile FileName="InvoiceService3.xsd" MetadataType="Schema" ID="08a2be0c-73e6-41eb-8229-07d9f6eb4d46" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd2" />
+    <MetadataFile FileName="InvoiceService4.xsd" MetadataType="Schema" ID="77f19319-b655-4d43-bb26-3302bdc21792" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd5" />
+    <MetadataFile FileName="InvoiceService5.xsd" MetadataType="Schema" ID="bd33acdd-d440-402c-8b27-bd4a63af12aa" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
