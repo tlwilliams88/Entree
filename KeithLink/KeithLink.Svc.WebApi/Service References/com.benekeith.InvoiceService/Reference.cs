@@ -16,16 +16,16 @@ namespace KeithLink.Svc.WebApi.com.benekeith.InvoiceService {
     public interface IInvoiceService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadInvoices", ReplyAction="http://tempuri.org/IInvoiceService/ReadInvoicesResponse")]
-        KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] ReadInvoices(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] ReadInvoices(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadInvoices", ReplyAction="http://tempuri.org/IInvoiceService/ReadInvoicesResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> ReadInvoicesAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> ReadInvoicesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadInvoice", ReplyAction="http://tempuri.org/IInvoiceService/ReadInvoiceResponse")]
-        KeithLink.Svc.Core.Models.Invoices.InvoiceModel ReadInvoice(long Id);
+        KeithLink.Svc.Core.Models.Invoices.InvoiceModel ReadInvoice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadInvoice", ReplyAction="http://tempuri.org/IInvoiceService/ReadInvoiceResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(long Id);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,20 +55,20 @@ namespace KeithLink.Svc.WebApi.com.benekeith.InvoiceService {
                 base(binding, remoteAddress) {
         }
         
-        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] ReadInvoices(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.ReadInvoices(catalogInfo);
+        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] ReadInvoices(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.ReadInvoices(user, catalogInfo);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> ReadInvoicesAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.ReadInvoicesAsync(catalogInfo);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> ReadInvoicesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.ReadInvoicesAsync(user, catalogInfo);
         }
         
-        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel ReadInvoice(long Id) {
-            return base.Channel.ReadInvoice(Id);
+        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel ReadInvoice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
+            return base.Channel.ReadInvoice(user, catalogInfo, Id);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(long Id) {
-            return base.Channel.ReadInvoiceAsync(Id);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
+            return base.Channel.ReadInvoiceAsync(user, catalogInfo, Id);
         }
     }
 }

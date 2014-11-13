@@ -30,74 +30,78 @@ namespace KeithLink.Svc.Impl.ETL
 
 		public void ImportInvoices()
 		{
+
 			DateTime startTime = DateTime.Now;
-			DataTable invoices = stagingRepository.ReadInvoices();
 
-			var invoicesForImport = new List<InvoiceModel>();
-			var invoiceItemsForImport = new List<InvoiceItemModel>();
+			stagingRepository.ProcessInvoices();
 
-			var invoiceNumber = "";
-			InvoiceModel currInvoice = null;
+			//DataTable invoices = stagingRepository.ReadInvoices();
 
-			internalInvoiceLogic.DeleteAll();
+			//var invoicesForImport = new List<InvoiceModel>();
+			//var invoiceItemsForImport = new List<InvoiceItemModel>();
 
-			foreach (var row in invoices.AsEnumerable())
-			{
-				var currentInvoiceNumber = row.GetString("InvoiceNumber");
+			//var invoiceNumber = "";
+			//InvoiceModel currInvoice = null;
 
-				//create header invoice and invoice item
-				if (invoiceNumber != currentInvoiceNumber)
-				{
-					invoiceNumber = currentInvoiceNumber;
-					currInvoice = CreateInvoiceModelFromStagedData(row);
-					invoicesForImport.Add(currInvoice);
-					currInvoice.Items = new List<InvoiceItemModel>();
-					invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
-				}
-					//create just invoice item
-				else
-				{
-					invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
-				}
-			}
+			//internalInvoiceLogic.DeleteAll();
 
-			internalInvoiceLogic.BulkImport(invoicesForImport, invoiceItemsForImport);
+			//foreach (var row in invoices.AsEnumerable())
+			//{
+			//	var currentInvoiceNumber = row.GetString("InvoiceNumber");
+
+			//	//create header invoice and invoice item
+			//	if (invoiceNumber != currentInvoiceNumber)
+			//	{
+			//		invoiceNumber = currentInvoiceNumber;
+			//		currInvoice = CreateInvoiceModelFromStagedData(row);
+			//		invoicesForImport.Add(currInvoice);
+			//		//currInvoice.Items = new List<InvoiceItemModel>();
+			//		invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
+			//	}
+			//		//create just invoice item
+			//	else
+			//	{
+			//		invoiceItemsForImport.Add(CreateInvoiceItemModelFromStagedData(row));
+			//	}
+			//}
+
+			//internalInvoiceLogic.BulkImport(invoicesForImport, invoiceItemsForImport);
 
 			eventLog.WriteInformationLog(string.Format("ImportInvoices Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
 		}
 
-        private InvoiceModel CreateInvoiceModelFromStagedData(DataRow row)
-        {
-            InvoiceModel invoiceModel = new InvoiceModel()
-            {
-				CustomerNumber = row.GetString("CustomerNumber"),
-				InvoiceNumber = row.GetString("InvoiceNumber"),
-				ShipDate = row["ShipDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["ShipDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
-				OrderDate = row["OrderDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["OrderDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None)
+		//private InvoiceModel CreateInvoiceModelFromStagedData(DataRow row)
+		//{
+		//	InvoiceModel invoiceModel = new InvoiceModel()
+		//	{
+		//		CustomerNumber = row.GetString("CustomerNumber"),
+		//		InvoiceNumber = row.GetString("InvoiceNumber"),
+		//		InvoiceDate = row["ShipDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["ShipDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None),
+		//		OrderDate = row["OrderDate"] == System.DBNull.Value ? new Nullable<DateTime>() : DateTime.ParseExact(row["OrderDate"].ToString(), "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None)
 				
 
-            };
-			return invoiceModel;
-        }
+		//	};
+		//	return invoiceModel;
+		//}
 			
 
-		private InvoiceItemModel CreateInvoiceItemModelFromStagedData(DataRow row)
-		{
-			InvoiceItemModel invoiceItemModel = new InvoiceItemModel()
-			{
-				CatchWeightCode = row.GetString("CatchWeightCode").Equals("y", StringComparison.CurrentCultureIgnoreCase),
-				ExtCatchWeight = row.GetNullableDecimal("ExtCatchWeight"),
-				ExtSalesNet = row.GetNullableDecimal("ExtSalesNet"),
-				ItemPrice = row.GetNullableDecimal("ItemPrice"),
-				QuantityOrdered = row.GetNullableInt("QuantityOrdered"),
-				QuantityShipped = row.GetNullableInt("QuantityShipped"),
-				InvoiceNumber = row.GetString("InvoiceNumber"),
-				ItemNumber = row.GetString("ItemNumber"),
-				ClassCode = row.GetString("ClassCode"),
-				LineNumber = row.GetString("LineNumber")
-			};
-			return invoiceItemModel;
-		}
+		//private InvoiceItemModel CreateInvoiceItemModelFromStagedData(DataRow row)
+		//{
+		//	InvoiceItemModel invoiceItemModel = new InvoiceItemModel()
+		//	{
+		//		CatchWeightCode = row.GetString("CatchWeightCode").Equals("y", StringComparison.CurrentCultureIgnoreCase),
+		//		ExtCatchWeight = row.GetNullableDecimal("ExtCatchWeight"),
+		//		ExtSalesNet = row.GetNullableDecimal("ExtSalesNet"),
+		//		ItemPrice = row.GetNullableDecimal("ItemPrice"),
+		//		QuantityOrdered = row.GetNullableInt("QuantityOrdered"),
+		//		QuantityShipped = row.GetNullableInt("QuantityShipped"),
+		//		InvoiceNumber = row.GetString("InvoiceNumber"),
+		//		ItemNumber = row.GetString("ItemNumber"),
+		//		ClassCode = row.GetString("ClassCode"),
+		//		LineNumber = row.GetString("LineNumber")
+		//	};
+		//	return invoiceItemModel;
+		//}
         
     }
 }

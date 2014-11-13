@@ -167,9 +167,20 @@ BEGIN
 		[Contract] as ContractNumber,
 		PORequiredFlag,
 		PowerMenu,
-		ContractOnly
+		ContractOnly,
+		TermCode,
+		CreditLimit,
+		CreditHoldFlag,
+		DateOfLastPayment,
+		AmountDue,
+		CurrentBalance,
+		PDACXAge1 BalanceAge1,
+		PDACXAge2 BalanceAge2,
+		PDACXAge3 BalanceAge3,
+		PDACXAge4 BalanceAge4
 	FROM 
 		[ETL].Staging_Customer
+
 END
 
 

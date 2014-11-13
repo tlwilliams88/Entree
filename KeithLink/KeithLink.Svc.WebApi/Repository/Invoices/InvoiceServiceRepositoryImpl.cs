@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,14 @@ namespace KeithLink.Svc.WebApi.Repository.Invoices
 			this.serviceClient = serviceClient;
 		}
 
-		public List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo)
+		public List<InvoiceModel> ReadInvoices(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			return serviceClient.ReadInvoices(catalogInfo).ToList();
+			return serviceClient.ReadInvoices(user, catalogInfo).ToList();
 		}
 
-		public InvoiceModel ReadInvoice(long Id)
+		public InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			return serviceClient.ReadInvoice(Id);
+			return serviceClient.ReadInvoice(user, catalogInfo, Id);
 		}
 	}
 }

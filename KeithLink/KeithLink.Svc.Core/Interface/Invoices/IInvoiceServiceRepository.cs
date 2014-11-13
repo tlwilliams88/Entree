@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Invoices
 {
 	public interface IInvoiceServiceRepository
 	{
-		List<InvoiceModel> ReadInvoices(UserSelectedContext catalogInfo);
-		InvoiceModel ReadInvoice(long Id);
+		List<InvoiceModel> ReadInvoices(UserProfile user, UserSelectedContext catalogInfo);
+		InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id);
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.SiteCatalog;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Invoices
 {
     [DataContract(Name = "InvoiceItem")]
-    public class InvoiceItemModel
+    public class InvoiceItemModel:BaseProductInfo
     {
 		[DataMember(Name="id")]
 		public long Id { get; set; }
@@ -31,7 +32,8 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public decimal? ExtSalesNet { get; set; }
 		[DataMember(Name = "classcode")]
 		public string ClassCode { get; set; }
-
+		[DataMember(Name = "packsize")]
+		public string PackSize { get; set; }
 
 		
 		public string InvoiceNumber { get; set; }
