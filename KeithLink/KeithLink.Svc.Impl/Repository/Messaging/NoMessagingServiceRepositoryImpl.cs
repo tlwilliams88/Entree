@@ -15,7 +15,6 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 	{
         public NoMessagingServiceRepositoryImpl()
         {
-            throw new NotImplementedException();
         }
 
         public List<UserMessageModel> ReadUserMessages(UserProfile user)

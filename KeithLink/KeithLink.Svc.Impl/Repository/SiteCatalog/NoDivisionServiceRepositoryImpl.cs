@@ -13,7 +13,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 	{
 		public NoDivisionServiceRepositoryImpl()
         {
-            throw new NotImplementedException();
 		}
 
 		public List<BranchSupportModel> ReadAllBranchSupports()

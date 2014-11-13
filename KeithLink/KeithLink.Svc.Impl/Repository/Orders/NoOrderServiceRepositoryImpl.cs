@@ -12,7 +12,6 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 	{
 		public NoOrderServiceRepositoryImpl()
         {
-            throw new NotImplementedException();
 		}
 
 		public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
