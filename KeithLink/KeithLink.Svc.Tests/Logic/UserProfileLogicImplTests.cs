@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Test.Logic {
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
 
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new OrderServiceRepositoryImpl(new KeithLink.Svc.Impl.com.benekeith.OrderService.OrderServiceClient()));
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl());
         }
         #endregion
 

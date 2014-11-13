@@ -56,7 +56,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                         entity.Id = rs.Fields["GeneralInfo.org_id"].Value.ToString();
                         foreach (var prop in this.ProfileEntityMappings.PropertyMappings)
                         {
-                            entity.Properties[prop.Key] = rs.Fields[prop.Value].Value.ToString();
+                            entity.Properties[prop.Key] = rs.Fields[prop.Value].Value;
                         }
                         response.CommerceEntities.Add(entity);
                         // Move to the next record.

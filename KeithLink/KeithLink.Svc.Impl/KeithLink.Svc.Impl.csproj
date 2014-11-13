@@ -373,7 +373,9 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
-    <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
@@ -383,11 +385,9 @@
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
@@ -397,8 +397,8 @@
     <Compile Include="Repository\Orders\History\OrderUpdateRequestQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
+    <Compile Include="Repository\Orders\NoOrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
@@ -422,9 +422,9 @@
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoCacheCatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoCachePriceCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\SiteCatalog\NoDivisionServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
@@ -451,32 +451,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.FoundationService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -565,16 +540,6 @@
     <None Include="Models\Orders\Schemas\ShippingDateResponse.xss">
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
     </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService.wsdl" />
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.xsd">
       <SubType>Designer</SubType>
@@ -602,82 +567,6 @@
     </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.ProcessRequestResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
-    <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService31.xsd">
-      <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -720,12 +609,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.FoundationService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.PricingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ShipDateService\" />
   </ItemGroup>
@@ -774,21 +658,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.ShipDateService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -905,66 +774,6 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201411112222437_Add Term.resx">
       <DependentUpon>201411112222437_Add Term.cs</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

@@ -1,19 +1,57 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state',
-    function ($scope, UserProfileService, branches, LocalStorage, $state) {
-      $scope.customers = $scope.userProfile.user_customers;
-      //TEST DATA UNTIL ENDPOINT EXISTS
-      $scope.users = [
-        {'email': 'rhedges@credera.com', 'firstName': 'Robert', 'lastName': 'Hedges', 'role': 'owner'},
-        {'email': 'chendon@credera.com', 'firstName': 'Clay', 'lastName': 'Hendon', 'role': 'buyer'},
-        {'email': 'aallen@credera.com', 'firstName': 'Andrew', 'lastName': 'Allen', 'role': 'guest'},
-        {'email': 'jshields@credera.com', 'firstName': 'John', 'lastName': 'Shields', 'role': 'owner'},
-        {'email': 'gsalazar@credera.com', 'firstName': 'Gabe', 'lastName': 'Salazar', 'role': 'accounting'}
-      ];
-      $scope.userExists = false;
+  .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'CustomerService', 'AccountService',
+    function ($scope, UserProfileService, branches, LocalStorage, $state, CustomerService, AccountService) {
 
+      var accountid = '';
+      //get user id from localstorage and ask for account id with it
+      AccountService.getAccountByUser(LocalStorage.getProfile().userid).then(function (success) {
+        accountid = success;
+        console.log(success);
+        //get all customers on account
+        CustomerService.getCustomers('4728d73a-81d7-4262-a1b0-88fd46aade32').then(function(success){
+          $scope.customers = success;
+
+          //get all users for every customer on the account
+          var tempArray = [];
+          var userAdded = false;
+          $scope.customers.forEach(function (customer) {
+            var data = {
+              params: {
+                customerid: customer.customerId
+              }
+            };
+            //request all users for a single customer
+            UserProfileService.getAllUsers(data).then(function (usersOfCustomer) {
+              usersOfCustomer.forEach(function (user) {
+                userAdded = false;
+                //check if the user already exists in the temporary array
+                tempArray.forEach(function(addedUser){
+                  if(addedUser.userid === user.userid){
+                    //flag user as already existing
+                    userAdded = true;
+                  }
+                 });
+                  if(!userAdded) {
+                    //add user to temporary array
+                    tempArray.push(user);
+                  }
+              });
+            });
+          }, function (error) {
+            $scope.displayMessage('error', 'An error occurred: ' + error);
+          });
+          $scope.users = tempArray;
+        }, function(error){
+          $scope.displayMessage('error', 'An error has occurred retrieving the customer list: ' + error)
+        });
+      }, function (error) {
+        $scope.displayMessage('error', 'An error occurred while retreiving the account number: ' + error);
+      });
+
+
+      $scope.userExists = false;
       /*---User Profile Functions---*/
       $scope.updateUserProfile = function (userProfile) {
         userProfile.email = userProfile.emailaddress;

@@ -363,7 +363,7 @@ angular
       controller: 'AddUserDetailsController'
     })
     .state('menu.admin.accountadmin',{
-      url: '/admin/account',
+      url: 'account/',
       templateUrl: 'views/admin/accountadmin.html',
       controller: 'AccountAdminController'
     })
