@@ -82,6 +82,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                                 org.SetPropertyValue("OrganizationType", r.GetString("u_organization_type"));
                                 org.SetPropertyValue("NationalOrRegionalAccountNumber", r.GetString("u_national_or_regional_account_number"));
                                 org.SetPropertyValue("ParentOrganizationId", r.GetString("u_parent_organization"));
+                                org.SetPropertyValue("TermCode", r.GetString("u_term_code"));
                                 org.SetPropertyValue("CurrentBalance", r.GetNullableDecimal("u_current_balance"));
                                 org.SetPropertyValue("TermCode", r.GetNullableDecimal("u_term_code"));
                                 org.SetPropertyValue("BalanceAge1", r.GetNullableDecimal("u_balance_age_1"));

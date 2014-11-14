@@ -24,5 +24,11 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public TermModel ReadTermInformation(string branchId, string termCode)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

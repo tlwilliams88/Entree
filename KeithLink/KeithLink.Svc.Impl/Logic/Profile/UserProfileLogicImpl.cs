@@ -10,6 +10,10 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Interface.Invoices;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -21,11 +25,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;
+        private IMessagingServiceRepository _msgServiceRepo;
+		private IInvoiceServiceRepository _invoiceServiceRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
+									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository)
+		{
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -33,6 +41,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
 			_orderServiceRepository = orderServiceRepository;
+            _msgServiceRepo = msgServiceRepo;
+			_invoiceServiceRepository = invoiceServiceRepository;
         }
         #endregion
 
@@ -371,6 +381,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
             }
 
+			foreach (var cust in userCustomers)
+			{
+				if (string.IsNullOrEmpty(cust.TermCode))
+					continue;
+
+				//Lookup Term info
+				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+				if (term != null)
+				{
+					cust.TermDescription = term.Description;
+					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+				}
+
+			}
+
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
@@ -381,12 +410,62 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = userCustomers
+                UserCustomers = userCustomers,
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
+                MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
             };
+        }
+
+        private List<ProfileMessagingPreferenceDetailModel> BuildPreferenceModelForEachNotificationType(List<UserMessagingPreferenceModel> currentMsgPrefs, string customerNumber)
+        {
+            var msgPrefModelList = new List<ProfileMessagingPreferenceDetailModel>();
+            //loop through each notification type to load in model
+            foreach (var notifType in Enum.GetValues(typeof(NotificationType)))
+            {
+                var currentSelectedChannels = new List<Core.Enumerations.Messaging.Channel>();
+
+                //find and add selected channels for current notification type
+                var currentMsgPrefsByType = currentMsgPrefs.Where(a => (a.NotificationType.Equals(notifType) && a.CustomerNumber == customerNumber));
+                foreach (var currentMsgPref in currentMsgPrefsByType)
+                {
+                    currentSelectedChannels.Add(currentMsgPref.Channel);
+                }
+                msgPrefModelList.Add(new ProfileMessagingPreferenceDetailModel()
+                {
+                    NotificationType = (NotificationType)notifType,
+                    Description = KeithLink.Svc.Core.Extensions.MessagingExtensions.GetEnumDescription((NotificationType)notifType),
+                    SelectedChannels = currentSelectedChannels
+                });
+
+            }
+            return msgPrefModelList;
+        }
+
+        private List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid)
+        {
+            var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
+            var userCustomers = _customerRepo.GetCustomersForUser(guid);
+
+            var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();
+            //first load user preferences
+            returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+            {
+                Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, null)
+            });
+            //then load customer preferences
+            foreach (var currentCustomer in userCustomers)
+            {
+                returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+                {
+                    CustomerNumber = currentCustomer.CustomerNumber,
+                    Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, currentCustomer.CustomerNumber)
+                });
+            }
+
+            return returnedMsgPrefModel;
         }
 
         private string GetUserDsmRole(UserPrincipal user)
@@ -637,7 +716,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (accountFilters != null) {
                 if (accountFilters.UserId.HasValue) {
-                    _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
+                    retAccounts.AddRange(_accountRepo.GetAccountsForUser(accountFilters.UserId.Value));
+
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
                     retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
@@ -646,6 +726,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             else
                 retAccounts = allAccounts;
 
+            foreach (var acct in retAccounts)
+            {
+                acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId == acct.Id).ToList();
+            }
             // TODO: add logic to filter down for internal administration versus external owner
 
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };

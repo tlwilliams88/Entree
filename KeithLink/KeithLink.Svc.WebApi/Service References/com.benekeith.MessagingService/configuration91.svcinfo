@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="F6zARrz2ardg3bdco3bhhgSV6JY=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="YwBm/BBdxL0NRo9o4m9WANQ70j8=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IMessagingService">
+    <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IMessagingService1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>BasicHttpBinding_IMessagingService</serializedValue>
+          <serializedValue>BasicHttpBinding_IMessagingService1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -112,7 +112,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IMessagingService" contract="com.benekeith.MessagingService.IMessagingService" bindingType="basicHttpBinding" address="http://localhost:1317/MessagingService.svc" bindingConfiguration="BasicHttpBinding_IMessagingService">
+    <endpoint name="BasicHttpBinding_IMessagingService" contract="com.benekeith.MessagingService.IMessagingService" bindingType="basicHttpBinding" address="http://localhost:1317/MessagingService.svc" bindingConfiguration="BasicHttpBinding_IMessagingService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost:1317/MessagingService.svc</serializedValue>
@@ -124,7 +124,7 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>BasicHttpBinding_IMessagingService</serializedValue>
+          <serializedValue>BasicHttpBinding_IMessagingService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>com.benekeith.MessagingService.IMessagingService</serializedValue>

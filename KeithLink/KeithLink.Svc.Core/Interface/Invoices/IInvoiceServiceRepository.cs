@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Interface.Invoices
 	{
 		List<InvoiceModel> ReadInvoices(UserProfile user, UserSelectedContext catalogInfo);
 		InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id);
+		TermModel ReadTermInformation(string branchId, string termCode);
 	}
 }

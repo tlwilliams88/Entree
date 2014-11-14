@@ -139,23 +139,60 @@
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
+    <Compile Include="Extensions\OnlinePayments\Customer\CustomerBankExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
+    <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
+    <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
+    <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
+    <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Invoices\TermModel.cs" />
+    <Compile Include="Models\Lists\ListCopyShareModel.cs" />
+    <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
+    <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
     <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\AchRoleEmail.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\Branch.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\Customer.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\CustomerBank.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\Dsr.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\AchRoleEmail.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\State.cs" />
+    <Compile Include="Models\OnlinePayments\Invoice\EF\Invoice.cs" />
+    <Compile Include="Models\OnlinePayments\Log\ApplicationLog.cs" />
+    <Compile Include="Models\OnlinePayments\Log\EF\ApplicationLog.cs" />
+    <Compile Include="Models\OnlinePayments\Log\EF\AuthenticationLog.cs" />
+    <Compile Include="Models\OnlinePayments\Log\EF\ProcessLog.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\EF\LastConfirmation.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\EF\PaymentTransaction.cs" />
+    <Compile Include="Models\OnlinePayments\Profile\ApplicationUser.cs" />
+    <Compile Include="Models\OnlinePayments\Log\AuthenticationLog.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\Branch.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\Customer.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\CustomerBank.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\Dsr.cs" />
+    <Compile Include="Models\OnlinePayments\Invoice\Invoice.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\LastConfirmation.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\PaymentTransaction.cs" />
+    <Compile Include="Models\OnlinePayments\Log\ProcessLog.cs" />
+    <Compile Include="Models\OnlinePayments\Profile\EF\ApplicationUser.cs" />
+    <Compile Include="Models\OnlinePayments\Profile\EF\UserGroup.cs" />
+    <Compile Include="Models\OnlinePayments\Customer\EF\State.cs" />
+    <Compile Include="Models\OnlinePayments\Profile\UserGroup.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
     <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
     <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
@@ -348,7 +385,12 @@
       <Name>KeithLink.Common.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Interface\OnlinePayments\Invoice\" />
+    <Folder Include="Interface\OnlinePayments\Log\" />
+    <Folder Include="Interface\OnlinePayments\Payment\" />
+    <Folder Include="Interface\OnlinePayments\Profile\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -22,12 +22,22 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             throw new NotImplementedException();
         }
 
-        public void UpdateUserMessages(List<UserMessageModel> userMessages)
+        public void MarkAsReadUserMessages(List<UserMessageModel> userMessages)
         {
             throw new NotImplementedException();
         }
 
         public int GetUnreadMessagesCount(UserProfile user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
         {
             throw new NotImplementedException();
         }

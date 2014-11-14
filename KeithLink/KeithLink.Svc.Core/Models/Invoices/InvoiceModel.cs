@@ -28,7 +28,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public DateTime? DueDate { get; set; }
 		[DataMember(Name = "status")]
 		public InvoiceStatus Status { get; set; }
-		[DataMember(Name = "statuddescription")]
+		[DataMember(Name = "statusdescription")]
 		public string StatusDescription { get; set; }
 		[DataMember(Name = "type")]
 		public InvoiceType Type { get; set; }

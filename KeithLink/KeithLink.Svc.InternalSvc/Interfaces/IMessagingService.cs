@@ -27,10 +27,14 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         [OperationContract]
-        void UpdateUserMessages(List<UserMessageModel> userMessages);
+        void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
         [OperationContract]
         void TestNotification();
         [OperationContract]
         int GetUnreadMessagesCount(UserProfile user);
+        [OperationContract]
+        void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
+        [OperationContract]
+        List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
     }
 }

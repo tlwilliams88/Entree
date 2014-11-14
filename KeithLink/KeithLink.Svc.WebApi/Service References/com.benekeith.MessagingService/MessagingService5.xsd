@@ -46,4 +46,10 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Channel" nillable="true" type="tns:Channel" />
+  <xs:complexType name="ArrayOfChannel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Channel" type="tns:Channel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfChannel" nillable="true" type="tns:ArrayOfChannel" />
 </xs:schema>
