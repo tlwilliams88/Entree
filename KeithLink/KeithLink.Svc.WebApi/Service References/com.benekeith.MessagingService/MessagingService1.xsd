@@ -86,14 +86,14 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateUserMessages">
+  <xs:element name="MarkAsReadUserMessages">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="userMessages" nillable="true" type="q14:ArrayOfUserMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="UpdateUserMessagesResponse">
+  <xs:element name="MarkAsReadUserMessagesResponse">
     <xs:complexType>
       <xs:sequence />
     </xs:complexType>
@@ -119,6 +119,33 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="GetUnreadMessagesCountResult" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateMessagingPreferences">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingPreferenceModel" nillable="true" type="q16:ProfileMessagingPreferenceModel" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q17:userprofile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateMessagingPreferencesResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReadMessagingPreferences">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q18:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReadMessagingPreferencesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="ReadMessagingPreferencesResult" nillable="true" type="q19:ArrayOfUserMessagingPreference" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

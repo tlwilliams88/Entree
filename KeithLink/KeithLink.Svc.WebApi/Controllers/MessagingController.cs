@@ -35,10 +35,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpPut]
-        [ApiKeyedRoute("usermessages/")]
+        [ApiKeyedRoute("usermessages/markasread")]
         public void Put(List<UserMessageModel> updatedUserMessages)
         {
-            messagingServiceRepository.UpdateUserMessages(updatedUserMessages);
+            messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
         }
 
         [HttpGet]
@@ -46,6 +46,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         public int unreadmessagescount()
         {
             return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser);
+        }
+
+        [HttpPut]
+        [ApiKeyedRoute("messagingpreferences/")]
+        public void Put(ProfileMessagingPreferenceModel messagingPreferenceModel)
+        {
+            messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
         }
 
 		
