@@ -176,6 +176,7 @@
     <Content Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\Reference.svcmap" />
+    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
@@ -374,7 +375,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <Content Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
     <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
     <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
       <SubType>Designer</SubType>

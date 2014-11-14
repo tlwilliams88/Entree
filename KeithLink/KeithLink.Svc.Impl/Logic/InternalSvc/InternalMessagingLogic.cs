@@ -281,6 +281,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             };
         }
 
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            var currentUserMessagingPreferences = userMessagingPreferenceRepository.Read(u => u.UserId.Equals(userId));
+
+            if (currentUserMessagingPreferences == null)
+                return null;
+
+            var messagingPreferencesList = new List<UserMessagingPreferenceModel>();
+
+            foreach (var currentMsgPref in currentUserMessagingPreferences)
+            {
+                messagingPreferencesList.Add(new UserMessagingPreferenceModel()
+                {
+                    Id = currentMsgPref.Id,
+                    CustomerNumber = currentMsgPref.CustomerNumber,
+                    Channel = currentMsgPref.Channel,
+                    NotificationType = currentMsgPref.NotificationType,
+                    UserId = currentMsgPref.UserId
+                });
+            }
+
+            return messagingPreferencesList;
+        }
+
         public void UpdateUserMessagingPreference(UserMessagingPreferenceModel userMessagingPreference)
         {
             var currentUserMessagingPreference = userMessagingPreferenceRepository.Read(u => u.Id.Equals(userMessagingPreference.Id)).FirstOrDefault();

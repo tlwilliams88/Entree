@@ -50,4 +50,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfUserMessage" nillable="true" type="tns:ArrayOfUserMessage" />
+  <xs:complexType name="ArrayOfUserMessagingPreference">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserMessagingPreference" nillable="true" type="tns:UserMessagingPreference" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserMessagingPreference" nillable="true" type="tns:ArrayOfUserMessagingPreference" />
+  <xs:complexType name="UserMessagingPreference">
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="channel" type="q4:Channel" />
+      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:long" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="notificationtype" type="q5:NotificationType" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserMessagingPreference" nillable="true" type="tns:UserMessagingPreference" />
 </xs:schema>

@@ -40,5 +40,10 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             serviceClient.UpdateMessagingPreferences(messagingPreferenceModel, user);
         }
 
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            return serviceClient.ReadMessagingPreferences(userId).ToList();
+        }
+
 	}
 }

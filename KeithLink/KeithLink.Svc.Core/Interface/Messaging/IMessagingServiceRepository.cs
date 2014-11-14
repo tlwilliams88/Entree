@@ -19,5 +19,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         int GetUnreadMessagesCount(UserProfile userProfile);
 
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile userProfile);
+
+        List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
     }
 }

@@ -37,5 +37,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             throw new NotImplementedException();
         }
 
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
 	}
 }
