@@ -391,6 +391,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 				if (term != null)
 				{
+					cust.TermDescription = term.Description;
 					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
 					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
 					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
@@ -409,12 +410,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = userCustomers
+                UserCustomers = userCustomers,
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
-                //MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
+                MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
             };
         }
 

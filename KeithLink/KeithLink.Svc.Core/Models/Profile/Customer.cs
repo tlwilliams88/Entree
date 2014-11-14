@@ -101,6 +101,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		[DataMember(Name = "termcode")]
 		public string TermCode { get; set; }
+		[DataMember(Name = "termdescription")]
+		public string TermDescription { get; set; }
     }
 
     public class CustomerAddUserModel
