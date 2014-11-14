@@ -70,45 +70,45 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-            //TerminateConfirmationThread();
-            //TerminateOrderHistoryThread();
-            //TerminateNotificationsThread();
+            TerminateConfirmationThread();
+            TerminateOrderHistoryThread();
+            TerminateNotificationsThread();
         }
         #endregion
 
         #region methods
         private void InitializeConfirmationMoverThread() {
-            //_confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
-            //_confirmationLogic.ListenForQueueMessages();
+            _confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
+            _confirmationLogic.ListenForQueueMessages();
         }
 
         private void InitializeNotificationsThread()
         {
-            //_messagingLogic = ((IContainer)AutofacHostFactory.Container).Resolve<Svc.Core.Interface.Messaging.IInternalMessagingLogic>();
-            //_messagingLogic.ListenForNotificationMessagesOnQueue();
+            _messagingLogic = ((IContainer)AutofacHostFactory.Container).Resolve<Svc.Core.Interface.Messaging.IInternalMessagingLogic>();
+            _messagingLogic.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializeOrderUpdateThread() {
             //System.Diagnostics.Debugger.Launch();
 
-            //_orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
-            //_orderHistoryLogic.ListenForQueueMessages();
+            _orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
+            _orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void TerminateConfirmationThread() {
-            //if (_confirmationLogic != null)
-            //    _confirmationLogic.Stop();
+            if (_confirmationLogic != null)
+                _confirmationLogic.Stop();
         }
 
         private void TerminateOrderHistoryThread() {
-            //if (_orderHistoryLogic != null)
-            //    _orderHistoryLogic.StopListening();
+            if (_orderHistoryLogic != null)
+                _orderHistoryLogic.StopListening();
         }
 
         private void TerminateNotificationsThread()
         {
-            //if (_messagingLogic != null)
-            //    _messagingLogic.Stop();
+            if (_messagingLogic != null)
+                _messagingLogic.Stop();
         }
 	}
 
