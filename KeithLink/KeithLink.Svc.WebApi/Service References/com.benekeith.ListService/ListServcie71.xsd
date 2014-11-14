@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="ListType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Custom" />
+      <xs:enumeration value="Favorite" />
+      <xs:enumeration value="Contract" />
+      <xs:enumeration value="Recent" />
+      <xs:enumeration value="Notes" />
+      <xs:enumeration value="Worksheet" />
+      <xs:enumeration value="ContractItemsAdded" />
+      <xs:enumeration value="ContractItemsDeleted" />
+      <xs:enumeration value="Reminder" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ListType" nillable="true" type="tns:ListType" />
+</xs:schema>

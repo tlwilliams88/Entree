@@ -25,14 +25,24 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             return serviceClient.ReadUserMessages(user).ToList();
         }
 
-        public void UpdateUserMessages(List<UserMessageModel> userMessages)
+        public void MarkAsReadUserMessages(List<UserMessageModel> userMessages)
         {
-            serviceClient.UpdateUserMessages(userMessages.ToArray());
+            serviceClient.MarkAsReadUserMessages(userMessages.ToArray());
         }
 
         public int GetUnreadMessagesCount(UserProfile user)
         {
             return serviceClient.GetUnreadMessagesCount(user);
+        }
+
+        public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user)
+        {
+            serviceClient.UpdateMessagingPreferences(messagingPreferenceModel, user);
+        }
+
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            return serviceClient.ReadMessagingPreferences(userId).ToList();
         }
 
 	}

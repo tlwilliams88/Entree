@@ -51,5 +51,9 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void UpdateItem(ListItemModel item);
 
 		void UpdateList(ListModel userList);
+
+		void CopyList(ListCopyShareModel copyListModel);
+
+		void ShareList(ListCopyShareModel shareListModel);
 	}
 }

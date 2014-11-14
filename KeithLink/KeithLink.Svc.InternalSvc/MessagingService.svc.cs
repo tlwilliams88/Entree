@@ -60,14 +60,24 @@ namespace KeithLink.Svc.InternalSvc
             return messagingLogic.ReadUserMessages(user);
         }
 
-        public void UpdateUserMessages(List<UserMessageModel> userMessages)
+        public void MarkAsReadUserMessages(List<UserMessageModel> userMessages)
         {
-            messagingLogic.UpdateUserMessages(userMessages);
+            messagingLogic.MarkAsReadUserMessages(userMessages);
         }
 
         public int GetUnreadMessagesCount(UserProfile user)
         {
             return messagingLogic.GetUnreadMessagesCount(user);
+        }
+
+        public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user)
+        {
+            messagingLogic.UpdateMessagingPreferences(messagingPreferenceModel, user);
+        }
+
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            return messagingLogic.ReadMessagingPreferences(userId);
         }
 
     }

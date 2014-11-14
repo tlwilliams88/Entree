@@ -86,7 +86,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 return retVal;
             } else {
-                return _profileLogic.GetUserProfile(email);
+                return _profileLogic.GetUserProfile(email, true);
             }
         }
 

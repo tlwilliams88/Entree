@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace KeithLink.Svc.Core.Extensions
 			};
 		}
 
-		public static ListModel ToListModel(this List list, bool returnAllItems = false)
+		public static ListModel ToListModel(this List list,UserSelectedContext catalogInfo, bool returnAllItems = false)
 		{
 			return new ListModel()
 			{
@@ -32,6 +33,8 @@ namespace KeithLink.Svc.Core.Extensions
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
+				IsSharing = list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId),
+				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
                     returnAllItems == false ? list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).Where(i => i.Status.Equals(Core.Enumerations.List.ListItemStatus.Current)).ToList() :
                     list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()

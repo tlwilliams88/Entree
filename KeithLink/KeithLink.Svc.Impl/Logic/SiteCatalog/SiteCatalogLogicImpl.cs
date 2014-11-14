@@ -126,8 +126,24 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids, UserProfile profile)
         {
-            ProductsReturn ret = _catalogRepository.GetProductsByIds(branch, ids);
-            return ret;
+			int totalProcessed = 0;
+			var products = new ProductsReturn() { Products = new List<Product>() };
+
+			while (totalProcessed < ids.Count)
+			{
+				var tempProducts = _catalogRepository.GetProductsByIds(branch, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
+
+				if (tempProducts != null && tempProducts.Products != null)
+				{
+					products.Count += tempProducts.Count;
+					products.TotalCount += tempProducts.TotalCount;
+					products.Products.AddRange(tempProducts.Products);
+				}
+
+				totalProcessed += 500;
+			}
+			
+			return products;
         }
 
 		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile)

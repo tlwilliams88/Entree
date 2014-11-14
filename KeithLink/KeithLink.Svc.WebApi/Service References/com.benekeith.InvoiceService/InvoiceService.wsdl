@@ -5,9 +5,11 @@
       <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
+      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
+      <xsd:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IInvoiceService_ReadInvoices_InputMessage">
@@ -22,6 +24,12 @@
   <wsdl:message name="IInvoiceService_ReadInvoice_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadInvoiceResponse" />
   </wsdl:message>
+  <wsdl:message name="IInvoiceService_ReadTermInformation_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadTermInformation" />
+  </wsdl:message>
+  <wsdl:message name="IInvoiceService_ReadTermInformation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadTermInformationResponse" />
+  </wsdl:message>
   <wsdl:portType name="IInvoiceService">
     <wsdl:operation name="ReadInvoices">
       <wsdl:input wsaw:Action="http://tempuri.org/IInvoiceService/ReadInvoices" message="tns:IInvoiceService_ReadInvoices_InputMessage" />
@@ -30,6 +38,10 @@
     <wsdl:operation name="ReadInvoice">
       <wsdl:input wsaw:Action="http://tempuri.org/IInvoiceService/ReadInvoice" message="tns:IInvoiceService_ReadInvoice_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IInvoiceService/ReadInvoiceResponse" message="tns:IInvoiceService_ReadInvoice_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadTermInformation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IInvoiceService/ReadTermInformation" message="tns:IInvoiceService_ReadTermInformation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IInvoiceService/ReadTermInformationResponse" message="tns:IInvoiceService_ReadTermInformation_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IInvoiceService" type="tns:IInvoiceService">
@@ -45,6 +57,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadInvoice">
       <soap:operation soapAction="http://tempuri.org/IInvoiceService/ReadInvoice" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadTermInformation">
+      <soap:operation soapAction="http://tempuri.org/IInvoiceService/ReadTermInformation" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

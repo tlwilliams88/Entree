@@ -18,7 +18,6 @@ namespace KeithLink.Svc.Core.Interface.Invoices
 		InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id);
 		void DeleteInvoice(long Id);
 		void UpdateInvoice(InvoiceModel invoice);
-		//void BulkImport(List<InvoiceModel> invoices, List<InvoiceItemModel> invoiceItems);
-		//void DeleteAll();
+		TermModel ReadTermInformation(string branchId, string termCode);
 	}
 }

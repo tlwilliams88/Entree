@@ -24,6 +24,7 @@
     <MetadataSource Address="http://localhost:1317/InvoiceService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="InvoiceService6.xsd" MetadataType="Schema" ID="a06d4be4-d87a-4fea-966f-f249173db2f5" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd6" />
     <MetadataFile FileName="InvoiceService.disco" MetadataType="Disco" ID="56d9b4ee-9bb9-4406-afe8-f3917d544737" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?disco" />
     <MetadataFile FileName="InvoiceService.xsd" MetadataType="Schema" ID="e74880ce-11c5-4b25-980e-c0b87c0c0a0a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd0" />
     <MetadataFile FileName="InvoiceService1.xsd" MetadataType="Schema" ID="2a8a8bf8-c9e3-4d48-b34e-c1eaaa83834a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd3" />
@@ -32,6 +33,7 @@
     <MetadataFile FileName="InvoiceService3.xsd" MetadataType="Schema" ID="08a2be0c-73e6-41eb-8229-07d9f6eb4d46" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd2" />
     <MetadataFile FileName="InvoiceService4.xsd" MetadataType="Schema" ID="77f19319-b655-4d43-bb26-3302bdc21792" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd5" />
     <MetadataFile FileName="InvoiceService5.xsd" MetadataType="Schema" ID="bd33acdd-d440-402c-8b27-bd4a63af12aa" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd4" />
+    <MetadataFile FileName="InvoiceService61.xsd" MetadataType="Schema" ID="6f740265-4ca5-4421-8a30-7ca0a90001cb" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd7" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

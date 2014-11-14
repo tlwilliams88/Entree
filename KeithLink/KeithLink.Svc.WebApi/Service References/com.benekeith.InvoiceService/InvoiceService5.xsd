@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-  <xs:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-  <xs:complexType name="ArrayOfInvoice">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:simpleType name="NotificationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OrderConfirmation">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="OrderUpdate">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="NotificationType" nillable="true" type="tns:NotificationType" />
+  <xs:complexType name="ArrayOfChannel">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Invoice" nillable="true" type="tns:Invoice" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Channel" type="tns:Channel" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfInvoice" nillable="true" type="tns:ArrayOfInvoice" />
-  <xs:complexType name="Invoice">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="amount" type="xs:decimal" />
-      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="duedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="id" type="xs:long" />
-      <xs:element minOccurs="0" name="invoicedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfInvoiceItem" />
-      <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="statuddescription" nillable="true" type="xs:string" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q1:InvoiceStatus" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q2:InvoiceType" />
-      <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Invoice" nillable="true" type="tns:Invoice" />
-  <xs:complexType name="ArrayOfInvoiceItem">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="InvoiceItem" nillable="true" type="tns:InvoiceItem" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfInvoiceItem" nillable="true" type="tns:ArrayOfInvoiceItem" />
-  <xs:complexType name="InvoiceItem">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q3:BaseProductInfo">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="catchweight" type="xs:boolean" />
-          <xs:element minOccurs="0" name="classcode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="extcatchweight" nillable="true" type="xs:decimal" />
-          <xs:element minOccurs="0" name="id" type="xs:long" />
-          <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="itemprice" nillable="true" type="xs:decimal" />
-          <xs:element minOccurs="0" name="linenumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="quantityordered" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="quantityshipped" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="salesnet" nillable="true" type="xs:decimal" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="InvoiceItem" nillable="true" type="tns:InvoiceItem" />
+  <xs:element name="ArrayOfChannel" nillable="true" type="tns:ArrayOfChannel" />
+  <xs:simpleType name="Channel">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Email">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="MobilePush">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Web">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="Channel" nillable="true" type="tns:Channel" />
 </xs:schema>

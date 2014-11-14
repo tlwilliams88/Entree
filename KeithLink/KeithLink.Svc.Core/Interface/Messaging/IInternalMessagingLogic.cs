@@ -19,12 +19,16 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification);
-        void UpdateUserMessages(List<UserMessageModel> userMessages);
+        void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 
 
 
         int GetUnreadMessagesCount(UserProfile user);
+
+        void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
+
+        List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
     }
 }

@@ -5,6 +5,10 @@ using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.WebApi.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.Invoices;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -19,7 +23,7 @@ namespace KeithLink.Svc.Test.Logic {
         private EventLogRepositoryImpl              _log;
         private UserProfileLogicImpl                _logic;
         private AccountRepository                   _acct;
-        private CustomerRepository                  _cust;
+        private CustomerRepository _cust;
         #endregion
 
         #region ctor
@@ -38,8 +42,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
-
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl());
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl());
         }
         #endregion
 
