@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Invoices;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -45,7 +46,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _msgPref = new UserMessagingPreferenceRepositoryImpl(_unitofwork);
 
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), _msgPref);
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), _msgPref, new NoInvoiceServiceRepositoryImpl());
         }
         #endregion
 
