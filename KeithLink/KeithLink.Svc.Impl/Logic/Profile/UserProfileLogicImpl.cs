@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -425,18 +426,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             //loop through each notification type to load in model
             foreach (var notifType in Enum.GetValues(typeof(NotificationType)))
             {
-                var currentSelectedChannels = new List<Core.Enumerations.Messaging.Channel>();
+                var currentSelectedChannels = new List<ProfileChannelModel>();
 
                 //find and add selected channels for current notification type
                 var currentMsgPrefsByType = currentMsgPrefs.Where(a => (a.NotificationType.Equals(notifType) && a.CustomerNumber == customerNumber));
                 foreach (var currentMsgPref in currentMsgPrefsByType)
                 {
-                    currentSelectedChannels.Add(currentMsgPref.Channel);
+                    currentSelectedChannels.Add(new ProfileChannelModel() { Channel = currentMsgPref.Channel, Description = EnumUtils<Channel>.GetDescription(currentMsgPref.Channel,"") });
                 }
                 msgPrefModelList.Add(new ProfileMessagingPreferenceDetailModel()
                 {
                     NotificationType = (NotificationType)notifType,
-                    Description = KeithLink.Svc.Core.Extensions.MessagingExtensions.GetEnumDescription((NotificationType)notifType),
+                    Description = EnumUtils<NotificationType>.GetDescription((NotificationType)notifType, ""),
                     SelectedChannels = currentSelectedChannels
                 });
 
