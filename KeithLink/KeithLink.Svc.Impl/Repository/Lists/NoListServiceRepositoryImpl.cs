@@ -121,6 +121,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         {
             throw new NotImplementedException();
 		}
-        #endregion
+        
+		public void CopyList(ListCopyShareModel copyListModel)
+		{
+			throw new NotImplementedException();
+		}
+		#endregion
 	}
 }

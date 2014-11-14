@@ -5,10 +5,12 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IListServcie_AddItems_InputMessage">
@@ -119,6 +121,12 @@
   <wsdl:message name="IListServcie_UpdateList_OutputMessage">
     <wsdl:part name="parameters" element="tns:UpdateListResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_CopyList_InputMessage">
+    <wsdl:part name="parameters" element="tns:CopyList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_CopyList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CopyListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -191,6 +199,10 @@
     <wsdl:operation name="UpdateList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/UpdateList" message="tns:IListServcie_UpdateList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/UpdateListResponse" message="tns:IListServcie_UpdateList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CopyList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/CopyList" message="tns:IListServcie_CopyList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/CopyListResponse" message="tns:IListServcie_CopyList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -350,6 +362,15 @@
     </wsdl:operation>
     <wsdl:operation name="UpdateList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/UpdateList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CopyList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/CopyList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
