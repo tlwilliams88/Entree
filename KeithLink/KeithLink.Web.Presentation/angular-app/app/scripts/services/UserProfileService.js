@@ -37,13 +37,9 @@ angular.module('bekApp')
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
           if (profile.rolename === 'guest') {
-            LocalStorage.setBranchId(profile.branchid);
-            LocalStorage.setCurrentLocation(profile.branchid);
+            LocalStorage.setSelectedBranchInfo(profile.branchid);
           } else {
-            var currentLocation = profile.user_customers[0];
-            LocalStorage.setCurrentLocation(currentLocation.customerNumber);
-            LocalStorage.setBranchId(currentLocation.customerBranch);
-            LocalStorage.setCustomerNumber(currentLocation.customerNumber);
+            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
           }
           return profile;
         });

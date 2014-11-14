@@ -25,6 +25,7 @@ angular
     'toaster',
     'angular-loading-bar',
     'angularFileUpload',
+    'fcsa-number',
     'configenv'
   ])
 .config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
@@ -480,7 +481,7 @@ angular
   });
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    if (AccessService.isLoggedIn()) {
+    if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
   });

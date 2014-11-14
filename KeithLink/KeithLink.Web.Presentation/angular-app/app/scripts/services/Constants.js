@@ -9,7 +9,8 @@ angular.module('bekApp')
       currentLocation: 'currentLocation',
       branchId: 'branchId',
       customerNumber: 'customerNumber',
-      leadGenInfo: 'leadGenInfo'
+      leadGenInfo: 'leadGenInfo',
+      currentCustomer: 'currentCustomer'
     },
 
     servicelocatorUrl: '../servicelocator',
