@@ -119,11 +119,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             foreach (CommerceEntity ent in (res.OperationResponses[0] as CommerceQueryOperationResponse).CommerceEntities)
             {
                 Organization org = new Organization(ent);
-                userAccounts.Add(new Account()
+                if (org.OrganizationType == "1")
                 {
-                    Id = Guid.Parse(org.Id),
-                    Name = org.Name,                     
-                });
+                    userAccounts.Add(new Account()
+                    {
+                        Id = Guid.Parse(org.Id),
+                        Name = org.Name,
+                    });
+                }
             }
             return userAccounts;
         }

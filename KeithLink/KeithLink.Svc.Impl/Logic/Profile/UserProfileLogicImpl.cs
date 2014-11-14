@@ -716,7 +716,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (accountFilters != null) {
                 if (accountFilters.UserId.HasValue) {
-                    _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
+                    retAccounts.AddRange(_accountRepo.GetAccountsForUser(accountFilters.UserId.Value));
+
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
                     retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
@@ -725,6 +726,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             else
                 retAccounts = allAccounts;
 
+            foreach (var acct in retAccounts)
+            {
+                acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId == acct.Id).ToList();
+            }
             // TODO: add logic to filter down for internal administration versus external owner
 
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
