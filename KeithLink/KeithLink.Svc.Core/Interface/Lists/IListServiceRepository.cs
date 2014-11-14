@@ -53,5 +53,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void UpdateList(ListModel userList);
 
 		void CopyList(ListCopyShareModel copyListModel);
+
+		void ShareList(ListCopyShareModel shareListModel);
 	}
 }

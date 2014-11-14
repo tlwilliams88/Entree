@@ -27,9 +27,9 @@ namespace KeithLink.Svc.Core.Models.EF
 		public string CustomerId { get; set; }
 		public string BranchId { get; set; }
 		public string AccountNumber { get; set; }
-		public bool Shared { get; set; }
 		public bool ReadOnly { get; set; }
         
 		public virtual ICollection<ListItem> Items { get; set; }
+		public virtual ICollection<ListShare> Shares { get; set; }
 	}
 }

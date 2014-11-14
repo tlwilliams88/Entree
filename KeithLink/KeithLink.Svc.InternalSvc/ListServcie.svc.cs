@@ -121,7 +121,13 @@ namespace KeithLink.Svc.InternalSvc
 		public void CopyList(ListCopyShareModel copyListModel)
 		{
 			listLogic.CopyList(copyListModel);
+		}		
+
+		public void ShareList(ListCopyShareModel shareListModel)
+		{
+			listLogic.ShareList(shareListModel);
 		}
+		
 		#endregion
 	}
 }

@@ -134,9 +134,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			serviceClient.CopyList(copyListModel);
 		}
 
-        #endregion
-
-
+		public void ShareList(ListCopyShareModel shareListModel)
+		{
+			serviceClient.ShareList(shareListModel);
+		} 
 		
+		#endregion
 	}
 }
