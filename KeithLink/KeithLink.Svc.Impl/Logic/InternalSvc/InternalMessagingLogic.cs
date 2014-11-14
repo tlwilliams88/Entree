@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Extensions.Messaging;
 using AmazonSNS = Amazon.SimpleNotificationService;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -360,7 +361,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 {
                     var newPreference = new UserMessagingPreference()
                     {
-                        Channel = channel,
+                        Channel = EnumUtils<Channel>.FromDescription(channel.Description),
                         CustomerNumber = messagingPrefModel.CustomerNumber,
                         NotificationType = currentPreference.NotificationType,
                         UserId = userId

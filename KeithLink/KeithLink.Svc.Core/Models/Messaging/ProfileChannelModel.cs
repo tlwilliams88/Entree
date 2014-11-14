@@ -10,13 +10,11 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Messaging
 {
-    public class ProfileMessagingPreferenceDetailModel
+    public class ProfileChannelModel
     {
-        [DataMember(Name = "notificationtype")]
-        public NotificationType NotificationType { get; set; }
+        [DataMember(Name = "channel")]
+        public Channel Channel { get; set; }
         [DataMember(Name = "description")]
         public string Description { get; set; }
-        [DataMember(Name = "selectedchannels")]
-        public List<ProfileChannelModel> SelectedChannels { get; set; }
     }
 }
