@@ -117,6 +117,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.UpdateList(userList);
 		}
-        #endregion
+        
+		public void CopyList(ListCopyShareModel copyListModel)
+		{
+			listLogic.CopyList(copyListModel);
+		}
+		#endregion
 	}
 }

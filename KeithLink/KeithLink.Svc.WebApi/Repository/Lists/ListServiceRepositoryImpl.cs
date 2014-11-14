@@ -128,6 +128,15 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			serviceClient.UpdateList(userList);
 		}
+
+		public void CopyList(ListCopyShareModel copyListModel)
+		{
+			serviceClient.CopyList(copyListModel);
+		}
+
         #endregion
+
+
+		
 	}
 }
