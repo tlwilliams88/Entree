@@ -312,6 +312,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (cachedList != null)
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
+
+				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+
 				return cachedList;
 			}
 
