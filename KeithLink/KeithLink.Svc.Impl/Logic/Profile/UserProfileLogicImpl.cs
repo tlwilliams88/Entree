@@ -387,12 +387,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = userCustomers,
+                UserCustomers = userCustomers
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
-                MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
+                //MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
             };
         }
 
