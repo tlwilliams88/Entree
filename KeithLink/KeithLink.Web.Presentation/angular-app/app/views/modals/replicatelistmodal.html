@@ -4,6 +4,14 @@
 <div class="modal-body">
 
   <form name="duplicateListForm">
+  
+    <p>
+      Sharing a list with another customer allows all users under that customer to view a living copy of the list.  Any edits you make will also occur on all shared versions of the list.  Users who have a shared copy will not be able to make any edits. 
+    </p>
+    <p>
+      Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
+    </p>
+
     <select ng-options="customer.customerNumber as customer.customerName for customer in customers" ng-model="duplicateList.customerNumber" required name="customerNumber">
       <option>Select a Customer</option>
     </select>  
