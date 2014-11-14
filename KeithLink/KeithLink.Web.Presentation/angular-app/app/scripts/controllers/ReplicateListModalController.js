@@ -32,6 +32,6 @@ angular.module('bekApp')
     } else {
       $scope.selectedCustomers.push(customer);
     }
-  }
+  };
 
 }]);
