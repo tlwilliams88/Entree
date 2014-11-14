@@ -82,6 +82,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.CopyList(copyListModel);
 		}
 
+		[HttpPost]
+		[ApiKeyedRoute("list/share")]
+		public void ShareList(ListCopyShareModel copyListModel)
+		{
+			listServiceRepository.ShareList(copyListModel);
+		}
+
 		
         [HttpPut]
 		[ApiKeyedRoute("list/item")]
