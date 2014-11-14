@@ -382,6 +382,24 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
             }
 
+			foreach (var cust in userCustomers)
+			{
+				if (string.IsNullOrEmpty(cust.TermCode))
+					continue;
+
+				//Lookup Term info
+				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+				if (term != null)
+				{
+					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+					cust.BalanceAge4Label = string.Format("{0} - {1}", term.Age3, term.Age4);
+				}
+
+			}
+
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),

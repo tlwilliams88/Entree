@@ -177,7 +177,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public TermModel ReadTermInformation(string branchId, string termCode)
 		{
-			var term = termRepository.Read(t => t.BranchId.Equals(branchId) && t.TermCode.Equals(termCode)).FirstOrDefault();
+			var intTerm = termCode.ToInt();
+
+			if (!intTerm.HasValue)
+				return null;
+
+			var term = termRepository.Read(t => t.BranchId.Equals(branchId) && t.TermCode.Equals(intTerm.Value)).FirstOrDefault();
 
 			if (term == null)
 				return null;

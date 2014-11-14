@@ -71,7 +71,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         BalanceAge1 = org.BalanceAge1,
                         BalanceAge2 = org.BalanceAge2,
                         BalanceAge3 = org.BalanceAge3,
-                        BalanceAge4 = org.BalanceAge4
+                        BalanceAge4 = org.BalanceAge4,
+						TermCode = org.TermCode
                     });
                 });
 
@@ -135,7 +136,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         BalanceAge1 = org.BalanceAge1,
                         BalanceAge2 = org.BalanceAge2,
                         BalanceAge3 = org.BalanceAge3,
-                        BalanceAge4 = org.BalanceAge4
+                        BalanceAge4 = org.BalanceAge4,
+						TermCode = org.TermCode
                     });
                 }
             }

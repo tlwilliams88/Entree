@@ -134,6 +134,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 
+			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+
             // customer bank - JA - 11/13
             builder.RegisterType<OnlinePaymentService>();
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
@@ -144,5 +146,7 @@ namespace KeithLink.Svc.InternalSvc
         }
 
 
-    }
+
+		
+	}
 }

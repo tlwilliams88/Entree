@@ -157,6 +157,7 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
+    <Compile Include="Models\Lists\ListCopyShareModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
