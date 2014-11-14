@@ -371,6 +371,7 @@ angular.module('bekApp')
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/replicatelistmodal.html',
         controller: 'ReplicateListModalController',
+        scope: $scope,
         resolve: {
           list: function() {
             return list;

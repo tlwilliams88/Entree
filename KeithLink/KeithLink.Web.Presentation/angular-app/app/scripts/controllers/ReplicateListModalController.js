@@ -7,9 +7,10 @@ angular.module('bekApp')
   $scope.list = list;
   $scope.customers = customers;
 
-  $scope.shareList = function(listId, customerNumber) {
-    ListService.shareList(listId, customerNumber);
-    $modalInstance.close();
+  $scope.shareList = function(list, customers) {
+    ListService.shareList(list, customers).then(function() {
+      $modalInstance.close();
+    });
   };
 
   $scope.copyList = function(list, customers) {

@@ -325,8 +325,18 @@ angular.module('bekApp')
         SHARING/COPYING
         ***************/
 
-        shareList: function(listId, customerNumber) {
-          console.log('shared - listId: ' + listId + ', customerNumber: ' + customerNumber);
+        shareList: function(list, customers) {
+          var copyListData = {
+            listid: list.listid,
+            customers: customers
+          };
+
+          return List.shareList(copyListData).$promise.then(function() {
+            list.issharing = true;
+            toaster.pop('success', null, 'Successfully shared list ' + list.name + ' with ' + customers.length + ' customers.');
+          }, function() {
+            toaster.pop('error', null, 'Error sharing list.');
+          });
         },
 
         copyList: function(list, customers) {

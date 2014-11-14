@@ -50,6 +50,11 @@ angular.module('bekApp')
       copyList: {
         url: '/list/copy',
         method: 'POST'
+      },
+
+      shareList: {
+        url: '/list/share',
+        method: 'POST'
       }
 
       // postData is an array of listitemids as strings

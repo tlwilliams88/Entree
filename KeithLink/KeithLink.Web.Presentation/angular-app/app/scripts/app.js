@@ -310,20 +310,8 @@ angular
         invoices: [ 'InvoiceService', function(InvoiceService) {
           return InvoiceService.getAllInvoices();
         }],
-        accounts: [ function() {
-          return [{
-            id: 1,
-            name: 'Bank of America',
-            number: 'XXXX XXXX XXXX 4321'
-          }, {
-            id: 2,
-            name: 'Chase',
-            number: 'XXXX XXXX XXXX 4321'
-          }, {
-            id: 3,
-            name: 'Wells Fargo',
-            number: 'XXXX XXXX XXXX 4321'
-          }];
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
         }]
       }
     })

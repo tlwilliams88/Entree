@@ -12,7 +12,7 @@
       Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
     </p>
 
-    <div class="checkbox" ng-repeat="customer in customers">
+    <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customerNumber !== customer.customerNumber">
       <label>
         <input type="checkbox"
           name="selectedFruits[]"
