@@ -26,6 +26,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.InvoiceService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadInvoice", ReplyAction="http://tempuri.org/IInvoiceService/ReadInvoiceResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadTermInformation", ReplyAction="http://tempuri.org/IInvoiceService/ReadTermInformationResponse")]
+        KeithLink.Svc.Core.Models.Invoices.TermModel ReadTermInformation(string branchId, string termCode);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IInvoiceService/ReadTermInformation", ReplyAction="http://tempuri.org/IInvoiceService/ReadTermInformationResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.TermModel> ReadTermInformationAsync(string branchId, string termCode);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +75,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.InvoiceService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> ReadInvoiceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
             return base.Channel.ReadInvoiceAsync(user, catalogInfo, Id);
+        }
+        
+        public KeithLink.Svc.Core.Models.Invoices.TermModel ReadTermInformation(string branchId, string termCode) {
+            return base.Channel.ReadTermInformation(branchId, termCode);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.TermModel> ReadTermInformationAsync(string branchId, string termCode) {
+            return base.Channel.ReadTermInformationAsync(branchId, termCode);
         }
     }
 }

@@ -29,15 +29,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IInvoiceItemRepository invoiceItemRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IListRepository listRepository;
+		private readonly ITermRepository termRepository;
 
 		public InternalInvoiceLogic(IUnitOfWork unitOfWork, IInvoiceRepository invoiceRepository, IInvoiceItemRepository invoiceItemRepository,
-			ICatalogLogic catalogLogic, IListRepository listRepository)
+			ICatalogLogic catalogLogic, IListRepository listRepository, ITermRepository termRepository)
 		{
 			this.invoiceRepository = invoiceRepository;
 			this.invoiceItemRepository = invoiceItemRepository;
 			this.unitOfWork = unitOfWork;
 			this.catalogLogic = catalogLogic;
 			this.listRepository = listRepository;
+			this.termRepository = termRepository;
 		}
 
 		public long CreateInvoice(InvoiceModel invoice, InvoiceType type)
@@ -170,6 +172,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 
 		//}
-				
+
+
+
+		public TermModel ReadTermInformation(string branchId, string termCode)
+		{
+			var term = termRepository.Read(t => t.BranchId.Equals(branchId) && t.TermCode.Equals(termCode)).FirstOrDefault();
+
+			if (term == null)
+				return null;
+
+			return new TermModel() { BranchId = term.BranchId, TermCode = term.TermCode, Description = term.Description, Age1 = term.Age1, Age2 = term.Age2, Age3 = term.Age3, Age4 = term.Age4 };
+		}
 	}
 }

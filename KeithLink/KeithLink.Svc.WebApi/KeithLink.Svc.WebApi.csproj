@@ -175,7 +175,9 @@
     <Content Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.DivisionService\Reference.svcmap"/>
+    <Content Include="Service References\com.benekeith.DivisionService\Reference.svcmap" />
+    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -186,6 +188,12 @@
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
     <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService61.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

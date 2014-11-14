@@ -18,5 +18,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		List<InvoiceModel> ReadInvoices(UserProfile user, UserSelectedContext catalogInfo);
 		[OperationContract]
 		InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id);
+		[OperationContract]
+		TermModel ReadTermInformation(string branchId, string termCode);
 	}
 }
