@@ -25,15 +25,23 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;
+<<<<<<< HEAD
         private IMessagingServiceRepository _msgServiceRepo;
+=======
+        private IUserMessagingPreferenceRepository _msgPrefRepository;
 		private IInvoiceServiceRepository _invoiceServiceRepository;
+>>>>>>> c871308f2bbce153f3b55624f1d84020b0e80b18
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
+<<<<<<< HEAD
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo) {
+=======
                                     IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
-									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository)
+									IUserMessagingPreferenceRepository msgPrefRepo, IInvoiceServiceRepository invoiceServiceRepository)
 		{
+>>>>>>> c871308f2bbce153f3b55624f1d84020b0e80b18
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -41,8 +49,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
 			_orderServiceRepository = orderServiceRepository;
+<<<<<<< HEAD
             _msgServiceRepo = msgServiceRepo;
+=======
+            _msgPrefRepository = msgPrefRepo;
 			_invoiceServiceRepository = invoiceServiceRepository;
+>>>>>>> c871308f2bbce153f3b55624f1d84020b0e80b18
         }
         #endregion
 

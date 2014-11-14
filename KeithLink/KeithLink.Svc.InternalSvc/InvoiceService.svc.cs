@@ -33,5 +33,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return invoiceLogic.ReadInvoice(user, catalogInfo, Id);
 		}
+
+
+		public TermModel ReadTermInformation(string branchId, string termCode)
+		{
+			return invoiceLogic.ReadTermInformation(branchId, termCode);
+		}
 	}
 }

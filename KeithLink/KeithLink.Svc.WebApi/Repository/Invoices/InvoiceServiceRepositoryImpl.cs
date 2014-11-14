@@ -28,5 +28,11 @@ namespace KeithLink.Svc.WebApi.Repository.Invoices
 		{
 			return serviceClient.ReadInvoice(user, catalogInfo, Id);
 		}
+
+
+		public TermModel ReadTermInformation(string branchId, string termCode)
+		{
+			return serviceClient.ReadTermInformation(branchId, termCode);
+		}
 	}
 }

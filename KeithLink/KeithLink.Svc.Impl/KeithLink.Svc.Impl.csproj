@@ -379,6 +379,7 @@
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
