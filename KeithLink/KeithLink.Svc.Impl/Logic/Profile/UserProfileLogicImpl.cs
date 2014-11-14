@@ -10,6 +10,10 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Enumerations.Messaging;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -21,11 +25,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;
+        private IUserMessagingPreferenceRepository _msgPrefRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository, IUserMessagingPreferenceRepository msgPrefRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -33,6 +38,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
 			_orderServiceRepository = orderServiceRepository;
+            _msgPrefRepository = msgPrefRepo;
         }
         #endregion
 
@@ -381,12 +387,62 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
-                UserCustomers = userCustomers
+                UserCustomers = userCustomers,
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
                 //}
+                MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
             };
+        }
+
+        private List<ProfileMessagingPreferenceDetailModel> BuildPreferenceModelForEachNotificationType(IEnumerable<UserMessagingPreference> currentMsgPrefs, string customerNumber)
+        {
+            var msgPrefModelList = new List<ProfileMessagingPreferenceDetailModel>();
+            //loop through each notification type to load in model
+            foreach (var notifType in Enum.GetValues(typeof(NotificationType)))
+            {
+                var currentSelectedChannels = new List<Core.Enumerations.Messaging.Channel>();
+
+                //find and add selected channels for current notification type
+                var currentMsgPrefsByType = currentMsgPrefs.Where(a => (a.NotificationType.Equals(notifType) && a.CustomerNumber == customerNumber));
+                foreach (var currentMsgPref in currentMsgPrefsByType)
+                {
+                    currentSelectedChannels.Add(currentMsgPref.Channel);
+                }
+                msgPrefModelList.Add(new ProfileMessagingPreferenceDetailModel()
+                {
+                    NotificationType = (NotificationType)notifType,
+                    Description = KeithLink.Svc.Core.Extensions.MessagingExtensions.GetEnumDescription((NotificationType)notifType),
+                    SelectedChannels = currentSelectedChannels
+                });
+
+            }
+            return msgPrefModelList;
+        }
+
+        private List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid)
+        {
+            var currentMessagingPreferences = _msgPrefRepository.Read(a => a.UserId.Equals(guid));
+            var userCustomers = _customerRepo.GetCustomersForUser(guid);
+
+            var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();
+            //first load user preferences
+            returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+            {
+                Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, null)
+            });
+            //then load customer preferences
+            foreach (var currentCustomer in userCustomers)
+            {
+                returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+                {
+                    CustomerNumber = currentCustomer.CustomerNumber,
+                    Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, currentCustomer.CustomerNumber)
+                });
+            }
+
+            return returnedMsgPrefModel;
         }
 
         private string GetUserDsmRole(UserPrincipal user)

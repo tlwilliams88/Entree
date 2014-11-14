@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -54,5 +55,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "user_customers")]
         public List<Customer> UserCustomers { get; set; }
+
+        [DataMember(Name = "messagingpreferences")]
+        public List<ProfileMessagingPreferenceModel> MessagingPreferences { get; set; }
     }
 }

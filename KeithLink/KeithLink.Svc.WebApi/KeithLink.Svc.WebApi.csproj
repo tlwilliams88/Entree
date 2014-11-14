@@ -168,6 +168,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
