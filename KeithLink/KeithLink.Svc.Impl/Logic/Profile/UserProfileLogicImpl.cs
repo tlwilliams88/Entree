@@ -395,7 +395,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
 					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
 					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-					cust.BalanceAge4Label = string.Format("{0} - {1}", term.Age3, term.Age4);
+					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
 				}
 
 			}
