@@ -105,7 +105,7 @@ angular.module('bekApp')
     }
 
     function setCurrentCustomer(customer) {
-      localStorageService.set(Constants.currentCustomer, customer);
+      localStorageService.set(Constants.localStorage.currentCustomer, customer);
     }
 
 

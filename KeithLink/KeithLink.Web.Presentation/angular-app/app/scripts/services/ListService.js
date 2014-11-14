@@ -17,6 +17,99 @@ angular.module('bekApp')
         });
       }
 
+      /*
+      VALID PERMISSIONS
+      canEditList -- save changes, cancel changes
+      specialDisplay -- in a list of lists this will be hidden (context menu, multi select menu on list page)
+      canReorderItems
+      canDeleteList
+      ??canCreateList
+      canDeleteItems
+      canAddItems
+      canRenameList
+      canSeeLabels
+      canEditLabels
+      canSeeParlevel
+      canEditParlevel
+      alternativeParHeader
+      alternativeFieldName
+      alternativeFieldHeader
+      canShareList
+      canCopyList
+      */
+
+      function updateListPermissions(list) {
+        var permissions = {};
+
+        // FAVORITES
+        if (list.isfavorite) {
+          permissions.canEditList = true;
+          permissions.canDeleteItems = true;
+          permissions.canAddItems = true;
+          permissions.specialDisplay = true;
+          permissions.canReorderItems = true;
+
+        // CONTRACT
+        } else if (list.is_contract_list) {
+          permissions.canSeeLabels = true;
+          permissions.alternativeFieldName = 'category';
+          permissions.alternativeFieldHeader = 'Category';
+
+        // WORKSHEET
+        } else if (list.isworksheet) {
+
+        // MANDATORY
+        } else if (list.ismandatory) {
+          permissions.canSeeParlevel = true;
+          permissions.alternativeParHeader = 'Required Qty';
+
+          // TODO: check if DSR user
+          // if (isDSR) {
+          //   permissions.canAddItems = true;
+          //   permissions.canDeleteItems = true;
+          //   permissions.canEditParlevel = true;
+          // }
+
+        // REMINDER
+        } else if (list.isreminder) {
+          permissions.canEditList = true;
+          permissions.canAddItems = true;
+          permissions.canDeleteItems = true;
+          permissions.canReorderItems = true;
+        
+        // CUSTOM LISTS (only these can be shared/copied)
+        } else {
+
+          // SHARED WITH ME
+          if (list.isshared) {
+            permissions.canSeeLabels = true;
+            permissions.canSeeParlevel = true;            
+
+          // OWNER OF LIST
+          } else {
+            permissions.canEditList = true;
+            permissions.canDeleteList = true;
+            permissions.canDeleteItems = true;
+            permissions.canAddItems = true;
+            permissions.canRenameList = true;
+            permissions.canSeeLabels = true;
+            permissions.canEditLabels = true;
+            permissions.canSeeParlevel = true;
+            permissions.canEditParlevel = true;
+            permissions.canShareList = true;
+            permissions.canCopyList = true;
+            permissions.canReorderItems = true;
+          }
+          // SHARING WITH OTHERS -- used to show icon on lists page
+          // else if (list.issharing) {
+
+          // }
+
+        }
+
+        list.permissions = permissions;        
+      }
+
       var Service = {
 
         lists: [],
@@ -29,6 +122,9 @@ angular.module('bekApp')
             params = {};
           }
           return List.query(params).$promise.then(function(lists) {
+            lists.forEach(function(list) {
+              updateListPermissions(list);
+            });
             angular.copy(lists, Service.lists);
             return lists;
           });
@@ -44,6 +140,7 @@ angular.module('bekApp')
           return List.get({
             listId: listId,
           }).$promise.then(function(list) {
+            updateListPermissions(list);
 
             // update new list in cache object
             var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
