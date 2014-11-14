@@ -68,6 +68,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
         System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
+        KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[]> ReadMessagingPreferencesAsync(System.Guid userId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -167,6 +173,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
             return base.Channel.UpdateMessagingPreferencesAsync(messagingPreferenceModel, user);
+        }
+        
+        public KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId) {
+            return base.Channel.ReadMessagingPreferences(userId);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[]> ReadMessagingPreferencesAsync(System.Guid userId) {
+            return base.Channel.ReadMessagingPreferencesAsync(userId);
         }
     }
 }

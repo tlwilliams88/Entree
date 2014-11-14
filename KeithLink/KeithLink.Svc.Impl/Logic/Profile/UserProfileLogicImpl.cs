@@ -12,7 +12,6 @@ using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
@@ -25,12 +24,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;
-        private IUserMessagingPreferenceRepository _msgPrefRepository;
+        private IMessagingServiceRepository _msgServiceRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository, IUserMessagingPreferenceRepository msgPrefRepo) {
+                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -38,7 +37,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
 			_orderServiceRepository = orderServiceRepository;
-            _msgPrefRepository = msgPrefRepo;
+            _msgServiceRepo = msgServiceRepo;
         }
         #endregion
 
@@ -396,7 +395,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             };
         }
 
-        private List<ProfileMessagingPreferenceDetailModel> BuildPreferenceModelForEachNotificationType(IEnumerable<UserMessagingPreference> currentMsgPrefs, string customerNumber)
+        private List<ProfileMessagingPreferenceDetailModel> BuildPreferenceModelForEachNotificationType(List<UserMessagingPreferenceModel> currentMsgPrefs, string customerNumber)
         {
             var msgPrefModelList = new List<ProfileMessagingPreferenceDetailModel>();
             //loop through each notification type to load in model
@@ -423,7 +422,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid)
         {
-            var currentMessagingPreferences = _msgPrefRepository.Read(a => a.UserId.Equals(guid));
+            var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
             var userCustomers = _customerRepo.GetCustomersForUser(guid);
 
             var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();

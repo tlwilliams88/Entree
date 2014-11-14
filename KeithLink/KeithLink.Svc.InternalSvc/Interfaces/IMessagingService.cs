@@ -34,5 +34,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         int GetUnreadMessagesCount(UserProfile user);
         [OperationContract]
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
+        [OperationContract]
+        List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
     }
 }

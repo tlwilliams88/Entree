@@ -75,5 +75,10 @@ namespace KeithLink.Svc.InternalSvc
             messagingLogic.UpdateMessagingPreferences(messagingPreferenceModel, user);
         }
 
+        public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
+        {
+            return messagingLogic.ReadMessagingPreferences(userId);
+        }
+
     }
 }

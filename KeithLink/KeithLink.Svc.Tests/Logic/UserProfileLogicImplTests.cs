@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.WebApi.Repository.Messaging;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -22,8 +23,6 @@ namespace KeithLink.Svc.Test.Logic {
         private UserProfileLogicImpl                _logic;
         private AccountRepository                   _acct;
         private CustomerRepository _cust;
-        private UserMessagingPreferenceRepositoryImpl _msgPref;
-        private UnitOfWork _unitofwork;
         #endregion
 
         #region ctor
@@ -43,9 +42,7 @@ namespace KeithLink.Svc.Test.Logic {
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
 
-            _msgPref = new UserMessagingPreferenceRepositoryImpl(_unitofwork);
-
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), _msgPref);
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl());
         }
         #endregion
 
