@@ -45,6 +45,11 @@ angular.module('bekApp')
         url: '/list/reminders',
         method: 'GET',
         isArray: true
+      },
+
+      copyList: {
+        url: '/list/copy',
+        method: 'POST'
       }
 
       // postData is an array of listitemids as strings

@@ -329,11 +329,18 @@ angular.module('bekApp')
           console.log('shared - listId: ' + listId + ', customerNumber: ' + customerNumber);
         },
 
-        copyList: function(listId, customerNumber) {
-          console.log('copied - listId: ' + listId + ', customerNumber: ' + customerNumber);
-        }
+        copyList: function(list, customers) {
+          var copyListData = {
+            listid: list.listid,
+            customers: customers
+          };
 
-
+          return List.copyList(copyListData).$promise.then(function() {
+            toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
+          }, function() {
+            toaster.pop('error', null, 'Error copying list.');
+          });
+        },
       };
 
       return Service;
