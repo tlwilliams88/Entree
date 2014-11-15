@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
             modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Core.Models.ContentManagement.EF.ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
 		public void DeleteTable(string tableName)

@@ -184,6 +184,8 @@
     <Compile Include="BEKFoundationService.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Extensions\BasketQueryPoHelper.cs" />
+    <Compile Include="Extensions\OrganizationAddressesLoader.cs" />
+    <Compile Include="Extensions\OrganizationAddressesResponseBuilder.cs" />
     <Compile Include="Extensions\SiteHelper.cs" />
     <Compile Include="Extensions\UserOrganizationsResponseBuilder.cs" />
     <Compile Include="Extensions\UserOrganizationsCommitter.cs" />

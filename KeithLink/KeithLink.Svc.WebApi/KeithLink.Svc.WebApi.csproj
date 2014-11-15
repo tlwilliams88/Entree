@@ -257,6 +257,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\ContentManagementController.cs" />
     <Compile Include="Controllers\MessagingController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
