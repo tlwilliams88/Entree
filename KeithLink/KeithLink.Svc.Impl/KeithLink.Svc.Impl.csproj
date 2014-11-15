@@ -355,6 +355,10 @@
     <Compile Include="Repository\EF\Migrations\201411141947051_Add ListShare.Designer.cs">
       <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.cs" />
+    <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.Designer.cs">
+      <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -794,6 +798,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411141947051_Add ListShare.resx">
       <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.resx">
+      <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
