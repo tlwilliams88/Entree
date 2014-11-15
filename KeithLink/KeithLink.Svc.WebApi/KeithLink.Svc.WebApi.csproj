@@ -179,6 +179,9 @@
     <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -202,6 +205,12 @@
     <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
     <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ListService\ListServcie7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie71.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

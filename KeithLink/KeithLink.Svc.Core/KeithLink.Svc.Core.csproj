@@ -149,6 +149,7 @@
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
+    <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
@@ -161,9 +162,11 @@
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
+    <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
+    <Compile Include="Models\Messaging\ProfileChannelModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />

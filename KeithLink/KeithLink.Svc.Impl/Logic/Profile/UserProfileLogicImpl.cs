@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -343,7 +344,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// </remarks>
-        public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true) {
+		public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false)
+		{
             List<Customer> userCustomers;
             if (IsInternalAddress(csProfile.Email))
             {
@@ -381,23 +383,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
             }
 
-			foreach (var cust in userCustomers)
+			if (includeTermInformation)
 			{
-				if (string.IsNullOrEmpty(cust.TermCode))
-					continue;
-
-				//Lookup Term info
-				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-				if (term != null)
+				foreach (var cust in userCustomers)
 				{
-					cust.TermDescription = term.Description;
-					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-				}
+					if (string.IsNullOrEmpty(cust.TermCode))
+						continue;
 
+					//Lookup Term info
+					var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+					if (term != null)
+					{
+						cust.TermDescription = term.Description;
+						cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+						cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+						cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+						cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+					}
+
+				}
 			}
 
 
@@ -425,18 +430,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             //loop through each notification type to load in model
             foreach (var notifType in Enum.GetValues(typeof(NotificationType)))
             {
-                var currentSelectedChannels = new List<Core.Enumerations.Messaging.Channel>();
+                var currentSelectedChannels = new List<ProfileChannelModel>();
 
                 //find and add selected channels for current notification type
                 var currentMsgPrefsByType = currentMsgPrefs.Where(a => (a.NotificationType.Equals(notifType) && a.CustomerNumber == customerNumber));
                 foreach (var currentMsgPref in currentMsgPrefsByType)
                 {
-                    currentSelectedChannels.Add(currentMsgPref.Channel);
+                    currentSelectedChannels.Add(new ProfileChannelModel() { Channel = currentMsgPref.Channel, Description = EnumUtils<Channel>.GetDescription(currentMsgPref.Channel,"") });
                 }
                 msgPrefModelList.Add(new ProfileMessagingPreferenceDetailModel()
                 {
                     NotificationType = (NotificationType)notifType,
-                    Description = KeithLink.Svc.Core.Extensions.MessagingExtensions.GetEnumDescription((NotificationType)notifType),
+                    Description = EnumUtils<NotificationType>.GetDescription((NotificationType)notifType, ""),
                     SelectedChannels = currentSelectedChannels
                 });
 
@@ -535,7 +540,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/18/2014 - documented
         /// jwames - 8/29/2014 - create a profile for a BEK user if it does not exist
         /// </remarks>
-        public UserProfileReturn GetUserProfile(string emailAddress) {
+		public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false)
+		{
             // check for cached user profile first
             Core.Models.Profile.UserProfile profile = _cache.GetProfile(emailAddress);
 
@@ -556,7 +562,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return GetUserProfile(emailAddress);
                 }
             } else {
-                retVal.UserProfiles.Add(FillUserProfile(csUserProfile));
+				retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeTermInformation: includeTermInformation));
             }
 
             // add to cache if found

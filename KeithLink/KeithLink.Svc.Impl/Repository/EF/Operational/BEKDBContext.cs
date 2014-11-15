@@ -28,6 +28,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<BranchSupport> BranchSupports { get; set; }
 		public DbSet<MessageTemplate> EmailTemplates { get; set; }
 		public DbSet<Term> Terms { get; set; }
+		public DbSet<ListShare> ListShares { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -45,6 +46,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
             modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<Core.Models.ContentManagement.EF.ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
 		public void DeleteTable(string tableName)

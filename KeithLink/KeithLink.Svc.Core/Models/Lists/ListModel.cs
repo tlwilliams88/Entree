@@ -35,6 +35,12 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "isreminder")]
         public bool IsReminder { get; set; }
 
+		[DataMember(Name = "isshared")]
+		public bool IsShared { get; set; }
+
+		[DataMember(Name = "issharing")]
+		public bool IsSharing { get; set; }
+
         public string BranchId { get; set; }
 		
 		//public string FormattedName(string branchId) 
@@ -44,3 +50,4 @@ namespace KeithLink.Svc.Core.Models.Lists
 
     }
 }
+

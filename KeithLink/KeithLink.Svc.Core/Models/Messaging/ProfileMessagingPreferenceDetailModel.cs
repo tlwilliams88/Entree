@@ -17,6 +17,6 @@ namespace KeithLink.Svc.Core.Models.Messaging
         [DataMember(Name = "description")]
         public string Description { get; set; }
         [DataMember(Name = "selectedchannels")]
-        public List<Channel> SelectedChannels { get; set; }
+        public List<ProfileChannelModel> SelectedChannels { get; set; }
     }
 }

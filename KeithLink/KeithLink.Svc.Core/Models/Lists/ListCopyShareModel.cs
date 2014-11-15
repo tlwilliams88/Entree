@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Profile;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -13,6 +14,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "listid")]
 		public long ListId { get; set; }
 		[DataMember(Name = "customers")]
-		public List<String> Customers { get; set; }
+		public List<Customer> Customers { get; set; }
 	}
+		
 }

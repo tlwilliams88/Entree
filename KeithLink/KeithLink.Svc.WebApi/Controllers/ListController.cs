@@ -75,6 +75,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
 		}
 		
+		[HttpPost]
+		[ApiKeyedRoute("list/copy")]
+		public void CopyList(ListCopyShareModel copyListModel)
+		{
+			listServiceRepository.CopyList(copyListModel);
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("list/share")]
+		public void ShareList(ListCopyShareModel copyListModel)
+		{
+			listServiceRepository.ShareList(copyListModel);
+		}
+
+		
         [HttpPut]
 		[ApiKeyedRoute("list/item")]
 		public void UpdateItem(ListItemModel updatedItem)
@@ -116,6 +131,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			listServiceRepository.DeleteItems(itemIds);
 		}
+
+
 
 		
         #endregion

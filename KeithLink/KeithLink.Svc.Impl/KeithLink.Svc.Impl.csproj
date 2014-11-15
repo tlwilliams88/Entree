@@ -351,6 +351,10 @@
     <Compile Include="Repository\EF\Migrations\201411130021476_Add Invoice DueDate.Designer.cs">
       <DependentUpon>201411130021476_Add Invoice DueDate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411141947051_Add ListShare.cs" />
+    <Compile Include="Repository\EF\Migrations\201411141947051_Add ListShare.Designer.cs">
+      <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -382,6 +386,7 @@
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
+    <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
@@ -786,6 +791,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411130021476_Add Invoice DueDate.resx">
       <DependentUpon>201411130021476_Add Invoice DueDate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411141947051_Add ListShare.resx">
+      <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,7 +7,6 @@
   </div>
 </div>
 
-
 <div class="row">
   <!-- Account Summary -->
   <div class="col-md-4 col-md-push-8">
@@ -18,23 +17,27 @@
       <h4><strong>Account Balance</strong></h4>
       
       <p class="text-red currency-value">
-          $3,253.31
+          {{selectedUserContext.currentbalance || 0 | currency}}
       </p>
       
-      <p class="">Your Terms: Net 14</p>
+      <p class="">Your Terms: {{selectedUserContext.termdescription || 'N/A'}}</p>
       
       <div class="row text-center">
-        <div class="col-xs-4 balance__term--amount">
-          <strong>0 - 7</strong>
-          $1,785
+        <div class="balance__term--amount term-amount-1">
+          <strong>{{selectedUserContext.balanceage1label}}</strong>
+          {{selectedUserContext.balanceage1 | currency}}
         </div>
-        <div class="col-xs-4 balance__term--amount">
-          <strong>0 - 14</strong>
-          $1468.21
+        <div class="balance__term--amount term-amount-2">
+          <strong>{{selectedUserContext.balanceage2label}}</strong>
+          {{selectedUserContext.balanceage2 | currency}}
         </div>
-        <div class="col-xs-4 balance__term--amount">
-          <strong>Past Due</strong>
-          <span class="text--late">$300.08</span>
+        <div class="balance__term--amount term-amount-3">
+          <strong>{{selectedUserContext.balanceage3label}}</strong>
+          {{selectedUserContext.balanceage3 | currency}}
+        </div>
+        <div class="balance__term--amount term-amount-4">
+          <strong>{{selectedUserContext.balanceage4label}}</strong>
+          {{selectedUserContext.balanceage4 | currency}}
         </div>
       </div>
     </div>
