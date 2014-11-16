@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a66e9e91-bd72-45ef-b39b-33e59a5d2c9d" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Impl" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Impl" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/ContentManagementService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ContentManagementService.xsd" MetadataType="Schema" ID="ddf5f0a0-3bf8-4f96-8afa-e1b1311568b3" SourceId="1" SourceUrl="http://localhost:1317/ContentManagementService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ContentManagementService1.xsd" MetadataType="Schema" ID="81178cc6-d195-4d6d-af87-dea808bb4d76" SourceId="1" SourceUrl="http://localhost:1317/ContentManagementService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ContentManagementService.wsdl" MetadataType="Wsdl" ID="1738474d-65ab-491f-83d6-95661d759024" SourceId="1" SourceUrl="http://localhost:1317/ContentManagementService.svc?wsdl" />
+    <MetadataFile FileName="ContentManagementService.disco" MetadataType="Disco" ID="f5ce5da1-0a0f-491f-83e7-caabd4b5bb5d" SourceId="1" SourceUrl="http://localhost:1317/ContentManagementService.svc?disco" />
+    <MetadataFile FileName="ContentManagementService2.xsd" MetadataType="Schema" ID="58cd2227-9fea-489b-a234-7d3c987cb0a8" SourceId="1" SourceUrl="http://localhost:1317/ContentManagementService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -8,20 +8,21 @@ using KeithLink.Svc.Core;
 using System.Web.Http.Cors;
 using System.Dynamic;
 using KeithLink.Svc.Core.Models.ContentManagement;
-using KeithLink.Svc.Core.Interface.Brand;
+using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
     public class ContentManagementController : BaseController {
         #region attributes
+        IContentManagementServiceRepository contentManagementServiceRepository;
         #endregion
 
         #region ctor
-        public ContentManagementController(IUserProfileLogic profileLogic)
+        public ContentManagementController(IContentManagementServiceRepository contentManagementServiceRepository, IUserProfileLogic profileLogic)
             : base(profileLogic)
         {
-            
+            this.contentManagementServiceRepository = contentManagementServiceRepository;
         }
         #endregion
 
@@ -51,7 +52,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("cms/contentitem")]
         public Models.OperationReturnModel<bool> CreateContentItem(ContentItemPostModel contentItem)
         {
-            throw new NotImplementedException();
+            this.contentManagementServiceRepository.CreateContentItem(contentItem);
+            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
+            ret.SuccessResponse = true;
+            return ret;
         }
 
         [HttpDelete]

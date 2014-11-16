@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
 
             contentManagementRepository.Create(contentItem);
+            unitOfWork.SaveChanges();
         }
 
         private static ContentItem ToContentItem(Core.Models.ContentManagement.ContentItemPostModel contentItemModel)
