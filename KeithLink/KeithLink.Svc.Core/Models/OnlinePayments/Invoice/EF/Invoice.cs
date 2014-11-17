@@ -5,11 +5,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF {
     public class Invoice {
-        [Key, Column(TypeName="char", Order=1), MaxLength(30)]
+        #region properties
+        [Key, Column(TypeName = "varchar", Order = 1), MaxLength(30)]
         public string InvoiceNumber { get; set; }
 
-        [Key, Column("Division", TypeName="char", Order=2), MaxLength(5)]
-        public string BranchId { get; set; }
+        public string TrimmedInvoiceNumber {
+            get {
+                if (InvoiceNumber == null) {
+                    return null;
+                } else {
+                    return InvoiceNumber.Trim();
+                }
+            }
+        }
+
+        [Key, Column(TypeName="char", Order=2), MaxLength(5)]
+        public string Division { get; set; }
 
         [Key, Column(TypeName="char", Order=3), MaxLength(5)]
         public string CustomerNumber { get; set; }
@@ -31,5 +42,6 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF {
 
         [Required]
         public bool DeleteFlag { get; set; }
+        #endregion
     }
 }

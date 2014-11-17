@@ -111,15 +111,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<Dsr>()
                 .ToTable("Dsr");
 
-            modelBuilder.Entity<Invoice>()
-                .ToTable("Invoice")
-                .MapToStoredProcedures(s => {
-                    s.Delete(d => d.HasName("procDeleteInvoice")
-                                   .Parameter(p => p.BranchId, "Division")
-                                   .Parameter(p => p.CustomerNumber, "CustNum")
-                                   .Parameter(p => p.InvoiceNumber, "Invoice")
-                        );
-                });
+            modelBuilder.Entity<Invoice>().ToTable("Invoice");
+            modelBuilder.Entity<Invoice>().Property(x => x.ItemSequence).HasColumnType("SMALLINT");
+            modelBuilder.Entity<Invoice>().Property(x => x.InvoiceNumber).HasColumnType("VARCHAR");
+
 
             modelBuilder.Entity<LastConfirmation>()
                 .ToTable("LastConfirmation");
