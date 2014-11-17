@@ -15,6 +15,7 @@ angular.module('bekApp')
         var newPreference = {};
         //set description and default to false
         newPreference.description = preference.description;
+        newPreference.notificationType = preference.notificationType;
         newPreference.channels = [false,false,false];
         //override defaulted false with true if it is sent by the pref object
         preference.selectedChannels.forEach(function (selectedChannel) {
@@ -53,7 +54,6 @@ angular.module('bekApp')
       };
 
       $scope.savePreferences = function () {
-        console.log($scope.defaultPreferences);
         //creates new payload object
         var preferencePayload = {};
 
@@ -65,15 +65,16 @@ angular.module('bekApp')
         $scope.defaultPreferences.forEach(function (preference) {
           var newTopic = {};
           newTopic.description = preference.description;
+          newTopic.notificationType = preference.notificationType;
           newTopic.selectedChannels = [];
           if(preference.channels[0] === true){
-            newTopic.selectedChannels.push(1);
+            newTopic.selectedChannels.push({"Channel": 1});
           }
           if(preference.channels[1] === true){
-            newTopic.selectedChannels.push(2);
+            newTopic.selectedChannels.push({"Channel": 2});
           }
           if(preference.channels[2] === true){
-            newTopic.selectedChannels.push(4);
+            newTopic.selectedChannels.push({"Channel": 4});
           }
           preferencePayload.preferences.push(newTopic);
         });
