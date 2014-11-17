@@ -22,8 +22,7 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region ctor
-        public InvoiceService(IInternalInvoiceLogic invoiceLogic, IKPayInvoiceRepository kpayInvoiceRepo)
-		{
+        public InvoiceService(IInternalInvoiceLogic invoiceLogic, IKPayInvoiceRepository kpayInvoiceRepo) {
 			this.invoiceLogic = invoiceLogic;
             _kpayRepo = kpayInvoiceRepo;
 		}
