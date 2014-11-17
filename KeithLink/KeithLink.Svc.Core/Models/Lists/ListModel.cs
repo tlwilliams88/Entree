@@ -41,6 +41,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "issharing")]
 		public bool IsSharing { get; set; }
 
+		[DataMember(Name = "ismandatory")]
+		public bool IsMandatory { get; set; }
+
         public string BranchId { get; set; }
 		
 		//public string FormattedName(string branchId) 

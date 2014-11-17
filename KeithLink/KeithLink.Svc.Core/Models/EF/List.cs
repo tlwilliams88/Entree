@@ -16,7 +16,8 @@ namespace KeithLink.Svc.Core.Models.EF
 		Worksheet,
         ContractItemsAdded,
         ContractItemsDeleted,
-        Reminder
+        Reminder,
+		Mandatory
 	}
 
 	public class List: BaseEFModel

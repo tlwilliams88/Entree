@@ -30,6 +30,7 @@ namespace KeithLink.Svc.Core.Extensions
 				IsFavorite = list.Type == ListType.Favorite,
 				IsWorksheet = list.Type == ListType.Worksheet,
                 IsReminder = list.Type == ListType.Reminder,
+				IsMandatory = list.Type == ListType.Mandatory,
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
