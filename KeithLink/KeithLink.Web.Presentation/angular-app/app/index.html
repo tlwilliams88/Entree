@@ -77,12 +77,13 @@
     <script src="lib/angular-loading-bar/loading-bar.js"></script>
     <script src="lib/angular-file-upload/angular-file-upload.js"></script>
     <script src="lib/angular-fcsa-number/fcsaNumber.js"></script>
+    <script src="lib/angular-base64-upload/angular-base64-upload.js"></script>
     <!-- endbuild -->
 
      <script id="template/carousel/carousel.html" type="text/ng-template">
       <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
         <ol class="carousel-paging" ng-show="slides.length > 1">
-            <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
+          <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
         </ol>
         <div class="carousel-inner" ng-transclude></div>
         <a class="left carousel-control" ng-click="prev()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-left"></span></a>
@@ -115,6 +116,7 @@
     <script type="text/javascript" src="scripts/controllers/InvoiceController.js"></script>
     <script type="text/javascript" src="scripts/controllers/InvoiceItemsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NotificationsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/MarketingController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/AccountDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/AccountsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomersController.js"></script>
@@ -166,6 +168,7 @@
     <script type="text/javascript" src="scripts/services/InvoiceService.js"></script>
     <script type="text/javascript" src="scripts/services/NotificationService.js"></script>
     <script type="text/javascript" src="scripts/services/BankAccountService.js"></script>
+    <script type="text/javascript" src="scripts/services/MarketingService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/InvoiceResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
@@ -176,6 +179,7 @@
     <script type="text/javascript" src="scripts/resources/AccountResource.js"></script>
     <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
     <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/MarketingResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>

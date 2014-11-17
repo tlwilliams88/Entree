@@ -14,18 +14,19 @@ angular
     // 'ngCookies',
     'ngResource',
     'ngTouch',
-    'LocalStorageModule',
+    'LocalStorageModule', // HTML5 local storage
     'ui.router',
     'ui.bootstrap',
-    'ui.sortable',
-    'shoppinpal.mobile-menu',
-    'ngDragDrop',
+    'ui.sortable', // jquery ui list sorting (used on lists page)
+    'shoppinpal.mobile-menu', // mobile sidebar menu
+    'ngDragDrop', // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
-    'unsavedChanges',
-    'toaster',
-    'angular-loading-bar',
-    'angularFileUpload',
-    // 'fcsa-number',
+    'unsavedChanges', // throws warning to user when navigating away from an unsaved form
+    'toaster', // user notification messages
+    'angular-loading-bar', // loading indicator in the upper left corner
+    'angularFileUpload', // csv file uploads for lists and orders
+    'naif.base64', // base64 file uploads for images
+    'fcsa-number',
     'configenv'
   ])
 .config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
@@ -189,11 +190,8 @@ angular
         changeOrders: ['OrderService', function(OrderService) {
           return OrderService.getChangeOrders();
         }],
-        reminderList: ['ListService', function(ListService) {
-          return ListService.getReminderList();
-        }],
-        mandatoryList: ['ListService', function(ListService) {
-          return ListService.getMandatoryList();
+        criticalItemsLists: ['ListService', function(ListService) {
+          return ListService.getCriticalItemsLists();
         }],
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
@@ -326,6 +324,23 @@ angular
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
           return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
         }]
+      }
+    })
+
+    /**********
+    MARKETING CMS
+    **********/
+    .state('menu.marketing', {
+      url: '/marketing/',
+      templateUrl: 'views/marketing.html',
+      controller: 'MarketingController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        // }]
       }
     })
 

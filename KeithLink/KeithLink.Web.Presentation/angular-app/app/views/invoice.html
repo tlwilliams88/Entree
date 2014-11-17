@@ -18,170 +18,171 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-xs-12 col-md-4 pull-right">
-    <div class="info-box">
-      <h3 style="margin-top:0">Billing Information</h3>
-      <address class="text-light">
-        {{selectedUserContext.customerName}}<br>
-        {{selectedUserContext.address.street}}<br>
-        {{selectedUserContext.address.city}}, {{selectedUserContext.address.regioncode}} {{selectedUserContext.address.postalcode}}<br>
-      </address>
-      <h3>Bank Account Info</h3>
-      
-      <div class="btn-group" dropdown is-open="status.isopen">
-        <button type="button" class="btn-lg btn btn-default dropdown-toggle" style="text-align:left;" ng-disabled="accounts.length <= 1">
-            <div style="display:inline-block;vertical-align:middle;">
-              {{selectedAccount.name}}<br>
-              {{selectedAccount.accountNumber}}
+  <form name="invoiceForm" class="style-validation-errors" novalidate>
+    <div class="col-sm-12 col-xs-12 col-md-4 pull-right">
+      <div class="info-box">
+        <h3 style="margin-top:0">Billing Information</h3>
+        <address class="text-light">
+          {{selectedUserContext.customerName}}<br>
+          {{selectedUserContext.address.street}}<br>
+          {{selectedUserContext.address.city}}, {{selectedUserContext.address.regioncode}} {{selectedUserContext.address.postalcode}}<br>
+        </address>
+        <h3>Bank Account Info</h3>
+        
+        <div class="btn-group" dropdown is-open="status.isopen">
+          <button type="button" class="btn-lg btn btn-default dropdown-toggle" style="text-align:left;" ng-disabled="accounts.length <= 1">
+              <div style="display:inline-block;vertical-align:middle;">
+                {{selectedAccount.name}}<br>
+                {{selectedAccount.accountNumber}}
+              </div>
+              <span style="display:inline-block;vertical-align:middle;" class="icon-arrow-down6"></span>
+            </button>
+
+            <div class="dropdown-menu">
+              <table class="table no-margin">
+                <tr ng-click="selectAccount(account)" ng-show="account.id !== selectedAccount.id" ng-repeat="account in accounts | orderBy: 'name'">
+                  <td><span class="overflow">{{account.name}}</span></td>
+                </tr>
+              </table>
             </div>
-            <span style="display:inline-block;vertical-align:middle;" class="icon-arrow-down6"></span>
-          </button>
+        </div>
 
-          <div class="dropdown-menu">
-            <table class="table no-margin">
-              <tr ng-click="selectAccount(account)" ng-show="account.id !== selectedAccount.id" ng-repeat="account in accounts | orderBy: 'name'">
-                <td><span class="overflow">{{account.name}}</span></td>
-              </tr>
-            </table>
-          </div>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="col-sm-12 col-xs-12 col-md-8 padding-top-xs padding-top-sm">
-    
-    <table class="table table-border table-striped-rows invoice-table" navigate-table>
-      <thead>
-        <tr>
-          <th class="input-col">
-            <input type="checkbox">
-          </th>
-          <th class="sort-col-header" ng-click="sortBy='invoicenumber';sortOrder=!sortOrder;">
-            Reference #
-            <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortBy='typedescription';sortOrder=!sortOrder;">
-            Type
-            <span sort-icons field="'typedescription'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortBy='statusdescription';sortOrder=!sortOrder;">
-            Status
-            <span sort-icons field="'statusdescription'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
-          <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='duedate';sortOrder=!sortOrder;">
-            Due Date
-            <span sort-icons field="'duedate'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortBy='amount';sortOrder=!sortOrder;">
-            Amount Due
-            <span sort-icons field="'amount'" sortorder="sortOrder" sortby="sortBy"></span>
-          </th>
-          <th class="text-center hidden-xs hidden-sm">Invoice Image</th>
-          <th class="hidden-xs hidden-sm">Payment Amt</th>
-          <th class="large-icon icon-col">
-            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-
-        <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
-          <td></td>
-          <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
-          </td>
-          <td></td>
-          <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.statusdescription">
-          </td>
-          <td class="hidden-xs hidden-sm"></td>
-          <td></td>
-          <td class="hidden-xs hidden-sm"></td>
-          <td class="hidden-xs hidden-sm"></td>
-          <td class="large-icon icon-col">
-            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
-          </td>
-        </tr> <!-- end Filter Row -->
-
-        <tr ng-repeat-start="invoice in (filteredItems = (invoices | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
-          <td>
-            <input type="checkbox" ng-model="invoice.isSelected">
-          </td>
-          <td>
-            <a ui-sref="menu.invoiceitems({invoiceId: invoice.id})">{{invoice.invoicenumber}}</a>
-          </td>
-          <td>
-            {{invoice.typedescription}}
-          </td>
-          <td class="highlight-text">
-            {{invoice.statusdescription}}
-          </td>
-          <td class="hidden-xs hidden-sm">
-            {{invoice.duedate | date:short }}
-          </td>
-          <td>
-            {{invoice.amount | currency}}
-          </td>
-          <td class="text-center large-icon hidden-xs hidden-sm">
-            <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
-          </td>
-          <td class="input-col hidden-xs hidden-sm">
-            <input class="text-right" type="text" ng-model="invoice.paymentAmount" fcsa-number="{ maxDecimals: 2, preventInvalidInput: true, prepend: '$', max: {{invoice.amount}}, min: 0 }">
-          </td>
-          <td class="large-icon icon-col">
-            <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-          </td>
-        </tr>
-
-        <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
-          <td colspan="8">
-            <table>
-              <colgroup>
-                <col width="25%" />
-                <col width="75%" />
-              </colgroup>
-              <tr>
-                <td>Due Date</td>
-                <td>{{invoice.duedate | date:short}}</td>
-              </tr>
-              <tr>
-                <td>Payment Amount</td>
-                <td>
-                  <input class="text-right" type="text" ng-model="invoice.paymentAmount" valid-payment-amount="invoice.amount">
-                </td>
-              </tr>
-              <tr>
-                <td class="large-icon" colspan="2">
-                  <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
-                </td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-
-      </tbody>
-      
-      <tfoot ng-show="invoices.length === 0">
-        <tr>
-          <td colspan="9">There are no invoices to display.</td>
-        </tr>
-      </tfoot>
-    </table>
-
-    <div class="row">
-      <div class="col-xs-12 text-right">
-        Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() || 0 | currency}}</span>
       </div>
     </div>
 
-    <div class="row sub-content">
-      <div class="col-xs-12 text-right">
-        <button class="btn btn-primary btn-lg">Pay Invoice(s)</button>
-      </div>
-    </div>
+    <div class="col-sm-12 col-xs-12 col-md-8 padding-top-xs padding-top-sm">
+      <table class="table table-border table-striped-rows invoice-table" navigate-table>
+        <thead>
+          <tr>
+            <th class="input-col">
+              <input type="checkbox">
+            </th>
+            <th class="sort-col-header" ng-click="sortBy='invoicenumber';sortOrder=!sortOrder;">
+              Reference #
+              <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortBy='typedescription';sortOrder=!sortOrder;">
+              Type
+              <span sort-icons field="'typedescription'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortBy='statusdescription';sortOrder=!sortOrder;">
+              Status
+              <span sort-icons field="'statusdescription'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='duedate';sortOrder=!sortOrder;">
+              Due Date
+              <span sort-icons field="'duedate'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortBy='amount';sortOrder=!sortOrder;">
+              Amount Due
+              <span sort-icons field="'amount'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th>
+            <th class="text-center hidden-xs hidden-sm">Invoice Image</th>
+            <th class="hidden-xs hidden-sm">Payment Amt</th>
+            <th class="large-icon icon-col">
+              <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
 
-  </div>
+          <!-- Filter Row -->
+          <tr class="filter-row" ng-show="showFilter">
+            <td></td>
+            <td class="input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
+            </td>
+            <td></td>
+            <td class="input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.statusdescription">
+            </td>
+            <td class="hidden-xs hidden-sm"></td>
+            <td></td>
+            <td class="hidden-xs hidden-sm"></td>
+            <td class="hidden-xs hidden-sm"></td>
+            <td class="large-icon icon-col">
+              <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+            </td>
+          </tr> <!-- end Filter Row -->
+
+          <tr ng-repeat-start="invoice in (filteredItems = (invoices | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+            <td>
+              <input type="checkbox" ng-model="invoice.isSelected">
+            </td>
+            <td>
+              <a ui-sref="menu.invoiceitems({invoiceId: invoice.id})">{{invoice.invoicenumber}}</a>
+            </td>
+            <td>
+              {{invoice.typedescription}}
+            </td>
+            <td class="highlight-text">
+              {{invoice.statusdescription}}
+            </td>
+            <td class="hidden-xs hidden-sm">
+              {{invoice.duedate | date:short }}
+            </td>
+            <td>
+              {{invoice.amount | currency}}
+            </td>
+            <td class="text-center large-icon hidden-xs hidden-sm">
+              <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
+            </td>
+            <td class="input-col hidden-xs hidden-sm">
+              <input class="text-right" type="text" ng-model="invoice.paymentAmount" fcsa-number="{ 'maxDecimals': 2, 'addMissingDecimals': true, 'preventInvalidInput': true, 'prepend': '$', 'max': {{invoice.amount}}, 'min': 0 }">
+            </td>
+            <td class="large-icon icon-col">
+              <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+            </td>
+          </tr>
+
+          <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
+            <td colspan="8">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>Due Date</td>
+                  <td>{{invoice.duedate | date:short}}</td>
+                </tr>
+                <tr>
+                  <td>Payment Amount</td>
+                  <td>
+                    <input class="text-right" type="text" ng-model="invoice.paymentAmount" valid-payment-amount="invoice.amount">
+                  </td>
+                </tr>
+                <tr>
+                  <td class="large-icon" colspan="2">
+                    <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+        </tbody>
+        
+        <tfoot ng-show="invoices.length === 0">
+          <tr>
+            <td colspan="9">There are no invoices to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="row">
+        <div class="col-xs-12 text-right">
+          Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() || 0 | currency}}</span>
+        </div>
+      </div>
+
+      <div class="row sub-content">
+        <div class="col-xs-12 text-right">
+          <button class="btn btn-primary btn-lg">Pay Invoice(s)</button>
+        </div>
+      </div>
+
+    </div>
+  </form>
 </div>
 

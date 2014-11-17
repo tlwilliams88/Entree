@@ -16,6 +16,10 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    if (ListService.findMandatoryList()) {
+      $scope.hideMandatoryList = true;
+    }
+
     function resetPage(list) {
       $scope.selectedList = list;
       // $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
@@ -59,6 +63,19 @@ angular.module('bekApp')
     $scope.createListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createList(dragSelection);
+    };
+
+    /**********
+    CREATE MANDATORY LIST
+    **********/
+
+    $scope.createMandatoryList = function(items) {
+      ListService.createMandatoryList(items).then(goToNewList);
+    };
+
+    $scope.createMandatoryListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createMandatoryList(dragSelection);
     };
 
     /**********
@@ -177,10 +194,6 @@ angular.module('bekApp')
         favoritesList = ListService.getFavoritesList();
 
       ListService.deleteMultipleItems(favoritesList.listid, items);
-    };
-
-    $scope.addItemsToReminderList = function() {
-      $scope.addItemsToList(ListService.findReminderList());
     };
 
     /********************

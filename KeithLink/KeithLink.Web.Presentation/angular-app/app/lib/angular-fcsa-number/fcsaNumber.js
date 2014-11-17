@@ -1,4 +1,18 @@
 /*! angular-fcsa-number (version 1.5.3) 2014-10-17 */
+/* https://github.com/FCSAmericaDev/angular-fcsa-number */
+
+/*
+OPTIONS
+addMissingDecimals (requires maxDecimals to be set)
+maxDecimals
+min
+max
+preventInvalidInput
+maxDigits
+prepend
+append
+*/
+
 (function() {
   var fcsaNumberModule,
     __hasProp = {}.hasOwnProperty;
@@ -7,13 +21,13 @@
 
   fcsaNumberModule.directive('fcsaNumber', [
     'fcsaNumberConfig', function(fcsaNumberConfig) {
-      var addCommasToInteger, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber;
+      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber;
       defaultOptions = fcsaNumberConfig.defaultOptions;
-      getOptions = function(scope) {
+      getOptions = function(attrs) {
         var option, options, value, _ref;
         options = angular.copy(defaultOptions);
-        if (scope.options != null) {
-          _ref = scope.$eval(scope.options);
+        if (attrs.fcsaNumber != null) {
+          _ref = JSON.parse(attrs.fcsaNumber.replace(/'/g, '"'));
           for (option in _ref) {
             if (!__hasProp.call(_ref, option)) continue;
             value = _ref[option];
@@ -28,7 +42,7 @@
       isNotDigit = function(which) {
         return which < 44 || which > 57 || which === 47;
       };
-      controlKeys = [0, 8, 13];
+      controlKeys = [0, 8, 13, 40, 39, 38, 37];
       isNotControlKey = function(which) {
         return controlKeys.indexOf(which) === -1;
       };
@@ -117,15 +131,38 @@
         commas = wholeNumbers.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
         return "" + commas + decimals;
       };
+      addTrailingDecimals = function(val, options) {
+        var zeroesToAdd;
+        if (options.addMissingDecimals && options.maxDecimals != null) {
+          var decimalIndex = val.indexOf(".");
+          if (decimalIndex === -1) { // decimal doesn't exist, add all decimals
+            val = val + ".";
+            zeroesToAdd = options.maxDecimals;
+          } else if (decimalIndex === val.length - 1) { // decimal is the last character, add all decimals
+            zeroesToAdd = options.maxDecimals;
+          } else if (val.length - 1 - decimalIndex !== options.maxDecimals) { // decimal exists and is not the last character 
+            zeroesToAdd = val.length - 1 - decimalIndex;
+          }
+
+          if (zeroesToAdd) {
+            var zeroes = "";
+            for (var i = 0; i < zeroesToAdd; i++) {
+              zeroes = zeroes + "0";
+            }
+            val = val + zeroes;
+          }
+        }
+        return val;
+      };
       return {
         restrict: 'A',
         require: 'ngModel',
-        scope: {
-          options: '@fcsaNumber'
-        },
+        // scope: {
+        //   options: '@fcsaNumber'
+        // },
         link: function(scope, elem, attrs, ngModelCtrl) {
           var isValid, options;
-          options = getOptions(scope);
+          options = getOptions(attrs);
           isValid = makeIsValid(options);
           ngModelCtrl.$parsers.unshift(function(viewVal) {
             var noCommasVal;
@@ -147,31 +184,12 @@
             }
             ngModelCtrl.$setValidity('fcsaNumber', true);
             val = addCommasToInteger(val.toString());
+            val = addTrailingDecimals(val.toString(), options);
             // add leading zero for decimals
             if (val.indexOf('.') === 0) {
               val = "0" + val;
             }
-            // add trailing decimals
-            var zeroesToAdd;
-            if (options.maxDecimals != null) {
-              var decimalIndex = val.indexOf(".");
-              if (decimalIndex === -1) { // decimal doesn't exist, add all decimals
-                val = val + ".";
-                zeroesToAdd = options.maxDecimals;
-              } else if (decimalIndex === val.length - 1) { // decimal is the last character, add all decimals
-                zeroesToAdd = options.maxDecimals;
-              } else if (val.length - 1 - decimalIndex !== options.maxDecimals) { // decimal exists and is not the last character 
-                zeroesToAdd = val.length - 1 - decimalIndex;
-              }
-
-              if (zeroesToAdd) {
-                var zeroes = "";
-                for (var i = 0; i < zeroesToAdd; i++) {
-                  zeroes = zeroes + "0";
-                }
-                val = val + zeroes;
-              }
-            }
+            
             if (options.prepend != null) {
               val = "" + options.prepend + val;
             }

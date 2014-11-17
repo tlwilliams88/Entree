@@ -15,7 +15,7 @@ angular.module('bekApp')
   $scope.totalPaymentAmount = function() {
     var total = 0;
     $scope.invoices.forEach(function(invoice) {
-      total += invoice.paymentAmount;
+      total += parseFloat(invoice.paymentAmount || 0);
     });
     return total;
   };

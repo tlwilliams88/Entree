@@ -1,0 +1,30 @@
+<div page-header-bar>
+  <div header-message>
+    Marketing CMS
+  </div>
+  <div header-buttons>
+    
+  </div>
+</div>
+
+<div class="row">
+  <form>
+    <p>branch <input type="text" ng-model="contentItem.branchId"></p>
+
+    <p>tagline <input type="text" ng-model="contentItem.tagline"></p>
+
+    <p>targeturltext <input type="text" ng-model="contentItem.targeturltext"></p>
+
+    <p>targeturl <input type="text" ng-model="contentItem.targeturl"></p>
+
+    <p>campaignid <input type="text" ng-model="contentItem.campaignid"></p>
+
+    <p>content <input type="text" ng-model="contentItem.content"></p>
+
+    <p><input type="file" ng-model="contentItem.image" base-sixty-four-input></p>
+
+    <button type="submit" ng-click="addContentItem(contentItem)">Add</button>
+  </form>
+
+
+</div>

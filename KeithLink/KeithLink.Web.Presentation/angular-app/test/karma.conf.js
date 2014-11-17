@@ -29,6 +29,8 @@ module.exports = function(config) {
       'app/lib/angular-toaster/toaster.js',
       'app/lib/angular-loading-bar/loading-bar.js',
       'app/lib/angular-file-upload/angular-file-upload.js',
+      'app/lib/angular-fcsa-number/fcsaNumber.js',
+      'app/lib/angular-base64-upload/angular-base64-upload.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',
