@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 
         public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
         {
-            throw new NotImplementedException();
+			return new List<UserMessagingPreferenceModel>();
         }
 
 	}
