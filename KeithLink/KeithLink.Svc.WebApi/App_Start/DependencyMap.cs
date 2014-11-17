@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
@@ -99,13 +100,14 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
 			builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.DivisionService.DivisionServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.DivisionService.IDivisionService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.InvoiceService.InvoiceServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.InvoiceService.IInvoiceService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ListService.ListServcieClient>().As<KeithLink.Svc.WebApi.com.benekeith.ListService.IListServcie>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.MessagingService.MessagingServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.MessagingService.IMessagingService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.OrderService.OrderServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.OrderService.IOrderService>();
-
+            builder.RegisterType<Repository.ContentManagement.ContentManagementServiceRepositoryImpl>().As<IContentManagementServiceRepository>();
+            builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();
+            builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
+            builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
+            builder.RegisterType<com.benekeith.MessagingService.MessagingServiceClient>().As<com.benekeith.MessagingService.IMessagingService>();
+            builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
+            builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
+            builder.RegisterType<com.benekeith.ContentManagementService.ContentManagementServiceClient>().As<com.benekeith.ContentManagementService.IContentManagementService>();
 
             // Build the container.
             var container = builder.Build();

@@ -12,4 +12,12 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
+  $scope.totalPaymentAmount = function() {
+    var total = 0;
+    $scope.invoices.forEach(function(invoice) {
+      total += invoice.paymentAmount;
+    });
+    return total;
+  };
+
 }]);

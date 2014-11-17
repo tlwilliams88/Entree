@@ -10,10 +10,14 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
     // flags (powers of 2)
 	public enum NotificationType
 	{
-        [Description("Order Confirmation")]
+        [Description("My Order is Confirmed")]
 		OrderConfirmation = 1,
-        [Description("Order Update")]
+        [Description("My Order is Shipped")]
 		OrderUpdate = 2,
+        [Description("My Invoices Need Attention")]
+        InvoiceAttention = 4,
+        [Description("Ben E. Keith Has News For Me")]
+        HasNews = 8
 	}
 
     public enum Channel : int
@@ -23,6 +27,6 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
         [Description("Mobile Push")]
         MobilePush = 2,
         [Description("Web")]
-        Web = 4,
+        Web = 4
     }
 }

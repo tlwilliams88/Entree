@@ -276,7 +276,7 @@ angular.module('bekApp')
           newPostion += 1;
         }
       });
-      if ($scope.listForm && !$scope.selectedList.read_only) {
+      if ($scope.listForm && $scope.selectedList.permissions.canReorderItems) {
         $scope.listForm.$setDirty();
       }
     }
@@ -371,6 +371,7 @@ angular.module('bekApp')
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/replicatelistmodal.html',
         controller: 'ReplicateListModalController',
+        scope: $scope,
         resolve: {
           list: function() {
             return list;
@@ -383,6 +384,6 @@ angular.module('bekApp')
     };
 
     resetPage(angular.copy(originalList));
-    $scope.selectedList.isRenaming = $stateParams.renameList === 'true' ? true : false;
+    $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
 
   }]);

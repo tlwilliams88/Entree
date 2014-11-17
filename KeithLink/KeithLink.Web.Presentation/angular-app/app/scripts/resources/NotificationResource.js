@@ -7,8 +7,8 @@ angular.module('bekApp')
 
       // defaults: QUERY
 
-      update: {
-        url: '/usermessages',
+      markAsRead: {
+        url: '/usermessages/markasread',
         method: 'PUT'
       }
       
