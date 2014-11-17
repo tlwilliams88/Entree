@@ -10,7 +10,9 @@ namespace KeithLink.Svc.Core.Models.ContentManagement
     [DataContract]
     public class ContentItemPostModel : ContentItemModelBase
     {
-        [DataMember(Name="imagedata")]
+        [DataMember(Name = "imagedata")]
         public string Base64ImageData { get; set; }
+        [DataMember(Name = "imagefilename")]
+        public string ImageFileName { get; set; }
     }
 }
