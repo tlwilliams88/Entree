@@ -7,18 +7,31 @@ angular.module('bekApp')
   $scope.list = list;
   $scope.customers = customers;
 
-  $scope.shareList = function(listId, customerNumber) {
-    ListService.shareList(listId, customerNumber);
-    $modalInstance.close();
+  $scope.shareList = function(list, customers) {
+    ListService.shareList(list, customers).then(function() {
+      $modalInstance.close();
+    });
   };
 
-  $scope.copyList = function(listId, customerNumber) {
-    ListService.copyList(listId, customerNumber);
-    $modalInstance.close();
+  $scope.copyList = function(list, customers) {
+    ListService.copyList(list, customers).then(function() {
+      $modalInstance.close();
+    });
   };
 
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
+  };
+
+  $scope.selectedCustomers = [];
+  $scope.toggleCustomerSelection = function(customer) {
+    var idx = $scope.selectedCustomers.indexOf(customer);
+
+    if (idx > -1) {
+      $scope.selectedCustomers.splice(idx, 1);
+    } else {
+      $scope.selectedCustomers.push(customer);
+    }
   };
 
 }]);

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ContentManagement" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ContentManagement" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ContentItemPostModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContentItemModelBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Base64ImageData" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ContentItemPostModel" nillable="true" type="tns:ContentItemPostModel" />
+  <xs:complexType name="ContentItemModelBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActiveDateEnd" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ActiveDateStart" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="BranchId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CampaignId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Content" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ContentItemId" type="xs:long" />
+      <xs:element minOccurs="0" name="IsContentHtml" type="xs:boolean" />
+      <xs:element minOccurs="0" name="TagLine" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TargetUrl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TargetUrlText" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContentItemModelBase" nillable="true" type="tns:ContentItemModelBase" />
+</xs:schema>

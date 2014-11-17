@@ -19,14 +19,23 @@ angular.module('bekApp')
     $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
     refreshAccessPermissions();
-    $scope.currentLocation = LocalStorage.getCurrentLocation();
-
     $scope.userBar.userNotifications = NotificationService.userNotifications;
+
+    // get selected user context
+    if ($scope.isOrderEntryCustomer) { // if order entry customer, use customer number
+      var customerNumber = LocalStorage.getCustomerNumber();
+      angular.forEach($scope.userProfile.user_customers, function(customer) {
+        if (customer.customerNumber === customerNumber) {
+          $scope.selectedUserContext = customer;
+        }
+      });
+    } else { // if guest user, use branch id
+      $scope.selectedUserContext = LocalStorage.getBranchId();
+    }
 
     // for guest users
     $scope.changeBranch = function() {
-      LocalStorage.setBranchId($scope.currentLocation);
-      LocalStorage.setCurrentLocation($scope.currentLocation);
+      LocalStorage.setSelectedBranchInfo($scope.selectedUserContext);
 
       $state.transitionTo($state.current, $state.params, {
         reload: true,
@@ -34,18 +43,12 @@ angular.module('bekApp')
         notify: true
       });
     };
+
     // for order-entry customers
     $scope.changeCustomerLocation = function() {
-      angular.forEach($scope.userProfile.user_customers, function(customer) {
-        if (customer.customerNumber === $scope.currentLocation) {
-          LocalStorage.setBranchId(customer.customerBranch);
-          LocalStorage.setCustomerNumber(customer.customerNumber);
-          LocalStorage.setCurrentLocation(customer.customerNumber);
-        }
-      }); 
+      LocalStorage.setSelectedCustomerInfo($scope.selectedUserContext);
 
       angular.copy([], CartService.shipDates);
-      // CartService.getShipDates();
       
       $state.transitionTo($state.current, $state.params, {
         reload: true,

@@ -69,30 +69,45 @@ angular.module('bekApp')
         }
       },
 
-      getCurrentLocation: function() {
-        return localStorageService.get(Constants.localStorage.currentLocation);
-      },
-
-      setCurrentLocation: function(location) {
-        localStorageService.set(Constants.localStorage.currentLocation, location);
-      },
+      /*************
+      SELECTED USER CONTEXT
+      *************/
 
       getBranchId: function() {
         return localStorageService.get(Constants.localStorage.branchId);
-      },
-
-      setBranchId: function(branchId) {
-        localStorageService.set(Constants.localStorage.branchId, branchId);
       },
 
       getCustomerNumber: function() {
         return localStorageService.get(Constants.localStorage.customerNumber);
       },
 
-      setCustomerNumber: function(customerNumber) {
-        localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
+      getCurrentCustomer: function() {
+        return localStorageService.get(Constants.currentCustomer);
+      },
+
+      setSelectedBranchInfo: function(branchId) { // for guest users
+        setBranchId(branchId);
+      },
+
+      setSelectedCustomerInfo: function(customer) { // for order entry users
+        setBranchId(customer.customerBranch);
+        setCustomerNumber(customer.customerNumber);
+        setCurrentCustomer(customer);
       }
     };
+
+    function setCustomerNumber(customerNumber) {
+      localStorageService.set(Constants.localStorage.customerNumber, customerNumber);
+    }
+
+    function setBranchId(branchId) {
+      localStorageService.set(Constants.localStorage.branchId, branchId);
+    }
+
+    function setCurrentCustomer(customer) {
+      localStorageService.set(Constants.localStorage.currentCustomer, customer);
+    }
+
 
     return Service;
 
