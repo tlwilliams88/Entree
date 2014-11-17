@@ -43,27 +43,27 @@
       </thead>
       <tbody>
         <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="webOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
           <td>My Order Is Confirmed</td>
         </tr>
         <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailOrderShipped" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushOrderShipped" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="webOrderShipped" ng-disabled="!canEditNotifications"/></td>
           <td>My Order Has Shipped</td>
         </tr>
         <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailInvoice" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushInvoice" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="webInvoice" ng-disabled="!canEditNotifications"/></td>
           <td>My Invoices Need Attention</td>
         </tr>
         <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailNews" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushNews" ng-disabled="!canEditNotifications"/></td>
+          <td class="checkboxCenter"><input type="checkbox" ng-checked="webNews" ng-disabled="!canEditNotifications"/></td>
           <td>Ben E. Keith Has News For Me</td>
         </tr>
       </tbody>
