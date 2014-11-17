@@ -2,31 +2,40 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Enumerations.Messaging
 {
-    // flags (powers of 2)
+	[DataContract(Name = "NotificationType")]
 	public enum NotificationType
 	{
         [Description("My Order is Confirmed")]
-		OrderConfirmation = 1,
+		[EnumMember]
+		OrderConfirmation,
         [Description("My Order is Shipped")]
-		OrderUpdate = 2,
+		[EnumMember]
+		OrderUpdate,
         [Description("My Invoices Need Attention")]
-        InvoiceAttention = 4,
+		[EnumMember]
+		InvoiceAttention,
         [Description("Ben E. Keith Has News For Me")]
-        HasNews = 8
+		[EnumMember]
+		HasNews
 	}
 
+	[DataContract(Name = "Channel")]
     public enum Channel : int
     {
         [Description("Email")]
-        Email = 1,
+		[EnumMember(Value="Email")]
+        Email,
         [Description("Mobile Push")]
-        MobilePush = 2,
+		[EnumMember(Value = "MobilePush")]
+        MobilePush,
         [Description("Web")]
-        Web = 4
+		[EnumMember(Value = "Web")]
+        Web
     }
 }
