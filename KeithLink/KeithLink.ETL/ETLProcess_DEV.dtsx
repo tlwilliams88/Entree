@@ -8,12 +8,12 @@
   DTS:DTSID="{C01635BB-E8CB-4128-B331-28D7E5E4DA81}"
   DTS:EnableConfig="True"
   DTS:ExecutableType="SSIS.Package.3"
-  DTS:LastModifiedProductVersion="11.0.3436.0"
+  DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="243"
-  DTS:VersionGUID="{F4939802-31BA-49B2-9DE2-49165F5AEE0E}">
+  DTS:VersionBuild="255"
+  DTS:VersionGUID="{0B8E0BF6-3E4E-471D-A8A9-93CF69A66F1C}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\customerFile.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{5D7C2061-6413-4C10-BE13-4FBFF845F524}"
+              DTS:DTSID="{5C7F00E9-8F0F-4A9F-9362-CE96A4360776}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{444CA62C-E878-43D8-8A9A-F96D246A1385}"
+              DTS:DTSID="{53E7F31C-8C76-4CB3-9B3A-3F28EFD36EC8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{56143A00-CA27-4B43-A01E-7B3FCD1CED42}"
+              DTS:DTSID="{BFB40C03-6FF8-4124-BFC7-CFBB0380E739}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{05A7FEAD-A5E4-4342-BB98-F1A07C992DA7}"
+              DTS:DTSID="{B666A01A-E253-4547-B0D0-BAD02210315E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{1633453A-F22F-4719-92FC-6E614072A280}"
+              DTS:DTSID="{C371CD73-EFBB-4285-81B5-BCC4B520F605}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{4052BE62-BE94-468F-9CED-2FAB64D09103}"
+              DTS:DTSID="{5C1A8AA7-FF40-4A88-A508-25250E32CD7F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{0273155B-8761-4181-88A7-2F43BF1551ED}"
+              DTS:DTSID="{DE57B602-F847-4E4F-9E5F-65EE97A31C59}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{6E4C623C-2773-482C-9EF7-3CCEC941E25B}"
+              DTS:DTSID="{C3E844C4-5088-4877-A2A4-9686C4DDB3B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{B5158851-C904-444E-B5A0-399565D515AB}"
+              DTS:DTSID="{961FD43A-9A86-4A18-9ED5-E1298C2307B0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{5F212D59-428E-45D3-9D07-B69D7F156D04}"
+              DTS:DTSID="{93C4870F-3EFF-4451-8477-E50E94BEA2A5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{8F51BBFB-CE71-4FB1-8CB0-0CB3485E2CE5}"
+              DTS:DTSID="{3B3D4408-B30B-4BD7-856E-CFFB38FF878F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{CF2EB33E-827A-4B42-A669-6D5387A0FB1B}"
+              DTS:DTSID="{FA019775-F27A-432A-9910-E3F3DBAA7CBD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{54738D3E-65B2-47E0-9046-374E81D545EE}"
+              DTS:DTSID="{8FCADFA2-3229-4870-B298-17BF7290FBF6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{4F3F8E61-8A24-4C73-92D8-370E48BE689A}"
+              DTS:DTSID="{B4F78BBB-C925-4FAF-9165-6082B3C7BCDD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{75657238-A85D-430A-80CE-19AB93B46D94}"
+              DTS:DTSID="{D34E2A4D-588C-42C2-841C-3E6529C51C2D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{B6785D0A-F038-4C3A-9DD7-AE98A65FFC77}"
+              DTS:DTSID="{9FEBBDB1-8303-4C1A-84BA-1568E02BEC17}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{65234CEB-B5CB-4984-AA8C-04F99606D947}"
+              DTS:DTSID="{C7061BFE-9D64-4F2A-901D-E986679CEB30}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{5E3E9738-64AD-42BA-B849-5CA8767AA9F1}"
+              DTS:DTSID="{2E9CED31-FE13-44EF-8C16-D880D16C49D2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{A1930C06-D9DF-4B9A-8D48-E0D1189B82AF}"
+              DTS:DTSID="{38335D4F-DA03-4414-8B9B-2EE08764FFDB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{A934198D-EA1B-4FED-88DB-C323E3389D4C}"
+              DTS:DTSID="{6158A685-E422-4DFD-8B35-D5695A6E0CE0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{245102D4-2F2C-4BB4-8D04-A1E5DB20D490}"
+              DTS:DTSID="{418567D0-CD0E-4C19-92D9-0E8A4D1CC92E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,15 +391,15 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{E467BBD1-2A00-45BE-81FE-81AEE0FE4BDF}"
+              DTS:DTSID="{B16F2C49-CE5D-43F3-91B3-EAFFEE57A01F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
               DTS:ColumnWidth="8"
-              DTS:MaximumWidth="50"
+              DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{63974CC6-26F0-425B-9C3B-3AB3F8362816}"
+              DTS:DTSID="{50D26DD5-D177-4F14-9615-BF335B707DE2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{86C06A6C-D60A-4383-AA2E-4BE3BE8087F4}"
+              DTS:DTSID="{15A1FD96-9000-4047-A07D-20BD48B5B126}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{8433080D-D6DF-4600-B773-7E5099BD992D}"
+              DTS:DTSID="{61717BDB-3272-45C4-A5D4-0EAA8E947384}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{AD3EEF9F-1D07-4D30-82E9-3DF7BA2401C4}"
+              DTS:DTSID="{0996F8D9-ABE1-4888-BABF-509EB51FC457}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{BB5EB58C-A68D-4F22-950A-60F0C466E130}"
+              DTS:DTSID="{03DD2459-7FA7-492C-91E0-FFCE948F5C1A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{673AA220-D9C2-4F26-BC6E-550963E30B86}"
+              DTS:DTSID="{D7F94661-7225-4A8A-A4E0-221FA44267EC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{7B7D2494-3B82-4BFB-A623-72115A84BACB}"
+              DTS:DTSID="{4EDAA920-7CFE-40AE-B39E-688E9D8113B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{4FDC2FE7-86B1-4935-BE2D-D4F790A0C72F}"
+              DTS:DTSID="{A4A37537-9F4C-4B4C-9029-C87A7F41A5E4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -463,7 +463,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{33AA87E4-ADDA-4C1E-BE2F-6523E6C0C7CD}"
+              DTS:DTSID="{7224F0F6-716F-406B-8B32-079C2BD1C256}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -471,7 +471,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{D758486F-DB32-4B04-8E63-0759B4B301E5}"
+              DTS:DTSID="{EC7B2642-9EB4-48C2-AF09-D2D129FBD975}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -479,7 +479,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{E743D8A7-65E6-4248-9B43-42AC9B2362C8}"
+              DTS:DTSID="{B92BF661-3A57-48FC-B05D-19331D7662D9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -487,7 +487,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{9D50E071-D72C-4A83-94D0-C4B14144D6A2}"
+              DTS:DTSID="{5EAB173D-B814-4A41-84CD-0BE8C00DA5AB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -495,7 +495,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{C43CFAB0-5610-4948-8838-5D27AFAA7279}"
+              DTS:DTSID="{468285B9-B2FC-4C97-8D17-253447AB44A0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -503,7 +503,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{69C44D41-9A9D-4F4D-B21D-EBBC7549DE55}"
+              DTS:DTSID="{3161AF7F-CCD7-4DB3-84D3-E8A032E9DE9E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -511,7 +511,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{8E15A00E-0B52-4511-86B5-BDB21894E3D7}"
+              DTS:DTSID="{FCE0F471-24D3-4968-B638-586CA364C7FD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -519,7 +519,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{FFDDDCDB-1EB3-4F1A-906F-240229F14BE8}"
+              DTS:DTSID="{56160E4C-F72C-42C7-8826-55ED03C09B84}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -527,7 +527,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{3204DBD3-32BF-4D1E-A3B7-95C76EE88EF3}"
+              DTS:DTSID="{433B2D75-86CF-4094-8C6B-D191E7DAEDA7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -535,7 +535,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{07E22153-4D0A-4ABA-AB37-FE51D1B4E447}"
+              DTS:DTSID="{69BA4D21-D58F-4DDB-880C-6FA971CD238C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -543,7 +543,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{24B551EB-5CD3-42D4-9F1E-CDBD99AD358B}"
+              DTS:DTSID="{8E076D23-900B-43EA-A4C2-21C21A4F6116}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -551,7 +551,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{523E0A26-7E57-42DC-8465-30A1953CC8B9}"
+              DTS:DTSID="{CD040E87-2F2A-43FE-AC90-183632C172F3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -559,7 +559,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{F00D1971-7556-4AAD-B075-6730DD797383}"
+              DTS:DTSID="{79D865C2-450F-40DB-A2F7-BF4D4B10C80F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -567,7 +567,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{3CDDDF6F-AB58-447A-B550-453265045203}"
+              DTS:DTSID="{B0DDF3E4-FC9C-4591-8CCF-7635720894B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -575,7 +575,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{1773BC8F-7FB4-403B-A525-7EF9363431B1}"
+              DTS:DTSID="{BE626DAF-2A08-4112-843D-DD25055B03CD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -583,7 +583,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{A3A13BAF-2021-4602-B709-AE99472BC95C}"
+              DTS:DTSID="{A3442932-7E19-4F93-BE62-45FC0FEC667B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -591,7 +591,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{56395EC2-5FEE-4CEA-8680-690F3C715246}"
+              DTS:DTSID="{73A54DA4-79DC-4ED5-BCFB-6C4ABDD000C6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -599,7 +599,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{EA230445-9756-4E6D-8C7E-D8994FB7333C}"
+              DTS:DTSID="{A8B4B171-261E-450D-B2FE-419BDE599BCF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -607,7 +607,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{0F3BE3E9-7F29-4A75-9443-2930FFA2F2F9}"
+              DTS:DTSID="{CD8B17DC-82B6-4C1A-B488-520B49AA98A4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -615,7 +615,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{0DD46C3C-6A4C-457B-A2DA-35BACB92E24E}"
+              DTS:DTSID="{C94C205C-8111-4A66-9A73-B93B574D03D0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -623,7 +623,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{7BE97B46-7C00-4056-8D12-81B84346508F}"
+              DTS:DTSID="{119EC775-463F-4602-A421-38F82EB45363}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -631,7 +631,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{1BD01514-FCA8-44C3-91D4-7F730854B641}"
+              DTS:DTSID="{EF5AF9D3-E9C6-4A21-BAF9-F01DD0F469C9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -639,7 +639,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="Column 0"
-              DTS:DTSID="{6396EDEB-1A37-4BA0-A210-9F843BA10C22}"
+              DTS:DTSID="{70619E27-568C-4DB6-9B9A-E7AE33EE450F}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -659,7 +659,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\customerBid.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -743,7 +743,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\customerWorkSheet.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -850,7 +850,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -858,7 +858,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{C473B9AE-4244-49BA-ADB1-5CDFF477D752}"
+              DTS:DTSID="{431E1F09-4B53-45E3-85F0-3D34D7575F89}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -866,7 +866,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CompanyNumber"
-              DTS:DTSID="{C40D875B-BFD9-4638-B56A-2AED6A276A98}"
+              DTS:DTSID="{E24A950D-4996-4A50-B4AF-87E84B8AC908}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -874,7 +874,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DivisionNumber"
-              DTS:DTSID="{F34ED4A2-4D82-4192-A7E6-3DC55AC09D88}"
+              DTS:DTSID="{AB76DEA8-8BB0-454B-8985-F5FA6E671354}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -882,7 +882,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DepartmentNumber"
-              DTS:DTSID="{4A1AA3B3-2DAA-492C-A8DF-E1EFC9169FEC}"
+              DTS:DTSID="{98D42711-9607-4CAD-8AE7-76914D22F597}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -890,7 +890,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{43F7FEEB-A2EB-44E8-BF12-8F66CD11FE0C}"
+              DTS:DTSID="{0B06E3B6-14A6-4EC8-9F9D-A171D1BA9221}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -898,7 +898,7 @@
               DTS:MaximumWidth="9"
               DTS:DataType="129"
               DTS:ObjectName="OrderNumber"
-              DTS:DTSID="{20103435-9021-4DEE-8E91-85F4D1F56D9C}"
+              DTS:DTSID="{C5559D19-C2FA-4868-AC8E-9110B3190A33}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -906,7 +906,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="LineNumber"
-              DTS:DTSID="{4281B207-9938-4CFF-A3A9-F015E67E06F7}"
+              DTS:DTSID="{B5B28717-BA78-4E0B-92DD-74D591520E71}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -914,7 +914,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MemoBillCode"
-              DTS:DTSID="{098B8147-97A8-46DF-AE0A-E68760E490E8}"
+              DTS:DTSID="{29CBDFD2-D504-48F7-9316-5001B32B8476}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -922,7 +922,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditOFlag"
-              DTS:DTSID="{923FFAD8-F458-483F-9F73-D154834DF709}"
+              DTS:DTSID="{1A2260BB-2BFA-4073-BAE2-17938093480D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -930,7 +930,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="TradeSWFlag"
-              DTS:DTSID="{685E4959-F106-471E-BC8C-3F027A69EDF4}"
+              DTS:DTSID="{08CF87D6-AFB1-4AD3-9ABF-305D677F38DE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -938,7 +938,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="ShipDate"
-              DTS:DTSID="{20DB271D-C584-4C39-8706-0746BC7D3806}"
+              DTS:DTSID="{6E66C563-7F86-4915-ACF6-DCF4AFF02156}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -946,7 +946,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="OrderDate"
-              DTS:DTSID="{466DF00E-EFFF-4D1D-960F-4908341E1F6F}"
+              DTS:DTSID="{BFA40CE4-2FFD-46BC-9122-A23746113B7F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -954,7 +954,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="RouteNumber"
-              DTS:DTSID="{D4A1F65F-9835-438A-99DD-D7B886F5B120}"
+              DTS:DTSID="{1CFB713F-DA4C-4C0F-92B2-1ED169FD1CE8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -962,7 +962,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="StopNumber"
-              DTS:DTSID="{02E31CCD-43C6-49EA-95E9-E0DAA9364B16}"
+              DTS:DTSID="{86ADA2C3-112C-4EC0-B558-5C25AB0351FD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -970,7 +970,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WHNumber"
-              DTS:DTSID="{AE1FC0B9-F2D8-4556-BFB7-559E43DE3C6F}"
+              DTS:DTSID="{86B031A2-B515-46B9-B4BE-474751CF2963}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -978,7 +978,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemNumber"
-              DTS:DTSID="{DB997745-A007-4C11-9B7C-13E216C0E593}"
+              DTS:DTSID="{1604F5C4-AF56-421D-B9DC-ED7F9D0A75DA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -986,7 +986,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="QuantityOrdered"
-              DTS:DTSID="{C18A390E-30C1-4BB7-AB5C-953E9EA796E2}"
+              DTS:DTSID="{60508C0E-7F73-4A74-9618-D8DD43515D86}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -994,7 +994,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="QuantityShipped"
-              DTS:DTSID="{2E9C52B7-5FF9-4183-97DB-68D05AA16D74}"
+              DTS:DTSID="{42F2C323-5ED7-4E2E-AF27-C95C27D1D2D3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1002,7 +1002,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="BrokenCaseCode"
-              DTS:DTSID="{1D475262-3D75-4ACD-B27A-87350C4C9C49}"
+              DTS:DTSID="{3BEBE637-D21A-405C-9975-5D040251D36D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1010,7 +1010,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CatchWeightCode"
-              DTS:DTSID="{CADD560A-6E0A-4046-A36B-67B8B7E24A91}"
+              DTS:DTSID="{87EA1E4A-FC2B-4596-8CD6-CCA8A23AC110}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1018,7 +1018,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ExtCatchWeight"
-              DTS:DTSID="{CE367D5E-0823-4F11-A502-EBD620245500}"
+              DTS:DTSID="{2872A9F4-F930-4635-AA17-B7538F031140}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1026,7 +1026,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemPrice"
-              DTS:DTSID="{A17C5B3C-9919-4BAB-B252-260C6870A0BF}"
+              DTS:DTSID="{DCB47D81-EFB8-4D45-A5C0-EF0651690A37}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1034,7 +1034,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="PriceBookNumber"
-              DTS:DTSID="{4250F960-8F2B-4B3A-87DC-E98D0DB8837C}"
+              DTS:DTSID="{F02910AB-EA78-4984-B781-4BB13ED3DC7D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1042,7 +1042,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ItemPriceSRP"
-              DTS:DTSID="{EF107922-1087-4C59-A433-B4E65BEC56BE}"
+              DTS:DTSID="{5A53AF2D-AAA4-4ABE-ACD1-3EBDAAD57B9E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1050,7 +1050,7 @@
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:ObjectName="InvoiceNumber"
-              DTS:DTSID="{9D96F4EC-513B-40F0-8DFB-E577CDBBFA04}"
+              DTS:DTSID="{B7770557-95C0-4400-A002-5044F3E96FD4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1058,7 +1058,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateOfLastOrder"
-              DTS:DTSID="{DB7A3448-4B20-4C5C-87CD-DE1193049964}"
+              DTS:DTSID="{CC37F5B8-E421-402D-BBDE-371A68AC5B46}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1066,7 +1066,7 @@
               DTS:MaximumWidth="12"
               DTS:DataType="129"
               DTS:ObjectName="ExtSRPAmount"
-              DTS:DTSID="{13797324-B69D-49F8-9137-46A44A8CDC10}"
+              DTS:DTSID="{68C9242A-7AFD-42A0-B399-CA77F46B635C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1074,7 +1074,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="ExtSalesGross"
-              DTS:DTSID="{89DD2F81-98D3-4314-B6E3-86CC55F7E785}"
+              DTS:DTSID="{F0274748-E4C4-4209-AD36-499EEC39E1B8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1082,7 +1082,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="ExtSalesNet"
-              DTS:DTSID="{783CAAE2-E20E-4C6C-B525-460C791769B9}"
+              DTS:DTSID="{236F1907-30B8-4D87-8F3C-7ABE4CA57998}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1090,7 +1090,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerGroup"
-              DTS:DTSID="{D55363CB-1B5D-49AB-8708-56CE85F05A62}"
+              DTS:DTSID="{DF0AA5D7-CF4E-466B-B807-99C590F86F56}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1098,7 +1098,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{959CE742-416B-42F6-A253-DB9FE4545DC0}"
+              DTS:DTSID="{98E9EF17-22A4-4C74-AD88-A5DCD3B9E5F3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1106,7 +1106,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="VendorNumber"
-              DTS:DTSID="{0D323EA9-ED2C-4E64-998D-225E366DF554}"
+              DTS:DTSID="{E8C34EDA-AB5A-45A2-A158-BD19E198D5E0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1114,7 +1114,7 @@
               DTS:MaximumWidth="20"
               DTS:DataType="129"
               DTS:ObjectName="CustomerPO"
-              DTS:DTSID="{5956A318-E287-4293-9287-D6ED56D30283}"
+              DTS:DTSID="{0340DFE6-7CFC-400C-87A8-09228D7E96FE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1122,7 +1122,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{EAABA5DB-B6A2-4A68-A31A-AD3D7C6822F1}"
+              DTS:DTSID="{9EA22DD6-7023-4DEC-A1C4-8935FAB35512}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1130,7 +1130,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CombStatementCustomer"
-              DTS:DTSID="{736FB11E-CD2F-4335-87EC-AF8CA2D57B94}"
+              DTS:DTSID="{EED797DC-4A5F-49A0-AB4A-4564EE67097F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1138,7 +1138,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="PriceBook"
-              DTS:DTSID="{492C8515-C304-428D-A3E2-EFE4C0CCFB5C}"
+              DTS:DTSID="{6E970400-CCB7-4957-BFA6-ED8A588DF667}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1146,14 +1146,15 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ClassCode"
-              DTS:DTSID="{9F898A06-2710-4ECB-BD6A-A202EE0A33C3}"
+              DTS:DTSID="{FADD9C9F-7D79-4094-9C78-1CE11EFDAB74}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
               DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{99D35C40-1437-44D4-B8B0-934CAEEF0799}"
+              DTS:DTSID="{E0DB79C7-102A-4349-94D7-472AC072C026}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -1173,7 +1174,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1321,7 +1322,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1468,7 +1469,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1543,7 +1544,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\propItem.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1619,7 +1620,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\20141111-010315.20141111-005316.JCTRMAP">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1711,17 +1712,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAD1JSPyewg948gHmkQqOcMUCkUlwEFdIpxlgWJPzjmbCAAAAAAOgAAAAAIAACAAAAAkGRfP4kGONwHuOxAjmIahbkawbiewqCzNi18oiDt7NRAAAAA0HrHUym+e5V3+1mbL4/oFQAAAAMrdLhDuSjy0aVVVZKhsblUsDuYIjeNNwji4A9Ic4IKBAGvKV9OvL/0iwNOY1X1gChAKjCNBQg5jGGvtObJ/Ruk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABeKtUp9MlvOv+pxYnZsqoYAAAAAASAAACgAAAAEAAAANupXkugTednYTyPJEM9ZIIIAAAAlp2YYppAsvoUAAAArw9cb1UK8RTHfhzzujkglMWIOx0</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABb9CXxDhOJaCGU3aDS/aeL/IPV+c85uP05VERmhFZu6wAAAAAOgAAAAAIAACAAAAActNhuNQtTvQMXkIbgTfq8X/mhAB7KAiVWTbzq+pP1FxAAAAClqO5Q7tZvMtc4HIsSruMYQAAAAGjtnvo8II4FfcGRNjYYA0+8Weu4Bxus3Qh9PDeNjAse1FJ7g2+yD3ysKuXyCG6LcoofxsHEez8GJanFJQfvXjY</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA3Zf+hSd6z9ztrOg3XB5DFAAAAAASAAACgAAAAEAAAANOrFmH51R2iP9vAx9yM3y0IAAAAZ9dWsWQURHEUAAAAtUmFTBAK+HOQaqpT4Ir6uR7lrpU</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1733,7 +1734,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1743,12 +1744,7 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACi4icrJlaHc3E6c28G/UNKm5tkHe07xahAenpz8BXN0wAAAAAOgAAAAAIAACAAAAD8sAgT8IYV6hVkVsayh506JLiRiJ0iob2PwjQb+fRWUBAAAACo9M56mckAlhv+stwL5CFHQAAAALCuVGKXdZKLMMoGvzPiGuc8h9ARtrOL4lIygwk8bxp6xZ+sXcXpVdWjdjRKNMqOx3N36bFNUDlUMbod9d5lBKg</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1758,11 +1754,11 @@
       DTS:ObjectName="OLE_KPay">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=kpay;Provider=SQLNCLI11.1;Auto Translate=False;">
+          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=kpay;Provider=SQLNCLI11.1;">
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAACX3ns2BJnIURAS952mgjZ2RBxJOzKfeWnAylwzxIR01AAAAAAOgAAAAAIAACAAAABsZWjgtLg4vCmsSYPr+kYi9479vye/EwN1xMSXDa7dShAAAAB909bdH+Zb9lYu82RSNxAmQAAAACHLXbRoeHhyKoF8jwNA/XRcLp+NX8ZcuyVwAdyAtkLUeMl8Yw5hQM8F/YqsyWo4m91jdbII+PvVIaNkkG8jFyI</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABsFi3ffiaxinjtNn6N2Si8AAAAAASAAACgAAAAEAAAAHj8lzebeb9OW33Rv0KQdTgQAAAARJPXpFpcexAoU85ETFZKQBQAAABUTiCY6Q6LlfFkCXuQQc9HX9DH7g</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1773,7 +1769,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=WIN2012BEK;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1783,12 +1779,7 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=192.168.21.46;User Id=ecom;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Auto Translate=False;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAfKpi8OERr0udsxQr8KQF2QAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAYOTocU4Z9qE0PQE5+gcYaXkekdmly8KExlwuSm6qpewAAAAAOgAAAAAIAACAAAADca6rophxbEo3YaKOwUXdLdecFizmk/q2ufs/51hTThxAAAAAaeRTVYokJVe/hPHjokY1QQAAAACtfEuCFZwTqPW7pRstkTeRaZqgzEovGDrGUDcwRxEVWUprFQQXdXW4Aa7eMGQD3bb1nt7WoWMUzBcowc+MibGk</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1798,7 +1789,7 @@
       DTS:ObjectName="SMTP">
       <DTS:ObjectData>
         <SmtpConnectionManager
-          ConnectionString="SmtpServer=192.168.21.46;UseWindowsAuthentication=True;EnableSsl=False;" />
+          ConnectionString="SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -1830,7 +1821,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">C:\Dev\BEK\datamigration\datamigration\PowerNetInterfaceFiles\</DTS:VariableValue>
+        DTS:DataType="8">\\bekbackup\ftproot\eBusiness\Test\KeithCom\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2025,14 +2016,35 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2153,105 +2165,34 @@
   </resheader>
 </root>]]></ProjectItem>
           <ProjectItem
-            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
-    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-         <Generator>ResXFileCodeGenerator</Generator>
-         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-             <AutoGen>True</AutoGen>
-         <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-         <Generator>SettingsSingleFileGenerator</Generator>
-         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-         <AutoGen>True</AutoGen>
-         <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptMain.cs">
-         <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptTask"
-                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
-                           ApplicationType="usd"
-                           Language="cs"
-                           TemplatesPath=""
-                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
-                           DebugInfoCommandLine=""
-                           DebugInfoWorkingDir=""
-                           IconImageList=""/>
-        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
-        </Host>
-        <ProjectClient>
-            <HostIdentifier>SSIS_ST110</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></ProjectItem>
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -2504,64 +2445,114 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
+    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -4289,7 +4280,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Catalog Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[DateLastPay]"
-                          length="50"
+                          length="8"
                           lineageId="Package\Catalog Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DateLastPay]"
                           name="DateLastPay"
                           truncationRowDisposition="FailComponent">
@@ -5103,7 +5094,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Catalog Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[DateLastPay]"
                           codePage="1252"
                           dataType="str"
-                          length="50"
+                          length="8"
                           name="DateLastPay" />
                         <externalMetadataColumn
                           refId="Package\Catalog Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[CustAmountDue]"
@@ -5761,10 +5752,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[DateLastPay]"
                           cachedCodepage="1252"
                           cachedDataType="str"
-                          cachedLength="50"
+                          cachedLength="8"
                           cachedName="DateLastPay"
                           externalMetadataColumnId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastPayment]"
                           lineageId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DateLastPay]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[WedRoutNum]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="5"
+                          cachedName="WedRoutNum"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[WednesdayRoutNum]"
+                          lineageId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[WedRoutNum]" />
+                        <inputColumn
+                          refId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[WedStopNum]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="3"
+                          cachedName="WedStopNum"
+                          externalMetadataColumnId="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[WednesdayStopNum]"
+                          lineageId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[WedStopNum]" />
                       </inputColumns>
                       <externalMetadataColumns
                         isUsed="True">
@@ -6513,7 +6520,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[DateLastPay]"
                           cachedCodepage="1252"
                           cachedDataType="str"
-                          cachedLength="50"
+                          cachedLength="8"
                           cachedName="DateLastPay"
                           lineageId="Package\Catalog Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DateLastPay]">
                           <properties>
@@ -7412,7 +7419,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DateLastPay]"
                           codePage="1252"
                           dataType="str"
-                          length="50"
+                          length="8"
                           lineageId="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DateLastPay]"
                           name="DateLastPay">
                           <properties>
@@ -11515,22 +11522,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[ClassCode]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[OriginalInvoice]"
-                          cachedDataType="wstr"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="20"
                           cachedName="OriginalInvoice"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[OriginalInvoiceNumber]"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[OriginalInvoice]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[CreditAdjustment]"
-                          cachedDataType="wstr"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
                           cachedLength="1"
                           cachedName="CreditAdjustment"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[AC]"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[CreditAdjustment]" />
                         <inputColumn
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].Columns[AdjustmentDate]"
-                          cachedDataType="wstr"
-                          cachedLength="20"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
                           cachedName="AdjustmentDate"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Bek_Commerce_AppData.Inputs[OLE DB Destination Input].ExternalColumns[ChangeDate]"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\Derived Column.Outputs[Derived Column Output].Columns[AdjustmentDate]" />
@@ -12832,7 +12842,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           errorOrTruncationOperation="Conversion"
                           errorRowDisposition="FailComponent"
                           externalMetadataColumnId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
-                          length="255"
+                          length="2"
                           lineageId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].Columns[CRLF]"
                           name="CRLF"
                           truncationRowDisposition="FailComponent">
@@ -13076,7 +13086,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           refId="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice.Outputs[Flat File Source Output].ExternalColumns[CRLF]"
                           codePage="1252"
                           dataType="str"
-                          length="255"
+                          length="2"
                           name="CRLF" />
                       </externalMetadataColumns>
                     </output>
@@ -16271,7 +16281,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="MeasurementValue"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Nutrition\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DailyValue]"
                           codePage="1252"
@@ -17519,43 +17529,43 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="UnitMeasure"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GrossWeight]"
                           dataType="numeric"
                           name="GrossWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
                           dataType="numeric"
                           name="NetWeight"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
                           dataType="numeric"
                           name="Length"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
                           dataType="numeric"
                           name="Width"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
                           dataType="numeric"
                           name="Height"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Volume]"
                           dataType="numeric"
                           name="Volume"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
                           codePage="1252"
@@ -17597,7 +17607,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           dataType="numeric"
                           name="ServingSize"
                           precision="20"
-                          scale="10" />
+                          scale="3" />
                         <externalMetadataColumn
                           refId="Package\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ServingSizeUOM]"
                           codePage="1252"
@@ -20321,18 +20331,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           WSTask:OutputType="Variable"
           WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
           <WSTask:MethodInfo
-            WSTask:MethodName="ImportPrePopulatedLists"
+            WSTask:MethodName="ProcessStagedData"
             WSTask:MessageName="">
             <WSTask:Documentation></WSTask:Documentation>
             <WSTask:ParamInfo
-              WSTask:Name="ImportPrePopulatedListsResult"
+              WSTask:Name="ProcessStagedDataResult"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="0">
               <WSTask:VariableValue></WSTask:VariableValue>
             </WSTask:ParamInfo>
             <WSTask:ParamInfo
-              WSTask:Name="ImportPrePopulatedListsResultSpecified"
+              WSTask:Name="ProcessStagedDataResultSpecified"
               WSTask:Datatype="Boolean&amp;"
               WSTask:ParamType="Variable"
               WSTask:SeqNumber="1">
@@ -20734,6 +20744,7 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 			files.Add("*.JXORDDP", @"keithNetInvoice.SSIS");
 			files.Add("*.JZRECWP", @"paidDetailFile.SSIS");
 			files.Add("*.JYRECAP", @"openDetailAR.SSIS");
+            files.Add("*.JCTRMAP", @"customerTerms.SSIS");
 			
 
             return files;
@@ -20787,15 +20798,15 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
             Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
 	<msb:PropertyGroup>
-		<msb:CodeName>ST_8b38e1c04cd142498eb6973136894e60</msb:CodeName>
 		<msb:Language>msBuild</msb:Language>
+		<msb:CodeName>ST_8b38e1c04cd142498eb6973136894e60</msb:CodeName>
 		<msb:DisplayName>ST_8b38e1c04cd142498eb6973136894e60</msb:DisplayName>
 		<msb:ProjectId>{5E196739-785D-49EC-8907-B2E31D628640}</msb:ProjectId>
 	</msb:PropertyGroup>
 	<msb:ItemGroup>
 		<msb:Project Include="ST_8b38e1c04cd142498eb6973136894e60.csproj"/>
-		<msb:File Include="Properties\AssemblyInfo.cs"/>
 		<msb:File Include="Properties\Settings.settings"/>
+		<msb:File Include="Properties\AssemblyInfo.cs"/>
 		<msb:File Include="Properties\Resources.resx"/>
 		<msb:File Include="Properties\Resources.Designer.cs"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
@@ -20932,105 +20943,105 @@ namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
           <BinaryItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDAPgQYVQAAAAAAAAAAOAAAiELAQsAABYAAAAIAAAAAAAAHjQA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAIUValQAAAAAAAAAAOAAAiELAQsAABYAAAAIAAAAAAAAXjQA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
-ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAMQzAABXAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
+ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAABA0AABLAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAJBQAAAAgAAAAFgAAAAIA
+AAAAIAAACAAAAAAAAAAAAAAACCAAAEgAAAAAAAAAAAAAAC50ZXh0AAAAZBQAAAAgAAAAFgAAAAIA
 AAAAAAAAAAAAAAAAACAAAGAucnNyYwAAAAgEAAAAQAAAAAYAAAAYAAAAAAAAAAAAAAAAAABAAABA
-LnJlbG9jAAAMAAAAAGAAAAACAAAAHgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAAAA
-NAAAAAAAAEgAAAACAAUASCMAAHwQAAABAAAAAAAAAJAiAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
+LnJlbG9jAAAMAAAAAGAAAAACAAAAHgAAAAAAAAAAAAAAAAAAQAAAQgAAAAAAAAAAAAAAAAAAAABA
+NAAAAAAAAEgAAAACAAUAWCMAALgQAAABAAAAAAAAAKAiAAC4AAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4CKA4AAAoqEzACAC0AAAABAAARfgEAAAQtIHIBAABw0AIA
 AAIoDwAACm8QAAAKcxEAAAoKBoABAAAEfgEAAAQqGn4CAAAEKh4CgAIAAAQqGn4DAAAEKi5zBgAA
 BoADAAAEKh4CKBQAAAoqABswBACxAAAAAgAAEQICKBYAAApvFwAACnJzAABwbxgAAApvGQAACm8a
 AAAKfQQAAAQWCigJAAAGbxsAAAoMKzMIbxwAAAqlIQAAAQsCAnsEAAAEEgEoHQAACm8aAAAKEgEo
 HgAACm8aAAAKKAoAAAYKBiYIbx8AAAotxd4RCHUiAAABDQksBglvIAAACtwGLA4CKBYAAAoWbyEA
 AAorDAIoFgAAChdvIQAACt4PJgIoFgAAChdvIQAACt4AKgAAAAEcAAACADIAP3EAEQAAAAAAAAAA
-oaEADyMAAAETMAMAqAAAAAMAABFzIgAACgoGcq0AAHBywQAAcG8jAAAKBnLlAABwcvkAAHBvIwAA
+oaEADyMAAAETMAMAuAAAAAMAABFzIgAACgoGcq0AAHBywQAAcG8jAAAKBnLlAABwcvkAAHBvIwAA
 CgZyGwEAcHIvAQBwbyMAAAoGcl0BAHBycQEAcG8jAAAKBnKfAQBwcrMBAHBvIwAACgZy1wEAcHLr
 AQBwbyMAAAoGcgcCAHByGwIAcG8jAAAKBnJJAgBwcl0CAHBvIwAACgZyhwIAcHKbAgBwbyMAAAoG
-csMCAHBy1wIAcG8jAAAKBioTMAMALgAAAAQAABEWCgMEKCQAAAoLB45pFzMcAwUoJQAACgwHFpoI
-FygmAAAKCCgnAAAKLAIXCgYqHgIoKAAACioAALQAAADOyu++AQAAAJEAAABsU3lzdGVtLlJlc291
-cmNlcy5SZXNvdXJjZVJlYWRlciwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1u
-ZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5I1N5c3RlbS5SZXNvdXJjZXMu
-UnVudGltZVJlc291cmNlU2V0AgAAAAAAAAAAAAAAUEFEUEFEULQAAABCU0pCAQABAAAAAAAMAAAA
-djQuMC4zMDMxOQAAAAAFAGwAAAB0BAAAI34AAOAEAADkBgAAI1N0cmluZ3MAAAAAxAsAAPwCAAAj
-VVMAwA4AABAAAAAjR1VJRAAAANAOAACsAQAAI0Jsb2IAAAAAAAAAAgAAAVcdogEJAwAAAPolMwAW
-AAABAAAAJgAAAAUAAAAHAAAACwAAAAQAAAAoAAAAAgAAAA8AAAAEAAAAAgAAAAMAAAAEAAAAAQAA
-AAQAAAABAAAAAQAAAAAACgABAAAAAAAGAMEAugAKAN0AyAAOAD0BFAEGAFkBugAGAG8BXgEGAKAB
-iwEGAEUCMgIGANECtwIGAPwC6gIGABMD6gIGADAD6gIGAE8D6gIGAGgD6gIGAIED6gIGAJwD6gIG
-ALcD6gIGANAD6gIGAAkE6QMGACkE6QMGAFoERwQGAHcEugAGAHwEugAGAKAE6gIKAMwEtgQKAOUE
-tgQGAPoE6QMOABwFFAEOAD4FFAESAJcFdwUSAK8FdwUGANQFMgIGAPgFMgIGABAGMgIGADEGugAG
-AFQGugAGAGwGYgYGAH8GugAGAI0GYgYAAAAAAQAAAAAAAQABAAAAEAAyADwABQABAAEAAAEQAGsA
-PAAJAAMABQABABAAdAB/AA0ABAAIAAMBAACjAAAAEQAFAAwAEQB/ARMAEQCsARcAEQD2ATkAAQAa
-AkcABgZoAlYAVoBwAlkAVoB4AlkAUCAAAAAAgxi8ARsAAQBYIAAAAACTCMIBHwABAJEgAAAAAJMI
-1gEkAAEAmCAAAAAAkwjiASkAAQCgIAAAAACWCAYCPQACALMgAAAAAIYYvAEbAAIApyAAAAAAkRgV
-BZgAAgC8IAAAAACGAC0CGwACAJghAAAAAJEATwJKAAIATCIAAAAAgQBdAk8AAgCGIgAAAACGGLwB
-GwAFAAAAAQCAAgAAAQCGAgAAAgCWAgAAAwCrAkEAvAFnAEkAvAFnAFEAvAFnAFkAvAFnAGEAvAFn
-AGkAvAFnAHEAvAFnAHkAvAFnAIEAvAFnAIkAvAFnAJEAvAFsAJkAvAEbAKEAvAEbAAkAvAEbAKkA
-jgRxAKkAqQR4ACkAvAF9AMEAvAGJANEAvAEbABEAvAEbANkAvAEbABkAUAWcAOEAoQWhAOkAuAWm
-APEAwQWsAAkAywWwADkA6gW0AAEBBAasAAkBIAasAAkBwQWsAAEBKAa5ABEBPQYbAOEARQZsADkA
-vAEbADkAXgbJACEBdgbUACkBhgbbADEBkgbhADEBlwboABkAvAEbAAgAGABdAAgAHABiACkAkwCP
-AC4AGwBlAS4AIwBlAS4AYwCLAS4ACwD0AC4AEwA8AS4AMwA8AS4AKwBlAS4AOwBrAS4AQwBlAS4A
-WwCCAUMAawBiAEkAkwCPAGEAmwBiAIMAqwBiAIQAvQDPAO0AAgABAAMAAwAAAG8BLwAAAO4BNAAA
-ABICQgACAAIAAwACAAMABQABAAQABQACAAUABwAEgAAAAQAAADMVTF4AAAAAAAB/AAAABAAAAAAA
-AAAAAAAAAQCxAAAAAAAEAAAAAAAAAAAAAAABALoAAAAAAAsAAAAAAAAAAAAAAAoA9QAAAAAACwAA
-AAAAAAAAAAAACgBYBQAAAAAAAAAAAQAAAJ4GAAAFAAQAAAAAPE1vZHVsZT4AU1RfOGIzOGUxYzA0
-Y2QxNDI0OThlYjY5NzMxMzY4OTRlNjAuZGxsAFJlc291cmNlcwBTVF84YjM4ZTFjMDRjZDE0MjQ5
-OGViNjk3MzEzNjg5NGU2MC5Qcm9wZXJ0aWVzAFNldHRpbmdzAFNjcmlwdE1haW4AU1RfOGIzOGUx
-YzA0Y2QxNDI0OThlYjY5NzMxMzY4OTRlNjAAU2NyaXB0UmVzdWx0cwBtc2NvcmxpYgBTeXN0ZW0A
-T2JqZWN0AFN5c3RlbS5Db25maWd1cmF0aW9uAEFwcGxpY2F0aW9uU2V0dGluZ3NCYXNlAE1pY3Jv
-c29mdC5TcWxTZXJ2ZXIuU2NyaXB0VGFzawBNaWNyb3NvZnQuU3FsU2VydmVyLkR0cy5UYXNrcy5T
-Y3JpcHRUYXNrAFZTVEFSVFNjcmlwdE9iamVjdE1vZGVsQmFzZQBFbnVtAFN5c3RlbS5SZXNvdXJj
-ZXMAUmVzb3VyY2VNYW5hZ2VyAHJlc291cmNlTWFuAFN5c3RlbS5HbG9iYWxpemF0aW9uAEN1bHR1
-cmVJbmZvAHJlc291cmNlQ3VsdHVyZQAuY3RvcgBnZXRfUmVzb3VyY2VNYW5hZ2VyAGdldF9DdWx0
-dXJlAHNldF9DdWx0dXJlAEN1bHR1cmUAZGVmYXVsdEluc3RhbmNlAGdldF9EZWZhdWx0AERlZmF1
-bHQAS0VJVEhDT01fRElSRUNUT1JZAE1haW4AU3lzdGVtLkNvbGxlY3Rpb25zAEhhc2h0YWJsZQBG
-aWxlc1RvUmVuYW1lAHJlbmFtZUZpbGUAdmFsdWVfXwBTdWNjZXNzAEZhaWx1cmUAdmFsdWUAUGFy
-ZW50RGlyZWN0b3J5AEN1cnJlbnRGaWxlRXh0ZW5zaW9uAE5ld0ZpbGVuYW1lAFN5c3RlbS5SdW50
-aW1lLlZlcnNpb25pbmcAVGFyZ2V0RnJhbWV3b3JrQXR0cmlidXRlAFN5c3RlbS5SZWZsZWN0aW9u
-AEFzc2VtYmx5VGl0bGVBdHRyaWJ1dGUAQXNzZW1ibHlEZXNjcmlwdGlvbkF0dHJpYnV0ZQBBc3Nl
-bWJseUNvbmZpZ3VyYXRpb25BdHRyaWJ1dGUAQXNzZW1ibHlDb21wYW55QXR0cmlidXRlAEFzc2Vt
-Ymx5UHJvZHVjdEF0dHJpYnV0ZQBBc3NlbWJseUNvcHlyaWdodEF0dHJpYnV0ZQBBc3NlbWJseVRy
-YWRlbWFya0F0dHJpYnV0ZQBBc3NlbWJseUN1bHR1cmVBdHRyaWJ1dGUAQXNzZW1ibHlWZXJzaW9u
-QXR0cmlidXRlAFN5c3RlbS5SdW50aW1lLkNvbXBpbGVyU2VydmljZXMAQ29tcGlsYXRpb25SZWxh
-eGF0aW9uc0F0dHJpYnV0ZQBSdW50aW1lQ29tcGF0aWJpbGl0eUF0dHJpYnV0ZQBTeXN0ZW0uRGlh
-Z25vc3RpY3MARGVidWdnZXJOb25Vc2VyQ29kZUF0dHJpYnV0ZQBUeXBlAFJ1bnRpbWVUeXBlSGFu
-ZGxlAEdldFR5cGVGcm9tSGFuZGxlAEFzc2VtYmx5AGdldF9Bc3NlbWJseQBTeXN0ZW0uQ29tcG9u
-ZW50TW9kZWwARWRpdG9yQnJvd3NhYmxlQXR0cmlidXRlAEVkaXRvckJyb3dzYWJsZVN0YXRlAENv
-bXBpbGVyR2VuZXJhdGVkQXR0cmlidXRlAC5jY3RvcgBTU0lTU2NyaXB0VGFza0VudHJ5UG9pbnRB
-dHRyaWJ1dGUAU2NyaXB0T2JqZWN0TW9kZWwAZ2V0X0R0cwBNaWNyb3NvZnQuU3FsU2VydmVyLk1h
-bmFnZWREVFMATWljcm9zb2Z0LlNxbFNlcnZlci5EdHMuUnVudGltZQBWYXJpYWJsZXMAZ2V0X1Zh
-cmlhYmxlcwBWYXJpYWJsZQBnZXRfSXRlbQBnZXRfVmFsdWUAVG9TdHJpbmcASURpY3Rpb25hcnlF
-bnVtZXJhdG9yAEdldEVudW1lcmF0b3IASUVudW1lcmF0b3IAZ2V0X0N1cnJlbnQARGljdGlvbmFy
-eUVudHJ5AGdldF9LZXkATW92ZU5leHQASURpc3Bvc2FibGUARGlzcG9zZQBzZXRfVGFza1Jlc3Vs
-dABFeGNlcHRpb24AQWRkAFN5c3RlbS5JTwBEaXJlY3RvcnkAR2V0RmlsZXMAU3RyaW5nAENvbmNh
-dABGaWxlAENvcHkARXhpc3RzAFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwLlBy
-b3BlcnRpZXMuUmVzb3VyY2VzLnJlc291cmNlcwAAAAAAcVMAVABfADgAYgAzADgAZQAxAGMAMAA0
-AGMAZAAxADQAMgA0ADkAOABlAGIANgA5ADcAMwAxADMANgA4ADkANABlADYAMAAuAFAAcgBvAHAA
-ZQByAHQAaQBlAHMALgBSAGUAcwBvAHUAcgBjAGUAcwAAOVUAcwBlAHIAOgA6AEUAVABMAFAAcgBv
-AGMAZQBzAHMAXwBLAGUAaQB0AGgAQwBvAG0ARABpAHIAABMqAC4ASgBEAEMAUwBUAEIAUAAAI2MA
-dQBzAHQAbwBtAGUAcgBGAGkAbABlAC4AUwBTAEkAUwAAEyoALgBKAFYAQgBJAEQAQwBQAAAhYwB1
-AHMAdABvAG0AZQByAEIAaQBkAC4AUwBTAEkAUwAAEyoALgBKAFUAQgBJAEQARABQAAAtYgBpAGQA
-QwBvAG4AdAByAGEAYwB0AEQAZQB0AGEAaQBsAC4AUwBTAEkAUwAAEyoALgBKAFMAQgBJAEQASABQ
-AAAtYgBpAGQAQwBvAG4AdAByAGEAYwB0AEgAZQBhAGQAZQByAC4AUwBTAEkAUwAAEyoALgBKAEEA
-UABSAFAAQwBQAAAjcAByAG8AcABDAHUAcwB0AG8AbQBlAHIALgBTAFMASQBTAAATKgAuAEoAQgBQ
-AFIAUABJAFAAABtwAHIAbwBwAEkAdABlAG0ALgBTAFMASQBTAAATKgAuAEoAUgBDAFMAVABIAFAA
-AC1jAHUAcwB0AG8AbQBlAHIAVwBvAHIAawBzAGgAZQBlAHQALgBTAFMASQBTAAATKgAuAEoAWABP
-AFIARABEAFAAAClrAGUAaQB0AGgATgBlAHQASQBuAHYAbwBpAGMAZQAuAFMAUwBJAFMAABMqAC4A
-SgBaAFIARQBDAFcAUAAAJ3AAYQBpAGQARABlAHQAYQBpAGwARgBpAGwAZQAuAFMAUwBJAFMAABMq
-AC4ASgBZAFIARQBDAEEAUAAAI28AcABlAG4ARABlAHQAYQBpAGwAQQBSAC4AUwBTAEkAUwAAAA11
-6yQfKqRPo02UUQWwADcACLd6XFYZNOCJCImEXc2AgMyRAwYSFQMGEhkDIAABBAAAEhUEAAASGQUA
-AQESGQQIABIVBAgAEhkDBhIMBAAAEgwECAASDAIGDgQAABIdBiADAg4ODgIGCAMGERQEAAAAAAQB
-AAAABCABAQ4EIAEBCAYAARJVEVkEIAASXQYgAgEOEl0EBwESFQUgAQERZQgBAAIAAAAAAAMAAAEE
-IAAScQQgABJ1BSABEnkcAyAAHAMgAA4EIAASfQMgAAILBwQCEYCFEn0SgIkFIAIBHBwEBwESHQYA
-Ah0ODg4FAAIODg4GAAMBDg4CBAABAg4GBwMCHQ4ORwEAGi5ORVRGcmFtZXdvcmssVmVyc2lvbj12
-NC4wAQBUDhRGcmFtZXdvcmtEaXNwbGF5TmFtZRAuTkVUIEZyYW1ld29yayA0KAEAI1NUXzhiMzhl
-MWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwAAAFAQAAAAAWAQARQ29weXJpZ2h0IEAgIDIwMTQA
-AAgBAAgAAAAAAB4BAAEAVAIWV3JhcE5vbkV4Y2VwdGlvblRocm93cwEAAOwzAAAAAAAAAAAAAA40
-AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAANAAAAAAAAAAAAAAAAAAAAAAAAAAAX0NvckRsbE1h
-aW4AbXNjb3JlZS5kbGwAAAAAAP8lACAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+csMCAHBy1wIAcG8jAAAKBnL7AgBwcg8DAHBvIwAACgYqEzADAC4AAAAEAAARFgoDBCgkAAAKCweO
+aRczHAMFKCUAAAoMBxaaCBcoJgAACggoJwAACiwCFwoGKh4CKCgAAAoqAAC0AAAAzsrvvgEAAACR
+AAAAbFN5c3RlbS5SZXNvdXJjZXMuUmVzb3VyY2VSZWFkZXIsIG1zY29ybGliLCBWZXJzaW9uPTQu
+MC4wLjAsIEN1bHR1cmU9bmV1dHJhbCwgUHVibGljS2V5VG9rZW49Yjc3YTVjNTYxOTM0ZTA4OSNT
+eXN0ZW0uUmVzb3VyY2VzLlJ1bnRpbWVSZXNvdXJjZVNldAIAAAAAAAAAAAAAAFBBRFBBRFC0AAAA
+QlNKQgEAAQAAAAAADAAAAHY0LjAuMzAzMTkAAAAABQBsAAAAdAQAACN+AADgBAAA5AYAACNTdHJp
+bmdzAAAAAMQLAAA4AwAAI1VTAPwOAAAQAAAAI0dVSUQAAAAMDwAArAEAACNCbG9iAAAAAAAAAAIA
+AAFXHaIBCQMAAAD6JTMAFgAAAQAAACYAAAAFAAAABwAAAAsAAAAEAAAAKAAAAAIAAAAPAAAABAAA
+AAIAAAADAAAABAAAAAEAAAAEAAAAAQAAAAEAAAAAAAoAAQAAAAAABgDBALoACgDdAMgADgA9ARQB
+BgBZAboABgBvAV4BBgCgAYsBBgBFAjICBgDRArcCBgD8AuoCBgATA+oCBgAwA+oCBgBPA+oCBgBo
+A+oCBgCBA+oCBgCcA+oCBgC3A+oCBgDQA+oCBgAJBOkDBgApBOkDBgBaBEcEBgB3BLoABgB8BLoA
+BgCgBOoCCgDMBLYECgDlBLYEBgD6BOkDDgAcBRQBDgA+BRQBEgCXBXcFEgCvBXcFBgDUBTICBgD4
+BTICBgAQBjICBgAxBroABgBUBroABgBsBmIGBgB/BroABgCNBmIGAAAAAAEAAAAAAAEAAQAAABAA
+MgA8AAUAAQABAAABEABrADwACQADAAUAAQAQAHQAfwANAAQACAADAQAAowAAABEABQAMABEAfwET
+ABEArAEXABEA9gE5AAEAGgJHAAYGaAJWAFaAcAJZAFaAeAJZAFAgAAAAAIMYvAEbAAEAWCAAAAAA
+kwjCAR8AAQCRIAAAAACTCNYBJAABAJggAAAAAJMI4gEpAAEAoCAAAAAAlggGAj0AAgCzIAAAAACG
+GLwBGwACAKcgAAAAAJEYFQWYAAIAvCAAAAAAhgAtAhsAAgCYIQAAAACRAE8CSgACAFwiAAAAAIEA
+XQJPAAIAliIAAAAAhhi8ARsABQAAAAEAgAIAAAEAhgIAAAIAlgIAAAMAqwJBALwBZwBJALwBZwBR
+ALwBZwBZALwBZwBhALwBZwBpALwBZwBxALwBZwB5ALwBZwCBALwBZwCJALwBZwCRALwBbACZALwB
+GwChALwBGwAJALwBGwCpAI4EcQCpAKkEeAApALwBfQDBALwBiQDRALwBGwARALwBGwDZALwBGwAZ
+AFAFnADhAKEFoQDpALgFpgDxAMEFrAAJAMsFsAA5AOoFtAABAQQGrAAJASAGrAAJAcEFrAABASgG
+uQARAT0GGwDhAEUGbAA5ALwBGwA5AF4GyQAhAXYG1AApAYYG2wAxAZIG4QAxAZcG6AAZALwBGwAI
+ABgAXQAIABwAYgApAJMAjwAuABsAZQEuACMAZQEuAGMAiwEuAAsA9AAuABMAPAEuADMAPAEuACsA
+ZQEuADsAawEuAEMAZQEuAFsAggFDAGsAYgBJAJMAjwBhAJsAYgCDAKsAYgCEAL0AzwDtAAIAAQAD
+AAMAAABvAS8AAADuATQAAAASAkIAAgACAAMAAgADAAUAAQAEAAUAAgAFAAcABIAAAAEAAAA6FVJD
+AAAAAAAAfwAAAAQAAAAAAAAAAAAAAAEAsQAAAAAABAAAAAAAAAAAAAAAAQC6AAAAAAALAAAAAAAA
+AAAAAAAKAPUAAAAAAAsAAAAAAAAAAAAAAAoAWAUAAAAAAAAAAAEAAACeBgAABQAEAAAAADxNb2R1
+bGU+AFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwLmRsbABSZXNvdXJjZXMAU1Rf
+OGIzOGUxYzA0Y2QxNDI0OThlYjY5NzMxMzY4OTRlNjAuUHJvcGVydGllcwBTZXR0aW5ncwBTY3Jp
+cHRNYWluAFNUXzhiMzhlMWMwNGNkMTQyNDk4ZWI2OTczMTM2ODk0ZTYwAFNjcmlwdFJlc3VsdHMA
+bXNjb3JsaWIAU3lzdGVtAE9iamVjdABTeXN0ZW0uQ29uZmlndXJhdGlvbgBBcHBsaWNhdGlvblNl
+dHRpbmdzQmFzZQBNaWNyb3NvZnQuU3FsU2VydmVyLlNjcmlwdFRhc2sATWljcm9zb2Z0LlNxbFNl
+cnZlci5EdHMuVGFza3MuU2NyaXB0VGFzawBWU1RBUlRTY3JpcHRPYmplY3RNb2RlbEJhc2UARW51
+bQBTeXN0ZW0uUmVzb3VyY2VzAFJlc291cmNlTWFuYWdlcgByZXNvdXJjZU1hbgBTeXN0ZW0uR2xv
+YmFsaXphdGlvbgBDdWx0dXJlSW5mbwByZXNvdXJjZUN1bHR1cmUALmN0b3IAZ2V0X1Jlc291cmNl
+TWFuYWdlcgBnZXRfQ3VsdHVyZQBzZXRfQ3VsdHVyZQBDdWx0dXJlAGRlZmF1bHRJbnN0YW5jZQBn
+ZXRfRGVmYXVsdABEZWZhdWx0AEtFSVRIQ09NX0RJUkVDVE9SWQBNYWluAFN5c3RlbS5Db2xsZWN0
+aW9ucwBIYXNodGFibGUARmlsZXNUb1JlbmFtZQByZW5hbWVGaWxlAHZhbHVlX18AU3VjY2VzcwBG
+YWlsdXJlAHZhbHVlAFBhcmVudERpcmVjdG9yeQBDdXJyZW50RmlsZUV4dGVuc2lvbgBOZXdGaWxl
+bmFtZQBTeXN0ZW0uUnVudGltZS5WZXJzaW9uaW5nAFRhcmdldEZyYW1ld29ya0F0dHJpYnV0ZQBT
+eXN0ZW0uUmVmbGVjdGlvbgBBc3NlbWJseVRpdGxlQXR0cmlidXRlAEFzc2VtYmx5RGVzY3JpcHRp
+b25BdHRyaWJ1dGUAQXNzZW1ibHlDb25maWd1cmF0aW9uQXR0cmlidXRlAEFzc2VtYmx5Q29tcGFu
+eUF0dHJpYnV0ZQBBc3NlbWJseVByb2R1Y3RBdHRyaWJ1dGUAQXNzZW1ibHlDb3B5cmlnaHRBdHRy
+aWJ1dGUAQXNzZW1ibHlUcmFkZW1hcmtBdHRyaWJ1dGUAQXNzZW1ibHlDdWx0dXJlQXR0cmlidXRl
+AEFzc2VtYmx5VmVyc2lvbkF0dHJpYnV0ZQBTeXN0ZW0uUnVudGltZS5Db21waWxlclNlcnZpY2Vz
+AENvbXBpbGF0aW9uUmVsYXhhdGlvbnNBdHRyaWJ1dGUAUnVudGltZUNvbXBhdGliaWxpdHlBdHRy
+aWJ1dGUAU3lzdGVtLkRpYWdub3N0aWNzAERlYnVnZ2VyTm9uVXNlckNvZGVBdHRyaWJ1dGUAVHlw
+ZQBSdW50aW1lVHlwZUhhbmRsZQBHZXRUeXBlRnJvbUhhbmRsZQBBc3NlbWJseQBnZXRfQXNzZW1i
+bHkAU3lzdGVtLkNvbXBvbmVudE1vZGVsAEVkaXRvckJyb3dzYWJsZUF0dHJpYnV0ZQBFZGl0b3JC
+cm93c2FibGVTdGF0ZQBDb21waWxlckdlbmVyYXRlZEF0dHJpYnV0ZQAuY2N0b3IAU1NJU1Njcmlw
+dFRhc2tFbnRyeVBvaW50QXR0cmlidXRlAFNjcmlwdE9iamVjdE1vZGVsAGdldF9EdHMATWljcm9z
+b2Z0LlNxbFNlcnZlci5NYW5hZ2VkRFRTAE1pY3Jvc29mdC5TcWxTZXJ2ZXIuRHRzLlJ1bnRpbWUA
+VmFyaWFibGVzAGdldF9WYXJpYWJsZXMAVmFyaWFibGUAZ2V0X0l0ZW0AZ2V0X1ZhbHVlAFRvU3Ry
+aW5nAElEaWN0aW9uYXJ5RW51bWVyYXRvcgBHZXRFbnVtZXJhdG9yAElFbnVtZXJhdG9yAGdldF9D
+dXJyZW50AERpY3Rpb25hcnlFbnRyeQBnZXRfS2V5AE1vdmVOZXh0AElEaXNwb3NhYmxlAERpc3Bv
+c2UAc2V0X1Rhc2tSZXN1bHQARXhjZXB0aW9uAEFkZABTeXN0ZW0uSU8ARGlyZWN0b3J5AEdldEZp
+bGVzAFN0cmluZwBDb25jYXQARmlsZQBDb3B5AEV4aXN0cwBTVF84YjM4ZTFjMDRjZDE0MjQ5OGVi
+Njk3MzEzNjg5NGU2MC5Qcm9wZXJ0aWVzLlJlc291cmNlcy5yZXNvdXJjZXMAAAAAAHFTAFQAXwA4
+AGIAMwA4AGUAMQBjADAANABjAGQAMQA0ADIANAA5ADgAZQBiADYAOQA3ADMAMQAzADYAOAA5ADQA
+ZQA2ADAALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAADlVAHMAZQBy
+ADoAOgBFAFQATABQAHIAbwBjAGUAcwBzAF8ASwBlAGkAdABoAEMAbwBtAEQAaQByAAATKgAuAEoA
+RABDAFMAVABCAFAAACNjAHUAcwB0AG8AbQBlAHIARgBpAGwAZQAuAFMAUwBJAFMAABMqAC4ASgBW
+AEIASQBEAEMAUAAAIWMAdQBzAHQAbwBtAGUAcgBCAGkAZAAuAFMAUwBJAFMAABMqAC4ASgBVAEIA
+SQBEAEQAUAAALWIAaQBkAEMAbwBuAHQAcgBhAGMAdABEAGUAdABhAGkAbAAuAFMAUwBJAFMAABMq
+AC4ASgBTAEIASQBEAEgAUAAALWIAaQBkAEMAbwBuAHQAcgBhAGMAdABIAGUAYQBkAGUAcgAuAFMA
+UwBJAFMAABMqAC4ASgBBAFAAUgBQAEMAUAAAI3AAcgBvAHAAQwB1AHMAdABvAG0AZQByAC4AUwBT
+AEkAUwAAEyoALgBKAEIAUABSAFAASQBQAAAbcAByAG8AcABJAHQAZQBtAC4AUwBTAEkAUwAAEyoA
+LgBKAFIAQwBTAFQASABQAAAtYwB1AHMAdABvAG0AZQByAFcAbwByAGsAcwBoAGUAZQB0AC4AUwBT
+AEkAUwAAEyoALgBKAFgATwBSAEQARABQAAApawBlAGkAdABoAE4AZQB0AEkAbgB2AG8AaQBjAGUA
+LgBTAFMASQBTAAATKgAuAEoAWgBSAEUAQwBXAFAAACdwAGEAaQBkAEQAZQB0AGEAaQBsAEYAaQBs
+AGUALgBTAFMASQBTAAATKgAuAEoAWQBSAEUAQwBBAFAAACNvAHAAZQBuAEQAZQB0AGEAaQBsAEEA
+UgAuAFMAUwBJAFMAABMqAC4ASgBDAFQAUgBNAEEAUAAAJWMAdQBzAHQAbwBtAGUAcgBUAGUAcgBt
+AHMALgBTAFMASQBTAAAAAABXyBQ+SsyXT6NwrP6LGM4iAAi3elxWGTTgiQiJhF3NgIDMkQMGEhUD
+BhIZAyAAAQQAABIVBAAAEhkFAAEBEhkECAASFQQIABIZAwYSDAQAABIMBAgAEgwCBg4EAAASHQYg
+AwIODg4CBggDBhEUBAAAAAAEAQAAAAQgAQEOBCABAQgGAAESVRFZBCAAEl0GIAIBDhJdBAcBEhUF
+IAEBEWUIAQACAAAAAAADAAABBCAAEnEEIAASdQUgARJ5HAMgABwDIAAOBCAAEn0DIAACCwcEAhGA
+hRJ9EoCJBSACARwcBAcBEh0GAAIdDg4OBQACDg4OBgADAQ4OAgQAAQIOBgcDAh0ODkcBABouTkVU
+RnJhbWV3b3JrLFZlcnNpb249djQuMAEAVA4URnJhbWV3b3JrRGlzcGxheU5hbWUQLk5FVCBGcmFt
+ZXdvcmsgNCgBACNTVF84YjM4ZTFjMDRjZDE0MjQ5OGViNjk3MzEzNjg5NGU2MAAABQEAAAAAFgEA
+EUNvcHlyaWdodCBAICAyMDE0AAAIAQAIAAAAAAAeAQABAFQCFldyYXBOb25FeGNlcHRpb25UaHJv
+d3MBAAA4NAAAAAAAAAAAAABONAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQDQAAAAAAAAAAF9D
+b3JEbGxNYWluAG1zY29yZWUuZGxsAAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -21040,13 +21051,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAABABAAAAAYAACAAAAAAAAAAAAAAAAAAAABAAEAAAAwAACAAAAAAAAAAAAAAAAAAAABAAAAAABI
 AAAAWEAAALADAAAAAAAAAAAAALADNAAAAFYAUwBfAFYARQBSAFMASQBPAE4AXwBJAE4ARgBPAAAA
-AAC9BO/+AAABAAAAAQBMXjMVAAABAExeMxU/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAA
+AAC9BO/+AAABAAAAAQBSQzoVAAABAFJDOhU/AAAAAAAAAAQAAAACAAAAAAAAAAAAAAAAAAAARAAA
 AAEAVgBhAHIARgBpAGwAZQBJAG4AZgBvAAAAAAAkAAQAAABUAHIAYQBuAHMAbABhAHQAaQBvAG4A
 AAAAAAAAsAQQAwAAAQBTAHQAcgBpAG4AZwBGAGkAbABlAEkAbgBmAG8AAADsAgAAAQAwADAAMAAw
 ADAANABiADAAAABwACQAAQBGAGkAbABlAEQAZQBzAGMAcgBpAHAAdABpAG8AbgAAAAAAUwBUAF8A
 OABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2ADgAOQA0
-AGUANgAwAAAAQAAPAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAuADUANAAyADcA
-LgAyADQAMQA0ADAAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBUAF8AOABi
+AGUANgAwAAAAQAAPAAEARgBpAGwAZQBWAGUAcgBzAGkAbwBuAAAAAAAxAC4AMAAuADUANAAzADQA
+LgAxADcAMgAzADQAAAAAAHAAKAABAEkAbgB0AGUAcgBuAGEAbABOAGEAbQBlAAAAUwBUAF8AOABi
 ADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2ADkANwAzADEAMwA2ADgAOQA0AGUA
 NgAwAC4AZABsAGwAAABIABIAAQBMAGUAZwBhAGwAQwBvAHAAeQByAGkAZwBoAHQAAABDAG8AcAB5
 AHIAaQBnAGgAdAAgAEAAIAAgADIAMAAxADQAAAB4ACgAAQBPAHIAaQBnAGkAbgBhAGwARgBpAGwA
@@ -21054,8 +21065,8 @@ ZQBuAGEAbQBlAAAAUwBUAF8AOABiADMAOABlADEAYwAwADQAYwBkADEANAAyADQAOQA4AGUAYgA2
 ADkANwAzADEAMwA2ADgAOQA0AGUANgAwAC4AZABsAGwAAABoACQAAQBQAHIAbwBkAHUAYwB0AE4A
 YQBtAGUAAAAAAFMAVABfADgAYgAzADgAZQAxAGMAMAA0AGMAZAAxADQAMgA0ADkAOABlAGIANgA5
 ADcAMwAxADMANgA4ADkANABlADYAMAAAAEQADwABAFAAcgBvAGQAdQBjAHQAVgBlAHIAcwBpAG8A
-bgAAADEALgAwAC4ANQA0ADIANwAuADIANAAxADQAMAAAAAAASAAPAAEAQQBzAHMAZQBtAGIAbAB5
-ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4ANQA0ADIANwAuADIANAAxADQAMAAAAAAAAAAAAAAA
+bgAAADEALgAwAC4ANQA0ADMANAAuADEANwAyADMANAAAAAAASAAPAAEAQQBzAHMAZQBtAGIAbAB5
+ACAAVgBlAHIAcwBpAG8AbgAAADEALgAwAC4ANQA0ADMANAAuADEANwAyADMANAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -21064,7 +21075,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAAAgNAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAAAAwAAABgNAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -21097,10 +21108,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
-          SendMailTask:From="WIN2012BEK@noreply.com"
+          SendMailTask:From="CORPMISDEV2C@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on WIN2012BEK"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on WIN2012BEK.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
     <DTS:Executable
@@ -21124,7 +21135,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Brand Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="1">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -21143,7 +21154,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Catalog Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="2">
+          DTS:ThreadHint="1">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -21162,7 +21173,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Contract Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="5">
+          DTS:ThreadHint="2">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -21179,7 +21190,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate GS1 Stage Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="4">
+          DTS:ThreadHint="3">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -21198,7 +21209,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Invoice Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="4">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -21217,7 +21228,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           DTS:LocaleID="-1"
           DTS:ObjectName="Truncate Worksheet Tables"
           DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="3">
+          DTS:ThreadHint="5">
           <DTS:Variables />
           <DTS:ObjectData>
             <SQLTask:SqlTaskData
@@ -22067,6 +22078,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Id="Package\Catalog Import Tasks"
           TopLeft="427,287.25" />
         <NodeLayout
+          Size="157,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms"
+          TopLeft="64,88" />
+        <NodeLayout
           Size="161,42"
           Id="Package\Customer Invoice Import Tasks\KeithNet Invoices"
           TopLeft="12,11" />
@@ -22078,10 +22093,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="129,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail"
           TopLeft="188,10" />
-        <NodeLayout
-          Size="157,42"
-          Id="Package\Customer Invoice Import Tasks\Customer Terms"
-          TopLeft="64,88" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -22956,7 +22967,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Catalog Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="159,42"
           Id="Package\Catalog Import Tasks\Stage Customers\KeithlinkAppData"
@@ -22969,42 +22980,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="176,42"
           Id="Package\Catalog Import Tasks\Stage Customers\Sort by Division ASC"
           TopLeft="322,249" />
-        <EdgeLayout
-          Id="Package\Catalog Import Tasks\Stage Customers.Paths[Sort Output]"
-          TopLeft="410,291">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="168.5,113"
-              Start="0,0"
-              End="168.5,105.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,52.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,52.5"
-                    Point2="0,56.5"
-                    Point3="4,56.5" />
-                  <mssgle:LineSegment
-                    End="164.5,56.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="164.5,56.5"
-                    Point2="168.5,56.5"
-                    Point3="168.5,60.5" />
-                  <mssgle:LineSegment
-                    End="168.5,105.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
         <EdgeLayout
           Id="Package\Catalog Import Tasks\Stage Customers.Paths[Flat File Source Output]"
           TopLeft="203,107.5">
@@ -23036,9 +23011,41 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Catalog Import Tasks\Stage Customers.Paths[Sort Output]"
+          TopLeft="410,291">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="168.5,113"
+              Start="0,0"
+              End="168.5,105.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,52.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,52.5"
+                    Point2="0,56.5"
+                    Point3="4,56.5" />
+                  <mssgle:LineSegment
+                    End="164.5,56.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="164.5,56.5"
+                    Point2="168.5,56.5"
+                    Point3="168.5,60.5" />
+                  <mssgle:LineSegment
+                    End="168.5,105.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23214,10 +23221,75 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
+    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
+          TopLeft="675,344" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
+          TopLeft="521,108" />
+        <EdgeLayout
+          Id="Package\Customer Invoice Import Tasks\Customer Terms.Paths[Flat File Source Output]"
+          TopLeft="596.5,150">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="164,194"
+              Start="0,0"
+              End="164,186.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,93" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,93"
+                    Point2="0,97"
+                    Point3="4,97" />
+                  <mssgle:LineSegment
+                    End="160,97" />
+                  <mssgle:CubicBezierSegment
+                    Point1="160,97"
+                    Point2="164,97"
+                    Point3="164,101" />
+                  <mssgle:LineSegment
+                    End="164,186.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
     design-time-name="Package\Customer Invoice Import Tasks\KeithNet Invoices">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="156,42"
           Id="Package\Customer Invoice Import Tasks\KeithNet Invoices\KeithNet Invoice"
@@ -23261,7 +23333,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23295,7 +23369,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23318,7 +23394,11 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Customer Invoice Import Tasks\Open Detail AR">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Customer Invoice Import Tasks\Open Detail AR\OLE DB Destination"
+          TopLeft="697,384" />
         <NodeLayout
           Size="151,42"
           Id="Package\Customer Invoice Import Tasks\Open Detail AR\Flat File Source"
@@ -23327,10 +23407,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="154,42"
           Id="Package\Customer Invoice Import Tasks\Open Detail AR\Derived Column"
           TopLeft="440,344" />
-        <NodeLayout
-          Size="171,42"
-          Id="Package\Customer Invoice Import Tasks\Open Detail AR\OLE DB Destination"
-          TopLeft="697,384" />
         <EdgeLayout
           Id="Package\Customer Invoice Import Tasks\Open Detail AR.Paths[Flat File Source Output]"
           TopLeft="543.5,133">
@@ -23362,7 +23438,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23396,7 +23474,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -23419,19 +23499,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Customer Invoice Import Tasks\Paid Detail">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="171,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail\OLE DB Destination"
           TopLeft="497,292" />
         <NodeLayout
-          Size="151,42"
-          Id="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source"
-          TopLeft="358,100" />
-        <NodeLayout
           Size="154,42"
           Id="Package\Customer Invoice Import Tasks\Paid Detail\Derived Column"
           TopLeft="270,246" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Customer Invoice Import Tasks\Paid Detail\Flat File Source"
+          TopLeft="358,100" />
         <EdgeLayout
           Id="Package\Customer Invoice Import Tasks\Paid Detail.Paths[Flat File Source Output]"
           TopLeft="433.5,142">
@@ -23463,7 +23543,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -23497,7 +23579,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -24072,7 +24156,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     design-time-name="Package\Import Contract Data\ProprietaryCustomer">
     <LayoutInfo>
       <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="164,42"
           Id="Package\Import Contract Data\ProprietaryCustomer\FF_PropCustomer"
@@ -24112,7 +24196,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -24185,69 +24271,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Worksheet Import Tasks\WorkSheet Items\Bek_Commerce_AppData">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="151,42"
-          Id="Package\Customer Invoice Import Tasks\Customer Terms\Flat File Source"
-          TopLeft="521,108" />
-        <NodeLayout
-          Size="171,42"
-          Id="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination"
-          TopLeft="675,344" />
-        <EdgeLayout
-          Id="Package\Customer Invoice Import Tasks\Customer Terms.Paths[Flat File Source Output]"
-          TopLeft="596.5,150">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="164,194"
-              Start="0,0"
-              End="164,186.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,93" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,93"
-                    Point2="0,97"
-                    Point3="4,97" />
-                  <mssgle:LineSegment
-                    End="160,97" />
-                  <mssgle:CubicBezierSegment
-                    Point1="160,97"
-                    Point2="164,97"
-                    Point3="164,101" />
-                  <mssgle:LineSegment
-                    End="164,186.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Customer Invoice Import Tasks\Customer Terms\OLE DB Destination">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
