@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.ETL;
@@ -64,6 +65,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<MessagingService>();
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
+            builder.RegisterType<ContentManagementService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -104,6 +106,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
             builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
             builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
+            builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
+            builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
 
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();

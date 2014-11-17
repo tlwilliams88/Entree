@@ -25,7 +25,7 @@ angular
     'toaster',
     'angular-loading-bar',
     'angularFileUpload',
-    'fcsa-number',
+    // 'fcsa-number',
     'configenv'
   ])
 .config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',

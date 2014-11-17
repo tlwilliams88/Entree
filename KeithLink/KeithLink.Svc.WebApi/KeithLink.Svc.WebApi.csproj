@@ -172,6 +172,13 @@
     <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
+    <Content Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
+    <Content Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
+    <Content Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
+    <Content Include="Service References\com.benekeith.ContentManagementService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <Content Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -182,6 +189,16 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
+    <Content Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.wsdl" />
+    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -266,6 +283,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\ContentManagementController.cs" />
     <Compile Include="Controllers\MessagingController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
@@ -287,12 +305,18 @@
     <Compile Include="Models\UpdatePasswordModel.cs" />
     <Compile Include="Models\UserProfileModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
+    <Compile Include="Service References\com.benekeith.ContentManagementService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -466,6 +490,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <WCFMetadataStorage Include="Service References\com.benekeith.ContentManagementService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />

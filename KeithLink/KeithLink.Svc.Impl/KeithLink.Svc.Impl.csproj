@@ -178,6 +178,7 @@
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -352,6 +354,10 @@
     <Compile Include="Repository\EF\Migrations\201411141947051_Add ListShare.cs" />
     <Compile Include="Repository\EF\Migrations\201411141947051_Add ListShare.Designer.cs">
       <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.cs" />
+    <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.Designer.cs">
+      <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -792,6 +798,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411141947051_Add ListShare.resx">
       <DependentUpon>201411141947051_Add ListShare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.resx">
+      <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
