@@ -139,6 +139,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
             // customer bank - JA - 11/13
             builder.RegisterType<OnlinePaymentService>();

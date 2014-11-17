@@ -61,6 +61,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
         public override void ExecuteQuery(CommerceServer.Foundation.CommerceQueryOperation queryOperation, CommerceServer.Foundation.OperationCacheDictionary operationCache, CommerceServer.Foundation.CommerceQueryOperationResponse response)
         {
+            return;
             List<string> preferredAddressIds = new List<string>();
             foreach (var entity in response.CommerceEntities)
             {

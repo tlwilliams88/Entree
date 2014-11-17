@@ -562,7 +562,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return GetUserProfile(emailAddress);
                 }
             } else {
-				retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeTermInformation: includeTermInformation));
+				retVal.UserProfiles.Add(FillUserProfile(csUserProfile, includeTermInformation: true));
             }
 
             // add to cache if found

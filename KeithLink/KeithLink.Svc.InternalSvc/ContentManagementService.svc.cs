@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Models.ContentManagement;
 using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.InternalSvc.Interfaces;
+using KeithLink.Common.Core.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,15 +16,22 @@ namespace KeithLink.Svc.InternalSvc
 	public class ContentManagementService : IContentManagementService
 	{
 		private IInternalContentManagementLogic internalCmsLogic;
+        private IEventLogRepository eventLogRepository;
 
-        public ContentManagementService(IInternalContentManagementLogic internalCmsLogic)
+        public ContentManagementService(IInternalContentManagementLogic internalCmsLogic, IEventLogRepository eventLogRepository)
 		{
 			this.internalCmsLogic = internalCmsLogic;
+            this.eventLogRepository = eventLogRepository;
 		}
 
 		public void CreateContentItem(ContentItemPostModel contentItem)
 		{
             internalCmsLogic.CreateContentItem(contentItem);
-		}
+            if (!String.IsNullOrEmpty(contentItem.Base64ImageData))
+            {
+                this.eventLogRepository.WriteInformationLog("ContentManagementService.CreateContentItem: Received base64 encoded data ____" 
+                    + contentItem.Base64ImageData + "____");
+		    }
+        }
 	}
 }

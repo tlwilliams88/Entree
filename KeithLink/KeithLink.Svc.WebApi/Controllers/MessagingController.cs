@@ -50,9 +50,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPut]
         [ApiKeyedRoute("messagingpreferences/")]
-        public void Put(ProfileMessagingPreferenceModel messagingPreferenceModel)
+        public Models.OperationReturnModel<bool> Put(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
             messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
+            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
+            ret.SuccessResponse = true;
+            return ret;
         }
 
 		
