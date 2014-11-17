@@ -4,13 +4,29 @@
 <div class="modal-body">
 
   <form name="duplicateListForm">
-    <select ng-options="customer.customerNumber as customer.customerName for customer in customers" ng-model="duplicateList.customerNumber" required name="customerNumber">
-      <option>Select a Customer</option>
-    </select>  
+  
+    <p>
+      Sharing a list with another customer allows all users under that customer to view a living copy of the list.  Any edits you make will also occur on all shared versions of the list.  Users who have a shared copy will not be able to make any edits. 
+    </p>
+    <p>
+      Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
+    </p>
+
+    <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customerNumber !== customer.customerNumber">
+      <label>
+        <input type="checkbox"
+          name="selectedFruits[]"
+          value="{{customer.customerName}}"
+          ng-checked="selectedCustomers.indexOf(customer) > -1"
+          ng-click="toggleCustomerSelection(customer)">
+        {{customer.customerName}}
+      </label>
+    </div>
+
   </form>
 
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn-lg btn btn-primary" ng-click="shareList(list.listid, duplicateList.customerNumber)">Share</button>
-    <button type="button" class="btn-lg btn btn-primary" ng-click="copyList(list.listid, duplicateList.customerNumber)">Copy</button>
+    <button type="button" class="btn-lg btn btn-primary" ng-click="shareList(list, selectedCustomers)">Share</button>
+    <button type="button" class="btn-lg btn btn-primary" ng-click="copyList(list, selectedCustomers)">Copy</button>
 </div>

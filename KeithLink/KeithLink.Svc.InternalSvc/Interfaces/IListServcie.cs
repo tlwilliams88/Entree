@@ -68,5 +68,11 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         void UpdateList(ListModel userList);
+
+		[OperationContract]
+		void CopyList(ListCopyShareModel copyListModel);
+
+		[OperationContract]
+		void ShareList(ListCopyShareModel shareListModel);
     }
 }

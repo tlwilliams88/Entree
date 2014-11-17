@@ -122,6 +122,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/UpdateList", ReplyAction="http://tempuri.org/IListServcie/UpdateListResponse")]
         System.Threading.Tasks.Task UpdateListAsync(KeithLink.Svc.Core.Models.Lists.ListModel userList);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/CopyList", ReplyAction="http://tempuri.org/IListServcie/CopyListResponse")]
+        void CopyList(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel copyListModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/CopyList", ReplyAction="http://tempuri.org/IListServcie/CopyListResponse")]
+        System.Threading.Tasks.Task CopyListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel copyListModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ShareList", ReplyAction="http://tempuri.org/IListServcie/ShareListResponse")]
+        void ShareList(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ShareList", ReplyAction="http://tempuri.org/IListServcie/ShareListResponse")]
+        System.Threading.Tasks.Task ShareListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -293,6 +305,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task UpdateListAsync(KeithLink.Svc.Core.Models.Lists.ListModel userList) {
             return base.Channel.UpdateListAsync(userList);
+        }
+        
+        public void CopyList(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel copyListModel) {
+            base.Channel.CopyList(copyListModel);
+        }
+        
+        public System.Threading.Tasks.Task CopyListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel copyListModel) {
+            return base.Channel.CopyListAsync(copyListModel);
+        }
+        
+        public void ShareList(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel) {
+            base.Channel.ShareList(shareListModel);
+        }
+        
+        public System.Threading.Tasks.Task ShareListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel) {
+            return base.Channel.ShareListAsync(shareListModel);
         }
     }
 }

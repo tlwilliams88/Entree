@@ -25,6 +25,7 @@ angular
     'toaster',
     'angular-loading-bar',
     'angularFileUpload',
+    // 'fcsa-number',
     'configenv'
   ])
 .config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
@@ -309,20 +310,8 @@ angular
         invoices: [ 'InvoiceService', function(InvoiceService) {
           return InvoiceService.getAllInvoices();
         }],
-        accounts: [ function() {
-          return [{
-            id: 1,
-            name: 'Bank of America',
-            number: 'XXXX XXXX XXXX 4321'
-          }, {
-            id: 2,
-            name: 'Chase',
-            number: 'XXXX XXXX XXXX 4321'
-          }, {
-            id: 3,
-            name: 'Wells Fargo',
-            number: 'XXXX XXXX XXXX 4321'
-          }];
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
         }]
       }
     })
@@ -480,7 +469,7 @@ angular
   });
 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
-    if (AccessService.isLoggedIn()) {
+    if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
   });

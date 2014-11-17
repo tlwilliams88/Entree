@@ -35,7 +35,7 @@ angular.module('bekApp')
           }
         });
 
-        return Notification.update(unreadMessages).$promise.then(function() {
+        return Notification.markAsRead(unreadMessages).$promise.then(function() {
           angular.copy({ unread: '0' }, Service.userNotifications);
         });
       }
