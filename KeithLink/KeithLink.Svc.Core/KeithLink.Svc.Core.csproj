@@ -156,6 +156,7 @@
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
+    <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
@@ -396,7 +397,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interface\OnlinePayments\Invoice\" />
     <Folder Include="Interface\OnlinePayments\Log\" />
     <Folder Include="Interface\OnlinePayments\Payment\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />

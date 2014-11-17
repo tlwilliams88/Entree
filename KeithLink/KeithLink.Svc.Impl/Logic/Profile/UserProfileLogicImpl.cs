@@ -347,10 +347,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false)
 		{
             List<Customer> userCustomers;
+			string dsrRole = string.Empty;
             if (IsInternalAddress(csProfile.Email))
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
-                string dsrRole = GetUserDsrRole(user);
+                dsrRole = GetUserDsrRole(user);
                 if (!String.IsNullOrEmpty(dsrRole))
                 {
                     // lookup customers by their assigned dsr number
@@ -416,6 +417,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 BranchId = csProfile.DefaultBranch,
                 RoleName = GetUserRole(csProfile.Email),
                 UserCustomers = userCustomers,
+				IsDSR = !string.IsNullOrEmpty(dsrRole),
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }

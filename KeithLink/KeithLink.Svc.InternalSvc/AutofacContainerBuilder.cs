@@ -10,6 +10,7 @@ using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
@@ -37,6 +38,7 @@ using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Orders.History;
@@ -146,6 +148,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
             builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
+            builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
 
             return builder.Build();
         }
