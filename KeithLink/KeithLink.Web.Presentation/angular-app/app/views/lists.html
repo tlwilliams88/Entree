@@ -56,6 +56,8 @@
         </a>
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
+      <li ng-if="isBekAdmin && !hideMandatoryList"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
+
     </ul>
   </div>
 
@@ -99,7 +101,19 @@
           data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
           jqyoui-droppable="{onDrop: 'createListFromDrag()'}" 
           class="btn btn-default btn-list text-light btn-lg">
-          Create A List
+          Create A List...
+        </button>
+
+        <button
+          type="button" 
+          ng-click="createMandatoryList()" 
+          data-drop="isDragging" 
+          data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+          jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
+          class="btn btn-default btn-list text-left text-light btn-lg"
+          style="margin-top:10px;"
+          ng-if="isBekAdmin && !hideMandatoryList">
+          Create Mandatory <br>List for Customer...
         </button>
         
         <button 
@@ -177,7 +191,6 @@
           <ul class="dropdown-menu" role="menu">
             <li ng-click="favoriteAll()"><a>Star Selected</a></li>
             <li ng-click="unfavoriteAll()"><a>Unstar Selected</a></li>
-            <!-- <li ng-click="addItemsToReminderList()"><a>Add to Reminders</a></li> -->
           </ul>
         </div>
       </div>

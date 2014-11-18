@@ -13,16 +13,16 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 	{
         [Description("My Order is Confirmed")]
 		[EnumMember]
-		OrderConfirmation,
+		OrderConfirmation = 1,
         [Description("My Order is Shipped")]
 		[EnumMember]
-		OrderUpdate,
+		OrderUpdate = 2,
         [Description("My Invoices Need Attention")]
 		[EnumMember]
-		InvoiceAttention,
+		InvoiceAttention = 4,
         [Description("Ben E. Keith Has News For Me")]
 		[EnumMember]
-		HasNews
+		HasNews = 8
 	}
 
 	[DataContract(Name = "Channel")]
@@ -30,12 +30,12 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
     {
         [Description("Email")]
 		[EnumMember(Value="Email")]
-        Email,
+        Email = 1,
         [Description("Mobile Push")]
 		[EnumMember(Value = "MobilePush")]
-        MobilePush,
+        MobilePush = 2,
         [Description("Web")]
 		[EnumMember(Value = "Web")]
-        Web
+        Web = 4
     }
 }

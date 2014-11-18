@@ -1,0 +1,11 @@
+ <div class="modal-header">
+    <div class="modal-close-button" ng-click="cancel()"><span class="icon-cross large-icon"></span></div>
+    <h2 class="modal-title">{{item.tagline}}</h2>
+</div>
+<div class="modal-body">
+
+  <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
+
+  <p ng-bind-html="item.content"></p>
+
+</div>
