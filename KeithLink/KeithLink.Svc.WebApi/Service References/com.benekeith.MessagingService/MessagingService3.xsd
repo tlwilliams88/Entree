@@ -8,6 +8,7 @@
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isdsr" type="xs:boolean" />
       <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingpreferences" nillable="true" type="q1:ArrayOfProfileMessagingPreferenceModel" />
       <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
@@ -28,9 +29,13 @@
       <xs:element minOccurs="0" name="accountId" nillable="true" type="ser:guid" />
       <xs:element minOccurs="0" name="address" nillable="true" type="tns:address" />
       <xs:element minOccurs="0" name="balanceage1" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage1label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="balanceage2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage2label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="balanceage3" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage3label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="balanceage4" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage4label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="contractId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="currentbalance" nillable="true" type="xs:decimal" />
       <xs:element minOccurs="0" name="customerBranch" nillable="true" type="xs:string" />
@@ -46,6 +51,8 @@
       <xs:element minOccurs="0" name="nationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="pointofcontact" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="termcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="termdescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="customer" nillable="true" type="tns:customer" />

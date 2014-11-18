@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Models.Messaging;
+﻿using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using System;
 using System.Collections.Generic;
@@ -38,7 +40,8 @@ namespace KeithLink.Svc.Core.Extensions
                 MessageCreatedUtc = userMessage.CreatedUtc,
                 UserId = userMessage.UserId,
                 Id = userMessage.Id,
-                Label = userMessage.Label
+                Label = userMessage.Label,
+				NotificationTypeDescription = EnumUtils<NotificationType>.GetDescription(userMessage.NotificationType)
             };
         }
 

@@ -31,21 +31,27 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("cms/contentitems/{branchId}/{count}")]
         public Models.OperationReturnModel<List<ContentItemViewModel>> ReadContentItems(string branchId, int count)
         {
-            throw new NotImplementedException();
+            Models.OperationReturnModel<List<ContentItemViewModel>> ret = new Models.OperationReturnModel<List<ContentItemViewModel>>();
+            ret.SuccessResponse = this.contentManagementServiceRepository.ReadContentItemsByBranch(branchId, count);
+            return ret;
         }
 
         [HttpGet]
-        [ApiKeyedRoute("cms/contentitem/{branchId}/{itemId}")] // shouldn't need branchId
-        public Models.OperationReturnModel<ContentItemViewModel >ReadContentItem(string branchId, string itemId)
+        [ApiKeyedRoute("cms/contentitem/{itemId}")]
+        public Models.OperationReturnModel<ContentItemViewModel> ReadContentItem(int itemId)
         {
-            throw new NotImplementedException();
+            Models.OperationReturnModel<ContentItemViewModel> ret = new Models.OperationReturnModel<ContentItemViewModel>();
+            ret.SuccessResponse = this.contentManagementServiceRepository.ReadContentItemById(itemId);
+            return ret;
         }
 
         [HttpGet]
-        [ApiKeyedRoute("cms/contentitems/promoitems/{branchId}/{count}")]
-        public Models.OperationReturnModel<ContentItemViewModel> ReadPromoContentItems(string branchId, int count)
+        [ApiKeyedRoute("cms/promoitems/{branchId}/{count}")]
+        public Models.OperationReturnModel<List<ContentItemViewModel>> ReadPromoItems(string branchId, int count)
         {
-            throw new NotImplementedException();
+            Models.OperationReturnModel<List<ContentItemViewModel>> ret = new Models.OperationReturnModel<List<ContentItemViewModel>>();
+            ret.SuccessResponse = this.contentManagementServiceRepository.ReadActiveContentItemsByBranch(branchId, count);
+            return ret;
         }
 
         [HttpPost]
@@ -59,10 +65,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpDelete]
-        [ApiKeyedRoute("cms/contentitem/{branchId}/{itemId}")] // shouldn't need branch id
-        public Models.OperationReturnModel<bool> DeleteContentItem(string branchId, string itemId)
+        [ApiKeyedRoute("cms/contentitem/{itemId}")]
+        public Models.OperationReturnModel<bool> DeleteContentItem(int itemId)
         {
-            throw new NotImplementedException();
+            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
+            this.contentManagementServiceRepository.DeleteContentItemById(itemId);
+            ret.SuccessResponse = true;
+            return ret;
         }
 
         #endregion

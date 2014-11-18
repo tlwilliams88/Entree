@@ -23,6 +23,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public void CreateContentItem(Core.Models.ContentManagement.ContentItemPostModel contentItemModel)
         {
+            // do validation; certain fields required
+            if (String.IsNullOrEmpty(contentItemModel.BranchId))
+                throw new ApplicationException("BranchId is required to create content item");
+            if (!String.IsNullOrEmpty(contentItemModel.Base64ImageData) && String.IsNullOrEmpty(contentItemModel.ImageFileName))
+                throw new ApplicationException("When providing an image, file name is required");
+
             ContentItem contentItem = ToContentItem(contentItemModel); // TODO: move to extension method
             
             if (!String.IsNullOrEmpty(contentItemModel.Base64ImageData))
@@ -49,6 +55,62 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             contentItem.TargetUrlText = contentItemModel.TargetUrlText;
 
             return contentItem;
+        }
+
+
+        public List<Core.Models.ContentManagement.ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count)
+        {
+            IEnumerable<ContentItem> contentItems = contentManagementRepository.ReadActiveContentItemsByBranch(branchId, count);
+            List<Core.Models.ContentManagement.ContentItemViewModel> itemModels = new List<Core.Models.ContentManagement.ContentItemViewModel>();
+            foreach (var item in contentItems)
+            {
+                itemModels.Add(ToItemViewModel(item));
+            }
+
+            return itemModels;
+        }
+
+        public List<Core.Models.ContentManagement.ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count)
+        {
+            IEnumerable<ContentItem> contentItems = contentManagementRepository.ReadContentItemsByBranch(branchId, count);
+            List<Core.Models.ContentManagement.ContentItemViewModel> itemModels = new List<Core.Models.ContentManagement.ContentItemViewModel>();
+            foreach (var item in contentItems)
+            {
+                itemModels.Add(ToItemViewModel(item));
+            }
+
+            return itemModels;
+        }
+
+        public void DeleteContentItemById(int itemId)
+        {
+            ContentItem toDelete = contentManagementRepository.ReadById(itemId);
+            contentManagementRepository.Delete(toDelete);
+            unitOfWork.SaveChanges();
+        }
+
+        public Core.Models.ContentManagement.ContentItemViewModel ReadContentItemById(int itemId)
+        {
+            ContentItem item = contentManagementRepository.ReadById(itemId);
+            return ToItemViewModel(item);
+        }
+
+        private static Core.Models.ContentManagement.ContentItemViewModel ToItemViewModel(ContentItem item)
+        {
+            Core.Models.ContentManagement.ContentItemViewModel itemModel = new Core.Models.ContentManagement.ContentItemViewModel();
+            itemModel.ImageUrl = item.ImageUrl;
+            itemModel.ContentItemId = item.Id;
+            itemModel.ActiveDateEnd = item.ActiveDateEnd;
+            itemModel.ActiveDateStart = item.ActiveDateStart;
+            itemModel.BranchId = item.BranchId;
+            itemModel.CampaignId = item.CampaignId;
+            itemModel.Content = item.Content;
+            itemModel.IsContentHtml = item.IsContentHtml;
+            itemModel.ProductId = item.ProductId;
+            itemModel.TagLine = item.TagLine;
+            itemModel.TargetUrl = item.TargetUrl;
+            itemModel.TargetUrlText = item.TargetUrlText;
+            return itemModel;
         }
     }
 }

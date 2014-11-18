@@ -373,7 +373,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		}
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
-            var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Reminder, i => i.Items);
+            var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
 
             if (list == null)
                 return null;
@@ -388,21 +388,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
 
         public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false) {
-            var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || 
-				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) 
-				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
+			var list = ReadListForCustomer(user, catalogInfo, headerOnly);
+
+			
 
             if (list == null)
                 return null;
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
+				ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
             if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
-                list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) || (l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded) || l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)).ToList();
+				ReadListForCustomer(user, catalogInfo, headerOnly);
             }
  
             if (headerOnly)
@@ -440,6 +440,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return processedList;
             }
         }
+
+		private List<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+		{
+			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
+				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
+				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
+			return list;
+		}
 		
         public void UpdateItem(ListItemModel item)
 		{
@@ -497,8 +505,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			unitOfWork.SaveChanges();
 			listCacheRepository.RemoveItem(string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
-        #endregion
-
 
 		public void CopyList(ListCopyShareModel copyListModel)
 		{
@@ -511,13 +517,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				foreach (var item in listToCopy.Items)
 					newList.Items.Add(new ListItem() { Category = item.Category, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.Par, Position = item.Position });
 				listRepository.Create(newList);
-					
+
 			}
 
 			unitOfWork.SaveChanges();
 		}
-
-
+		
 		public void ShareList(ListCopyShareModel shareListModel)
 		{
 			var listToShare = listRepository.ReadById(shareListModel.ListId);
@@ -527,10 +532,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var customer in shareListModel.Customers)
 			{
-				listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch});
+				listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
 			}
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
 		}
+        
+		#endregion
+
+
+		
 	}
 }

@@ -4,7 +4,7 @@ angular.module('bekApp')
   .factory('MessagePreferenceService', [ '$http', '$q', '$log', function ($http, $q, $log) {
     var Service = {
       updatePreferences: function(preferences){
-        /*var deferred = $q.defer();
+        var deferred = $q.defer();
 
         $http.put('/messagingpreferences', preferences).then(function(response) {
 
@@ -17,8 +17,7 @@ angular.module('bekApp')
             deferred.reject(data.errorMessage);
           }
         });
-        return deferred.promise;*/
-        console.log(preferences);
+        return deferred.promise;
       }
     };
 

@@ -10,7 +10,6 @@
 angular.module('bekApp')
   .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
 
-    //noinspection UnnecessaryLocalVariableJS
     var Service = {
       getProfile: function(email) {
         var data = {

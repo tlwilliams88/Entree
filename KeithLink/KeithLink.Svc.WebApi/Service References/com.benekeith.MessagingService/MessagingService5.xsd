@@ -1,55 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:simpleType name="NotificationType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="OrderConfirmation">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="OrderUpdate">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
+      <xs:enumeration value="OrderConfirmation" />
+      <xs:enumeration value="OrderUpdate" />
+      <xs:enumeration value="InvoiceAttention" />
+      <xs:enumeration value="HasNews" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="NotificationType" nillable="true" type="tns:NotificationType" />
   <xs:simpleType name="Channel">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="Email">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="MobilePush">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Web">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
+      <xs:enumeration value="Email" />
+      <xs:enumeration value="MobilePush" />
+      <xs:enumeration value="Web" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="Channel" nillable="true" type="tns:Channel" />
-  <xs:complexType name="ArrayOfChannel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Channel" type="tns:Channel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfChannel" nillable="true" type="tns:ArrayOfChannel" />
 </xs:schema>

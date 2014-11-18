@@ -359,6 +359,10 @@
     <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.Designer.cs">
       <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.cs" />
+    <Compile Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.Designer.cs">
+      <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -396,6 +400,7 @@
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
+    <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
@@ -801,6 +806,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.resx">
       <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.resx">
+      <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
