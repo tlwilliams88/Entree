@@ -13,5 +13,14 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
     {
         [OperationContract]
         void CreateContentItem(ContentItemPostModel contentItem);
+
+        [OperationContract]
+        List<ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count);
+
+        [OperationContract]
+        void DeleteContentItemById(int itemId);
+
+        [OperationContract]
+        ContentItemViewModel ReadContentItemById(int itemId);
     }
 }

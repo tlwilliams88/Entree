@@ -29,6 +29,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
       <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ismandatory" type="xs:boolean" />
       <xs:element minOccurs="0" name="isreminder" type="xs:boolean" />
       <xs:element minOccurs="0" name="isshared" type="xs:boolean" />
       <xs:element minOccurs="0" name="issharing" type="xs:boolean" />

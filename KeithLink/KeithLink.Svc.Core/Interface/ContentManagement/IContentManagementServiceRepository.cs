@@ -10,5 +10,8 @@ namespace KeithLink.Svc.Core.Interface.ContentManagement
 	public interface IContentManagementServiceRepository
 	{
 		void CreateContentItem(ContentItemPostModel item);
+        List<ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count);
+        ContentItemViewModel ReadContentItemById(int itemId);
+        void DeleteContentItemById(int itemId);
 	}
 }

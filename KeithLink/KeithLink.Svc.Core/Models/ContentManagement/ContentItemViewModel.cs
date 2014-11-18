@@ -8,9 +8,9 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core.Models.ContentManagement
 {
     [DataContract]
-    public class ContentItemViewModel
+    public class ContentItemViewModel : ContentItemModelBase
     {
         [DataMember(Name="imageurl")]
-        public Int64 ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
     }
 }

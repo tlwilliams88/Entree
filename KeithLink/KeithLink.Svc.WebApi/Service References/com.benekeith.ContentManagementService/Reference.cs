@@ -20,6 +20,26 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ContentManagementService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/CreateContentItem", ReplyAction="http://tempuri.org/IContentManagementService/CreateContentItemResponse")]
         System.Threading.Tasks.Task CreateContentItemAsync(KeithLink.Svc.Core.Models.ContentManagement.ContentItemPostModel contentItem);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranch", ReplyAction="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranchRespon" +
+            "se")]
+        KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[] ReadActiveContentItemsByBranch(string branchId, int count);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranch", ReplyAction="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranchRespon" +
+            "se")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadActiveContentItemsByBranchAsync(string branchId, int count);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/DeleteContentItemById", ReplyAction="http://tempuri.org/IContentManagementService/DeleteContentItemByIdResponse")]
+        void DeleteContentItemById(int itemId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/DeleteContentItemById", ReplyAction="http://tempuri.org/IContentManagementService/DeleteContentItemByIdResponse")]
+        System.Threading.Tasks.Task DeleteContentItemByIdAsync(int itemId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadContentItemById", ReplyAction="http://tempuri.org/IContentManagementService/ReadContentItemByIdResponse")]
+        KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel ReadContentItemById(int itemId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadContentItemById", ReplyAction="http://tempuri.org/IContentManagementService/ReadContentItemByIdResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel> ReadContentItemByIdAsync(int itemId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +75,30 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ContentManagementService {
         
         public System.Threading.Tasks.Task CreateContentItemAsync(KeithLink.Svc.Core.Models.ContentManagement.ContentItemPostModel contentItem) {
             return base.Channel.CreateContentItemAsync(contentItem);
+        }
+        
+        public KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[] ReadActiveContentItemsByBranch(string branchId, int count) {
+            return base.Channel.ReadActiveContentItemsByBranch(branchId, count);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadActiveContentItemsByBranchAsync(string branchId, int count) {
+            return base.Channel.ReadActiveContentItemsByBranchAsync(branchId, count);
+        }
+        
+        public void DeleteContentItemById(int itemId) {
+            base.Channel.DeleteContentItemById(itemId);
+        }
+        
+        public System.Threading.Tasks.Task DeleteContentItemByIdAsync(int itemId) {
+            return base.Channel.DeleteContentItemByIdAsync(itemId);
+        }
+        
+        public KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel ReadContentItemById(int itemId) {
+            return base.Channel.ReadContentItemById(itemId);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel> ReadContentItemByIdAsync(int itemId) {
+            return base.Channel.ReadContentItemByIdAsync(itemId);
         }
     }
 }
