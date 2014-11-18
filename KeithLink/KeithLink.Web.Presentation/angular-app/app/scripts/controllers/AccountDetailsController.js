@@ -3,36 +3,41 @@
 angular.module('bekApp')
   .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'MessagePreferenceService',
     function ($scope, UserProfileService, branches, LocalStorage, $state, MessagePreferenceService) {
-      /*---init---*/
-      $scope.userProfile = angular.copy(LocalStorage.getProfile());
-      $scope.branches = branches;
-      $scope.customers = $scope.userProfile.user_customers;
 
-      /*---process user preferences---*/
-      var prefArray = [];
-      //for every topic of notification build a preference object
-      $scope.userProfile.messagingpreferences[0].preferences.forEach(function(preference){
-        var newPreference = {};
-        //set description and default to false
-        newPreference.description = preference.description;
-        newPreference.notificationType = preference.notificationType;
-        newPreference.channels = [false,false,false];
-        //override defaulted false with true if it is sent by the pref object
-        preference.selectedChannels.forEach(function (selectedChannel) {
-          if(selectedChannel.channel === 1){
-            newPreference.channels[0] = true;
-          } else if(selectedChannel.channel === 2){
-            newPreference.channels[1] = true;
-          } else if(selectedChannel.channel === 4){
-            newPreference.channels[2] = true;
-          }
+      var init = function(){
+        /*---init---*/
+        $scope.userProfile = angular.copy(LocalStorage.getProfile());
+        $scope.branches = branches;
+        $scope.customers = $scope.userProfile.user_customers;
+
+        /*---process user preferences---*/
+        var prefArray = [];
+        //for every topic of notification build a preference object
+        $scope.userProfile.messagingpreferences[0].preferences.forEach(function(preference){
+          var newPreference = {};
+          //set description and default to false
+          newPreference.description = preference.description;
+          newPreference.notificationType = preference.notificationType;
+          newPreference.channels = [false,false,false];
+          //override defaulted false with true if it is sent by the pref object
+          preference.selectedChannels.forEach(function (selectedChannel) {
+            if(selectedChannel.channel === 1){
+              newPreference.channels[0] = true;
+            } else if(selectedChannel.channel === 2){
+              newPreference.channels[1] = true;
+            } else if(selectedChannel.channel === 4){
+              newPreference.channels[2] = true;
+            }
+          });
+          //add new pref object with booleans to the temporary array
+          prefArray.push(newPreference);
         });
-        //add new pref object with booleans to the temporary array
-        prefArray.push(newPreference);
-      });
 
-      //persist temp array to scope for use in DOM
-      $scope.defaultPreferences = prefArray;
+        //persist temp array to scope for use in DOM
+        $scope.defaultPreferences = prefArray;
+      };
+
+      init();
 
       $scope.cancelChanges = function () {
         $scope.userProfile = angular.copy(LocalStorage.getProfile());
@@ -43,7 +48,8 @@ angular.module('bekApp')
         $scope.changePasswordErrorMessage = null;
         changePasswordData.email = $scope.userProfile.emailaddress;
 
-        UserProfileService.changePassword(changePasswordData).then(function (successMessage) {
+        UserProfileService.changePassword(changePasswordData).then(function (success) {
+          $log.debug(success);
           $scope.changePasswordData = {};
           $scope.changePasswordForm.$setPristine();
           $scope.displayMessage('success', 'Successfully changed password.');
@@ -81,8 +87,15 @@ angular.module('bekApp')
 
         //make ajax call
         MessagePreferenceService.updatePreferences(preferencePayload).then(function (success) {
-          $scope.displayMessage('success', 'Your preferences were successfully updated');
-          //probably should refresh profile preferences here <----------TODO
+          $log.debug(success);
+          //refresh user profile locally
+          UserProfileService.getProfile(LocalStorage.getProfile().emailaddress).then(function (success) {
+            $log.debug(success);
+            $scope.displayMessage('success', 'Your preferences were successfully updated');
+            init(); //reinitialize data from refreshed profile
+          }, function (error) {
+            $scope.displayMessage('error', 'An error occurred while refreshing user profile' + error)
+          });
         }, function (error) {
           $scope.displayMessage('error', 'An error occurred while updating user preferences' + error)
         });
