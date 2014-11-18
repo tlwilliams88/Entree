@@ -361,7 +361,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 {
                     var newPreference = new UserMessagingPreference()
                     {
-                        Channel = EnumUtils<Channel>.FromDescription(channel.Description),
+                        Channel = channel.Channel,
                         CustomerNumber = messagingPrefModel.CustomerNumber,
                         NotificationType = currentPreference.NotificationType,
                         UserId = userId

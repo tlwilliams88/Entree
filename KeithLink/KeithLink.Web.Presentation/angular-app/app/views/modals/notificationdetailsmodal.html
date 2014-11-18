@@ -21,10 +21,27 @@
 
   <div class="row">
     <label class="col-xs-6" for="">Type</label>
-    <div class="col-xs-6">{{notification.notificationtype}}</div>
+    <div class="col-xs-6">{{notification.notificationtypedescription}}</div>
   </div>
 
 </div>
 <div class="modal-footer">
-  <button class="btn btn-lg btn-primary pull-left">View All Orders</button>
+  <button 
+    ng-if="notification.displayType === 'Order'" 
+    ng-click="goToPage('menu.order')" 
+    class="btn btn-lg btn-primary pull-left">
+    View All Orders
+  </button>
+  <button 
+    ng-if="notification.displayType === 'Invoice'"
+    ng-click="goToPage('menu.invoice')" 
+    class="btn btn-lg btn-primary pull-left">
+    View All Invoices
+  </button>
+  <button 
+    ng-if="notification.displayType !== 'Order' && notification.displayType !== 'Invoice'"
+    ng-click="closeModal()" 
+    class="btn btn-lg btn-primary pull-left">
+    OK
+  </button>
 </div>

@@ -58,17 +58,14 @@ angular.module('bekApp')
         // WORKSHEET
         } else if (list.isworksheet) {
 
-        // MANDATORY
+        // MANDATORY -- only shown to DSRs
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
-
-          // TODO: check if DSR user
-          // if (isDSR) {
-          //   permissions.canAddItems = true;
-          //   permissions.canDeleteItems = true;
-          //   permissions.canEditParlevel = true;
-          // }
+          permissions.canAddItems = true;
+          permissions.canDeleteItems = true;
+          permissions.canEditParlevel = true;
+          permissions.canDeleteList = true;
 
         // REMINDER
         } else if (list.isreminder) {
@@ -163,9 +160,13 @@ angular.module('bekApp')
         EDIT LIST
         ********************/
 
-        // accepts null, item object, or array of item objects
+        // items: accepts null, item object, or array of item objects
+        // params: isMandatory param for creating mandatory list
         // returns promise and new list object
-        createList: function(items) {
+        createList: function(items, params) {
+          if (!params) {
+            params = {};
+          }
 
           var newList = {};
 
@@ -182,7 +183,7 @@ angular.module('bekApp')
 
           newList.name = UtilityService.generateName('List', Service.lists);
 
-          return List.save({}, newList).$promise.then(function(response) {
+          return List.save(params, newList).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);
           }, function() {
@@ -400,22 +401,17 @@ angular.module('bekApp')
         REMINDER/MANDATORY ITEMS LISTS
         *****************************/
 
-        getReminderList: function() {
-          return List.getReminderList().$promise.then(function(lists) {
-            if (lists.length === 1) {
-              return lists[0];  
-            } else {
-              return {};
-            }
-          });
+        createMandatoryList: function(items) {
+          var params = { isMandatory: true };
+          return Service.createList(items, params);
         },
 
-        findReminderList: function() {
-          return UtilityService.findObjectByField(Service.lists, 'isreminder', true);
+        getCriticalItemsLists: function() {
+          return List.getReminderList().$promise;
         },
 
-        getMandatoryList: function() {
-          return Service.getList('95');
+        findMandatoryList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'ismandatory', true);
         },
 
         /***************
