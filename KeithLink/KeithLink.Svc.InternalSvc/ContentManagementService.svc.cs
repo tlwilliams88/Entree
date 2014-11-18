@@ -39,6 +39,10 @@ namespace KeithLink.Svc.InternalSvc
             return internalCmsLogic.ReadActiveContentItemsByBranch(branchId, count);
         }
 
+        public List<ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count)
+        {
+            return internalCmsLogic.ReadContentItemsByBranch(branchId, count);
+        }
 
         public void DeleteContentItemById(int itemId)
         {

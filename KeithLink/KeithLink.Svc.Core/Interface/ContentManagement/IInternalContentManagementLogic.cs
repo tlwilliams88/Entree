@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Interface.ContentManagement
     {
         void CreateContentItem(ContentItemPostModel contentItem);
         List<ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count);
+        List<ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count);
         void DeleteContentItemById(int itemId);
         ContentItemViewModel ReadContentItemById(int itemId);
     }

@@ -18,6 +18,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count);
 
         [OperationContract]
+        List<ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count);
+
+        [OperationContract]
         void DeleteContentItemById(int itemId);
 
         [OperationContract]

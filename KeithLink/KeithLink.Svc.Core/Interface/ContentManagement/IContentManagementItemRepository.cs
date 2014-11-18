@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.ContentManagement
 	public interface IContentManagementItemRepository : IBaseEFREpository<ContentItem>
 	{
         IEnumerable<ContentItem> ReadActiveContentItemsByBranch(string branchId, int count);
+        IEnumerable<ContentItem> ReadContentItemsByBranch(string branchId, int count);
 	}
 }

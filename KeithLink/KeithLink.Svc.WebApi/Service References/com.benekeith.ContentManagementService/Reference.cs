@@ -29,6 +29,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ContentManagementService {
             "se")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadActiveContentItemsByBranchAsync(string branchId, int count);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadContentItemsByBranch", ReplyAction="http://tempuri.org/IContentManagementService/ReadContentItemsByBranchResponse")]
+        KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[] ReadContentItemsByBranch(string branchId, int count);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/ReadContentItemsByBranch", ReplyAction="http://tempuri.org/IContentManagementService/ReadContentItemsByBranchResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadContentItemsByBranchAsync(string branchId, int count);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IContentManagementService/DeleteContentItemById", ReplyAction="http://tempuri.org/IContentManagementService/DeleteContentItemByIdResponse")]
         void DeleteContentItemById(int itemId);
         
@@ -83,6 +89,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ContentManagementService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadActiveContentItemsByBranchAsync(string branchId, int count) {
             return base.Channel.ReadActiveContentItemsByBranchAsync(branchId, count);
+        }
+        
+        public KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[] ReadContentItemsByBranch(string branchId, int count) {
+            return base.Channel.ReadContentItemsByBranch(branchId, count);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel[]> ReadContentItemsByBranchAsync(string branchId, int count) {
+            return base.Channel.ReadContentItemsByBranchAsync(branchId, count);
         }
         
         public void DeleteContentItemById(int itemId) {

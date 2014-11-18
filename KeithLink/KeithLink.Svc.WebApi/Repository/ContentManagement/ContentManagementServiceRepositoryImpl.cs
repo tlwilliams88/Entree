@@ -27,6 +27,11 @@ namespace KeithLink.Svc.WebApi.Repository.ContentManagement
             return serviceClient.ReadActiveContentItemsByBranch(branchId, count).ToList();
         }
 
+        public List<ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count)
+        {
+            return serviceClient.ReadContentItemsByBranch(branchId, count).ToList();
+        }
+
         public void DeleteContentItemById(int id)
         {
             serviceClient.DeleteContentItemById(id);

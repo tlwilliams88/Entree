@@ -32,7 +32,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Models.OperationReturnModel<List<ContentItemViewModel>> ReadContentItems(string branchId, int count)
         {
             Models.OperationReturnModel<List<ContentItemViewModel>> ret = new Models.OperationReturnModel<List<ContentItemViewModel>>();
-            ret.SuccessResponse = this.contentManagementServiceRepository.ReadActiveContentItemsByBranch(branchId, count);
+            ret.SuccessResponse = this.contentManagementServiceRepository.ReadContentItemsByBranch(branchId, count);
             return ret;
         }
 
@@ -46,10 +46,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [HttpGet]
-        [ApiKeyedRoute("cms/contentitems/promoitems/{branchId}/{count}")]
-        public Models.OperationReturnModel<ContentItemViewModel> ReadPromoContentItems(string branchId, int count)
+        [ApiKeyedRoute("cms/promoitems/{branchId}/{count}")]
+        public Models.OperationReturnModel<List<ContentItemViewModel>> ReadPromoItems(string branchId, int count)
         {
-            throw new NotImplementedException();
+            Models.OperationReturnModel<List<ContentItemViewModel>> ret = new Models.OperationReturnModel<List<ContentItemViewModel>>();
+            ret.SuccessResponse = this.contentManagementServiceRepository.ReadActiveContentItemsByBranch(branchId, count);
+            return ret;
         }
 
         [HttpPost]
