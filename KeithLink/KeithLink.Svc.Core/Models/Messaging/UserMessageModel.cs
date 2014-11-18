@@ -23,6 +23,8 @@ namespace KeithLink.Svc.Core.Models.Messaging
         public string Label { get; set; }
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
+		[DataMember(Name = "notificationtypedescription")]
+		public string NotificationTypeDescription { get; set; }
         [DataMember(Name = "messagereadutc")]
         public DateTime? MessageReadUtc { get; set; }
         [DataMember(Name = "messagecreatedutc")]

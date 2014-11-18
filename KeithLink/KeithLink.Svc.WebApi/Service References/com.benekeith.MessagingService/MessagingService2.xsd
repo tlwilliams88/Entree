@@ -12,6 +12,7 @@
       <xs:element minOccurs="0" name="messagecreatedutc" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="messagereadutc" nillable="true" type="xs:dateTime" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="notificationtype" type="q1:NotificationType" />
+      <xs:element minOccurs="0" name="notificationtypedescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="subject" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="userid" type="ser:guid" />
     </xs:sequence>
