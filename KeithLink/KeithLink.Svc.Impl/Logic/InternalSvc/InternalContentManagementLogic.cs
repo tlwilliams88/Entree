@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             itemModel.CampaignId = item.CampaignId;
             itemModel.Content = item.Content;
             itemModel.IsContentHtml = item.IsContentHtml;
-            // itemModel.ProductId = item. // TODO: Add ProductId to EF Model
+            itemModel.ProductId = item.ProductId;
             itemModel.TagLine = item.TagLine;
             itemModel.TargetUrl = item.TargetUrl;
             itemModel.TargetUrlText = item.TargetUrlText;
