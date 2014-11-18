@@ -415,7 +415,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 PhoneNumber = csProfile.Telephone,
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
-                RoleName = GetUserRole(csProfile.Email),
+                RoleName = !String.IsNullOrEmpty(dsrRole) ? "dsr" : GetUserRole(csProfile.Email),
                 UserCustomers = userCustomers,
 				IsDSR = !string.IsNullOrEmpty(dsrRole),
                 //new List<Customer>() { // for testing only
