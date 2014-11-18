@@ -15,14 +15,21 @@
     display: block;
   }
 
+}
+.dropdown-menu > table {
+  min-width: 0;
+  
+  > caption {
+    font-weight: 600;
+    padding: 5px;
+  }
+
   > tbody > tr > td {
     border-bottom: 1px solid $color-border;
     padding: 10px;
+    cursor: pointer;
   }
   > tbody > tr:hover > td {
     background-color: $background;
   }
-}
-table.dropdown-menu {
-  min-width: 0;
 }

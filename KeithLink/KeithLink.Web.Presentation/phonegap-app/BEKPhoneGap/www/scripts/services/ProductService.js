@@ -86,7 +86,7 @@ angular.module('bekApp')
             facets += ',';
           }
           if (facetCategory) {
-            categoryName = facetCategory.name;
+            //categoryName = facetCategory.name;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
