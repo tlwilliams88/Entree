@@ -7,10 +7,9 @@ angular.module('bekApp')
       var accountid = '';
       //get user id from localstorage and ask for account id with it
       AccountService.getAccountByUser(LocalStorage.getProfile().userid).then(function (success) {
-        accountid = success;
-        console.log(success);
+        accountid = success.id;
         //get all customers on account
-        CustomerService.getCustomers('4728d73a-81d7-4262-a1b0-88fd46aade32').then(function(success){
+        CustomerService.getCustomers(accountid).then(function(success){
           $scope.customers = success;
 
           //get all users for every customer on the account

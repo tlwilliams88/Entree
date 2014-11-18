@@ -17,18 +17,18 @@ namespace KeithLink.Svc.Impl.Repository.Invoices
 
 		public List<InvoiceModel> ReadInvoices(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)
 		{
-			throw new NotImplementedException();
+			return new List<InvoiceModel>();
 		}
 
 		public InvoiceModel ReadInvoice(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			throw new NotImplementedException();
+			return null;
 		}
 
 
 		public TermModel ReadTermInformation(string branchId, string termCode)
 		{
-			throw new NotImplementedException();
+			return new TermModel();
 		}
 	}
 }

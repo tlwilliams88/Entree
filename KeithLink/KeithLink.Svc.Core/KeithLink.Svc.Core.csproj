@@ -146,6 +146,9 @@
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
+    <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
+    <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
+    <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
@@ -153,9 +156,14 @@
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
+    <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
+    <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
+    <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
+    <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
@@ -389,7 +397,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Interface\OnlinePayments\Invoice\" />
     <Folder Include="Interface\OnlinePayments\Log\" />
     <Folder Include="Interface\OnlinePayments\Payment\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />

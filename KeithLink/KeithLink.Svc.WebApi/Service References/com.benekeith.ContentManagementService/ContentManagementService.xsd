@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ContentManagement" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ContentManagement" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ContentItemPostModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContentItemModelBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imagedata" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="imagefilename" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ContentItemPostModel" nillable="true" type="tns:ContentItemPostModel" />
+  <xs:complexType name="ContentItemModelBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="activedateend" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="activesdatestart" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="campaignid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="content" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:long" />
+      <xs:element minOccurs="0" name="iscontenthtml" type="xs:boolean" />
+      <xs:element minOccurs="0" name="productid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tagline" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="targeturl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="targeturltext" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ContentItemModelBase" nillable="true" type="tns:ContentItemModelBase" />
+  <xs:complexType name="ArrayOfContentItemViewModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ContentItemViewModel" nillable="true" type="tns:ContentItemViewModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfContentItemViewModel" nillable="true" type="tns:ArrayOfContentItemViewModel" />
+  <xs:complexType name="ContentItemViewModel">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:ContentItemModelBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ContentItemViewModel" nillable="true" type="tns:ContentItemViewModel" />
+</xs:schema>

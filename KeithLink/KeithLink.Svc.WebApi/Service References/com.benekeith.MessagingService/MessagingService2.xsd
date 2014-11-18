@@ -12,6 +12,7 @@
       <xs:element minOccurs="0" name="messagecreatedutc" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="messagereadutc" nillable="true" type="xs:dateTime" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="notificationtype" type="q1:NotificationType" />
+      <xs:element minOccurs="0" name="notificationtypedescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="subject" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="userid" type="ser:guid" />
     </xs:sequence>
@@ -40,10 +41,23 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="NotificationType" type="q2:NotificationType" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="SelectedChannels" nillable="true" type="q3:ArrayOfChannel" />
+      <xs:element minOccurs="0" name="SelectedChannels" nillable="true" type="tns:ArrayOfProfileChannelModel" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ProfileMessagingPreferenceDetailModel" nillable="true" type="tns:ProfileMessagingPreferenceDetailModel" />
+  <xs:complexType name="ArrayOfProfileChannelModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ProfileChannelModel" nillable="true" type="tns:ProfileChannelModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfProfileChannelModel" nillable="true" type="tns:ArrayOfProfileChannelModel" />
+  <xs:complexType name="ProfileChannelModel">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="Channel" type="q3:Channel" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ProfileChannelModel" nillable="true" type="tns:ProfileChannelModel" />
   <xs:complexType name="ArrayOfUserMessage">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="UserMessage" nillable="true" type="tns:UserMessage" />
