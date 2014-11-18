@@ -8,12 +8,21 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('MarketingService', [ 'Marketing', function (Marketing) {
+  .factory('MarketingService', [ '$q', '$http', 'LocalStorage', function ($q, $http, LocalStorage) {
 
   var Service = {
   
-    createItem: function(contentItem) {
-      return Marketing.save(contentItem).$promise;
+    getPromoItems: function() {
+      var deferred = $q.defer();
+      $http.get('/cms/promoitems/' + LocalStorage.getBranchId() + '/6').then(function(response) {
+        var data = response.data;
+        if (data.successResponse) {
+          deferred.resolve(data.successResponse);
+        } else {
+          deferred.reject(data.errorMessage);
+        }
+      });
+      return deferred.promise;
     }
 
   };

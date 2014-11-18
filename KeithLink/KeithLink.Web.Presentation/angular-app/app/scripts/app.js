@@ -13,6 +13,7 @@ angular
     // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
+    'ngSanitize',
     'ngTouch',
     'LocalStorageModule', // HTML5 local storage
     'ui.router',
