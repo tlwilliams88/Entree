@@ -50,8 +50,7 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "userid")]
         public Guid UserId {get;set;}
 
-		[DataMember(Name = "isdsr")]
-		public bool IsDSR { get; set; }
+		public bool IsDSR { get { return RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase); } }
         
         //[DataMember(Name = "username")]
         //public string UserName { get; set; }

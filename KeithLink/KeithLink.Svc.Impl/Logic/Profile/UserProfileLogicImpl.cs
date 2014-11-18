@@ -417,7 +417,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 BranchId = csProfile.DefaultBranch,
                 RoleName = !String.IsNullOrEmpty(dsrRole) ? "dsr" : GetUserRole(csProfile.Email),
                 UserCustomers = userCustomers,
-				IsDSR = !string.IsNullOrEmpty(dsrRole),
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }

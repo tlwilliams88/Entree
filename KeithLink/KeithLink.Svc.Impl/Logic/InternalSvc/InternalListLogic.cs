@@ -397,12 +397,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-				ReadListForCustomer(user, catalogInfo, headerOnly);
+				list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
             if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
-				ReadListForCustomer(user, catalogInfo, headerOnly);
+				list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
  
             if (headerOnly)
