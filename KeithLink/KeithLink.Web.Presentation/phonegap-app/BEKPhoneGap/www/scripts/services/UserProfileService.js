@@ -12,7 +12,7 @@ angular.module('bekApp')
 
     var Service = {
       getProfile: function(email) {
-        var data = { 
+        var data = {
           params: {
             email: email
           }
@@ -35,16 +35,24 @@ angular.module('bekApp')
 
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
-          if (profile.rolename === 'guest') { 
-            LocalStorage.setBranchId(profile.branchid);
-            LocalStorage.setCurrentLocation(profile.branchid);
+          if (profile.rolename === 'guest') {
+            LocalStorage.setSelectedBranchInfo(profile.branchid);
           } else {
-            var currentLocation = profile.user_customers[0];
-            LocalStorage.setCurrentLocation(currentLocation.customerNumber);
-            LocalStorage.setBranchId(currentLocation.customerBranch);
-            LocalStorage.setCustomerNumber(currentLocation.customerNumber);
+            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
           }
           return profile;
+        });
+      },
+
+      getUserProfile: function(email) {
+        var data = {
+          params: {
+            email: email
+          }
+        };
+
+        return $http.get('/profile', data).then(function(response){
+          return response.data.userProfiles[0];
         });
       },
 
@@ -54,7 +62,7 @@ angular.module('bekApp')
         $http.get('/profile/users', params).then(function(response) {
           var data = response.data;
           if (data.successResponse) {
-            deferred.resolve(data.successResponse.users);
+            deferred.resolve(data.successResponse.userProfiles);
           } else {
             deferred.reject(data.errorMessage);
           }
@@ -80,16 +88,33 @@ angular.module('bekApp')
       updateUser: function(userProfile) {
         var deferred = $q.defer();
 
-        $http.put('/profile/user', userProfile).then(function(response) {
+        $http.put('/profile', userProfile).then(function(response) {
 
           var data = response.data;
 
           if (data.successResponse) {
             var profile = data.successResponse.userProfiles[0];
-            // profile.role = 'Owner';
             $log.debug(profile);
             LocalStorage.setProfile(profile);
-            deferred.resolve(profile);  
+            deferred.resolve(profile);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
+        });
+        return deferred.promise;
+      },
+
+      updateProfile: function(userProfile) {
+        var deferred = $q.defer();
+
+        $http.put('/profile', userProfile).then(function(response) {
+
+          var data = response.data;
+
+          if (data.successResponse) {
+            var profile = data.successResponse.userProfiles[0];
+            $log.debug(profile);
+            deferred.resolve(profile);
           } else {
             deferred.reject(data.errorMessage);
           }

@@ -11,10 +11,12 @@
 @import 'scaffolding/utilities';
 @import 'scaffolding/typography';
 @import 'scaffolding/alignment';
+@import 'scaffolding/responsive-spacing';
 
 // mixins
 @import 'mixins/mixins';
 @import 'mixins/arrows';
+@import 'mixins/scroll-div';
 
 // components
 @import 'components/table';
@@ -34,6 +36,7 @@
 @import 'components/sidebar-mobile';
 @import 'components/user-bar';
 @import 'components/page-header-bar';
+@import 'components/modal';
 
 // pages
 @import 'pages/home';
@@ -47,3 +50,5 @@
 @import 'pages/orders';
 @import 'pages/cart';
 @import 'pages/admin';
+@import 'pages/invoice';
+@import 'pages/notifications';

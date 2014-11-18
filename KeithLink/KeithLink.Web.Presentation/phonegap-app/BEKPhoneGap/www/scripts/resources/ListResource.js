@@ -26,12 +26,12 @@ angular.module('bekApp')
 
       // postData is the item
       updateItem: {
-        url: '/list/:listId/item',
+        url: '/list/item',
         method: 'PUT'
       },
 
       deleteItem: {
-        url: '/list/:listId/item/:listItemId',
+        url: '/list/item/:listItemId',
         method: 'DELETE'
       },
 
@@ -41,7 +41,24 @@ angular.module('bekApp')
         method: 'POST'
       },
 
+      getReminderList: {
+        url: '/list/reminders',
+        method: 'GET',
+        isArray: true
+      },
+
+      copyList: {
+        url: '/list/copy',
+        method: 'POST'
+      },
+
+      shareList: {
+        url: '/list/share',
+        method: 'POST'
+      }
+
       // postData is an array of listitemids as strings
+      // NOTE $resource does not accept deletes with payloads
       // deleteMultipleItems: {
       //   url: '/list/:listId/item',
       //   method: 'DELETE'

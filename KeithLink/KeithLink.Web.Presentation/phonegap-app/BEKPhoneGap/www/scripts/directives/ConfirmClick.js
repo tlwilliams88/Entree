@@ -13,11 +13,29 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     link: function (scope, element, attr) {
-      var clickAction = attr.confirmedClick;
+      var clickAction = attr.confirmedClick,
+        cancelAction = attr.cancelClick;
       element.bind('click',function (event) {
-        var msg = event.target.parentElement.attributes['ng-confirm-click'].value || 'Are you sure?';
+
+        var msg;
+        if (event.target.attributes['ng-confirm-click']) {
+          msg = event.target.attributes['ng-confirm-click'].value;
+        }
+        if (!msg && event.target.parentElement.attributes['ng-confirm-click']) {
+          msg = event.target.parentElement.attributes['ng-confirm-click'].value;
+        }
+        if (!msg) {
+          msg = 'Are you sure?';
+        }
+
         if ( window.confirm(msg) ) {
+          // ok
           scope.$eval(clickAction);
+        } else {
+          // cancel
+          if (cancelAction) {
+            scope.$eval(cancelAction);
+          }
         }
       });
     }

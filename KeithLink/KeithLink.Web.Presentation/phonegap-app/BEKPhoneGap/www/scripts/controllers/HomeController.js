@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$state', 'CartService', 'OrderService', 
-    function($scope, $state, CartService, OrderService) {
+  .controller('HomeController', [ '$scope', '$state', '$modal', 'CartService', 'OrderService', 'MarketingService',
+    function($scope, $state, $modal, CartService, OrderService, MarketingService) {
     
     $scope.myInterval = -1;
 
@@ -19,28 +19,31 @@ angular.module('bekApp')
       $scope.loadingOrders = false;
     });
 
+    $scope.loadingPromoItems = true;
+
+    MarketingService.getPromoItems().then(function(items) {
+      console.log(items);
+      $scope.promoItems = items;
+      $scope.loadingPromoItems = false;
+    })
+ 
     $scope.createNewCart = function() {
-      return CartService.createCart().then(function(cart) {
-        $state.go('menu.cart.items', {cartId: cart.id, renameCart: true});
+      return CartService.createCart().then(function(cartId) {
+        CartService.setActiveCart(cartId);
+        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
       });
     };
 
-    var items = $scope.items = [{
-      id: 1,
-      imageUrl: 'images/demoimage1.jpg',
-      name: '50% off of apples!'
-    },{
-      id: 1,
-      imageUrl: 'images/demoimage2.jpg',
-      name: '50% off of apples!'
-    },{
-      id: 1,
-      imageUrl: 'images/demoimage3.jpg',
-      name: '50% off of apples!'
-    },{
-      id: 1,
-      imageUrl: 'images/demoimage4.jpg',
-      name: '50% off of apples!'
-    }];
+    $scope.showPromoItemContent = function(promoItem) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/promoitemcontentmodal.html',
+        controller: 'PromoItemContentModalController',
+        resolve: {
+          promoItem: function() {
+            return promoItem;
+          }
+        }
+      });
+    };
 
   }]);
