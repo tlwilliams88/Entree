@@ -410,7 +410,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsContractList = l.Type == ListType.Contract, 
 					IsFavorite = l.Type == ListType.Favorite, 
 					IsWorksheet = l.Type == ListType.Worksheet, 
-					IsReminder = l.Type == ListType.Reminder, 
+					IsReminder = l.Type == ListType.Reminder,
+ 					IsMandatory = l.Type == ListType.Mandatory,
 					ReadOnly = l.ReadOnly,
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
