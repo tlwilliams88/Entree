@@ -9,6 +9,7 @@ using System.ServiceModel;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.InternalSvc.Interfaces
 {
@@ -36,5 +37,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
         [OperationContract]
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
+		[OperationContract]
+		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
     }
 }

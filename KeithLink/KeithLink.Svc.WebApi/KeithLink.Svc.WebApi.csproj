@@ -236,6 +236,9 @@
     <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
     <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
