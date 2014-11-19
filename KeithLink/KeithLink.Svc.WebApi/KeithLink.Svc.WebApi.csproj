@@ -256,6 +256,12 @@
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
     <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />

@@ -30,9 +30,9 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
         
-        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool returnAllItems = false);
+        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 		
-		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool returnAllItems = false);
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
         
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
         
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
         List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
 
-        List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false);
+        List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
 
         void UpdateItem(ListItemModel item);
 		

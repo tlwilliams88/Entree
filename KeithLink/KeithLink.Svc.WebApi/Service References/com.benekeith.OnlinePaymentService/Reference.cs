@@ -15,6 +15,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="com.benekeith.OnlinePaymentService.IOnlinePaymentService")]
     public interface IOnlinePaymentService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/DeleteInvoice", ReplyAction="http://tempuri.org/IOnlinePaymentService/DeleteInvoiceResponse")]
+        void DeleteInvoice(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/DeleteInvoice", ReplyAction="http://tempuri.org/IOnlinePaymentService/DeleteInvoiceResponse")]
+        System.Threading.Tasks.Task DeleteInvoiceAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetAllBankAccounts", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetAllBankAccountsResponse")]
         KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank[] GetAllBankAccounts(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
         
@@ -26,6 +32,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetBankAccount", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetBankAccountResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank> GetBankAccountAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string accountNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactions", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactionsResponse")]
+        KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetInvoiceTransactions(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactions", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactionsResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetInvoiceTransactionsAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse")]
+        KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetOpenInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -55,6 +73,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
                 base(binding, remoteAddress) {
         }
         
+        public void DeleteInvoice(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber) {
+            base.Channel.DeleteInvoice(userContext, invoiceNumber);
+        }
+        
+        public System.Threading.Tasks.Task DeleteInvoiceAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber) {
+            return base.Channel.DeleteInvoiceAsync(userContext, invoiceNumber);
+        }
+        
         public KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank[] GetAllBankAccounts(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
             return base.Channel.GetAllBankAccounts(userContext);
         }
@@ -69,6 +95,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank> GetBankAccountAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string accountNumber) {
             return base.Channel.GetBankAccountAsync(userContext, accountNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetInvoiceTransactions(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber) {
+            return base.Channel.GetInvoiceTransactions(userContext, invoiceNumber);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetInvoiceTransactionsAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber) {
+            return base.Channel.GetInvoiceTransactionsAsync(userContext, invoiceNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetOpenInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
+            return base.Channel.GetOpenInvoiceHeaders(userContext);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
+            return base.Channel.GetOpenInvoiceHeadersAsync(userContext);
         }
     }
 }
