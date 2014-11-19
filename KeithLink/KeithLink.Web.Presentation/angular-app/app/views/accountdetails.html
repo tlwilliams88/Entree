@@ -24,21 +24,21 @@
     <form name="updateProfileForm" class="style-validation-errors form-horizontal" role="form">
       <p class="text-red">{{updateProfileErrorMessage}}</p>
 
-      <div class="form-group form-group-lg">
+      <div class="form-group">
         <label for="firstName" class="col-md-2 control-label">First Name</label>
 
         <div class="col-md-4">
-          <input type="text" class="form-control form-control-lg" id="firstName" name="firstName"
+          <input type="text" class="form-control" id="firstName" name="firstName"
                  ng-model="userProfile.firstname">
         </div>
         <label for="lastName" class="col-md-2 control-label">Last Name</label>
 
         <div class="col-md-4">
-          <input type="text" class="form-control form-control-lg" id="lastName" name="lastName"
+          <input type="text" class="form-control" id="lastName" name="lastName"
                  ng-model="userProfile.lastname">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="emailAddress" class="col-md-2 control-label">Email</label>
 
         <div class="col-md-10">
@@ -50,7 +50,7 @@
                  ng-model="userProfile.emailaddress">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
 
         <div class="col-md-4">
@@ -58,7 +58,7 @@
                  ng-model="userProfile.phonenumber">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="branch" class="col-md-2 control-label">Division</label>
 
         <div class="col-md-6">
@@ -69,7 +69,7 @@
           <!-- </div> -->
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group">
         <div class="col-md-offset-2 col-md-6 button-row">
           <button class="btn-lg btn btn-primary" ng-disabled="updateProfileForm.$invalid || updateProfileForm.$pristine"
                   ng-click="updateUserProfile(userProfile)">Update Profile
@@ -87,7 +87,7 @@
     <p ng-if="changePasswordErrorMessage" class="text-red">{{changePasswordErrorMessage}}</p>
 
     <form name="changePasswordForm" class="style-validation-errors form-horizontal" role="form">
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="originalPassword" class="col-md-4 control-label">Old Password</label>
 
         <div class="col-md-8">
@@ -98,7 +98,7 @@
                  name="originalPassword" ng-model="changePasswordData.originalpassword">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="newPassword" class="col-md-4 control-label">New Password</label>
 
         <div class="col-md-8">
@@ -111,7 +111,7 @@
                  validate-password ng-model="changePasswordData.newpassword">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <label for="confirmPassword" class="col-md-4 control-label">Confirm Password</label>
 
         <div class="col-md-8">
@@ -122,11 +122,11 @@
             ng-show="changePasswordForm.confirmPassword.$error.matchInput && changePasswordForm.confirmPassword.$dirty"
             class="text-red">Passwords do not match</span>
           <input type="password" class="form-control form-control-lg" name="confirmPassword" id="confirmPassword"
-                 required match-input="changePasswordData.newpassword" id="confirmPassword"
+                 required match-input="changePasswordData.newpassword"
                  ng-model="changePasswordData.confirmNewpassword">
         </div>
       </div>
-      <div class="form-group form-group-lg">
+      <div class="form-group ">
         <div class="col-md-offset-4 col-md-8">
           <button ng-disabled="changePasswordForm.$invalid || changePasswordForm.$pristine"
                   ng-click="changePassword(changePasswordData)" type="submit" class="btn-lg btn btn-primary">Change

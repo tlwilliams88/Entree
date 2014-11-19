@@ -31,7 +31,7 @@
   </div>
 
   <h2>Customer Notification Preferences &nbsp;&nbsp;&nbsp;<a class="smallerHeaderLinkText" ng-init="canEditNotifications = false" ng-click="canEditNotifications = !canEditNotifications"><span class="glyphicon glyphicon-pencil"></span> Edit Notifications</a></h2>
-  <form ng-submit="saveChanges()" class="form-horizontal">
+  <form ng-submit="savePreferences()" class="form-horizontal">
     <table class="preferencesTable">
       <thead>
         <tr>
@@ -42,29 +42,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="webOrderConfirmed" ng-disabled="!canEditNotifications"/></td>
-          <td>My Order Is Confirmed</td>
-        </tr>
-        <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailOrderShipped" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushOrderShipped" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="webOrderShipped" ng-disabled="!canEditNotifications"/></td>
-          <td>My Order Has Shipped</td>
-        </tr>
-        <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailInvoice" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushInvoice" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="webInvoice" ng-disabled="!canEditNotifications"/></td>
-          <td>My Invoices Need Attention</td>
-        </tr>
-        <tr>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="emailNews" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="pushNews" ng-disabled="!canEditNotifications"/></td>
-          <td class="checkboxCenter"><input type="checkbox" ng-checked="webNews" ng-disabled="!canEditNotifications"/></td>
-          <td>Ben E. Keith Has News For Me</td>
+        <tr ng-repeat="preference in defaultPreferences">
+          <td ng-repeat="channel in preference.channels track by $index" class="checkboxCenter">
+            <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
+          </td>
+          <td>{{preference.description}}</td>
         </tr>
       </tbody>
     </table>

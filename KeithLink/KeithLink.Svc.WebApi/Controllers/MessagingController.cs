@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.IO;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -29,28 +30,28 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [HttpGet]
         [ApiKeyedRoute("usermessages/")]
-        public List<UserMessageModel> usermessages()
+		public PagedResults<UserMessageModel> usermessages([FromUri] PagingModel paging)
         {
-            return messagingServiceRepository.ReadUserMessages(this.AuthenticatedUser);
+            return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 
         [HttpPut]
         [ApiKeyedRoute("usermessages/markasread")]
-        public void Put(List<UserMessageModel> updatedUserMessages)
+        public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
         {
             messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
         }
 
         [HttpGet]
         [ApiKeyedRoute("usermessages/unreadcount")]
-        public int unreadmessagescount()
+        public int ReadUnreadMessageCount()
         {
             return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser);
         }
 
         [HttpPut]
         [ApiKeyedRoute("messagingpreferences/")]
-        public Models.OperationReturnModel<bool> Put(ProfileMessagingPreferenceModel messagingPreferenceModel)
+        public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
             messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();

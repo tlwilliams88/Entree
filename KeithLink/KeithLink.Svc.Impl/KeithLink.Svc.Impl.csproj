@@ -359,6 +359,14 @@
     <Compile Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.Designer.cs">
       <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.cs" />
+    <Compile Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.Designer.cs">
+      <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.cs" />
+    <Compile Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.Designer.cs">
+      <DependentUpon>201411191433209_Remove_ListitemStatus.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -802,6 +810,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411152310219_CMS v1 20141113.resx">
       <DependentUpon>201411152310219_CMS v1 20141113.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.resx">
+      <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.resx">
+      <DependentUpon>201411191433209_Remove_ListitemStatus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

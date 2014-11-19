@@ -13,16 +13,92 @@
   <wsdl:message name="IContentManagementService_CreateContentItem_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateContentItemResponse" />
   </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadActiveContentItemsByBranch_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadActiveContentItemsByBranch" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadActiveContentItemsByBranch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadActiveContentItemsByBranchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadContentItemsByBranch_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadContentItemsByBranch" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadContentItemsByBranch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadContentItemsByBranchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_DeleteContentItemById_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteContentItemById" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_DeleteContentItemById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteContentItemByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadContentItemById_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadContentItemById" />
+  </wsdl:message>
+  <wsdl:message name="IContentManagementService_ReadContentItemById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadContentItemByIdResponse" />
+  </wsdl:message>
   <wsdl:portType name="IContentManagementService">
     <wsdl:operation name="CreateContentItem">
       <wsdl:input wsaw:Action="http://tempuri.org/IContentManagementService/CreateContentItem" message="tns:IContentManagementService_CreateContentItem_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IContentManagementService/CreateContentItemResponse" message="tns:IContentManagementService_CreateContentItem_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadActiveContentItemsByBranch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranch" message="tns:IContentManagementService_ReadActiveContentItemsByBranch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranchResponse" message="tns:IContentManagementService_ReadActiveContentItemsByBranch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadContentItemsByBranch">
+      <wsdl:input wsaw:Action="http://tempuri.org/IContentManagementService/ReadContentItemsByBranch" message="tns:IContentManagementService_ReadContentItemsByBranch_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IContentManagementService/ReadContentItemsByBranchResponse" message="tns:IContentManagementService_ReadContentItemsByBranch_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteContentItemById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IContentManagementService/DeleteContentItemById" message="tns:IContentManagementService_DeleteContentItemById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IContentManagementService/DeleteContentItemByIdResponse" message="tns:IContentManagementService_DeleteContentItemById_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadContentItemById">
+      <wsdl:input wsaw:Action="http://tempuri.org/IContentManagementService/ReadContentItemById" message="tns:IContentManagementService_ReadContentItemById_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IContentManagementService/ReadContentItemByIdResponse" message="tns:IContentManagementService_ReadContentItemById_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IContentManagementService" type="tns:IContentManagementService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="CreateContentItem">
       <soap:operation soapAction="http://tempuri.org/IContentManagementService/CreateContentItem" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadActiveContentItemsByBranch">
+      <soap:operation soapAction="http://tempuri.org/IContentManagementService/ReadActiveContentItemsByBranch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadContentItemsByBranch">
+      <soap:operation soapAction="http://tempuri.org/IContentManagementService/ReadContentItemsByBranch" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteContentItemById">
+      <soap:operation soapAction="http://tempuri.org/IContentManagementService/DeleteContentItemById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadContentItemById">
+      <soap:operation soapAction="http://tempuri.org/IContentManagementService/ReadContentItemById" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

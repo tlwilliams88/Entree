@@ -37,7 +37,7 @@ angular.module('bekApp')
       },
 
       isBekAdmin: function() {
-        return false;
+        return ( LocalStorage.getProfile().isdsr );
       },
 
       isCustomerAdmin: function() {

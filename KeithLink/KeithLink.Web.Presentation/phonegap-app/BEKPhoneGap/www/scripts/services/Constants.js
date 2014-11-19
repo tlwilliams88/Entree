@@ -6,10 +6,10 @@ angular.module('bekApp')
     localStorage : {
       userProfile: 'userProfile',
       userToken: 'userToken',
-      currentLocation: 'currentLocation',
       branchId: 'branchId',
       customerNumber: 'customerNumber',
-      leadGenInfo: 'leadGenInfo'
+      leadGenInfo: 'leadGenInfo',
+      currentCustomer: 'currentCustomer'
     },
 
     servicelocatorUrl: '../servicelocator',

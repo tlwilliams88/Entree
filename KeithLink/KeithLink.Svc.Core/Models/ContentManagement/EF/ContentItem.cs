@@ -33,6 +33,9 @@ namespace KeithLink.Svc.Core.Models.ContentManagement.EF
         [MaxLength(1024)]
         public string Content { get; set; }
 
+        [MaxLength(24)]
+        public string ProductId { get; set; }
+
         public bool IsContentHtml { get; set; }
         public DateTime ActiveDateStart { get; set; }
         public DateTime ActiveDateEnd { get; set; }

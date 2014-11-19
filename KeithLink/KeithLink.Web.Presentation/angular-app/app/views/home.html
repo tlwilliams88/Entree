@@ -17,7 +17,7 @@
       <h4><strong>Account Balance</strong></h4>
       
       <p class="text-red currency-value">
-          {{selectedUserContext.currentbalance || 0 | currency}}
+        {{selectedUserContext.currentbalance || 0 | currency}}
       </p>
       
       <p class="">Your Terms: {{selectedUserContext.termdescription || 'N/A'}}</p>
@@ -159,13 +159,34 @@
   <div class="col-md-8 col-xs-12">
     <h3>Latest From Ben E. Keith</h3>
     <div class="row">
+
+      <div ng-hide="promoItems || promoItems.length > 0 || loadingPromoItems"></div>
+
       <div class="col-sm-12 hidden-xs hidden-sm">
-        <div ng-repeat="item in items">
+        <div ng-repeat="item in promoItems">
           <div class="featured-item text-center">
-            <img ng-src="{{item.imageUrl}}" alt="image">
+            <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
             <div class="featured-item__detail">
-              {{item.name}}
-              <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">view details</a>
+              {{item.tagline}}
+              <a 
+                ng-if="item.targeturl" 
+                ng-href="{{item.targeturl}}" 
+                class="text-uppercase">
+                {{item.targeturltext}}
+              </a>
+              <a 
+                ng-if="item.productid" 
+                ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
+                target="_blank" 
+                class="text-uppercase">
+                {{item.targeturltext}}
+              </a>
+              <a 
+                ng-if="!item.targeturl && !item.productid && item.content" 
+                ng-click="showPromoItemContent(item)"
+                class="text-uppercase">
+                {{item.targeturltext}}
+              </a>
             </div>
           </div>
         </div>
@@ -174,13 +195,31 @@
       <div class="col-xs-12">
         <div class="featured-item-mobile visible-xs visible-sm">
           <carousel interval="myInterval" disable-ng-animate>
-            <slide ng-repeat="item in items track by $index" active="item.active">
-              <div ng-show="item.imageUrl" class="col-xs-4 no-padding text-left">
-                <img ng-src="{{item.imageUrl}}">
+            <slide ng-repeat="item in promoItems track by $index" active="item.active">
+              <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
+                <img ng-src="{{item.imageurl}}" alt="image">
               </div>
               <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                {{item.name}}<br />
-                <a ui-sref="menu.catalog.products.details({ itemId : item.id })" class="text-uppercase">View Details</a>
+                {{item.tagline}}<br />
+                <a 
+                  ng-if="item.targeturl" 
+                  ng-href="{{item.targeturl}}" 
+                  class="text-uppercase">
+                  {{item.targeturltext}}
+                </a>
+                <a 
+                  ng-if="item.productid" 
+                  ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
+                  target="_blank" 
+                  class="text-uppercase">
+                  {{item.targeturltext}}
+                </a>
+                <a 
+                  ng-if="!item.targeturl && !item.productid && item.content" 
+                  ng-click="showPromoItemContent(item)"
+                  class="text-uppercase">
+                  {{item.targeturltext}}
+                </a>
               </div>
             </slide>
           </carousel>

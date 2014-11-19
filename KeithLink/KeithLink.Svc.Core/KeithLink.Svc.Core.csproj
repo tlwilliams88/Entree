@@ -319,6 +319,8 @@
     <Compile Include="Models\Orders\OrderHistoryUpdateModel.cs" />
     <Compile Include="Models\Orders\OrderImportModel.cs" />
     <Compile Include="Models\Orders\OrderImportOptions.cs" />
+    <Compile Include="Models\Paging\PagedResults.cs" />
+    <Compile Include="Models\Paging\PagingModel.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />

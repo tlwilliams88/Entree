@@ -11,12 +11,15 @@
   <xs:complexType name="Invoice">
     <xs:sequence>
       <xs:element minOccurs="0" name="amount" type="xs:decimal" />
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="duedate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="id" type="xs:long" />
       <xs:element minOccurs="0" name="invoicedate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ispayable" type="xs:boolean" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfInvoiceItem" />
+      <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
       <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q1:InvoiceStatus" />
       <xs:element minOccurs="0" name="statusdescription" nillable="true" type="xs:string" />

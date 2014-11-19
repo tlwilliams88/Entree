@@ -24,9 +24,8 @@
     <![endif]-->
 
     <toaster-container></toaster-container>
-    
-    <div ui-view="" class="container-fluid">
-    </div>
+
+    <div ui-view="" class="container-fluid"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -47,6 +46,7 @@
     <script src="lib/respondjs/respond.min.js"></script>
     <script src="lib/respondjs/respond.matchmedia.addListener.min.js"></script>
     <script src="lib/angular-ui-utils/ui-utils-ieshiv.js"></script>
+    <script src="lib/angular-file-upload/angular-file-upload-shim.js"></script>
     <script>
         document.createElement('tabset');
         document.createElement('tab');
@@ -62,11 +62,13 @@
     <script src="lib/angular/angular.js"></script>
     <script src="lib/json3/lib/json3.js"></script>
     <script src="lib/angular-resource/angular-resource.js"></script>
+    <script src="lib/angular-sanitize/angular-sanitize.js"></script>
+    <script src="lib/angular-cookies/angular-cookies.js"></script>
     <script src="lib/angular-cookies/angular-cookies.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-touch/angular-touch.js"></script>
     <script src="lib/angular-ui-router/angular-ui-router.js"></script>
-    <script src="lib/angular-ui-bootstrap/ui-bootstrap-tpls-0.11.2.js"></script>
+    <script src="lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="lib/angular-local-storage/angular-local-storage.js"></script>
     <script src="lib/ng-mobile-menu/ng-mobile-menu.js"></script>
     <script src="lib/angular-dragdrop/angular-dragdrop.js"></script>
@@ -75,8 +77,10 @@
     <script src="lib/angular-unsavedChanges/unsavedChanges.js"></script>
     <script src="lib/angular-toaster/toaster.js"></script>
     <script src="lib/angular-loading-bar/loading-bar.js"></script>
-
-        <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script src="lib/angular-file-upload/angular-file-upload.js"></script>
+    <script src="lib/angular-fcsa-number/fcsaNumber.js"></script>
+    <script src="lib/angular-base64-upload/angular-base64-upload.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
 
     <script>
@@ -90,7 +94,7 @@
      <script id="template/carousel/carousel.html" type="text/ng-template">
       <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
         <ol class="carousel-paging" ng-show="slides.length > 1">
-            <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
+          <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
         </ol>
         <div class="carousel-inner" ng-transclude></div>
         <a class="left carousel-control" ng-click="prev()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-left"></span></a>
@@ -110,25 +114,34 @@
     <script type="text/javascript" src="scripts/controllers/SearchController.js"></script>
     <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AccountDetailsController.js"></script>
-    <script type="text/javascript" src="scripts/controllers/CartController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CartItemsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/AddToOrderController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ContextMenuModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/PromoItemContentModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ReplicateListModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/NotificationDetailsModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/TechnicalSupportModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ImportModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ItemNotesModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/OrderController.js"></script>
     <script type="text/javascript" src="scripts/controllers/OrderItemsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/InvoiceController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/InvoiceItemsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/NotificationsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/AccountDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/AccountsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomersController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/EditUserDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/AddUserDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/UsersController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/admin/AccountAdminController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
     <script type="text/javascript" src="scripts/directives/PageHeaderBar.js"></script>
     <script type="text/javascript" src="scripts/directives/ConfirmClick.js"></script>
     <script type="text/javascript" src="scripts/directives/ContextMenu.js"></script>
+    <script type="text/javascript" src="scripts/directives/ContextMenuTemplate.js"></script>
     <script type="text/javascript" src="scripts/directives/FavoriteIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/FavoriteItemClickHandlers.js"></script>
     <script type="text/javascript" src="scripts/directives/AllowOnePositiveDecimal.js"></script>
@@ -144,6 +157,7 @@
     <script type="text/javascript" src="scripts/directives/Counter.js"></script>
     <script type="text/javascript" src="scripts/directives/OrderCutoffDate.js"></script>
     <script type="text/javascript" src="scripts/directives/DisableNgAnimate.js"></script>
+    <script type="text/javascript" src="scripts/directives/MandatoryItemsCheck.js"></script>
     <script type="text/javascript" src="scripts/services/Constants.js"></script>
     <script type="text/javascript" src="scripts/services/AccessService.js"></script>
     <script type="text/javascript" src="scripts/services/AuthenticationService.js"></script>
@@ -160,16 +174,27 @@
     <script type="text/javascript" src="scripts/services/LocalStorage.js"></script>
     <script type="text/javascript" src="scripts/services/CustomerService.js"></script>
     <script type="text/javascript" src="scripts/services/AccountService.js"></script>
+    <script type="text/javascript" src="scripts/services/ResolveService.js"></script>
+    <script type="text/javascript" src="scripts/services/InvoiceService.js"></script>
+    <script type="text/javascript" src="scripts/services/NotificationService.js"></script>
+    <script type="text/javascript" src="scripts/services/BankAccountService.js"></script>
+    <script type="text/javascript" src="scripts/services/MarketingService.js"></script>
+    <script type="text/javascript" src="scripts/services/MessagePreferenceService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/InvoiceResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
     <script type="text/javascript" src="scripts/resources/RecentlyViewedItemResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ItemNotesResource.js"></script>
     <script type="text/javascript" src="scripts/resources/OrderResource.js"></script>
     <script type="text/javascript" src="scripts/resources/CustomerResource.js"></script>
     <script type="text/javascript" src="scripts/resources/AccountResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
+    <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
-
-        <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
+    <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>

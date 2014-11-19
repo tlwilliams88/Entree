@@ -10,25 +10,29 @@
  */
 angular
   .module('bekApp', [
-    'ngAnimate',
+    // 'ngAnimate',
     // 'ngCookies',
     'ngResource',
+    'ngSanitize',
     'ngTouch',
-    'LocalStorageModule',
+    'LocalStorageModule', // HTML5 local storage
     'ui.router',
     'ui.bootstrap',
-    'ui.sortable',
-    'shoppinpal.mobile-menu',
-    'ngDragDrop',
+    'ui.sortable', // jquery ui list sorting (used on lists page)
+    'shoppinpal.mobile-menu', // mobile sidebar menu
+    'ngDragDrop', // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
-    'unsavedChanges',
-    'toaster',
-    'angular-loading-bar',
+    'unsavedChanges', // throws warning to user when navigating away from an unsaved form
+    'toaster', // user notification messages
+    'angular-loading-bar', // loading indicator in the upper left corner
+    'angularFileUpload', // csv file uploads for lists and orders
+    'naif.base64', // base64 file uploads for images
+    'fcsa-number',
     'configenv'
   ])
-.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
-  function($stateProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
-  
+.config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+  function($stateProvider, $compileProvider, $tooltipProvider, $urlRouterProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
 
@@ -51,9 +55,11 @@ angular
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
+        // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
         }]
+        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home
@@ -75,6 +81,19 @@ angular
       resolve: {
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
+        }]
+      }
+    })
+    .state('menu.notifications', {
+      url: '/notifications/',
+      templateUrl: 'views/notifications.html',
+      controller: 'NotificationsController',
+      data: {
+        authorize: 'isLoggedIn'
+      },
+      resolve: {
+        notifications: ['NotificationService', function(NotificationService) {
+          return NotificationService.getAllMessages();
         }]
       }
     })
@@ -122,7 +141,9 @@ angular
       }
     })
 
-
+    /**********
+    LISTS
+    **********/
     .state('menu.lists', {
       url: '/lists/',
       abstract: true,
@@ -131,14 +152,11 @@ angular
         authorize: 'canManageLists'
       },
       resolve: {
-        lists: ['$q', 'ListService', function ($q, ListService) {
-          return $q.all([
-            ListService.getAllLists(),
-            ListService.getAllLabels()
-          ]);
+        lists: ['ListService', function (ListService) {
+          return ListService.getListHeaders();
         }],
-        carts: ['CartService', function(CartService) {
-          return CartService.getCartHeaders();
+        labels: ['ListService', function(ListService) {
+          return ListService.getAllLabels();
         }]
       }
     })
@@ -148,20 +166,35 @@ angular
       controller: 'ListController',
       data: {
         authorize: 'canManageLists'
+      },
+      resolve: {
+        originalList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.selectDefaultList($stateParams.listId);
+        }]
       }
     })
+
+    /**********
+    CART
+    **********/
     .state('menu.cart', {
       url: '/cart/',
-      templateUrl: 'views/cart.html',
-      controller: 'CartController',
+      abstract: true,
+      template: '<ui-view/>',
       data: {
         authorize: 'canCreateOrders'
       },
       resolve: {
         carts: ['CartService', function (CartService){
-          return CartService.getAllCarts();
+          return CartService.getCartHeaders();
         }],
-        shipDates: ['CartService', function (CartService){
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
+        }],
+        criticalItemsLists: ['ListService', function(ListService) {
+          return ListService.getCriticalItemsLists();
+        }],
+        shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
         }]
       }
@@ -172,8 +205,22 @@ angular
       controller: 'CartItemsController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+          if (selectedBasket) {
+            return selectedBasket;
+          } else {
+            $state.go('menu.home');
+          }
+        }]
       }
     })
+
+    /**********
+    ADD TO ORDER
+    **********/
     .state('menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
@@ -183,10 +230,13 @@ angular
       },
       resolve: {
         lists: ['ListService', function (ListService){
-          return ListService.getAllLists();
+          return ListService.getListHeaders();
         }],
         carts: ['CartService', function(CartService) {
-          return CartService.getAllCarts();
+          return CartService.getCartHeaders();
+        }],
+        changeOrders: ['OrderService', function(OrderService) {
+          return OrderService.getChangeOrders();
         }],
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
@@ -199,8 +249,25 @@ angular
       controller: 'AddToOrderController',
       data: {
         authorize: 'canCreateOrders'
+      },
+      resolve: {
+        selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.selectDefaultList($stateParams.listId);
+        }],
+        selectedCart: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
+          if (selectedBasket) {
+            return selectedBasket;
+          } else {
+            $state.go('menu.home');
+          }
+        }]
       }
     })
+
+    /**********
+    ORDER HISTORY
+    **********/
     .state('menu.order', {
       url: '/orders/',
       templateUrl: 'views/order.html',
@@ -215,7 +282,7 @@ angular
       }
     })
     .state('menu.orderitems', {
-      url: '/orders/:orderNumber/',
+      url: '/order/:orderNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
@@ -225,6 +292,56 @@ angular
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
           return OrderService.getOrderDetails($stateParams.orderNumber);
         }]
+      }
+    })
+
+    /**********
+    INVOICE
+    **********/
+    .state('menu.invoice', {
+      url: '/invoices/',
+      templateUrl: 'views/invoice.html',
+      controller: 'InvoiceController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoices: [ 'InvoiceService', function(InvoiceService) {
+          return InvoiceService.getAllInvoices();
+        }],
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
+        }]
+      }
+    })
+    .state('menu.invoiceitems', {
+      url: '/invoice/:invoiceId/',
+      templateUrl: 'views/invoiceitems.html',
+      controller: 'InvoiceItemsController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        }]
+      }
+    })
+
+    /**********
+    MARKETING CMS
+    **********/
+    .state('menu.marketing', {
+      url: '/marketing/',
+      templateUrl: 'views/marketing.html',
+      controller: 'MarketingController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        // }]
       }
     })
 
@@ -250,20 +367,25 @@ angular
       templateUrl: 'views/admin/adduserdetails.html',
       controller: 'AddUserDetailsController'
     })
-    .state('menu.admin.edituser', {
-      url: 'users/:userId/',
-      templateUrl: 'views/admin/edituserdetails.html',
-      controller: 'EditUserDetailsController'
+    .state('menu.admin.accountadmin',{
+      url: 'account/',
+      templateUrl: 'views/admin/accountadmin.html',
+      controller: 'AccountAdminController'
     })
-    .state('menu.admin.customer', {
-      url: 'customers/',
-      templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
+    .state('menu.admin.edituser', {
+      url: 'edituser/:email/',
+      templateUrl: 'views/admin/edituserdetails.html',
+      controller: 'EditUserDetailsController',
       resolve: {
-        customers: [ 'CustomerService', function(CustomerService) {
-          return CustomerService.getCustomers();
+        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
         }]
       }
+    })
+    .state('menu.admin.customer', {
+      url: 'customers/:customerNumber/',
+      templateUrl: 'views/admin/customers.html',
+      controller: 'CustomersController'
     })
     .state('menu.admin.account', {
       url: 'accounts/',
@@ -282,7 +404,7 @@ angular
     });
 
   $stateProvider
-    .state('404', { 
+    .state('404', {
       url: '/404/',
       templateUrl: 'views/404.html'
     });
@@ -291,6 +413,8 @@ angular
   $urlRouterProvider.when('/', '/register');
   $urlRouterProvider.when('/lists', '/lists/1');
   $urlRouterProvider.when('/lists/', '/lists/1');
+  $urlRouterProvider.when('/cart/', '/cart/1');
+  $urlRouterProvider.when('/cart/', '/cart/1');
   $urlRouterProvider.otherwise('/404');
 
   // allow user to access paths with or without trailing slashes
@@ -311,9 +435,17 @@ angular
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
 
+  // group multiple aysnc methods together to only run through one digest cycle
+  $httpProvider.useApplyAsync(true);
+
+  $compileProvider.debugInfoEnabled(false);
+
+  // fix for ngAnimate and ui-bootstrap tooltips
+  $tooltipProvider.options({animation: false});
+
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'PhonegapServices',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, PhonegapServices) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
@@ -334,7 +466,7 @@ angular
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');
-        event.preventDefault(); 
+        event.preventDefault();
       }
     }
 
@@ -342,13 +474,20 @@ angular
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
 
       if ( AccessService.isOrderEntryCustomer() ) {
-        $state.go('menu.home');  
+        $state.go('menu.home');
       } else {
         $state.go('menu.catalog.home');
       }
 
-      event.preventDefault(); 
+      event.preventDefault();
     }
 
   });
+
+  $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    if (AccessService.isOrderEntryCustomer()) {
+      NotificationService.getUnreadMessageCount();
+    }
+  });
+
 }]);

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'ListService', 'CartService', 
-    function ($scope, $modal, item, ProductService, ListService, CartService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService',
+    function ($scope, $modal, item, ProductService) {
     
     var originalItemNotes = item.notes;
 
@@ -17,17 +17,11 @@ angular.module('bekApp')
     $scope.item.quantity = 1;
     
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
-      $scope.item.productimages = item.productimages;
+      $scope.item = item;
+      $scope.item.quantity = 1;
     });
 
     ProductService.saveRecentlyViewedItem(item.itemnumber);
-
-    // TODO: move into context menu controller
-    $scope.lists = ListService.lists;
-    ListService.getListHeaders();
-
-    $scope.carts = CartService.carts;
-    CartService.getCartHeaders();
 
     $scope.canOrderProduct = function(item) {
       return ProductService.canOrderProduct(item);
@@ -36,7 +30,7 @@ angular.module('bekApp')
     $scope.openNotesModal = function (item) {
 
       var modalInstance = $modal.open({
-        templateUrl: 'views/itemnotesmodal.html',
+        templateUrl: 'views/modals/itemnotesmodal.html',
         controller: 'ItemNotesModalController',
         resolve: {
           item: function() {

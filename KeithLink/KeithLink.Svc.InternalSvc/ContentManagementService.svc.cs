@@ -33,5 +33,25 @@ namespace KeithLink.Svc.InternalSvc
                     + contentItem.Base64ImageData + "____");
 		    }
         }
-	}
+
+        public List<ContentItemViewModel> ReadActiveContentItemsByBranch(string branchId, int count)
+        {
+            return internalCmsLogic.ReadActiveContentItemsByBranch(branchId, count);
+        }
+
+        public List<ContentItemViewModel> ReadContentItemsByBranch(string branchId, int count)
+        {
+            return internalCmsLogic.ReadContentItemsByBranch(branchId, count);
+        }
+
+        public void DeleteContentItemById(int itemId)
+        {
+            internalCmsLogic.DeleteContentItemById(itemId);
+        }
+
+        public ContentItemViewModel ReadContentItemById(int itemId)
+        {
+            return internalCmsLogic.ReadContentItemById(itemId);
+        }
+    }
 }

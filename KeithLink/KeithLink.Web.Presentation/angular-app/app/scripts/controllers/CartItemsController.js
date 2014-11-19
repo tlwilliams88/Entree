@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'reminderList', 'mandatoryList',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, reminderList, mandatoryList) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, criticalItemsLists) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -17,12 +17,19 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    $scope.reminderList = reminderList;
-    $scope.mandatoryList = mandatoryList;
+    $scope.reminderList = criticalItemsLists[0];
+    $scope.mandatoryList = criticalItemsLists[1];
     $scope.changeOrders = changeOrders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    // set default selected critical items list
+    if ($scope.mandatoryList) {
+      $scope.mandatoryList.active = true;
+    } else {
+      $scope.reminderList.active = true;
+    }
 
     $scope.goToCart = function(cartId, isChangeOrder) {
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null}).then(function() {
