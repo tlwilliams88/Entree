@@ -5,7 +5,21 @@ angular.module('bekApp')
   function ($resource) {
     return $resource('/usermessages', { }, {
 
-      // defaults: QUERY
+      // defaults: GET
+
+//       "size": 50,
+// "from": 4,
+// "sort": {
+// "sfield": "name",
+// "sdir": "asc"
+// },
+// "filter": [
+// {
+// "ffield": "test",
+// "fvalue": "TestValue"
+// }
+// ]
+// }
 
       markAsRead: {
         url: '/usermessages/markasread',

@@ -18,14 +18,14 @@
 
 <div class="row sub-content">
   <div class="col-xs-12 text-right">
-    Showing {{filteredItems.length}} of {{notifications.length}} Notifications
+    Showing {{filteredItems.length}} of {{totalNotifications}} Notifications
   </div>
 </div>
 
 <div class="row">
   <div class="col-xs-12">
     
-    <table class="table table-striped-rows table-border">
+    <table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()">
       <thead>
         <tr>
           <th class="sort-col-header" ng-click="sortBy='label';sortOrder=!sortOrder">
@@ -72,7 +72,10 @@
         </tr>  -->
         <!-- end Filter Row -->
 
-        <tr ng-repeat="notification in (filteredItems = (notifications | filter:notificationSearchTerm | orderBy:[sortOrder ? '-' : '' + sortBy, '-messagecreatedutc']))" ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
+        <tr 
+          ng-repeat="notification in (filteredItems = (notifications | filter:notificationSearchTerm | orderBy:[sortOrder ? '-' : '' + sortBy, '-messagecreatedutc']))" 
+          ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
+          
           <td>{{notification.label}}</td>
           <td class="hidden-xs hidden-sm">{{notification.customernumber}}</td>
           <td>{{notification.subject}}</td>

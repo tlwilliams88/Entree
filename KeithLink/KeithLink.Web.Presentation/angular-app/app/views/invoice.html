@@ -51,6 +51,7 @@
       </div>
 
       <div class="info-box" ng-if="!hasPayableInvoices">
+        <p>You have no payable invoices at this time.</p>
         <p>Contact your DSR to pay invoices online.</p>
       </div>
     </div>
@@ -126,7 +127,8 @@
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
             </td>
             <td>
-              <a ui-sref="menu.invoiceitems({invoiceId: invoice.id})">{{invoice.invoicenumber}}</a>
+              <a ng-if="isTypeInvoice(invoice)" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
+              <span ng-if="!isTypeInvoice(invoice)">{{invoice.invoicenumber}}</span>
             </td>
             <td>
               {{invoice.typedescription}}

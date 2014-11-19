@@ -8,7 +8,7 @@ angular.module('bekApp')
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
 
-  $scope.hasPayableInvoices = !!($filter('filter')(invoices, { ispayable: true }).length > 0);
+  $scope.hasPayableInvoices = $filter('filter')(invoices, { ispayable: true }).length > 0;
 
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
@@ -45,6 +45,10 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
+  $scope.isTypeInvoice = function(invoice) {
+    return invoice.typedescription === 'IN ';
+  }
+
   //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
   $scope.filterFields = {};
   $scope.setSelectedFilter = function(selectedFilter) {
@@ -61,7 +65,7 @@ angular.module('bekApp')
         item.isSelected = $scope.selectAllPayable;
       }
     });
-  }
+  };
 
   $scope.totalPaymentAmount = function() {
     var total = 0;
