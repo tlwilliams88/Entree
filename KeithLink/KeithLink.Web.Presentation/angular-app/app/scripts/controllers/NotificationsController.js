@@ -34,7 +34,16 @@ angular.module('bekApp')
       }
     }
 
-    $scope.notificationParams.filter = filterList;
+    var firstFilter = filterList[0];
+    filterList.splice(0,1);
+
+    var filterParamObject = {
+      field: firstFilter.field,
+      value: firstFilter.value,
+      filter: filterList
+    };
+
+    $scope.notificationParams.filter = filterParamObject;
 
     // reset paging
     $scope.notificationParams.size = Constants.infiniteScrollPageSize;
@@ -113,13 +122,17 @@ angular.module('bekApp')
     sort: [{
       field: 'messagecreatedutc',
       order: 'desc'
-    }],
-    filter: [
-      // {
-      //   field: 'name',
-      //   value: 'value'
-      // }
-    ]
+    }]
+    // filter: {
+      // field: 'subject',
+      // value: 'value',
+      // filter: [
+      //    {
+      //      field: 'name',
+      //      value: 'value'
+      //    }
+      // ]
+    // }
   };
 
   $scope.notifications = [];
