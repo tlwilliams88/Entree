@@ -28,13 +28,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
-        [HttpGet]
+        [HttpPost]
         [ApiKeyedRoute("usermessages/")]
-		public PagedResults<UserMessageModel> usermessages([FromUri] PagingModel paging)
+		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
         {
             return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
-
+		
         [HttpPut]
         [ApiKeyedRoute("usermessages/markasread")]
         public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)

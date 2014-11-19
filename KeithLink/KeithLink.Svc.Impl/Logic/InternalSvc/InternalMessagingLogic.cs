@@ -377,13 +377,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var userMessages = userMessageRepository.ReadUserMessages(user).ToList();
 
-			var returnValue = new PagedResults<UserMessageModel>();
+			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreatedUtc");
 
-			returnValue.TotalResults = userMessages.Count();
+			//var returnValue = new PagedResults<UserMessageModel>();
 
-			returnValue.Results = userMessages.Select(u => u.ToUserMessageModel()).Skip(paging.From.HasValue ? paging.From.Value : 0).Take(paging.Size.HasValue ? paging.Size.Value : int.MaxValue).ToList();
+			//returnValue.TotalResults = userMessages.Count();
 
-			return returnValue;
+			//returnValue.Results = userMessages.Select(u => u.ToUserMessageModel()).Skip(paging.From.HasValue ? paging.From.Value : 0).Take(paging.Size.HasValue ? paging.Size.Value : int.MaxValue).ToList();
+
+			//return returnValue;
 		}
 	}
 }
