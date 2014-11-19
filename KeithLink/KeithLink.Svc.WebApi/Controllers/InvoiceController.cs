@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Invoices;
+﻿//using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
 using System;
@@ -10,29 +11,29 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class InvoiceController : BaseController
-    {
+    public class InvoiceController : BaseController {
+        #region attributes
+        private readonly IOnlinePaymentServiceRepository _repo;
+        #endregion
 
-		private readonly IInvoiceServiceRepository invoiceServiceRepository;
-
-		public InvoiceController(IUserProfileLogic profileLogic, IInvoiceServiceRepository invoiceServiceRepository): base(profileLogic)
-		{
-			this.invoiceServiceRepository = invoiceServiceRepository;
+        #region ctor
+        #endregion
+        public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository) : base(profileLogic) {
+            _repo = invoiceRepository;
 		}
 
-		[HttpGet]
-		[ApiKeyedRoute("invoice/")]
-		public List<InvoiceModel> invoice()
-		{
-			return invoiceServiceRepository.ReadInvoices(this.AuthenticatedUser, this.SelectedUserContext);
-		}
+        #region methods
+        [HttpGet]
+        [ApiKeyedRoute("invoice/")]
+        public List<InvoiceModel> Invoice() {
+            return _repo.GetOpenInvoiceHeaders(SelectedUserContext);
+        }
 
-		[HttpGet]
-		[ApiKeyedRoute("invoice/{id}")]
-		public InvoiceModel invoice(long id)
-		{
-			return invoiceServiceRepository.ReadInvoice(this.AuthenticatedUser, this.SelectedUserContext, id);
-		}
-
+        [HttpGet]
+        [ApiKeyedRoute("invoice/{invoiceNumber}")]
+        public List<InvoiceModel> InvoiceTransactions(string invoiceNumber) {
+            return _repo.GetInvoiceTransactions(SelectedUserContext, invoiceNumber);
+        }
+        #endregion
     }
 }
