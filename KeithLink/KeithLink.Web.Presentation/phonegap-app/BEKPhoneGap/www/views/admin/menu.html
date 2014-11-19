@@ -1,23 +1,12 @@
-<div page-header-bar>
-  <div header-message>
-    Admin
-  </div>
-  <div header-buttons>
-    
-  </div>
-</div>
-<div class="row page-subheader-bar">
-<div class="col-md-12 page-subheader-bar__container">
-    <div class="page-subheader-bar__message hidden-xs hidden-sm">
-      <ul class="no-margin">
-        <li style="display:inline-block;"><a ui-sref="menu.admin.user">Users</a></li>
-        <li style="display:inline-block;"><a ui-sref="menu.admin.customer">Customers</a></li>
-        <li style="display:inline-block;"><a ui-sref="menu.admin.account">Accounts</a></li>
-        <!-- <li style="display:inline-block;"><a href="">Custom Groups</a></li> -->
-      </ul>
+<div ui-view>
+  <div page-header-bar>
+    <div header-message>
+      Admin
+    </div>
+    <div header-buttons>
     </div>
   </div>
+  <div class="col-md-12 page-subheader-bar__container">
+
+  </div>
 </div>
-
-
-<div class="row" ui-view></div>

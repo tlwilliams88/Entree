@@ -215,13 +215,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
                                                                          Configuration.ActiveDirectoryInternalServerName,
                                                                          Configuration.ActiveDirectoryInternalRootNode,
-                                                                         ContextOptions.Negotiate,
+                                                                         ContextOptions.SimpleBind,
                                                                          Configuration.ActiveDirectoryInternalDomainUserName,
                                                                          Configuration.ActiveDirectoryInternalPassword))
                 {
-                    string domainUserName = string.Format(Configuration.ActiveDirectoryInternalDomain, userName);
 
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, domainUserName);
+					UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName.Split('@')[0]);
 
                     if (user == null)
                         return string.Empty;

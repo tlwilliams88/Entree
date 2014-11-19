@@ -1,7 +1,6 @@
 app.js
 
-, 'PhonegapServices'
-, PhonegapServices
+add PhonegapServices to .run
 
 ------------------------------------------------------------
 
@@ -11,7 +10,7 @@ Change "styles/main.css" to "css/main.css" at top
 
 Remove "ng-app=bekapp" from <body>
 
-Below lib scripts:
+Add these below lib scripts:
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
 
@@ -22,7 +21,7 @@ Below lib scripts:
     });
     </script>
 
-Below resources:
+add these Below resources:
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
@@ -36,7 +35,7 @@ change apiEndpoint to: apiEndpoint:'https://shopqa.benekeith.com/api'
 
 ------------------------------------------------------------
 
-then do:
+then run in terminal:
 compass compile www/scss/main.scss
 
 ------------------------------------------------------------

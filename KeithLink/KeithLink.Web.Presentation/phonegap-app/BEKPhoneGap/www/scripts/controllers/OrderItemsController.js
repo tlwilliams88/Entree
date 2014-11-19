@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$stateParams', 'OrderService', 'order',
-  function ($scope, $stateParams, OrderService, order) {
+.controller('OrderItemsController', ['$scope', '$stateParams', 'order', 'OrderService',
+  function ($scope, $stateParams, order, OrderService) {
 
   $scope.order = order;
-  
+
 }]);

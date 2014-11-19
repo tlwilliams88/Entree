@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'ListService', 'CartService', 'BrandService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, ListService, CartService, BrandService) {
+    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'BrandService',
+        function($scope, $state, $stateParams, ProductService, CategoryService, BrandService) {
             // clear keyword search term at top of the page
             if ($scope.userBar) {
                 $scope.userBar.universalSearchTerm = '';
@@ -40,20 +40,27 @@ angular.module('bekApp')
             $scope.hidden = true;
             $scope.sortField = '';
             $scope.sortDirection = '';
-            $scope.asc = true;
+            $scope.sortReverse = false;
             $scope.paramType = $stateParams.type;
             $scope.categoryName = '';
 
             function getCategoryBySearchName(categorySearchName) {
                 return CategoryService.getCategories().then(function(data) {
                     angular.forEach(data.categories, function(item, index) {
-                        if (item.search_name === categorySearchName) {
+                        if (item.search_name === categorySearchName) { // for the bread crumb, we map from the search name back to the display name
                             $scope.categoryName = item.name;
+                            if ($scope.selectedCategory) {
+                                angular.forEach(item.subcategories, function (subitem, index) {
+                                    if (subitem.name === $scope.selectedCategory.name) {
+                                        categorySearchName = subitem.categoryid.trim(); // if we are searching by a friendly named facet, then fall back to the search name
+                                    }
+                                });
+                            }
                         }
                     });
                     return ProductService.getProductsByCategory(categorySearchName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
                 });
-            }
+                }
 
             function getHouseBrandById(houseBrandId) {
                 return BrandService.getHouseBrands().then(function(brands) {
@@ -309,14 +316,14 @@ angular.module('bekApp')
                     if ($scope.sortField !== field) {
                         $scope.sortField = field;
                         $scope.sortDirection = 'asc';
-                        $scope.asc = true;
+                        $scope.sortReverse = false;
                     } else {
                         if ($scope.sortDirection === 'asc') {
                             $scope.sortDirection = 'desc';
-                            $scope.asc = false;
+                            $scope.sortReverse = true;
                         } else {
                             $scope.sortDirection = 'asc';
-                            $scope.asc = true;
+                            $scope.sortReverse = false;
                         }
                     }
                     loadProducts();
@@ -523,12 +530,5 @@ angular.module('bekApp')
                     return 'Non-Stock Item';
                 }
             }
-
-            // TODO: move into context menu controller
-            $scope.lists = ListService.lists;
-            ListService.getListHeaders();
-
-            $scope.carts = CartService.carts;
-            CartService.getCartHeaders();
         }
     ]);

@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -45,5 +46,9 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             return serviceClient.ReadMessagingPreferences(userId).ToList();
         }
 
+		public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging)
+		{
+			return serviceClient.ReadPagedUserMessages(user, paging);
+		}
 	}
 }

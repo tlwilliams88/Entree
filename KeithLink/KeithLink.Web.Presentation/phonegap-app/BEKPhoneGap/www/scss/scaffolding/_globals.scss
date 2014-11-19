@@ -1,15 +1,16 @@
 // must have for infinite scroll
-html {
+html, body {
   height: 100%;
 }
 
-.desktop-wrapper {
+body {
   background-image: url('../images/Textured-BG.jpg');
 }
 
 
 // Bootstrap adjustment for fixed width sidebar
 .container-fluid {
+  height: 100%;
   padding-left: 0;
   padding-right: 0;
 }

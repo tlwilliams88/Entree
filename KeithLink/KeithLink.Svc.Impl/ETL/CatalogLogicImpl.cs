@@ -26,6 +26,7 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.Messaging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -83,13 +84,14 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly IEventLogRepository eventLog;
         private readonly IUserProfileLogic userProfileLogic;
 		private readonly IInternalListLogic listLogic;
+        private readonly IInternalMessagingLogic messageLogic;
         
         #endregion
 
         #region " Methods / Functions "
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository,
             IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
-			IEventLogRepository eventLog, IUserProfileLogic userProfile, IInternalListLogic listLogic)
+			IEventLogRepository eventLog, IUserProfileLogic userProfile, IInternalListLogic listLogic, IInternalMessagingLogic messageLogic)
         {
             this.catalogRepository = catalogRepository;
             this.stagingRepository = stagingRepository;
@@ -97,6 +99,7 @@ namespace KeithLink.Svc.Impl.ETL
 			this.eventLog = eventLog;
             this.userProfileLogic = userProfile;
 			this.listLogic = listLogic;
+            this.messageLogic = messageLogic;
         }
 
         public void ProcessStagedData()
@@ -162,6 +165,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportPrePopulatedLists()
         {
+
             //For performance debugging purposes
             var startTime = DateTime.Now;
 
@@ -199,7 +203,7 @@ namespace KeithLink.Svc.Impl.ETL
                 {
                     eventLog.WriteErrorLog("Error importing pre-populated lists", ex);
                 }
-                
+
             }
 
             eventLog.WriteInformationLog(string.Format("ImportPrePopulatedLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
@@ -666,7 +670,7 @@ namespace KeithLink.Svc.Impl.ETL
             , string contractNumber)
         {
 
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract, true);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
 
             if (lists.Count == 0 && contractNumber != null && !contractNumber.Equals(String.Empty))
             {
@@ -709,6 +713,8 @@ namespace KeithLink.Svc.Impl.ETL
                     lists[0].Items = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
                     listLogic.UpdateList(lists[0]);
 
+                    CreateContractDiffMessage(userProfile.UserId, userSelectedContext);
+
                 }
             }
             else if (lists.Count == 1 && (contractNumber == null || contractNumber.Equals(String.Empty)))
@@ -721,7 +727,7 @@ namespace KeithLink.Svc.Impl.ETL
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
         {
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet, true);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
 
             if (lists.Count == 0)
             {
@@ -867,28 +873,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
             return existingItems;
-
-            //foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
-            //{
-            //    if (!newItemDictionary.ContainsKey(kvp.Key))
-            //    {
-            //        existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Deleted;
-            //        listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
-            //    }
-            //}
-        }
-
-        private void CompareListItemUpdatedDates(Dictionary<string, ListItemModel> existingItemDictionary)
-        {
-            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
-            {
-                if (kvp.Value.Status == Core.Enumerations.List.ListItemStatus.Added &&
-                    kvp.Value.ModifiedUtc.Day <= DateTime.Today.AddDays(Configuration.ListItemsDaysNew * -1).Day)
-                {
-                    existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Current;
-                    listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
-                }
-            }
         }
 
         private long GetContractItemChangesListId(
@@ -917,6 +901,15 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
             return listId;
+        }
+
+        private void CreateContractDiffMessage(Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
+        {
+            KeithLink.Svc.Core.Models.Messaging.UserMessageModel messageModel = new KeithLink.Svc.Core.Models.Messaging.UserMessageModel();
+            messageModel.Body = "Your contract items have changed.  Please check your contract added and removed items lists for details.";
+            messageModel.Subject = "Your contract items have changed";
+            messageModel.NotificationType = Core.Enumerations.Messaging.NotificationType.HasNews;
+            messageLogic.CreateUserMessage(userId, userSelectedContext, messageModel);
         }
 
         #endregion

@@ -17,6 +17,7 @@ using AmazonSNS = Amazon.SimpleNotificationService;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -371,7 +372,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
             unitOfWork.SaveChanges();
         }
+		
+		public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging)
+		{
+			var userMessages = userMessageRepository.ReadUserMessages(user).ToList();
 
+			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreatedUtc");
 
-    }
+			//var returnValue = new PagedResults<UserMessageModel>();
+
+			//returnValue.TotalResults = userMessages.Count();
+
+			//returnValue.Results = userMessages.Select(u => u.ToUserMessageModel()).Skip(paging.From.HasValue ? paging.From.Value : 0).Take(paging.Size.HasValue ? paging.Size.Value : int.MaxValue).ToList();
+
+			//return returnValue;
+		}
+	}
 }

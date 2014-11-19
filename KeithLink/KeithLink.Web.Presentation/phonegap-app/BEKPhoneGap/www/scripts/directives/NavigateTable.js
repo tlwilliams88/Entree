@@ -31,7 +31,7 @@ angular.module('bekApp')
           switch (e.which) {
 
               case key.left: {
-                  if (input.selectionStart === 0) {
+                  if (input.type === 'checkbox' || input.selectionStart === 0) {
                       moveTo = td.prev('td:has(input,textarea)');
                   }
                   break;
@@ -48,21 +48,30 @@ angular.module('bekApp')
               case key.enter: {
 
                   var tr = td.closest('tr');
+                  if (attr.navigateTable === 'lists') {
+                    tr = td.closest('tbody');
+                  }
                   var pos = td[0].cellIndex;
 
                   var moveToRow = null;
                   if (e.which === key.down || e.which === key.enter) {
                       moveToRow = tr.next('tr').next('tr');
+                      if (attr.navigateTable === 'lists') {
+                        moveToRow = tr.next('tbody').children('tr:not(.mobile-details-row)');
+                      }
 
                       if (!moveToRow.length) { // go to first row
-                        moveToRow = angular.element('.table > tbody > tr:not(.filter-row, .mobile-details-row)').first();
+                        moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
                       }
                   }
                   else if (e.which === key.up) {
                       moveToRow = tr.prev('tr').prev('tr');
+                      if (attr.navigateTable === 'lists') {
+                        moveToRow = tr.prev('tbody').children('tr:not(.mobile-details-row)');
+                      }
 
                       if (!moveToRow.length) { // go to last row
-                        moveToRow = angular.element('.table > tbody > tr:not(.filter-row, .mobile-details-row)').last();
+                        moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
                       }
                   }
 
@@ -101,5 +110,10 @@ angular.module('bekApp')
         }
       }
     }
+
+    scope.$on('$destroy',function() {
+      // console.log('done!');
+      angular.element( window ).off( 'resize.Viewport' );
+    });
   };
   }]);
