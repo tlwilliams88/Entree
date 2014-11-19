@@ -31,9 +31,7 @@ namespace KeithLink.Svc.Core.Models.Lists
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
 
-        public KeithLink.Svc.Core.Enumerations.List.ListItemStatus Status { get; set; }
-
-		public int CompareTo(object obj)
+        public int CompareTo(object obj)
 		{
 			return this.Position.CompareTo(((ListItemModel)obj).Position);
 		}

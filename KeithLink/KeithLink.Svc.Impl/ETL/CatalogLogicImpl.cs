@@ -670,7 +670,7 @@ namespace KeithLink.Svc.Impl.ETL
             , string contractNumber)
         {
 
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract, true);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
 
             if (lists.Count == 0 && contractNumber != null && !contractNumber.Equals(String.Empty))
             {
@@ -727,7 +727,7 @@ namespace KeithLink.Svc.Impl.ETL
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
         {
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet, true);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
 
             if (lists.Count == 0)
             {
@@ -873,28 +873,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
             return existingItems;
-
-            //foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
-            //{
-            //    if (!newItemDictionary.ContainsKey(kvp.Key))
-            //    {
-            //        existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Deleted;
-            //        listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
-            //    }
-            //}
-        }
-
-        private void CompareListItemUpdatedDates(Dictionary<string, ListItemModel> existingItemDictionary)
-        {
-            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
-            {
-                if (kvp.Value.Status == Core.Enumerations.List.ListItemStatus.Added &&
-                    kvp.Value.ModifiedUtc.Day <= DateTime.Today.AddDays(Configuration.ListItemsDaysNew * -1).Day)
-                {
-                    existingItemDictionary[kvp.Key].Status = Core.Enumerations.List.ListItemStatus.Current;
-                    listLogic.UpdateItem(existingItemDictionary[kvp.Key]);
-                }
-            }
         }
 
         private long GetContractItemChangesListId(
