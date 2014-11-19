@@ -22,7 +22,7 @@ angular.module('bekApp')
       },
 
       getMessages: function(params) {
-        return Notification.get(params).$promise.then(function(data) {
+        return Notification.save(params).$promise.then(function(data) {
           data.results.forEach(function(notification) {
             switch (notification.notificationtype) {
               case 0: // My order is confirmed

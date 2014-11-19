@@ -319,6 +319,9 @@ angular
       resolve: {
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
           return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
+        }],
+        order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
+          return OrderService.getOrderDetails($stateParams.invoiceNumber);
         }]
       }
     })
