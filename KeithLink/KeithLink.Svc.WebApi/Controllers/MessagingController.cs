@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.IO;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -29,9 +30,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [HttpGet]
         [ApiKeyedRoute("usermessages/")]
-        public List<UserMessageModel> ReadUserMessages()
+		public PagedResults<UserMessageModel> usermessages([FromUri] PagingModel paging)
         {
-            return messagingServiceRepository.ReadUserMessages(this.AuthenticatedUser);
+            return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 
         [HttpPut]

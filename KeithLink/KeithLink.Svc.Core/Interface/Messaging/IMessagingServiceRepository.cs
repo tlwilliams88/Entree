@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -21,5 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile userProfile);
 
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
+
+		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
     }
 }

@@ -8,6 +8,7 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Core.Interface.Messaging
 {
@@ -23,6 +24,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 
+		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
 
 
         int GetUnreadMessagesCount(UserProfile user);

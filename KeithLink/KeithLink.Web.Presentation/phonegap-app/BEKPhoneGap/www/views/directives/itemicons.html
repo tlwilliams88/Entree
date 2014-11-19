@@ -5,7 +5,12 @@
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="item.replaceditem > 0">
   <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
 </a>
+<!-- Substituted Item (orders only) -->
+<a ng-if="item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
 <!-- Deviated Cost -->
+<a ng-if="item.deviatedcost === 'Y'">
+  <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>
+</a>
 <!-- Sell Sheet -->
 <a ng-if="item.sellsheet === 'Y'" ng-href="{{'http://multidocs.benekeith.com/SellSheet/GetFile?ItemNumber=' + item.itemnumber}}" target="_blank">
   <span tooltip="Product information sheet" class="text-regular icon-sellsheet"></span>

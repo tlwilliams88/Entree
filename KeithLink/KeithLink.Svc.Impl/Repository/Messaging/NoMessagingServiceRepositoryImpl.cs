@@ -42,5 +42,11 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 			return new List<UserMessagingPreferenceModel>();
         }
 
+
+
+		public Core.Models.Paging.PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, Core.Models.Paging.PagingModel paging)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

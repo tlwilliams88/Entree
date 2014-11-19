@@ -39,6 +39,7 @@
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IMessagingService_AddUserSubscription_InputMessage">
@@ -101,6 +102,12 @@
   <wsdl:message name="IMessagingService_ReadMessagingPreferences_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadMessagingPreferencesResponse" />
   </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadPagedUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadPagedUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadPagedUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadPagedUserMessagesResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMessagingService">
     <wsdl:operation name="AddUserSubscription">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/AddUserSubscription" message="tns:IMessagingService_AddUserSubscription_InputMessage" />
@@ -141,6 +148,10 @@
     <wsdl:operation name="ReadMessagingPreferences">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences" message="tns:IMessagingService_ReadMessagingPreferences_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse" message="tns:IMessagingService_ReadMessagingPreferences_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadPagedUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages" message="tns:IMessagingService_ReadPagedUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse" message="tns:IMessagingService_ReadPagedUserMessages_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
@@ -235,6 +246,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ReadPagedUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadPagedUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="NetTcpBinding_IMessagingService" type="tns:IMessagingService">
     <wsp:PolicyReference URI="#NetTcpBinding_IMessagingService_policy" />
@@ -322,6 +342,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadMessagingPreferences">
       <soap12:operation soapAction="http://tempuri.org/IMessagingService/ReadMessagingPreferences" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadPagedUserMessages">
+      <soap12:operation soapAction="http://tempuri.org/IMessagingService/ReadPagedUserMessages" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

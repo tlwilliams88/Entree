@@ -17,7 +17,7 @@ angular.module('bekApp')
         // TODO: redirect to new account details page
         $scope.displayMessage('success', 'Successfully created a new account.');
       }, function(error) {
-        console.log(error);
+        $log.debug(error);
         $scope.displayMessage('error', 'Error creating new account.');
       });
     };
