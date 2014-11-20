@@ -179,6 +179,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
