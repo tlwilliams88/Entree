@@ -79,6 +79,12 @@
   <wsdl:message name="IMessagingService_ReadPagedUserMessages_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadPagedUserMessagesResponse" />
   </wsdl:message>
+  <wsdl:message name="IMessagingService_RegisterPushDevice_InputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterPushDevice" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_RegisterPushDevice_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterPushDeviceResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMessagingService">
     <wsdl:operation name="AddUserSubscription">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/AddUserSubscription" message="tns:IMessagingService_AddUserSubscription_InputMessage" />
@@ -123,6 +129,10 @@
     <wsdl:operation name="ReadPagedUserMessages">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages" message="tns:IMessagingService_ReadPagedUserMessages_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse" message="tns:IMessagingService_ReadPagedUserMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterPushDevice">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/RegisterPushDevice" message="tns:IMessagingService_RegisterPushDevice_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse" message="tns:IMessagingService_RegisterPushDevice_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
@@ -219,6 +229,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadPagedUserMessages">
       <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadPagedUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterPushDevice">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/RegisterPushDevice" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

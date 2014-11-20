@@ -15,7 +15,7 @@ angular.module('bekApp')
       userNotifications: { }, // must be an object
 
       getUnreadMessageCount: function() {
-        return $http.get('/usermessages/unreadcount').then(function(response) {
+        return $http.get('/messaging/usermessages/unreadcount').then(function(response) {
           angular.copy({ unread: response.data }, Service.userNotifications); // convert int to object
           return response.data;
         });

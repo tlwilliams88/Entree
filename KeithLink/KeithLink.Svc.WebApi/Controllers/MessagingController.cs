@@ -29,28 +29,28 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         #region methods
         [HttpPost]
-        [ApiKeyedRoute("usermessages/")]
+        [ApiKeyedRoute("messaging/usermessages/")]
 		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
         {
             return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 		
         [HttpPut]
-        [ApiKeyedRoute("usermessages/markasread")]
+        [ApiKeyedRoute("messaging/usermessages/markasread")]
         public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
         {
             messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
         }
 
         [HttpGet]
-        [ApiKeyedRoute("usermessages/unreadcount")]
+        [ApiKeyedRoute("messaging/usermessages/unreadcount")]
         public int ReadUnreadMessageCount()
         {
             return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser);
         }
 
         [HttpPut]
-        [ApiKeyedRoute("messagingpreferences/")]
+        [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
             messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
@@ -59,7 +59,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
-		
+        [HttpPut]
+        [ApiKeyedRoute("messaging/registerpushdevice")]
+        public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
+        {
+            
+            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
+            ret.SuccessResponse = true;
+            return ret;
+        }		
         #endregion
     }
 }

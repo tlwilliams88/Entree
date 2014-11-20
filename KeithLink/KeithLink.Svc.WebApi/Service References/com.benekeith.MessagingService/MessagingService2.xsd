@@ -80,4 +80,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserMessagingPreference" nillable="true" type="tns:UserMessagingPreference" />
+  <xs:complexType name="PushDeviceRegistrationModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DeviceId" nillable="true" type="xs:string" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="DeviceOS" type="q6:DeviceOS" />
+      <xs:element minOccurs="0" name="ProviderToken" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PushDeviceRegistrationModel" nillable="true" type="tns:PushDeviceRegistrationModel" />
 </xs:schema>

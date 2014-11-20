@@ -3,12 +3,12 @@
 angular.module('bekApp')
   .factory('Notification', [ '$resource', 
   function ($resource) {
-    return $resource('/usermessages', { }, {
+    return $resource('/messaging/usermessages', { }, {
 
       // defaults: QUERY
 
       markAsRead: {
-        url: '/usermessages/markasread',
+        url: '/messaging/usermessages/markasread',
         method: 'PUT'
       }
       
