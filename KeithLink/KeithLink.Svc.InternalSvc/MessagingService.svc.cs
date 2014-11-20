@@ -89,7 +89,7 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
         {
-            throw new NotImplementedException();
+            return messagingLogic.RegisterPushDevice(user, deviceRegistrationModel);
         }
     }
 }

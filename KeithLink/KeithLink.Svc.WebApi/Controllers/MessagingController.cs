@@ -63,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
         {
-            
+            messagingServiceRepository.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;
             return ret;
