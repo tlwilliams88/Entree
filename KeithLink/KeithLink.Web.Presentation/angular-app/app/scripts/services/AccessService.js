@@ -40,12 +40,16 @@ angular.module('bekApp')
         return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
       },
 
-      isDsr: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.DSR );
+      isSysAdmin: function() {
+        return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
       },
 
-      isCustomerAdmin: function() {
-        return false;
+      isBranchManager: function() {
+        return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
+      },
+
+      isDsr: function() {
+        return ( LocalStorage.getUserRole() === Constants.roles.DSR );
       },
 
       // PRIVILEDGES

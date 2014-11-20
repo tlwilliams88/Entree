@@ -12,7 +12,7 @@ angular.module('bekApp')
       $scope.totalNotifications = data.totalResults;
       
       // mark messages read
-      // NotificationService.updateUnreadMessages(angular.copy(data.results));
+      NotificationService.updateUnreadMessages(angular.copy(data.results));
 
       return data.results;
     });
@@ -23,6 +23,18 @@ angular.module('bekApp')
   }
 
   $scope.filterNotifications = function(filterFields) {
+    // example filter object
+    // filter: {
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+
     var filterList = [];
     for(var propertyName in filterFields) {
       if (filterFields[propertyName] && filterFields[propertyName] !== '') {

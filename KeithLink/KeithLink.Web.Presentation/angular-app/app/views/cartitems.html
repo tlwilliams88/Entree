@@ -170,12 +170,12 @@
   </div>
 
   <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
-    <tabset class="tabset critical-items__tabset">
+    <tabset class="tabset critical-items__tabset tab-border">
 
       <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
         <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
 
-        <table class="table table-striped-rows">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">
@@ -230,7 +230,7 @@
       </tab>
 
       <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0" active="reminderList.active">
-        <table class="table table-striped-rows">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">
