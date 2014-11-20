@@ -39,6 +39,22 @@ angular.module('bekApp')
 
       init();
 
+      $scope.uploadAvatar = function(avatarFile) {
+        console.log(avatarFile);
+        var file = {
+          name: avatarFile.filename,
+          file: avatarFile.base64
+        };
+        UserProfileService.uploadAvatar(file);
+        // TODO: update user profile in local storage
+      };
+
+      $scope.removeAvatar = function() {
+        console.log('remove avatar');
+        UserProfileService.removeAvatar();
+        // TODO: update user profile in local storage
+      };
+
       $scope.cancelChanges = function () {
         $scope.userProfile = angular.copy(LocalStorage.getProfile());
         $scope.updateProfileForm.$setPristine();

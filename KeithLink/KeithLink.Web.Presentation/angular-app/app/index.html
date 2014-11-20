@@ -19,8 +19,9 @@
     <!-- endbuild -->
   </head>
   <body ng-app="bekApp">
-    <!--[if lt IE 7]>
-    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    
+    <!--[if lt IE 9]>
+    <p>Entree does not support older browsers. Please upgrade or use KeithNet.</p>
     <![endif]-->
 
     <toaster-container></toaster-container>
@@ -37,23 +38,6 @@
     //    ga('create', 'UA-XXXXX-X');
     //    ga('send', 'pageview');
     </script>
-
-    <!--[if lt IE 9]>
-    <script src="lib/es5-shim/es5-shim.js"></script>
-    <script src="lib/json3/lib/json3.min.js"></script>
-    <script src="lib/html5shiv/html5shiv.min.js"></script>
-    <script src="lib/html5shiv/html5shiv-printshiv.min.js"></script>
-    <script src="lib/respondjs/respond.min.js"></script>
-    <script src="lib/respondjs/respond.matchmedia.addListener.min.js"></script>
-    <script src="lib/angular-ui-utils/ui-utils-ieshiv.js"></script>
-    <script src="lib/angular-file-upload/angular-file-upload-shim.js"></script>
-    <script>
-        document.createElement('tabset');
-        document.createElement('tab');
-        document.createElement('accordion');
-    </script>
-    <![endif]-->
-
 
     <!-- build:js(app) scripts/vendor.js -->
     <script src="lib/jquery/jquery-1.11.1.min.js"></script>

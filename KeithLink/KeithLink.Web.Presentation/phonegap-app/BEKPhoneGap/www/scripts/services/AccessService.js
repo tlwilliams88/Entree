@@ -11,7 +11,11 @@ angular.module('bekApp')
       },
 
       isOrderEntryCustomer: function() {
-        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() ) );
+        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isDsr() ) );
+      },
+
+      isInternalUser: function() {
+        return ( Service.isLoggedIn() && ( Service.isDsr() ) );
       },
 
       // ROLES
@@ -32,12 +36,12 @@ angular.module('bekApp')
         return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
       },
 
-      isUser: function() {
+      isGuest: function() {
         return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
       },
 
-      isBekAdmin: function() {
-        return ( LocalStorage.getProfile().isdsr );
+      isDsr: function() {
+        return ( LocalStorage.getUserRole() === Constants.roles.DSR );
       },
 
       isCustomerAdmin: function() {
@@ -47,31 +51,27 @@ angular.module('bekApp')
       // PRIVILEDGES
 
       canBrowseCatalog: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
+        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
       },
 
       canManageLists: function() {
-        return ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isUser() );
+        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
       },
 
       canCreateOrders: function() {
-        return ( Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
+        return ( Service.isDsr() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
       },
 
       canSubmitOrders: function() {
-        return ( Service.isOwner() || Service.isApprover() );
+        return ( Service.isDsr() || Service.isOwner() || Service.isApprover() );
       },
 
       canPayInvoices: function() {
-        return ( Service.isOwner() || Service.isAccounting() );
+        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() );
       },
 
       canManageAccount: function() {
-        return ( Service.isOwner() );
-      },
-
-      canManageeMenu: function() {
-        return ( Service.isOwner() );
+        return ( Service.isDsr() || Service.isOwner() );
       }
 
     };

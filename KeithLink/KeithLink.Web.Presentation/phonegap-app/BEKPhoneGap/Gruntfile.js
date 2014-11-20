@@ -5,6 +5,7 @@ module.exports = function(grunt) {
       phonegap: {
         config: {
           plugins: ['https://github.com/apache/cordova-plugin-network-information.git'],
+          maxBuffer: 500,
           platforms: ['ios', 'android'],
           config: {
             template: '_config.xml',
@@ -34,6 +35,7 @@ module.exports = function(grunt) {
       "www/scripts/directives/{,*/}*",
       "www/scripts/services/{,*/}*",
       "www/scripts/resources/{,*/}*",
+      "www/scripts/filters/{,*/}*",
       "www/scss/{,*/}*",
       "www/views/{,*/}*"
       ],
@@ -118,6 +120,12 @@ cwd: '../../angular-app/app/scripts/services/',  // set working folder / root to
 cwd: '../../angular-app/app/scripts/resources/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/resources/',    // destination folder
+    expand: true           // required when using cwd
+  },
+    {
+cwd: '../../angular-app/app/scripts/filters/',  // set working folder / root to copy
+    src: '**/*',           // copy all files and subfolders
+    dest: 'www/scripts/filters/',    // destination folder
     expand: true           // required when using cwd
   },
   {

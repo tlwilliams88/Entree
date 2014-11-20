@@ -317,8 +317,8 @@ angular
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-          return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
+        transactions: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceTransactions($stateParams.invoiceNumber);
         }],
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
           return OrderService.getOrderDetails($stateParams.invoiceNumber);
