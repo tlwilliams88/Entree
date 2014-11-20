@@ -24,7 +24,7 @@ angular.module('bekApp')
       $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-        if ( AccessService.isOrderEntryCustomer() ) {
+        if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalUser() ) {
           $state.transitionTo('menu.home');  
         } else {
           $state.transitionTo('menu.catalog.home');

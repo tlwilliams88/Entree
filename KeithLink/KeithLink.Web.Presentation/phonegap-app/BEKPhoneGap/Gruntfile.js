@@ -5,6 +5,7 @@ module.exports = function(grunt) {
       phonegap: {
         config: {
           plugins: ['https://github.com/apache/cordova-plugin-network-information.git'],
+          maxBuffer: 500,
           platforms: ['ios', 'android'],
           config: {
             template: '_config.xml',
