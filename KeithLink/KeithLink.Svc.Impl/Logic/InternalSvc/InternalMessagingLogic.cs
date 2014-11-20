@@ -28,18 +28,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IUserMessageRepository userMessageRepository;
         private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private readonly IGenericQueueRepository genericQueueRepository;
+        private readonly IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
         private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
         private Task listenForQueueMessagesTask;
         private bool doListenForMessagesInTask = true;
 
         public InternalMessagingLogic(IUnitOfWork unitOfWork, ICustomerTopicRepository customerTopicRepository, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
-            IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository)
+            IGenericQueueRepository genericQueueRepository, Common.Core.Logging.IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository)
         {
             this.unitOfWork = unitOfWork;
             this.customerTopicRepository = customerTopicRepository;
             this.userMessageRepository = userMessageRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.genericQueueRepository = genericQueueRepository;
+            this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
             this.eventLogRepository = eventLogRepository;
         }
 
@@ -387,5 +389,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			//return returnValue;
 		}
-	}
+
+
+        public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
+        {
+            UserPushNotificationDevice userPushNotificationDevice =
+                userPushNotificationDeviceRepository.ReadUserDevice(user.UserId, deviceRegistrationModel.DeviceId, deviceRegistrationModel.DeviceOS);
+
+            if (userPushNotificationDevice == null)
+            {
+                userPushNotificationDevice = new UserPushNotificationDevice()
+                {
+                    DeviceOS = deviceRegistrationModel.DeviceOS,
+                    DeviceId = deviceRegistrationModel.DeviceId,
+                    UserId = user.UserId
+                };
+            }
+
+            userPushNotificationDevice.ProviderToken = deviceRegistrationModel.ProviderToken;
+
+            userPushNotificationDeviceRepository.CreateOrUpdate(userPushNotificationDevice);
+            unitOfWork.SaveChanges();
+
+            // now, to create/confirm/update the application endpoint in AWS
+            return true;
+        }
+    }
 }

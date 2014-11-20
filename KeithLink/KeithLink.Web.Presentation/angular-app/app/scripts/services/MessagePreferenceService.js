@@ -6,7 +6,7 @@ angular.module('bekApp')
       updatePreferences: function(preferences){
         var deferred = $q.defer();
 
-        $http.put('/messagingpreferences', preferences).then(function(response) {
+        $http.put('/messaging/preferences', preferences).then(function(response) {
 
           var data = response.data;
 

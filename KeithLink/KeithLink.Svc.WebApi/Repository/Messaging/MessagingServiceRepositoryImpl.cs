@@ -50,5 +50,11 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
 		{
 			return serviceClient.ReadPagedUserMessages(user, paging);
 		}
-	}
+
+
+        public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
+        {
+            return serviceClient.RegisterPushDevice(user, deviceRegistrationModel);
+        }
+    }
 }

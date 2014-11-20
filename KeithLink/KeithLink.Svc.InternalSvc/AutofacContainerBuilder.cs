@@ -124,6 +124,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();

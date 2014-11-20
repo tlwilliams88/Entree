@@ -85,5 +85,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return messagingLogic.ReadPagedUserMessages(user, paging);
 		}
-	}
+
+
+        public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
+        {
+            return messagingLogic.RegisterPushDevice(user, deviceRegistrationModel);
+        }
+    }
 }

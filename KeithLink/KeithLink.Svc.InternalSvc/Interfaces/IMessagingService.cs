@@ -39,5 +39,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
 		[OperationContract]
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
+        [OperationContract]
+        bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
     }
 }

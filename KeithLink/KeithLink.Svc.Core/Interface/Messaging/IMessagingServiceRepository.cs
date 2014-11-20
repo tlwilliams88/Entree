@@ -24,5 +24,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
 
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
+
+        bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
     }
 }
