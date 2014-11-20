@@ -103,8 +103,18 @@
   </div>
 </div>
 
-<form unsaved-warning-form novalidate name="addToOrderForm" class="style-validation-errors" autocomplete="off">
-  <table class="table table-striped-rows table-border" navigate-table infinite-scroll="infiniteScrollLoadMore()">
+<form 
+  unsaved-warning-form 
+  novalidate 
+  name="addToOrderForm" 
+  class="style-validation-errors" 
+  autocomplete="off">
+
+  <table 
+    class="table table-striped-rows table-border" 
+    navigate-table 
+    infinite-scroll="infiniteScrollLoadMore()">
+
     <thead>
       <tr>
         <th class="sort-col-header" ng-click="sortBy='position';sortOrder=!sortOrder;">
@@ -195,7 +205,9 @@
         </td>
       </tr> <!-- end Filter Row -->
 
-      <tr ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo: itemsToDisplay)) track by item.listitemid" ng-class="{ odd : $odd, even: $even }">
+      <tr 
+        ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo: itemsToDisplay)) track by item.listitemid" 
+        ng-class="{ odd : $odd, even: $even }">
         <td>
           {{item.position}}
         </td>
@@ -228,7 +240,18 @@
         </td>
         <td ng-show="useParlevel" class="hidden-xs hidden-sm input-col">
           <ng-form name="parlevelForm">
-            <input type="text" class="input-number text-right" fcsa-number="{ 'maxDecimals': 1, 'preventInvalidInput': true, 'min': 0 }" ng-model="item.onhand" name="onhand" xx-update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+            <input 
+              type="text" 
+              class="input-number text-right" 
+              fcsa-number="{ 
+                'maxDecimals': 1, 
+                'preventInvalidInput': true, 
+                'min': 0 }" 
+              ng-model="item.onhand" 
+              name="onhand" 
+              update-quantity-from-parlevel 
+              parlevel="item.parlevel" 
+              quantity="item.quantity">
           </ng-form>
         </td>
         <td class="input-col nowrap">
@@ -292,7 +315,14 @@
               <td>On Hand Amount</td>
               <td class="input-col">
                 <ng-form name="parlevelForm_mobile">
-                  <input type="text" class="input-number text-right" allow-one-positive-decimal ng-model="item.onhand_mobile" update-quantity-from-parlevel parlevel="item.parlevel" quantity="item.quantity">
+                  <input 
+                    type="text" 
+                    class="input-number text-right" 
+                    allow-one-positive-decimal 
+                    ng-model="item.onhand_mobile" 
+                    update-quantity-from-parlevel 
+                    parlevel="item.parlevel" 
+                    quantity="item.quantity">
                 </ng-form>
               </td>
             </tr>

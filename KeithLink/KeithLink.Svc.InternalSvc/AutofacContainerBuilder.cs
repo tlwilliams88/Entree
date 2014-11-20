@@ -119,6 +119,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
+			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
+
             //added 11-6
             builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();

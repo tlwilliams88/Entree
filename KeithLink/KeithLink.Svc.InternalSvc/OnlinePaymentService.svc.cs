@@ -99,28 +99,14 @@ namespace KeithLink.Svc.InternalSvc {
             List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
             List<InvoiceModel> returnInvoices = new List<InvoiceModel>();
 
-            foreach (var currentInv in kpayInvoices) {
-                InvoiceModel myInvoice = new InvoiceModel();
-                myInvoice.Parse(currentInv);
-
-                returnInvoices.Add(myInvoice);
-            }
-
-            return returnInvoices;
+			return kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
         }
 
         public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
             List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            List<InvoiceModel> returnInvoices = new List<InvoiceModel>();
-
-            foreach (var currentInv in kpayInvoices) {
-                InvoiceModel myInvoice = new InvoiceModel();
-                myInvoice.Parse(currentInv);
-
-                returnInvoices.Add(myInvoice);
-            }
-
-            //TODO: add check to see if customer is KPay customer
+            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+			
+			//TODO: add check to see if customer is KPay customer
             returnInvoices.Select(i => { i.IsPayable = true; return i; }).ToList();
 
             return returnInvoices;

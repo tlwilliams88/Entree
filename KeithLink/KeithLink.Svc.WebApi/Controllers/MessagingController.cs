@@ -34,8 +34,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
-		
-        [HttpPut]
+
+		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
         public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
         {
