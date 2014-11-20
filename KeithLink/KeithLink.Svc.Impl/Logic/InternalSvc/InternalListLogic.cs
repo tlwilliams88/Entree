@@ -314,10 +314,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -546,6 +546,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
+			listCacheRepository.RemoveItem(string.Format("UserList_{0}", listToShare.Id)); //Invalidate cache
+			
 		}
         
 		#endregion
