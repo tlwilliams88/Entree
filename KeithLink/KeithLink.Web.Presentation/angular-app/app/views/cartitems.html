@@ -132,10 +132,10 @@
       <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <p class="form-control-static">
-            {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
-            <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
-              
+          <div class="btn-group" dropdown is-open="showShipDates">
+            <p class="form-control-static">
+              {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+              <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
               <div class="dropdown-menu">
                 <table class="table no-margin">
                   <tr>
@@ -150,9 +150,8 @@
                   </tr>
                 </table>
               </div>
-
-            </button>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
 
