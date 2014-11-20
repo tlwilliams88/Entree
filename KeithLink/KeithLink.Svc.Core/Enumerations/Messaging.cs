@@ -38,4 +38,15 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 		[EnumMember(Value = "Web")]
         Web = 4
     }
+
+    [DataContract(Name = "DeviceOS")]
+    public enum DeviceOS : int
+    {
+        [Description("iOS")]
+        [EnumMember(Value="iOS")]
+        iOS = 1,
+        [Description("Android")]
+        [EnumMember(Value="Android")]
+        Android = 2
+    }
 }

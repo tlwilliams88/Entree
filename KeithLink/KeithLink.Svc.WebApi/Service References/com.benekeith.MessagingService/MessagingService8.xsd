@@ -3,11 +3,35 @@
   <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
   <xs:complexType name="PagingModel">
     <xs:sequence>
+      <xs:element minOccurs="0" name="filter" nillable="true" type="tns:FilterInfo" />
       <xs:element minOccurs="0" name="from" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="size" nillable="true" type="xs:int" />
+      <xs:element minOccurs="0" name="sort" nillable="true" type="tns:ArrayOfSortInfo" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PagingModel" nillable="true" type="tns:PagingModel" />
+  <xs:complexType name="FilterInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="condition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FilterInfo" nillable="true" type="tns:FilterInfo" />
+  <xs:complexType name="ArrayOfSortInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortInfo" nillable="true" type="tns:SortInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSortInfo" nillable="true" type="tns:ArrayOfSortInfo" />
+  <xs:complexType name="SortInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="order" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SortInfo" nillable="true" type="tns:SortInfo" />
   <xs:complexType name="PagedResultsOfUserMessage8lAsFgpf">
     <xs:annotation>
       <xs:appinfo>

@@ -14,5 +14,17 @@ namespace KeithLink.Svc.Core.Models.Paging
 		public int? Size { get; set; }
 		[DataMember(Name = "from")]
 		public int? From { get; set; }
+		[DataMember(Name = "sort")]
+		public List<SortInfo> Sort { get; set; }
+		[DataMember(Name = "filter")]
+		public FilterInfo Filter { get; set; }
 	}
+
+	
+
+	
+
+	
+	
+	
 }

@@ -48,5 +48,11 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+
+        public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

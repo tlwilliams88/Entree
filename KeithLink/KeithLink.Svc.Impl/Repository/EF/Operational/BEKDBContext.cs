@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.ContentManagement.EF;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -29,6 +30,12 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<MessageTemplate> EmailTemplates { get; set; }
 		public DbSet<Term> Terms { get; set; }
 		public DbSet<ListShare> ListShares { get; set; }
+        public DbSet<ContentItem> ContentItems { get; set; }
+        public DbSet<UserMessage> UserMessages { get; set; }
+        public DbSet<CustomerTopic> CustomerTopics { get; set; }
+        public DbSet<UserMessagingPreference> UserMessagingPreferences { get; set; }
+        public DbSet<UserPushNotificationDevice> UserPushNotificationDevices { get; set; }
+        public DbSet<UserTopicSubscription> UserTopicSubscriptions { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -46,7 +53,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
             modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<Core.Models.ContentManagement.EF.ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
 		public void DeleteTable(string tableName)
