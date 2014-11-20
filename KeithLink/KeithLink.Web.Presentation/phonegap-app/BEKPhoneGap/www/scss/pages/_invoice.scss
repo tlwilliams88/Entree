@@ -1,0 +1,18 @@
+.invoice-table {
+  > tbody > tr.invoice__late > td {
+    &:first-child {
+      border-left: 3px solid $color-red;
+    }
+    &.highlight-text {
+      color: $color-red;
+    }
+  }
+  > tbody > tr.invoice__paid > td {
+    &:first-child {
+      border-left: 3px solid $color-green;
+    }
+    &.highlight-text {
+      color: $color-green;
+    }
+  }
+}

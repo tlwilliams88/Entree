@@ -377,7 +377,7 @@ module.exports = function (grunt) {
                   expand: true,
                   cwd: '.tmp',
                   dest: '<%= yeoman.dev %>',
-                  src: 'styles/*.css',
+                  src: 'styles/*.css'
               }]
           }
       },
@@ -408,7 +408,7 @@ module.exports = function (grunt) {
           }
       },
 
-      // start mock api server 
+      // start mock api server
       run: {
           mock_server: {
               options: {
