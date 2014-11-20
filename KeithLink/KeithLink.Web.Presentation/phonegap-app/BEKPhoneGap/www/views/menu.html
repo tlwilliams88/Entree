@@ -62,7 +62,7 @@
             <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
           </a>
         <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div><span ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0" class="badge">{{userBar.userNotifications.unread}}</span>Notifications</li>
+          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div><span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>Notifications</li>
         </a>
       </div>
     </ul>
@@ -84,7 +84,7 @@
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
-      <img src="images/bek-logo.png" alt="logo" />
+      <img src="images/Entree-HomeScreen.png" alt="logo" />
     </div>
 
     <nav class="sidebar-nav">
@@ -134,7 +134,7 @@
   <div class="row page-content">
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
-        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
+        <img src="images/Entree-HomeScreen.png" alt="logo" class="logo-mobile" />
         <ul>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
@@ -163,7 +163,7 @@
           <div ng-if="isLoggedIn">
             <a ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
               <span ng-if="isOrderEntryCustomer" class="icon-bell"></span>
-              <span class="badge" ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0">{{userBar.userNotifications.unread}}</span>
+              <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">

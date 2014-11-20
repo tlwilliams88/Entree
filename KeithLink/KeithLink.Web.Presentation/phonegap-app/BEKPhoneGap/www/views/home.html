@@ -12,7 +12,7 @@
   <div class="col-md-4 col-md-push-8">
     <div class="info-box">
 
-      <button class="pull-right btn btn-primary btn-lg">Pay Now</button>
+      <a ui-sref="menu.invoice" class="pull-right btn btn-primary btn-lg">Pay Now</a>
       
       <h4><strong>Account Balance</strong></h4>
       
@@ -147,7 +147,7 @@
     </div> <!-- end Mobile Order Summary -->
 
     <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
-    <div class="hidden-xs hidden-sm" ng-hide="orders || orders.length > 0 || loadingOrders">
+    <div class="hidden-xs hidden-sm" ng-hide="orders.length > 0 || loadingOrders">
       No Recent Orders
     </div>
     </div> <!-- end Order Summary -->
