@@ -18,7 +18,7 @@
     <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
   </head>
-  <body>
+  <body ng-app="bekApp">
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -80,15 +80,6 @@
     <script src="lib/angular-file-upload/angular-file-upload.js"></script>
     <script src="lib/angular-fcsa-number/fcsaNumber.js"></script>
     <script src="lib/angular-base64-upload/angular-base64-upload.js"></script>
-    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
-
-    <script>
-    angular.element(document).ready(function() {
-        app.initialize();
-      angular.bootstrap(document, ['bekApp']);
-    });
-    </script>
     <!-- endbuild -->
 
      <script id="template/carousel/carousel.html" type="text/ng-template">
@@ -191,13 +182,9 @@
     <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
     <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
-    <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/meetsMinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
     <!-- endbuild -->
 </body>
 </html>
