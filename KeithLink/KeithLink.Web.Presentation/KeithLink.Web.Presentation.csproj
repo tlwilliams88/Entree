@@ -94,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="angular-app\package.json" />
+    <None Include="Properties\PublishProfiles\Release.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\Test.pubxml">
       <SubType>Designer</SubType>
     </None>
