@@ -70,7 +70,10 @@ angular.module('bekApp')
     **********/
 
     $scope.createMandatoryList = function(items) {
-      ListService.createMandatoryList(items).then(goToNewList);
+      ListService.createMandatoryList(items).then(function(list) {
+        $scope.hideMandatoryList = true;
+        return list;
+      }).then(goToNewList);
     };
 
     $scope.createMandatoryListFromDrag = function(event, helper) {
@@ -83,7 +86,12 @@ angular.module('bekApp')
     **********/
 
     $scope.deleteList = function(listId) {
-      ListService.deleteList(listId).then($scope.goToList);
+      ListService.deleteList(listId).then(function(list) {
+        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === listId) {
+          $scope.hideMandatoryList = false;
+        }
+        return list;
+      }).then($scope.goToList);
     };
 
     /**********

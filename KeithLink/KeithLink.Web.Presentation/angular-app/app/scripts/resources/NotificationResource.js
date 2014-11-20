@@ -5,7 +5,7 @@ angular.module('bekApp')
   function ($resource) {
     return $resource('/messaging/usermessages', { }, {
 
-      // defaults: QUERY
+      // defaults: SAVE
 
       markAsRead: {
         url: '/messaging/usermessages/markasread',

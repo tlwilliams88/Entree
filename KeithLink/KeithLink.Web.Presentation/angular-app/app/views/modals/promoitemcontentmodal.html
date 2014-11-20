@@ -4,8 +4,9 @@
 </div>
 <div class="modal-body">
 
-  <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
-
-  <p ng-bind-html="item.content"></p>
+  <!-- <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image"> -->
+  
+  <div ng-if="item.iscontenthtml" ng-bind-html="item.content"></div>
+  <p ng-if="!item.iscontenthtml">{{item.content}}</p>
 
 </div>

@@ -21,8 +21,23 @@ angular.module('bekApp')
         });
       },
 
-      getAllMessages: function() {
-        return Notification.query().$promise;
+      getMessages: function(params) {
+        return Notification.save(params).$promise.then(function(data) {
+          data.results.forEach(function(notification) {
+            switch (notification.notificationtype) {
+              case 0: // My order is confirmed
+              case 1: // My order is shipped
+                notification.displayType = 'Order';
+                break;
+              case 2: // My invoices need attention
+                notification.displayType = 'Invoice';
+                break;
+              case 3: // Ben E Keith has news for me
+                break;
+            }
+          });
+          return data;
+        });
       },
 
       updateUnreadMessages: function(messages) {

@@ -25,7 +25,7 @@ angular.module('bekApp')
       console.log(items);
       $scope.promoItems = items;
       $scope.loadingPromoItems = false;
-    })
+    });
  
     $scope.createNewCart = function() {
       return CartService.createCart().then(function(cartId) {

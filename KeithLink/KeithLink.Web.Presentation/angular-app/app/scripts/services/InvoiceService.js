@@ -17,10 +17,12 @@ angular.module('bekApp')
         return Invoice.query().$promise;
       },
 
-      getInvoiceDetails: function(invoiceId) {
-        return Invoice.get({
-          invoiceId: invoiceId
-        }).$promise;
+      getInvoiceDetails: function(invoiceNumber) {
+        return Invoice.getOneInvoice({
+          invoiceNumber: invoiceNumber
+        }).$promise.then(function(invoices) {
+          return invoices[0];
+        });
       }
     };
  

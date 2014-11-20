@@ -88,8 +88,9 @@ angular.module('bekApp')
     function refreshAccessPermissions() {
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
+      $scope.isInternalUser = AccessService.isInternalUser();
       
-      $scope.isBekAdmin = AccessService.isBekAdmin();
+      // $scope.isBekAdmin = AccessService.isBekAdmin();
       $scope.isCustomerAdmin = AccessService.isCustomerAdmin();
 
       $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
@@ -98,6 +99,5 @@ angular.module('bekApp')
       $scope.canSubmitOrders = AccessService.canSubmitOrders();
       $scope.canPayInvoices = AccessService.canPayInvoices();
       $scope.canManageAccount = AccessService.canManageAccount();
-      $scope.canManageeMenu = AccessService.canManageeMenu();
     }
   }]);
