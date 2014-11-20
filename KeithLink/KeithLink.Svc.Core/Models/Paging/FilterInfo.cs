@@ -35,6 +35,7 @@ namespace KeithLink.Svc.Core.Models.Paging
 		[DataMember(Name = "value")]
 		public string Value { get; set; }
 
+		[DataMember(Name = "filter")]
 		public List<FilterInfo> Filters { get; set; }
 
 

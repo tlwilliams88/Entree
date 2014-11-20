@@ -34,6 +34,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
+
+		[HttpGet]
+		[ApiKeyedRoute("pagingtest/")]
+		public PagingModel Test()
+		{
+			return new PagingModel() { From = 5, Size = 5, Filter = new FilterInfo() { Field = "subject", Value = "test", Filters = new List<FilterInfo>() { new FilterInfo() { Field = "body", Value = "test" } } } };
+		}
 		
         [HttpPut]
         [ApiKeyedRoute("usermessages/markasread")]
