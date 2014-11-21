@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
@@ -19,6 +20,10 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
         #endregion
 
         #region methods
+        public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
+            _client.DeleteInvoice(userContext, invoiceNumber);
+        }
+
         public List<CustomerBank> GetAllCustomerBanks(UserSelectedContext userContext) {
             return _client.GetAllBankAccounts(userContext).ToList<CustomerBank>();
         }
@@ -26,6 +31,20 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
         public Core.Models.OnlinePayments.Customer.CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             return _client.GetBankAccount(userContext, accountNumber);
         }
-        #endregion
-    }
+
+        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+            return _client.GetInvoiceTransactions(userContext, invoiceNumber).ToList<InvoiceModel>();
+        }
+
+        public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
+            return _client.GetOpenInvoiceHeaders(userContext).ToList<InvoiceModel>();
+        }
+       
+		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		{
+			_client.MakeInvoicePayment(userContext, user, payments.ToArray());
+		} 
+		
+		#endregion
+	}
 }

@@ -16,6 +16,10 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    if (ListService.findMandatoryList()) {
+      $scope.hideMandatoryListCreateButton = true;
+    }
+
     function resetPage(list) {
       $scope.selectedList = list;
       // $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
@@ -62,11 +66,32 @@ angular.module('bekApp')
     };
 
     /**********
+    CREATE MANDATORY LIST
+    **********/
+
+    $scope.createMandatoryList = function(items) {
+      ListService.createMandatoryList(items).then(function(list) {
+        $scope.hideMandatoryListCreateButton = true;
+        return list;
+      }).then(goToNewList);
+    };
+
+    $scope.createMandatoryListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createMandatoryList(dragSelection);
+    };
+
+    /**********
     DELETE LIST
     **********/
 
     $scope.deleteList = function(listId) {
-      ListService.deleteList(listId).then($scope.goToList);
+      ListService.deleteList(listId).then(function(list) {
+        if (ListService.findMandatoryList() && ListService.findMandatoryList().listid === listId) {
+          $scope.hideMandatoryListCreateButton = false;
+        }
+        return list;
+      }).then($scope.goToList);
     };
 
     /**********
@@ -177,10 +202,6 @@ angular.module('bekApp')
         favoritesList = ListService.getFavoritesList();
 
       ListService.deleteMultipleItems(favoritesList.listid, items);
-    };
-
-    $scope.addItemsToReminderList = function() {
-      $scope.addItemsToList(ListService.findReminderList());
     };
 
     /********************
@@ -371,6 +392,7 @@ angular.module('bekApp')
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/replicatelistmodal.html',
         controller: 'ReplicateListModalController',
+        windowClass: 'no-padding-modal',
         scope: $scope,
         resolve: {
           list: function() {
@@ -379,6 +401,15 @@ angular.module('bekApp')
           customers: ['LocalStorage', function(LocalStorage) {
             return LocalStorage.getProfile().user_customers;
           }]
+        }
+      });
+
+      modalInstance.result.then(function(sharedWith) {
+        $scope.selectedList.sharedwith = sharedWith;
+        if (sharedWith.length === 0) {
+          $scope.selectedList.issharing = false;
+        } else if (sharedWith.length > 0) {
+          $scope.selectedList.issharing = true;
         }
       });
     };

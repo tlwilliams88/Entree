@@ -74,6 +74,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[]> ReadMessagingPreferencesAsync(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse")]
+        KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel> ReadPagedUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel>> ReadPagedUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RegisterPushDevice", ReplyAction="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse")]
+        bool RegisterPushDevice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RegisterPushDevice", ReplyAction="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse")]
+        System.Threading.Tasks.Task<bool> RegisterPushDeviceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -181,6 +193,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[]> ReadMessagingPreferencesAsync(System.Guid userId) {
             return base.Channel.ReadMessagingPreferencesAsync(userId);
+        }
+        
+        public KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel> ReadPagedUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.ReadPagedUserMessages(user, paging);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel>> ReadPagedUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.ReadPagedUserMessagesAsync(user, paging);
+        }
+        
+        public bool RegisterPushDevice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel) {
+            return base.Channel.RegisterPushDevice(user, deviceRegistrationModel);
+        }
+        
+        public System.Threading.Tasks.Task<bool> RegisterPushDeviceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel) {
+            return base.Channel.RegisterPushDeviceAsync(user, deviceRegistrationModel);
         }
     }
 }

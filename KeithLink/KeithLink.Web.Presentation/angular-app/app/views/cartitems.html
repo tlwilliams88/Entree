@@ -36,17 +36,41 @@
 
       <div ng-if="!isChangeOrder" style="display:inline-block;">
         <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-        <a class="hidden-print" confirmed-click="deleteCart(currentCart)" ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"><span class="large-icon text-light icon-trash"></span></a>
+        <a 
+          class="hidden-print" 
+          confirmed-click="deleteCart(currentCart)" 
+          ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}">
+          <span class="large-icon text-light icon-trash"></span>
+        </a>
       </div>
     </div>
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
-      <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" class="input-lg form-control" required ng-model="editCart.name" name="cartName" id="cartName" />
-      <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
+      <input 
+        check-duplicate-field="name" 
+        collection="carts" 
+        type="text" 
+        max-length="15" 
+        focus-me="currentCart.isRenaming" 
+        class="input-lg form-control" 
+        required 
+        ng-model="editCart.name" 
+        name="cartName" 
+        id="cartName" />
+      
+      <button 
+        ng-disabled="renamecartForm.$invalid" 
+        class="btn-no-style" 
+        type="submit" 
+        ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
+        <span class="large-icon text-green icon-checkmark"></span>
+      </button>
+      
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
     </form>
+
   </div>
   <div class="col-md-5 hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
@@ -108,10 +132,10 @@
       <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <p class="form-control-static">
-            {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
-            <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
-              
+          <div class="btn-group" dropdown is-open="showShipDates">
+            <p class="form-control-static">
+              {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+              <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
               <div class="dropdown-menu">
                 <table class="table no-margin">
                   <tr>
@@ -126,9 +150,8 @@
                   </tr>
                 </table>
               </div>
-
-            </button>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -146,12 +169,12 @@
   </div>
 
   <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
-    <tabset class="tabset critical-items__tabset">
+    <tabset class="tabset critical-items__tabset tab-border">
 
-      <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0">
+      <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
         <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
 
-        <table class="table table-striped-rows">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">
@@ -205,8 +228,8 @@
         </table>
       </tab>
 
-      <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0">
-        <table class="table table-striped-rows">
+      <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0" active="reminderList.active">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">

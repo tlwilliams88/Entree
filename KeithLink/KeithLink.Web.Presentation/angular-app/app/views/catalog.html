@@ -12,7 +12,13 @@
 			<div class="input-group">
 				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacturer number">
 				<span class="input-group-btn">
-				<button ui-sref="menu.catalog.products.list({ type: 'search', id: catalogSearchTerm })" ng-disabled="catalogSearchForm.$invalid" class="btn btn-primary btn-lg" type="submit"><span class="icon-search"></span> SEARCH</button>
+				<button 
+          ui-sref="menu.catalog.products.list({ type: 'search', id: catalogSearchTerm })" 
+          ng-disabled="catalogSearchForm.$invalid" 
+          class="btn btn-primary btn-lg" 
+          type="submit">
+          <span class="icon-search"></span> SEARCH
+        </button>
 				</span>
 			</div>
 		</form>
@@ -25,11 +31,20 @@
 		<h2>Recently Viewed Items</h2>
     <div loading-spinner="loadingRecentlyViewedItems" ng-show="loadingRecentlyViewedItems"></div>
 
-		<ul class="horizontal-slide hidden-xs hidden-sm slide-recently-viewed-items">
+		<ul class="horizontal-slide hidden-xs hidden-sm">
 			<li ng-repeat="item in recentlyViewedItems" class="item-holder">
 				<div class="featured-item text-center">
-					<img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
-          <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+					<img 
+            ng-if="item.images.length > 0" 
+            class="hand" 
+            ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" 
+            ng-src="{{item.images[0].url}}" 
+            alt="product image">
+          <img 
+            ng-if="item.images.length === 0" 
+            class="product-placeholder-image" 
+            src="images/bek-logo.png" 
+            alt="default product image">
 					<span class="featured-item__detail">
 						{{item.name}}
 						<a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
@@ -42,7 +57,7 @@
       <carousel interval="myInterval" disable-ng-animate>
         <slide ng-repeat="item in recentlyViewedItems" active="item.active">
           <div class="col-xs-4 no-padding text-left">
-            <img ng-if="item.images.length > 0"class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+            <img ng-if="item.images.length > 0" class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
             <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
           </div>
           <div class="col-xs-8 no-padding featured-item-mobile__detail">

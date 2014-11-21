@@ -1,8 +1,13 @@
-﻿using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
+﻿using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using EF = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
+using EFCustomer = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
+using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.InternalSvc.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -15,21 +20,27 @@ namespace KeithLink.Svc.InternalSvc {
     public class OnlinePaymentService : IOnlinePaymentService {
         #region attributes
         private readonly ICustomerBankRepository _bankRepo;
+        private readonly IKPayInvoiceRepository _invoiceRepo;
         #endregion
 
         #region ctor
-        public OnlinePaymentService(ICustomerBankRepository customerBankRepository) {
+        public OnlinePaymentService(ICustomerBankRepository customerBankRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
             _bankRepo = customerBankRepository;
+            _invoiceRepo = kpayInvoiceRepository;
         }
         #endregion
 
         #region methods
+        public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
+            _invoiceRepo.DeleteInvoice(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+        }
+
         public List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext) {
-            List<EF.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(GetDivision(userContext.BranchId), userContext.CustomerId);
+            List<EFCustomer.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(GetDivision(userContext.BranchId), userContext.CustomerId);
 
             List<CustomerBank> banks = new List<CustomerBank>();
 
-            foreach (EF.CustomerBank entity in bankEntities) {
+            foreach (EFCustomer.CustomerBank entity in bankEntities) {
                 if (entity != null) {
                     CustomerBank bank = new CustomerBank();
                     bank.Parse(entity);
@@ -42,7 +53,7 @@ namespace KeithLink.Svc.InternalSvc {
         }
 
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
-            EF.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
+            EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
 
             if (bankEntity == null)
                 return null;
@@ -83,7 +94,43 @@ namespace KeithLink.Svc.InternalSvc {
                 return null;
             }
         }
-        #endregion
 
-    }
+        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+            List<InvoiceModel> returnInvoices = new List<InvoiceModel>();
+
+			return kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+        }
+
+        public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+			
+			//TODO: add check to see if customer is KPay customer
+            returnInvoices.Select(i => { i.IsPayable = true; return i; }).ToList();
+
+            return returnInvoices;
+        }
+       
+		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		{
+			var confId = _invoiceRepo.GetNextConfirmationId();
+
+			foreach (var payment in payments)
+				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
+				{
+					AccountNumber = payment.AccountNumber,
+					BranchId = GetDivision(userContext.BranchId),
+					ConfirmationId = confId,
+					CustomerNumber = userContext.CustomerId,
+					InvoiceNumber = payment.InvoiceNumber,
+					PaymentAmount = payment.PaymentAmount,
+					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+					UserName = user.EmailAddress
+				});
+
+
+		}
+		#endregion				
+	}
 }

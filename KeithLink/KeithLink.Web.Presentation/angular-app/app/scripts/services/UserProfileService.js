@@ -135,6 +135,15 @@ angular.module('bekApp')
         });
 
         return deferred.promise;
+      },
+
+      uploadAvatar: function() {
+        // TODO: add upload avatar api call
+        // needs to return url so you can refresh the profile object
+      },
+
+      removeAvatar: function() {
+        // TODO: add remove avatar api call
       }
     };
 

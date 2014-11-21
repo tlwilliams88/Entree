@@ -2,24 +2,40 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
-  <xs:element name="GetAllBankAccounts">
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+  <xs:element name="DeleteInvoice">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q1:UserSelectedContext" />
+        <xs:element minOccurs="0" name="invoiceNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteInvoiceResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllBankAccounts">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q2:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetAllBankAccountsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" minOccurs="0" name="GetAllBankAccountsResult" nillable="true" type="q2:ArrayOfCustomerBank" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" minOccurs="0" name="GetAllBankAccountsResult" nillable="true" type="q3:ArrayOfCustomerBank" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetBankAccount">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q3:UserSelectedContext" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q4:UserSelectedContext" />
         <xs:element minOccurs="0" name="accountNumber" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -27,8 +43,51 @@
   <xs:element name="GetBankAccountResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" minOccurs="0" name="GetBankAccountResult" nillable="true" type="q4:CustomerBank" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" minOccurs="0" name="GetBankAccountResult" nillable="true" type="q5:CustomerBank" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInvoiceTransactions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q6:UserSelectedContext" />
+        <xs:element minOccurs="0" name="invoiceNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInvoiceTransactionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="GetInvoiceTransactionsResult" nillable="true" type="q7:ArrayOfInvoice" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOpenInvoiceHeaders">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q8:UserSelectedContext" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOpenInvoiceHeadersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="GetOpenInvoiceHeadersResult" nillable="true" type="q9:ArrayOfInvoice" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MakeInvoicePayment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q10:UserSelectedContext" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q11:userprofile" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="payments" nillable="true" type="q12:ArrayOfPaymentTransactionModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MakeInvoicePaymentResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

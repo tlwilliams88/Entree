@@ -9,6 +9,7 @@ using System.Web.Http;
 using System.IO;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -27,29 +28,29 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
-        [HttpGet]
-        [ApiKeyedRoute("usermessages/")]
-        public List<UserMessageModel> ReadUserMessages()
+        [HttpPost]
+        [ApiKeyedRoute("messaging/usermessages/")]
+		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
         {
-            return messagingServiceRepository.ReadUserMessages(this.AuthenticatedUser);
+            return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 
-        [HttpPut]
-        [ApiKeyedRoute("usermessages/markasread")]
+		[HttpPut]
+        [ApiKeyedRoute("messaging/usermessages/markasread")]
         public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
         {
             messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
         }
 
         [HttpGet]
-        [ApiKeyedRoute("usermessages/unreadcount")]
+        [ApiKeyedRoute("messaging/usermessages/unreadcount")]
         public int ReadUnreadMessageCount()
         {
             return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser);
         }
 
         [HttpPut]
-        [ApiKeyedRoute("messagingpreferences/")]
+        [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
             messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
@@ -58,7 +59,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
-		
+        [HttpPut]
+        [ApiKeyedRoute("messaging/registerpushdevice")]
+        public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
+        {
+            messagingServiceRepository.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
+            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
+            ret.SuccessResponse = true;
+            return ret;
+        }		
         #endregion
     }
 }

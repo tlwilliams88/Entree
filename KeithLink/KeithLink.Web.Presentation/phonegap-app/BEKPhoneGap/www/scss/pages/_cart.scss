@@ -2,3 +2,19 @@
   left: initial;
   right: 0;
 }
+
+.critical-items__tabset {
+  .nav-tabs li a {
+    padding: 8px 15px;
+    // font-weight: 600;
+  }
+  .nav-tabs li.active a, .nav-tabs li.active a:hover {
+    padding-top: 6px;
+    // background-color: $background;
+    border-bottom: 1px solid $color-border;
+  }
+
+  .tab-content {
+    @include scroll-div-vertical(150px);
+  }
+}

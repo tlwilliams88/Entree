@@ -363,6 +363,14 @@
     <Compile Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.Designer.cs">
       <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.cs" />
+    <Compile Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.Designer.cs">
+      <DependentUpon>201411191433209_Remove_ListitemStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.cs" />
+    <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.Designer.cs">
+      <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -396,6 +404,7 @@
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Messaging\UserPushNotificationDeviceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
@@ -809,6 +818,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411180432123_cms add productid 20141117.resx">
       <DependentUpon>201411180432123_cms add productid 20141117.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411191433209_Remove_ListitemStatus.resx">
+      <DependentUpon>201411191433209_Remove_ListitemStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.resx">
+      <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -3,38 +3,82 @@
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
         <button type="button" class="btn-lg btn btn-default dropdown-toggle">
-          {{currentCart.name}} <span class="caret"></span>
+          {{currentCart.name || '# ' + currentCart.ordernumber}} <span class="icon-arrow-down6"></span>
         </button>
-        <table class="hand dropdown-menu">
-          <tr ng-click="goToCart(cart)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
-            <td><span class="overflow">{{cart.name}}</span></td>
-            <td>{{cart.items.length}}</td>
-            <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
-          </tr>
-          <tr ng-click="createNewCart()">
-            <td colspan="3">Create a Cart...</td>
-          </tr>
-        </table>
+        <div class="dropdown-menu">
+          
+          <table class="table no-margin">
+            <caption class="text-left">Carts</caption>
+            <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
+              <td><span class="overflow">{{cart.name}}</span></td>
+              <td>{{cart.items.length}}</td>
+              <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
+            </tr>
+            <tr ng-click="createNewCart()">
+              <td colspan="3">Create a Cart...</td>
+            </tr>
+          </table>
+
+          <table class="table no-margin" ng-if="changeOrders.length > 0">
+            <caption class="text-left">Change Orders</caption>
+            <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
+              <td><span class="overflow"># {{order.ordernumber}}</span></td>
+              <td>{{order.itemcount}}</td>
+              <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
+            </tr>
+            <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
+              <td colspan="3">No other change orders.</td>
+            </tr>
+          </table>
+          
+        </div>
       </div>
 
-      <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
-      <a confirmed-click="deleteCart(currentCart)" class="hidden-print" ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}"><span class="large-icon text-light icon-trash"></span></a>
+      <div ng-if="!isChangeOrder" style="display:inline-block;">
+        <a ng-click="startEditCartName(currentCart.name)"><span class="hidden-print large-icon text-light icon-pencil"></span></a>
+        <a 
+          class="hidden-print" 
+          confirmed-click="deleteCart(currentCart)" 
+          ng-confirm-click="{{'This will delete the cart ' + currentCart.name + ' and all items within. Are you sure you want to delete this cart?'}}">
+          <span class="large-icon text-light icon-trash"></span>
+        </a>
+      </div>
     </div>
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
-      <input check-duplicate-field="name" collection="carts" type="text" max-length="15" focus-me="currentCart.isRenaming" class="input-lg form-control" required ng-model="editCart.name" name="cartName" id="cartName" />
-      <button ng-disabled="renamecartForm.$invalid" class="btn-no-style" type="submit" ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();"><span class="large-icon text-green icon-checkmark"></span></button>
+      <input 
+        check-duplicate-field="name" 
+        collection="carts" 
+        type="text" 
+        max-length="15" 
+        focus-me="currentCart.isRenaming" 
+        class="input-lg form-control" 
+        required 
+        ng-model="editCart.name" 
+        name="cartName" 
+        id="cartName" />
+      
+      <button 
+        ng-disabled="renamecartForm.$invalid" 
+        class="btn-no-style" 
+        type="submit" 
+        ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
+        <span class="large-icon text-green icon-checkmark"></span>
+      </button>
+      
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
     </form>
+
   </div>
   <div class="col-md-5 hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
     <div class="pull-right">
       <div class="page-header__buttons">
-        <button class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-        <button class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+        <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+        <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+        <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
         <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
@@ -46,74 +90,68 @@
 
 <form unsaved-warning-form novalidate name="cartForm" class="form-horizontal style-validation-errors">
 <div class="row">
-  <div class="col-xs-12 col-sm-9 col-md-7 col-lg-6">
+  <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
     <div class="info-box">
       
       <div class="row">
         <div class="col-xs-12">
+          
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+          <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
+
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-sm-5 col-md-4 text-green currency-value">
+      <div class="row" ng-if="!isChangeOrder">
+        <div class="col-sm-4 col-md-4 text-green currency-value">
           {{getSubtotal(currentCart.items) | currency}}
         </div>
-        <div class="col-sm-7 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+
+        <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
           <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
-          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || !currentCart.items || currentCart.items.length === 0" ng-click="submitOrder(currentCart)" >Submit Order</button>
+          
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="submitOrder(currentCart)" >Submit Order</button>
         </div>
       </div>
 
-      <!-- <div class="row">
-        <h3 class="col-xs-12">Upcoming Ship Dates</h3>
-        <div class="col-xs-6 col-sm-3 col-md-4">
-          Ship Date
+      <div class="row" ng-if="isChangeOrder">
+        <div class="col-sm-4 col-md-4 currency-value">
+          {{currentCart.ordertotal | currency}}
         </div>
-        <div class="col-xs-6 col-sm-9 col-md-8">
-          Submit By
+
+        <div class="col-sm-8 col-md-8 hidden-print button-row text-right-lg text-left-xs">
+          <button class="btn-lg btn btn-primary" ng-disabled="cartform.$pristine" ng-click="saveChangeOrder(currentCart)">Update</button>
+
+          <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Re-Submit</button>
+
+          <button class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to cancel order # ' + currentCart.ordernumber + '?'}}">Cancel</button>
         </div>
-        <div class="text-light col-xs-6 col-sm-3 col-md-4" ng-repeat-start="shipDate in shipDates">
-          {{shipDate.dayofweek}} {{shipDate.shipdate}}
-        </div>
-        <div class="text-light col-xs-6 col-sm-9 col-md-8" ng-repeat-end>
-          {{shipDate.cutoffdatetime}}
-        </div>
-      </div> -->
+      </div>
 
       <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <p class="form-control-static">
-            {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
-            <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
-              
-              <!-- <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="shipDate in shipDates">
-                  <a ng-click="selectShipDate(shipDate)">
-                    {{shipDate.dayofweek}}
-                    <span class="pull-right">{{shipDate.shipdate}}</span>
-                    {{shipDate.cutoffdatetime}}
-                  </a>
-                </li>
-              </ul> -->
-
-              <table class="dropdown-menu">
-                <tr style="cursor:default">
-                  <td></td>
-                  <td>Ship Date</td>
-                  <td>Submit By</td>
-                </tr>
-                <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
-                  <td>{{shipDate.dayofweek}}</td>
-                  <td class="nowrap">{{shipDate.shipdate}}</td>
-                  <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
-                </tr>
-              </table>
-
-            </button>
-          </p>
+          <div class="btn-group" dropdown is-open="showShipDates">
+            <p class="form-control-static">
+              {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+              <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
+              <div class="dropdown-menu">
+                <table class="table no-margin">
+                  <tr>
+                    <th></th>
+                    <th>Ship Date</th>
+                    <th>Submit By</th>
+                  </tr>
+                  <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
+                    <td>{{shipDate.dayofweek}}</td>
+                    <td class="nowrap">{{shipDate.shipdate}}</td>
+                    <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
+                  </tr>
+                </table>
+              </div>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -125,23 +163,123 @@
         </div>
       </div>
 
-      <div class="row">
-        <div class="col-offset-sm-2 col-sm-10">
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="currentCart.active" name="activeCart" id="activeCart"> Make this my Active Cart
-            </label>
-          </div>
-        </div>
-      </div>
+      <p class="sub-content" ng-if="isChangeOrder">This is a change order. Updated prices will not be reflected until you re-submit the order.</p>
 
     </div>
   </div>
+
+  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
+    <tabset class="tabset critical-items__tabset tab-border">
+
+      <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
+        <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
+
+        <table class="table table-striped-rows table-narrow">
+          <thead>
+            <tr>
+              <th class="input-col">
+                <input type="checkbox" ng-model="mandatoryList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(mandatoryItems, mandatoryList.allSelected)">
+              </th>
+              <th class="sort-col-header" ng-click="mandatorySortBy='itemnumber';mandatorySortOrder=!mandatorySortOrder;">
+                Item #
+                <span sort-icons field="'itemnumber'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+              </th>
+              <th class="sort-col-header" ng-click="mandatorySortBy='name';mandatorySortOrder=!mandatorySortOrder;">
+                Name
+                <span sort-icons field="'name'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+              </th>
+              <th>
+                Qty
+              </th>
+              <th>
+                # in Cart
+              </th>
+              <th class="input-col">
+                <a class="pull-right" ng-show="mandatoryItems && mandatoryItems.length > 0" ng-click="addSelectedToCart(mandatoryItems)"><span class="icon-plus3 large-icon"></span> Add</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in (mandatoryItems = (mandatoryList.items | meetsMinimumQuantity:currentCart.items | orderBy:mandatorySortBy:mandatorySortOrder))"  ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }">
+              <td class="input-col">
+                <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
+              </td>
+              <td>
+                <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+              </td>
+              <td>
+                {{item.name}}
+              </td>
+              <td>
+                {{item.parlevel}}
+              </td>
+              <td colspan="2">
+                {{item.qtyInCart}}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot ng-show="mandatoryItems.length === 0 || !mandatoryItems">
+            <tr>
+              <td colspan="5">
+                There are no missing mandatory items for this cart.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </tab>
+
+      <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0" active="reminderList.active">
+        <table class="table table-striped-rows table-narrow">
+          <thead>
+            <tr>
+              <th class="input-col">
+                <input type="checkbox" ng-model="reminderList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(reminderItems, reminderList.allSelected)">
+              </th>
+              <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
+                Item #
+                <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+              </th>
+              <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
+                Name
+                <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+              </th>
+              <th class="input-col">
+                <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"><span class="icon-plus3 large-icon"></span> Add</a>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="item in (reminderItems = (reminderList.items | meetsMinimumQuantity:currentCart.items | orderBy:reminderSortBy:reminderSortOrder))"  ng-class="{ odd : $odd, even: $even, 'item-selected': item.isSelected }">
+              <td class="input-col">
+                <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
+              </td>
+              <td>
+                <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+              </td>
+              <td colspan="2">
+                {{item.name}}
+              </td>
+            </tr>
+          </tbody>
+          <tfoot ng-show="reminderItems.length === 0 || !reminderItems">
+            <tr>
+              <td colspan="5">
+                There are no missing reminder items for this cart.
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </tab>
+     
+    </tabset>
+  </div>
+
 </div>
 
 <div class="row sub-content">
   <div class="col-md-12">
     <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <h4 class="visible-xs-inline-block">Cart Items</h4>
     <table class="table table-striped-rows table-border" navigate-table>
       <thead>
         <tr>
@@ -214,7 +352,7 @@
         </tr> <!-- end Filter row -->
 
         <tr ng-class="{ odd : $odd, even: $even }" 
-            ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay)) track by item.cartitemid">
+            ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay))">
           <td>
             <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
           </td>
@@ -247,13 +385,24 @@
               <label for="each"></label>
             </ng-form>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{item.each ? item.packageprice : item.caseprice | currency}}
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
           </td>
+
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.price | currency}}
+            <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+          </td>
+          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+            {{item.linetotal | currency}}
+          </td>
+
+
           <td class="hidden-print large-icon icon-col">
             <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
@@ -288,17 +437,31 @@
                   <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
                 </td>
               </tr>
-              <tr>
+              
+              <tr ng-if="!isChangeOrder">
                 <td>Price</td>
                 <td>
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </td>
               </tr>
-              <tr>
+              <tr ng-if="!isChangeOrder">
                 <td>Ext Price</td>
                 <td>{{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}</td>
               </tr>
+              
+              <tr ng-if="isChangeOrder">
+                <td>Price</td>
+                <td>
+                  {{item.price | currency}}
+                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                </td>
+              </tr>
+              <tr ng-if="isChangeOrder">
+                <td>Ext Price</td>
+                <td>{{item.linetotal | currency}}</td>
+              </tr>
+
               <tr>
                 <td colspan="2" class="sub-content">
                   <button ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
@@ -307,6 +470,7 @@
             </table>
           </td>
         </tr>
+
       </tbody>
       <tfoot>
         <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">

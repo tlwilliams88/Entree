@@ -179,6 +179,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
+    <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
@@ -236,6 +237,9 @@
     <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
     <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.MessagingService\MessagingService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -251,6 +255,24 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService51.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService52.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService53.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />

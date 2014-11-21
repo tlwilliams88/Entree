@@ -1,54 +1,67 @@
 <div page-header-bar>
   <div header-message>
-    Order Status
+    Order Details
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <button title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
+    <button title="Export" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-md-7 col-lg-6">
+  <div class="col-sm-12 col-md-9 col-lg-8">
     <div class="info-box">
       <h3 class="no-margin">ORDER INFORMATION</h3>
       <div class="order-item">
         <div class="order-item-title">Order #</div>
-        <div class="order-item-value">{{order.ordernumber}}</div>
+        <div class="order-item-value-1">{{order.ordernumber}}</div>
         <div class="order-item-title">Order Status</div>
-        <div class="order-item-value">PENDING</div>
+        <div class="order-item-value-2">{{order.status}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Order Date</div>
-        <div class="order-item-value">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+        <div class="order-item-value-1">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+        <div class="order-item-title">Requested Ship Date</div>
+        <div class="order-item-value-2">{{order.requestedshipdate | date:'MM/dd/yyyy h:mma'}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Delivery Date</div>
-        <div class="order-item-value">{{order.deliveryDate || 'N/A'}}</div>
+        <div class="order-item-value-1">{{order.deliverydate || 'N/A'}}</div>
         <div class="order-item-title">Delivered</div>
-        <div class="order-item-value"></div>
+        <div class="order-item-value-2">{{order.delivered || 'N/A'}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Total Cost</div>
-        <div class="order-item-value">{{order.ordertotal | currency}}</div>
+        <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
         <div class="order-item-title">Items</div>
-        <div class="order-item-value">{{order.itemcount}}</div>
+        <div class="order-item-value-2">{{order.itemcount}}</div>
       </div>
       <div class="order-item">
         <div class="order-item-title">Invoice #</div>
-        <div class="order-item-value">{{order.invoicenumber || 'N/A'}}</div>
+        <div class="order-item-value-1">{{order.invoicenumber || 'N/A'}}</div>
         <div class="order-item-title">Invoice Status</div>
-        <div class="order-item-value">{{order.invoicestatus}}</div>
+        <div class="order-item-value-2">{{order.invoicestatus || 'N/A'}}</div>
       </div>
-      <hr>
-      <a href="">VIEW ORDER CHANGES</a>
+      <!-- <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
+        <input type="text" order-cutoff-date ng-model="cutoffdate">
+      </form>
+      <div ng-if="order.ischangeorderallowed">
+        <hr>
+        <p class="text-green">You can make changes to this order until {{cutoffdate}}.</p>
+        <button class="btn btn-lg btn-primary">Change Order</button>
+        <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
+      </div> -->
+      <hr ng-if="order.ischangeorderallowed">
+      <div ng-if="order.ischangeorderallowed">
+        <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View Change Order</a>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="row sub-content">
   <div class="col-xs-12 text-right">
-    Showing {{filteredItems.length}} of {{order.lineItems.length}} Items
+    Showing {{filteredItems.length}} of {{order.items.length}} Items
   </div>
 </div>
 
@@ -77,8 +90,16 @@
       </th>
       <th class="hidden-xs hidden-sm"></th>
       <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
-        Qty
+        # Requested
         <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th>
+      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
+        # Ordered
+        <span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th>
+      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='quantityshipped';sortOrder=!sortOrder;">
+        # Shipped
+        <span sort-icons field="'quantityshipped'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="hidden-xs hidden-sm sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder;">
         Each
@@ -91,6 +112,10 @@
       <th class="hidden-xs hidden-sm sort-col-header text-right" ng-click="sortBy='linetotal';sortOrder=!sortOrder;">
         Ext Price
         <span sort-icons field="'linetotal'" sortorder="sortOrder" sortby="sortBy"></span>
+      </th>
+      <th class="sort-col-header" ng-click="sortBy='status';sortOrder=!sortOrder;">
+        Status
+        <span sort-icons field="'status'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="large-icon icon-col">
         <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
@@ -117,13 +142,16 @@
       <td class="hidden-xs hidden-sm"></td>
       <td class="hidden-xs hidden-sm"></td>
       <td class="hidden-xs hidden-sm"></td>
+      <td class="hidden-xs hidden-sm"></td>
+      <td class="hidden-xs hidden-sm"></td>
+      <td></td>
       <td class="large-icon icon-col">
         <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
       </td>
     </tr> <!-- end Filter Row -->
 
-    <tr ng-repeat-start="item in (filteredItems = (order.lineItems | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
-      <td>
+    <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
+      <td ng-class="{ 'red-border': item.substituteditemnumber }">
         <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
       </td>
       <td class="hidden-xs hidden-sm notes-col">{{item.notes}}</td>
@@ -135,11 +163,14 @@
       <td>{{item.name}}</td>
       <td class="hidden-xs hidden-sm" item-icons></td>
       <td>{{item.quantity}}</td>
+      <td class="hidden-xs hidden-sm">{{item.quantityordered}}</td>
+      <td class="hidden-xs hidden-sm">{{item.quantityshipped}}</td>
       <td class="hidden-xs hidden-sm">
         {{item.each ? 'Y' : 'N'}}
       </td>
       <td class="hidden-xs hidden-sm text-right">{{item.price | currency}}</td>
       <td class="hidden-xs hidden-sm text-right">{{item.linetotal | currency}}</td>
+      <td>{{item.mainframestatus}}</td>
       <td class="large-icon icon-col">
         <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
       </td>
@@ -165,6 +196,14 @@
             <td>{{item.brand}}</td>
           </tr>
           <tr>
+            <td>Qty Ordered</td>
+            <td>{{item.quantityordered}}</td>
+          </tr>
+          <tr>
+            <td>Qty Shipped</td>
+            <td>{{item.quantityshipped}}</td>
+          </tr>
+          <tr>
             <td item-icons></td>
           </tr>
           <tr>
@@ -185,7 +224,7 @@
       </td>
     </tr>
   </tbody>
-  <tfoot ng-show="(order.lineItems.length === 0 || !order.lineItems || filteredItems.length === 0) && order">
+  <tfoot ng-show="(order.items.length === 0 || !order.items || filteredItems.length === 0) && order">
     <tr>
       <td colspan="15">
         There are no products to display.

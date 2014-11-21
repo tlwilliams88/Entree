@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Invoices;
+using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,23 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value)
+		{
+			return new InvoiceModel()
+			{
+				BranchId = value.Division.Substring(0, 3),
+				InvoiceNumber = value.InvoiceNumber.Trim(),
+				TypeDescription = value.InvoiceType,
+				Status = InvoiceStatus.Open, //TODO: Determine the correct status???
+				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open),
+				CustomerNumber = value.CustomerNumber,
+				Amount = value.AmountDue,
+				DueDate = value.DueDate,
+				InvoiceDate = value.InvoiceDate,
+				OrderDate = value.InvoiceDate
+			};
+		}
+
 		public static Invoice ToEFInvoice(this InvoiceModel invoice)
 		{
 			return new KeithLink.Svc.Core.Models.EF.Invoice(){

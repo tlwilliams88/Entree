@@ -20,7 +20,7 @@ $sidebar-nav__text--selected: $color-white;
     background-color: $sidebar__background--light;
     padding: 0;
     width: $sidebar-width;
-    min-height: 750px;
+    min-height: 780px;
   }
   
   a {
@@ -61,6 +61,14 @@ $sidebar-nav__text--selected: $color-white;
         text-align: center;
         font-size: 16px;
       }
+      
+      .badge {
+        float: right;
+        background-color: $color-red;
+        border-radius: 20px;
+        padding: 2px 7px;
+        color: $color-white;
+      }
     }
     
     .is-selected li {
@@ -100,7 +108,7 @@ $sidebar-nav__text--selected: $color-white;
     font-size: 11px;
     font-weight: 300;
     position: absolute;
-    bottom: $gutter-size;
+    bottom: 10px;
     left: 0;
   }
 }

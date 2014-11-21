@@ -11,6 +11,7 @@ using System.Text;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -79,6 +80,16 @@ namespace KeithLink.Svc.InternalSvc
         {
             return messagingLogic.ReadMessagingPreferences(userId);
         }
+		
+		public PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging)
+		{
+			return messagingLogic.ReadPagedUserMessages(user, paging);
+		}
 
+
+        public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
+        {
+            return messagingLogic.RegisterPushDevice(user, deviceRegistrationModel);
+        }
     }
 }

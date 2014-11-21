@@ -1,0 +1,63 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Import a New Order</h3>
+</div>
+<div class="modal-body">
+
+  <form name="orderImportForm" class="form-horizontal style-validation-errors">
+    <div class="form-group">
+      <label for="file" class="col-sm-3 control-label">File: </label>
+      <div class="col-sm-9">
+        <input type="file" ng-file-select="onFileSelect($files)">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="itemType" class="col-sm-3 control-label">Item Type: </label>
+      <div class="col-sm-9">
+        <select name="itemType" id="" required ng-model="options.itemnumber">
+          <option value="0">Item Number</option>
+          <option value="1">UPC</option>
+          <option value="2">Item Number or UPC</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="contents" class="col-sm-3 control-label">Contents: </label>
+      <div class="col-sm-9">
+        <select name="contents" id="" required ng-model="options.contents">
+          <option value="0">Item Only</option>
+          <option value="1">Item Qty</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="fileFormat" class="col-sm-3 control-label">File Format: </label>
+      <div class="col-sm-9">
+        <select name="fileFormat" id="" required ng-model="options.fileformat">
+          <option value="0">CSV</option>
+          <option value="1">Tab</option>
+          <option value="2">Excel</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="ignoreZeroes" class="col-sm-3 control-label">Ignore zero quantities: </label>
+      <div class="col-sm-9">
+        <input type="checkbox" name="ignoreZeroes" ng-model="options.ignorezero">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="ignoreFirstLine" class="col-sm-3 control-label">Ignore first line: </label>
+      <div class="col-sm-9">
+        <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
+      </div>
+    </div>
+    
+
+  </form>
+
+</div>
+<div class="modal-footer">
+    <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
+    <button class="btn-lg btn btn-primary" ng-click="startOrderUpload(options)">Import</button>
+    <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

@@ -18,6 +18,7 @@ module.exports = function(config) {
       'app/lib/angular-cookies/angular-cookies.js',
       'app/lib/angular-resource/angular-resource.js',
       'app/lib/angular-touch/angular-touch.js',
+      'app/lib/angular-sanitize/angular-sanitize.js',
       'app/lib/angular-local-storage/angular-local-storage.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js',
@@ -29,6 +30,8 @@ module.exports = function(config) {
       'app/lib/angular-toaster/toaster.js',
       'app/lib/angular-loading-bar/loading-bar.js',
       'app/lib/angular-file-upload/angular-file-upload.js',
+      'app/lib/angular-fcsa-number/fcsaNumber.js',
+      'app/lib/angular-base64-upload/angular-base64-upload.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

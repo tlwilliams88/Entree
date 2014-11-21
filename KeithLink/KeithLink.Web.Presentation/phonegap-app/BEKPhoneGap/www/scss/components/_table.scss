@@ -20,7 +20,6 @@ ng-class="{ odd : $odd, even: $even }"
 }
 
 .table-border {
-  // border: 1px solid $color-border;
   > thead:first-child > tr:first-child > th {
     border-top: 1px solid $color-border;
   }
@@ -29,13 +28,22 @@ ng-class="{ odd : $odd, even: $even }"
   > tfoot > tr > td {
     &:first-child {
       border-left: 1px solid $color-border;
+
+      &.red-border {
+        border-left:3px solid $color-red;
+      }
     }
     &:last-child {
       border-right: 1px solid $color-border;
     }
   }
-  > tbody, > tfoot {
+  > tbody > tr > td, 
+  > tfoot > tr > td {
     border-bottom: 1px solid $color-border;
+  }
+  > tbody > tr:first-child > td,
+  > tbody > tr:first-child > th {
+    border-top: none;
   }
 }
 
@@ -50,10 +58,6 @@ ng-class="{ odd : $odd, even: $even }"
       cursor: pointer;
       white-space: nowrap;
     }
-  }
-  > tbody > tr:first-child > td,
-  > tbody > tr:first-child > th {
-    border-top: none;
   }
 
   > tbody > tr.mobile-details-row > td {
@@ -74,6 +78,32 @@ ng-class="{ odd : $odd, even: $even }"
       }
     }
   }
+
+  > tbody + tbody {
+    border-top: none;
+  }
+
+  .item-selected > tr > td, 
+  .item-selected > td {
+    background-color: $color-yellow !important;
+  }
+}
+
+.table-narrow {
+  margin-bottom: 0;
+
+  > thead > tr > th, 
+  > thead > tr > td, 
+  > tbody > tr > th, 
+  > tbody > tr > td, 
+  > tfoot > tr > th, 
+  > tfoot > tr > td {
+    padding: 6px 5px;
+
+    &.input-col {
+      padding: 3px 5px;
+    }
+  }
 }
 
 // inputs 
@@ -88,6 +118,7 @@ table {
         input[type="text"] {
           border: 1px solid #c3bc9c;
           padding: 5px;
+          width: 100%;
         }
       }
 

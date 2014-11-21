@@ -8,6 +8,7 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Core.Interface.Messaging
 {
@@ -20,9 +21,11 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification);
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
+        bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 
+		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
 
 
         int GetUnreadMessagesCount(UserProfile user);

@@ -25,12 +25,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListCacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
 		private readonly IProductImageRepository productImageRepository;
+		private readonly IListShareRepository listShareRepository;
         #endregion
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -40,6 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.listCacheRepository = listCacheRepository;
 			this.priceLogic = priceLogic;
 			this.productImageRepository = productImageRepository;
+			this.listShareRepository = listShareRepository;
 		}
         #endregion
 
@@ -63,7 +65,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				Label = newItem.Label,
 				Par = newItem.ParLevel,
 				Position = newItem.Position,
-                Status = newItem.Status
 			};
 
 			list.Items.Add(item);
@@ -304,7 +305,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return list.SelectMany(i => i.Items.Select(x => x.ItemNumber)).ToList();
 		}
 
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool returnAllItems = false)
+		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
 			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
@@ -313,10 +314,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -326,7 +327,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list == null)
 				return null;
 
-			var returnList = list.ToListModel(catalogInfo,returnAllItems);
+			var returnList = list.ToListModel(catalogInfo);
 
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
@@ -334,14 +335,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return returnList;
 		}
 		
-        public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool returnAllItems = false)
+        public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
 		{
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).ToList();
 
 			if (list == null)
 				return null;
 
-			return list.Select(b => b.ToListModel(catalogInfo, returnAllItems)).ToList();
+			return list.Select(b => b.ToListModel(catalogInfo)).ToList();
 		}
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
@@ -378,7 +379,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             if (list == null)
                 return null;
 
-            var returnList = list.Select(b => b.ToListModel(catalogInfo, true)).ToList();
+            var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
 
             returnList.ForEach(delegate(ListModel listItem) {
                 LookupProductDetails(user, listItem, catalogInfo);
@@ -387,7 +388,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return returnList;
         }
 
-        public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false, bool returnAllItems = false) {
+        public List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false) {
 			var list = ReadListForCustomer(user, catalogInfo, headerOnly);
 
 			
@@ -397,12 +398,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             if (!list.Where(l => l.Type.Equals(ListType.Favorite)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Favorites", BranchId = catalogInfo.BranchId }, ListType.Favorite);
-				ReadListForCustomer(user, catalogInfo, headerOnly);
+				list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
 
             if (!list.Where(l => l.Type.Equals(ListType.Reminder)).Any()) {
                 this.CreateList(user.UserId, catalogInfo, new ListModel() { Name = "Reminder", BranchId = catalogInfo.BranchId }, ListType.Reminder);
-				ReadListForCustomer(user, catalogInfo, headerOnly);
+				list = ReadListForCustomer(user, catalogInfo, headerOnly);
             }
  
             if (headerOnly)
@@ -410,12 +411,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsContractList = l.Type == ListType.Contract, 
 					IsFavorite = l.Type == ListType.Favorite, 
 					IsWorksheet = l.Type == ListType.Worksheet, 
-					IsReminder = l.Type == ListType.Reminder, 
+					IsReminder = l.Type == ListType.Reminder,
+ 					IsMandatory = l.Type == ListType.Mandatory,
 					ReadOnly = l.ReadOnly,
+					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
-                var returnList = list.Select(b => b.ToListModel(catalogInfo, returnAllItems)).ToList();
+                var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
                 var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
 
                 var processedList = new List<ListModel>();
@@ -451,7 +454,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public void UpdateItem(ListItemModel item)
 		{
-			listItemRepository.Update(new ListItem() { Id = item.ListItemId, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel, Position = item.Position, Status = item.Status });
+			listItemRepository.Update(new ListItem() { Id = item.ListItemId, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel, Position = item.Position});
 			unitOfWork.SaveChanges();
 
 			var updatedItem = listItemRepository.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList).FirstOrDefault();
@@ -532,10 +535,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var customer in shareListModel.Customers)
 			{
-				listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
+				if(!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
+					listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
 			}
+
+			var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
+
+			foreach (var item in itemsToRemove)
+				listShareRepository.Delete(item);
+			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			if (cachedList != null)
+			{
+				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+			}
 		}
         
 		#endregion

@@ -17,11 +17,11 @@ namespace KeithLink.Svc.Core.Extensions
 				DisplayName = list.Name,
 				Type = KeithLink.Svc.Core.Models.EF.ListType.Custom,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes, Status = i.Status }).ToArray()
+				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes}).ToArray()
 			};
 		}
 
-		public static ListModel ToListModel(this List list,UserSelectedContext catalogInfo, bool returnAllItems = false)
+		public static ListModel ToListModel(this List list,UserSelectedContext catalogInfo)
 		{
 			return new ListModel()
 			{
@@ -31,14 +31,14 @@ namespace KeithLink.Svc.Core.Extensions
 				IsWorksheet = list.Type == ListType.Worksheet,
                 IsReminder = list.Type == ListType.Reminder,
 				IsMandatory = list.Type == ListType.Mandatory,
+				SharedWith = list.Shares.Select(s => s.CustomerId).ToList(),
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
 				IsSharing = list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId),
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    returnAllItems == false ? list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).Where(i => i.Status.Equals(Core.Enumerations.List.ListItemStatus.Current)).ToList() :
-                    list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, Status = i.Status, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()
+                    list.Items.Select(i => new ListItemModel() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()
 			};
 		}
 	}
