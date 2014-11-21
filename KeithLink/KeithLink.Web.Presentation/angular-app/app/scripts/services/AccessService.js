@@ -59,7 +59,7 @@ angular.module('bekApp')
       },
 
       canManageLists: function() {
-        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
+        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
       },
 
       canCreateOrders: function() {
