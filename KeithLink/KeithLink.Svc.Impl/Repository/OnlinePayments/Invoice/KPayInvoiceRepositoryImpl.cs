@@ -44,16 +44,15 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
         
 		public long GetNextConfirmationId()
 		{
-			//var returnCode = new SqlParameter();
-			//returnCode.ParameterName = "@return_value";
-			//returnCode.SqlDbType = SqlDbType.Int;
-			//returnCode.Direction = ParameterDirection.Output;
+			var returnCode = new SqlParameter();
+			returnCode.ParameterName = "@ReturnCode";
+			returnCode.SqlDbType = SqlDbType.Int;
+			returnCode.Direction = ParameterDirection.Output;
 
-			//_dbContext.Context.Database.ExecuteSqlCommand(
-			//	"@return_value = [dbo].[procIncrementCounter]",
-			//	returnCode);
+			// assign the return code to the new output parameter and pass it to the sp
+			_dbContext.Context.Database.ExecuteSqlCommand("EXEC @ReturnCode = [dbo].[procIncrementCounter]", returnCode);
 			
-			return 1;
+			return (int)returnCode.Value;
 		}
 
 		public void PayInvoice(PaymentTransaction payment)
