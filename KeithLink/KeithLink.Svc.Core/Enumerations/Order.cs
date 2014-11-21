@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Core.Enumerations.Order
 		Entree,
         DSR,
         CustomerService,
+        KeithNet,
         Other
 	}
 

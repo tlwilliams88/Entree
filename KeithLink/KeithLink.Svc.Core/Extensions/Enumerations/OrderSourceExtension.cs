@@ -9,17 +9,18 @@ namespace KeithLink.Svc.Core.Extensions.Enumerations {
     public static class OrderSourceExtension {
 
         #region methods
-        public static void Parse(this OrderSource value, string input) {
+        public static OrderSource Parse(this OrderSource value, string input) {
             switch (input) {
                 case "B":
-                    value = OrderSource.Entree;
-                    break;
+                    return OrderSource.Entree;
+                case "C":
+                    return OrderSource.CustomerService;
                 case "K":
-                    value = OrderSource.DSR;
-                    break;
+                    return OrderSource.DSR;
+                case "T":
+                    return OrderSource.KeithNet;
                 default:
-                    value = OrderSource.Other;
-                    break;
+                    return OrderSource.Other;
             }
         }
 
@@ -30,7 +31,9 @@ namespace KeithLink.Svc.Core.Extensions.Enumerations {
                 case OrderSource.DSR:
                     return "K";
                 case OrderSource.CustomerService:
-                    return string.Empty;
+                    return "C";
+                case OrderSource.KeithNet:
+                    return "T";
                 case OrderSource.Other:
                     return string.Empty;
                 default:
