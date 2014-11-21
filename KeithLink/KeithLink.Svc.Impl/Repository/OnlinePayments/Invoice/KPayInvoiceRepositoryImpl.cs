@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
 				new SqlParameter("@Account", payment.AccountNumber),
 				new SqlParameter("@UserName", payment.UserName),
 				new SqlParameter("@Amount", payment.PaymentAmount),
-				new SqlParameter("@ConfId", payment.CustomerNumber),
+				new SqlParameter("@ConfId", payment.ConfirmationId),
 				new SqlParameter("@SchDate", payment.PaymentDate)
 				);
 
