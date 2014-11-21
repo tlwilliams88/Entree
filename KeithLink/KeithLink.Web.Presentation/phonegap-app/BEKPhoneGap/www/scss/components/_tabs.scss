@@ -1,6 +1,4 @@
-.nav-tabs {
-  border-bottom: 1px solid $color-border;
-
+.nav-tabs:not(.nav-justified) {
   li {
     a {
       margin-right: 5px;
@@ -14,20 +12,33 @@
       }
     }
     &.active a {
-      border: 1px solid $color-border;
       border-bottom-color: transparent;
       border-top: 3px solid $color-blue;
       padding-top: 10px;
       font-weight: normal;
+      background-color: $color-white;
 
       &:hover {
         @extend a;
+        border-bottom: 1px solid transparent;
       }
     }
   }
 }
 
-.tab-content {
+.nav-tabs.nav-justified {
+  > li.active > a {
+    border-bottom: 1px solid transparent;
+    &:hover {
+      border-bottom: 1px solid transparent;
+    }
+  }
+  > li > a {
+    font-size: 15px;
+  }
+}
+
+.tabset.tab-border .tab-content {
   .tab-pane {
     background-color: $color-white;
     border-left: 1px solid $color-border;
@@ -36,6 +47,12 @@
   }
 }
 
+.tabset.modal-body .tab-content {
+  padding: 15px;
+  border: 1px solid $color-border;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
 
 @media (max-width: $screen-xs-max) {
   .nav-tabs {

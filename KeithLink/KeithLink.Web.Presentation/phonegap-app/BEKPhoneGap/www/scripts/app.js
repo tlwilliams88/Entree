@@ -317,8 +317,8 @@ angular
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-          return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
+        transactions: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceTransactions($stateParams.invoiceNumber);
         }],
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
           return OrderService.getOrderDetails($stateParams.invoiceNumber);
@@ -442,8 +442,14 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices) {
+
+  PhonegapServices.PhonegapPushService.register().then(function(result) {
+      // Success!
+  }, function(err) {
+      // An error occurred. Show a message to the user
+  });
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);

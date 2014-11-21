@@ -4,7 +4,12 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       phonegap: {
         config: {
-          plugins: ['https://github.com/apache/cordova-plugin-network-information.git'],
+          plugins: ['https://github.com/apache/cordova-plugin-network-information.git',
+              'https://github.com/phonegap-build/PushPlugin.git',
+              'org.apache.cordova.device',
+              'org.apache.cordova.dialogs',
+              'org.apache.cordova.vibration'
+          ],
           maxBuffer: 500,
           platforms: ['ios', 'android'],
           config: {

@@ -6,16 +6,31 @@ angular.module('bekApp')
 
   $scope.list = list;
   $scope.customers = customers;
+  $scope.selectedShareCustomers = [];
+  $scope.selectedCopyCustomers = [];
+
+  // select shared customers
+  list.sharedwith.forEach(function(customerNumber) {
+    customers.forEach(function(customer) {
+      if (customerNumber === customer.customerNumber) {
+        $scope.selectedShareCustomers.push(customer);
+      }
+    });
+  });
 
   $scope.shareList = function(list, customers) {
     ListService.shareList(list, customers).then(function() {
-      $modalInstance.close();
+      var sharedwith = [];
+      customers.forEach(function(customer) {
+        sharedwith.push(customer.customerNumber);
+      });
+      $modalInstance.close(sharedwith);
     });
   };
 
   $scope.copyList = function(list, customers) {
     ListService.copyList(list, customers).then(function() {
-      $modalInstance.close();
+      $modalInstance.close(list.sharedwith);
     });
   };
 
@@ -23,14 +38,13 @@ angular.module('bekApp')
     $modalInstance.dismiss('cancel');
   };
 
-  $scope.selectedCustomers = [];
-  $scope.toggleCustomerSelection = function(customer) {
-    var idx = $scope.selectedCustomers.indexOf(customer);
+  $scope.toggleCustomerSelection = function(customerList, customer) {
+    var idx = customerList.indexOf(customer);
 
     if (idx > -1) {
-      $scope.selectedCustomers.splice(idx, 1);
+      customerList.splice(idx, 1);
     } else {
-      $scope.selectedCustomers.push(customer);
+      customerList.push(customer);
     }
   };
 

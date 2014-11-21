@@ -8,15 +8,15 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('NotificationService', [ '$http', 'Notification',
-    function ($http, Notification) {
+  .factory('NotificationService', [ '$http', '$filter', 'Notification',
+    function ($http, $filter, Notification) {
     
     var Service = {
-      userNotifications: { }, // must be an object
+      userNotificationsCount: { }, // must be an object
 
       getUnreadMessageCount: function() {
         return $http.get('/messaging/usermessages/unreadcount').then(function(response) {
-          angular.copy({ unread: response.data }, Service.userNotifications); // convert int to object
+          angular.copy({ unread: response.data }, Service.userNotificationsCount); // convert int to object
           return response.data;
         });
       },
@@ -51,7 +51,7 @@ angular.module('bekApp')
         });
 
         return Notification.markAsRead(unreadMessages).$promise.then(function() {
-          angular.copy({ unread: '0' }, Service.userNotifications);
+          angular.copy({ unread: Service.userNotificationsCount.unread - unreadMessages.length }, Service.userNotificationsCount);
         });
       }
     };

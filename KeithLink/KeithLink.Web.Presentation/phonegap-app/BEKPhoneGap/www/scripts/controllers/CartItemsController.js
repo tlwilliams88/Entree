@@ -17,12 +17,19 @@ angular.module('bekApp')
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    $scope.reminderList = criticalItemsLists[0];
-    $scope.mandatoryList = criticalItemsLists[1];
     $scope.changeOrders = changeOrders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    // set mandatory and reminder lists
+    criticalItemsLists.forEach(function(list) {
+      if (list.ismandatory) {
+        $scope.mandatoryList = list;
+      } else if (list.isreminder) {
+        $scope.reminderList = list;
+      }
+    });
 
     // set default selected critical items list
     if ($scope.mandatoryList) {
