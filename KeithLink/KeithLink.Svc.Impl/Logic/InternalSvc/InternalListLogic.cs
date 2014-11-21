@@ -546,8 +546,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
-			listCacheRepository.RemoveItem(string.Format("UserList_{0}", listToShare.Id)); //Invalidate cache
-			
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			if (cachedList != null)
+			{
+				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+			}
 		}
         
 		#endregion
