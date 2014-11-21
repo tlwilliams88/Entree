@@ -28,6 +28,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 throw new ApplicationException("BranchId is required to create content item");
             if (!String.IsNullOrEmpty(contentItemModel.Base64ImageData) && String.IsNullOrEmpty(contentItemModel.ImageFileName))
                 throw new ApplicationException("When providing an image, file name is required");
+            if (contentItemModel.ActiveDateEnd == null || contentItemModel.ActiveDateStart == null)
+                throw new ApplicationException("Content items require a start and end date");
 
             ContentItem contentItem = ToContentItem(contentItemModel); // TODO: move to extension method
             
@@ -44,8 +46,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private static ContentItem ToContentItem(Core.Models.ContentManagement.ContentItemPostModel contentItemModel)
         {
             ContentItem contentItem = new ContentItem();
-            contentItem.ActiveDateEnd = contentItemModel.ActiveDateEnd;
-            contentItem.ActiveDateStart = contentItemModel.ActiveDateStart;
+            contentItem.ActiveDateEnd = contentItemModel.ActiveDateEnd.Value;
+            contentItem.ActiveDateStart = contentItemModel.ActiveDateStart.Value;
             contentItem.BranchId = contentItemModel.BranchId;
             contentItem.CampaignId = contentItemModel.CampaignId;
             contentItem.Content = contentItemModel.Content;

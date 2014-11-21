@@ -13,17 +13,22 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-        public static void Parse(this InvoiceModel invoice, EFInvoice.Invoice value){
-            invoice.BranchId = value.Division.Substring(0, 3);
-            invoice.InvoiceNumber = value.InvoiceNumber.Trim();
-            invoice.TypeDescription = value.InvoiceType;
-            invoice.Status = InvoiceStatus.Open;
-            invoice.CustomerNumber = value.CustomerNumber;
-            invoice.Amount = value.AmountDue;
-            invoice.DueDate = value.DueDate;
-            invoice.InvoiceDate = value.InvoiceDate;
-            invoice.OrderDate = value.InvoiceDate;
-        }
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value)
+		{
+			return new InvoiceModel()
+			{
+				BranchId = value.Division.Substring(0, 3),
+				InvoiceNumber = value.InvoiceNumber.Trim(),
+				TypeDescription = value.InvoiceType,
+				Status = InvoiceStatus.Open, //TODO: Determine the correct status???
+				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open),
+				CustomerNumber = value.CustomerNumber,
+				Amount = value.AmountDue,
+				DueDate = value.DueDate,
+				InvoiceDate = value.InvoiceDate,
+				OrderDate = value.InvoiceDate
+			};
+		}
 
 		public static Invoice ToEFInvoice(this InvoiceModel invoice)
 		{

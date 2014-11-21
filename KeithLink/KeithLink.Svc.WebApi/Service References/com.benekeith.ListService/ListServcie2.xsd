@@ -8,7 +8,6 @@
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="isdsr" type="xs:boolean" />
       <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingpreferences" nillable="true" type="q1:ArrayOfProfileMessagingPreferenceModel" />
       <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />

@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         bool SendMessage(Core.Models.Messaging.Queue.BaseNotification notification);
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
+        bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
         void ListenForNotificationMessagesOnQueue();
         void Stop();
 

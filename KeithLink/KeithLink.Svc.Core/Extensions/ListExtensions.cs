@@ -31,6 +31,7 @@ namespace KeithLink.Svc.Core.Extensions
 				IsWorksheet = list.Type == ListType.Worksheet,
                 IsReminder = list.Type == ListType.Reminder,
 				IsMandatory = list.Type == ListType.Mandatory,
+				SharedWith = list.Shares.Select(s => s.CustomerId).ToList(),
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,

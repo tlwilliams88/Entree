@@ -107,6 +107,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Linq.Dynamic">
+      <HintPath>..\packages\System.Linq.Dynamic.1.0.3\lib\net40\System.Linq.Dynamic.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -145,12 +148,14 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
+    <Compile Include="Interface\Messaging\IUserPushNotificationDeviceRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
@@ -169,6 +174,8 @@
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
+    <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />
+    <Compile Include="Models\Messaging\PushDeviceRegistrationModel.cs" />
     <Compile Include="Models\Messaging\ProfileChannelModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
@@ -191,6 +198,7 @@
     <Compile Include="Models\OnlinePayments\Log\EF\ProcessLog.cs" />
     <Compile Include="Models\OnlinePayments\Payment\EF\LastConfirmation.cs" />
     <Compile Include="Models\OnlinePayments\Payment\EF\PaymentTransaction.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\PaymentTransactionModel.cs" />
     <Compile Include="Models\OnlinePayments\Profile\ApplicationUser.cs" />
     <Compile Include="Models\OnlinePayments\Log\AuthenticationLog.cs" />
     <Compile Include="Models\OnlinePayments\Customer\EF\Branch.cs" />
@@ -199,7 +207,6 @@
     <Compile Include="Models\OnlinePayments\Customer\EF\Dsr.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\Invoice.cs" />
     <Compile Include="Models\OnlinePayments\Payment\LastConfirmation.cs" />
-    <Compile Include="Models\OnlinePayments\Payment\PaymentTransaction.cs" />
     <Compile Include="Models\OnlinePayments\Log\ProcessLog.cs" />
     <Compile Include="Models\OnlinePayments\Profile\EF\ApplicationUser.cs" />
     <Compile Include="Models\OnlinePayments\Profile\EF\UserGroup.cs" />
@@ -320,8 +327,10 @@
     <Compile Include="Models\Orders\OrderHistoryUpdateModel.cs" />
     <Compile Include="Models\Orders\OrderImportModel.cs" />
     <Compile Include="Models\Orders\OrderImportOptions.cs" />
+    <Compile Include="Models\Paging\FilterInfo.cs" />
     <Compile Include="Models\Paging\PagedResults.cs" />
     <Compile Include="Models\Paging\PagingModel.cs" />
+    <Compile Include="Models\Paging\SortInfo.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />

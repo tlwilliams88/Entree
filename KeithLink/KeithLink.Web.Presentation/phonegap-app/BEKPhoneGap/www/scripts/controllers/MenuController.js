@@ -19,7 +19,7 @@ angular.module('bekApp')
     $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
     refreshAccessPermissions();
-    $scope.userBar.userNotifications = NotificationService.userNotifications;
+    $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
 
     // get selected user context
     if ($scope.isOrderEntryCustomer) { // if order entry customer, use customer number
@@ -89,8 +89,10 @@ angular.module('bekApp')
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
       
-      $scope.isBekAdmin = AccessService.isBekAdmin();
-      $scope.isCustomerAdmin = AccessService.isCustomerAdmin();
+      // $scope.isInternalUser = AccessService.isInternalUser();
+      // $scope.isBekAdmin = AccessService.isBekAdmin();
+
+      $scope.isDsr = AccessService.isDsr();
 
       $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
       $scope.canManageLists = AccessService.canManageLists();
@@ -98,6 +100,7 @@ angular.module('bekApp')
       $scope.canSubmitOrders = AccessService.canSubmitOrders();
       $scope.canPayInvoices = AccessService.canPayInvoices();
       $scope.canManageAccount = AccessService.canManageAccount();
-      $scope.canManageeMenu = AccessService.canManageeMenu();
+
+
     }
   }]);

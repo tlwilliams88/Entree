@@ -13,9 +13,11 @@
       <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt="">
       </div>
       <div class="person-info__section person-info__details">
-        <span ng-hide="userProfile.imageUrl"><a href="">Add Photo</a></span>
-        <span ng-show="userProfile.imageUrl"><a href="">Change Photo</a></span>
-        <span ng-show="userProfile.imageUrl">| <a href="">Remove Photo</a></span>
+        <form name="uploadAvatarForm">
+          <input type="file" name="avatarFile" ng-model="userAvatar" base-sixty-four-input required>
+          <span><a ng-disabled="uploadAvatarForm.$invalid" ng-click="uploadAvatar(userAvatar)">Upload Photo</a></span>
+          <span ng-show="userProfile.imageUrl">| <a ng-click="removeAvatar()">Remove Photo</a></span>
+        </form>
       </div>
     </div>
   </div>

@@ -29,8 +29,8 @@ namespace KeithLink.Svc.Core.Models.ContentManagement
         [DataMember(Name = "productid")]
         public string ProductId { get; set; }
         [DataMember(Name = "activesdatestart")]
-        public DateTime ActiveDateStart { get; set; }
+        public DateTime? ActiveDateStart { get; set; }
         [DataMember(Name = "activedateend")]
-        public DateTime ActiveDateEnd { get; set; }
+        public DateTime? ActiveDateEnd { get; set; }
     }
 }

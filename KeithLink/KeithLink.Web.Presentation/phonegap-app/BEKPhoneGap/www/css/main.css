@@ -7217,14 +7217,14 @@ form.style-validation-errors .form-error-message {
 .featured-item {
   background-color: white;
   float: left;
-  width: 159px;
+  min-width: 158px;
   margin: 8px 4px;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
 /* line 8, ../scss/components/_featured-items.scss */
 .featured-item img {
-  height: 159px;
-  width: 100%;
+  height: 158px;
+  min-width: 100%;
   border-bottom: 1px solid #c3bc9c;
   display: block;
 }
@@ -7239,55 +7239,45 @@ form.style-validation-errors .form-error-message {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 158px;
   display: inline-block;
 }
 
-/* line 31, ../scss/components/_featured-items.scss */
-.slide-recently-viewed-items .featured-item {
-  width: initial;
-}
-/* line 33, ../scss/components/_featured-items.scss */
-.slide-recently-viewed-items .featured-item img {
-  width: initial;
-}
-
-/* line 39, ../scss/components/_featured-items.scss */
+/* line 30, ../scss/components/_featured-items.scss */
 .featured-item-mobile {
   background-color: #fff;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
-/* line 43, ../scss/components/_featured-items.scss */
+/* line 34, ../scss/components/_featured-items.scss */
 .featured-item-mobile img {
   max-height: 84px;
   max-width: 100px;
 }
-/* line 48, ../scss/components/_featured-items.scss */
+/* line 39, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail {
   text-align: left;
   padding: 25px 15px 25px 20px;
 }
-/* line 52, ../scss/components/_featured-items.scss */
+/* line 43, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail a, .featured-item-mobile .featured-item-mobile__detail .nav-tabs li a:hover, .nav-tabs li .featured-item-mobile .featured-item-mobile__detail a:hover {
   font-size: 12px;
 }
-/* line 57, ../scss/components/_featured-items.scss */
+/* line 48, ../scss/components/_featured-items.scss */
 .featured-item-mobile .carousel-counter {
   display: none;
 }
 
-/* line 62, ../scss/components/_featured-items.scss */
+/* line 53, ../scss/components/_featured-items.scss */
 .carousel-control.right, .carousel-control.left {
   background-image: none;
   color: #c3bc9c;
 }
 
-/* line 68, ../scss/components/_featured-items.scss */
+/* line 59, ../scss/components/_featured-items.scss */
 .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right {
   top: 38%;
 }
 
-/* line 73, ../scss/components/_featured-items.scss */
+/* line 64, ../scss/components/_featured-items.scss */
 .carousel-paging {
   position: absolute;
   z-index: 15;
@@ -7296,7 +7286,7 @@ form.style-validation-errors .form-error-message {
   right: 0;
   cursor: auto;
 }
-/* line 81, ../scss/components/_featured-items.scss */
+/* line 72, ../scss/components/_featured-items.scss */
 .carousel-paging .showIndex {
   display: none;
 }

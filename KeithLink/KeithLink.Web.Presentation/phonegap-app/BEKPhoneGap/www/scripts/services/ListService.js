@@ -62,6 +62,7 @@ angular.module('bekApp')
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
+          permissions.canDeleteList = true;
           permissions.canAddItems = true;
           permissions.canDeleteItems = true;
           permissions.canEditParlevel = true;
@@ -181,8 +182,12 @@ angular.module('bekApp')
           // remove irrelevant properties from items
           UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
 
-          newList.name = UtilityService.generateName('List', Service.lists);
-
+          if (params.isMandatory === true) {
+            newList.name = 'Mandatory';
+          } else {
+            newList.name = UtilityService.generateName('List', Service.lists);
+          }
+          
           return List.save(params, newList).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);

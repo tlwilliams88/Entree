@@ -25,12 +25,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListCacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
 		private readonly IProductImageRepository productImageRepository;
+		private readonly IListShareRepository listShareRepository;
         #endregion
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -40,6 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.listCacheRepository = listCacheRepository;
 			this.priceLogic = priceLogic;
 			this.productImageRepository = productImageRepository;
+			this.listShareRepository = listShareRepository;
 		}
         #endregion
 
@@ -312,10 +314,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -412,6 +414,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsReminder = l.Type == ListType.Reminder,
  					IsMandatory = l.Type == ListType.Mandatory,
 					ReadOnly = l.ReadOnly,
+					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
@@ -532,10 +535,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var customer in shareListModel.Customers)
 			{
-				listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
+				if(!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
+					listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
 			}
+
+			var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
+
+			foreach (var item in itemsToRemove)
+				listShareRepository.Delete(item);
+			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			if (cachedList != null)
+			{
+				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+			}
 		}
         
 		#endregion

@@ -30,5 +30,11 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
             throw new NotImplementedException();
         }
         #endregion
-    }
+
+
+		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
