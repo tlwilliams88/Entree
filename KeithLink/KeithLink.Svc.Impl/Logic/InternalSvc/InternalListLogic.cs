@@ -314,10 +314,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -446,6 +446,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		private List<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
 		{
+            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+                return new List<List>();
+
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
 				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
 				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
@@ -546,6 +549,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			if (cachedList != null)
+			{
+				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+			}
 		}
         
 		#endregion

@@ -3,6 +3,8 @@
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
   <xs:element name="DeleteInvoice">
     <xs:complexType>
       <xs:sequence>
@@ -72,6 +74,20 @@
       <xs:sequence>
         <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="GetOpenInvoiceHeadersResult" nillable="true" type="q9:ArrayOfInvoice" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MakeInvoicePayment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q10:UserSelectedContext" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q11:userprofile" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="payments" nillable="true" type="q12:ArrayOfPaymentTransactionModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MakeInvoicePaymentResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

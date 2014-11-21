@@ -111,6 +111,26 @@ namespace KeithLink.Svc.InternalSvc {
 
             return returnInvoices;
         }
-        #endregion
-    }
+       
+		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		{
+			var confId = _invoiceRepo.GetNextConfirmationId();
+
+			foreach (var payment in payments)
+				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
+				{
+					AccountNumber = payment.AccountNumber,
+					BranchId = GetDivision(userContext.BranchId),
+					ConfirmationId = confId,
+					CustomerNumber = userContext.CustomerId,
+					InvoiceNumber = payment.InvoiceNumber,
+					PaymentAmount = payment.PaymentAmount,
+					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+					UserName = user.EmailAddress
+				});
+
+
+		}
+		#endregion				
+	}
 }

@@ -16,7 +16,7 @@
   </div>
 </div> -->
 
-<div class="row sub-content">
+<div class="row">
   <div class="col-xs-12 text-right">
     Showing {{notifications.length}} of {{totalNotifications}} Notifications
   </div>
@@ -93,7 +93,7 @@
         </tr>
 
       </tbody>
-      <tfoot ng-show="notifications.length === 0 || !notifications">
+      <tfoot ng-show="notifications.length === 0 && !loadingResults">
         <tr>
           <td colspan="15">
             There are no notifications to display.
@@ -101,6 +101,8 @@
         </tr>
       </tfoot>
     </table>
+
+    <div class="text-center" loading-spinner="loadingResults"></div>
 
   </div>
 </div>
