@@ -17,13 +17,21 @@ angular.module('bekApp')
         return Invoice.query().$promise;
       },
 
-      getInvoiceDetails: function(invoiceNumber) {
-        return Invoice.getOneInvoice({
+      getInvoiceTransactions: function(invoiceNumber) {
+        return Invoice.getTransactions({
           invoiceNumber: invoiceNumber
-        }).$promise.then(function(invoices) {
-          return invoices[0];
+        }).$promise;
+      },
+
+      payInvoices: function(payments, account) {
+        payments.forEach(function(payment) {
+          payment.account = account.accountNumber;
+          payment.amount = parseFloat(payment.paymentAmount);
         });
+
+        return Invoice.pay(payments).$promise;
       }
+
     };
  
     return Service;

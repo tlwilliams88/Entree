@@ -63,6 +63,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #region events
         public void SocketFileReceived(object sender, ReceivedFileEventArgs e) {
+            StringBuilder logMsg = new StringBuilder();
+            logMsg.AppendLine("Order Update File Received. See below for more details.");
+            logMsg.AppendLine();
+            logMsg.AppendLine(e.FileData);
+
+            _log.WriteInformationLog(logMsg.ToString());
             string[] lines = e.FileData.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
 
             OrderHistoryFileReturn parsedFiles = ParseFile(lines);

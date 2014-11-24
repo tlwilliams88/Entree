@@ -14,6 +14,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
 
+		[DataMember(Name = "sharedwith")]
+		public List<string> SharedWith { get; set; }
+
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
@@ -43,6 +46,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "ismandatory")]
 		public bool IsMandatory { get; set; }
+
+
 
         public string BranchId { get; set; }
 		

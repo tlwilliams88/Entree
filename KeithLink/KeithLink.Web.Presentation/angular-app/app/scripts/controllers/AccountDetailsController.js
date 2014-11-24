@@ -39,6 +39,22 @@ angular.module('bekApp')
 
       init();
 
+      $scope.uploadAvatar = function(avatarFile) {
+        console.log(avatarFile);
+        var file = {
+          name: avatarFile.filename,
+          file: avatarFile.base64
+        };
+        UserProfileService.uploadAvatar(file);
+        // TODO: update user profile in local storage
+      };
+
+      $scope.removeAvatar = function() {
+        console.log('remove avatar');
+        UserProfileService.removeAvatar();
+        // TODO: update user profile in local storage
+      };
+
       $scope.cancelChanges = function () {
         $scope.userProfile = angular.copy(LocalStorage.getProfile());
         $scope.updateProfileForm.$setPristine();
@@ -49,7 +65,6 @@ angular.module('bekApp')
         changePasswordData.email = $scope.userProfile.emailaddress;
 
         UserProfileService.changePassword(changePasswordData).then(function (success) {
-          $log.debug(success);
           $scope.changePasswordData = {};
           $scope.changePasswordForm.$setPristine();
           $scope.displayMessage('success', 'Successfully changed password.');
@@ -74,30 +89,23 @@ angular.module('bekApp')
           newTopic.notificationType = preference.notificationType;
           newTopic.selectedChannels = [];
           if(preference.channels[0] === true){
-            newTopic.selectedChannels.push({"Channel": 1});
+            newTopic.selectedChannels.push({'Channel': 1});
           }
           if(preference.channels[1] === true){
-            newTopic.selectedChannels.push({"Channel": 2});
+            newTopic.selectedChannels.push({'Channel': 2});
           }
           if(preference.channels[2] === true){
-            newTopic.selectedChannels.push({"Channel": 4});
+            newTopic.selectedChannels.push({'Channel': 4});
           }
           preferencePayload.preferences.push(newTopic);
         });
 
         //make ajax call
         MessagePreferenceService.updatePreferences(preferencePayload).then(function (success) {
-          $log.debug(success);
           //refresh user profile locally
-          UserProfileService.getProfile(LocalStorage.getProfile().emailaddress).then(function (success) {
-            $log.debug(success);
-            $scope.displayMessage('success', 'Your preferences were successfully updated');
-            init(); //reinitialize data from refreshed profile
-          }, function (error) {
-            $scope.displayMessage('error', 'An error occurred while refreshing user profile' + error)
-          });
+
         }, function (error) {
-          $scope.displayMessage('error', 'An error occurred while updating user preferences' + error)
+          $scope.displayMessage('error', 'An error occurred while updating user preferences' + error);
         });
       };
     }]);

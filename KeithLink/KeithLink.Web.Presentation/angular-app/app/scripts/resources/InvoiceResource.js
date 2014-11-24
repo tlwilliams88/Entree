@@ -7,10 +7,15 @@ angular.module('bekApp')
 
       // defaults: GET, QUERY
       
-      getOneInvoice: {
+      getTransactions: {
         url: '/invoice/:invoiceNumber',
         method: 'GET',
         isArray: true
+      },
+
+      pay: {
+        url: '/invoice/payment',
+        method: 'POST'
       }
 
     });

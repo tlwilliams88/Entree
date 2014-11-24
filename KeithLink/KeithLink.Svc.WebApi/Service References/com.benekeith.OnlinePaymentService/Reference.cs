@@ -44,6 +44,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment", ReplyAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse")]
+        void MakeInvoicePayment(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment", ReplyAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse")]
+        System.Threading.Tasks.Task MakeInvoicePaymentAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -111,6 +117,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
             return base.Channel.GetOpenInvoiceHeadersAsync(userContext);
+        }
+        
+        public void MakeInvoicePayment(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments) {
+            base.Channel.MakeInvoicePayment(userContext, user, payments);
+        }
+        
+        public System.Threading.Tasks.Task MakeInvoicePaymentAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments) {
+            return base.Channel.MakeInvoicePaymentAsync(userContext, user, payments);
         }
     }
 }

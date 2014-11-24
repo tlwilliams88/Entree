@@ -165,6 +165,7 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="Models\OnlinePayments\Log\EF\ProcessLog.cs" />
     <Compile Include="Models\OnlinePayments\Payment\EF\LastConfirmation.cs" />
     <Compile Include="Models\OnlinePayments\Payment\EF\PaymentTransaction.cs" />
+    <Compile Include="Models\OnlinePayments\Payment\PaymentTransactionModel.cs" />
     <Compile Include="Models\OnlinePayments\Profile\ApplicationUser.cs" />
     <Compile Include="Models\OnlinePayments\Log\AuthenticationLog.cs" />
     <Compile Include="Models\OnlinePayments\Customer\EF\Branch.cs" />
@@ -205,7 +207,6 @@
     <Compile Include="Models\OnlinePayments\Customer\EF\Dsr.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\Invoice.cs" />
     <Compile Include="Models\OnlinePayments\Payment\LastConfirmation.cs" />
-    <Compile Include="Models\OnlinePayments\Payment\PaymentTransaction.cs" />
     <Compile Include="Models\OnlinePayments\Log\ProcessLog.cs" />
     <Compile Include="Models\OnlinePayments\Profile\EF\ApplicationUser.cs" />
     <Compile Include="Models\OnlinePayments\Profile\EF\UserGroup.cs" />

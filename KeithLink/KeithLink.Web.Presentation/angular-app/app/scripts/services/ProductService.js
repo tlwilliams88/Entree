@@ -180,10 +180,6 @@ angular.module('bekApp')
           return returnProduct;
         },
 
-        canOrderProduct: function(item) {
-          return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
-        },
-
         // ITEM NOTES
         updateItemNote: function(itemNumber, note) {
           var itemNote = {

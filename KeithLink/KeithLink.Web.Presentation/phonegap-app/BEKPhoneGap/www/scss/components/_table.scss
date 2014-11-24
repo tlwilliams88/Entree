@@ -89,6 +89,23 @@ ng-class="{ odd : $odd, even: $even }"
   }
 }
 
+.table-narrow {
+  margin-bottom: 0;
+
+  > thead > tr > th, 
+  > thead > tr > td, 
+  > tbody > tr > th, 
+  > tbody > tr > td, 
+  > tfoot > tr > th, 
+  > tfoot > tr > td {
+    padding: 6px 5px;
+
+    &.input-col {
+      padding: 3px 5px;
+    }
+  }
+}
+
 // inputs 
 table {
 

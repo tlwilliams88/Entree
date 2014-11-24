@@ -1,0 +1,39 @@
+----------------------------app.js--------------------------------
+
+add PhonegapServices to .run
+
+-----------------------------index.html-------------------------------
+
+Change "styles/main.css" to "css/main.css" at top
+
+Remove "ng-app=bekapp" from <body>
+
+Add these below lib scripts:
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script>
+        angular.element(document).ready(function() {
+            app.initialize();
+            angular.bootstrap(document, ['bekApp']);
+        });
+    </script>
+
+add these Below resources:
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapPushService.js"></script>
+
+--------------------------configenv.js----------------------------------
+
+replace line 5 with:
+.constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'qauser@qa.com',password:'Ab21345'})
+
+-------------------------TERMINAL-----------------------------------
+
+then run in terminal:
+compass compile www/scss/main.scss
+
+------------------------------------------------------------
+

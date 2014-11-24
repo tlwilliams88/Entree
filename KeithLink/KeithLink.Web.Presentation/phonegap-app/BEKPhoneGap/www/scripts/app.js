@@ -89,12 +89,7 @@ angular
       templateUrl: 'views/notifications.html',
       controller: 'NotificationsController',
       data: {
-        authorize: 'isLoggedIn'
-      },
-      resolve: {
-        notifications: ['NotificationService', function(NotificationService) {
-          return NotificationService.getAllMessages();
-        }]
+        authorize: 'isOrderEntryCustomer'
       }
     })
 
@@ -315,15 +310,18 @@ angular
       }
     })
     .state('menu.invoiceitems', {
-      url: '/invoice/:invoiceId/',
+      url: '/invoice/:invoiceNumber/',
       templateUrl: 'views/invoiceitems.html',
       controller: 'InvoiceItemsController',
       data: {
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-          return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        transactions: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceTransactions($stateParams.invoiceNumber);
+        }],
+        order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
+          return OrderService.getOrderDetails($stateParams.invoiceNumber);
         }]
       }
     })
@@ -340,7 +338,7 @@ angular
       },
       resolve: {
         // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
         // }]
       }
     })
@@ -446,6 +444,12 @@ angular
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices',
   function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices) {
+
+  PhonegapServices.PhonegapPushService.register().then(function(result) {
+      // Success!
+  }, function(err) {
+      // An error occurred. Show a message to the user
+  });
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
