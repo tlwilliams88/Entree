@@ -526,5 +526,26 @@ angular.module('bekApp')
                     return 'Non-Stock Item';
                 }
             }
+
+            $scope.openExportModal = function() {
+              var modalInstance = $modal.open({
+                templateUrl: 'views/modals/exportmodal.html',
+                controller: 'ExportModalController',
+                resolve: {
+                  headerText: function () {
+                    return 'Search Results';
+                  },
+                  exportMethod: function() {
+                    return ProductService.exportProducts;
+                  },
+                  exportConfig: function() {
+                    return ProductService.getExportConfig();
+                  },
+                  exportParams: function() {
+                    return ""; // search query string param
+                  }
+                }
+              });
+            };
         }
     ]);

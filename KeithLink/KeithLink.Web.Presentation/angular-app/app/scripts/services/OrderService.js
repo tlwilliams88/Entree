@@ -78,6 +78,18 @@ angular.module('bekApp')
 
       pollOrderHistory: function() {
         return Order.pollOrderHistory().$promise;
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      exportCustomOrder: function(config) {
+        console.log('custom export order');
+      },
+
+      exportDefaultOrder: function(config) {
+        console.log('default order export');
       }
 
     };

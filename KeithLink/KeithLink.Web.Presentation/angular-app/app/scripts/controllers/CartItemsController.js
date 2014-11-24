@@ -206,6 +206,27 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openExportModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/exportmodal.html',
+        controller: 'ExportModalController',
+        resolve: {
+          headerText: function () {
+            return 'Cart';
+          },
+          defaultExport: function() {
+            return CartService.exportDefaultCart;
+          },
+          customExport: function() {
+            return CartService.exportCustomCart;
+          },
+          exportConfig: function() {
+            return CartService.getExportConfig();
+          }
+        }
+      });
+    };
+
     /*************************
     REMINDER / MANDATORY ITEMS
     *************************/
