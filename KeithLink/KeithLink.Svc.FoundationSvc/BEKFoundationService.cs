@@ -20,144 +20,222 @@ namespace KeithLink.Svc.FoundationSvc
 	[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
 	public class BEKFoundationService : OperationService, IBEKFoundationService
 	{
+        private static string applicationNameForLogging = "KeithLink.FoundationSvc";
 		public string SaveCartAsOrder(Guid userId, Guid cartId)
 		{
-            var context = Extensions.SiteHelper.GetOrderContext();
-
-			var basket = context.GetBasket(userId, cartId);
-
-            int startIndex = 1; // main frame needs these to start at 1
-            foreach (CommerceServer.Core.Runtime.Orders.LineItem  lineItem in basket.OrderForms[0].LineItems)
+            try
             {
-                lineItem["LinePosition"] = startIndex;
-                startIndex++;
+                var context = Extensions.SiteHelper.GetOrderContext();
+
+                var basket = context.GetBasket(userId, cartId);
+
+                int startIndex = 1; // main frame needs these to start at 1
+                foreach (CommerceServer.Core.Runtime.Orders.LineItem lineItem in basket.OrderForms[0].LineItems)
+                {
+                    lineItem["LinePosition"] = startIndex;
+                    startIndex++;
+                }
+
+                PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+                pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+
+                basket.TrackingNumber = GetNextControlNumber();
+                basket["OriginalOrderNumber"] = basket.TrackingNumber;
+                var purchaseOrder = basket.SaveAsOrder();
+
+                return purchaseOrder.TrackingNumber;
             }
-
-            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-			pipeLineHelper.RunPipeline(basket, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
-
-            basket.TrackingNumber = GetNextControlNumber();
-            basket["OriginalOrderNumber"] = basket.TrackingNumber;
-			var purchaseOrder = basket.SaveAsOrder();
-
-			return purchaseOrder.TrackingNumber;
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in SaveCartAsOrder: ", ex);
+                    
+                throw ex;
+            }
 		}
 
         public string SaveOrderAsChangeOrder(Guid userId, Guid cartId)
         {
-            CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
-                GetPurchaseOrder(userId, cartId);
+            try
+            {
+                CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
+                    GetPurchaseOrder(userId, cartId);
 
-            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-            pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+                PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
-            po.TrackingNumber = GetNextControlNumber();
-            po.Save();
+                po.TrackingNumber = GetNextControlNumber();
+                po.Save();
 
-            return po.TrackingNumber;
+                return po.TrackingNumber;
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in SaveOrderAsChangeOrder: ", ex);
+
+                throw ex;
+            }
         }
 
         public void CleanUpChangeOrder(Guid userId, Guid cartId)
         {
-            CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
-                GetPurchaseOrder(userId, cartId);
-
-            List<int> lineItemIndexesToRemove = new List<int>();
-
-            foreach (CommerceServer.Core.Runtime.Orders.LineItem li in po.OrderForms[0].LineItems)
+            try
             {
-                if (li.Status == "deleted")
-                {
-                    lineItemIndexesToRemove.Add(li.Index);
-                }
-                li.Status = string.Empty;
-            }
-            foreach (int index in lineItemIndexesToRemove)
-                po.OrderForms[0].LineItems.Remove(index);
+                CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
+                    GetPurchaseOrder(userId, cartId);
 
-            po.Save();
+                List<int> lineItemIndexesToRemove = new List<int>();
+
+                foreach (CommerceServer.Core.Runtime.Orders.LineItem li in po.OrderForms[0].LineItems)
+                {
+                    if (li.Status == "deleted")
+                    {
+                        lineItemIndexesToRemove.Add(li.Index);
+                    }
+                    li.Status = string.Empty;
+                }
+                foreach (int index in lineItemIndexesToRemove)
+                    po.OrderForms[0].LineItems.Remove(index);
+
+                po.Save();
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in CleanUpChangeOrder: ", ex);
+
+                throw ex;
+            }
         }
 
         private static CommerceServer.Core.Runtime.Orders.PurchaseOrder GetPurchaseOrder(Guid userId, Guid cartId)
         {
-            CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
-            return context.GetPurchaseOrder(userId, cartId);
+            try
+            {
+                CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
+                return context.GetPurchaseOrder(userId, cartId);
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in GetPurchaseOrder: ", ex);
+
+                throw ex;
+            }
         }
 
         public string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> lineItemUpdates)
         {
-            CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
-            CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
-            po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
-            po["RequestedShipDate"] = requestedShipDate;
-            int linePosition = 1; // main frame needs these to start at 1
-            foreach (var li in lineItems)
-                if (linePosition < (int)li["LinePosition"])
-                    linePosition = (int)li["LinePosition"];
-            linePosition++;
-
-            foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
+            try
             {
-                CommerceServer.Core.Runtime.Orders.LineItem lineItem = lineItems.Where(x => x.ProductId == i.ItemNumber).FirstOrDefault();
-                // find existing item based on item number
-                if (i.Status == "changed" && lineItem != null)
+                CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
+                CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
+                po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+                po["RequestedShipDate"] = requestedShipDate;
+                int linePosition = 1; // main frame needs these to start at 1
+                foreach (var li in lineItems)
+                    if (linePosition < (int)li["LinePosition"])
+                        linePosition = (int)li["LinePosition"];
+                linePosition++;
+
+                foreach (PurchaseOrderLineItemUpdate i in lineItemUpdates)
                 {
-                    lineItem.Quantity = i.Quantity;
-                    lineItem["Each"] = i.Each;
-                    lineItem["CatchWeight"] = i.CatchWeight;
-                    lineItem.Status = "changed";
+                    CommerceServer.Core.Runtime.Orders.LineItem lineItem = lineItems.Where(x => x.ProductId == i.ItemNumber).FirstOrDefault();
+                    // find existing item based on item number
+                    if (i.Status == "changed" && lineItem != null)
+                    {
+                        lineItem.Quantity = i.Quantity;
+                        lineItem["Each"] = i.Each;
+                        lineItem["CatchWeight"] = i.CatchWeight;
+                        lineItem.Status = "changed";
+                    }
+                    if (i.Status == "deleted" && lineItem != null)
+                    {
+                        lineItem.Status = "deleted";
+                    }
+                    if (i.Status == "added" && lineItem == null)
+                    {
+                        CommerceServer.Core.Runtime.Orders.LineItem li = new CommerceServer.Core.Runtime.Orders.LineItem() { ProductId = i.ItemNumber, Quantity = i.Quantity, Status = "added" };
+                        li["CatchWeight"] = i.CatchWeight;
+                        li["Each"] = i.Each;
+                        li["Notes"] = string.Empty;
+                        li["LinePosition"] = linePosition;
+                        li.ProductCatalog = i.Catalog;
+                        linePosition++;
+                        po.OrderForms[0].LineItems.Add(li);
+                    }
                 }
-                if (i.Status == "deleted" && lineItem != null)
-                {
-                    lineItem.Status = "deleted";
-                }
-                if (i.Status == "added" && lineItem == null)
-                {
-                    CommerceServer.Core.Runtime.Orders.LineItem li = new CommerceServer.Core.Runtime.Orders.LineItem() { ProductId = i.ItemNumber, Quantity = i.Quantity, Status = "added" };
-                    li["CatchWeight"] = i.CatchWeight;
-                    li["Each"] = i.Each;
-                    li["Notes"] = string.Empty;
-                    li["LinePosition"] = linePosition;
-                    li.ProductCatalog = i.Catalog;
-                    linePosition++;
-                    po.OrderForms[0].LineItems.Add(li);
-                }
+
+                PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+
+                po.Save();
+                return po.TrackingNumber;
             }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in UpdatePurchaseOrder: ", ex);
 
-            PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-            pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
-
-            po.Save();
-            return po.TrackingNumber;
+                throw ex;
+            }
         }
 
         public string CancelPurchaseOrder(Guid userId, Guid orderId)
         {
-            CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
-            po.Status = "Cancelled";
-            po.TrackingNumber = GetNextControlNumber();
-            po.Save();
-            return po.TrackingNumber;
+            try
+            {
+                CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
+                po.Status = "Cancelled";
+                po.TrackingNumber = GetNextControlNumber();
+                po.Save();
+                return po.TrackingNumber;
+            }
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in CancelPurchaseOrder: ", ex);
+
+                throw ex;
+            }
         }
 
         private static string GetNextControlNumber()
         {
-            string controlNumber = string.Empty;
-            // get tracking number from DB
-            using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString))
+            try
             {
-                using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn))
+                string controlNumber = string.Empty;
+                // get tracking number from DB
+                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString))
                 {
-                    cmd.CommandType = CommandType.StoredProcedure;
-                    SqlParameter parm = new SqlParameter();
-                    parm.Direction = ParameterDirection.ReturnValue;
-                    cmd.Parameters.Add(parm);
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-                    controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
+                    using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlParameter parm = new SqlParameter();
+                        parm.Direction = ParameterDirection.ReturnValue;
+                        cmd.Parameters.Add(parm);
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
+                    }
                 }
+                return controlNumber;
             }
-            return controlNumber;
+            catch (Exception ex)
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in GetNextControlNumber: ", ex);
+
+                throw ex;
+            }
         }
     }	
 }
