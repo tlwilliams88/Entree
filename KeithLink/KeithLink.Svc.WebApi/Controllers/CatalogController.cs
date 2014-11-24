@@ -147,7 +147,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			else
 			{
 				stream = new ModelExporter<Product>(prods.Products, exportRequest.Fields).Export(exportRequest.SelectedType);
-				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, null, exportRequest.Fields, exportRequest.SelectedType);
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 			}
 			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 			result.Content = new StreamContent(stream);
