@@ -466,8 +466,10 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices, PhonegapPushService) {
+
+  PhonegapPushService.register();
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
