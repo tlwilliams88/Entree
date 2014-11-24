@@ -12,6 +12,7 @@ using System.IO;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -19,13 +20,15 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ListController : BaseController {
         #region attributes
         private readonly IListServiceRepository listServiceRepository;
+		private readonly IExportSettingServiceRepository exportSettingRepository;
         #endregion
 
         #region ctor
-		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository)
+		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingServiceRepository exportSettingRepository)
 			: base(profileLogic)
 		{
             this.listServiceRepository = listServiceRepository;
+			this.exportSettingRepository = exportSettingRepository;
         }
         #endregion
 
@@ -38,17 +41,28 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 			MemoryStream stream;
 
-			if(exportRequest.Fields == null)
+			if (exportRequest.Fields == null)
 				stream = new ModelExporter<ListItemModel>(list.Items).Export(exportRequest.SelectedType);
 			else
+			{
 				stream = new ModelExporter<ListItemModel>(list.Items, exportRequest.Fields).Export(exportRequest.SelectedType);
-
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields);
+			}
 			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 			result.Content = new StreamContent(stream);
 			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
 			result.Content.Headers.ContentDisposition.FileName = "export.csv";
 			return result;
 		}
+
+		[HttpGet]
+		[ApiKeyedRoute("list/export/{listId}")]
+		public ExportOptionsModel ExportList(long listId)
+		{
+			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
+		}
+
+
 
         [HttpGet]
 		[ApiKeyedRoute("list/")]

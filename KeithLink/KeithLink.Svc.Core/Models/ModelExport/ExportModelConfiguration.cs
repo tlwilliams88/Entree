@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.ModelExport
 {
 	[DataContract]
+	[Serializable]
 	public class ExportModelConfiguration
 	{
 		[DataMember(Name = "field")]

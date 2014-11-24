@@ -36,6 +36,7 @@ using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -100,6 +101,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
 			builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+			builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
+
             builder.RegisterType<Repository.ContentManagement.ContentManagementServiceRepositoryImpl>().As<IContentManagementServiceRepository>();
             builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();
             builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
@@ -108,6 +111,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
             builder.RegisterType<com.benekeith.ContentManagementService.ContentManagementServiceClient>().As<com.benekeith.ContentManagementService.IContentManagementService>();
+
+			builder.RegisterType<com.benekeith.ConfigurationService.ConfigurationServiceClient>().As<com.benekeith.ConfigurationService.IConfigurationService>();
 
             // Build the container.
             var container = builder.Build();

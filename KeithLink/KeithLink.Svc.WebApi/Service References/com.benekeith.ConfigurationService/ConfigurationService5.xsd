@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="ExportType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="List" />
+      <xs:enumeration value="Invoice" />
+      <xs:enumeration value="Order" />
+      <xs:enumeration value="Products" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ExportType" nillable="true" type="tns:ExportType" />
+</xs:schema>

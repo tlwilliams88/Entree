@@ -36,8 +36,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "size")]
         public string Size { get; set; }
 
-        [DataMember(Name = "upc")]
-		public string UPC { get; set; }
+        
 
         [DataMember(Name = "manufacturer_number")]
         public string ManufacturerNumber { get; set; }
@@ -48,21 +47,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cases")]
         public string Cases { get; set; }
 
-        [DataMember(Name = "categoryId")]
-        public string CategoryId { get; set; }
-
-        [DataMember(Name = "categoryname")]
-        public string CategoryName { get; set; }
-
         [DataMember(Name = "kosher")]
         public string Kosher { get; set; }
-
-        [DataMember(Name= "vendor_num")]
-        public string VendorItemNumber {get;set;}
-
-        [DataMember(Name= "class")]
-        public string ItemClass { get; set; }
-                
+		                        
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
 

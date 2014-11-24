@@ -69,5 +69,20 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
+
+		[DataMember(Name = "categoryId")]
+		public string CategoryId { get; set; }
+
+		[DataMember(Name = "categoryname")]
+		public string CategoryName { get; set; }
+
+		[DataMember(Name = "class")]
+		public string ItemClass { get; set; }
+
+		[DataMember(Name = "vendor_num")]
+		public string VendorItemNumber { get; set; }
+
+		[DataMember(Name = "upc")]
+		public string UPC { get; set; }
     }
 }

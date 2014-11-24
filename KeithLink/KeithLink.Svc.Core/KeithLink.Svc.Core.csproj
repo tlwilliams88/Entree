@@ -150,6 +150,9 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
+    <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
+    <Compile Include="Interface\Configuration\IInternalExportSettingLogic.cs" />
+    <Compile Include="Interface\Configuration\IExportSettingRepository.cs" />
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
@@ -166,6 +169,7 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
