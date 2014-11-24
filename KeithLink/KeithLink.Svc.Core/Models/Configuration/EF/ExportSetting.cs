@@ -22,5 +22,6 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
 		public ExportType Type { get; set; }
 		public ListType? ListType { get; set; } //Only set then Type == ExportType.List
 		public string Settings { get; set; }
+		public string ExportFormat { get; set; }
 	}
 }

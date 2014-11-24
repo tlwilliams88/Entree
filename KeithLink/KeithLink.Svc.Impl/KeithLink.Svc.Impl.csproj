@@ -378,6 +378,10 @@
     <Compile Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.Designer.cs">
       <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.cs" />
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.Designer.cs">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -834,6 +838,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.resx">
       <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.resx">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

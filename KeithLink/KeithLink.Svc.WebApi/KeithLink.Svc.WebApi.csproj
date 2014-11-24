@@ -181,7 +181,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
-    <Content Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
+    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -309,13 +309,13 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.disco" />
-    <Content Include="Service References\com.benekeith.ConfigurationService\configuration91.svcinfo" />
-    <Content Include="Service References\com.benekeith.ConfigurationService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.ConfigurationService\Reference.svcmap">
+    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.disco" />
+    <None Include="Service References\com.benekeith.ConfigurationService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.ConfigurationService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ConfigurationService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>

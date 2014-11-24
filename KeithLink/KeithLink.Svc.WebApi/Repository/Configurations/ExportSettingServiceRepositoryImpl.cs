@@ -24,9 +24,9 @@ namespace KeithLink.Svc.WebApi.Repository.Configurations
 			return serviceClient.ReadCustomExportOptions(userId, type, ListId);
 		}
 
-		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration)
+		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat)
 		{
-			serviceClient.SaveUserExportSettings(userId, type, listType, configuration.ToArray());
+			serviceClient.SaveUserExportSettings(userId, type, listType, configuration.ToArray(), exportFormat);
 		}
 	}
 }

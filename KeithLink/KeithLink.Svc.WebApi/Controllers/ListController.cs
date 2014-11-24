@@ -46,7 +46,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			else
 			{
 				stream = new ModelExporter<ListItemModel>(list.Items, exportRequest.Fields).Export(exportRequest.SelectedType);
-				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields);
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields, exportRequest.SelectedType);
 			}
 			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 			result.Content = new StreamContent(stream);

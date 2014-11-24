@@ -12,6 +12,6 @@ namespace KeithLink.Svc.Core.Interface.Configuration
 	public interface IInternalExportSettingLogic
 	{
 		ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId);
-		void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration);
+		void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat);
 	}
 }

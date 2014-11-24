@@ -48,13 +48,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				previousSettings = exportSettingRepository.Read(u => u.UserId == userId && u.Type == type).FirstOrDefault();
 
 			List<ExportModelConfiguration> previousOptions = new List<ExportModelConfiguration>();
-
-			if (previousSettings != null)
-				previousOptions = DeserializeSettings(previousSettings.Settings);
-
-
 			var exportOptions = GetTypeSpecificExportOptions(type, listType);
 
+			if (previousSettings != null)
+			{
+				previousOptions = DeserializeSettings(previousSettings.Settings);
+				exportOptions.SelectedType = previousSettings.ExportFormat;
+			}
+
+			
 			//Update the Selected and Order for any used in previous export
 			foreach (var setting in previousOptions)
 			{
@@ -122,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return options;
 		}
 
-		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration)
+		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat)
 		{
 			ExportSetting existingSetting = null;
 			if (type == ExportType.List)
@@ -133,6 +135,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (existingSetting != null)
 			{
 				existingSetting.Settings = SerializeSettings(configuration);
+				existingSetting.ExportFormat = exportFormat;
 				exportSettingRepository.Update(existingSetting);
 			}
 			else
@@ -141,7 +144,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					Type = type,
 					ListType = listType,
 					UserId = userId,
-					Settings = SerializeSettings(configuration)
+					Settings = SerializeSettings(configuration),
+					ExportFormat = exportFormat
 				};
 				exportSettingRepository.Create(newSetting);
 			}

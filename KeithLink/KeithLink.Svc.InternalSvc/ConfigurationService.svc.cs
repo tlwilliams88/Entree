@@ -28,9 +28,9 @@ namespace KeithLink.Svc.InternalSvc
 			return exportSettingLogic.ReadCustomExportOptions(userId, type, ListId);
 		}
 
-		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration)
+		public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat)
 		{
-			exportSettingLogic.SaveUserExportSettings(userId, type, listType, configuration);
+			exportSettingLogic.SaveUserExportSettings(userId, type, listType, configuration, exportFormat);
 		}
 	}
 }

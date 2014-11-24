@@ -22,10 +22,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ConfigurationService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel> ReadCustomExportOptionsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, System.Nullable<long> ListId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IConfigurationService/SaveUserExportSettings", ReplyAction="http://tempuri.org/IConfigurationService/SaveUserExportSettingsResponse")]
-        void SaveUserExportSettings(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration);
+        void SaveUserExportSettings(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IConfigurationService/SaveUserExportSettings", ReplyAction="http://tempuri.org/IConfigurationService/SaveUserExportSettingsResponse")]
-        System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration);
+        System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -63,12 +63,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ConfigurationService {
             return base.Channel.ReadCustomExportOptionsAsync(userId, type, ListId);
         }
         
-        public void SaveUserExportSettings(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration) {
-            base.Channel.SaveUserExportSettings(userId, type, listType, configuration);
+        public void SaveUserExportSettings(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat) {
+            base.Channel.SaveUserExportSettings(userId, type, listType, configuration, exportFormat);
         }
         
-        public System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration) {
-            return base.Channel.SaveUserExportSettingsAsync(userId, type, listType, configuration);
+        public System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat) {
+            return base.Channel.SaveUserExportSettingsAsync(userId, type, listType, configuration, exportFormat);
         }
     }
 }
