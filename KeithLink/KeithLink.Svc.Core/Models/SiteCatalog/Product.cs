@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -61,6 +62,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			get { return pack.TrimStart(new char[] { '0' }); }
 			set { pack = value; }
 		}
+
+		[DataMember(Name = "pack")]
+		[Description("Pack/Size")]
+		public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } }
 
 		[DataMember(Name = "nutritional")]
         public Nutritional Nutritional { get; set; }
