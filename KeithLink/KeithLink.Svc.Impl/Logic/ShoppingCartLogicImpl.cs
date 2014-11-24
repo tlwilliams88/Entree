@@ -179,6 +179,9 @@ namespace KeithLink.Svc.Impl.Logic
 		
         public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
+            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+                return new List<ShoppingCart>();
+
 			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart);
 
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) &&

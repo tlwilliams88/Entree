@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions.Enumerations;
+﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
@@ -39,9 +40,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
         #region methods
         public static void Parse(this OrderHistoryHeader value, string record) {
-            if (record.Length >= HEADER_STARTPOS_ORDSYS + HEADER_LENGTH_ORDSYS) { value.OrderSystem.Parse(record.Substring(HEADER_STARTPOS_ORDSYS, HEADER_LENGTH_ORDSYS)); }
-            if (record.Length >= HEADER_STARTPOS_BRANCH + HEADER_LENGTH_BRANCH) { value.BranchId = record.Substring(HEADER_STARTPOS_BRANCH, HEADER_LENGTH_BRANCH); }
-            if (record.Length >= HEADER_STARTPOS_CUSTNUM + HEADER_LENGTH_CUSTNUM) { value.CustomerNumber = record.Substring(HEADER_STARTPOS_CUSTNUM, HEADER_LENGTH_CUSTNUM); }
+            if (record.Length >= HEADER_STARTPOS_ORDSYS + HEADER_LENGTH_ORDSYS) {
+                OrderSource tempOrderSource = new OrderSource();
+                value.OrderSystem = tempOrderSource.Parse(record.Substring(HEADER_STARTPOS_ORDSYS, HEADER_LENGTH_ORDSYS)); 
+            }
+            if (record.Length >= HEADER_STARTPOS_BRANCH + HEADER_LENGTH_BRANCH) { value.BranchId = record.Substring(HEADER_STARTPOS_BRANCH, HEADER_LENGTH_BRANCH).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_CUSTNUM + HEADER_LENGTH_CUSTNUM) { value.CustomerNumber = record.Substring(HEADER_STARTPOS_CUSTNUM, HEADER_LENGTH_CUSTNUM).Trim(); }
 
             if (record.Length >= HEADER_STARTPOS_DELVDATE + HEADER_LENGTH_DELVDATE) {
                 string deliveryDate = record.Substring(HEADER_STARTPOS_DELVDATE, HEADER_LENGTH_DELVDATE);
@@ -51,15 +55,15 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             }
 
             if (record.Length >= HEADER_STARTPOS_PONUM + HEADER_LENGTH_PONUM) { value.PONumber = record.Substring(HEADER_STARTPOS_PONUM, HEADER_LENGTH_PONUM).Trim(); }
-            if (record.Length >= HEADER_STARTPOS_CTRLNUM + HEADER_LENGTH_CTRLNUM) { value.ControlNumber = record.Substring(HEADER_STARTPOS_CTRLNUM, HEADER_LENGTH_CTRLNUM); }
-            if (record.Length >= HEADER_STARTPOS_INVNUM + HEADER_LENGTH_INVNUM) { value.InvoiceNumber = record.Substring(HEADER_STARTPOS_INVNUM, HEADER_LENGTH_INVNUM); }
-            if (record.Length >= HEADER_STARTPOS_ORDSTS + HEADER_LENGTH_ORDSTS) { value.OrderStatus = record.Substring(HEADER_STARTPOS_ORDSTS, HEADER_LENGTH_ORDSTS); }
+            if (record.Length >= HEADER_STARTPOS_CTRLNUM + HEADER_LENGTH_CTRLNUM) { value.ControlNumber = record.Substring(HEADER_STARTPOS_CTRLNUM, HEADER_LENGTH_CTRLNUM).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_INVNUM + HEADER_LENGTH_INVNUM) { value.InvoiceNumber = record.Substring(HEADER_STARTPOS_INVNUM, HEADER_LENGTH_INVNUM).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_ORDSTS + HEADER_LENGTH_ORDSTS) { value.OrderStatus = record.Substring(HEADER_STARTPOS_ORDSTS, HEADER_LENGTH_ORDSTS).Trim(); }
 
             // don't set Future Item flag here
             // don't set Error Status flag here
 
-            if (record.Length >= HEADER_STARTPOS_RTENUM + HEADER_LENGTH_RTENUM) { value.RouteNumber = record.Substring(HEADER_STARTPOS_RTENUM, HEADER_LENGTH_RTENUM); }
-            if (record.Length >= HEADER_STARTPOS_STPNUM + HEADER_LENGTH_STPNUM) { value.StopNumber = record.Substring(HEADER_STARTPOS_STPNUM, HEADER_LENGTH_STPNUM); }
+            if (record.Length >= HEADER_STARTPOS_RTENUM + HEADER_LENGTH_RTENUM) { value.RouteNumber = record.Substring(HEADER_STARTPOS_RTENUM, HEADER_LENGTH_RTENUM).Trim(); }
+            if (record.Length >= HEADER_STARTPOS_STPNUM + HEADER_LENGTH_STPNUM) { value.StopNumber = record.Substring(HEADER_STARTPOS_STPNUM, HEADER_LENGTH_STPNUM).Trim(); }
         }
 
         public static void MergeWithEntity(this OrderHistoryHeader value, ref EF.OrderHistoryHeader entity) {
@@ -69,7 +73,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.InvoiceNumber = value.InvoiceNumber;
             entity.DeliveryDate = value.DeliveryDate;
             entity.PONumber = value.PONumber;
-            entity.ControlNumber = value.ControlNumber;
+            entity.ControlNumber = value.ControlNumber.Trim();
             entity.OrderStatus = value.OrderStatus;
             entity.FutureItems = value.FutureItems;
             entity.ErrorStatus = value.ErrorStatus;
