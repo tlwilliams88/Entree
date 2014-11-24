@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" />
+  <xs:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ModelExport" />
+  <xs:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+  <xs:element name="ReadCustomExportOptions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q1:guid" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" minOccurs="0" name="type" type="q2:ExportType" />
+        <xs:element minOccurs="0" name="ListId" nillable="true" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReadCustomExportOptionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ModelExport" minOccurs="0" name="ReadCustomExportOptionsResult" nillable="true" type="q3:ExportOptionsModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveUserExportSettings">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q4:guid" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" minOccurs="0" name="type" type="q5:ExportType" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="listType" type="q6:ListType" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ModelExport" minOccurs="0" name="configuration" nillable="true" type="q7:ArrayOfExportModelConfiguration" />
+        <xs:element minOccurs="0" name="exportFormat" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveUserExportSettingsResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

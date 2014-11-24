@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Elasticsearch.Net;
 using System.Dynamic;
@@ -71,7 +72,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                                 filter = new { query = filterTerms }
                             }
                         },
-                        functions = BuildPreferredItemBoostFunctions(),
+                        functions = BuildItemBoostFunctions(searchExpression),
                         score_mode = "max",
                         boost_mode = "multiply"
                     }
@@ -91,7 +92,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     function_score = new
                     {
                         query,
-                        functions = BuildPreferredItemBoostFunctions(),
+                        functions = BuildItemBoostFunctions(),
                         score_mode = "max",
                         boost_mode = "multiply"
                     }
@@ -101,13 +102,35 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             };
         }
 
-        private static List<dynamic> BuildPreferredItemBoostFunctions() {
-            return new List<dynamic>
-                    {
-                        new { filter = new { term = new { preferreditemcode = "A" } }, boost_factor = 300 },
-                        new { filter = new { term = new { preferreditemcode = "B" } }, boost_factor = 200 },
-                        new { filter = new { term = new { preferreditemcode = "C" } }, boost_factor = 100 }
-                    };
+        private static List<dynamic> BuildItemBoostFunctions(string searchTerms = null) {
+            List<dynamic> boosts = new List<dynamic>();
+
+            // preferred item boosts
+            boosts.Add(new { filter = new { term = new { preferreditemcode = "A" } }, 
+                boost_factor = 300 });
+            boosts.Add(new { filter = new { term = new { preferreditemcode = "B" } }, 
+                boost_factor = 200 });
+            boosts.Add(new { filter = new { term = new { preferreditemcode = "C" } }, 
+                boost_factor = 100 });
+
+            // name and description boosts
+            if (!String.IsNullOrEmpty(searchTerms)) // search is keyword
+            {
+                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
+                    boost_factor = 500 });
+                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
+                    boost_factor = 250 });
+            }
+            // phrase boosts on name and description
+            if (!String.IsNullOrEmpty(searchTerms) && Regex.IsMatch(searchTerms, "\\s+")) // search is keyword and any whitespace in search terms
+            {
+                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
+                    boost_factor = 1000 });
+                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
+                    boost_factor = 500 });
+            }
+
+            return boosts;
         }
 
         private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category="") {

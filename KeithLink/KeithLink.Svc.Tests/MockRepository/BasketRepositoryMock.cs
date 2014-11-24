@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Test.MockRepository
 			return Guid.NewGuid();
 		}
 
-		public List<CS.Basket> ReadAllBaskets(Guid userId, Core.Enumerations.List.ListType type, bool runPipelines = false)
+		public List<CS.Basket> ReadAllBaskets(Guid userId, Core.Enumerations.List.BasketType type, bool runPipelines = false)
 		{
 			return MockBaskets;
 		}

@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = cart.Name;
-			newBasket.ListType = (int)ListType.Cart;
+			newBasket.ListType = (int)BasketType.Cart;
 			newBasket.Name = CartName(cart.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
@@ -168,7 +168,7 @@ namespace KeithLink.Svc.Impl.Logic
 		
         private void MarkCurrentActiveCartAsInactive(UserProfile user, UserSelectedContext catalogInfo, string branchId)
 		{
-			var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
+			var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
 
 			if (currentlyActiveCart != null)
 			{
@@ -182,7 +182,7 @@ namespace KeithLink.Svc.Impl.Logic
             if (String.IsNullOrEmpty(catalogInfo.CustomerId))
                 return new List<ShoppingCart>();
 
-			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, ListType.Cart);
+			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart);
 
 			var listForBranch = lists.Where(b => b.BranchId.Equals(catalogInfo.BranchId.ToLower()) &&
 				!string.IsNullOrEmpty(b.CustomerId) &&

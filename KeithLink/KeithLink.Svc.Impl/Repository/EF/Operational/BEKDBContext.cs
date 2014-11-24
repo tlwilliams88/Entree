@@ -36,6 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
         public DbSet<UserMessagingPreference> UserMessagingPreferences { get; set; }
         public DbSet<UserPushNotificationDevice> UserPushNotificationDevices { get; set; }
         public DbSet<UserTopicSubscription> UserTopicSubscriptions { get; set; }
+		public DbSet<ExportSetting> ExportSettings { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -48,7 +49,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
             modelBuilder.Entity<MessageTemplate>().ToTable("MessageTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<ExportSetting>().ToTable("ExportSettings", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
             modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
