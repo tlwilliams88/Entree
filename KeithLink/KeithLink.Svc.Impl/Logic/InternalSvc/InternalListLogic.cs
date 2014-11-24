@@ -240,6 +240,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
                     listItem.TempZone = prod.TempZone;
+					listItem.ItemClass = prod.ItemClass;
+					listItem.CategoryId = prod.CategoryId;
+					listItem.CategoryName = prod.CategoryName;
+					listItem.UPC = prod.UPC;
+					listItem.VendorItemNumber = prod.VendorItemNumber;
 
 				}
 				if (price != null)

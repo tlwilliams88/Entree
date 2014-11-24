@@ -53,14 +53,16 @@ namespace KeithLink.Svc.Impl.Helpers
 		public MemoryStream Export(string exportType)
 		{
 			StringBuilder sb = new StringBuilder();
-			this.WriteHeaderRecord(sb);
+
+			if(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+				this.WriteHeaderRecord(sb, exportType);
 
 			if (this.Model != null && this.Model.Count > 0) // is there any data to render
 			{
 				foreach (var item in this.Model)
 				{
 					if (item != null)
-						this.WriteItemRecord(sb, item);
+						this.WriteItemRecord(sb, item, exportType);
 				}
 
 			}
@@ -74,7 +76,7 @@ namespace KeithLink.Svc.Impl.Helpers
 			return ms;
 		}
 
-		private void WriteItemRecord(StringBuilder sb, TModel item)
+		private void WriteItemRecord(StringBuilder sb, TModel item, string exportType)
 		{
 			List<string> itemRecord = new List<string>();
 
@@ -88,24 +90,9 @@ namespace KeithLink.Svc.Impl.Helpers
 					itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));
 				}
 			}
-
-			//foreach (var property in item.GetType().GetProperties())
-			//{
-			//	//if (property.GetCustomAttribute<ExportAttribute>() != null)
-			//	//{
-			//	//	var map = this.EnumMaps.FirstOrDefault(m => m.PropertyName.Equals(property.Name));
-			//	string value = string.Empty;
-			//	//	if (map != null)
-			//	//		value = this.GetAttributeFieldValue(map.EnumerationType, Enum.GetName(map.EnumerationType, property.GetValue(item)));
-			//	//	else
-			//			value = this.GetFieldValue(item, property);
-
-			//		itemRecord.Add(string.Format("\"{0}\"", value.Trim()));
-			//	//}
-			//}
-
+			
 			if (itemRecord.Count > 0)
-				sb.AppendLine(string.Join(",", itemRecord));
+				sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase ) ? "," : "\t", itemRecord));
 		}
 
 		private string GetFieldValue(object item, PropertyInfo property)
@@ -132,7 +119,7 @@ namespace KeithLink.Svc.Impl.Helpers
 			return fieldName;
 		}
 
-		private void WriteHeaderRecord(StringBuilder sb)
+		private void WriteHeaderRecord(StringBuilder sb, string exportType)
 		{
 			var headerRecord = new List<string>();
 
@@ -154,23 +141,7 @@ namespace KeithLink.Svc.Impl.Helpers
 				}
 			}
 
-			//foreach (var property in typeof(TModel).GetProperties())
-			//{
-			//	//if (property.GetCustomAttribute<ExportAttribute>() != null)
-			//	//{
-
-			//		var description = property.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>();
-			//		string value = string.Empty;
-			//		if (description != null)
-			//			value = description.Description;
-			//		else
-			//			value = property.Name;
-
-			//		headerRecord.Add(string.Format("\"{0}\"", value.Trim()));
-			//	//}
-			//}
-
-			sb.AppendLine(string.Join(",", headerRecord));
+			sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", headerRecord));
 		}
 
 	}

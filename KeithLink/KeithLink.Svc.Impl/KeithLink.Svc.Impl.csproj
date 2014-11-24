@@ -181,6 +181,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
@@ -371,6 +373,14 @@
     <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.cs" />
     <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.Designer.cs">
       <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.cs" />
+    <Compile Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.Designer.cs">
+      <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.cs" />
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.Designer.cs">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -825,6 +835,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.resx">
       <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.resx">
+      <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.resx">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
