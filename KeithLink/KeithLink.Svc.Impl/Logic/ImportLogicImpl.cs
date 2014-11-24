@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.ShoppingCart;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -60,7 +61,7 @@ namespace KeithLink.Svc.Impl.Logic
 					newList.Items = items; //All items are in the user's catalog
 
 
-				importReturn.ListId = 	listServiceRepository.CreateList(user.UserId, catalogInfo, newList, Core.Models.EF.ListType.Custom);
+				importReturn.ListId = 	listServiceRepository.CreateList(user.UserId, catalogInfo, newList, ListType.Custom);
 
 				importReturn.Success = true;
 

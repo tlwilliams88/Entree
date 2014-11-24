@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	public interface IBasketLogic
 	{
 		CS.Basket RetrieveSharedCustomerBasket(UserProfile user, UserSelectedContext catalogInfo, Guid listId);
-		List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool includeFavorites = false);
+		List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, BasketType type, bool includeFavorites = false);
 		
 
 	}

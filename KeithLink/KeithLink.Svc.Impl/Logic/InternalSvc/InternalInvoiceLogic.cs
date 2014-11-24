@@ -19,6 +19,7 @@ using System.Transactions;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {

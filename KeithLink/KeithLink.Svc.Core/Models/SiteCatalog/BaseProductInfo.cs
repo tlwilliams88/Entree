@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,6 +13,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	{
 
 		[DataMember(Name = "itemnumber")]
+		[Description("Item")]
 		public string ItemNumber { get; set; }
 
 		[DataMember(Name = "nonstock")]
@@ -36,6 +38,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public string ChildNutrition { get; set; }
 
 		[DataMember(Name = "brand")]
+		[Description("Brand")]
 		public string Brand { get; set; }
 
         [DataMember(Name = "brand_extended_description")]
@@ -45,12 +48,14 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string BrandControlLabel { get; set; }
 
 		[DataMember(Name = "name")]
+		[Description("Name")]
 		public string Name { get; set; }
 
 		[DataMember(Name = "favorite")]
 		public bool Favorite { get; set; }
 
 		[DataMember(Name = "notes")]
+		[Description("Note")]
 		public string Notes { get; set; }
 
         [DataMember(Name = "catchweight")]

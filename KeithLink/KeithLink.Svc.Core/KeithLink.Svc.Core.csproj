@@ -183,6 +183,10 @@
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
+    <Compile Include="Models\ModelExport\ExportModelConfiguration.cs" />
+    <Compile Include="Interface\ModelExport\IExportableModel.cs" />
+    <Compile Include="Models\ModelExport\ExportOptionsModel.cs" />
+    <Compile Include="Models\ModelExport\ExportRequestModel.cs" />
     <Compile Include="Models\OnlinePayments\Customer\AchRoleEmail.cs" />
     <Compile Include="Models\OnlinePayments\Customer\Branch.cs" />
     <Compile Include="Models\OnlinePayments\Customer\Customer.cs" />

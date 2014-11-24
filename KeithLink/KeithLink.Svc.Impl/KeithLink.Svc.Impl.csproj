@@ -175,6 +175,7 @@
     <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
+    <Compile Include="Helpers\ModelExporter.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />

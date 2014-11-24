@@ -9,8 +9,8 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IListServcie_AddItems_InputMessage">

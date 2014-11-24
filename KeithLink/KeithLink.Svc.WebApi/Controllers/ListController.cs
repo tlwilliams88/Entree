@@ -9,6 +9,9 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.IO;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -27,6 +30,26 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
+		[HttpPost]
+		[ApiKeyedRoute("list/export/{listId}")]
+		public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest)
+		{
+			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			MemoryStream stream;
+
+			if(exportRequest.Fields == null)
+				stream = new ModelExporter<ListItemModel>(list.Items).Export(exportRequest.SelectedType);
+			else
+				stream = new ModelExporter<ListItemModel>(list.Items, exportRequest.Fields).Export(exportRequest.SelectedType);
+
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			result.Content.Headers.ContentDisposition.FileName = "export.csv";
+			return result;
+		}
+
         [HttpGet]
 		[ApiKeyedRoute("list/")]
         public List<ListModel> List(bool header = false)
@@ -58,7 +81,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
 		public NewListItem List(ListModel list, bool isMandatory = false)
         {
-			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? Core.Models.EF.ListType.Mandatory : Core.Models.EF.ListType.Custom) };
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : ListType.Custom) };
         }
 		
         [HttpPost]
