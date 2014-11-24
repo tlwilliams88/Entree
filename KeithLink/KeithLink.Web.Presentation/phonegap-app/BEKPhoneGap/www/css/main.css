@@ -4964,7 +4964,7 @@ tbody.collapse.in {
 
 /* line 76, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
 .nav-tabs {
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #c3bc9c;
 }
 /* line 78, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
 .nav-tabs > li {
@@ -4980,13 +4980,13 @@ tbody.collapse.in {
 }
 /* line 89, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
 .nav-tabs > li > a:hover, .nav-tabs li.active .nav-tabs > li > a:hover {
-  border-color: #c3bc9c #c3bc9c #ddd;
+  border-color: #c3bc9c #c3bc9c #c3bc9c;
 }
 /* line 96, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
-  color: #555555;
+  color: #504938;
   background-color: #fff;
-  border: 1px solid #ddd;
+  border: 1px solid #c3bc9c;
   border-bottom-color: transparent;
   cursor: default;
 }
@@ -5066,12 +5066,12 @@ tbody.collapse.in {
 .nav-tabs-justified > .active > a:focus,
 .nav-tabs.nav-justified > .active > a:focus,
 .nav-tabs li.active .nav-tabs-justified > .active > a:focus:hover {
-  border: 1px solid #ddd;
+  border: 1px solid #c3bc9c;
 }
 @media (min-width: 768px) {
   /* line 206, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
   .nav-tabs-justified > li > a, .nav-tabs.nav-justified > li > a, .nav-tabs .nav-tabs-justified > li > a:hover, .nav-tabs li.active .nav-tabs.nav-justified > li > a:hover {
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #c3bc9c;
     border-radius: 4px 4px 0 0;
   }
   /* line 210, ../scss/vendor/bootstrap/bootstrap/_navs.scss */
@@ -5082,7 +5082,7 @@ tbody.collapse.in {
   .nav-tabs-justified > .active > a:focus,
   .nav-tabs.nav-justified > .active > a:focus,
   .nav-tabs li.active .nav-tabs-justified > .active > a:focus:hover {
-    border-bottom-color: #f3f1eb;
+    border-bottom-color: #c3bc9c;
   }
 }
 
@@ -7004,36 +7004,59 @@ ng-class="{ odd : $odd, even: $even }"
   background-color: #f8f8c4 !important;
 }
 
-/* line 98, ../scss/components/_table.scss */
+/* line 92, ../scss/components/_table.scss */
+.table-narrow {
+  margin-bottom: 0;
+}
+/* line 95, ../scss/components/_table.scss */
+.table-narrow > thead > tr > th,
+.table-narrow > thead > tr > td,
+.table-narrow > tbody > tr > th,
+.table-narrow > tbody > tr > td,
+.table-narrow > tfoot > tr > th,
+.table-narrow > tfoot > tr > td {
+  padding: 6px 5px;
+}
+/* line 103, ../scss/components/_table.scss */
+.table-narrow > thead > tr > th.input-col,
+.table-narrow > thead > tr > td.input-col,
+.table-narrow > tbody > tr > th.input-col,
+.table-narrow > tbody > tr > td.input-col,
+.table-narrow > tfoot > tr > th.input-col,
+.table-narrow > tfoot > tr > td.input-col {
+  padding: 3px 5px;
+}
+
+/* line 115, ../scss/components/_table.scss */
 table tr > td.input-col, table tr > th.input-col {
   padding: 6px 5px;
 }
-/* line 101, ../scss/components/_table.scss */
+/* line 118, ../scss/components/_table.scss */
 table tr > td.input-col input[type="text"], table tr > th.input-col input[type="text"] {
   border: 1px solid #c3bc9c;
   padding: 5px;
   width: 100%;
 }
-/* line 108, ../scss/components/_table.scss */
+/* line 125, ../scss/components/_table.scss */
 table tr > td.icon-col, table tr > th.icon-col {
   padding: 7px 5px;
 }
-/* line 112, ../scss/components/_table.scss */
+/* line 129, ../scss/components/_table.scss */
 table tr > td.notes-col, table tr > th.notes-col {
   max-width: 100px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-/* line 121, ../scss/components/_table.scss */
+/* line 138, ../scss/components/_table.scss */
 table tr.filter-row input {
   width: 100%;
 }
-/* line 126, ../scss/components/_table.scss */
+/* line 143, ../scss/components/_table.scss */
 table tr.mobile-details-row table {
   width: 100%;
 }
-/* line 128, ../scss/components/_table.scss */
+/* line 145, ../scss/components/_table.scss */
 table tr.mobile-details-row table > tbody > tr > td {
   padding-top: 5px;
 }
@@ -7136,11 +7159,28 @@ input.input-number {
   font-style: italic;
 }
 
-/* line 1, ../scss/components/_tabs.scss */
-.nav-tabs {
-  border-bottom: 1px solid #c3bc9c;
+/* line 3, ../scss/components/_tabs.scss */
+.nav-tabs.nav-justified > li.active > a {
+  border-bottom: 1px solid transparent;
+  padding-top: 12px;
 }
-/* line 5, ../scss/components/_tabs.scss */
+/* line 6, ../scss/components/_tabs.scss */
+.nav-tabs.nav-justified > li.active > a:hover {
+  border-bottom: 1px solid transparent;
+  margin-right: 0;
+  border-radius: 4px 4px 0 0;
+  padding-top: 12px;
+}
+/* line 13, ../scss/components/_tabs.scss */
+.nav-tabs.nav-justified > li > a, .nav-tabs li.active .nav-tabs.nav-justified > li > a:hover {
+  font-size: 15px;
+}
+/* line 16, ../scss/components/_tabs.scss */
+.nav-tabs.nav-justified > li > a:hover {
+  margin-right: 0;
+  border-radius: 4px 4px 0 0;
+}
+/* line 24, ../scss/components/_tabs.scss */
 .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   margin-right: 5px;
   color: #504938;
@@ -7148,53 +7188,65 @@ input.input-number {
   border: 1px solid #c3bc9c;
   padding: 12px 40px;
 }
-/* line 16, ../scss/components/_tabs.scss */
+/* line 35, ../scss/components/_tabs.scss */
 .nav-tabs li.active a, .nav-tabs li.active a:hover {
-  border: 1px solid #c3bc9c;
   border-bottom-color: transparent;
   border-top: 3px solid #489ecf;
   padding-top: 10px;
   font-weight: normal;
+  background-color: #fff;
+}
+/* line 42, ../scss/components/_tabs.scss */
+.nav-tabs li.active a:hover {
+  border-bottom: 1px solid transparent;
 }
 
-/* line 31, ../scss/components/_tabs.scss */
-.tab-content .tab-pane {
+/* line 51, ../scss/components/_tabs.scss */
+.tabset.tab-border .tab-content .tab-pane {
   background-color: #fff;
   border-left: 1px solid #c3bc9c;
   border-right: 1px solid #c3bc9c;
   border-bottom: 1px solid #c3bc9c;
 }
 
+/* line 59, ../scss/components/_tabs.scss */
+.tabset.modal-body .tab-content {
+  padding: 15px;
+  border: 1px solid #c3bc9c;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+}
+
 @media (max-width: 767px) {
-  /* line 42, ../scss/components/_tabs.scss */
+  /* line 68, ../scss/components/_tabs.scss */
   .nav-tabs li {
     width: 100%;
   }
-  /* line 45, ../scss/components/_tabs.scss */
+  /* line 71, ../scss/components/_tabs.scss */
   .nav-tabs li a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
     margin-right: 0px;
     border-radius: 8px;
     margin-bottom: 5px;
   }
-  /* line 52, ../scss/components/_tabs.scss */
+  /* line 78, ../scss/components/_tabs.scss */
   .nav-tabs li.active a, .nav-tabs li.active a:hover {
     border-bottom-color: #c3bc9c;
     background-color: #fff;
   }
 }
 @media print {
-  /* line 60, ../scss/components/_tabs.scss */
+  /* line 86, ../scss/components/_tabs.scss */
   .nav-tabs {
     display: none;
   }
 
-  /* line 64, ../scss/components/_tabs.scss */
+  /* line 90, ../scss/components/_tabs.scss */
   .tab-pane {
     display: block !important;
     margin-top: 15px;
     border-top: 1px solid #c3bc9c;
   }
-  /* line 70, ../scss/components/_tabs.scss */
+  /* line 96, ../scss/components/_tabs.scss */
   .tab-pane h3 {
     margin-top: 10px;
     margin-bottom: 0;
@@ -7546,7 +7598,18 @@ form.style-validation-errors .form-error-message {
 .sidebar .sidebar-nav ul {
   margin-bottom: 0;
 }
-/* line 49, ../scss/components/_sidebar.scss */
+/* line 48, ../scss/components/_sidebar.scss */
+.sidebar .sidebar-nav ul button {
+  width: 100%;
+  padding: 0;
+  text-align: left;
+}
+/* line 56, ../scss/components/_sidebar.scss */
+.sidebar .sidebar-nav ul button[disabled] li {
+  cursor: default;
+  color: #8d8d8d;
+}
+/* line 65, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-nav ul li {
   padding: 14px 8px;
   color: #9f8e7c;
@@ -7555,14 +7618,14 @@ form.style-validation-errors .form-error-message {
   font-weight: 400;
   letter-spacing: 1px;
 }
-/* line 58, ../scss/components/_sidebar.scss */
+/* line 74, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-nav ul li .sidebar-nav__icon {
   width: 35px;
   display: inline-block;
   text-align: center;
   font-size: 16px;
 }
-/* line 65, ../scss/components/_sidebar.scss */
+/* line 81, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-nav ul li .badge {
   float: right;
   background-color: #dc6a6a;
@@ -7570,38 +7633,38 @@ form.style-validation-errors .form-error-message {
   padding: 2px 7px;
   color: #fff;
 }
-/* line 74, ../scss/components/_sidebar.scss */
+/* line 91, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-nav ul .is-selected li {
   color: #fff;
   background-color: #2a2621;
   border-left: 3px solid #e8aa30;
   padding-left: 5px;
 }
-/* line 82, ../scss/components/_sidebar.scss */
+/* line 99, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr {
   padding: 20px;
   background-color: #373029;
   border-bottom: 1px solid #706457;
   letter-spacing: 1px;
 }
-/* line 88, ../scss/components/_sidebar.scss */
+/* line 105, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr img {
   height: 60px;
   width: 60px;
   border-radius: 50px;
 }
-/* line 94, ../scss/components/_sidebar.scss */
+/* line 111, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr .contact-info {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 100;
 }
-/* line 100, ../scss/components/_sidebar.scss */
+/* line 117, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr .contact-info span {
   color: white;
   display: block;
 }
-/* line 107, ../scss/components/_sidebar.scss */
+/* line 124, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-meta {
   font-size: 11px;
   font-weight: 300;
@@ -7871,12 +7934,21 @@ form.style-validation-errors .form-error-message {
     float: right;
   }
 }
-/* line 1, ../scss/components/_modal.scss */
+/* line 2, ../scss/components/_modal.scss */
+.no-padding-modal .modal-content {
+  border: none;
+}
+/* line 5, ../scss/components/_modal.scss */
+.no-padding-modal .modal-body {
+  padding: 0;
+}
+
+/* line 11, ../scss/components/_modal.scss */
 .modal-backdrop {
   bottom: 0;
 }
 
-/* line 5, ../scss/components/_modal.scss */
+/* line 15, ../scss/components/_modal.scss */
 .modal-close-button {
   position: absolute;
   top: -10px;
@@ -7888,7 +7960,7 @@ form.style-validation-errors .form-error-message {
   cursor: pointer;
 }
 
-/* line 16, ../scss/components/_modal.scss */
+/* line 26, ../scss/components/_modal.scss */
 .color-background-modal .modal-content {
   background-color: #f3f1eb;
 }
@@ -8317,7 +8389,7 @@ ul.horizontal-slide .product-placeholder-image {
 
 /* line 11, ../scss/pages/_register.scss */
 .register-header img {
-  height: 80px;
+  height: 85px;
 }
 /* line 17, ../scss/pages/_register.scss */
 .register-header .login-form button {
@@ -8900,7 +8972,6 @@ ul.horizontal-slide .product-placeholder-image {
 /* line 7, ../scss/pages/_cart.scss */
 .critical-items__tabset .nav-tabs li a, .critical-items__tabset .nav-tabs li.active a:hover {
   padding: 8px 15px;
-  font-weight: 600;
 }
 /* line 11, ../scss/pages/_cart.scss */
 .critical-items__tabset .nav-tabs li.active a, .critical-items__tabset .nav-tabs li.active a:hover {
@@ -8911,28 +8982,6 @@ ul.horizontal-slide .product-placeholder-image {
 .critical-items__tabset .tab-content {
   max-height: 150px;
   overflow-y: auto;
-}
-/* line 21, ../scss/pages/_cart.scss */
-.critical-items__tabset .tab-content .table {
-  margin-bottom: 0;
-}
-/* line 24, ../scss/pages/_cart.scss */
-.critical-items__tabset .tab-content .table > thead > tr > th,
-.critical-items__tabset .tab-content .table > thead > tr > td,
-.critical-items__tabset .tab-content .table > tbody > tr > th,
-.critical-items__tabset .tab-content .table > tbody > tr > td,
-.critical-items__tabset .tab-content .table > tfoot > tr > th,
-.critical-items__tabset .tab-content .table > tfoot > tr > td {
-  padding: 6px 5px;
-}
-/* line 32, ../scss/pages/_cart.scss */
-.critical-items__tabset .tab-content .table > thead > tr > th.input-col,
-.critical-items__tabset .tab-content .table > thead > tr > td.input-col,
-.critical-items__tabset .tab-content .table > tbody > tr > th.input-col,
-.critical-items__tabset .tab-content .table > tbody > tr > td.input-col,
-.critical-items__tabset .tab-content .table > tfoot > tr > th.input-col,
-.critical-items__tabset .tab-content .table > tfoot > tr > td.input-col {
-  padding: 3px 5px;
 }
 
 /* line 1, ../scss/pages/_admin.scss */
@@ -9009,6 +9058,15 @@ ul.horizontal-slide .product-placeholder-image {
 /* line 14, ../scss/pages/_invoice.scss */
 .invoice-table > tbody > tr.invoice__paid > td.highlight-text {
   color: #04a773;
+}
+
+/* line 20, ../scss/pages/_invoice.scss */
+.datepicker ul {
+  padding: 10px;
+}
+/* line 23, ../scss/pages/_invoice.scss */
+.datepicker ul .btn-default {
+  border: none;
 }
 
 /* line 2, ../scss/pages/_notifications.scss */

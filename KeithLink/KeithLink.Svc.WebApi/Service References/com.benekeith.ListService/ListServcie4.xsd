@@ -4,8 +4,8 @@
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:element name="AddItems">
     <xs:complexType>
       <xs:sequence>
@@ -72,7 +72,7 @@
         <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q11:guid" />
         <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q12:UserSelectedContext" />
         <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="list" nillable="true" type="q13:UserList" />
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" minOccurs="0" name="type" type="q14:ListType" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q14:ListType" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -157,7 +157,7 @@
       <xs:sequence>
         <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q23:userprofile" />
         <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q24:UserSelectedContext" />
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" minOccurs="0" name="type" type="q25:ListType" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q25:ListType" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

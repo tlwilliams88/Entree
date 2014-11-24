@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Lists;
+﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;

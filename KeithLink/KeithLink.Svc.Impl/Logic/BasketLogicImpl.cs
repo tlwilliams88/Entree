@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return null;
 		}
 
-		public List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool includeFavorites = false)
+		public List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, BasketType type, bool includeFavorites = false)
 		{
 			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(user.UserCustomers.Where(c => c.CustomerNumber.Equals(catalogInfo.CustomerId)).First().CustomerId).ToList();
 
@@ -72,7 +72,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			if (includeFavorites)
 			{
-				var favorite = basketRepository.ReadAllBaskets(user.UserId, ListType.Favorite).ToList();
+				var favorite = basketRepository.ReadAllBaskets(user.UserId, BasketType.Favorite).ToList();
 				returnBaskets.AddRange(favorite);
 			}
 

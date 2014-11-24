@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
 		Guid? AddItem(Guid basketId, LineItem newItem, Basket basket, bool runPipelines = false);
 
-		List<Basket> ReadAllBaskets(Guid userId, ListType type, bool runPipelines = false);
+		List<Basket> ReadAllBaskets(Guid userId, BasketType type, bool runPipelines = false);
 
 		Basket ReadBasket(Guid userId, Guid basketId, bool runPipelines = false);
 		Basket ReadBasket(Guid userId, string basketName, bool runPipelines = false);

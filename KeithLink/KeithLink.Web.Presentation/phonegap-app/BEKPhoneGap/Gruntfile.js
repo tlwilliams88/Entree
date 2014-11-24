@@ -8,7 +8,8 @@ module.exports = function(grunt) {
               'https://github.com/phonegap-build/PushPlugin.git',
               'org.apache.cordova.device',
               'org.apache.cordova.dialogs',
-              'org.apache.cordova.vibration'
+              'org.apache.cordova.vibration',
+              'org.apache.cordova.console'
           ],
           maxBuffer: 500,
           platforms: ['ios', 'android'],

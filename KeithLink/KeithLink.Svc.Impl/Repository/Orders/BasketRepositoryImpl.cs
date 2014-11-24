@@ -60,7 +60,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((Basket)basketResponse.CommerceEntities[0]);
 		}
 
-        public List<Basket> ReadAllBaskets(Guid userId, ListType type, bool runPipelines = false)
+        public List<Basket> ReadAllBaskets(Guid userId, BasketType type, bool runPipelines = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToCommerceServerFormat();

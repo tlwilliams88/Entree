@@ -225,7 +225,7 @@ angular.module('bekApp')
                 }
             };
 
-
+            return Service;
 
         }
     ]);
