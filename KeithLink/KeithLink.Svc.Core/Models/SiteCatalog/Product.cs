@@ -8,12 +8,14 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Core.Models.ModelExport;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "product")]
     [Serializable]
-    public class Product: BaseProductInfo
+    public class Product: BaseProductInfo, IExportableModel
     {
 		private string pack;
 
@@ -80,7 +82,21 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			if (this.UPC.Equals("00000000000000"))
 				this.UPC = string.Empty;
 		}
-    }
+
+		public List<ExportModelConfiguration> DefaultExportConfiguration()
+		{
+			var defaultConfig = new List<ExportModelConfiguration>();
+
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 10, Label = "Brand" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 40, Label = "Price" });
+
+
+			return defaultConfig;
+		}
+	}
 
 	
 }
