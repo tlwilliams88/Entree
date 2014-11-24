@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Diagnostics;
 
 namespace KeithLink.Svc.FoundationSvc
 {
@@ -16,6 +17,23 @@ namespace KeithLink.Svc.FoundationSvc
     {
         protected void Application_Start()
         {
+            try
+            {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink.FoundationSvc");
+                eventLog.WriteInformationLog("Foundation Service Starting Up");
+            }
+            catch (Exception ex)
+            {
+                string sSource = "KeithLink.FoundationSvc";
+                string sLog = "Application";
+                string sEvent = "Error trying to log in startup: " + ex.ToString();
+
+                if (!EventLog.SourceExists(sSource))
+	                EventLog.CreateEventSource(sSource,sLog);
+					
+                EventLog.WriteEntry(sSource, sEvent, EventLogEntryType.Error,  234);
+            }
         }
     }
 }
