@@ -1,11 +1,15 @@
 ﻿using KeithLink.Svc.Core.Interface.Cart;
+using KeithLink.Svc.Core.Interface.Configuration;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -21,16 +25,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IShipDateRepository _shipDayService;
         private readonly IShoppingCartLogic _shoppingCartLogic;
 		private readonly IOrderServiceRepository _orderServiceRepository;
+		private readonly IExportSettingServiceRepository _exportSettingRepository;
+        
         #endregion
 
         #region ctor
-        public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo, 
-                               IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository): base(profileLogic) {
+        public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo,
+							   IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository, IExportSettingServiceRepository exportSettingRepository)
+			: base(profileLogic)
+		{
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
 			_shoppingCartLogic = shoppingCartLogic;
 			this._orderServiceRepository = orderServiceRepository;
+			this._exportSettingRepository = exportSettingRepository;
         }
         #endregion
 
@@ -46,6 +55,34 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public List<Order> Orders()
 		{
 			return _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("order/export/")]
+		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
+		{
+			var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
+			MemoryStream stream;
+
+			if (exportRequest.Fields == null)
+				stream = new ModelExporter<Order>(orders).Export(exportRequest.SelectedType);
+			else
+			{
+				stream = new ModelExporter<Order>(orders, exportRequest.Fields).Export(exportRequest.SelectedType);
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			}
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			result.Content.Headers.ContentDisposition.FileName = "export.csv";
+			return result;
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("order/export")]
+		public ExportOptionsModel ExportProducts()
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, 0);
 		}
 
 		[HttpGet]

@@ -108,6 +108,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		#region Exports
 
+		[HttpGet]
+		[ApiKeyedRoute("catalog/export")]
+		public ExportOptionsModel ExportProducts()
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, 0);
+		}
+
 		[HttpPost]
 		[ApiKeyedRoute("catalog/export/{searchTerms}/products")]
 		public HttpResponseMessage ProductSearchExport(string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
