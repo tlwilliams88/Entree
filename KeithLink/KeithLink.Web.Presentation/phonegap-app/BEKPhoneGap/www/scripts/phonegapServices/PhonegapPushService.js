@@ -1,4 +1,6 @@
-module.factory('PhonegapPushService', function ($q, $window) {
+'use strict';
+
+angular.module('bekApp').factory('PhonegapPushService', function ($q, $window) {
 
     var pushConfig = {};
     if (device.platform == 'android' || device.platform == 'Android') {
