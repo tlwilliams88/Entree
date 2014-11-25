@@ -84,13 +84,21 @@ angular.module('bekApp')
       EXPORT
       ********************/
 
-      getExportConfig: function() {
-        return Order.exportConfig({}).$promise;
+      getOrderExportConfig: function() {
+        return Order.getOrderExportConfig({}).$promise;
       },
 
-      exportOrders: function(config, listId) {
+      exportOrders: function(config) {
         ExportService.export('/order/export', config);
       },
+
+      getDetailExportConfig: function() {
+        return Order.getDetailExportConfig({}).$promise;
+      },
+
+      exportOrderDetails: function(config, orderNumber) {
+        ExportService.export('/order/export/' + orderNumber, config);
+      }
 
     };
  
