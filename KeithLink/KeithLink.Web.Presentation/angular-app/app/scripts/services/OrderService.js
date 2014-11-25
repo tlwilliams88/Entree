@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'Order', 
-    function ($http, $q, $filter, UtilityService, Order) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'Order', 
+    function ($http, $q, $filter, UtilityService, ExportService, Order) {
     
     var Service = {
       
@@ -78,7 +78,19 @@ angular.module('bekApp')
 
       pollOrderHistory: function() {
         return Order.pollOrderHistory().$promise;
-      }
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      getExportConfig: function() {
+        return Order.exportConfig({}).$promise;
+      },
+
+      exportOrders: function(config, listId) {
+        ExportService.export('/order/export', config);
+      },
 
     };
  

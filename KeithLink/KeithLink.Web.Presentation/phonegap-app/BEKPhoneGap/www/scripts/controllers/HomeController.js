@@ -20,7 +20,6 @@ angular.module('bekApp')
     });
 
     $scope.loadingPromoItems = true;
-
     MarketingService.getPromoItems().then(function(items) {
       console.log(items);
       $scope.promoItems = items;

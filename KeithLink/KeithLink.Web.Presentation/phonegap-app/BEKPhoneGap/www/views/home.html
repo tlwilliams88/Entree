@@ -160,7 +160,7 @@
     <h3>Latest From Ben E. Keith</h3>
     <div class="row">
 
-      <div class="col-xs-12" ng-hide="promoItems || promoItems.length > 0 || loadingPromoItems"></div>
+      <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
       <p class="col-xs-12" ng-show="promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
 
       <div class="col-sm-12 hidden-xs hidden-sm">

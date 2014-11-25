@@ -1,0 +1,65 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Export {{headerText}}</h3>
+</div>
+<div class="modal-body">
+  <form name="exportForm" class="style-validation-errors form-horizontal">
+    <div class="form-group">
+      <label for="exportType" class="col-xs-2">Type</label>
+      <div class="col-xs-5">
+        <select 
+          class="form-control"
+          ng-options="name for name in exportConfig.availabletypes"
+          ng-model="exportConfig.selectedtype"
+          name="exportType" 
+          id="exportType"
+          required></select>
+      </div>
+    </div>
+    <button type="button" class="pull-right btn-lg btn btn-primary" ng-click="defaultExport()">Default Export</button>
+    <div class="clearfix"></div>
+
+    <h4>Custom Export Fields</h4>
+
+    <div class="form-group">
+      <div class="col-xs-6 sortable-list-container">
+        <h5>Available Fields:
+        <button class="btn btn-default btn-sm icon-angle-double-right"ng-click="selectAll()"></button></h5>
+        <ul
+          ui-sortable="{connectWith: '.bek-sortable-list', tolerance: 'pointer'}"
+          ng-model="unselectedFields"
+          class="bek-sortable-list">
+          <li ng-repeat="field in unselectedFields">
+            {{field.label}}
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-xs-6 sortable-list-container">
+        <h5>Selected Fields:
+        <button class="btn btn-default btn-sm icon-angle-double-left" ng-click="unselectAll()"></button></h5>
+        <ul
+          ui-sortable="{connectWith: '.bek-sortable-list', tolerance: 'pointer'}"
+          ng-model="selectedFields"
+          class="bek-sortable-list">
+          <li ng-repeat="field in selectedFields">
+            {{field.label}}
+          </li>
+        </ul>
+      </div>
+
+      <input type="hidden" ng-model="selectedFields.length" required-array>
+    </div>
+
+    <div class="clearfix"></div>
+    <button 
+      type="button" 
+      class="pull-right btn-lg btn btn-primary" 
+      ng-click="customExport()"
+      ng-disabled="exportForm.$invalid">Custom Export</button>
+    <div class="clearfix"></div>
+
+  </form>
+</div>
+<div class="modal-footer">
+  <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

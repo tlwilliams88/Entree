@@ -404,10 +404,6 @@ angular.module('bekApp')
                 }
             };
 
-            $scope.canOrderProduct = function(item) {
-                return ProductService.canOrderProduct(item);
-            };
-
             function refreshScopeFacets(facets) {
                 $scope.categories = facets.categories;
                 $scope.brands = facets.brands;

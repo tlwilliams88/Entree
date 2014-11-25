@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', 'orders', 'LocalStorage', 'OrderService',
-  function ($scope, $state, $timeout, orders, LocalStorage, OrderService) {
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'orders', 'LocalStorage', 'OrderService',
+  function ($scope, $state, $timeout, $modal, orders, LocalStorage, OrderService) {
 
   $scope.sortBy = 'createddate';
   $scope.sortOrder = true;
@@ -52,6 +52,27 @@ angular.module('bekApp')
   $scope.refreshOrderHistory = function() {
     OrderService.refreshOrderHistory().then(function(response) {
       poller();  
+    });
+  };
+
+  $scope.openExportModal = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Orders';
+        },
+        exportMethod: function() {
+          return OrderService.exportOrders;
+        },
+        exportConfig: function() {
+          return OrderService.getExportConfig();
+        },
+        exportParams: function() {
+          return null;
+        }
+      }
     });
   };
   

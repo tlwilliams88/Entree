@@ -23,10 +23,6 @@ angular.module('bekApp')
 
     ProductService.saveRecentlyViewedItem(item.itemnumber);
 
-    $scope.canOrderProduct = function(item) {
-      return ProductService.canOrderProduct(item);
-    };
-
     $scope.openNotesModal = function (item) {
 
       var modalInstance = $modal.open({

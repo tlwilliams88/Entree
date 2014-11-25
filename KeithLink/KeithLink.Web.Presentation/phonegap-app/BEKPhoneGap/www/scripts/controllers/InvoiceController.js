@@ -1,12 +1,21 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceController', ['$scope', '$filter', 'invoices', 'accounts',
-  function ($scope, $filter, invoices, accounts) {
+.controller('InvoiceController', ['$scope', '$filter', 'invoices', 'accounts', 'InvoiceService',
+  function ($scope, $filter, invoices, accounts, InvoiceService) {
 
   $scope.invoices = invoices;
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
+
+  $scope.datepickerOptions = {
+    minDate: new Date(),
+    maxDate: '2015-06-22',
+    options: {
+      dateFormat: 'yyyy-MM-dd',
+      showWeeks: false
+    }
+  }
 
   $scope.hasPayableInvoices = $filter('filter')(invoices, { ispayable: true }).length > 0;
 
@@ -73,6 +82,11 @@ angular.module('bekApp')
       total += parseFloat(invoice.paymentAmount || 0);
     });
     return total;
+  };
+
+  $scope.payInvoices = function() {
+    var payments = $filter('filter')($scope.filteredItems, { isSelected: true});
+    InvoiceService.payInvoices(payments, $scope.selectedAccount);
   };
 
 }]);

@@ -11,6 +11,11 @@ angular.module('bekApp')
         url: '/invoice/:invoiceNumber',
         method: 'GET',
         isArray: true
+      },
+
+      pay: {
+        url: '/invoice/payment',
+        method: 'POST'
       }
 
     });

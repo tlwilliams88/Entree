@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'BrandService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, BrandService) {
+    .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'BrandService',
+        function($scope, $state, $stateParams, $modal, ProductService, CategoryService, BrandService) {
             // clear keyword search term at top of the page
             if ($scope.userBar) {
                 $scope.userBar.universalSearchTerm = '';
@@ -526,5 +526,26 @@ angular.module('bekApp')
                     return 'Non-Stock Item';
                 }
             }
+
+            $scope.openExportModal = function() {
+              var modalInstance = $modal.open({
+                templateUrl: 'views/modals/exportmodal.html',
+                controller: 'ExportModalController',
+                resolve: {
+                  headerText: function () {
+                    return 'Search Results';
+                  },
+                  exportMethod: function() {
+                    return ProductService.exportProducts;
+                  },
+                  exportConfig: function() {
+                    return ProductService.getExportConfig();
+                  },
+                  exportParams: function() {
+                    return null; // search query string param
+                  }
+                }
+              });
+            };
         }
     ]);

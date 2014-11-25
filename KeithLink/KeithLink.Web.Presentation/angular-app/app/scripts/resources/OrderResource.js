@@ -30,6 +30,11 @@ angular.module('bekApp')
       pollOrderHistory: {
         url: '/order/lastupdate',
         method: 'GET'
+      },
+
+      exportConfig: {
+        url: '/order/export',
+        method: 'GET'
       }
 
     });

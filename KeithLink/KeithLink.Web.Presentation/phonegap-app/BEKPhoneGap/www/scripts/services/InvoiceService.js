@@ -21,7 +21,17 @@ angular.module('bekApp')
         return Invoice.getTransactions({
           invoiceNumber: invoiceNumber
         }).$promise;
+      },
+
+      payInvoices: function(payments, account) {
+        payments.forEach(function(payment) {
+          payment.account = account.accountNumber;
+          payment.amount = parseFloat(payment.paymentAmount);
+        });
+
+        return Invoice.pay(payments).$promise;
       }
+
     };
  
     return Service;
