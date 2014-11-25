@@ -37,36 +37,11 @@ angular.module('bekApp')
       ********************/
 
       getExportConfig: function() {
-        return {
-          availtypes: ['csv', 'excel', 'tab'],
-          selectedtype: 'tab',
-          fields: [{
-            field: 'description',
-            label: 'Description',
-            order: 2,
-            selected: true
-          }, {
-            field: 'upc',
-            label: 'UPC'
-          }, {
-            field: 'price',
-            label: 'Price'
-          }, {
-            field: 'label',
-            label: 'Label',
-            order: 1,
-            selected: true
-          }]
-        };
+        return Invoice.exportConfig({}).$promise;
       },
 
-      exportCustomInvoice: function(config) {
-        console.log('custom export Invoice');
-        console.log(config);
-      },
-
-      exportDefaultInvoice: function(config) {
-        console.log('default Invoice export');
+      exportInvoice: function(config) {
+        ExportService.export('/invoice/export/', config);
       }
 
     };

@@ -118,52 +118,6 @@ angular.module('bekApp')
       },
 
       /********************
-      EXPORT
-      ********************/
-
-      getExportConfig: function() {
-        return {
-          availtypes: ['csv', 'excel', 'tab'],
-          selectedtype: 'tab',
-          fields: [{
-            field: 'description',
-            label: 'Description',
-            order: 2,
-            selected: true
-          }, {
-            field: 'upc',
-            label: 'UPC'
-          }, {
-            field: 'price',
-            label: 'Price'
-          }, {
-            field: 'label',
-            label: 'Label',
-            order: 1,
-            selected: true
-          }]
-        };
-      },
-
-      exportCustomCart: function(params) {
-        console.log('custom export cart');
-      },
-
-      exportDefaultCart: function(params) {
-        console.log('default cart export');
-        $http.post('/list/export/127', {
-          selectedtype: 'csv'
-        }).then(function(response) {
-           var element = angular.element('<a/>');
-           element.attr({
-               href: 'data:attachment/csv;charset=utf-8,' + encodeURI(response.data),
-               target: '_blank',
-               download: 'filename.csv'
-           })[0].click();
-        });
-      },
-
-      /********************
       EDIT CART
       ********************/
 

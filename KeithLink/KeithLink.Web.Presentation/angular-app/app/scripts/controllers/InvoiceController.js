@@ -90,7 +90,6 @@ angular.module('bekApp')
   };
 
   $scope.openExportModal = function() {
-    console.log('export modal');
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
@@ -98,11 +97,8 @@ angular.module('bekApp')
         headerText: function () {
           return 'Invoices';
         },
-        defaultExport: function() {
-          return InvoiceService.exportDefaultInvoice;
-        },
-        customExport: function() {
-          return InvoiceService.exportCustomInvoice;
+        exportMethod: function() {
+          return InvoiceService.exportInvoice;
         },
         exportConfig: function() {
           return InvoiceService.getExportConfig();
