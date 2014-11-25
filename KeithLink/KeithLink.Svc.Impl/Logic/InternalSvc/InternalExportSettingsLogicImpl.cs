@@ -77,13 +77,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var options = new ExportOptionsModel();
 			options.Fields = new List<ExportModelConfiguration>();
 
+			if (type == ExportType.Order) //Order headers don't have options for item level details
+			{
+				options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "DeliveryDate", Label = "Delivery Date" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "ItemCount", Label = "Item Count" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "OrderTotal", Label = "Total" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Label = "Invoice #" });
+				options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceStatus", Label = "Invoice Status" });
+				return options;
+			}		
+
 			options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Label = "Item" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Label = "Name" });
-			options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Label = "Brand" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Label = "Pack/Size" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityInCart", Label = "# In Cart" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
-
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryName", Label = "Category Desc" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "ItemClass", Label = "Class" });
@@ -118,15 +130,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityShipped", Label = "Qty Shipped" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Label = "Qty Ordered" });
 					break;
-				case ExportType.Order:
-					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Order = 1, Label = "Order #" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Order = 10, Label = "Order Date" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Order = 20, Label = "Status" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "DeliveryDate", Order = 30, Label = "Delivery Date" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "ItemCount", Order = 40, Label = "Item Count" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderTotal", Order = 50, Label = "Total" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 60, Label = "Invoice #" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceStatus", Order = 70, Label = "Invoice Status" });
+				
+				case ExportType.OrderDetail:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "# Requested" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Label = "# Ordered" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "QantityShipped", Label = "# Shipped" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "EachYN", Label = "Each" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Price", Label = "Price" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
 					break;
 			}
 

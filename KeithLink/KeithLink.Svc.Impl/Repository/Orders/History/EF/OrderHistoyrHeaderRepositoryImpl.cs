@@ -27,5 +27,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
             return query.ToList();
         }
         #endregion
+
+
+        public IEnumerable<OrderHistoryHeader> GetCustomerOrderHistoryHeaders(string branchId, string customerNumber)
+        {
+            return this.Entities.Where(o => o.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && o.CustomerNumber.Equals(customerNumber)).OrderByDescending(o => o.CreatedUtc);
+        }
     }
 }

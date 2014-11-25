@@ -39,20 +39,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest)
 		{
 			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
-			MemoryStream stream;
 
-			if (exportRequest.Fields == null)
-				stream = new ModelExporter<ListItemModel>(list.Items).Export(exportRequest.SelectedType);
-			else
-			{
-				stream = new ModelExporter<ListItemModel>(list.Items, exportRequest.Fields).Export(exportRequest.SelectedType);
+			if (exportRequest.Fields != null)
 				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields, exportRequest.SelectedType);
-			}
-			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-			result.Content = new StreamContent(stream);
-			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-			result.Content.Headers.ContentDisposition.FileName = "export.csv";
-			return result;
+			return ExportModel<ListItemModel>(list.Items, exportRequest);				
 		}
 
 		[HttpGet]

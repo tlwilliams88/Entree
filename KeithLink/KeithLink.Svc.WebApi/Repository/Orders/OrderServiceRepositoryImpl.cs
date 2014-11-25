@@ -25,5 +25,10 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         public List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber ) {
             return serviceClient.GetLastFiveOrderHistory( catalogInfo, itemNumber ).ToList();
         }
-	}
+
+        public List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo)
+        {
+            return serviceClient.GetCustomerOrderHistories(catalogInfo).ToList();
+        }
+    }
 }

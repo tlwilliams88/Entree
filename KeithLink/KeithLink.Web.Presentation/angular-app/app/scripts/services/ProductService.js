@@ -56,7 +56,6 @@ angular.module('bekApp')
           if (facets === '') {
             facets = null;
           }
-
           return facets;
         },
 
@@ -74,7 +73,7 @@ angular.module('bekApp')
           if (!params.sfield) {
             delete params.sfield;
           }
-          return params;
+          return params;  
         },
 
         getSearchUrl: function(type, id) {

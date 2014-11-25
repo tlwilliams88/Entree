@@ -22,16 +22,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private IListServiceRepository listServiceRepository;
+        private IOrderServiceRepository orderServiceRepository;
 		private readonly IOrderQueueLogic orderQueueLogic;
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
 
-		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic,
+		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
             IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogLogic = catalogLogic;
 			this.listServiceRepository = listServiceRepository;
+            this.orderServiceRepository = orderServiceRepository;
             this.orderQueueLogic = orderQueueLogic;
             this.priceLogic = priceLogic;
             this.eventLogRepository = eventLogRepository;
@@ -39,7 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
 		{
-			var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
+            var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
 
 			var returnOrders = orders.Select(p => ToOrder(p)).ToList();
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
@@ -53,6 +55,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 			return returnOrders;
 		}
+
+        public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
+        {
+            var orders = orderServiceRepository.GetCustomerOrderHistories(catalogInfo);
+
+            var returnOrders = orders.Select(p => ToOrder(p)).ToList();
+            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+
+            return returnOrders;
+        }
 
 		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true)
 		{
@@ -84,6 +96,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			};
 		}
 
+        private Order ToOrder(Core.Models.Orders.History.OrderHistoryHeader orderHistoryHeader)
+        {
+            return new Order()
+            {
+                CreatedDate = orderHistoryHeader.DeliveryDate.HasValue ? orderHistoryHeader.DeliveryDate.Value : DateTime.Now,
+                OrderNumber = orderHistoryHeader.ControlNumber,
+                OrderTotal = orderHistoryHeader.Items.Sum(l => l.SellPrice),
+                InvoiceNumber = orderHistoryHeader.InvoiceNumber,
+                IsChangeOrderAllowed = false,
+                Status = orderHistoryHeader.OrderStatus,
+                RequestedShipDate = DateTime.UtcNow,
+                Items = orderHistoryHeader.Items.Select(l => ToOrderLine(l)).ToList(),
+                CommerceId = Guid.Empty, // could be orders from any system
+            };
+        }
+
 		private OrderLine ToOrderLine(CS.LineItem lineItem)
 		{
 			return new OrderLine()
@@ -99,6 +127,23 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 Each = (bool)lineItem.Properties["Each"]
 			};
 		}
+
+        private OrderLine ToOrderLine(Core.Models.Orders.History.OrderHistoryDetail lineItem)
+        {
+            return new OrderLine()
+            {
+                ItemNumber = lineItem.ItemNumber,
+                Quantity = (short)lineItem.ShippedQuantity,
+                Price = (double)lineItem.SellPrice,
+                QuantityOrdered = lineItem.OrderQuantity,
+                QantityShipped = lineItem.ShippedQuantity,
+                Status = lineItem.ItemStatus,
+                SubstitutedItemNumber = !String.IsNullOrEmpty(lineItem.ReplacedOriginalItemNumber.Trim()) ? lineItem.ReplacedOriginalItemNumber :
+                    !String.IsNullOrEmpty(lineItem.SubbedOriginalItemNumber.Trim()) ? lineItem.SubbedOriginalItemNumber : string.Empty,
+                MainFrameStatus = lineItem.ItemStatus,
+                Each = lineItem.UnitOfMeasure == UnitOfMeasure.Package ? true : false
+            };
+        }
 
 		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes)
 		{

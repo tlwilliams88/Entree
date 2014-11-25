@@ -62,25 +62,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
 		{
 			var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-			MemoryStream stream;
-
-			if (exportRequest.Fields == null)
-				stream = new ModelExporter<Order>(orders).Export(exportRequest.SelectedType);
-			else
-			{
-				stream = new ModelExporter<Order>(orders, exportRequest.Fields).Export(exportRequest.SelectedType);
+			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-			}
-			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-			result.Content = new StreamContent(stream);
-			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-			result.Content.Headers.ContentDisposition.FileName = "export.csv";
-			return result;
+			
+			return ExportModel<Order>(orders, exportRequest);
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("order/export")]
-		public ExportOptionsModel ExportProducts()
+		public ExportOptionsModel ExportOrders()
 		{
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, 0);
 		}
@@ -91,6 +81,25 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
 		}
+
+		[HttpPost]
+		[ApiKeyedRoute("order/export/{orderNumber}")]
+		public HttpResponseMessage ExportOrderDetail(string orderNumber, ExportRequestModel exportRequest)
+		{
+			var order = _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+
+			return ExportModel<OrderLine>(order.Items, exportRequest);			
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("order/export/{orderNumber}")]
+		public ExportOptionsModel ExportOrderDetail(string orderNumber)
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, 0);
+		}
+
 
         [HttpPost]
         [ApiKeyedRoute("order/history")]

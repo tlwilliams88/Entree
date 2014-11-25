@@ -99,6 +99,26 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
             return retVal;
         }
+
+        public static OrderHistoryHeader ToOrderHistoryHeader(this EF.OrderHistoryHeader value)
+        {
+            OrderHistoryHeader retVal = new OrderHistoryHeader();
+
+            retVal.OrderSystem = OrderSource.Entree; // TODO: value.OrderSystem.ToShortString();
+            retVal.BranchId = value.BranchId;
+            retVal.CustomerNumber = value.CustomerNumber;
+            retVal.InvoiceNumber = value.InvoiceNumber;
+            retVal.DeliveryDate = value.DeliveryDate;
+            retVal.PONumber = value.PONumber;
+            retVal.ControlNumber = value.ControlNumber;
+            retVal.OrderStatus = value.OrderStatus;
+            retVal.FutureItems = value.FutureItems;
+            retVal.ErrorStatus = value.ErrorStatus;
+            retVal.RouteNumber = value.RouteNumber;
+            retVal.StopNumber = value.StropNumber;
+
+            return retVal;
+        }
         #endregion
     }
 }

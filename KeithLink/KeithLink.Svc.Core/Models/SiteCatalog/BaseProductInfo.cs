@@ -11,6 +11,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 	[DataContract]
     public class BaseProductInfo
 	{
+		private string pack;
+
 
 		[DataMember(Name = "itemnumber")]
 		[Description("Item")]
@@ -90,5 +92,19 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "upc")]
 		public string UPC { get; set; }
+
+		[DataMember(Name = "size")]
+		public string Size { get; set; }
+
+		[DataMember(Name = "pack")]
+		public string Pack
+		{
+			get { return string.IsNullOrEmpty(pack) ? string.Empty : pack.TrimStart(new char[] { '0' }); }
+			set { pack = value; }
+		}
+
+		[DataMember(Name = "packsize")]
+		[Description("Pack/Size")]
+		public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } set { } }
     }
 }
