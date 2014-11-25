@@ -18,8 +18,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Product: BaseProductInfo, IExportableModel
     {
-		private string pack;
-
+		
         #region ctor
         public Product()
         {
@@ -36,9 +35,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
 		       
-        [DataMember(Name = "size")]
-        public string Size { get; set; }
-
+        
         
 
         [DataMember(Name = "manufacturer_number")]
@@ -55,17 +52,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		                        
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
-
-		[DataMember(Name = "pack")]
-		public string Pack
-		{
-			get { return pack.TrimStart(new char[] { '0' }); }
-			set { pack = value; }
-		}
-
-        [DataMember(Name = "packsize")]
-        [Description("Pack/Size")]
-        public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } set { } }
+		
 
 		[DataMember(Name = "nutritional")]
         public Nutritional Nutritional { get; set; }

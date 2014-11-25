@@ -119,14 +119,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Label = "Qty Ordered" });
 					break;
 				case ExportType.Order:
-					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Order = 1, Label = "Order #" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Order = 10, Label = "Order Date" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Order = 20, Label = "Status" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "DeliveryDate", Order = 30, Label = "Delivery Date" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "ItemCount", Order = 40, Label = "Item Count" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderTotal", Order = 50, Label = "Total" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 60, Label = "Invoice #" });
-					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceStatus", Order = 70, Label = "Invoice Status" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "DeliveryDate", Label = "Delivery Date" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "ItemCount", Label = "Item Count" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "OrderTotal", Label = "Total" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Label = "Invoice #" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceStatus", Label = "Invoice Status" });
+					break;
+				case ExportType.OrderDetail:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Quantity", Label = "# Requested" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityOrdered", Label = "# Ordered" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "QantityShipped", Label = "# Shipped" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "EachYN", Label = "Each" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Price", Label = "Price" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Status", Label = "Status" });
 					break;
 			}
 
