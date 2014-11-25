@@ -12,6 +12,7 @@
       <xs:enumeration value="Entree" />
       <xs:enumeration value="DSR" />
       <xs:enumeration value="CustomerService" />
+      <xs:enumeration value="KeithNet" />
       <xs:enumeration value="Other" />
     </xs:restriction>
   </xs:simpleType>

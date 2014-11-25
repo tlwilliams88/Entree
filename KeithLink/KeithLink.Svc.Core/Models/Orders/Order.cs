@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 				
 		[DataMember(Name = "itemcount")]
 		[Description("Item Count")]
-		public int ItemCount { get { return this.Items.Sum(l => l.Quantity); } }
+		public int ItemCount { get { return this.Items != null ? this.Items.Sum(l => l.Quantity) : 0; } } // to do: allow setting item count for order history?
 
 		[DataMember(Name = "ordertotal")]
 		[Description("Total")]

@@ -41,5 +41,6 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		[Column(TypeName = "char")]
 		public string ItemStatus { get; set; }
 		public decimal TotalShippedWeight { get; set; }
+        public decimal SellPrice { get; set; }
 	}
 }

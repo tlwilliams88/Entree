@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
 using System;
 using System.Runtime.Serialization;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Models.Orders.History {
 
@@ -43,6 +44,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember(Name="stopnumber")]
         public string StopNumber { get; set; }
+
+        [DataMember(Name = "items")]
+        public List<OrderHistoryDetail> Items { get; set; }
 
         #endregion
     }

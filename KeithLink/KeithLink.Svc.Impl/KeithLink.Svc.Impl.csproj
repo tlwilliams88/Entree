@@ -386,6 +386,10 @@
     <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.Designer.cs">
       <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs" />
+    <Compile Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.Designer.cs">
+      <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -845,6 +849,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.resx">
       <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.resx">
+      <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

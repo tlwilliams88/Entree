@@ -26,6 +26,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistory", ReplyAction="http://tempuri.org/IOrderService/GetLastFiveOrderHistoryResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile[]> GetLastFiveOrderHistoryAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetCustomerOrderHistories", ReplyAction="http://tempuri.org/IOrderService/GetCustomerOrderHistoriesResponse")]
+        KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader[] GetCustomerOrderHistories(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetCustomerOrderHistories", ReplyAction="http://tempuri.org/IOrderService/GetCustomerOrderHistoriesResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader[]> GetCustomerOrderHistoriesAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +75,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile[]> GetLastFiveOrderHistoryAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber) {
             return base.Channel.GetLastFiveOrderHistoryAsync(catalogInfo, itemNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader[] GetCustomerOrderHistories(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.GetCustomerOrderHistories(catalogInfo);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader[]> GetCustomerOrderHistoriesAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.GetCustomerOrderHistoriesAsync(catalogInfo);
         }
     }
 }
