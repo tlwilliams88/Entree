@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using System;
@@ -7,48 +8,40 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Helpers
+namespace KeithLink.Svc.Impl.Logic.Export
 {
-	public class ModelExporter<TModel> where TModel : class, IExportableModel
+	public class ModelExportLogicImpl<T> : IModelExportLogic<T> where T: class, IExportableModel
 	{
-		private IList<TModel> Model { get; set; }
-
+		private IList<T> Model  { get; set; }
 		private List<ExportModelConfiguration> exportConfig = null;
-						
-		public ModelExporter(IList<TModel> model, List<ExportModelConfiguration> exportConfig)
+
+		public System.IO.MemoryStream Export(IList<T> model, List<ExportModelConfiguration> exportConfig, string exportType)
 		{
 			this.Model = model;
 			this.exportConfig = exportConfig;
+
+			return Export(exportType);
 		}
 
-		public ModelExporter(IList<TModel> model)
+		public System.IO.MemoryStream Export(IList<T> model, string exportType)
 		{
 			this.Model = model;
 			this.exportConfig = model.First().DefaultExportConfiguration();
-		}			
-
-		private MemberInfo GetMemberInfo<TModel, TProperty>(Expression<Func<TModel, TProperty>> propertyExpression)
-		{
-			var member = propertyExpression.Body as MemberExpression;
-			if (member != null)
-				return member.Member;
-
-			throw new ArgumentException("Expression is not a member access", "expression");
+			return Export(exportType);
 		}
 
-		public MemoryStream Export(string exportType)
+		private MemoryStream Export(string exportType)
 		{
 			StringBuilder sb = new StringBuilder();
 
-			if(exportType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+			if (exportType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
 				return this.GenerateExcelExport();
 
-			if(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+			if (exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) || exportType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
 				this.WriteHeaderRecord(sb, exportType);
 
 			if (this.Model != null && this.Model.Count > 0) // is there any data to render
@@ -70,6 +63,7 @@ namespace KeithLink.Svc.Impl.Helpers
 			return ms;
 		}
 
+		#region Excel Export
 		private MemoryStream GenerateExcelExport()
 		{
 			MemoryStream stream = new MemoryStream();
@@ -85,6 +79,9 @@ namespace KeithLink.Svc.Impl.Helpers
 
 		private void WriteExcelFile(SpreadsheetDocument spreadsheet)
 		{
+			//Bulk of code from http://www.codeproject.com/Articles/692121/Csharp-Export-data-to-Excel-using-OpenXML-librarie with modification
+			//to work with our classes and structure
+
 			//  Create the Excel file contents.  This function is used when creating an Excel file either writing 
 			//  to a file, or writing to a MemoryStream.
 			spreadsheet.AddWorkbookPart();
@@ -100,10 +97,10 @@ namespace KeithLink.Svc.Impl.Helpers
 
 			//  Loop through each of the DataTables in our DataSet, and create a new Excel Worksheet for each.
 			uint worksheetNumber = 1;
-			
+
 			//  For each worksheet you want to create
 			string workSheetID = "rId" + worksheetNumber.ToString();
-			string worksheetName ="Export";
+			string worksheetName = "Export";
 
 			WorksheetPart newWorksheetPart = spreadsheet.WorkbookPart.AddNewPart<WorksheetPart>();
 			newWorksheetPart.Worksheet = new DocumentFormat.OpenXml.Spreadsheet.Worksheet();
@@ -126,12 +123,12 @@ namespace KeithLink.Svc.Impl.Helpers
 				Name = worksheetName
 			});
 
-			
+
 
 			spreadsheet.WorkbookPart.Workbook.Save();
 		}
 
-		private void WriteDataTableToExcelWorksheet( WorksheetPart worksheetPart)
+		private void WriteDataTableToExcelWorksheet(WorksheetPart worksheetPart)
 		{
 			var worksheet = worksheetPart.Worksheet;
 			var sheetData = worksheet.GetFirstChild<SheetData>();
@@ -157,14 +154,14 @@ namespace KeithLink.Svc.Impl.Helpers
 			var headerRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
 			sheetData.Append(headerRow);
 
-			var properties = typeof(TModel).GetProperties();
+			var properties = typeof(T).GetProperties();
 			int columnIndex = 0;
 			foreach (var config in exportConfig.OrderBy(e => e.Order))
 			{
 				var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 				if (property != null)
 				{
-					var description = property.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>();
+					var description = property.GetCustomAttribute<DescriptionAttribute>();
 					string value = string.Empty;
 					if (description != null)
 						value = description.Description;
@@ -174,12 +171,12 @@ namespace KeithLink.Svc.Impl.Helpers
 					AppendTextCell(excelColumnNames[columnIndex] + "1", value.Trim(), headerRow);
 					columnIndex++;
 				}
-				
+
 			}
-			
+
 			//
 			//  Now, step through each row of data in our DataTable...
-					
+
 			foreach (var item in this.Model)
 			{
 				rowIndex++;
@@ -197,8 +194,8 @@ namespace KeithLink.Svc.Impl.Helpers
 						}
 						columnIndex++;
 					}
-				}				
-			}						
+				}
+			}
 		}
 
 		private static string GetExcelColumnName(int columnIndex)
@@ -230,8 +227,10 @@ namespace KeithLink.Svc.Impl.Helpers
 			cell.Append(cellValue);
 			excelRow.Append(cell);
 		}
+		#endregion
 
-		private void WriteItemRecord(StringBuilder sb, TModel item, string exportType)
+		#region CSV and Tab Export
+		private void WriteItemRecord(StringBuilder sb, T item, string exportType)
 		{
 			List<string> itemRecord = new List<string>();
 
@@ -245,9 +244,9 @@ namespace KeithLink.Svc.Impl.Helpers
 					itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));
 				}
 			}
-			
+
 			if (itemRecord.Count > 0)
-				sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase ) ? "," : "\t", itemRecord));
+				sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", itemRecord));
 		}
 
 		private string GetFieldValue(object item, PropertyInfo property)
@@ -278,14 +277,14 @@ namespace KeithLink.Svc.Impl.Helpers
 		{
 			var headerRecord = new List<string>();
 
-			var properties = typeof(TModel).GetProperties();
+			var properties = typeof(T).GetProperties();
 
 			foreach (var config in exportConfig.OrderBy(e => e.Order))
 			{
 				var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
 				if (property != null)
 				{
-					var description = property.GetCustomAttribute<System.ComponentModel.DescriptionAttribute>();
+					var description = property.GetCustomAttribute<DescriptionAttribute>();
 					string value = string.Empty;
 					if (description != null)
 						value = description.Description;
@@ -298,6 +297,6 @@ namespace KeithLink.Svc.Impl.Helpers
 
 			sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", headerRecord));
 		}
-
+		#endregion
 	}
 }

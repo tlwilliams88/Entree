@@ -20,6 +20,7 @@ using KeithLink.Svc.Impl.Helpers;
 using System.IO;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Export;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -107,12 +108,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest) where T : class, IExportableModel
 		{
+			var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
+                
 			MemoryStream stream;
 			if (exportRequest.Fields == null)
-				stream = new ModelExporter<T>(model).Export(exportRequest.SelectedType);
+				stream = exportLogic.Export(model, exportRequest.SelectedType);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
 			else
 			{
-				stream = new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
+				stream = exportLogic.Export(model,exportRequest.Fields,  exportRequest.SelectedType); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
 			}
 			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 			result.Content = new StreamContent(stream);

@@ -182,6 +182,7 @@
     <Compile Include="Helpers\ModelExporter.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
+    <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
