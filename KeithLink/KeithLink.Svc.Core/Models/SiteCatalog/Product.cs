@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			set { pack = value; }
 		}
 
-		[DataMember(Name = "pack")]
+		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
 		public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } }
 
