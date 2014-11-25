@@ -83,6 +83,7 @@ namespace KeithLink.Svc.Impl.ETL
         private readonly IElasticSearchRepository elasticSearchRepository;
 		private readonly IEventLogRepository eventLog;
         private readonly IUserProfileLogic userProfileLogic;
+
 		private readonly IInternalListLogic listLogic;
         private readonly IInternalMessagingLogic messageLogic;
         
@@ -192,10 +193,8 @@ namespace KeithLink.Svc.Impl.ETL
                             break;
                         processedCustomers.Add(customerRow.CustomerNumber);
 
-                        KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerRow.CustomerNumber, customerRow.CustomerBranch);
-
-                        CreateOrUpdateContractLists(userProfile, userSelectedContext, customerRow.ContractId);
-                        CreateOrUpdateWorksheetLists(userProfile, userSelectedContext);
+                        CreateOrUpdateContractLists(userProfile, customerRow);
+                        CreateOrUpdateWorksheetLists(userProfile, customerRow);
 
                     }
                 }
@@ -666,29 +665,29 @@ namespace KeithLink.Svc.Impl.ETL
 
         private void CreateOrUpdateContractLists(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
-            , string contractNumber)
+            , KeithLink.Svc.Core.Models.Profile.Customer customerProfile
+            )
         {
-
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
             List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
 
-            if (lists.Count == 0 && contractNumber != null && !contractNumber.Equals(String.Empty))
+            if (lists.Count == 0 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
             {
                 listLogic.CreateList(   
                     userProfile.UserId 
                     , userSelectedContext 
                     , CreateUserList(
-                        contractNumber
-                        , GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber)
+                        customerProfile.ContractId
+                        , GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId)
                         , Core.Models.EF.ListType.Contract
                         , true)
                     , Core.Models.EF.ListType.Contract);
                 return;
             }
-            
-            if (lists.Count == 1 && contractNumber != null && !contractNumber.Equals(String.Empty))
+
+            if (lists.Count == 1 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
             {
-                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber));
+                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId));
                 Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
                 SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
                 SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
@@ -710,14 +709,14 @@ namespace KeithLink.Svc.Impl.ETL
                         listLogic.AddItems(userProfile, userSelectedContext, deletedItemsListId, deletedItems);
                     }
 
-                    lists[0].Items = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, contractNumber);
+                    lists[0].Items = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId);
                     listLogic.UpdateList(lists[0]);
 
-                    CreateContractDiffMessage(userProfile.UserId, userSelectedContext);
+                    SendContractDiffMessages(customerProfile);
 
                 }
             }
-            else if (lists.Count == 1 && (contractNumber == null || contractNumber.Equals(String.Empty)))
+            else if (lists.Count == 1 && (customerProfile.ContractId == null || customerProfile.ContractId.Equals(String.Empty)))
             {
                 listLogic.DeleteList(lists[0].ListId);
             }
@@ -725,8 +724,9 @@ namespace KeithLink.Svc.Impl.ETL
 
         private void CreateOrUpdateWorksheetLists(
             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
+            , KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
         {
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
             List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
 
             if (lists.Count == 0)
@@ -753,7 +753,6 @@ namespace KeithLink.Svc.Impl.ETL
                 {
                     lists[0].Items = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
                     listLogic.UpdateList(lists[0]);
-
                 }
             }
         }
@@ -901,6 +900,22 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
             return listId;
+        }
+
+        private void SendContractDiffMessages(KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
+        {
+            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
+            KeithLink.Svc.Core.Models.Profile.UserFilterModel filter = new KeithLink.Svc.Core.Models.Profile.UserFilterModel();
+            filter.CustomerId = customerProfile.CustomerId;
+            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userQuery = userProfileLogic.GetUsers(filter);
+
+            List<KeithLink.Svc.Core.Models.Profile.UserProfile> users = userQuery.UserProfiles;
+
+            foreach (KeithLink.Svc.Core.Models.Profile.UserProfile up in users)
+            {
+                CreateContractDiffMessage(up.UserId, userSelectedContext);
+            }
+
         }
 
         private void CreateContractDiffMessage(Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
