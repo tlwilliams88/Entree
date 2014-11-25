@@ -234,6 +234,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.BrandExtendedDescription;
+					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
