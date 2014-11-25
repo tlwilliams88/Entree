@@ -12,7 +12,9 @@ angular.module('bekApp')
       require: '?ngModel',
       restrict: 'A',
       link: function(scope, elm, attr, ctrl) {
-        if (!ctrl) return;
+        if (!ctrl) {
+          return;
+        }
 
         ctrl.$validators.requiredArray = function(modelValue, viewValue) {
           return (viewValue > 0);
