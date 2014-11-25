@@ -18,8 +18,6 @@ namespace KeithLink.Svc.Impl.Helpers
 	{
 		private IList<TModel> Model { get; set; }
 
-		//private List<ModelExportEnumMap> _enumMaps = null;
-		//public IReadOnlyList<ModelExportEnumMap> EnumMaps { get { return this._enumMaps.AsReadOnly(); } }
 		private List<ExportModelConfiguration> exportConfig = null;
 						
 		public ModelExporter(IList<TModel> model, List<ExportModelConfiguration> exportConfig)
@@ -32,16 +30,7 @@ namespace KeithLink.Svc.Impl.Helpers
 		{
 			this.Model = model;
 			this.exportConfig = model.First().DefaultExportConfiguration();
-		}
-
-		//public void AddEnumMap<TModel, TProperty>(Expression<Func<TModel, TProperty>> propertyExpression, Type enumerationType)
-		//{
-		//	var property = this.GetMemberInfo(propertyExpression);
-		//	if (property is PropertyInfo)
-		//		this._enumMaps.Add(new ModelExportEnumMap(property.Name, enumerationType));
-		//	else
-		//		throw new ArgumentException("Expression is not a property access", "propertyExpression");
-		//}
+		}			
 
 		private MemberInfo GetMemberInfo<TModel, TProperty>(Expression<Func<TModel, TProperty>> propertyExpression)
 		{
@@ -88,6 +77,7 @@ namespace KeithLink.Svc.Impl.Helpers
 			{
 				WriteExcelFile(document);
 			}
+
 			stream.Flush();
 			stream.Position = 0;
 			return stream;
@@ -194,7 +184,7 @@ namespace KeithLink.Svc.Impl.Helpers
 			{
 				rowIndex++;
 				var newExcelRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
-				
+				sheetData.Append(newExcelRow);
 				if (item != null)
 				{
 					columnIndex = 0;
