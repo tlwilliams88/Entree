@@ -135,7 +135,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category="") {
             List<dynamic> mustClause = new List<dynamic>();
-            string[] facets = facetFilters.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+            string facetSeparator = "___";
+            string[] facets = facetFilters.Split(new string[] { facetSeparator }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in facets)
             {
                 string[] keyValues = s.Split(new string[] { ":" }, StringSplitOptions.RemoveEmptyEntries);

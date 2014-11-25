@@ -34,33 +34,34 @@ angular.module('bekApp')
           pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
-          var facets = '';
+          var facets = ''; // todo: convert this to json
+          var facetSeparator = '___';
           if (brands && brands.length > 0) {
             facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (facetCategory) {
             facets += 'categories:' + facetCategory.name;
-            facets += ',';
+            facets += facetSeparator;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (itemspecs && itemspecs.length > 0) {
             facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (nonstock && nonstock.length > 0) {
             facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
+            facets += facetSeparator;
           }
 
           if (facets === '') {
             facets = null;
           }
           else {
-            facets = facets.substr(0, facets.length - 1);
+            facets = facets.substr(0, facets.length - 3);
           }
 
           return $http.get('/catalog/search/' + searchTerm + '/products', {
@@ -81,31 +82,32 @@ angular.module('bekApp')
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
 
           var facets = '';
+          var facetSeparator = '___';
           if (brands && brands.length > 0) {
             facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (facetCategory) {
             //categoryName = facetCategory.name;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (itemspecs && itemspecs.length > 0) {
             facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (nonstock && nonstock.length > 0) {
             facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
+            facets += facetSeparator;
           }
           
           if (facets === '') {
             facets = null;
           }
           else {
-            facets = facets.substr(0, facets.length - 1);
+            facets = facets.substr(0, facets.length - 3);
           }
 
           return $http.get('/catalog/search/category/' + categoryName + '/products', {
@@ -126,32 +128,33 @@ angular.module('bekApp')
           index = typeof index !== 'undefined' ? index : defaultStartingIndex;
           
           var facets = '';
+          var facetSeparator = '___';
           if (brands && brands.length > 0) {
             facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (facetCategory) {
             facets += 'categories:' + facetCategory.name;
-            facets += ',';
+            facets += facetSeparator;
           }
           if (dietary && dietary.length > 0) {
             facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (itemspecs && itemspecs.length > 0) {
             facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
+            facets += facetSeparator;
           }
           if (nonstock && nonstock.length > 0) {
             facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
+            facets += facetSeparator;
           }
 
           if (facets === '') {
             facets = null;
           }
           else {
-            facets = facets.substr(0, facets.length - 1);
+            facets = facets.substr(0, facets.length - 3);
           }
 
           return $http.get('/catalog/search/brands/house/' + houseBrandId, {
