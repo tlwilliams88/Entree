@@ -27,6 +27,7 @@ using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
@@ -126,6 +127,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+            builder.RegisterType<NotificationQueueConsumerImpl>().As<INotificationQueueConsumer>();
 
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
