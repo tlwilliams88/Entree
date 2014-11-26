@@ -54,14 +54,9 @@ angular.module('bekApp')
       }
     };
 
-    function clearFacets() {
-      $scope.facets.categories.selected = [];
-      $scope.facets.brands.selected = [];
-      $scope.facets.dietary.selected = [];
-      $scope.facets.itemspecs.selected = [];
-      loadProducts().then(refreshFacets);
-    }
-
+    /*************
+    BREADCRUMBS
+    *************/
     function setBreadcrumbs(data) {
       var breadcrumbs = [],
         filterCount = 0,
@@ -176,6 +171,9 @@ angular.module('bekApp')
       $scope.filterCount = filterCount;
     }
 
+    /*************
+    LOAD PRODUCT DATA
+    *************/
     function getData() {
       var facets = ProductService.getFacets(
         $scope.facets.categories.selected, 
@@ -209,6 +207,17 @@ angular.module('bekApp')
       });
     }
 
+    /*************
+    FACETS
+    *************/
+    function clearFacets() {
+      $scope.facets.categories.selected = [];
+      $scope.facets.brands.selected = [];
+      $scope.facets.dietary.selected = [];
+      $scope.facets.itemspecs.selected = [];
+      loadProducts().then(refreshFacets);
+    }
+
     function refreshFacets(facets) {
       $scope.facets.categories.available = facets.categories;
       $scope.facets.brands.available = facets.brands;
@@ -216,6 +225,9 @@ angular.module('bekApp')
       $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
     }
 
+    /*************
+    ITEM SPEC ICONS
+    *************/
     function getIconDisplayInfo(name) {
       var itemSpec = {};
       switch (name) {
@@ -265,6 +277,9 @@ angular.module('bekApp')
       return itemspecsArray;
     }
 
+    /*************
+    CLICK EVENTS
+    *************/
     $scope.sortTable = function(field) {
       $scope.itemsPerPage = 50;
       $scope.itemIndex = 0;
