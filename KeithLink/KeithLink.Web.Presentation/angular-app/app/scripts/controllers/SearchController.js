@@ -68,9 +68,8 @@ angular.module('bekApp')
         breadcrumbSeparator = ', ';
 
       // top level breadcrumb based on the type of search
+      var displayText;
       if ($scope.paramType === 'category') {
-
-        var displayText;
         CategoryService.getCategories().then(function(data) {
           angular.forEach(data.categories, function(item, index) {
             if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
@@ -335,7 +334,7 @@ angular.module('bekApp')
               $scope.facets.itemspecs.selected 
             );
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
-            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + $.param(params); // search query string param
+            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + jQuery.param(params); // search query string param
           }
         }
       });
