@@ -8,15 +8,17 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Core.Models.ModelExport;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "product")]
     [Serializable]
-    public class Product: BaseProductInfo
+    public class Product: BaseProductInfo, IExportableModel
     {
-		private string pack;
-
+		
         #region ctor
         public Product()
         {
@@ -33,11 +35,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
 		       
-        [DataMember(Name = "size")]
-        public string Size { get; set; }
-
-        [DataMember(Name = "upc")]
-		public string UPC { get; set; }
+        
+        
 
         [DataMember(Name = "manufacturer_number")]
         public string ManufacturerNumber { get; set; }
@@ -48,30 +47,12 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "cases")]
         public string Cases { get; set; }
 
-        [DataMember(Name = "categoryId")]
-        public string CategoryId { get; set; }
-
-        [DataMember(Name = "categoryname")]
-        public string CategoryName { get; set; }
-
         [DataMember(Name = "kosher")]
         public string Kosher { get; set; }
-
-        [DataMember(Name= "vendor_num")]
-        public string VendorItemNumber {get;set;}
-
-        [DataMember(Name= "class")]
-        public string ItemClass { get; set; }
-                
+		                        
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }
-
-		[DataMember(Name = "pack")]
-		public string Pack
-		{
-			get { return pack.TrimStart(new char[] { '0' }); }
-			set { pack = value; }
-		}
+		
 
 		[DataMember(Name = "nutritional")]
         public Nutritional Nutritional { get; set; }
@@ -93,7 +74,21 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			if (this.UPC.Equals("00000000000000"))
 				this.UPC = string.Empty;
 		}
-    }
+
+		public List<ExportModelConfiguration> DefaultExportConfiguration()
+		{
+			var defaultConfig = new List<ExportModelConfiguration>();
+
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 10, Label = "Brand" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 40, Label = "Price" });
+
+
+			return defaultConfig;
+		}
+	}
 
 	
 }

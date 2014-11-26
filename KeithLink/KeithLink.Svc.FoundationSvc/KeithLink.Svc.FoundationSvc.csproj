@@ -261,6 +261,10 @@
       <Project>{a5061d47-ad81-4c9d-b171-8d92f38db60d}</Project>
       <Name>KeithLink.Common.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Common.Impl\KeithLink.Common.Impl.csproj">
+      <Project>{562e7a83-563d-4848-af64-7dcb432935e8}</Project>
+      <Name>KeithLink.Common.Impl</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

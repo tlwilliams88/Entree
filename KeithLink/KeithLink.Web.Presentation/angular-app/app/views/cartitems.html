@@ -77,7 +77,6 @@
     <div class="pull-right">
       <div class="page-header__buttons">
         <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-        <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
         <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
@@ -132,10 +131,10 @@
       <div class="sub-content form-group no-margin">
         <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
         <div class="col-sm-6">
-          <p class="form-control-static">
-            {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
-            <button class="btn-no-style dropdown-toggle" dropdown is-open="showShipDates"> <span class="text-blue icon-calendar"></span>
-              
+          <div class="btn-group" dropdown is-open="showShipDates">
+            <p class="form-control-static">
+              {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+              <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
               <div class="dropdown-menu">
                 <table class="table no-margin">
                   <tr>
@@ -150,9 +149,8 @@
                   </tr>
                 </table>
               </div>
-
-            </button>
-          </p>
+            </p>
+          </div>
         </div>
       </div>
 
@@ -170,12 +168,12 @@
   </div>
 
   <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
-    <tabset class="tabset critical-items__tabset">
+    <tabset class="tabset critical-items__tabset tab-border">
 
       <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
         <input name="mandatoryItemsCount" type="hidden" ng-model="mandatoryItems.length" mandatory-items-check>
 
-        <table class="table table-striped-rows">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">
@@ -230,7 +228,7 @@
       </tab>
 
       <tab heading="Reminder Items" ng-show="reminderList && reminderList.items.length > 0" active="reminderList.active">
-        <table class="table table-striped-rows">
+        <table class="table table-striped-rows table-narrow">
           <thead>
             <tr>
               <th class="input-col">

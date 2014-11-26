@@ -12,7 +12,7 @@
   <div class="col-md-4 col-md-push-8">
     <div class="info-box">
 
-      <button class="pull-right btn btn-primary btn-lg">Pay Now</button>
+      <a ui-sref="menu.invoice" class="pull-right btn btn-primary btn-lg">Pay Now</a>
       
       <h4><strong>Account Balance</strong></h4>
       
@@ -147,7 +147,7 @@
     </div> <!-- end Mobile Order Summary -->
 
     <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
-    <div class="hidden-xs hidden-sm" ng-hide="orders || orders.length > 0 || loadingOrders">
+    <div class="hidden-xs hidden-sm" ng-hide="orders.length > 0 || loadingOrders">
       No Recent Orders
     </div>
     </div> <!-- end Order Summary -->
@@ -160,7 +160,8 @@
     <h3>Latest From Ben E. Keith</h3>
     <div class="row">
 
-      <div ng-hide="promoItems || promoItems.length > 0 || loadingPromoItems"></div>
+      <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+      <p class="col-xs-12" ng-show="promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
 
       <div class="col-sm-12 hidden-xs hidden-sm">
         <div ng-repeat="item in promoItems">
@@ -171,13 +172,13 @@
               <a 
                 ng-if="item.targeturl" 
                 ng-href="{{item.targeturl}}" 
+                target="_blank" 
                 class="text-uppercase">
                 {{item.targeturltext}}
               </a>
               <a 
                 ng-if="item.productid" 
                 ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                target="_blank" 
                 class="text-uppercase">
                 {{item.targeturltext}}
               </a>
@@ -204,13 +205,13 @@
                 <a 
                   ng-if="item.targeturl" 
                   ng-href="{{item.targeturl}}" 
-                  class="text-uppercase">
+                  class="text-uppercase"
+                  target="_blank">
                   {{item.targeturltext}}
                 </a>
                 <a 
                   ng-if="item.productid" 
                   ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                  target="_blank" 
                   class="text-uppercase">
                   {{item.targeturltext}}
                 </a>

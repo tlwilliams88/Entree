@@ -14,8 +14,8 @@
     </div>
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <button class="btn btn-icon btn-default" title="Print"><span class="icon-printer"></span></button>
+    <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button>
   </div>
 </div>
 
@@ -90,6 +90,7 @@
             </th>
             <th class="text-center hidden-xs hidden-sm">Invoice Image</th>
             <th class="hidden-xs hidden-sm">Payment Amt</th>
+            <th class="hidden-xs hidden-sm">Schedule Date</th>
             <th class="large-icon icon-col">
               <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
             </th>
@@ -146,7 +147,33 @@
               <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
             </td>
             <td class="input-col hidden-xs hidden-sm">
-              <input ng-if="invoice.ispayable" class="text-right" type="text" ng-model="invoice.paymentAmount" fcsa-number="{ 'maxDecimals': 2, 'addMissingDecimals': true, 'preventInvalidInput': true, 'prepend': '$', 'min': 0 }">
+              <input 
+                ng-if="invoice.ispayable" 
+                class="text-right" 
+                type="text" 
+                ng-model="invoice.paymentAmount" 
+                fcsa-number="{ 
+                  'maxDecimals': 2, 
+                  'addMissingDecimals': true, 
+                  'preventInvalidInput': true, 
+                  'prepend': '$', 
+                  'min': 0 }"
+                ng-required="invoice.isSelected">
+            </td>
+            <td class="hidden-xs hidden-sm datepicker">
+              <a 
+                ng-click="openDatepicker = true" 
+                ng-if="invoice.ispayable"
+                class="icon-calendar"
+                datepicker-popup="{{datepickerOptions.options.dateFormat}}" 
+                ng-model="invoice.date" 
+                is-open="openDatepicker" 
+                min-date="datepickerOptions.minDate" 
+                max-date="datepickerOptions.maxDate" 
+                datepicker-options="datepickerOptions.options" 
+                date-disabled="disabled(date, mode)" 
+                close-text="Close"></a>
+              {{invoice.date | date:shortDate}}
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -171,7 +198,36 @@
                 <tr ng-if="invoice.ispayable">
                   <td>Payment Amount</td>
                   <td>
-                    <input class="form-control text-right" type="text" ng-model="invoice.paymentAmount"fcsa-number="{ 'maxDecimals': 2, 'addMissingDecimals': true, 'preventInvalidInput': true, 'prepend': '$', 'min': 0 }">
+                    <input 
+                      class="form-control text-right" 
+                      type="text" 
+                      ng-model="invoice.paymentAmount"
+                      fcsa-number="{ 
+                        'maxDecimals': 2, 
+                        'addMissingDecimals': true, 
+                        'preventInvalidInput': true, 
+                        'prepend': '$', 
+                        'min': 0 }"
+                      ng-required="invoice.isSelected">
+                  </td>
+                </tr>
+                <tr ng-if="invoice.ispayable">
+                  <td>
+                    Schedule Date
+                  </td>
+                  <td class="datepicker">
+                    <a 
+                      ng-click="openDatepicker = true" 
+                      class="icon-calendar"
+                      datepicker-popup="{{datepickerOptions.options.dateFormat}}" 
+                      ng-model="invoice.date" 
+                      is-open="openDatepicker" 
+                      min-date="datepickerOptions.minDate" 
+                      max-date="datepickerOptions.maxDate" 
+                      datepicker-options="datepickerOptions.options" 
+                      date-disabled="disabled(date, mode)" 
+                      close-text="Close"></a>
+                      {{invoice.date | date:shortDate}}
                   </td>
                 </tr>
                 <tr>
@@ -187,7 +243,7 @@
         
         <tfoot ng-show="filteredItems.length === 0">
           <tr>
-            <td colspan="9">There are no invoices to display.</td>
+            <td colspan="10">There are no invoices to display.</td>
           </tr>
         </tfoot>
       </table>
@@ -200,7 +256,7 @@
 
       <div class="row sub-content" ng-if="hasPayableInvoices">
         <div class="col-xs-12 text-right">
-          <button class="btn btn-primary btn-lg">Pay Invoice(s)</button>
+          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
         </div>
       </div>
 

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.ModelExport;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -13,6 +15,9 @@ namespace KeithLink.Svc.Core.Models.Lists
     {
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
+
+		[DataMember(Name = "sharedwith")]
+		public List<string> SharedWith { get; set; }
 
         [DataMember(Name = "name")]
         public string Name { get; set; }
@@ -43,14 +48,13 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "ismandatory")]
 		public bool IsMandatory { get; set; }
-
-        public string BranchId { get; set; }
 		
-		//public string FormattedName(string branchId) 
-		//{ 
-		//	return string.Format("l{0}_{1}", branchId, Regex.Replace(Name, @"\s+", ""));
-		//}
+        public string BranchId { get; set; }
 
-    }
+		[DataMember]
+		public ListType Type { get; set; }
+			
+
+	}
 }
 

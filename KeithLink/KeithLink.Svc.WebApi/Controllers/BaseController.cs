@@ -14,6 +14,13 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Impl.Helpers;
+using System.IO;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Export;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -52,15 +59,22 @@ namespace KeithLink.Svc.WebApi.Controllers
                     GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
-					if (Request.Headers.Contains("userSelectedContext"))
-					{
-						this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
-												
-						//Verify that the authenticated user has access to this customer/branch
-						if (!(_user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST) && string.IsNullOrEmpty(this.SelectedUserContext.CustomerId )) &&
-							!_user.UserCustomers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase) && c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any())
-							throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
-					}
+                    if (Request.Headers.Contains("userSelectedContext"))
+                    {
+                        this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
+
+                        //Verify that the authenticated user has access to this customer/branch
+                        bool isGuest = _user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase);
+                        bool isCustomerSelected = (!string.IsNullOrEmpty(this.SelectedUserContext.CustomerId));
+                        bool userHasAccessToCustomer = (_user.UserCustomers != null &&
+                            _user.UserCustomers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase)
+                                && c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any());
+
+                        if ((isGuest && isCustomerSelected) || (!isGuest && !userHasAccessToCustomer))
+                        {
+                            throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+                        }
+                    }
 
                 }
                 else
@@ -91,6 +105,32 @@ namespace KeithLink.Svc.WebApi.Controllers
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
             }
         }
+
+		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest) where T : class, IExportableModel
+		{
+			var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
+                
+			MemoryStream stream;
+			if (exportRequest.Fields == null)
+				stream = exportLogic.Export(model, exportRequest.SelectedType);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
+			else
+			{
+				stream = exportLogic.Export(model,exportRequest.Fields,  exportRequest.SelectedType); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
+			}
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			
+			if(exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			else if(exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
+			else
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+
+			return result;
+		}
+
         #endregion
 
         #region properties

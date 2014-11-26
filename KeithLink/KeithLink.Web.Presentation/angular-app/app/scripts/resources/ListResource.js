@@ -55,6 +55,11 @@ angular.module('bekApp')
       shareList: {
         url: '/list/share',
         method: 'POST'
+      },
+
+      exportConfig: {
+        url: '/list/export/:listId',
+        method: 'GET'
       }
 
       // postData is an array of listitemids as strings

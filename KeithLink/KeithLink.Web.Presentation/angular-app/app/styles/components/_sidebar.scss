@@ -45,6 +45,22 @@ $sidebar-nav__text--selected: $color-white;
   .sidebar-nav ul { 
     margin-bottom: 0; 
     
+    button {
+      width: 100%;
+      padding: 0;
+      text-align: left;
+      
+      &[disabled] {
+        // background-color: darken(gray, 5%);
+
+        li {
+          cursor: default;
+          color: lighten(gray, 5%);
+        }
+      }
+
+    }
+    
     // nav menu items
     li {
       padding: 14px $padding__size;
@@ -70,6 +86,7 @@ $sidebar-nav__text--selected: $color-white;
         color: $color-white;
       }
     }
+
     
     .is-selected li {
       color: $sidebar-nav__text--selected;

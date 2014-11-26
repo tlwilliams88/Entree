@@ -89,12 +89,7 @@ angular
       templateUrl: 'views/notifications.html',
       controller: 'NotificationsController',
       data: {
-        authorize: 'isLoggedIn'
-      },
-      resolve: {
-        notifications: ['NotificationService', function(NotificationService) {
-          return NotificationService.getAllMessages();
-        }]
+        authorize: 'isOrderEntryCustomer'
       }
     })
 
@@ -315,15 +310,18 @@ angular
       }
     })
     .state('menu.invoiceitems', {
-      url: '/invoice/:invoiceId/',
+      url: '/invoice/:invoiceNumber/',
       templateUrl: 'views/invoiceitems.html',
       controller: 'InvoiceItemsController',
       data: {
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-          return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        transactions: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceTransactions($stateParams.invoiceNumber);
+        }],
+        order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
+          return OrderService.getOrderHistoryDetails($stateParams.invoiceNumber);
         }]
       }
     })
@@ -340,7 +338,7 @@ angular
       },
       resolve: {
         // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceId);
+        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
         // }]
       }
     })
@@ -350,12 +348,18 @@ angular
     **********/
     .state('menu.admin', {
       url: '/admin/',
-      templateUrl: 'views/admin/menu.html'
+      templateUrl: 'views/admin/menu.html',
+      data: {
+        authorize: 'canManageAccount'
+      }
     })
     .state('menu.admin.user', {
       url: 'users/',
       templateUrl: 'views/admin/users.html', //'views/adminusers.html',
       controller: 'UsersController',
+      data: {
+        authorize: 'canManageAccount'
+      },
       resolve: {
         users: [ 'UserProfileService', function(UserProfileService) {
           return [{name: 'Maria'}, {name: 'Andrew'}, {name: 'Josh'}]; //UserProfileService.getAllUsers();
@@ -365,17 +369,26 @@ angular
     .state('menu.admin.adduser', {
       url: 'users/add/',
       templateUrl: 'views/admin/adduserdetails.html',
-      controller: 'AddUserDetailsController'
+      controller: 'AddUserDetailsController',
+      data: {
+        authorize: 'canManageAccount'
+      }
     })
     .state('menu.admin.accountadmin',{
       url: 'account/',
       templateUrl: 'views/admin/accountadmin.html',
-      controller: 'AccountAdminController'
+      controller: 'AccountAdminController',
+      data: {
+        authorize: 'canManageAccount'
+      }
     })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController',
+      data: {
+        authorize: 'canManageAccount'
+      },
       resolve: {
         returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
@@ -385,12 +398,18 @@ angular
     .state('menu.admin.customer', {
       url: 'customers/:customerNumber/',
       templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController'
+      controller: 'CustomersController',
+      data: {
+        authorize: 'canManageAccount'
+      }
     })
     .state('menu.admin.account', {
       url: 'accounts/',
       templateUrl: 'views/admin/accounts.html',
       controller: 'AccountsController',
+      data: {
+        authorize: 'canManageAccount'
+      },
       resolve: {
         accounts: [ 'AccountService', function(AccountService) {
           return AccountService.getAccounts();
@@ -400,7 +419,10 @@ angular
     .state('menu.admin.account.details', {
       url: ':accountId/',
       templateUrl: 'views/admin/accountdetails.html',
-      controller: 'AdminAccountDetailsController'
+      controller: 'AdminAccountDetailsController',
+      data: {
+        authorize: 'canManageAccount'
+      }
     });
 
   $stateProvider
@@ -444,8 +466,10 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices, PhonegapPushService) {
+
+  PhonegapPushService.register();
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);

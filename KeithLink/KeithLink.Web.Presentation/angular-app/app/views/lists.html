@@ -2,6 +2,10 @@
   <div header-message>
     <div ng-hide="selectedList.isRenaming">
       <span>{{selectedList.name}}</span>
+
+      <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
+      <span ng-if="selectedList.isshared" class="large-icon icon-users" tooltip="This list is shared with you."></span>
+
       <div 
         style="display:inline-block;" 
         ng-show="selectedList" 
@@ -21,6 +25,7 @@
           <span class="large-icon text-light icon-trash"></span>
         </a>
       </div>
+
     </div>
 
     <form name="renameListForm" class="style-validation-errors inline-header-form" ng-show="selectedList.isRenaming">
@@ -67,7 +72,7 @@
       Cancel
     </button>
     <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-    <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
+    <button title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
     <button title="Import" class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button>
     <button ng-if="selectedList.permissions.canShareList || selectedList.permissions.canCopyList" title="Give List" class="btn btn-default btn-icon" ng-click="openReplicateListModal(selectedList)"><span class="icon-share"></span></button>
   </div>
@@ -106,7 +111,7 @@
         </a>
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
-      <li ng-if="isInternalUser && !hideMandatoryList"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
+      <li ng-if="isDsr && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
 
     </ul>
   </div>
@@ -174,7 +179,7 @@
           jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
           class="btn btn-default btn-list text-left text-light btn-lg"
           style="margin-top:10px;"
-          ng-if="isInternalUser && !hideMandatoryList">
+          ng-if="isDsr && !hideMandatoryListCreateButton">
           Create Mandatory <br>List for Customer...
         </button>
         
@@ -467,7 +472,7 @@
           </tr>
           <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
             <td colspan="10">
-              <table style="width:100%;">
+              <table>
                 <colgroup>
                   <col width="25%" />
                   <col width="75%" />

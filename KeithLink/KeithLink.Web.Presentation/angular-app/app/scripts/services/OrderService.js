@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'Order', 
-    function ($http, $q, $filter, UtilityService, Order) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'Order', 
+    function ($http, $q, $filter, UtilityService, ExportService, Order) {
     
     var Service = {
       
@@ -70,8 +70,34 @@ angular.module('bekApp')
         return Order.getOrderHistory().$promise;
       },
 
+      getOrderHistoryDetails: function(invoiceNumber) {
+        return Order.getOrderHistoryDetails({
+          invoiceNumber: invoiceNumber
+        }).$promise;
+      },
+
       pollOrderHistory: function() {
         return Order.pollOrderHistory().$promise;
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      getOrderExportConfig: function() {
+        return Order.getOrderExportConfig({}).$promise;
+      },
+
+      exportOrders: function(config) {
+        ExportService.export('/order/export', config);
+      },
+
+      getDetailExportConfig: function() {
+        return Order.getDetailExportConfig({}).$promise;
+      },
+
+      exportOrderDetails: function(config, orderNumber) {
+        ExportService.export('/order/export/' + orderNumber, config);
       }
 
     };

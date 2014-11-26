@@ -8,6 +8,10 @@
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinePaymentService_DeleteInvoice_InputMessage">
@@ -40,6 +44,12 @@
   <wsdl:message name="IOnlinePaymentService_GetOpenInvoiceHeaders_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetOpenInvoiceHeadersResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_MakeInvoicePayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:MakeInvoicePayment" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_MakeInvoicePayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MakeInvoicePaymentResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOnlinePaymentService">
     <wsdl:operation name="DeleteInvoice">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/DeleteInvoice" message="tns:IOnlinePaymentService_DeleteInvoice_InputMessage" />
@@ -60,6 +70,10 @@
     <wsdl:operation name="GetOpenInvoiceHeaders">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders" message="tns:IOnlinePaymentService_GetOpenInvoiceHeaders_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse" message="tns:IOnlinePaymentService_GetOpenInvoiceHeaders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="MakeInvoicePayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" message="tns:IOnlinePaymentService_MakeInvoicePayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse" message="tns:IOnlinePaymentService_MakeInvoicePayment_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlinePaymentService" type="tns:IOnlinePaymentService">
@@ -102,6 +116,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetOpenInvoiceHeaders">
       <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MakeInvoicePayment">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -37,7 +37,7 @@
           <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
         </div>
       </div>
-      <div ng-if="canOrderProduct(item)" class="hidden-print sub-content">
+      <div ng-if="canManageLists || canCreateOrders || canSubmitOrders" class="hidden-print sub-content">
         <div class="btn-primary btn btn-lg" context-menu context-menu-template>
           Add To...
           <span class="icon-arrow-down6"></span>
@@ -69,7 +69,7 @@
 
 <div class="row sub-content">
   <div class="col-lg-12">
-    <tabset class="tabset">
+    <tabset class="tabset tab-border">
       <tab heading="Item Specifications">
         <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
           <table class="table item-details__table table-striped-rows no-margin">

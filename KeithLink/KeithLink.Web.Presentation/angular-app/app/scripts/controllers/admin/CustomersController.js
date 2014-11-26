@@ -4,6 +4,7 @@ angular.module('bekApp')
   .controller('CustomersController', ['$scope', '$stateParams', 'LocalStorage', 'MessagePreferenceService', 'UserProfileService',
     function ($scope, $stateParams, LocalStorage, MessagePreferenceService, UserProfileService) {
 
+      console.log(LocalStorage.getProfile());
       /*---init---*/
       var init = function(){
         console.log(LocalStorage.getProfile());
@@ -78,12 +79,7 @@ angular.module('bekApp')
         //make ajax call
         MessagePreferenceService.updatePreferences(preferencePayload).then(function (success) {
           //refresh user profile locally
-          UserProfileService.getProfile(LocalStorage.getProfile().emailaddress).then(function (success) {
-            $scope.displayMessage('success', 'Your preferences were successfully updated');
-            init(); //reinitialize data from refreshed profile
-          }, function (error) {
-            $scope.displayMessage('error', 'An error occured while refreshing user profile' + error)
-          });
+
         }, function (error) {
           $scope.displayMessage('error', 'An error occurred while updating user preferences' + error)
         });

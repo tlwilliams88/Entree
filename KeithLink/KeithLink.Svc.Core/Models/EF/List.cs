@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Enumerations.List;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,19 +7,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.EF
 {
-	public enum ListType
-	{
-		Custom,
-		Favorite,
-		Contract,
-		Recent,
-		Notes,
-		Worksheet,
-        ContractItemsAdded,
-        ContractItemsDeleted,
-        Reminder,
-		Mandatory
-	}
+	
 
 	public class List: BaseEFModel
 	{

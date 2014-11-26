@@ -8,527 +8,340 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('SearchController', ['$scope', '$state', '$stateParams', 'ProductService', 'CategoryService', 'BrandService',
-        function($scope, $state, $stateParams, ProductService, CategoryService, BrandService) {
-            // clear keyword search term at top of the page
-            if ($scope.userBar) {
-                $scope.userBar.universalSearchTerm = '';
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants',
+    function($scope, $state, $stateParams, $modal, ProductService, CategoryService, Constants) {
+    
+    // clear keyword search term at top of the page
+    if ($scope.userBar) {
+      $scope.userBar.universalSearchTerm = '';
+    }
+
+    $scope.paramType = $stateParams.type;
+    $scope.paramId = $stateParams.id;
+
+    $scope.loadingResults = false;
+    $scope.sortField = null;
+    $scope.sortReverse = false;
+
+    $scope.itemsPerPage = Constants.infiniteScrollPageSize;
+    $scope.itemIndex = 0;
+    
+    $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
+    $scope.maxSortCount = 200;      // max number of items that can be sorted by price
+
+    $scope.hideMobileFilters = true;
+
+    $scope.products = [];
+    $scope.facets = {
+      categories: {
+        available: [],
+        selected: []
+      },
+      brands: {
+        available: [],
+        selected: [],
+        showMore: true
+      },
+      itemspecs: {
+        available: [],
+        selected: [],
+        showMore: true
+      },
+      dietary: {
+        available: [],
+        selected: [],
+        showMore: true
+      }
+    };
+
+    function clearFacets() {
+      $scope.facets.categories.selected = [];
+      $scope.facets.brands.selected = [];
+      $scope.facets.dietary.selected = [];
+      $scope.facets.itemspecs.selected = [];
+      loadProducts().then(refreshFacets);
+    }
+
+    function setBreadcrumbs(data) {
+      var breadcrumbs = [],
+        filterCount = 0,
+        breadcrumbSeparator = ', ';
+
+      // top level breadcrumb based on the type of search
+      if ($scope.paramType === 'category') {
+
+        var displayText;
+        CategoryService.getCategories().then(function(data) {
+          angular.forEach(data.categories, function(item, index) {
+            if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
+              displayText = item.name;
             }
+          });
 
-            $scope.loadingResults = true;
+          $scope.featuredBreadcrumb = {
+            click: clearFacets,
+            clickData: null,
+            displayText: displayText
+          };
+          breadcrumbs.unshift($scope.featuredBreadcrumb);
+        });
+      }
 
-            $scope.itemsPerPage = 50;
-            $scope.itemIndex = 0;
+      if ($scope.paramType === 'brand') {
+        data.facets.brands.forEach(function(brand) {
+          if (brand.brand_control_label.toUpperCase() === $scope.paramId.toUpperCase()) {
+            displayText = brand.name;
+          }
+        });
+        $scope.featuredBreadcrumb = {
+          click: clearFacets,
+          clickData: null,
+          displayText: displayText
+        };
+        breadcrumbs.push($scope.featuredBreadcrumb);
+      }
 
-            $scope.oneAtATime = true;
-            $scope.selectedCategory = '';
-            $scope.selectedSubcategory = '';
-            $scope.selectedBrands = [];
-            $scope.selectedDietary = [];
-            $scope.selectedSpecs = [];
-            $scope.selectedNonstock = [];
-            $scope.isBrandShowing = false;
-            $scope.isDietaryShowing = false;
-            $scope.isSpecShowing = false;
-            $scope.brandHiddenNumber = 3;
-            $scope.dietaryHiddenNumber = 3;
-            $scope.specHiddenNumber = 3;
-            $scope.constantHiddenNumber = 4;
-            $scope.brandCount = 0;
-            $scope.dietaryCount = 0;
-            $scope.specCount = 0;
-            $scope.hidden = true;
-            $scope.sortField = '';
-            $scope.sortDirection = '';
-            $scope.sortReverse = false;
-            $scope.paramType = $stateParams.type;
-            $scope.categoryName = '';
+      // categories
+      if ($scope.facets.categories.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.categories.selected = data;
+            $scope.facets.brands.selected = [];
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.categories.selected,
+          displayText: $scope.facets.categories.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.categories.selected.length;
+      }
 
-            function getCategoryBySearchName(categorySearchName) {
-                return CategoryService.getCategories().then(function(data) {
-                    angular.forEach(data.categories, function(item, index) {
-                        if (item.search_name === categorySearchName) { // for the bread crumb, we map from the search name back to the display name
-                            $scope.categoryName = item.name;
-                            if ($scope.selectedCategory) {
-                                angular.forEach(item.subcategories, function (subitem, index) {
-                                    if (subitem.name === $scope.selectedCategory.name) {
-                                        categorySearchName = subitem.categoryid.trim(); // if we are searching by a friendly named facet, then fall back to the search name
-                                    }
-                                });
-                            }
-                        }
-                    });
-                    return ProductService.getProductsByCategory(categorySearchName, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
-                });
-                }
+      // brands
+      if ($scope.facets.brands.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.brands.selected = data;
+            $scope.facets.dietary.selected = [];
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.brands.selected,
+          displayText: 'Brands: ' + $scope.facets.brands.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.brands.selected.length;
+      }
 
-            function getHouseBrandById(houseBrandId) {
-                return BrandService.getHouseBrands().then(function(brands) {
-                    angular.forEach(brands, function(item, index) {
-                        if (item.brand_control_label === houseBrandId) {
-                            $scope.categoryName = item.extended_description;
-                        }
+      // dietary
+      if ($scope.facets.dietary.selected.length > 0) {
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.dietary.selected = data;
+            $scope.facets.itemspecs.selected = [];
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.dietary.selected,
+          displayText: 'Dietary: ' + $scope.facets.dietary.selected.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.dietary.selected.length;
+      }
 
-                    });
-                    return ProductService.getProductsByHouseBrand(houseBrandId, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
-                });
-            }
+      // item specifications
+      if ($scope.facets.itemspecs.selected.length > 0) {
+        var specDisplayNames = [];
+        $scope.facets.itemspecs.selected.forEach(function(spec) {
+          specDisplayNames.push(getIconDisplayInfo(spec).displayname);
+        });
+        breadcrumbs.push({
+          click: function(data) {
+            $scope.facets.itemspecs.selected = data;
+            loadProducts().then(refreshFacets);
+          },
+          clickData: $scope.facets.itemspecs.selected,
+          displayText: 'Item Specifications: ' + specDisplayNames.join(breadcrumbSeparator)
+        });
+        filterCount += $scope.facets.itemspecs.selected.length;
+      }
 
-            function getData() {
-                var type = $stateParams.type;
+      // search term
+      if ($scope.paramType === 'search') {
+        $scope.featuredBreadcrumb = {
+          click: clearFacets,
+          clickData: '',
+          displayText: '"' + $scope.paramId + '"'
+        };
+        breadcrumbs.push($scope.featuredBreadcrumb);  
+      }
 
-                if (type === 'category') {
-                    var categorySearchName = $stateParams.id;
-                    return getCategoryBySearchName(categorySearchName);
+      $scope.breadcrumbs = breadcrumbs;
+      $scope.filterCount = filterCount;
+    }
 
-                } else if (type === 'search') {
+    function getData() {
+      var facets = ProductService.getFacets(
+        $scope.facets.categories.selected, 
+        $scope.facets.brands.selected, 
+        $scope.facets.dietary.selected, 
+        $scope.facets.itemspecs.selected 
+      );
+      var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
+    }
 
-                    var searchTerm = $stateParams.id;
-                    $scope.searchTerm = '\"' + searchTerm + '\"';
-                    return ProductService.getProducts(searchTerm, $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
-                } else if (type === 'brand') {
-                    var houseBrandId = $stateParams.id;
-                    return getHouseBrandById(houseBrandId);
+    function loadProducts(appendResults) {
+      $scope.loadingResults = true;
 
-                    //$scope.selectedBrands.push(brandName);
-                    //return ProductService.getProducts('', $scope.itemsPerPage, $scope.itemIndex, $scope.selectedBrands, $scope.selectedCategory, $scope.selectedDietary, $scope.selectedSpecs, $scope.selectedNonstock, $scope.sortField, $scope.sortDirection);
-                }
-            }
+      return getData().then(function(data) {
+        $scope.loadingResults = false;
+        $scope.totalItems = data.totalcount;
 
-            function loadProducts(appendResults) {
-                $scope.loadingResults = true;
-
-                return getData().then(function(data) {
-                    $scope.filterCount = 0;
-
-                    // append results to existing data
-                    if (appendResults) {
-                        $scope.products.push.apply($scope.products, data.products);
-                        // replace existing data
-                    } else {
-                        $scope.products = data.products;
-                    }
-                    $scope.totalItems = data.totalcount;
-
-                    $scope.breadcrumbs = [];
-                    //check initial page view
-                    if ($stateParams.type === 'category') {
-                        $scope.breadcrumbs.push({
-                            type: 'topcategory',
-                            id: $stateParams.id,
-                            name: $scope.categoryName
-                        });
-                        $scope.filterCount++;
-                        $scope.houseBrand = '';
-                    }
-                    if ($stateParams.type === 'search') {
-                        $scope.breadcrumbs.push({
-                            type: 'allcategories',
-                            id: $stateParams.id,
-                            name: 'All Categories'
-                        });
-                        $scope.houseBrand = '';
-                    }
-                    if ($stateParams.type === 'brand') {
-                        $scope.breadcrumbs.push({
-                            type: 'allcategories',
-                            id: $stateParams.id,
-                            name: $scope.categoryName
-                        });
-                        //check and disable selected brand
-                        $scope.houseBrand = $scope.categoryName;
-                    }
-
-                    //check for selected facets
-                    if ($scope.selectedCategory) {
-                        $scope.breadcrumbs.push({
-                            type: 'category',
-                            id: $scope.selectedCategory.name,
-                            name: $scope.selectedCategory.categoryname
-                        });
-                        $scope.filterCount++;
-                    }
-                    var brandsBreadcrumb = 'Brand: ';
-                    angular.forEach($scope.selectedBrands, function(item, index) {
-                        brandsBreadcrumb += item + ' or ';
-                        $scope.filterCount++;
-                    });
-                    if (brandsBreadcrumb !== 'Brand: ') {
-                        $scope.breadcrumbs.push({
-                            type: 'brand',
-                            id: $scope.selectedBrands,
-                            name: brandsBreadcrumb.substr(0, brandsBreadcrumb.length - 4)
-                        });
-                    }
-                    var dietaryBreadcrumb = 'Dietary: ';
-                    angular.forEach($scope.selectedDietary, function(item, index) {
-                        dietaryBreadcrumb += item + ' or ';
-                        $scope.filterCount++;
-                    });
-                    if (dietaryBreadcrumb !== 'Dietary: ') {
-                        $scope.breadcrumbs.push({
-                            type: 'dietary',
-                            id: $scope.selectedDietary,
-                            name: dietaryBreadcrumb.substr(0, dietaryBreadcrumb.length - 4)
-                        });
-                    }
-                    var specBreadcrumb = 'Item Specifications: ';
-                    angular.forEach($scope.selectedSpecs, function(item, index) {
-                        specBreadcrumb += changeSpecDisplayName(item) + ' or ';
-                        $scope.filterCount++;
-                    });
-                    angular.forEach($scope.selectedNonstock, function(item, index) {
-                        specBreadcrumb += changeSpecDisplayName(item) + ' or ';
-                        $scope.filterCount++;
-                    });
-                    if (specBreadcrumb !== 'Item Specifications: ') {
-                        $scope.breadcrumbs.push({
-                            type: 'spec',
-                            id: $scope.selectedSpecs,
-                            name: specBreadcrumb.substr(0, specBreadcrumb.length - 4)
-                        });
-                    }
-                    if ($stateParams.type === 'search') {
-                        $scope.breadcrumbs.push({
-                            type: 'search',
-                            id: 'search',
-                            name: '\"' + $stateParams.id + '\"'
-                        });
-                    }
-                    $scope.loadingResults = false;
-                    $scope.brandCount = data.facets.brands.length;
-                    $scope.dietaryCount = data.facets.dietary.length;
-                    $scope.specCount = data.facets.itemspecs.length + data.facets.nonstock.length;
-
-                    return data.facets;
-                });
-            }
-
-            loadProducts().then(function(facets) {
-                refreshScopeFacets(facets);
-            });
-
-            $scope.goToItemDetails = function(item) {
-                ProductService.selectedProduct = item;
-                $state.go('menu.catalog.products.details', {
-                    itemNumber: item.itemnumber
-                });
-            };
-
-            $scope.infiniteScrollLoadMore = function() {
-                if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
-                    return;
-                }
-
-                $scope.itemIndex += $scope.itemsPerPage;
-
-                loadProducts(true);
-            };
-
-            $scope.breadcrumbClickEvent = function(type, id) {
-                $scope.loadingResults = true;
-                if (type === 'topcategory' || type === 'allcategories') {
-                    $scope.selectedBrands = [];
-                    $scope.selectedSpecs = [];
-                    $scope.selectedNonstock = [];
-                    $scope.selectedDietary = [];
-                    $scope.selectedCategory = '';
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-                if (type === 'category') {
-                    $scope.selectedBrands = [];
-                    $scope.selectedSpecs = [];
-                    $scope.selectedNonstock = [];
-                    $scope.selectedDietary = [];
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-                if (type === 'brand') {
-                    $scope.selectedSpecs = [];
-                    $scope.selectedNonstock = [];
-                    $scope.selectedDietary = [];
-                    $scope.selectedBrands = id;
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-                if (type === 'dietary') {
-                    $scope.selectedBrands = [];
-                    $scope.selectedSpecs = [];
-                    $scope.selectedNonstock = [];
-                    $scope.selectedDietary = id;
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-                if (type === 'spec') {
-                    $scope.selectedBrands = [];
-                    $scope.selectedDietary = [];
-                    $scope.selectedSpecs = id;
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-            };
-
-            $scope.showContextMenu = function(e, idx) {
-                $scope.contextMenuLocation = {
-                    'top': e.y,
-                    'left': e.x
-                };
-                $scope.isContextMenuDisplayed = true;
-            };
-
-            $scope.showBrand = function() {
-                $scope.isBrandShowing = true;
-                $scope.brandHiddenNumber = 500;
-            };
-            $scope.hideBrand = function() {
-                $scope.isBrandShowing = false;
-                $scope.brandHiddenNumber = 3;
-            };
-
-            $scope.showDietary = function() {
-                $scope.isDietaryShowing = true;
-                $scope.dietaryHiddenNumber = 500;
-            };
-            $scope.hideDietary = function() {
-                $scope.isDietaryShowing = false;
-                $scope.dietaryHiddenNumber = 3;
-            };
-
-            $scope.showSpec = function() {
-                $scope.isSpecShowing = true;
-                $scope.specHiddenNumber = 500;
-            };
-            $scope.hideSpec = function() {
-                $scope.isSpecShowing = false;
-                $scope.specHiddenNumber = 3;
-            };
-
-            $scope.sortTable = function sortTable(field) {
-                $scope.itemsPerPage = 50;
-                $scope.itemIndex = 0;
-                if (field !== 'caseprice' || $scope.totalItems < 201) {
-                    if ($scope.sortField !== field) {
-                        $scope.sortField = field;
-                        $scope.sortDirection = 'asc';
-                        $scope.sortReverse = false;
-                    } else {
-                        if ($scope.sortDirection === 'asc') {
-                            $scope.sortDirection = 'desc';
-                            $scope.sortReverse = true;
-                        } else {
-                            $scope.sortDirection = 'asc';
-                            $scope.sortReverse = false;
-                        }
-                    }
-                    loadProducts();
-                }
-            };
-
-            $scope.toggleSelection = function toggleSelection(selectedFacet, filter) {
-                $scope.loadingResults = true;
-                $scope.itemsPerPage = 50;
-                $scope.itemIndex = 0;
-                var idx;
-                if (filter === 'brand') {
-                    idx = $scope.selectedBrands.indexOf(selectedFacet);
-
-                    // is currently selected
-                    if (idx > -1) {
-                        $scope.selectedBrands.splice(idx, 1);
-                    }
-                    // is newly selected
-                    else {
-                        $scope.selectedBrands.push(selectedFacet);
-                    }
-
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                } else if (filter === 'dietary') {
-                    idx = $scope.selectedDietary.indexOf(selectedFacet);
-
-                    // is currently selected
-                    if (idx > -1) {
-                        $scope.selectedDietary.splice(idx, 1);
-                    }
-                    // is newly selected
-                    else {
-                        $scope.selectedDietary.push(selectedFacet);
-                    }
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                } else if (filter === 'spec') {
-                    idx = $scope.selectedSpecs.indexOf(selectedFacet);
-
-                    // is currently selected
-                    if (idx > -1) {
-                        $scope.selectedSpecs.splice(idx, 1);
-                    }
-                    // is newly selected
-                    else {
-                        $scope.selectedSpecs.push(selectedFacet);
-                    }
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                } else if (filter === 'nonstock') {
-                    idx = $scope.selectedNonstock.indexOf(selectedFacet);
-
-                    // is currently selected
-                    if (idx > -1) {
-                        $scope.selectedNonstock.splice(idx, 1);
-                    }
-                    // is newly selected
-                    else {
-                        $scope.selectedNonstock.push(selectedFacet);
-                    }
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                } else if (filter === 'subcategory') {
-                    $scope.selectedSubcategory = selectedFacet.id;
-                } else {
-                    $scope.selectedCategory = selectedFacet;
-                    $scope.selectedSubcategory = '';
-
-                    loadProducts().then(function(facets) {
-                        refreshScopeFacets(facets);
-                    });
-                }
-            };
-
-            $scope.canOrderProduct = function(item) {
-                return ProductService.canOrderProduct(item);
-            };
-
-            function refreshScopeFacets(facets) {
-                $scope.categories = facets.categories;
-                $scope.brands = facets.brands;
-                $scope.dietary = facets.dietary;
-                if (facets.itemspecs && facets.itemspecs.length > 0) {
-                    $scope.itemspecs = addIcons(facets.itemspecs);
-                } else {
-                    $scope.itemspecs = [];
-                }
-                var hasNonstock = false;
-                if (facets.nonstock && facets.nonstock.length > 0) {
-                    angular.forEach(facets.nonstock, function(item, index) {
-                        if (item.name === 'y') {
-                            $scope.nonstock = {
-                                name: 'nonstock',
-                                displayname: 'Non-Stock Item',
-                                iconclass: 'text-regular icon-user',
-                                count: item.count
-                            };
-                            hasNonstock = true;
-                            $scope.hasNonstock = true;
-                            $scope.specHiddenNumber = 2;
-                        }
-                    });
-                    if (hasNonstock === false) {
-                        $scope.nonstock = '';
-                        $scope.specHiddenNumber = 3;
-                        $scope.hasNonstock = false;
-                    }
-
-                } else {
-                    $scope.nonstock = '';
-                    $scope.specHiddenNumber = 3;
-                    $scope.hasNonstock = true;
-                }
-            }
-
-            function addIcons(itemspecs) {
-                var itemspecsArray = [];
-                angular.forEach(itemspecs, function(item, index) {
-                    var itemname = '';
-                    var itemcount = 0;
-                    //if coming from bookmark, set item name
-                    if (!item.name) {
-                        if (item) {
-                            itemname = item;
-                        }
-                    } else {
-                        itemname = item.name;
-                        itemcount = item.count;
-                    }
-
-                    if (itemname === 'itembeingreplaced') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Item Being Replaced',
-                            iconclass: 'text-red icon-cycle',
-                            count: itemcount
-                        });
-                    }
-                    if (itemname === 'replacementitem') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Replacement Item',
-                            iconclass: 'text-green icon-cycle',
-                            count: itemcount
-                        });
-                    }
-                    if (itemname === 'childnutrition') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Child Nutrition Sheet',
-                            iconclass: 'text-regular icon-apple',
-                            count: itemcount
-                        });
-                    }
-                    if (itemname === 'sellsheet') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Product Information Sheet',
-                            iconclass: 'text-regular icon-sellsheet',
-                            count: itemcount
-                        });
-                    }
-                    //THESE ITEM.NAMES ARE CURRENTLY JUST GUESSES --- I HAVE NOT SEEN WHAT THESE 4 ARE CALLED YET
-                    if (itemname === 'DeviatedCost') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'DeviatedCost',
-                            iconclass: 'text-regular icon-dollar',
-                            count: itemcount
-                        });
-                    }
-                    if (item.name === 'MaterialSafety') {
-                        itemspecsArray.push({
-                            name: itemname,
-                            displayname: 'Material Safety Data Sheet',
-                            iconclass: 'text-regular icon-safety',
-                            count: itemcount
-                        });
-                    }
-                });
-                return itemspecsArray;
-            }
-
-            function changeSpecDisplayName(name) {
-                if (name === 'itembeingreplaced') {
-                    return 'Item Being Replaced';
-                }
-                if (name === 'replacementitem') {
-                    return 'Replacement Item';
-                }
-                if (name === 'childnutrition') {
-                    return 'Child Nutrition Sheet';
-                }
-                if (name === 'sellsheet') {
-                    return 'Product Information Sheet';
-                }
-                if (name === 'nonstock') {
-                    return 'Non-Stock Item';
-                }
-            }
+        // append results to existing data (for infinite scroll)
+        if (appendResults) {
+          $scope.products.push.apply($scope.products, data.products);
+        // replace existing data (for sort, filter)
+        } else {
+          $scope.products = data.products;
         }
-    ]);
+
+        setBreadcrumbs(data);
+
+        return data.facets;
+      });
+    }
+
+    function refreshFacets(facets) {
+      $scope.facets.categories.available = facets.categories;
+      $scope.facets.brands.available = facets.brands;
+      $scope.facets.dietary.available = facets.dietary;
+      $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
+    }
+
+    function getIconDisplayInfo(name) {
+      var itemSpec = {};
+      switch (name) {
+        case 'itembeingreplaced':
+          itemSpec.displayname = 'Item Being Replaced';
+          itemSpec.iconclass = 'text-red icon-cycle';
+          break;
+        case 'replacementitem':
+          itemSpec.displayname = 'Replacement Item';
+          itemSpec.iconclass = 'text-green icon-cycle';
+          break;
+        case 'childnutrition':
+          itemSpec.displayname = 'Child Nutrition Sheet';
+          itemSpec.iconclass = 'text-regular icon-apple';
+          break;
+        case 'sellsheet':
+          itemSpec.displayname = 'Product Information Sheet';
+          itemSpec.iconclass = 'text-regular icon-sellsheet';
+          break;
+        case 'nonstock':
+          itemSpec.displayname = 'Non-Stock Item';
+          itemSpec.iconclass = 'text-regular icon-user';
+          break;
+        // cannot filter by deviated cost
+        // case 'deviatedcost':
+        //   itemSpec.displayname = 'DeviatedCost';
+        //   itemSpec.iconclass = 'text-regular icon-dollar';
+        //   break;
+
+        // TODO: fitler by and display MSDS info
+        case 'materialsafety':
+          itemSpec.displayname = 'Material Safety Data Sheet';
+          itemSpec.iconclass = 'text-regular icon-safety';
+          break;
+      }
+      return itemSpec;
+    }
+
+    function addIcons(itemspecs) {
+      var itemspecsArray = [];
+      angular.forEach(itemspecs, function(item, index) {
+        var itemSpec = getIconDisplayInfo(item.name);
+        itemSpec.name = item.name;
+        itemSpec.count = item.count;
+        itemspecsArray.push(itemSpec);
+      });
+      return itemspecsArray;
+    }
+
+    $scope.sortTable = function(field) {
+      $scope.itemsPerPage = 50;
+      $scope.itemIndex = 0;
+
+      if (field !== 'caseprice' || $scope.totalItems <= $scope.maxSortCount) {
+        if ($scope.sortField !== field) { // different field
+          $scope.sortField = field;
+          $scope.sortReverse = false;
+        } else { // same field
+          $scope.sortReverse = !$scope.sortReverse;
+        }
+        loadProducts();
+      }
+    };
+
+    $scope.infiniteScrollLoadMore = function() {
+      if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
+        return;
+      }
+
+      $scope.itemIndex += $scope.itemsPerPage;
+      loadProducts(true);
+    };
+
+    $scope.toggleSelection = function(facetList, selectedFacet) {
+      $scope.itemsPerPage = 50;
+      $scope.itemIndex = 0;
+
+      var idx = facetList.indexOf(selectedFacet);
+      if (idx > -1) {
+        facetList.splice(idx, 1);
+      } else {
+        facetList.push(selectedFacet);
+      }
+
+      loadProducts().then(refreshFacets);
+    };
+
+    $scope.goToItemDetails = function(item) {
+      ProductService.selectedProduct = item;
+      $state.go('menu.catalog.products.details', {
+        itemNumber: item.itemnumber
+      });
+    };
+
+    $scope.openExportModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/exportmodal.html',
+        controller: 'ExportModalController',
+        resolve: {
+          headerText: function () {
+            return 'Product Catalog (limited to 500 items)';
+          },
+          exportMethod: function() {
+            return ProductService.exportProducts;
+          },
+          exportConfig: function() {
+            return ProductService.getExportConfig();
+          },
+          exportParams: function() {
+            // return search url with params
+            var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
+            var facets = ProductService.getFacets(
+              $scope.facets.categories.selected, 
+              $scope.facets.brands.selected, 
+              $scope.facets.dietary.selected, 
+              $scope.facets.itemspecs.selected 
+            );
+            var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
+            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + $.param(params); // search query string param
+          }
+        }
+      });
+    };
+
+    // INIT
+    loadProducts().then(refreshFacets);
+
+  }]);

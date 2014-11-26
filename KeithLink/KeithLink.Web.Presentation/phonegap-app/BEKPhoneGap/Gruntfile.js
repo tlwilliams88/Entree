@@ -4,7 +4,14 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       phonegap: {
         config: {
-          plugins: ['https://github.com/apache/cordova-plugin-network-information.git'],
+          plugins: ['https://github.com/apache/cordova-plugin-network-information.git',
+              'https://github.com/phonegap-build/PushPlugin.git',
+              'org.apache.cordova.device',
+              'org.apache.cordova.dialogs',
+              'org.apache.cordova.vibration',
+              'org.apache.cordova.console'
+          ],
+          maxBuffer: 500,
           platforms: ['ios', 'android'],
           config: {
             template: '_config.xml',
@@ -34,6 +41,7 @@ module.exports = function(grunt) {
       "www/scripts/directives/{,*/}*",
       "www/scripts/services/{,*/}*",
       "www/scripts/resources/{,*/}*",
+      "www/scripts/filters/{,*/}*",
       "www/scss/{,*/}*",
       "www/views/{,*/}*"
       ],
@@ -118,6 +126,12 @@ cwd: '../../angular-app/app/scripts/services/',  // set working folder / root to
 cwd: '../../angular-app/app/scripts/resources/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/resources/',    // destination folder
+    expand: true           // required when using cwd
+  },
+    {
+cwd: '../../angular-app/app/scripts/filters/',  // set working folder / root to copy
+    src: '**/*',           // copy all files and subfolders
+    dest: 'www/scripts/filters/',    // destination folder
     expand: true           // required when using cwd
   },
   {

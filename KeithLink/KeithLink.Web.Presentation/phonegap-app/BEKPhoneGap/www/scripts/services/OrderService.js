@@ -70,6 +70,12 @@ angular.module('bekApp')
         return Order.getOrderHistory().$promise;
       },
 
+      getOrderHistoryDetails: function(invoiceNumber) {
+        return Order.getOrderHistoryDetails({
+          invoiceNumber: invoiceNumber
+        }).$promise;
+      },
+
       pollOrderHistory: function() {
         return Order.pollOrderHistory().$promise;
       }

@@ -1,12 +1,21 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceController', ['$scope', '$filter', 'invoices', 'accounts',
-  function ($scope, $filter, invoices, accounts) {
+.controller('InvoiceController', ['$scope', '$filter', '$modal', 'invoices', 'accounts', 'InvoiceService',
+  function ($scope, $filter, $modal, invoices, accounts, InvoiceService) {
 
   $scope.invoices = invoices;
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
+
+  $scope.datepickerOptions = {
+    minDate: new Date(),
+    maxDate: '2015-06-22',
+    options: {
+      dateFormat: 'yyyy-MM-dd',
+      showWeeks: false
+    }
+  };
 
   $scope.hasPayableInvoices = $filter('filter')(invoices, { ispayable: true }).length > 0;
 
@@ -73,6 +82,32 @@ angular.module('bekApp')
       total += parseFloat(invoice.paymentAmount || 0);
     });
     return total;
+  };
+
+  $scope.payInvoices = function() {
+    var payments = $filter('filter')($scope.filteredItems, { isSelected: true});
+    InvoiceService.payInvoices(payments, $scope.selectedAccount);
+  };
+
+  $scope.openExportModal = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Invoices';
+        },
+        exportMethod: function() {
+          return InvoiceService.exportInvoice;
+        },
+        exportConfig: function() {
+          return InvoiceService.getExportConfig();
+        },
+        exportParams: function() {
+          return null;
+        }
+      }
+    });
   };
 
 }]);

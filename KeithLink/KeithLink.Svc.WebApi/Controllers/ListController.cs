@@ -9,6 +9,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.IO;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -16,17 +20,40 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ListController : BaseController {
         #region attributes
         private readonly IListServiceRepository listServiceRepository;
+		private readonly IExportSettingServiceRepository exportSettingRepository;
         #endregion
 
         #region ctor
-		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository)
+		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingServiceRepository exportSettingRepository)
 			: base(profileLogic)
 		{
             this.listServiceRepository = listServiceRepository;
+			this.exportSettingRepository = exportSettingRepository;
         }
         #endregion
 
         #region methods
+
+		[HttpPost]
+		[ApiKeyedRoute("list/export/{listId}")]
+		public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest)
+		{
+			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+
+			if (exportRequest.Fields != null)
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<ListItemModel>(list.Items, exportRequest);				
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("list/export/{listId}")]
+		public ExportOptionsModel ExportList(long listId)
+		{
+			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
+		}
+
+
+
         [HttpGet]
 		[ApiKeyedRoute("list/")]
         public List<ListModel> List(bool header = false)
@@ -58,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/")]
 		public NewListItem List(ListModel list, bool isMandatory = false)
         {
-			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? Core.Models.EF.ListType.Mandatory : Core.Models.EF.ListType.Custom) };
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : ListType.Custom) };
         }
 		
         [HttpPost]

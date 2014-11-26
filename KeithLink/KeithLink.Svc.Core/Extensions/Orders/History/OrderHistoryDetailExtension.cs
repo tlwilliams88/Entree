@@ -53,6 +53,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
             entity.ItemStatus = value.ItemStatus;
             entity.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+            entity.SellPrice = (decimal)value.SellPrice;
         }
 
         public static void Parse(this OrderHistoryDetail value, string record) {
@@ -112,6 +113,27 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
             retVal.ItemStatus = value.ItemStatus;
             retVal.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+            retVal.SellPrice = (decimal)value.SellPrice;
+
+            return retVal;
+        }
+
+        public static OrderHistoryDetail ToOrderHistoryDetail(this EF.OrderHistoryDetail value)
+        {
+            OrderHistoryDetail retVal = new OrderHistoryDetail();
+
+            retVal.ItemNumber = value.ItemNumber;
+            retVal.LineNumber = value.LineNumber;
+            retVal.OrderQuantity = value.OrderQuantity;
+            retVal.ShippedQuantity = value.ShippedQuantity;
+            retVal.UnitOfMeasure = value.UnitOfMeasure.Equals("C", StringComparison.InvariantCultureIgnoreCase) ? UnitOfMeasure.Case : UnitOfMeasure.Package;
+            retVal.CatchWeight = value.CatchWeight;
+            retVal.ItemDeleted = value.ItemDeleted;
+            retVal.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
+            retVal.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
+            retVal.ItemStatus = value.ItemStatus;
+            retVal.TotalShippedWeight = (double)value.TotalShippedWeight;
+            retVal.SellPrice = (double)value.SellPrice;
 
             return retVal;
         }

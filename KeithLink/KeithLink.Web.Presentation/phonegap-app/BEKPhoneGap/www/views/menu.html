@@ -19,15 +19,22 @@
     <ul class="list-unstyled">
 
       <div ng-show="displayUserMenu">
-        <a ng-click="$spMenu.hide()" ui-sref="menu.accountdetails">
+        <button 
+          class="btn-no-style"
+          ng-click="$spMenu.hide()" 
+          ui-sref="menu.accountdetails">
           <li>Account Settings</li>
-        </a>
-        <a ng-click="$spMenu.hide(); openTechnicalSupportModal()">
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-click="$spMenu.hide(); openTechnicalSupportModal()">
           <li>Technical Support</li>
-        </a>
-        <a ng-click="logout()">
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-click="logout()">
           <li>Sign Out</li>
-        </a>
+        </button>
         <!-- <a> -->
           <li>
             <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
@@ -36,35 +43,101 @@
         <!-- </a> -->
       </div>
 
+      <!-- MOBILE MENU -->
       <div ng-click="$spMenu.hide()">
-        <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
-        </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.order" ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
-        </a>
-        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ng-class="{'is-selected': $state.includes('menu.catalog')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
-        </a>
-        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
-        </a>
-        <a ng-if="canPayInvoices" ui-sref="menu.invoice" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
-        </a>
-        <a ng-if="canManageLists" ui-sref="menu.lists.items({listId: 0})" ng-class="{'is-selected': $state.includes('menu.lists')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
-        </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
-        </a>
-        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
-            <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
-          </a>
-        <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-bell"></span></div><span ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0" class="badge">{{userBar.userNotifications.unread}}</span>Notifications</li>
-        </a>
-      </div>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!isOrderEntryCustomer" 
+          ui-sref="menu.home" 
+          ui-sref-active="is-selected" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-house"></span></div>
+            Home
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canCreateOrders" 
+          ui-sref="menu.order" 
+          ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>
+            Order History
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canBrowseCatalog" 
+          ui-sref="menu.catalog.home" 
+          ng-class="{'is-selected': $state.includes('menu.catalog')}" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-book2"></span></div>
+            Product Catalog
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canPayInvoices" 
+          ui-sref="blank" 
+          ui-sref-active="is-selected" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-pie"></span></div>
+            Reports
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canPayInvoices" 
+          ui-sref="menu.invoice" 
+          ui-sref-active="is-selected" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>
+            Invoices
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canManageLists" 
+          ui-sref="menu.lists.items({listId: 0})" 
+          ng-class="{'is-selected': $state.includes('menu.lists')}" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-text"></span></div>
+            My Lists
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!canCreateOrders" 
+          ui-sref="menu.addtoorder.items({ })" 
+          ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>
+            Add to Order
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-if="canManageAccount"
+          ui-sref="menu.admin.accountadmin" 
+          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
+            Admin
+          </li>
+        </button>
+        <button 
+          class="btn-no-style"
+          ng-disabled="!isOrderEntryCustomer" 
+          ui-sref="menu.notifications" 
+          ui-sref-active="is-selected" >
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
+            <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
+            Notifications
+          </li>
+        </button>
+      </div> <!-- END MOBILE MENU -->
+
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
@@ -87,34 +160,91 @@
       <img src="images/bek-logo.png" alt="logo" />
     </div>
 
+    <!-- DESKTOP MENU -->
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <a ng-if="isOrderEntryCustomer" ui-sref="menu.home" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-house"></span></div>Home</li>
-        </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.order" ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>Order History</li>
-        </a>
-        <a ng-if="canBrowseCatalog" ui-sref="menu.catalog.home" ng-class="{'is-selected': $state.includes('menu.catalog')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-book2"></span></div>Product Catalog</li>
-        </a>
-        <a ng-if="canPayInvoices" ui-sref="blank" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-pie"></span></div>Reports</li>
-        </a>
-        <a ng-if="canPayInvoices" ui-sref="menu.invoice" ui-sref-active="is-selected" >
-          <li><div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>Invoices</li>
-        </a>
-        <a ng-if="canManageLists" ui-sref="menu.lists.items({listId: 0})" ng-class="{'is-selected': $state.includes('menu.lists')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-text"></span></div>My Lists</li>
-        </a>
-        <a ng-if="canCreateOrders" ui-sref="menu.addtoorder.items({ })" ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>Add to Order</li>
-        </a>
-        <a ui-sref="menu.admin.accountadmin" ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
-          <li><div class="sidebar-nav__icon"><span class="icon-cog"></span></div>Admin</li>
-        </a>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!isOrderEntryCustomer" 
+          ui-sref="menu.home" 
+          ui-sref-active="is-selected" >
+          <li>
+            <span class="icon-house sidebar-nav__icon"></span>
+            Home
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canCreateOrders" 
+          ui-sref="menu.order" 
+          ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
+          <li>
+            <span class="icon-clipboard sidebar-nav__icon"></span>
+            Order History
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canBrowseCatalog" 
+          ui-sref="menu.catalog.home" 
+          ng-class="{'is-selected': $state.includes('menu.catalog')}" >
+          <li>
+            <span class="icon-book2 sidebar-nav__icon"></span>
+            Product Catalog
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canPayInvoices" 
+          ui-sref="blank" 
+          ui-sref-active="is-selected" >
+          <li>
+            <span class="icon-pie sidebar-nav__icon"></span>
+            Reports
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canPayInvoices" 
+          ui-sref="menu.invoice" 
+          ui-sref-active="is-selected" >
+          <li>
+            <span class="icon-dollar sidebar-nav__icon"></span>
+            Invoices
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canManageLists" 
+          ui-sref="menu.lists.items({listId: 0})" 
+          ng-class="{'is-selected': $state.includes('menu.lists')}" >
+          <li>
+            <span class="icon-text sidebar-nav__icon"></span>
+            My Lists
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-disabled="!canCreateOrders" 
+          ui-sref="menu.addtoorder.items({ })" 
+          ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
+          <li>
+            <span class="icon-add-to-list sidebar-nav__icon"></span>
+            Add to Order
+          </li>
+        </button>
+        <button 
+          class="btn-no-style" 
+          ng-if="canManageAccount"
+          ui-sref="menu.admin.accountadmin" 
+          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
+          <li>
+            <span class="icon-cog sidebar-nav__icon"></span>
+            Admin
+          </li>
+        </button>
       </ul>
-    </nav>
+    </nav> <!-- END DESKTOP MENU -->
 
     <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer">
       <p>Your Sales Rep</p>
@@ -160,10 +290,10 @@
           </form>
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right nowrap">
-          <div ng-if="isLoggedIn">
-            <a ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
-              <span ng-if="isOrderEntryCustomer" class="icon-bell"></span>
-              <span class="badge" ng-if="userBar.userNotifications.unread && userBar.userNotifications.unread > 0">{{userBar.userNotifications.unread}}</span>
+          <div>
+            <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
+              <span class="icon-bell"></span>
+              <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">

@@ -8,162 +8,109 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 
-    function($http, UserProfileService, RecentlyViewedItem, ItemNotes) {
+  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
-      var defaultPageSize = 50,
+      var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
 
-      function concatenateNestedParameters(name, list) {
-        var filters = name + ':';
-        angular.forEach(list, function(item, index) {
-          if (name === 'brands' || name === 'dietary' || name==='itemspecs') {
-            filters += item + '|';
-          }
-          if (name === 'nonstock') {
-            filters += 'y|';
+      function filterNonstock(itemspecs) {
+        var nonstockIndex = -1;
+        itemspecs.forEach(function(spec, index) {
+          if (spec === 'nonstock') {
+            nonstockIndex = index;
           }
         });
-        return filters.substr(0, filters.length - 1);
+        return nonstockIndex;
       }
 
       var Service = {
         selectedProduct: {}, 
 
-        getProducts: function(searchTerm, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
-          pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
-          index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+        getFacets: function(categories, brands, dietary, itemspecs) {
+          var facets = [];
 
-          var facets = '';
-          if (brands && brands.length > 0) {
-            facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
+          // handle nonstock special case
+          var nonstockIndex = filterNonstock(itemspecs);
+          var cleanItemspecs = angular.copy(itemspecs); 
+          cleanItemspecs.splice(nonstockIndex, 1);
+
+          if (categories && categories.length > 0) {
+            facets.push('categories:' + categories.join('|'));
           }
-          if (facetCategory) {
-            facets += 'categories:' + facetCategory.name;
-            facets += ',';
+          if (brands && brands.length > 0) {
+            facets.push('brands:' + brands.join('|'));
           }
           if (dietary && dietary.length > 0) {
-            facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
+            facets.push('dietary:' + dietary.join('|'));
           }
-          if (itemspecs && itemspecs.length > 0) {
-            facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
+          if (cleanItemspecs && cleanItemspecs.length > 0) {
+            facets.push('itemspecs:' + cleanItemspecs.join('|'));
           }
-          if (nonstock && nonstock.length > 0) {
-            facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
+          if (nonstockIndex > -1) {
+            facets.push('nonstock:y');
           }
+
+          facets = facets.join('___'); // join all facets together for query string
 
           if (facets === '') {
             facets = null;
           }
-          else {
-            facets = facets.substr(0, facets.length - 1);
-          }
-
-          return $http.get('/catalog/search/' + searchTerm + '/products', {
-            params: {
-              size: pageSize,
-              from: index,
-              facets: facets,
-              sfield: sortfield,
-              sdir: sortdirection
-            }
-          }).then(function(response) {
-            return response.data;
-          });
+          return facets;
         },
 
-        getProductsByCategory: function(categoryName, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
-          pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
-          index = typeof index !== 'undefined' ? index : defaultStartingIndex;
-
-          var facets = '';
-          if (brands && brands.length > 0) {
-            facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
+        getSearchParams: function(pageSize, index, sortField, sortDirection, facets) {
+          var params = {
+            size: pageSize  || defaultPageSize,
+            from: index || defaultStartingIndex,
+            facets: facets,
+            sfield: sortField,
+            sdir: sortDirection
+          };
+          if (!params.facets) {
+            delete params.facets;
+          } 
+          if (!params.sfield) {
+            delete params.sfield;
           }
-          if (facetCategory) {
-            //categoryName = facetCategory.name;
-          }
-          if (dietary && dietary.length > 0) {
-            facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
-          }
-          if (itemspecs && itemspecs.length > 0) {
-            facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
-          }
-          if (nonstock && nonstock.length > 0) {
-            facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
-          }
-          
-          if (facets === '') {
-            facets = null;
-          }
-          else {
-            facets = facets.substr(0, facets.length - 1);
-          }
-
-          return $http.get('/catalog/search/category/' + categoryName + '/products', {
-            params: {
-              size: pageSize,
-              from: index,
-              facets: facets,
-              sfield: sortfield,
-              sdir: sortdirection
-            }
-          }).then(function(response) {
-            return response.data;
-          });
+          return params;  
         },
 
-        getProductsByHouseBrand: function(houseBrandId, pageSize, index, brands, facetCategory, dietary, itemspecs, nonstock, sortfield, sortdirection) {
-          pageSize = typeof pageSize !== 'undefined' ? pageSize : defaultPageSize;
-          index = typeof index !== 'undefined' ? index : defaultStartingIndex;
+        getSearchUrl: function(type, id) {
+          var url = '/catalog/search/' + id + '/products'; // default to search url
+
+          if (type === 'category') {
+            url = '/catalog/search/category/' + id + '/products';
+          } else if (type === 'brand') {
+            url = '/catalog/search/brands/house/' + id;
+          }
+          return url;
+        },
+
+        searchCatalog: function(type, id, params) {
           
-          var facets = '';
-          if (brands && brands.length > 0) {
-            facets += concatenateNestedParameters('brands', brands);
-            facets += ',';
-          }
-          if (facetCategory) {
-            facets += 'categories:' + facetCategory.name;
-            facets += ',';
-          }
-          if (dietary && dietary.length > 0) {
-            facets += concatenateNestedParameters('dietary', dietary);
-            facets += ',';
-          }
-          if (itemspecs && itemspecs.length > 0) {
-            facets += concatenateNestedParameters('itemspecs', itemspecs);
-            facets += ',';
-          }
-          if (nonstock && nonstock.length > 0) {
-            facets += concatenateNestedParameters('nonstock', nonstock);
-            facets += ',';
-          }
+          var url = Service.getSearchUrl(type, id);
+          
+          var config = {
+            params: params
+          };
 
-          if (facets === '') {
-            facets = null;
-          }
-          else {
-            facets = facets.substr(0, facets.length - 1);
-          }
+          return $http.get(url, config).then(function(response) {
+            var data = response.data;
 
-          return $http.get('/catalog/search/brands/house/' + houseBrandId, {
-            params: {
-              size: pageSize,
-              from: index,
-              facets: facets,
-              sfield: sortfield,
-              sdir: sortdirection
+            // convert nonstock to behave like itemspec
+            if (data.facets.nonstock && data.facets.nonstock.length > 0) {
+              data.facets.nonstock.forEach(function(nonstockItem) {
+                if (nonstockItem.name === 'y') {
+                  data.facets.itemspecs.push({
+                    name: 'nonstock',
+                    count: nonstockItem.count // yes
+                  });
+                }
+              });
             }
-          }).then(function(response) {
-            return response.data;
+
+            return data;
           });
         },
 
@@ -180,11 +127,9 @@ angular.module('bekApp')
           return returnProduct;
         },
 
-        canOrderProduct: function(item) {
-          return (item.caseprice !== '$0.00' || item.packageprice !== '$0.00' || item.nonstock === 'Y');
-        },
-
-        // ITEM NOTES
+        /****************
+        ITEM NOTES
+        ****************/
         updateItemNote: function(itemNumber, note) {
           var itemNote = {
             itemnumber: itemNumber,
@@ -199,7 +144,9 @@ angular.module('bekApp')
           }).$promise;
         },
 
-        // RECENTLY VIEWED ITEMS
+        /****************
+        RECENTLY VIEWED ITEMS
+        ****************/
         saveRecentlyViewedItem: function(itemNumber) {
           return RecentlyViewedItem.save({
             itemNumber: itemNumber
@@ -208,7 +155,22 @@ angular.module('bekApp')
 
         getRecentlyViewedItems: function() {
           return RecentlyViewedItem.query({}).$promise;
+        },
+
+        /****************
+        EXPORT
+        ****************/
+        getExportConfig: function() {
+          return $http.get('/catalog/export').then(function(response) {
+            return response.data;
+          });
+        },
+
+        exportProducts: function(config, url) {
+          url = url.replace('search', 'export');
+          ExportService.export(url, config);
         }
+
       };
 
       return Service;

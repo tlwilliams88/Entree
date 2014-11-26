@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿#region Using
+using Autofac;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
@@ -52,6 +53,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Impl.Repository.Configurations;
+#endregion
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -69,6 +73,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
             builder.RegisterType<ContentManagementService>();
+			builder.RegisterType<ConfigurationService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -120,6 +125,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
+			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
+
             //added 11-6
             builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
@@ -153,9 +160,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
 
-            
 
-
+			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
+			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             return builder.Build();
         }
 

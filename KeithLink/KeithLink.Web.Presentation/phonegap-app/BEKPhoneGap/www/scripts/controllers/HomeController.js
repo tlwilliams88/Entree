@@ -20,12 +20,11 @@ angular.module('bekApp')
     });
 
     $scope.loadingPromoItems = true;
-
     MarketingService.getPromoItems().then(function(items) {
       console.log(items);
       $scope.promoItems = items;
       $scope.loadingPromoItems = false;
-    })
+    });
  
     $scope.createNewCart = function() {
       return CartService.createCart().then(function(cartId) {

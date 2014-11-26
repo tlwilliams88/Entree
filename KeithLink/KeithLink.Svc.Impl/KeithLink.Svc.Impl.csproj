@@ -98,6 +98,9 @@
       <HintPath>..\packages\CommerceServerContrib.Library.1.0.184.0\lib\Net35\CommerceServerContrib.Web.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="DocumentFormat.OpenXml">
+      <HintPath>..\packages\DocumentFormat.OpenXml.2.5\lib\DocumentFormat.OpenXml.dll</HintPath>
+    </Reference>
     <Reference Include="Elasticsearch.Net, Version=1.0.0.0, Culture=neutral, PublicKeyToken=96c599bbe3e70f5d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Elasticsearch.Net.1.0.1\lib\Elasticsearch.Net.dll</HintPath>
@@ -163,6 +166,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
@@ -177,9 +181,11 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
+    <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
@@ -200,6 +206,7 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
@@ -372,6 +379,18 @@
     <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.cs" />
     <Compile Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.Designer.cs">
       <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.cs" />
+    <Compile Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.Designer.cs">
+      <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.cs" />
+    <Compile Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.Designer.cs">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs" />
+    <Compile Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.Designer.cs">
+      <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -826,6 +845,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411200343175_add user push notification device 20141119.resx">
       <DependentUpon>201411200343175_add user push notification device 20141119.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411241836239_CreateExportSettings.resx">
+      <DependentUpon>201411241836239_CreateExportSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411242058589_SaveLastExportFormat.resx">
+      <DependentUpon>201411242058589_SaveLastExportFormat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.resx">
+      <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -25,12 +26,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListCacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
 		private readonly IProductImageRepository productImageRepository;
+		private readonly IListShareRepository listShareRepository;
         #endregion
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -40,6 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.listCacheRepository = listCacheRepository;
 			this.priceLogic = priceLogic;
 			this.productImageRepository = productImageRepository;
+			this.listShareRepository = listShareRepository;
 		}
         #endregion
 
@@ -231,12 +234,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.BrandExtendedDescription;
+					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
                     listItem.TempZone = prod.TempZone;
+					listItem.ItemClass = prod.ItemClass;
+					listItem.CategoryId = prod.CategoryId;
+					listItem.CategoryName = prod.CategoryName;
+					listItem.UPC = prod.UPC;
+					listItem.VendorItemNumber = prod.VendorItemNumber;
 
 				}
 				if (price != null)
@@ -305,17 +314,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
 
 			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -412,11 +421,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsReminder = l.Type == ListType.Reminder,
  					IsMandatory = l.Type == ListType.Mandatory,
 					ReadOnly = l.ReadOnly,
+					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
-                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
 
                 var processedList = new List<ListModel>();
                 //Lookup product details for each item
@@ -443,6 +453,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		private List<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
 		{
+            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+                return new List<List>();
+
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
 				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
 				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
@@ -532,10 +545,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var customer in shareListModel.Customers)
 			{
-				listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
+				if(!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
+					listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
 			}
+
+			var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
+
+			foreach (var item in itemsToRemove)
+				listShareRepository.Delete(item);
+			
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			if (cachedList != null)
+			{
+				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+			}
 		}
         
 		#endregion

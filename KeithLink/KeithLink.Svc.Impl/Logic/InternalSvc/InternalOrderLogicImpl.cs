@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Core.Extensions.Orders.History;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
 	public class InternalOrderLogicImpl: IInternalOrderLogic
 	{
-		private readonly IOrderHistoryHeaderRepsitory orderHistoryRepository;
+		private readonly IOrderHistoryHeaderRepsitory orderHistoryHeaderRepository;
 		private readonly IUnitOfWork unitOfWork;
 
 		public InternalOrderLogicImpl(IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork)
 		{
-			this.orderHistoryRepository = orderHistoryRepository;
+			this.orderHistoryHeaderRepository = orderHistoryRepository;
 			this.unitOfWork = unitOfWork;
 		}
 
 		public DateTime? ReadLatestUpdatedDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
 		{
-			var orders = orderHistoryRepository.Read(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
+			var orders = orderHistoryHeaderRepository.Read(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
 				o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase));
 
 			if (orders.Any())
@@ -35,7 +36,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
             List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
 
-            IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader> history = orderHistoryRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber );
+            IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader> history = orderHistoryHeaderRepository.GetLastFiveOrdersByItem( catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber );
 
             foreach (Core.Models.Orders.History.EF.OrderHistoryHeader h in history) {
                 OrderHistoryFile root = new OrderHistoryFile() {
@@ -70,5 +71,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             return returnValue;
         }
-	}
+
+
+        public List<OrderHistoryHeader> GetCustomerOrderHistories(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        {
+            var histHeaders = orderHistoryHeaderRepository.GetCustomerOrderHistoryHeaders(catalogInfo.BranchId, catalogInfo.CustomerId).ToList();
+            // convert to orderhistoryheader from ef orderhistoryheader
+            List<OrderHistoryHeader> orderHistories = new List<OrderHistoryHeader>();
+
+            foreach (var histHeader in histHeaders)
+            {
+                OrderHistoryHeader retHistHeader = histHeader.ToOrderHistoryHeader();
+                retHistHeader.Items = histHeader.OrderDetails.Select(l => l.ToOrderHistoryDetail()).ToList();
+                orderHistories.Add(retHistHeader);
+            }
+
+            return orderHistories;
+        }
+
+    }
 }
