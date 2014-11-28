@@ -280,7 +280,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
             AssertGuestProfile(emailAddress, password);
 
-            _extAd.CreateUser(Core.Constants.AD_GUEST_CONTAINER, 
+            _extAd.CreateUser(Configuration.ActiveDirectoryGuestContainer,
                               emailAddress, 
                               password, 
                               Core.Constants.AD_GUEST_FIRSTNAME, 
