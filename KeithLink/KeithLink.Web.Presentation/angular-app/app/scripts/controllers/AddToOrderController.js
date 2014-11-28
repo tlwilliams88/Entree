@@ -205,4 +205,15 @@ angular.module('bekApp')
       }
     };
 
+    $scope.updateQuantity = function(item) {
+      if (!isNaN(item.onhand)) {
+        var quantity = Math.ceil(item.parlevel - item.onhand);
+        if (quantity > -1) {
+          item.quantity = quantity;
+        } else {
+          item.quantity = 0;
+        }
+      }
+    };
+
   }]);

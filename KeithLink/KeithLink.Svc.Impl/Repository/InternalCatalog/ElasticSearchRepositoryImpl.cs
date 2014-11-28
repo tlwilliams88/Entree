@@ -48,7 +48,23 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 		public void CreateEmptyIndex(string branchId)
 		{
 			var request = new RestRequest(branchId, Method.PUT);
-			client.Execute(request);
+            System.Dynamic.ExpandoObject snowballAnalyzer = new System.Dynamic.ExpandoObject();
+            (snowballAnalyzer as IDictionary<string, object>).Add("default", new { type = "snowball", language = "English" } );
+            dynamic indexSettings = 
+                new { settings = 
+                    new { 
+                        index = 
+                        new { number_of_replicas = 1, number_of_shards = 1, analysis =
+                            new { analyzer = 
+                                snowballAnalyzer
+                            }
+                        }
+                    }
+                };
+
+            request.RequestFormat = DataFormat.Json;
+            request.AddBody(indexSettings);
+			IRestResponse res = client.Execute(request);
 		}
 	}
 }

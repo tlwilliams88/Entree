@@ -47,6 +47,7 @@
       <xs:element minOccurs="0" name="errorstatus" type="xs:boolean" />
       <xs:element minOccurs="0" name="futureitems" type="xs:boolean" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
       <xs:element minOccurs="0" name="orderstatus" nillable="true" type="xs:string" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q2:OrderSource" />
       <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
@@ -55,4 +56,10 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="OrderHistoryHeader" nillable="true" type="tns:OrderHistoryHeader" />
+  <xs:complexType name="ArrayOfOrderHistoryHeader">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHistoryHeader" nillable="true" type="tns:OrderHistoryHeader" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderHistoryHeader" nillable="true" type="tns:ArrayOfOrderHistoryHeader" />
 </xs:schema>

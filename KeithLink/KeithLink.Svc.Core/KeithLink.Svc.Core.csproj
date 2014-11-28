@@ -150,9 +150,13 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
+    <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
+    <Compile Include="Interface\Configuration\IInternalExportSettingLogic.cs" />
+    <Compile Include="Interface\Configuration\IExportSettingRepository.cs" />
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
+    <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Messaging\IUserPushNotificationDeviceRepository.cs" />
@@ -166,6 +170,7 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
@@ -184,6 +189,10 @@
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
+    <Compile Include="Models\ModelExport\ExportModelConfiguration.cs" />
+    <Compile Include="Interface\ModelExport\IExportableModel.cs" />
+    <Compile Include="Models\ModelExport\ExportOptionsModel.cs" />
+    <Compile Include="Models\ModelExport\ExportRequestModel.cs" />
     <Compile Include="Models\OnlinePayments\Customer\AchRoleEmail.cs" />
     <Compile Include="Models\OnlinePayments\Customer\Branch.cs" />
     <Compile Include="Models\OnlinePayments\Customer\Customer.cs" />

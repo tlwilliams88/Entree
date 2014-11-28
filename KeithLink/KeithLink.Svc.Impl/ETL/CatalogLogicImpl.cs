@@ -27,6 +27,7 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -668,8 +669,10 @@ namespace KeithLink.Svc.Impl.ETL
             , KeithLink.Svc.Core.Models.Profile.Customer customerProfile
             )
         {
+
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Contract);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, ListType.Contract);
+
 
             if (lists.Count == 0 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
             {
@@ -679,9 +682,9 @@ namespace KeithLink.Svc.Impl.ETL
                     , CreateUserList(
                         customerProfile.ContractId
                         , GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId)
-                        , Core.Models.EF.ListType.Contract
+                        , ListType.Contract
                         , true)
-                    , Core.Models.EF.ListType.Contract);
+                    , ListType.Contract);
                 return;
             }
 
@@ -699,13 +702,13 @@ namespace KeithLink.Svc.Impl.ETL
                     
                     if (newItems.Count > 0)
                     {
-                        long addedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, Core.Models.EF.ListType.ContractItemsAdded);
+                        long addedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsAdded);
                         listLogic.AddItems(userProfile, userSelectedContext, addedItemsListId, newItems);
                     }
                     
                     if (deletedItems.Count > 0)
                     {
-                        long deletedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, Core.Models.EF.ListType.ContractItemsDeleted);
+                        long deletedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsDeleted);
                         listLogic.AddItems(userProfile, userSelectedContext, deletedItemsListId, deletedItems);
                     }
 
@@ -727,7 +730,7 @@ namespace KeithLink.Svc.Impl.ETL
             , KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
         {
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, Core.Models.EF.ListType.Worksheet);
+            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, ListType.Worksheet);
 
             if (lists.Count == 0)
             {
@@ -737,9 +740,9 @@ namespace KeithLink.Svc.Impl.ETL
                     , CreateUserList(
                         String.Empty
                         , GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId)
-                        , Core.Models.EF.ListType.Worksheet
+                        , ListType.Worksheet
                         , true)
-                    , Core.Models.EF.ListType.Worksheet);
+                    , ListType.Worksheet);
             }
 
             if (lists.Count == 1)
@@ -765,7 +768,7 @@ namespace KeithLink.Svc.Impl.ETL
             return userSelectedContext;
         }
 
-        private ListModel CreateUserList(string name, List<ListItemModel> items, Core.Models.EF.ListType listType, bool readOnly)
+        private ListModel CreateUserList(string name, List<ListItemModel> items, ListType listType, bool readOnly)
         {
             ListModel list = new ListModel();
             list.Name = GetListName(name, listType);
@@ -774,22 +777,22 @@ namespace KeithLink.Svc.Impl.ETL
             return list;
         }
 
-        private string GetListName(string name, Core.Models.EF.ListType listType)
+        private string GetListName(string name, ListType listType)
         {
             string listName = name;
 
             switch (listType)
             {
-                case Core.Models.EF.ListType.Contract:
+                case ListType.Contract:
                     listName = "Contract - " + listName;
                     break;
-                case Core.Models.EF.ListType.Worksheet:
+                case ListType.Worksheet:
                     listName = "History";
                     break;
-                case Core.Models.EF.ListType.ContractItemsAdded:
+                case ListType.ContractItemsAdded:
                     listName = "Contract Items Added";
                     break;
-                case Core.Models.EF.ListType.ContractItemsDeleted:
+                case ListType.ContractItemsDeleted:
                     listName = "Contract Items Deleted";
                     break;
             }
@@ -877,7 +880,7 @@ namespace KeithLink.Svc.Impl.ETL
         private long GetContractItemChangesListId(
              KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
             , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
-            , Core.Models.EF.ListType listType)
+            , ListType listType)
         {
             long listId = -1;
             List<ListModel> addedItemsList = listLogic.ReadListByType(userProfile, userSelectedContext, listType);

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ConfigurationService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.ModelExport" />
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/ConfigurationService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IConfigurationService_ReadCustomExportOptions_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadCustomExportOptions" />
+  </wsdl:message>
+  <wsdl:message name="IConfigurationService_ReadCustomExportOptions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadCustomExportOptionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IConfigurationService_SaveUserExportSettings_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveUserExportSettings" />
+  </wsdl:message>
+  <wsdl:message name="IConfigurationService_SaveUserExportSettings_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveUserExportSettingsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IConfigurationService">
+    <wsdl:operation name="ReadCustomExportOptions">
+      <wsdl:input wsaw:Action="http://tempuri.org/IConfigurationService/ReadCustomExportOptions" message="tns:IConfigurationService_ReadCustomExportOptions_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IConfigurationService/ReadCustomExportOptionsResponse" message="tns:IConfigurationService_ReadCustomExportOptions_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveUserExportSettings">
+      <wsdl:input wsaw:Action="http://tempuri.org/IConfigurationService/SaveUserExportSettings" message="tns:IConfigurationService_SaveUserExportSettings_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IConfigurationService/SaveUserExportSettingsResponse" message="tns:IConfigurationService_SaveUserExportSettings_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IConfigurationService" type="tns:IConfigurationService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReadCustomExportOptions">
+      <soap:operation soapAction="http://tempuri.org/IConfigurationService/ReadCustomExportOptions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SaveUserExportSettings">
+      <soap:operation soapAction="http://tempuri.org/IConfigurationService/SaveUserExportSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ConfigurationService">
+    <wsdl:port name="BasicHttpBinding_IConfigurationService" binding="tns:BasicHttpBinding_IConfigurationService">
+      <soap:address location="http://localhost:1317/ConfigurationService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

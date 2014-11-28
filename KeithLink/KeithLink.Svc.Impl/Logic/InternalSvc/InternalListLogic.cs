@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -233,12 +234,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.BrandExtendedDescription;
+					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
                     listItem.TempZone = prod.TempZone;
+					listItem.ItemClass = prod.ItemClass;
+					listItem.CategoryId = prod.CategoryId;
+					listItem.CategoryName = prod.CategoryName;
+					listItem.UPC = prod.UPC;
+					listItem.VendorItemNumber = prod.VendorItemNumber;
 
 				}
 				if (price != null)
@@ -307,7 +314,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
 
 			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
 			if (cachedList != null)
@@ -419,7 +426,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
-                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.ListType.Cart).Where(b => b.Active.Equals(true));
+                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
 
                 var processedList = new List<ListModel>();
                 //Lookup product details for each item

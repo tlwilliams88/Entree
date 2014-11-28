@@ -13,6 +13,10 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.WebApi.Models;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Helpers;
+using System.IO;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -21,11 +25,16 @@ namespace KeithLink.Svc.WebApi.Controllers
     {
         #region attributes
         KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic _catalogLogic;
+		private readonly IExportSettingServiceRepository _exportSettingRepository;
+       
         #endregion
 
         #region ctor
-        public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic) : base(profileLogic) {
+		public CatalogController(ICatalogLogic catalogLogic, IUserProfileLogic profileLogic, IExportSettingServiceRepository exportSettingRepository)
+			: base(profileLogic)
+		{
             _catalogLogic = catalogLogic;
+			this._exportSettingRepository = exportSettingRepository;
         }
         #endregion
 
@@ -88,7 +97,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }
-
+				
 		[HttpGet]
 		[AllowAnonymous]
 		[ApiKeyedRoute("catalog/divisions")]
@@ -96,6 +105,53 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _catalogLogic.GetDivisions();
 		}
+
+		#region Exports
+
+		[HttpGet]
+		[ApiKeyedRoute("catalog/export")]
+		public ExportOptionsModel ExportProducts()
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, 0);
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("catalog/export/{searchTerms}/products")]
+		public HttpResponseMessage ProductSearchExport(string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
+		{
+			searchModel.Size = 500;
+
+			ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<Product>(prods.Products, exportRequest);	
+
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("catalog/export/category/{categoryId}/products")]
+		public HttpResponseMessage GetProductsByCategoryIdExport(string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
+		{
+			searchModel.Size = 500;
+
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<Product>(prods.Products, exportRequest);	
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("catalog/export/brands/house/{brandControlLabel}")]
+		public HttpResponseMessage GetProductsByHouseBrandExport(string brandControlLabel, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
+		{
+			searchModel.Size = 500;
+			ProductsReturn prods = _catalogLogic.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<Product>(prods.Products, exportRequest);	
+		}	
+
+		#endregion
 
         #endregion
     }

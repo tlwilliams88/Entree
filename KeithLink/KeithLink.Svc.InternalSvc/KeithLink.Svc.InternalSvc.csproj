@@ -142,6 +142,7 @@
   <ItemGroup>
     <Content Include="ContentManagementService.svc" />
     <Content Include="DivisionService.svc" />
+    <Content Include="ConfigurationService.svc" />
     <Content Include="MessagingService.svc" />
     <Content Include="InvoiceService.svc" />
     <Content Include="ListServcie.svc" />
@@ -163,6 +164,10 @@
     <Compile Include="DivisionService.svc.cs">
       <DependentUpon>DivisionService.svc</DependentUpon>
     </Compile>
+    <Compile Include="ConfigurationService.svc.cs">
+      <DependentUpon>ConfigurationService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IConfigurationService.cs" />
     <Compile Include="Interfaces\IContentManagementService.cs" />
     <Compile Include="Interfaces\IDivisionService.cs" />
     <Compile Include="Interfaces\IOnlinePaymentService.cs" />

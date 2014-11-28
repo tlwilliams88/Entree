@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'List',
-    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'ExportService', 'List',
+    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, ExportService, List) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -19,21 +19,21 @@ angular.module('bekApp')
 
       /*
       VALID PERMISSIONS
-      canEditList -- save changes, cancel changes
-      specialDisplay -- in a list of lists this will be hidden (context menu, multi select menu on list page)
-      canReorderItems
+      canEditList             -- save changes, cancel changes
+      specialDisplay          -- in a list of lists this will be hidden (context menu, multi select menu on list page)
+      canReorderItems         -- can use the drag to rearrage or reorder list items
       canDeleteList
       ??canCreateList
-      canDeleteItems
-      canAddItems
-      canRenameList
-      canSeeLabels
-      canEditLabels
-      canSeeParlevel
-      canEditParlevel
-      alternativeParHeader
-      alternativeFieldName
-      alternativeFieldHeader
+      canDeleteItems          -- can remove items from list
+      canAddItems             -- can add items via drag/drop and context menu
+      canRenameList           -- 
+      canSeeLabels            -- show label column
+      canEditLabels           -- read only label
+      canSeeParlevel          -- show parlevel column
+      canEditParlevel         -- read only parlevel
+      alternativeParHeader    -- different label for parlevel field (ex. Required Qty for Mandatory list)
+      alternativeFieldName    -- an additional JSON field that is only used for certain types of lists (ex. category for contract list)
+      alternativeFieldHeader  -- header display text for the additinal field
       canShareList
       canCopyList
       */
@@ -51,7 +51,6 @@ angular.module('bekApp')
 
         // CONTRACT
         } else if (list.is_contract_list) {
-          permissions.canSeeLabels = true;
           permissions.alternativeFieldName = 'category';
           permissions.alternativeFieldHeader = 'Category';
 
@@ -155,6 +154,20 @@ angular.module('bekApp')
 
         findListById: function(listId) {
           return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
+        },
+
+        /********************
+        EXPORT
+        ********************/
+
+        getExportConfig: function(listId) {
+          return List.exportConfig({
+            listId: listId
+          }).$promise;
+        },
+
+        exportList: function(config, listId) {
+          ExportService.export('/list/export/' + listId, config);
         },
 
         /********************

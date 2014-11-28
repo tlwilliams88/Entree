@@ -28,5 +28,6 @@ angular.module('bekApp')
       BRANCH_MANAGER: 'branchismanager'
     },
 
-    infiniteScrollPageSize: 50
+    infiniteScrollPageSize: 50,
+    promoItemsSize: 6
   });
