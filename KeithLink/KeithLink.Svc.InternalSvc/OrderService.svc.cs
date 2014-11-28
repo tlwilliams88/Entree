@@ -39,5 +39,10 @@ namespace KeithLink.Svc.InternalSvc
         public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
             return orderLogic.GetLastFiveOrderHistory( catalogInfo, itemNumber );
         }
-	}
+
+        public List<OrderHistoryHeader> GetCustomerOrderHistories(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+        {
+            return orderLogic.GetCustomerOrderHistories(catalogInfo);
+        }
+    }
 }

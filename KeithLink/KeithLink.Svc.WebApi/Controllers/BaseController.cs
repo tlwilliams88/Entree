@@ -14,6 +14,13 @@ using System.Security.Claims;
 using System.Security.Principal;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.ModelExport;
+using KeithLink.Svc.Impl.Helpers;
+using System.IO;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Export;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -98,6 +105,32 @@ namespace KeithLink.Svc.WebApi.Controllers
                 throw new HttpResponseException(new HttpResponseMessage(HttpStatusCode.BadRequest) { Content = new StringContent("An unhandled exception has occured") });
             }
         }
+
+		public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest) where T : class, IExportableModel
+		{
+			var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
+                
+			MemoryStream stream;
+			if (exportRequest.Fields == null)
+				stream = exportLogic.Export(model, exportRequest.SelectedType);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
+			else
+			{
+				stream = exportLogic.Export(model,exportRequest.Fields,  exportRequest.SelectedType); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
+			}
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			
+			if(exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			else if(exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
+			else
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+
+			return result;
+		}
+
         #endregion
 
         #region properties

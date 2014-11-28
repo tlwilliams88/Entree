@@ -25,9 +25,9 @@ angular.module('bekApp')
           scope.allowDropdown = true;
         }
 
-        // if (!scope.value) {
-        //   scope.value = 0;
-        // }
+        if (!scope.value) {
+          scope.value = 0;
+        }
         
         var min = angular.isUndefined(attributes.min) ? null : parseInt(attributes.min);
         var max = angular.isUndefined(attributes.max) ? null : parseInt(attributes.max);
@@ -44,7 +44,7 @@ angular.module('bekApp')
           ctrl.$setViewValue(val);
 
           disableButtons(val);
-          scope.counter.isopen = false;
+          // scope.counter.isopen = false;
         };
 
         scope.newValue = setValue;

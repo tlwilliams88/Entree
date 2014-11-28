@@ -122,8 +122,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			searchModel.Size = 500;
 
 			ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<Product>(prods.Products, exportRequest);	
 
-			return GenerateExportResponse(exportRequest, prods);
 		}
 
 		[HttpPost]
@@ -133,7 +135,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 			searchModel.Size = 500;
 
 			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
-			return GenerateExportResponse(exportRequest, prods);
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<Product>(prods.Products, exportRequest);	
 		}
 
 		[HttpPost]
@@ -142,25 +146,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			searchModel.Size = 500;
 			ProductsReturn prods = _catalogLogic.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
-			return GenerateExportResponse(exportRequest, prods);
-		}
-
-		private HttpResponseMessage GenerateExportResponse(ExportRequestModel exportRequest, ProductsReturn prods)
-		{
-			MemoryStream stream;
-
-			if (exportRequest.Fields == null)
-				stream = new ModelExporter<Product>(prods.Products).Export(exportRequest.SelectedType);
-			else
-			{
-				stream = new ModelExporter<Product>(prods.Products, exportRequest.Fields).Export(exportRequest.SelectedType);
+			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-			}
-			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-			result.Content = new StreamContent(stream);
-			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-			return result;
-		}
+			return ExportModel<Product>(prods.Products, exportRequest);	
+		}	
 
 		#endregion
 

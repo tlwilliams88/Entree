@@ -1,4 +1,5 @@
-﻿using System;
+﻿#region Using
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -37,6 +38,9 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Export;
+using KeithLink.Svc.Impl.Logic.Export;
+#endregion
 
 namespace KeithLink.Svc.WebApi
 {
@@ -60,7 +64,6 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<PriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
-            //builder.RegisterType<ListLogicImpl>().As<IListLogic>();
 			builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 			builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
@@ -73,9 +76,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-			//builder.RegisterType<ItemNoteLogicImpl>().As<IItemNoteLogic>();
             builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
-			//builder.RegisterType<RecentlyViewedListLogicImpl>().As<IRecentlyViewedListLogic>();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
@@ -113,6 +114,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<com.benekeith.ContentManagementService.ContentManagementServiceClient>().As<com.benekeith.ContentManagementService.IContentManagementService>();
 
 			builder.RegisterType<com.benekeith.ConfigurationService.ConfigurationServiceClient>().As<com.benekeith.ConfigurationService.IConfigurationService>();
+
+			builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
 
             // Build the container.
             var container = builder.Build();
