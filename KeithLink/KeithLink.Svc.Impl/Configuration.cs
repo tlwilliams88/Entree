@@ -22,6 +22,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
         private const string KEY_AD_EXTERNAL_SERVERNAME = "ADExtServer";
         private const string KEY_AD_EXTERNAL_USER = "ADExtUser";
+        private const string KEY_AD_GUEST_CONTAINER = "ADGuestOU";
         private const string KEY_AD_INTERNAL_DOMAIN = "ADIntDomain";
         private const string KEY_AD_INTERNAL_PASSWORD = "ADIntPass";
         private const string KEY_AD_INTERNAL_ROOTNODE = "ADIntRoot";
@@ -168,6 +169,10 @@ namespace KeithLink.Svc.Impl
             {
                 return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
             }
+        }
+
+        public static string ActiveDirectoryGuestContainer {
+            get { return GetValue(KEY_AD_GUEST_CONTAINER, string.Empty); }
         }
 
         public static string ActiveDirectoryInternalDomain
