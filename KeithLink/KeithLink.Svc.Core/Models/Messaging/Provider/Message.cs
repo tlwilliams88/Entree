@@ -12,7 +12,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.Provider
         public string MessageSubject { get; set; }
         public string CustomerNumber { get; set; }
         public string CustomerName { get; set; }
-        public Guid UserId { get; set; }
         public Svc.Core.Enumerations.Messaging.NotificationType NotificationType { get; set; }
     }
 }

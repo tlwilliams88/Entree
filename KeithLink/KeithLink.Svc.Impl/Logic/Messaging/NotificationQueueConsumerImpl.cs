@@ -21,13 +21,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private readonly IGenericQueueRepository genericQueueRepository;
         private readonly IEventLogRepository eventLogRepository;
+        Func<NotificationType, INotificationHandler> notificationHandlerFactory;
+        // handlers
         #endregion
 
         #region constructor
-        public NotificationQueueConsumerImpl(IEventLogRepository eventLogRepository, IGenericQueueRepository genericQueueRepository)
+        public NotificationQueueConsumerImpl(IEventLogRepository eventLogRepository, IGenericQueueRepository genericQueueRepository,
+            Func<NotificationType, INotificationHandler> notificationHandlerFactory)
         {
             this.eventLogRepository = eventLogRepository;
             this.genericQueueRepository = genericQueueRepository;
+            this.notificationHandlerFactory = notificationHandlerFactory;
         }
         #endregion
         public void ListenForNotificationMessagesOnQueue()
@@ -46,7 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     if (msg != null)
                     {
                         BaseNotification notification = NotificationExtension.Deserialize(msg);
-                        INotificationHandler handler = GetHandler(notification);
+                        var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
                         handler.ProcessNotification(notification);
                     }
                 }
@@ -55,11 +59,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
                 }
             }
-        }
-
-        public INotificationHandler GetHandler(BaseNotification notification)
-        {
-            throw new NotImplementedException();
         }
 
         public string ConsumeMessageFromQueue()

@@ -8,8 +8,8 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 
 namespace KeithLink.Svc.Core.Interface.Messaging
 {
-    public interface IMessageProvider
+    public interface IPushNotificationMessageProvider : IMessageProvider
     {
-        void SendMessage(IEnumerable<Recipient> recipients, Message message);
+        string RegisterRecipient(UserPushNotificationDevice userPushNotificationDevice);
     }
 }

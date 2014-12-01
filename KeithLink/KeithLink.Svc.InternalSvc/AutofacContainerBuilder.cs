@@ -1,5 +1,6 @@
 ﻿#region Using
 using Autofac;
+using Autofac.Features.Indexed;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
@@ -135,6 +136,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             builder.RegisterType<NotificationQueueConsumerImpl>().As<INotificationQueueConsumer>();
+            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
 
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
@@ -144,7 +146,33 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
             builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+            
+            // keyed types - notification handlers
+            builder.RegisterType<OrderConfirmationNotificationHandlerImpl>()
+                .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.OrderConfirmation);
+            builder.RegisterType<InvoiceNotificationHandlerImpl>()
+                .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.InvoiceAttention);
+            builder.Register<Func<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>(
+                c => {
+                    var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>();
+                    return request => handlers[request];  
+                });
 
+            // keyed types - message providers
+            builder.RegisterType<WebMessageProvider>()
+                .Keyed<IMessageProvider>(Svc.Core.Enumerations.Messaging.Channel.Web);
+            builder.RegisterType<EmailMessageProvider>()
+                .Keyed<IMessageProvider>(Svc.Core.Enumerations.Messaging.Channel.Email);
+            builder.RegisterType<AmazonPushNotificationMessageProvider>()
+                .Keyed<IMessageProvider>(Svc.Core.Enumerations.Messaging.Channel.MobilePush);
+            builder.Register<Func<Svc.Core.Enumerations.Messaging.Channel, IMessageProvider>>(
+                c =>
+                {
+                    var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.Channel, IMessageProvider>>();
+                    return request => handlers[request];
+                });
+
+            // no implementation (will throw notimplementedexception if called)
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();

@@ -26,15 +26,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IUserMessageRepository userMessageRepository;
         private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private readonly IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
+        private readonly IPushNotificationMessageProvider pushNotificationMessageProvider;
         private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
 
         public InternalMessagingLogic(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
-            Common.Core.Logging.IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository)
+            Common.Core.Logging.IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository,
+            IPushNotificationMessageProvider pushNotificationMessageProvider)
         {
             this.unitOfWork = unitOfWork;
             this.userMessageRepository = userMessageRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
+            this.pushNotificationMessageProvider = pushNotificationMessageProvider;
             this.eventLogRepository = eventLogRepository;
         }
 
@@ -244,6 +247,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
 
             userPushNotificationDevice.ProviderToken = deviceRegistrationModel.ProviderToken;
+            userPushNotificationDevice.ProviderEndpointId =
+                pushNotificationMessageProvider.RegisterRecipient(userPushNotificationDevice);
 
             userPushNotificationDeviceRepository.CreateOrUpdate(userPushNotificationDevice);
             unitOfWork.SaveChanges();

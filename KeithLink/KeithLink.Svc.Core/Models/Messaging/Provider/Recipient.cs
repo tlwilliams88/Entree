@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.Provider
         public Guid UserId { get; set; }
         public string CustomerNumber { get; set; }
         public DeviceOS? DeviceOS { get; set; }
+        public Channel Channel { get; set; }
     }
 }

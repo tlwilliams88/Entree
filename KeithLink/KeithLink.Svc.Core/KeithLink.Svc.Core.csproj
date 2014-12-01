@@ -159,6 +159,7 @@
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
+    <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
     <Compile Include="Interface\Messaging\IMessageProvider.cs" />
     <Compile Include="Interface\Messaging\INotificationHandler.cs" />
     <Compile Include="Interface\Messaging\INotificationQueueConsumer.cs" />
