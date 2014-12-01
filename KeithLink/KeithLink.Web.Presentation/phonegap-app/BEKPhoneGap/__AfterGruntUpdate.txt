@@ -1,6 +1,7 @@
 ----------------------------app.js--------------------------------
 
-add PhonegapServices to .run
+add PhonegapServices and PhonegapPushService to .run
+add PhonegapPushService.register(); under toState.name === 'register' line 495
 
 -----------------------------index.html-------------------------------
 
@@ -14,7 +15,9 @@ Add these below lib scripts:
     <script>
         angular.element(document).ready(function() {
             app.initialize();
-            angular.bootstrap(document, ['bekApp']);
+            document.addEventListener('deviceready', function onDeviceReady() {
+                angular.bootstrap(document, ['bekApp']);
+            }, false);
         });
     </script>
 
@@ -29,6 +32,13 @@ add these Below resources:
 
 replace line 5 with:
 .constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'qauser@qa.com',password:'Ab21345'})
+
+
+--------------------------RegisterController.js-------------------------
+
+add PhonegapPushService to .controller
+add PhonegapPushService.register(); under AuthenticationService.login line 27
+
 
 -------------------------TERMINAL-----------------------------------
 

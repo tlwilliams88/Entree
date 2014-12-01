@@ -14,6 +14,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
     {
         public UserMessagingPreferenceRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
 
-
+        public IEnumerable<UserMessagingPreference> ReadByUserIdsAndNotificationType(IEnumerable<Guid> ids, NotificationType notificationType)
+        {
+            var ret = this.Entities.Where(u => ids.Contains(u.UserId) && u.NotificationType == notificationType);
+            return ret;
+        }
     }
 }

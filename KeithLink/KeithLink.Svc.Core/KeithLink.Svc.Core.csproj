@@ -159,6 +159,10 @@
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
+    <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
+    <Compile Include="Interface\Messaging\IMessageProvider.cs" />
+    <Compile Include="Interface\Messaging\INotificationHandler.cs" />
+    <Compile Include="Interface\Messaging\INotificationQueueConsumer.cs" />
     <Compile Include="Interface\Messaging\IUserPushNotificationDeviceRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
@@ -295,7 +299,6 @@
     <Compile Include="Models\Configuration\EF\MessageTemplate.cs" />
     <Compile Include="Models\Configuration\MessageTemplateModel.cs" />
     <Compile Include="Models\Messaging\EF\UserMessagingPreference.cs" />
-    <Compile Include="Models\Messaging\Provider\Channel.cs" />
     <Compile Include="Models\Messaging\Provider\Message.cs" />
     <Compile Include="Models\Messaging\Provider\Recipient.cs" />
     <Compile Include="Models\Messaging\Queue\BaseNotification.cs" />

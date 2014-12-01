@@ -243,15 +243,10 @@
             <input 
               type="text" 
               class="input-number text-right" 
-              fcsa-number="{ 
-                'maxDecimals': 1, 
-                'preventInvalidInput': true, 
-                'min': 0 }" 
+              allow-one-positive-decimal
               ng-model="item.onhand" 
               name="onhand" 
-              update-quantity-from-parlevel 
-              parlevel="item.parlevel" 
-              quantity="item.quantity">
+              ng-change="updateQuantity(item)">
           </ng-form>
         </td>
         <td class="input-col nowrap">
@@ -320,9 +315,7 @@
                     class="input-number text-right" 
                     allow-one-positive-decimal 
                     ng-model="item.onhand_mobile" 
-                    update-quantity-from-parlevel 
-                    parlevel="item.parlevel" 
-                    quantity="item.quantity">
+                    ng-change="updateQuantity(item)">
                 </ng-form>
               </td>
             </tr>

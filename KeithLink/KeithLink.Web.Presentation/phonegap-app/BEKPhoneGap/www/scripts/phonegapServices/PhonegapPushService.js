@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-    .factory('PhonegapPushService', ['$window',
-        function($window){
+    .factory('PhonegapPushService', ['$window', '$http', '$q',
+        function($window, $http, $q){
             var Service = {};
-            console.log('SERVICE CREATED');
             Service.register = function () {
                 console.log('register call');
                 if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
@@ -15,20 +14,6 @@ angular.module('bekApp')
                     {
                         "senderID":"replace_with_sender_id",
                         "ecb":"onNotification"
-                    });
-                } else if ( device.platform == 'blackberry10'){
-                    console.log('blackberry register');
-                    window.plugins.pushNotification.register(
-                    successHandler,
-                    errorHandler,
-                    {
-                        invokeTargetId : "replace_with_invoke_target_id",
-                        appId: "replace_with_app_id",
-                        ppgUrl:"replace_with_ppg_url", //remove for BES pushes
-                        ecb: "pushNotificationHandler",
-                        simChangeCallback: replace_with_simChange_callback,
-                        pushTransportReadyCallback: replace_with_pushTransportReady_callback,
-                        launchApplicationOnPush: true
                     });
                 } else {
                     console.log('iOS register');
@@ -44,9 +29,44 @@ angular.module('bekApp')
                 }
             };
 
+            var sendTo = function (token) {
+                console.log('sendTo call');
+                var deferred = $q.defer();
+
+                var object = {};
+
+                if(device.platform === 'iOS'){
+                    object.deviceos = 1;
+                }
+                if(device.platform === 'Android'){
+                    object.deviceos = 2;
+                }
+
+                object.deviceid = device.uuid;
+                object.providertoken = token;
+                console.log(object);
+                $http.put('/messaging/registerpushdevice', object).then(function(response) {
+                    console.log('got response:' + response);
+                  var data = response.data;
+                  if (data.successResponse) {
+                      console.log('successful response from api');
+                    deferred.resolve(data.successResponse);
+                  } else {
+                      console.log('error response from api');
+                    deferred.reject(data.errorMessage);
+                  }
+                });
+                return deferred.promise;
+            };
+
             //iOS token handler callback
             $window.tokenHandler = function(success) {
-                console.log('tokenHandler: ' + success);
+                console.log('tokenhandler');
+                sendTo(success).then(function (success) {
+                    console.log('successful push to api');
+                }, function (error) {
+                    console.log('error pushing to api: ' + error);
+                });
             };
 
             //Android/Windows/FireOS callback

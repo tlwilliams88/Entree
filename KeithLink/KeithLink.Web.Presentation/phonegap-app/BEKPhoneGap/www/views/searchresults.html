@@ -3,172 +3,182 @@
 		Product Catalog
 	</div>
 	<div header-buttons>
-		<button class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-		<button class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+		<button class="btn btn-icon btn-default" title="Print"><span class="icon-printer"></span></button>
+		<button class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></button>
 	</div>
 </div>
-<div class="row page-subheader-bar">
+
+<!-- Desktop subheader bar -->
+<div class="row page-subheader-bar hidden-xs hidden-sm">
 	<div class="col-md-12 page-subheader-bar__container">
-		<div class="page-subheader-bar__message hidden-xs hidden-sm">
-			<div ng-repeat="bc in breadcrumbs"><a ng-click="breadcrumbClickEvent(bc.type,bc.id)">{{bc.name}} </a> <span>>></span></div>
+		<div class="page-subheader-bar__message">
+			<div ng-repeat="bc in breadcrumbs"><a ng-click="bc.click(bc.clickData)">{{bc.displayText}} </a> <span>>></span></div>
 		</div>
-		<div class="page-subheader-bar__message hidden-lg hidden-md">
-			{{categoryName}}{{searchTerm}}
-		</div>
-		<div ng-click="hidden = ! hidden" class="hidden-lg hidden-md page-subheader-bar__filter">
-			Filter <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
-		</div>
-	</div>
+  </div>
 </div>
-<div class="row" ng-hide="hidden">
+
+<!-- Mobile subheader bar -->
+<div class="row page-subheader-bar hidden-md hidden-lg">
+  <div class="col-md-12 page-subheader-bar__container">
+		<div class="page-subheader-bar__message">
+			{{featuredBreadcrumb.displayText}}
+		</div>
+    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="btn-no-style page-subheader-bar__button button-right">
+      Filter <span ng-show="filterCount > 0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
+    </button>
+  </div>
+</div>
+
+<div class="row" ng-hide="hideMobileFilters">
 	<div class="col-xs-9 col-xs-offset-3 mobile-filter filters">
 		<div class="row">
-			<accordion close-others="oneAtATime">
-				<accordion-group is-open="status.openCategories">
+			
+      <accordion close-others="oneAtATime">
+				<accordion-group is-open="status.openCategories" ng-show="facets.categories.available.length > 0">
 					<accordion-heading>
 						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
 					</accordion-heading>
-					<div ng-repeat="category in categories" class="panel panel-default">
+					<div ng-repeat="category in facets.categories.available" class="panel panel-default">
 						<div class="panel-body">
-							<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
+							<a ng-click="toggleSelection(facets.categories.selected, category.name)" ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">{{category.categoryname}} ({{category.count}})</a>
 						</div>
 					</div>
 				</accordion-group>
-				<accordion-group is-open="status.openBrand">
+				<accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0">
 					<accordion-heading>
 						Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
 					</accordion-heading>
-					<div ng-repeat="brand in brands" class="panel panel-default">
+					<div ng-repeat="brand in facets.brands.available" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
 							value="brandValue_{{brand.name}}"
 							id="brandId_{{brand.name}}"
-							ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
-							ng-disabled="brand.name === houseBrand"
-							ng-click="toggleSelection(brand.name,'brand')">
+							ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
+							ng-disabled="brand.name === featuredBreadcrumb.displayText"
+							ng-click="toggleSelection(facets.brands.selected, brand.name)">
 							<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 						</div>
 					</div>
 				</accordion-group>
-				<accordion-group is-open="status.openDietary">
+				<accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
 					<accordion-heading>
 						Dietary<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
 					</accordion-heading>
-					<div ng-repeat="diet in dietary" class="panel panel-default">
+					<div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
 							value="dietValue_{{diet.name}}"
 							id="dietId_{{diet.name}}"
-							ng-checked="selectedDietary.indexOf(diet.name) > -1"
-							ng-click="toggleSelection(diet.name,'dietary')">
+							ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
+							ng-click="toggleSelection(facets.dietary.selected, diet.name)">
 							<label for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
 						</div>
 					</div>
 				</accordion-group>
-				<accordion-group is-open="status.openSpecs">
+				<accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
 					<accordion-heading>
 						Item Specifications<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
 					</accordion-heading>
-					<div ng-class="{hidenonstock: !hasNonstock}" class="panel panel-default">
-						<div class="panel-body">
-							<input type="checkbox"
-							value="nonstockValue_{{nonstock.name}}"
-							id="nonstockId_{{nonstock.name}}"
-							ng-checked="selectedNonstock.indexOf(nonstock.name) > -1"
-							ng-click="toggleSelection(nonstock.name,'nonstock')">
-							<label for="nonstockId_{{nonstock.name}}"><span class="{{nonstock.iconclass}}"></span> {{nonstock.displayname}} ({{nonstock.count}})</label>
-						</div>
-					</div>
-					<div ng-repeat="spec in itemspecs" class="panel panel-default">
+					<div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
 						<div class="panel-body">
 							<input type="checkbox"
 							value="specValue_{{spec.name}}"
 							id="specId_{{spec.name}}"
-							ng-checked="selectedSpecs.indexOf(spec.name) > -1"
-							ng-click="toggleSelection(spec.name,'spec')">
+							ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+							ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
 							<label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span> {{spec.displayname}} ({{spec.count}})</label>
 						</div>
 					</div>
 				</accordion-group>
 			</accordion>
+
 		</div>
 	</div>
 </div>
 <div class="row">
+
 	<!-- Filters -->
 	<div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
 		<div class="row">
 			<div class="col-sm-12">
-				<h3 ng-show="paramType !== 'category'">Categories</h3>
-				<h3 ng-show="paramType === 'category'">{{categoryName}}</h3>
-				<ul class="nav search-results__category" ng-show="categories">
-					<li ng-repeat="category in categories">
-						<a ng-click="toggleSelection(category, 'category')" ng-class="{active: category.name == selectedCategory.name}">{{category.categoryname}} ({{category.count}})</a>
+				<h3>{{paramType === 'category' ? featuredBreadcrumb.displayText : 'Categories'}}</h3>
+				<ul class="nav search-results__category" ng-show="facets.categories.available.length > 0">
+					<li ng-repeat="category in facets.categories.available">
+						<a 
+              ng-click="toggleSelection(facets.categories.selected, category.name)" 
+              ng-class="{active: facets.categories.selected.indexOf(category.name) > -1 || category.name === featuredBreadcrumb.displayText}">
+              {{category.categoryname}} ({{category.count}})
+            </a>
 					</li>
 				</ul>
 			</div>
 		</div>
-		<div class="row" ng-show="brands">
+		<div class="row" ng-show="facets.brands.available.length > 0">
 			<div class="col-sm-12">
-				<h3>Brand</h3>
-				<div ng-repeat="brand in brands" ng-class="{hidebrand: $index > brandHiddenNumber}">
-					<input type="checkbox"
-					value="brandValue_{{brand.name}}"
-					id="brandId_{{brand.name}}"
-					ng-checked="selectedBrands.indexOf(brand.name) > -1 || brand.name === houseBrand"
-					ng-disabled="brand.name === houseBrand"
-					ng-click="toggleSelection(brand.name,'brand')">
+				<h3>Brands</h3>
+				<div ng-repeat="brand in facets.brands.available | limitTo: facets.brands.showMore ? numberFacetsToShow : facets.brands.available.length">
+					<input 
+            type="checkbox"
+  					value="brandValue_{{brand.name}}"
+  					id="brandId_{{brand.name}}"
+  					ng-checked="facets.brands.selected.indexOf(brand.name) > -1 || brand.name === featuredBreadcrumb.displayText"
+  					ng-disabled="brand.name === featuredBreadcrumb.displayText"
+  					ng-click="toggleSelection(facets.brands.selected, brand.name)">
 					<label for="brandId_{{brand.name}}">{{brand.name}} ({{brand.count}})</label>
 				</div>
-				<div ng-class="{'hidebrand': brandCount <= constantHiddenNumber}">
-					<a ng-class="{'hidebrand': isBrandShowing}" ng-click="showBrand()">+ Show More</a>
-					<a ng-class="{'hidebrand': !isBrandShowing}" ng-click="hideBrand()">- Show Less</a>
+				<div>
+					<a 
+            ng-if="facets.brands.available.length > numberFacetsToShow" 
+            ng-click="facets.brands.showMore = !facets.brands.showMore">
+            {{facets.brands.showMore ? '+ Show More' : '- Show Less'}}
+          </a>
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-show="dietary">
+		<div class="row" ng-show="facets.dietary.available.length > 0">
 			<div class="col-sm-12">
 				<h3>Dietary</h3>
-				<div ng-repeat="diet in dietary" ng-class="{hidedietary: $index > dietaryHiddenNumber}">
-					<input type="checkbox"
-					value="dietValue_{{diet.name}}"
-					id="dietId_{{diet.name}}"
-					ng-checked="selectedDietary.indexOf(diet.name) > -1"
-					ng-click="toggleSelection(diet.name,'dietary')">
+				<div ng-repeat="diet in facets.dietary.available | limitTo: facets.brands.showMore ? numberFacetsToShow : facets.brands.available.length">
+					<input 
+            type="checkbox"
+  					value="dietValue_{{diet.name}}"
+  					id="dietId_{{diet.name}}"
+  					ng-checked="facets.dietary.selected.indexOf(diet.name) > -1"
+  					ng-click="toggleSelection(facets.dietary.selected, diet.name)">
 					<label class="text-capitalize" for="dietId_{{diet.name}}">{{diet.name}} ({{diet.count}})</label>
 				</div>
-				<div ng-class="{'hidedietary': dietaryCount <= constantHiddenNumber}">
-					<a ng-class="{'hidedietary': isDietaryShowing}" ng-click="showDietary()">+ Show More</a>
-					<a ng-class="{'hidedietary': !isDietaryShowing}" ng-click="hideDietary()">- Show Less</a>
+				<div>
+					<a 
+            ng-if="facets.dietary.available.length > numberFacetsToShow" 
+            ng-click="facets.dietary.showMore = !facets.dietary.showMore">
+            {{facets.dietary.showMore ? '+ Show More' : '- Show Less'}}
+          </a>
 				</div>
 			</div>
 		</div>
-		<div class="row" ng-show="itemspecs || hasNonstock">
+		<div class="row" ng-show="facets.itemspecs.available.length > 0">
 			<div class="col-sm-12">
 				<h3>Item Specifications</h3>
-				<div ng-class="{hidenonstock: !hasNonstock}">
-					<input type="checkbox"
-					value="nonstockValue_{{nonstock.name}}"
-					id="nonstockId_{{nonstock.name}}"
-					ng-checked="selectedNonstock.indexOf(nonstock.name) > -1"
-					ng-click="toggleSelection(nonstock.name,'nonstock')">
-					<label for="nonstockId_{{nonstock.name}}"><span class="{{nonstock.iconclass}}"></span> {{nonstock.displayname}} ({{nonstock.count}})</label>
-				</div>
-				<div ng-repeat="spec in itemspecs" ng-class="{hidespec: $index > specHiddenNumber}">
-					<input type="checkbox"
-					value="specValue_{{spec.name}}"
-					id="specId_{{spec.name}}"
-					ng-checked="selectedSpecs.indexOf(spec.name) > -1"
-					ng-click="toggleSelection(spec.name,'spec')">
+				<div ng-repeat="spec in facets.itemspecs.available | limitTo: facets.itemspecs.showMore ? numberFacetsToShow : facets.itemspecs.available.length">
+					<input 
+            type="checkbox"
+  					value="specValue_{{spec.name}}"
+  					id="specId_{{spec.name}}"
+  					ng-checked="facets.itemspecs.selected.indexOf(spec.name) > -1"
+  					ng-click="toggleSelection(facets.itemspecs.selected, spec.name)">
 					<label for="specId_{{spec.name}}"><span class="{{spec.iconclass}}"></span> {{spec.displayname}} ({{spec.count}})</label>
 				</div>
-				<div ng-class="{'hidespec': specCount <= constantHiddenNumber}">
-					<a ng-class="{'hidespec': isSpecShowing}" ng-click="showSpec()">+ Show More</a>
-					<a ng-class="{'hidespec': !isSpecShowing}" ng-click="hideSpec()">- Show Less</a>
-				</div>
+				<div>
+          <a 
+            ng-if="facets.itemspecs.available.length > numberFacetsToShow" 
+            ng-click="facets.itemspecs.showMore = !facets.itemspecs.showMore">
+            {{facets.itemspecs.showMore ? '+ Show More' : '- Show Less'}}
+          </a>
+        </div>
 			</div>
 		</div>
 	</div>
+
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
 		<div class="row">
@@ -196,9 +206,9 @@
             Pack/Size
           </th>
           <th class="hidden-sm hidden-xs"></th>
-          <th class="hidden-sm hidden-xs" ng-class="{'sort-col-header': totalItems < 201}" ng-click="sortTable('caseprice')">
+          <th class="hidden-sm hidden-xs" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
             Price
-            <span ng-show="totalItems < 201" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
+            <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th></th>
         </tr>
@@ -227,25 +237,41 @@
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span ng-if="canManageLists || canCreateOrders || canSubmitOrders" context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+            <span ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
 
             <a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>
         </tr>
         <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
           <td colspan="4">
-            <div>
-              <p>Pack / Size: {{item.pack | number}} / {{item.size}}</p>
-              <p>Brand: {{item.brand_extended_description}}</p>
-              <p class="large-icon" item-icons>
-              <p ng-if="item.caseprice !== '$0.00'">Price: {{item.caseprice}}</p>
-              </p>
-            </div>
+            <table>
+              <colgroup>
+                <col width="25%" />
+                <col width="75%" />
+              </colgroup>
+              <tbody>
+                <tr>
+                  <td>Pack/Size</td>
+                  <td>{{item.pack | number}} / {{item.size}}</td>
+                </tr>
+                <tr>
+                  <td>Brand</td>
+                  <td>{{item.brand_extended_description}}</td>
+                </tr>
+                <tr>
+                  <td colspan="2" item-icons></td>
+                </tr>
+                <tr ng-if="item.caseprice !== '$0.00'">
+                  <td>Price</td>
+                  <td>{{item.caseprice}}</td>
+                </tr>
+              </tbody>
+            </table>
           </td>
         </tr>
 			</tbody>
 			<tfoot>
-				<tr ng-show="products.length === 0">
+				<tr ng-show="products.length === 0 && !loadingResults">
 					<td colspan="8">No products found.</td>
 				</tr>
 			</tfoot>

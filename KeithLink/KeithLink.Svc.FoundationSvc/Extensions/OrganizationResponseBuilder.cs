@@ -25,7 +25,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
         public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
         {
             CommerceModelSearch search = ((CommerceServer.Foundation.CommerceModelSearch)(queryOperation.SearchCriteria));
-            if (search.Model.Properties.Count == 1 && search.Model.Properties[0].Key == "OrganizationType")
+            if (!String.IsNullOrEmpty(search.WhereClause))
             {
             }
             else

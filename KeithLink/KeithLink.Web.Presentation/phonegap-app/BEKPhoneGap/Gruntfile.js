@@ -9,6 +9,7 @@ module.exports = function(grunt) {
               'org.apache.cordova.device',
               'org.apache.cordova.dialogs',
               'org.apache.cordova.vibration',
+              'org.apache.cordova.statusbar',
               'org.apache.cordova.console'
           ],
           maxBuffer: 500,

@@ -8520,17 +8520,11 @@ ul.horizontal-slide .product-placeholder-image {
   font-weight: 600;
 }
 
-/* line 41, ../scss/pages/_search-results.scss */
-.hidebrand, .hideallergen, .hidedietary, .hidespec, .hidenonstock {
-  display: none;
-}
-
-/* line 45, ../scss/pages/_search-results.scss */
+/* line 42, ../scss/pages/_search-results.scss */
 .mobile-filter {
   position: absolute;
   z-index: 1;
   background-color: #fff;
-  margin-top: -25px;
 }
 /* line 52, ../scss/mixins/_arrows.scss */
 .mobile-filter:after, .mobile-filter:before {
@@ -8557,31 +8551,31 @@ ul.horizontal-slide .product-placeholder-image {
   right: 8px;
 }
 
-/* line 52, ../scss/pages/_search-results.scss */
+/* line 48, ../scss/pages/_search-results.scss */
 .mobile-filter:before {
   right: 29px;
   top: -23px;
 }
 
-/* line 56, ../scss/pages/_search-results.scss */
+/* line 52, ../scss/pages/_search-results.scss */
 .mobile-filter:after {
   right: 30px;
 }
 
-/* line 60, ../scss/pages/_search-results.scss */
+/* line 56, ../scss/pages/_search-results.scss */
 .panel-group {
   margin-bottom: 0;
 }
-/* line 62, ../scss/pages/_search-results.scss */
+/* line 58, ../scss/pages/_search-results.scss */
 .panel-group .panel + .panel {
   margin-top: 0;
 }
-/* line 65, ../scss/pages/_search-results.scss */
+/* line 61, ../scss/pages/_search-results.scss */
 .panel-group .panel {
   border-radius: 0;
   border-bottom: 0px;
 }
-/* line 68, ../scss/pages/_search-results.scss */
+/* line 64, ../scss/pages/_search-results.scss */
 .panel-group .panel .panel-heading {
   position: relative;
   height: 40px;
@@ -8590,7 +8584,7 @@ ul.horizontal-slide .product-placeholder-image {
   color: #fff;
   border-radius: 0;
 }
-/* line 75, ../scss/pages/_search-results.scss */
+/* line 71, ../scss/pages/_search-results.scss */
 .panel-group .panel .panel-heading a, .panel-group .panel .panel-heading .nav-tabs li.active a:hover, .nav-tabs li.active .panel-group .panel .panel-heading a:hover {
   position: absolute;
   width: 100%;
@@ -8598,36 +8592,36 @@ ul.horizontal-slide .product-placeholder-image {
   padding: 12px;
   font-size: 13px;
 }
-/* line 81, ../scss/pages/_search-results.scss */
+/* line 77, ../scss/pages/_search-results.scss */
 .panel-group .panel .panel-heading a:hover {
   color: inherit;
 }
-/* line 84, ../scss/pages/_search-results.scss */
+/* line 80, ../scss/pages/_search-results.scss */
 .panel-group .panel .panel-heading a.active {
   color: #489ecf;
   font-weight: 600;
 }
-/* line 88, ../scss/pages/_search-results.scss */
+/* line 84, ../scss/pages/_search-results.scss */
 .panel-group .panel .panel-heading a.active:hover {
   color: #489ecf !important;
 }
-/* line 94, ../scss/pages/_search-results.scss */
+/* line 90, ../scss/pages/_search-results.scss */
 .panel-group .panel-body {
   padding: 0;
 }
-/* line 96, ../scss/pages/_search-results.scss */
+/* line 92, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel {
   border-bottom: 0;
   border-left: 0;
   border-right: 0;
 }
-/* line 100, ../scss/pages/_search-results.scss */
+/* line 96, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body {
   padding: 0;
   position: relative;
   height: 40px;
 }
-/* line 104, ../scss/pages/_search-results.scss */
+/* line 100, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body a {
   position: absolute;
   width: 100%;
@@ -8636,20 +8630,20 @@ ul.horizontal-slide .product-placeholder-image {
   font-size: 13px;
   color: inherit;
 }
-/* line 111, ../scss/pages/_search-results.scss */
+/* line 107, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body a:hover {
   color: inherit;
 }
-/* line 114, ../scss/pages/_search-results.scss */
+/* line 110, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body a.active {
   color: #489ecf;
   font-weight: 600;
 }
-/* line 118, ../scss/pages/_search-results.scss */
+/* line 114, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body a.active:hover {
   color: #489ecf !important;
 }
-/* line 122, ../scss/pages/_search-results.scss */
+/* line 118, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body label {
   margin-bottom: 0;
   position: absolute;
@@ -8659,41 +8653,41 @@ ul.horizontal-slide .product-placeholder-image {
   font-size: 12px;
   font-weight: 400;
 }
-/* line 131, ../scss/pages/_search-results.scss */
+/* line 127, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body input[type="checkbox"] + label {
   background-position: right;
   background: url("../images/graycheckbox-clear.png") no-repeat 97% center;
   background-size: 24px;
 }
-/* line 136, ../scss/pages/_search-results.scss */
+/* line 132, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel .panel-body input[type="checkbox"]:checked + label {
   background-position: right;
   background: url("../images/graycheckbox-checked.png") no-repeat 97% center;
   background-size: 24px;
 }
-/* line 143, ../scss/pages/_search-results.scss */
+/* line 139, ../scss/pages/_search-results.scss */
 .panel-group .panel-body .panel:first-child {
   border-top: 0;
 }
 
-/* line 151, ../scss/pages/_search-results.scss */
+/* line 147, ../scss/pages/_search-results.scss */
 .sub-accordion > .panel-collapse > .panel-body {
   height: auto !important;
 }
-/* line 153, ../scss/pages/_search-results.scss */
+/* line 149, ../scss/pages/_search-results.scss */
 .sub-accordion > .panel-collapse > .panel-body label {
   padding: 11px 30px !important;
 }
-/* line 158, ../scss/pages/_search-results.scss */
+/* line 154, ../scss/pages/_search-results.scss */
 .sub-accordion .panel-heading a, .sub-accordion .panel-heading .nav-tabs li a:hover, .nav-tabs li .sub-accordion .panel-heading a:hover {
   padding: 0 !important;
   color: #504938;
 }
-/* line 161, ../scss/pages/_search-results.scss */
+/* line 157, ../scss/pages/_search-results.scss */
 .sub-accordion .panel-heading a .panel-body, .sub-accordion .panel-heading .nav-tabs li.active a:hover .panel-body, .nav-tabs li.active .sub-accordion .panel-heading a:hover .panel-body {
   background-color: #f3f1eb;
 }
-/* line 165, ../scss/pages/_search-results.scss */
+/* line 161, ../scss/pages/_search-results.scss */
 .sub-accordion .panel-heading a:hover, .sub-accordion .panel-heading .nav-tabs li.active a:hover, .nav-tabs li.active .sub-accordion .panel-heading a:hover {
   color: #504938 !important;
 }
@@ -9080,4 +9074,23 @@ ul.horizontal-slide .product-placeholder-image {
 /* line 6, ../scss/pages/_notifications.scss */
 .table tbody > tr.mandatory td:first-child {
   border-left: 3px solid #dc6a6a;
+}
+
+/* line 4, ../scss/pages/_export-modal.scss */
+.sortable-list-container .bek-sortable-list {
+  border: 1px dashed #c3bc9c;
+  list-style-type: none;
+  padding: 5px 10px;
+  max-height: 250px;
+  min-height: 250px;
+  overflow-y: auto;
+}
+/* line 15, ../scss/pages/_export-modal.scss */
+.sortable-list-container .bek-sortable-list > li {
+  border: 1px solid #c3bc9c;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: #f3f1eb;
+  margin-top: 5px;
+  cursor: pointer;
 }
