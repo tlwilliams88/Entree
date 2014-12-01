@@ -387,6 +387,27 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openExportModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/exportmodal.html',
+        controller: 'ExportModalController',
+        resolve: {
+          headerText: function () {
+            return 'List ' + $scope.selectedList.name;
+          },
+          exportMethod: function() {
+            return ListService.exportList;
+          },
+          exportConfig: function() {
+            return ListService.getExportConfig($scope.selectedList.listid);
+          },
+          exportParams: function() {
+            return $scope.selectedList.listid;
+          }
+        }
+      });
+    };
+
     $scope.openReplicateListModal = function (list) {
 
       var modalInstance = $modal.open({
