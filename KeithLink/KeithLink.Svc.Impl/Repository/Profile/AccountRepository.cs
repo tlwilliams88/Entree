@@ -68,10 +68,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public List<Account> GetAccounts()
         {
-            var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            createOrg.SearchCriteria.Model.OrganizationType = "1"; // org type of account
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0'"; // org type of account
 
-            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
             var accounts = new System.Collections.Concurrent.BlockingCollection<Account>();
             System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>

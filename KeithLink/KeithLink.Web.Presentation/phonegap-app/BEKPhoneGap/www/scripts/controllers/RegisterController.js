@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
-    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
+    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
 
     $scope.loginInfo = {
       username: ENV.username,
@@ -24,6 +24,7 @@ angular.module('bekApp')
       $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
+        PhonegapPushService.register();
         if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalUser() ) {
           $state.transitionTo('menu.home');  
         } else {

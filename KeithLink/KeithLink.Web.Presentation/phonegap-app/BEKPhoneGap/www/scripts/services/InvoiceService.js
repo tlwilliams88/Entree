@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('InvoiceService', ['Invoice', 
-    function (Invoice) {
+  .factory('InvoiceService', ['ExportService', 'Invoice', 
+    function (ExportService, Invoice) {
     
     var Service = {
       
@@ -30,6 +30,18 @@ angular.module('bekApp')
         });
 
         return Invoice.pay(payments).$promise;
+      },
+
+      /********************
+      EXPORT
+      ********************/
+
+      getExportConfig: function() {
+        return Invoice.exportConfig({}).$promise;
+      },
+
+      exportInvoice: function(config) {
+        ExportService.export('/invoice/export/', config);
       }
 
     };

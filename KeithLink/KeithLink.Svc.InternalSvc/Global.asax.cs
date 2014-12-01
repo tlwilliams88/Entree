@@ -26,7 +26,7 @@ namespace KeithLink.Svc.InternalSvc
         #region attributes
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
-        private Svc.Core.Interface.Messaging.IInternalMessagingLogic _messagingLogic;
+        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
         #endregion
 
         #region events
@@ -84,15 +84,15 @@ namespace KeithLink.Svc.InternalSvc
 
         private void InitializeNotificationsThread()
         {
-            _messagingLogic = ((IContainer)AutofacHostFactory.Container).Resolve<Svc.Core.Interface.Messaging.IInternalMessagingLogic>();
-            _messagingLogic.ListenForNotificationMessagesOnQueue();
+            _notificationQueueConsumer = ((IContainer)AutofacHostFactory.Container).Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
         }
 
         private void InitializeOrderUpdateThread() {
             //System.Diagnostics.Debugger.Launch();
 
-            _orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
+            //_orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
+            //_orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void TerminateConfirmationThread() {
@@ -107,8 +107,8 @@ namespace KeithLink.Svc.InternalSvc
 
         private void TerminateNotificationsThread()
         {
-            if (_messagingLogic != null)
-                _messagingLogic.Stop();
+            if (_notificationQueueConsumer != null)
+                _notificationQueueConsumer.Stop();
         }
 	}
 

@@ -158,19 +158,30 @@ namespace KeithLink.Svc.Impl.Logic.Export
 			int columnIndex = 0;
 			foreach (var config in exportConfig.OrderBy(e => e.Order))
 			{
-				var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-				if (property != null)
-				{
-					var description = property.GetCustomAttribute<DescriptionAttribute>();
-					string value = string.Empty;
-					if (description != null)
-						value = description.Description;
-					else
-						value = property.Name;
 
-					AppendTextCell(excelColumnNames[columnIndex] + "1", value.Trim(), headerRow);
-					columnIndex++;
+				var propertyName = config.Field.Split('.');
+
+				if (propertyName.Length == 1)
+				{
+
+					var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+					if (property != null)
+					{
+						AppendTextCell(excelColumnNames[columnIndex] + "1", GetPropertyDescription(property).Trim(), headerRow);
+						columnIndex++;
+					}
 				}
+				else
+				{
+					var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
+					var childProperties = childProp.PropertyType.GetProperties();
+					var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
+					if (subProperty != null)
+					{
+						AppendTextCell(excelColumnNames[columnIndex] + "1", GetPropertyDescription(subProperty).Trim(), headerRow);
+						columnIndex++;
+					}
+				}	
 
 			}
 
@@ -187,11 +198,28 @@ namespace KeithLink.Svc.Impl.Logic.Export
 					columnIndex = 0;
 					foreach (var config in exportConfig.OrderBy(e => e.Order))
 					{
-						var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-						if (property != null)
+						var propertyName = config.Field.Split('.');
+
+						if (propertyName.Length == 1)
 						{
-							AppendTextCell(excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(item, property).Trim(), newExcelRow);
+							var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+							if (property != null)
+							{
+								AppendTextCell(excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(item, property).Trim(), newExcelRow);								
+							}
 						}
+						else
+						{
+							var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
+							var childProperties = childProp.PropertyType.GetProperties();
+							var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
+							if (subProperty != null)
+							{
+								AppendTextCell(excelColumnNames[columnIndex] + rowIndex.ToString(), this.GetFieldValue(childProp.GetValue(item), subProperty).Trim(), newExcelRow);
+							}
+
+						}
+						
 						columnIndex++;
 					}
 				}
@@ -234,14 +262,31 @@ namespace KeithLink.Svc.Impl.Logic.Export
 		{
 			List<string> itemRecord = new List<string>();
 
-			var properties = item.GetType().GetProperties();
+			var properties = item.GetType().GetProperties(BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Instance);
 
 			foreach (var config in exportConfig.OrderBy(e => e.Order))
 			{
-				var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-				if (property != null)
+				//Base or Sub property?
+				var propertyName = config.Field.Split('.');
+
+				if (propertyName.Length == 1)
 				{
-					itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));
+					var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+					if (property != null)
+					{
+						itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(item, property).Trim()));
+					}
+				}
+				else
+				{
+					var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
+					var childProperties = childProp.PropertyType.GetProperties();
+					var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
+					if (subProperty != null)
+					{
+						itemRecord.Add(string.Format("\"{0}\"", this.GetFieldValue(childProp.GetValue(item), subProperty).Trim()));	
+					}
+            
 				}
 			}
 
@@ -257,6 +302,9 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
 			if (value.GetType().IsEnum)
 				return this.GetAttributeFieldValue(value.GetType(), value.ToString());
+
+			if (property.PropertyType == typeof(Boolean))
+				return value.ToString().Equals("False") ? "N" : "Y";
 
 			return value.ToString();
 		}
@@ -281,21 +329,38 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
 			foreach (var config in exportConfig.OrderBy(e => e.Order))
 			{
-				var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
-				if (property != null)
-				{
-					var description = property.GetCustomAttribute<DescriptionAttribute>();
-					string value = string.Empty;
-					if (description != null)
-						value = description.Description;
-					else
-						value = property.Name;
 
-					headerRecord.Add(string.Format("\"{0}\"", value.Trim()));
+				var propertyName = config.Field.Split('.');
+
+				if (propertyName.Length == 1)
+				{
+
+					var property = properties.Where(p => p.Name.Equals(config.Field, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+					if (property != null)
+						headerRecord.Add(string.Format("\"{0}\"", GetPropertyDescription(property).Trim()));					
+				}
+				else
+				{
+					var childProp = properties.Where(p => p.Name.Equals(propertyName[0])).FirstOrDefault();
+					var childProperties = childProp.PropertyType.GetProperties();
+					var subProperty = childProperties.Where(p => p.Name.Equals(propertyName[1])).FirstOrDefault();
+					if (subProperty != null)
+						headerRecord.Add(string.Format("\"{0}\"", GetPropertyDescription(subProperty).Trim()));
 				}
 			}
 
 			sb.AppendLine(string.Join(exportType.Equals("csv", StringComparison.CurrentCultureIgnoreCase) ? "," : "\t", headerRecord));
+		}
+
+		private static string GetPropertyDescription(PropertyInfo property)
+		{
+			var description = property.GetCustomAttribute<DescriptionAttribute>();
+			string value = string.Empty;
+			if (description != null)
+				value = description.Description;
+			else
+				value = property.Name;
+			return value;
 		}
 		#endregion
 	}

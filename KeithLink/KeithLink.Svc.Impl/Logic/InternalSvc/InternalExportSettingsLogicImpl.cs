@@ -90,8 +90,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return options;
 			}		
 
+			//Common product detail fields
 			options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Label = "Item" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Label = "Name" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Favorite", Label = "Favorite" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Label = "Pack/Size" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityInCart", Label = "# In Cart" });
@@ -101,6 +104,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			options.Fields.Add(new ExportModelConfiguration() { Field = "ItemClass", Label = "Class" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Label = "Vendor Item #" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "UPC", Label = "UPC" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Cases", Label = "Cases" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "CatchWeight", Label = "Catch Weight" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.CountryOfOrigin", Label = "Country Of Origin" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.GrossWeight", Label = "Gross Weight" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.HandlingInstructions", Label = "Handling Instruction" });
+			
 			
 			
 

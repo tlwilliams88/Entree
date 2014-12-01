@@ -15,6 +15,9 @@
     <preference name="fullscreen"       value="false" />
     <preference name="permissions"      value="none"/>
     <preference name="DisallowOverscroll" value="true" />
+    <preference name="StatusBarOverlaysWebView" value="false" />
+    <preference name="StatusBarBackgroundColor" value="#000000" />
+    <preference name="StatusBarStyle" value="lightcontent" />
 
     <access origin="*" />
 
