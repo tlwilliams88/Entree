@@ -231,6 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
+					listItem.Description = prod.Description;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.BrandExtendedDescription;
@@ -246,6 +247,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.CategoryName = prod.CategoryName;
 					listItem.UPC = prod.UPC;
 					listItem.VendorItemNumber = prod.VendorItemNumber;
+					listItem.Cases = prod.Cases;
+					listItem.Nutritional = new Nutritional()
+					{
+						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+						GrossWeight = prod.Nutritional.GrossWeight,
+						HandlingInstructions = prod.Nutritional.HandlingInstructions
+					};
 
 				}
 				if (price != null)

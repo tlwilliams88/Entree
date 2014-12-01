@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.Serialization;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
@@ -52,8 +53,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "brandowner")]
         public string BrandOwner { get; set; }
         [DataMember(Name = "countryoforigin")]
+		[Description("Country Of Origin")]
         public string CountryOfOrigin { get; set; }
         [DataMember(Name = "grossweight")]
+		[Description("Gross Weight")]
         public string GrossWeight { get; set; }
         [DataMember(Name = "handlinginstruction")]
         public string HandlingInstructions { get; set; }
