@@ -160,15 +160,36 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				if (prod != null)
 				{
 					item.Name = prod.Name;
+					item.Description = prod.Description;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
+					item.BrandExtendedDescription = prod.BrandExtendedDescription;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
 					item.ChildNutrition = prod.ChildNutrition;
                     item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
+					item.ItemClass = prod.ItemClass;
+					item.CategoryId = prod.CategoryId;
+					item.CategoryName = prod.CategoryName;
+					item.UPC = prod.UPC;
+					item.VendorItemNumber = prod.VendorItemNumber;
+					item.Cases = prod.Cases;
+					item.Kosher = prod.Kosher;
+					item.ManufacturerName = prod.ManufacturerName;
+					item.ManufacturerNumber = prod.ManufacturerNumber;
+					item.Nutritional = new Nutritional()
+					{
+						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+						GrossWeight = prod.Nutritional.GrossWeight,
+						HandlingInstructions = prod.Nutritional.HandlingInstructions,
+						Height = prod.Nutritional.Height,
+						Length = prod.Nutritional.Length,
+						Ingredients = prod.Nutritional.Ingredients,
+						Width = prod.Nutritional.Width
+					};
 				}
 				if (price != null)
 				{
