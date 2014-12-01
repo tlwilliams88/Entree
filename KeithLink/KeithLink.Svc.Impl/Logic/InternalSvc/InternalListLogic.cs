@@ -231,6 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
+					listItem.Description = prod.Description;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.Brand = prod.BrandExtendedDescription;
@@ -246,6 +247,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.CategoryName = prod.CategoryName;
 					listItem.UPC = prod.UPC;
 					listItem.VendorItemNumber = prod.VendorItemNumber;
+					listItem.Cases = prod.Cases;
+					listItem.Kosher = prod.Kosher;
+					listItem.ManufacturerName = prod.ManufacturerName;
+					listItem.ManufacturerNumber = prod.ManufacturerNumber;
+					listItem.Nutritional = new Nutritional()
+					{
+						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+						GrossWeight = prod.Nutritional.GrossWeight,
+						HandlingInstructions = prod.Nutritional.HandlingInstructions,
+						Height = prod.Nutritional.Height,
+						Length = prod.Nutritional.Length,
+						Ingredients = prod.Nutritional.Ingredients,
+						Width = prod.Nutritional.Width
+					};
 
 				}
 				if (price != null)
@@ -321,10 +336,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
 
-				//var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				//cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
-				//cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				return cachedList;
 			}
@@ -381,7 +396,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		}
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
-            var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
+            var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
 
             if (list == null)
                 return null;
