@@ -32,8 +32,13 @@ angular.module('bekApp')
         method: 'GET'
       },
 
-      exportConfig: {
+      getOrderExportConfig: {
         url: '/order/export',
+        method: 'GET'
+      },
+
+      getDetailExportConfig: {
+        url: '/order/export/:orderNumber',
         method: 'GET'
       }
 

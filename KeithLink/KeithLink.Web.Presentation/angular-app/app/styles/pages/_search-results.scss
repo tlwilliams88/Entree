@@ -38,16 +38,12 @@
     }
   }
 }
-.hidebrand , .hideallergen, .hidedietary, .hidespec, .hidenonstock{
-  display: none;
-}
 
 .mobile-filter{
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
   z-index: 1;
   background-color: $color-white;
-  margin-top: -25px;
 }
 .mobile-filter:before{
   right: 29px;
