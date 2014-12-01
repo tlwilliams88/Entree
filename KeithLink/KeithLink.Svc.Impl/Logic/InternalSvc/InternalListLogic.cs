@@ -396,7 +396,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		}
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
-            var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
+            var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
 
             if (list == null)
                 return null;
