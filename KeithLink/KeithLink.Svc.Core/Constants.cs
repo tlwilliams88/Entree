@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core
         public static string ReturnSizeQueryStringParam { get { return "size"; } }
         public static string ReturnFromQueryStringParam { get { return "from"; } }
 
-        public const string AD_GUEST_CONTAINER = "_bek_guest";
+        //public const string AD_GUEST_CONTAINER = "_bek_guest";
         public const string AD_GUEST_FIRSTNAME = "guest";
         public const string AD_GUEST_LASTNAME = "account";
 

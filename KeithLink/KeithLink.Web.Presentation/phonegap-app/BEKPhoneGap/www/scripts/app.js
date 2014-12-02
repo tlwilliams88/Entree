@@ -469,8 +469,6 @@ angular
 .run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', 'PhonegapServices', 'PhonegapPushService',
   function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, PhonegapServices, PhonegapPushService) {
 
-  PhonegapPushService.register();
-
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
@@ -496,7 +494,7 @@ angular
 
     // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
-
+      PhonegapPushService.register();
       if ( AccessService.isOrderEntryCustomer() ) {
         $state.go('menu.home');
       } else {

@@ -12,11 +12,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     public class BaseProductInfo
 	{
 		private string pack;
-
-
+		
 		[DataMember(Name = "itemnumber")]
 		[Description("Item")]
 		public string ItemNumber { get; set; }
+
+		[DataMember(Name = "description")]
+		public string Description { get; set; }
 
 		[DataMember(Name = "nonstock")]
 		public string NonStock { get; set; }
@@ -63,6 +65,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public string Notes { get; set; }
 
         [DataMember(Name = "catchweight")]
+		[Description("Catch Weight")]
         public bool CatchWeight { get; set; }
 
         [DataMember(Name = "sellsheet")]
@@ -106,5 +109,23 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
 		public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } set { } }
+
+		[DataMember(Name = "cases")]
+		[Description("Cases")]
+		public string Cases { get; set; }
+
+		[DataMember(Name = "nutritional")]
+		public Nutritional Nutritional { get; set; }
+
+		[DataMember(Name = "kosher")]
+		public string Kosher { get; set; }
+
+		[DataMember(Name = "manufacturer_number")]
+		[Description("Manufacturer Number")]
+		public string ManufacturerNumber { get; set; }
+
+		[DataMember(Name = "manufacturer_name")]
+		[Description("Manufacturer Name")]
+		public string ManufacturerName { get; set; }
     }
 }

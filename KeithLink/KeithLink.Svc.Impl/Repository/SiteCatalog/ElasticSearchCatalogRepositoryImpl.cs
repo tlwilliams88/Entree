@@ -340,7 +340,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;
                 nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
                 nutritional.GrossWeight = oProd._source.nutritional.grossweight;
-                nutritional.HandlingInstructions = oProd._source.nutritional.handlinginstructions;
+                nutritional.HandlingInstructions = oProd._source.nutritional.handlinginstruction;
                 nutritional.Ingredients = oProd._source.nutritional.ingredients;
                 nutritional.MarketingMessage = oProd._source.nutritional.marketingmessage;
                 nutritional.MoreInformation = oProd._source.nutritional.moreinformation;

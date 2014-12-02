@@ -22,6 +22,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
         private const string KEY_AD_EXTERNAL_SERVERNAME = "ADExtServer";
         private const string KEY_AD_EXTERNAL_USER = "ADExtUser";
+        private const string KEY_AD_GUEST_CONTAINER = "ADGuestOU";
         private const string KEY_AD_INTERNAL_DOMAIN = "ADIntDomain";
         private const string KEY_AD_INTERNAL_PASSWORD = "ADIntPass";
         private const string KEY_AD_INTERNAL_ROOTNODE = "ADIntRoot";
@@ -90,6 +91,10 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_VHOST_NOTIFICATION = "RabbitMQNotificationVHost";
         private const string KEY_RABBITMQ_VHOST_ORDER = "RabbitMQOrderVHost";
         private const string KEY_RUN_INTERNAL_SERVICE_QUEUES = "RunInternalServiceQueues";
+        private const string KEY_AMAZON_SNS_ACCESS_KEY = "AmazonSnsAccessKey";
+        private const string KEY_AMAZON_SNS_SECRET_KEY = "AmazonSnsSecretKey";
+        private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS = "AmazonSnsMobilePlatformAppArnIOS";
+        private const string KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID = "AmazonSnsMobilePlatformAppArnAndroid";
 
         // Misc
         private const string KEY_APP_NAME = "AppName";
@@ -164,6 +169,10 @@ namespace KeithLink.Svc.Impl
             {
                 return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
             }
+        }
+
+        public static string ActiveDirectoryGuestContainer {
+            get { return GetValue(KEY_AD_GUEST_CONTAINER, string.Empty); }
         }
 
         public static string ActiveDirectoryInternalDomain
@@ -634,6 +643,38 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
+            }
+        }
+
+        public static string AmazonSnsAccessKey
+        {
+            get
+            {
+                return GetValue(KEY_AMAZON_SNS_ACCESS_KEY, string.Empty);
+            }
+        }
+
+        public static string AmazonSnsSecretKey
+        {
+            get
+            {
+                return GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
+            }
+        }
+
+        public static string AmazonSnsMobilePlatformAppArnIOS
+        {
+            get
+            {
+                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
+            }
+        }
+
+        public static string AmazonSnsMobilePlatformAppArnAndroid
+        {
+            get
+            {
+                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
             }
         }
 

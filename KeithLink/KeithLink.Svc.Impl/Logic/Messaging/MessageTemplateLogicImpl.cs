@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Logic
+namespace KeithLink.Svc.Impl.Logic.Messaging
 {
 	public class MessageTemplateLogicImpl: IMessageTemplateLogic
 	{

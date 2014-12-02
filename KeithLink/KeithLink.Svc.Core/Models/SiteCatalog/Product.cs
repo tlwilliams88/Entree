@@ -29,33 +29,19 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         #region properties
         
-        [DataMember(Name = "description")]
-        public string Description { get; set; }
-
+        
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
 		       
         
         
 
-        [DataMember(Name = "manufacturer_number")]
-        public string ManufacturerNumber { get; set; }
-
-        [DataMember(Name = "manufacturer_name")]
-        public string ManufacturerName { get; set; }
-
-        [DataMember(Name = "cases")]
-        public string Cases { get; set; }
-
-        [DataMember(Name = "kosher")]
-        public string Kosher { get; set; }
+        
+		       
+        
 		                        
         [DataMember(Name = "cube")]
-        public string CaseCube { get; set; }
-		
-
-		[DataMember(Name = "nutritional")]
-        public Nutritional Nutritional { get; set; }
+        public string CaseCube { get; set; }		
         
         [DataMember(Name = "productimages")]
         public List<ProductImage> ProductImages { get; set; }

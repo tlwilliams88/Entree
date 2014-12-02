@@ -16,6 +16,11 @@ angular.module('bekApp')
       pay: {
         url: '/invoice/payment',
         method: 'POST'
+      },
+
+      exportConfig: {
+        url: '/invoice/export',
+        method: 'GET'
       }
 
     });

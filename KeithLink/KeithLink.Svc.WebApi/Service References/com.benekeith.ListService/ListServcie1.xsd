@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="UserSelectedContext">
     <xs:sequence>
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
@@ -13,22 +14,100 @@
       <xs:element minOccurs="0" name="brand_control_label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="brand_extended_description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="caseprice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="cases" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="catchweight" type="xs:boolean" />
+      <xs:element minOccurs="0" name="categoryId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="categoryname" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="childnutrition" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="class" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="description" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="deviatedcost" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="favorite" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="kosher" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="manufacturer_name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="manufacturer_number" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nonstock" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="notes" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nutritional" nillable="true" type="tns:nutritional" />
+      <xs:element minOccurs="0" name="pack" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="packageprice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="replaceditem" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="replacementitem" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="sellsheet" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="size" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="temp_zone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="upc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vendor_num" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BaseProductInfo" nillable="true" type="tns:BaseProductInfo" />
+  <xs:complexType name="nutritional">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="allergens" nillable="true" type="tns:allergen" />
+      <xs:element minOccurs="0" name="brandowner" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="countryoforigin" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="diet" nillable="true" type="tns:ArrayOfdiet" />
+      <xs:element minOccurs="0" name="grossweight" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="handlinginstruction" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="height" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ingredients" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="length" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="marketingmessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="moreinformation" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nutrition" nillable="true" type="tns:ArrayOfnutrition" />
+      <xs:element minOccurs="0" name="servingsize" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="servingsizeuom" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="servingsperpack" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="servingsuggestion" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="shelf" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unitmeasure" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unitspercase" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="volume" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="width" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="nutritional" nillable="true" type="tns:nutritional" />
+  <xs:complexType name="allergen">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="contains" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="freefrom" nillable="true" type="q2:ArrayOfstring" />
+      <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="maycontain" nillable="true" type="q3:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="allergen" nillable="true" type="tns:allergen" />
+  <xs:complexType name="ArrayOfdiet">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="diet" nillable="true" type="tns:diet" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfdiet" nillable="true" type="tns:ArrayOfdiet" />
+  <xs:complexType name="diet">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="diettype" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="diet" nillable="true" type="tns:diet" />
+  <xs:complexType name="ArrayOfnutrition">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="nutrition" nillable="true" type="tns:nutrition" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfnutrition" nillable="true" type="tns:ArrayOfnutrition" />
+  <xs:complexType name="nutrition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="dailyvalue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="measurementtypeid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="measurementvalue" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nutrienttype" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nutrienttypecode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="nutrition" nillable="true" type="tns:nutrition" />
   <xs:complexType name="ItemNote">
     <xs:sequence>
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />

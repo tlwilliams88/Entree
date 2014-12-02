@@ -41,39 +41,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             if (allCustomersFromCache != null)
                 return allCustomersFromCache;
                 
-            var createOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            createOrg.SearchCriteria.Model.OrganizationType = "0"; // org type of customer
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0'"; // org type of customer
 
-            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
             var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
             System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
                 {
                     Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
-                    customers.Add(new Customer()
-                    {
-                        CustomerId = Guid.Parse(org.Id),
-                        AccountId = String.IsNullOrEmpty(org.ParentOrganizationId) ? new Nullable<Guid>() : Guid.Parse(org.ParentOrganizationId),
-                        ContractId = org.ContractNumber,
-                        CustomerBranch = org.BranchNumber,
-                        CustomerName = org.Name,
-                        CustomerNumber = org.CustomerNumber,
-                        DsrNumber = org.DsrNumber,
-                        IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
-                        IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
-                        NationalId = org.NationalAccountId,
-                        // TODO - fill this in from real data source
-                        Phone = "303-422-7765",
-                        Email = "test@test.com",
-                        PointOfContact = "test@test.com",
-                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
-                        CurrentBalance = org.CurrentBalance,
-                        BalanceAge1 = org.BalanceAge1,
-                        BalanceAge2 = org.BalanceAge2,
-                        BalanceAge3 = org.BalanceAge3,
-                        BalanceAge4 = org.BalanceAge4,
-						TermCode = org.TermCode
-                    });
+                    customers.Add(OrgToCustomer(org));
                 });
 
             List<Customer> customersList = customers.ToList();
@@ -115,30 +92,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 Organization org = new Organization(ent);
                 if (org.OrganizationType == "0")
                 {
-                    userCustomers.Add(new Customer()
-                    {
-                        CustomerId = Guid.Parse(org.Id),
-                        CustomerName = org.Name,
-                        CustomerNumber = org.CustomerNumber,
-                        CustomerBranch = org.BranchNumber.ToLower(),
-                        ContractId = org.ContractNumber,
-                        DsrNumber = org.DsrNumber,
-                        IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
-                        IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
-                        NationalOrRegionalAccountNumber = org.NationalOrRegionalAccountNumber,
-                        AccountId = !String.IsNullOrEmpty(org.ParentOrganizationId) ? Guid.Parse(org.ParentOrganizationId) : new Nullable<Guid>(),
-                        // TODO - fill this in from real data source
-                        Phone = "303-422-7765",
-                        Email = "test@test.com",
-                        PointOfContact = "test@test.com",
-                        Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
-                        CurrentBalance = org.CurrentBalance,
-                        BalanceAge1 = org.BalanceAge1,
-                        BalanceAge2 = org.BalanceAge2,
-                        BalanceAge3 = org.BalanceAge3,
-                        BalanceAge4 = org.BalanceAge4,
-						TermCode = org.TermCode
-                    });
+                    userCustomers.Add(OrgToCustomer(org));
                 }
             }
             return userCustomers;
@@ -148,6 +102,68 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         {
             return "CustomerCache_" + setName;
         }
+
+        public Customer GetCustomerByCustomerNumber(string customerNumber)
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0' AND GeneralInfo.customer_number = '" + customerNumber + "'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+            if (res.CommerceEntities.Count > 0)
+                return OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]));
+            else
+                return null;
+        }
+
+        public List<Customer> GetCustomersByNameSearch(string searchText)
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.name LIKE '%" + searchText + "%'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+            List<Customer> customers = new List<Customer>();
+            foreach (CommerceEntity ent in res.CommerceEntities)
+            {
+                Organization org = new Organization(ent);
+                if (org.OrganizationType == "0")
+                {
+                    customers.Add(OrgToCustomer(org));
+                }
+            }
+            return customers;
+        }
+
+        private static Customer OrgToCustomer(Organization org)
+        {
+            return new Customer()
+            {
+                CustomerId = Guid.Parse(org.Id),
+                AccountId = String.IsNullOrEmpty(org.ParentOrganizationId) ? new Nullable<Guid>() : Guid.Parse(org.ParentOrganizationId),
+                ContractId = org.ContractNumber,
+                CustomerBranch = org.BranchNumber,
+                CustomerName = org.Name,
+                CustomerNumber = org.CustomerNumber,
+                DsrNumber = org.DsrNumber,
+                IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
+                IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
+                NationalId = org.NationalAccountId,
+                // TODO - fill this in from real data source
+                Phone = "303-422-7765",
+                Email = "test@test.com",
+                PointOfContact = "test@test.com",
+                Address = new Address() { StreetAddress = "2102 East St", City = "Golden", RegionCode = "CO", PostalCode = "80401" },
+                CurrentBalance = org.CurrentBalance,
+                BalanceAge1 = org.BalanceAge1,
+                BalanceAge2 = org.BalanceAge2,
+                BalanceAge3 = org.BalanceAge3,
+                BalanceAge4 = org.BalanceAge4,
+                TermCode = org.TermCode
+            };
+        }
+
         #endregion
+
     }
 }
