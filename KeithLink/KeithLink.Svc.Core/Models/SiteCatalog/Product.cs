@@ -36,14 +36,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         
         
 
-        [DataMember(Name = "manufacturer_number")]
-        public string ManufacturerNumber { get; set; }
-
-        [DataMember(Name = "manufacturer_name")]
-        public string ManufacturerName { get; set; }
+        
 		       
-        [DataMember(Name = "kosher")]
-        public string Kosher { get; set; }
+        
 		                        
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }		

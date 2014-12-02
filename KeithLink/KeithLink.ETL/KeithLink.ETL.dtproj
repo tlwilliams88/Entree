@@ -23,6 +23,11 @@
           <FullPath>ETLProcess_QA.dtsx</FullPath>
           <References />
         </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>ETLProcess_RELEASE.dtsx</Name>
+          <FullPath>ETLProcess_RELEASE.dtsx</FullPath>
+          <References />
+        </DtsPackage>
       </DTSPackages>
     </Manifest>
   </DeploymentModelSpecificContent>
