@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Impl.ETL
             this.messageLogic = messageLogic;
         }
 
-        public void ProcessStagedData()
+        public void ProcessCatalogData()
         {
             try
             {
@@ -112,16 +112,6 @@ namespace KeithLink.Svc.Impl.ETL
 
 				Task.WaitAll(catTask);
 
-				var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
-				var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
-                var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
-
-				Task.WaitAll(esItemTask, esCatTask, esBrandTask);
-
-                var contractTask = Task.Factory.StartNew(() => ImportPrePopulatedLists());
-                
-                Task.WaitAll(contractTask);
-				
             }
             catch (Exception ex) 
             {
@@ -130,12 +120,45 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
-        public void ImportCustomers()
+        public void ProcessElasticSearchData()
+        {
+            try
+            {
+                var esItemTask = Task.Factory.StartNew(() => ImportItemsToElasticSearch());
+                var esCatTask = Task.Factory.StartNew(() => ImportCategoriesToElasticSearch());
+                var esBrandTask = Task.Factory.StartNew(() => ImportHouseBrandsToElasticSearch());
+
+                Task.WaitAll(esItemTask, esCatTask, esBrandTask);
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Catalog Import Error", ex);
+            }
+        }
+
+        public void ProcessContractAndWorksheetData()
+        {
+            try
+            {
+                var contractTask = Task.Factory.StartNew(() => ImportPrePopulatedLists());
+
+                Task.WaitAll(contractTask);
+
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Contract or Worksheet Import Error", ex);
+            }
+        }
+
+        private void ImportCustomers()
         {
 
         }
 
-        public void ImportCatalog()
+        private void ImportCatalog()
         {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
@@ -161,11 +184,11 @@ namespace KeithLink.Svc.Impl.ETL
 
         }
 
-        public void ImportProfiles()
+        private void ImportProfiles()
         {   
         }
 
-        public void ImportPrePopulatedLists()
+        private void ImportPrePopulatedLists()
         {
 
             //For performance debugging purposes
@@ -208,8 +231,8 @@ namespace KeithLink.Svc.Impl.ETL
 
             eventLog.WriteInformationLog(string.Format("ImportPrePopulatedLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
-        
-        public void ImportItemsToElasticSearch()
+
+        private void ImportItemsToElasticSearch()
         {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
@@ -254,7 +277,7 @@ namespace KeithLink.Svc.Impl.ETL
 			eventLog.WriteInformationLog(string.Format("ImportItemsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
-        public void ImportCategoriesToElasticSearch()
+        private void ImportCategoriesToElasticSearch()
         {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
@@ -305,7 +328,7 @@ namespace KeithLink.Svc.Impl.ETL
 			eventLog.WriteInformationLog(string.Format("ImportCategoriesToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
-        public void ImportHouseBrandsToElasticSearch()
+        private void ImportHouseBrandsToElasticSearch()
         {
 			//For performance debugging purposes
 			var startTime = DateTime.Now;
