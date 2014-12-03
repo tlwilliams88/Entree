@@ -1,5 +1,6 @@
 namespace KeithLink.Svc.Impl.Migrations
 {
+	using KeithLink.Svc.Core.Models.Configuration.EF;
 	using KeithLink.Svc.Core.Models.EF;
 	using System;
 	using System.Collections.Generic;
@@ -100,6 +101,19 @@ namespace KeithLink.Svc.Impl.Migrations
 					SupportPhoneNumber = "2105076151",
 					TollFreeNumber = "After Hours: 2105076471",
 					Email = "Fsa-dis-mis@benekeith.com"
+				}
+				);
+
+			context.MessageTemplates.AddOrUpdate(
+				t => t.TemplateKey,
+				new MessageTemplate
+				{
+					TemplateKey = "GuestUserWelcome",
+					Subject = "Welcome to Entrée",
+					IsBodyHtml = false,
+					Type = MessageTemplateType.Email,
+					Body = "Thank you for your interest in the Entrée System, Powered by Ben E. Keith. " + 
+						   "If you have comments or questions, or would like someone to contact you, please e-mail us at ${contactEmail}"
 				}
 				);
         }

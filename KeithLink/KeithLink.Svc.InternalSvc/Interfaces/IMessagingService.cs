@@ -10,6 +10,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Configuration;
 
 namespace KeithLink.Svc.InternalSvc.Interfaces
 {
@@ -23,7 +24,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
         [OperationContract]
-        int GetUnreadMessagesCount(UserProfile user);
+        int GetUnreadMessagesCount(Guid userId);
         [OperationContract]
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
         [OperationContract]
@@ -32,5 +33,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
         [OperationContract]
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
+		[OperationContract]
+		MessageTemplateModel ReadMessageTemplateForKey(string key);
     }
 }
