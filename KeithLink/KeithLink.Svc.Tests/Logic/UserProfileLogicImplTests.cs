@@ -9,6 +9,8 @@ using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.WebApi.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Component;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -42,7 +44,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl());
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl());
         }
         #endregion
 

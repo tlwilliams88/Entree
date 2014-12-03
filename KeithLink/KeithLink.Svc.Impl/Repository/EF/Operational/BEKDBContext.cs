@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<Invoice> Invoices { get; set; }
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
 		public DbSet<BranchSupport> BranchSupports { get; set; }
-		public DbSet<MessageTemplate> EmailTemplates { get; set; }
+		public DbSet<MessageTemplate> MessageTemplates { get; set; }
 		public DbSet<Term> Terms { get; set; }
 		public DbSet<ListShare> ListShares { get; set; }
         public DbSet<ContentItem> ContentItems { get; set; }
@@ -60,13 +60,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
             modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
-
-		public void DeleteTable(string tableName)
-		{
-			Database.ExecuteSqlCommand("DELETE " + tableName);
-		}
-
-
+		
 		public override int SaveChanges()
 		{
 			var changeSet = ChangeTracker.Entries<BaseEFModel>();

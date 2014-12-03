@@ -115,6 +115,7 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
 		private const string KEY_INVOICE_LINK_URL_FORMAT = "InvoiceLinkURLFormat";
+		private const string KEY_CONTACT_EMAIL_FORMAT = "{0}_ContactEmail";
 
 
         #endregion
@@ -129,6 +130,12 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+		public static string BranchContactEmail(string branchId)
+		{
+			return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
+
+		}
+
 		public static string InvoiceLinkURLFormat
 		{
 			get

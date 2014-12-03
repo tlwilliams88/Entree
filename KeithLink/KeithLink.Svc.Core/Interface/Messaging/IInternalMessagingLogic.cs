@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
-        int GetUnreadMessagesCount(UserProfile user);
+        int GetUnreadMessagesCount(Guid userId);
 
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user);
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
