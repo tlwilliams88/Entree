@@ -15,6 +15,7 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
+using KeithLink.Svc.Impl;
 
 namespace KeithLink.Svc.InternalSvc {
     public class OnlinePaymentService : IOnlinePaymentService {
@@ -105,7 +106,11 @@ namespace KeithLink.Svc.InternalSvc {
         public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
             List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
             List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+
 			
+			foreach (var inv in returnInvoices)
+				inv.InvoiceLink = new Uri(string.Format(Configuration.InvoiceLinkURLFormat, inv.BranchId, inv.CustomerNumber, inv.InvoiceNumber));
+
 			//TODO: add check to see if customer is KPay customer
             returnInvoices.Select(i => { i.IsPayable = true; return i; }).ToList();
 

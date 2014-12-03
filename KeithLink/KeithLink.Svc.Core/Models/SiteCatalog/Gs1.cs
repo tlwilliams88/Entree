@@ -59,6 +59,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Gross Weight")]
         public string GrossWeight { get; set; }
         [DataMember(Name = "handlinginstruction")]
+		[Description("Handling Instructions")]
         public string HandlingInstructions { get; set; }
         [DataMember(Name = "ingredients")]
         public string Ingredients { get; set; }
