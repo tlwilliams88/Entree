@@ -117,6 +117,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             while (_keepListening) {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
+                int loopCnt = 0;
+
                 try {
                     string rawOrder = _queue.ConsumeFromQueue();
 
@@ -132,7 +134,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         ProcessAsConfirmation(historyFile);
 
                         rawOrder = _queue.ConsumeFromQueue();
+
+                        if (loopCnt++ == 1000) { 
+                            _unitOfWork.SaveChanges();
+                            loopCnt = 0;
+                        }
                     }
+
+                    _unitOfWork.SaveChanges();
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
@@ -330,7 +339,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             _headerRepo.CreateOrUpdate(header);
 
-            _unitOfWork.SaveChanges();
+            //_unitOfWork.SaveChanges();
         }
 
         public void StopListening() {

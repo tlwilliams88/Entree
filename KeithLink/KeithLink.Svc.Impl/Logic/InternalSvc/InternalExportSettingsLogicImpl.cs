@@ -109,6 +109,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.CountryOfOrigin", Label = "Country Of Origin" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.GrossWeight", Label = "Gross Weight" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.HandlingInstructions", Label = "Handling Instruction" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.Height", Label = "Height" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.Length", Label = "Length" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.Width", Label = "Width" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Nutritional.Ingredients", Label = "Ingredients" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "Kosher", Label = "Kosher" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Label = "Manufacturer Name" });
+			options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerNumber", Label = "Manufacturer Number" });
 			
 			
 			

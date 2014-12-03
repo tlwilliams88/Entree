@@ -19,18 +19,18 @@
     <ul class="list-unstyled">
 
       <div ng-show="displayUserMenu">
-        <button 
+        <button
           class="btn-no-style"
-          ng-click="$spMenu.hide()" 
+          ng-click="$spMenu.hide()"
           ui-sref="menu.accountdetails">
           <li>Account Settings</li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
           ng-click="$spMenu.hide(); openTechnicalSupportModal()">
           <li>Technical Support</li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
           ng-click="logout()">
           <li>Sign Out</li>
@@ -45,90 +45,90 @@
 
       <!-- MOBILE MENU -->
       <div ng-click="$spMenu.hide()">
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!isOrderEntryCustomer" 
-          ui-sref="menu.home" 
+          ng-disabled="!isOrderEntryCustomer"
+          ui-sref="menu.home"
           ui-sref-active="is-selected" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-house"></span></div>
             Home
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canCreateOrders" 
-          ui-sref="menu.order" 
+          ng-disabled="!canCreateOrders"
+          ui-sref="menu.order"
           ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>
             Order History
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canBrowseCatalog" 
-          ui-sref="menu.catalog.home" 
+          ng-disabled="!canBrowseCatalog"
+          ui-sref="menu.catalog.home"
           ng-class="{'is-selected': $state.includes('menu.catalog')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-book2"></span></div>
             Product Catalog
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canPayInvoices" 
-          ui-sref="blank" 
+          ng-disabled="!canPayInvoices"
+          ui-sref="blank"
           ui-sref-active="is-selected" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-pie"></span></div>
             Reports
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canPayInvoices" 
-          ui-sref="menu.invoice" 
+          ng-disabled="!canPayInvoices"
+          ui-sref="menu.invoice"
           ui-sref-active="is-selected" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>
             Invoices
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canManageLists" 
-          ui-sref="menu.lists.items({listId: 0})" 
+          ng-disabled="!canManageLists"
+          ui-sref="menu.lists.items({listId: 0})"
           ng-class="{'is-selected': $state.includes('menu.lists')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-text"></span></div>
             My Lists
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!canCreateOrders" 
-          ui-sref="menu.addtoorder.items({ })" 
+          ng-disabled="!canCreateOrders"
+          ui-sref="menu.addtoorder.items({ })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>
             Add to Order
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
           ng-if="canManageAccount"
-          ui-sref="menu.admin.accountadmin" 
+          ui-sref="menu.admin.accountadmin"
           ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
           <li>
             <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
             Admin
           </li>
         </button>
-        <button 
+        <button
           class="btn-no-style"
-          ng-disabled="!isOrderEntryCustomer" 
-          ui-sref="menu.notifications" 
+          ng-disabled="!isOrderEntryCustomer"
+          ui-sref="menu.notifications"
           ui-sref-active="is-selected" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
@@ -157,86 +157,86 @@
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
-      <img src="images/bek-logo.png" alt="logo" />
+      <img src="images/bek-logo-small.png" alt="logo" />
     </div>
 
     <!-- DESKTOP MENU -->
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!isOrderEntryCustomer" 
-          ui-sref="menu.home" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!isOrderEntryCustomer"
+          ui-sref="menu.home"
           ui-sref-active="is-selected" >
           <li>
             <span class="icon-house sidebar-nav__icon"></span>
             Home
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canCreateOrders" 
-          ui-sref="menu.order" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canCreateOrders"
+          ui-sref="menu.order"
           ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
           <li>
             <span class="icon-clipboard sidebar-nav__icon"></span>
             Order History
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canBrowseCatalog" 
-          ui-sref="menu.catalog.home" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canBrowseCatalog"
+          ui-sref="menu.catalog.home"
           ng-class="{'is-selected': $state.includes('menu.catalog')}" >
           <li>
             <span class="icon-book2 sidebar-nav__icon"></span>
             Product Catalog
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canPayInvoices" 
-          ui-sref="blank" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canPayInvoices"
+          ui-sref="blank"
           ui-sref-active="is-selected" >
           <li>
             <span class="icon-pie sidebar-nav__icon"></span>
             Reports
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canPayInvoices" 
-          ui-sref="menu.invoice" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canPayInvoices"
+          ui-sref="menu.invoice"
           ui-sref-active="is-selected" >
           <li>
             <span class="icon-dollar sidebar-nav__icon"></span>
             Invoices
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canManageLists" 
-          ui-sref="menu.lists.items({listId: 0})" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canManageLists"
+          ui-sref="menu.lists.items({listId: 0})"
           ng-class="{'is-selected': $state.includes('menu.lists')}" >
           <li>
             <span class="icon-text sidebar-nav__icon"></span>
             My Lists
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
-          ng-disabled="!canCreateOrders" 
-          ui-sref="menu.addtoorder.items({ })" 
+        <button
+          class="btn-no-style"
+          ng-disabled="!canCreateOrders"
+          ui-sref="menu.addtoorder.items({ })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <span class="icon-add-to-list sidebar-nav__icon"></span>
             Add to Order
           </li>
         </button>
-        <button 
-          class="btn-no-style" 
+        <button
+          class="btn-no-style"
           ng-if="canManageAccount"
-          ui-sref="menu.admin.accountadmin" 
+          ui-sref="menu.admin.accountadmin"
           ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
           <li>
             <span class="icon-cog sidebar-nav__icon"></span>

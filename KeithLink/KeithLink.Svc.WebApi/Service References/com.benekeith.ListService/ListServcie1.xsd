@@ -24,6 +24,9 @@
       <xs:element minOccurs="0" name="deviatedcost" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="favorite" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="kosher" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="manufacturer_name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="manufacturer_number" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nonstock" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="notes" nillable="true" type="xs:string" />
