@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Extensions
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
-				OrderDate = value.InvoiceDate
+				OrderDate = value.InvoiceDate				
 			};
 		}
 

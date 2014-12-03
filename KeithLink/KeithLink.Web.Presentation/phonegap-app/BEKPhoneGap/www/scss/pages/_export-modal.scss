@@ -1,0 +1,24 @@
+.sortable-list-container {
+  // width: 49%;
+  
+  .bek-sortable-list {
+    border: 1px dashed $color-border; 
+    // height: 100px;
+    // float: left;
+    // display: inline-block;
+    list-style-type: none;
+    padding: 5px 10px;
+    max-height: 250px;
+    min-height: 250px;
+    overflow-y: auto;
+
+    > li {
+      border: 1px solid $color-border;
+      border-radius: 4px;
+      padding: 5px 10px;
+      background-color: $background;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+  }
+}

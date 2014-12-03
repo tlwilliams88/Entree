@@ -17,7 +17,7 @@ module.exports = function(grunt) {
           config: {
             template: '_config.xml',
             data: {
-              id: 'com.benekeith',
+              id: 'com.benekeith.entree',
               version: '<%= pkg.version %>',
               name: '<%= pkg.name %>',
               description: '<%= pkg.description %>',
