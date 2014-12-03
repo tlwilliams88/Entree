@@ -114,6 +114,8 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_SMTP_USERNAME = "SMTPUsername";
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
+		private const string KEY_INVOICE_LINK_URL_FORMAT = "InvoiceLinkURLFormat";
+
 
         #endregion
 
@@ -127,6 +129,14 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+		public static string InvoiceLinkURLFormat
+		{
+			get
+			{
+				return GetValue(KEY_INVOICE_LINK_URL_FORMAT, string.Empty);
+			}
+		}
+
         public static string ActiveDirectoryExternalDomain { 
             get { 
                 return GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty); 

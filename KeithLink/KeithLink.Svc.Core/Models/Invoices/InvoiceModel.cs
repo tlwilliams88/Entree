@@ -58,5 +58,8 @@ namespace KeithLink.Svc.Core.Models.Invoices
 
         [DataMember(Name="ispayable")]
         public bool IsPayable { get; set; }
+
+		[DataMember(Name = "invoicelink")]
+		public Uri InvoiceLink { get; set; }
 	}
 }
