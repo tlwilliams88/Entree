@@ -10,5 +10,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 	{
 		BEKDBContext Context { get; }
 		int SaveChanges();
+		int SaveChangesAndClearContext();
+		
 	}
 }

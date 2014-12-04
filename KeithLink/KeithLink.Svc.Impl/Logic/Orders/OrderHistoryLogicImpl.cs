@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -135,13 +136,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                         rawOrder = _queue.ConsumeFromQueue();
 
-                        if (loopCnt++ == 1000) { 
-                            _unitOfWork.SaveChanges();
+                        if (loopCnt++ == 500) {
+							_unitOfWork.SaveChangesAndClearContext();
                             loopCnt = 0;
                         }
                     }
 
-                    _unitOfWork.SaveChanges();
+					_unitOfWork.SaveChangesAndClearContext();
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
