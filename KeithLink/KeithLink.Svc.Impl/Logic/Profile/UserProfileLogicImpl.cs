@@ -304,7 +304,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-			if (generatedPassword)
+			if (generatedPassword) //TODO: Switch to new email client with message templates
 				KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
 			else
 			{
