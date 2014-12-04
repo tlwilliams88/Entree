@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.EF;
+﻿using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
@@ -17,7 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 
         void MarkAsReadUserMessages(List<UserMessageModel> updatedUserMessages);
 
-        int GetUnreadMessagesCount(UserProfile userProfile);
+        int GetUnreadMessagesCount(Guid userId);
 
         void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile userProfile);
 
@@ -26,5 +27,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
 
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
+
+		MessageTemplateModel ReadMessageTemplateForKey(string key);
     }
 }

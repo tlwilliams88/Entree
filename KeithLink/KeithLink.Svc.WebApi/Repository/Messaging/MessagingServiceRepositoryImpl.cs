@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
@@ -31,9 +32,9 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             serviceClient.MarkAsReadUserMessages(userMessages.ToArray());
         }
 
-        public int GetUnreadMessagesCount(UserProfile user)
+        public int GetUnreadMessagesCount(Guid userId)
         {
-            return serviceClient.GetUnreadMessagesCount(user);
+            return serviceClient.GetUnreadMessagesCount(userId);
         }
 
         public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user)
@@ -56,5 +57,11 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
         {
             return serviceClient.RegisterPushDevice(user, deviceRegistrationModel);
         }
-    }
+
+
+		public MessageTemplateModel ReadMessageTemplateForKey(string key)
+		{
+			return serviceClient.ReadMessageTemplateForKey(key);
+		}
+	}
 }

@@ -1,68 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
   <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging.EF" />
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
-  <xs:element name="AddUserSubscription">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="notificationType" type="q1:NotificationType" />
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="channel" type="q2:Channel" />
-        <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q3:guid" />
-        <xs:element minOccurs="0" name="customerNumber" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="notificationEndpoint" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="AddUserSubscriptionResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="AddUserSubscriptionResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="RemoveUserSubscription">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="notificationType" type="q4:NotificationType" />
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" minOccurs="0" name="channel" type="q5:Channel" />
-        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q6:guid" />
-        <xs:element minOccurs="0" name="customerNumber" nillable="true" type="xs:string" />
-        <xs:element minOccurs="0" name="notificationEndpoint" nillable="true" type="xs:string" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="RemoveUserSubscriptionResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element minOccurs="0" name="RemoveUserSubscriptionResult" type="xs:boolean" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetUserMessages">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q7:guid" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="GetUserMessagesResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging.EF" minOccurs="0" name="GetUserMessagesResult" nillable="true" type="q8:ArrayOfUserMessage" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration" />
   <xs:element name="CreateUserMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q9:guid" />
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q10:UserSelectedContext" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="userMessage" nillable="true" type="q11:UserMessage" />
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q1:guid" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q2:UserSelectedContext" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="userMessage" nillable="true" type="q3:UserMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -76,21 +25,21 @@
   <xs:element name="ReadUserMessages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q12:userprofile" />
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q4:userprofile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadUserMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="ReadUserMessagesResult" nillable="true" type="q13:ArrayOfUserMessage" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="ReadUserMessagesResult" nillable="true" type="q5:ArrayOfUserMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="MarkAsReadUserMessages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="userMessages" nillable="true" type="q14:ArrayOfUserMessage" />
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="userMessages" nillable="true" type="q6:ArrayOfUserMessage" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -99,20 +48,10 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
-  <xs:element name="TestNotification">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="TestNotificationResponse">
-    <xs:complexType>
-      <xs:sequence />
-    </xs:complexType>
-  </xs:element>
   <xs:element name="GetUnreadMessagesCount">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q15:userprofile" />
+        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q7:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -126,8 +65,8 @@
   <xs:element name="UpdateMessagingPreferences">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingPreferenceModel" nillable="true" type="q16:ProfileMessagingPreferenceModel" />
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q17:userprofile" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingPreferenceModel" nillable="true" type="q8:ProfileMessagingPreferenceModel" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q9:userprofile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -139,37 +78,37 @@
   <xs:element name="ReadMessagingPreferences">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q18:guid" />
+        <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q10:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadMessagingPreferencesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="ReadMessagingPreferencesResult" nillable="true" type="q19:ArrayOfUserMessagingPreference" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="ReadMessagingPreferencesResult" nillable="true" type="q11:ArrayOfUserMessagingPreference" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadPagedUserMessages">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q20:userprofile" />
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q21:PagingModel" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q12:userprofile" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q13:PagingModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadPagedUserMessagesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="ReadPagedUserMessagesResult" nillable="true" type="q22:PagedResultsOfUserMessage8lAsFgpf" />
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="ReadPagedUserMessagesResult" nillable="true" type="q14:PagedResultsOfUserMessage8lAsFgpf" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="RegisterPushDevice">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q23:userprofile" />
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="deviceRegistrationModel" nillable="true" type="q24:PushDeviceRegistrationModel" />
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q15:userprofile" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="deviceRegistrationModel" nillable="true" type="q16:PushDeviceRegistrationModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -177,6 +116,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="RegisterPushDeviceResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReadMessageTemplateForKey">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="key" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReadMessageTemplateForKeyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration" minOccurs="0" name="ReadMessageTemplateForKeyResult" nillable="true" type="q17:MessageTemplateModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

@@ -54,5 +54,17 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
         {
             throw new NotImplementedException();
         }
-    }
+
+
+		public Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key)
+		{
+			throw new NotImplementedException();
+		}
+
+
+		public int GetUnreadMessagesCount(Guid userId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }
