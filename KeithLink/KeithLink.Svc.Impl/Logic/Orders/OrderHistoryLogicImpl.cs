@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -122,7 +123,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 try {
                     StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
-                    //_unitOfWork = _unitOfWorkOriginal.GetUniqueUnitOfWork();
 
                     while (rawOrder != null) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
@@ -137,22 +137,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
-                        if (loopCnt++ == 200) { 
-                            _unitOfWork.SaveChanges();
-
-                            foreach (System.Data.Entity.Infrastructure.DbEntityEntry entry in _unitOfWork.Context.ChangeTracker.Entries()) {
-                                if (entry.Entity != null) {
-                                    entry.State = System.Data.Entity.EntityState.Detached;
-                                }
-                            }
-                            //_unitOfWork = _unitOfWorkOriginal.GetUniqueUnitOfWork();
+                        if (loopCnt++ == 100) { 
+                            _unitOfWork.SaveChangesAndClearContext();
 
                             loopCnt = 0;
                         }
                     }
 
-                    _unitOfWork.SaveChanges();
-                    //_unitOfWork = CloneOriginalUnitOfWork();
+					_unitOfWork.SaveChangesAndClearContext();
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }

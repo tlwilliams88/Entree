@@ -37,5 +37,13 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		{
 			return this.Context.SaveChanges();
 		}
+
+
+		public int SaveChangesAndClearContext()
+		{
+			var returnValue = this.SaveChanges();
+			this.Context.UndoDBContextChanges();
+			return returnValue;
+		}
 	}
 }
