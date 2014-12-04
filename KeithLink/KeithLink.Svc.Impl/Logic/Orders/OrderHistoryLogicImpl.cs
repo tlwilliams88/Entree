@@ -34,6 +34,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IOrderHistoryQueueRepository _queue;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWorkOriginal;
 
         private bool _keepListening;
         private Task _queueTask;
@@ -49,7 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _queue = queueRepo;
             _socket = socket;
             _unitOfWork = unitOfWork;
-
+            
             _keepListening = true;
 
             _socket.FileReceived            += SocketFileReceived;
@@ -120,28 +121,38 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 int loopCnt = 0;
 
                 try {
-                    string rawOrder = _queue.ConsumeFromQueue();
+                    StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
+                    //_unitOfWork = _unitOfWorkOriginal.GetUniqueUnitOfWork();
 
                     while (rawOrder != null) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
-                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder);
+                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
 
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
                         Save(historyFile);
                         ProcessAsConfirmation(historyFile);
 
-                        rawOrder = _queue.ConsumeFromQueue();
+                        rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
-                        if (loopCnt++ == 1000) { 
+                        if (loopCnt++ == 200) { 
                             _unitOfWork.SaveChanges();
+
+                            foreach (System.Data.Entity.Infrastructure.DbEntityEntry entry in _unitOfWork.Context.ChangeTracker.Entries()) {
+                                if (entry.Entity != null) {
+                                    entry.State = System.Data.Entity.EntityState.Detached;
+                                }
+                            }
+                            //_unitOfWork = _unitOfWorkOriginal.GetUniqueUnitOfWork();
+
                             loopCnt = 0;
                         }
                     }
 
                     _unitOfWork.SaveChanges();
+                    //_unitOfWork = CloneOriginalUnitOfWork();
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
