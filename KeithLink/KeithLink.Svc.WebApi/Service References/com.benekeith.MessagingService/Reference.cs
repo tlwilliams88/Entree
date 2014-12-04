@@ -15,24 +15,6 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="com.benekeith.MessagingService.IMessagingService")]
     public interface IMessagingService {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/AddUserSubscription", ReplyAction="http://tempuri.org/IMessagingService/AddUserSubscriptionResponse")]
-        bool AddUserSubscription(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/AddUserSubscription", ReplyAction="http://tempuri.org/IMessagingService/AddUserSubscriptionResponse")]
-        System.Threading.Tasks.Task<bool> AddUserSubscriptionAsync(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RemoveUserSubscription", ReplyAction="http://tempuri.org/IMessagingService/RemoveUserSubscriptionResponse")]
-        bool RemoveUserSubscription(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RemoveUserSubscription", ReplyAction="http://tempuri.org/IMessagingService/RemoveUserSubscriptionResponse")]
-        System.Threading.Tasks.Task<bool> RemoveUserSubscriptionAsync(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUserMessages", ReplyAction="http://tempuri.org/IMessagingService/GetUserMessagesResponse")]
-        KeithLink.Svc.Core.Models.Messaging.EF.UserMessage[] GetUserMessages(System.Guid userId);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUserMessages", ReplyAction="http://tempuri.org/IMessagingService/GetUserMessagesResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.EF.UserMessage[]> GetUserMessagesAsync(System.Guid userId);
-        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateUserMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateUserMessageResponse")]
         long CreateUserMessage(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage);
         
@@ -51,17 +33,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
         System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/TestNotification", ReplyAction="http://tempuri.org/IMessagingService/TestNotificationResponse")]
-        void TestNotification();
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/TestNotification", ReplyAction="http://tempuri.org/IMessagingService/TestNotificationResponse")]
-        System.Threading.Tasks.Task TestNotificationAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
+        int GetUnreadMessagesCount(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
-        int GetUnreadMessagesCount(KeithLink.Svc.Core.Models.Profile.UserProfile user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
-        System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
         void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
@@ -86,6 +62,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RegisterPushDevice", ReplyAction="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse")]
         System.Threading.Tasks.Task<bool> RegisterPushDeviceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
+        KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -115,30 +97,6 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
                 base(binding, remoteAddress) {
         }
         
-        public bool AddUserSubscription(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint) {
-            return base.Channel.AddUserSubscription(notificationType, channel, userId, customerNumber, notificationEndpoint);
-        }
-        
-        public System.Threading.Tasks.Task<bool> AddUserSubscriptionAsync(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint) {
-            return base.Channel.AddUserSubscriptionAsync(notificationType, channel, userId, customerNumber, notificationEndpoint);
-        }
-        
-        public bool RemoveUserSubscription(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint) {
-            return base.Channel.RemoveUserSubscription(notificationType, channel, userId, customerNumber, notificationEndpoint);
-        }
-        
-        public System.Threading.Tasks.Task<bool> RemoveUserSubscriptionAsync(KeithLink.Svc.Core.Enumerations.Messaging.NotificationType notificationType, KeithLink.Svc.Core.Enumerations.Messaging.Channel channel, System.Guid userId, string customerNumber, string notificationEndpoint) {
-            return base.Channel.RemoveUserSubscriptionAsync(notificationType, channel, userId, customerNumber, notificationEndpoint);
-        }
-        
-        public KeithLink.Svc.Core.Models.Messaging.EF.UserMessage[] GetUserMessages(System.Guid userId) {
-            return base.Channel.GetUserMessages(userId);
-        }
-        
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.EF.UserMessage[]> GetUserMessagesAsync(System.Guid userId) {
-            return base.Channel.GetUserMessagesAsync(userId);
-        }
-        
         public long CreateUserMessage(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage) {
             return base.Channel.CreateUserMessage(userId, catalogInfo, userMessage);
         }
@@ -163,20 +121,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
             return base.Channel.MarkAsReadUserMessagesAsync(userMessages);
         }
         
-        public void TestNotification() {
-            base.Channel.TestNotification();
+        public int GetUnreadMessagesCount(System.Guid userId) {
+            return base.Channel.GetUnreadMessagesCount(userId);
         }
         
-        public System.Threading.Tasks.Task TestNotificationAsync() {
-            return base.Channel.TestNotificationAsync();
-        }
-        
-        public int GetUnreadMessagesCount(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            return base.Channel.GetUnreadMessagesCount(user);
-        }
-        
-        public System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            return base.Channel.GetUnreadMessagesCountAsync(user);
+        public System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(System.Guid userId) {
+            return base.Channel.GetUnreadMessagesCountAsync(userId);
         }
         
         public void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
@@ -209,6 +159,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task<bool> RegisterPushDeviceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel) {
             return base.Channel.RegisterPushDeviceAsync(user, deviceRegistrationModel);
+        }
+        
+        public KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key) {
+            return base.Channel.ReadMessageTemplateForKey(key);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key) {
+            return base.Channel.ReadMessageTemplateForKeyAsync(key);
         }
     }
 }

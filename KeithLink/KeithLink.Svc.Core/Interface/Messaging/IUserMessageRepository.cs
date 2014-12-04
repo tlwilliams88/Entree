@@ -12,6 +12,6 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         IEnumerable<UserMessage> ReadUserMessages(Core.Models.Profile.UserProfile user);
 
 
-        int GetUnreadMessagesCount(Models.Profile.UserProfile user);
+        int GetUnreadMessagesCount(Guid userId);
     }
 }

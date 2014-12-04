@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.Email;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -28,12 +29,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IOrderServiceRepository _orderServiceRepository;
         private IMessagingServiceRepository _msgServiceRepo;
 		private IInvoiceServiceRepository _invoiceServiceRepository;
+		private IEmailClient _emailClient;
+		private IMessagingServiceRepository _messagingServiceRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
                                     IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
-									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository)
+									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -44,6 +47,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_orderServiceRepository = orderServiceRepository;
             _msgServiceRepo = msgServiceRepo;
 			_invoiceServiceRepository = invoiceServiceRepository;
+			_emailClient = emailClient;
+			_messagingServiceRepository = messagingServiceRepository;
         }
         #endregion
 
@@ -276,7 +281,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (String.IsNullOrEmpty(password) && allowPasswordGeneration)
             {
                 generatedPassword = true;
-                password = "aAbBcC123ZZ";
+				password = System.Web.Security.Membership.GeneratePassword(8, 0);
             }
             AssertGuestProfile(emailAddress, password);
 
@@ -295,9 +300,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-            if (generatedPassword)
-                KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
-            
+			if (generatedPassword)
+				KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
+			else
+			{
+				var template = _messagingServiceRepository.ReadMessageTemplateForKey("GuestUserWelcome");
+
+				if (template != null)
+					_emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail(branchId) });
+			}
+
             return GetUserProfile(emailAddress);
         }
 
