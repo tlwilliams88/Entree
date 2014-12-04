@@ -112,7 +112,7 @@ namespace KeithLink.Svc.Impl.Migrations
 					Subject = "Welcome to Entrée",
 					IsBodyHtml = false,
 					Type = MessageTemplateType.Email,
-					Body = "Thank you for your interest in the Entrée System, Powered by Ben E. Keith. " + 
+					Body = "Thank you for your interest in the Entrée System, Powered by Ben E. Keith.\r\n\r\n" + 
 						   "If you have comments or questions, or would like someone to contact you, please e-mail us at ${contactEmail}"
 				}
 				);
