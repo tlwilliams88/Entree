@@ -96,6 +96,9 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 
 		public virtual T ReadTransient(long id)
 		{
+			if (id == 0)
+				return null;
+
 			T output = null;
 
 			var transient = Entities.Find(id);
