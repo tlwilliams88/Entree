@@ -372,6 +372,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		{
             List<Customer> userCustomers;
 			string dsrRole = string.Empty;
+            
             if (IsInternalAddress(csProfile.Email))
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
@@ -392,7 +393,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     else
                     {
                         // until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
-                        userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                        //userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                        userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList(); //use the use the user organization object for customer filtering
                     }
                 }
             }
@@ -407,7 +409,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 foreach (var customer in userCustomers)
                     customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
             }
-
+            
 			if (includeTermInformation)
 			{
 				foreach (var cust in userCustomers)
@@ -429,7 +431,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 				}
 			}
-
+            
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),

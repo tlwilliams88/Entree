@@ -19,8 +19,12 @@
 
 .datepicker ul {
   padding: 10px;
-  
+
   .btn-default {
     border: none;
   }
+}
+
+.overdueHighlight td {
+  background-color: rgba(234, 56, 24, 0.50) !important;
 }
