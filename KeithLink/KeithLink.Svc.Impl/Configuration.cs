@@ -106,11 +106,12 @@ namespace KeithLink.Svc.Impl
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
 
+
 		//Email
-		private const string KEY_SMTP_HOST_NAME = "SMTPHostName";
+		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
+		private const string KEY_SMTP_SERVERNAME = "SmtpServer";
 		private const string KEY_SMTP_SEND_PORT = "SMTPSendPort";
 		private const string DEFAULT_SMTP_SEND_PORT = "25";
-		private const string KEY_SERVICE_EMAIL_ADDRESS = "ServiceEmailAddress";
 		private const string KEY_SMTP_USERNAME = "SMTPUsername";
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
@@ -732,7 +733,7 @@ namespace KeithLink.Svc.Impl
 
 		public static string SMTPHostName
 		{
-			get { return GetValue(KEY_SMTP_HOST_NAME, null); }
+			get { return GetValue(KEY_SMTP_SERVERNAME, null); }
 		}
 
 		public static int SMTPSendPort
@@ -756,7 +757,7 @@ namespace KeithLink.Svc.Impl
 
 		public static string ServiceEmailAddress
 		{
-			get { return GetValue(KEY_SERVICE_EMAIL_ADDRESS, null); }
+			get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
 		}
 
         #endregion
