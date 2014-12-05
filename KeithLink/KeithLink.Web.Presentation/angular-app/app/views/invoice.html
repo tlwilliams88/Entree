@@ -124,7 +124,7 @@
 
           <tr
             ng-repeat-start="invoice in (filteredItems = (invoices | filter:selectedFilterView.filter | filter:filterFields | orderBy:sortBy:sortOrder))"
-            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected }">
+            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, overdueHighlight:  invoice.status == 2}">
             <td>
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
             </td>

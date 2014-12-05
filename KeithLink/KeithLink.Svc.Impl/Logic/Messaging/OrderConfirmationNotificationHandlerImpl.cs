@@ -75,6 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             message.MessageBody = statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerNumber = customer.CustomerNumber;
+			message.NotificationType = NotificationType.OrderConfirmation;
             return message;
         }
     }

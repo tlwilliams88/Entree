@@ -19,6 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using System.ComponentModel;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -34,6 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IOrderHistoryQueueRepository _queue;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
+        //private readonly IUnitOfWork _unitOfWorkOriginal;
 
         private bool _keepListening;
         private Task _queueTask;
@@ -49,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _queue = queueRepo;
             _socket = socket;
             _unitOfWork = unitOfWork;
-
+            
             _keepListening = true;
 
             _socket.FileReceived            += SocketFileReceived;
@@ -118,30 +120,39 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 int loopCnt = 0;
+                //IUnitOfWork uow = _unitOfWork.GetUniqueUnitOfWork();
 
                 try {
-                    string rawOrder = _queue.ConsumeFromQueue();
+                    StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
                     while (rawOrder != null) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
-                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder);
+                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
 
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
                         Save(historyFile);
                         ProcessAsConfirmation(historyFile);
 
-                        rawOrder = _queue.ConsumeFromQueue();
+                        rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
-                        if (loopCnt++ == 1000) { 
-                            _unitOfWork.SaveChanges();
+                        if (loopCnt++ == 100) {
+                            _unitOfWork.SaveChangesAndClearContext();
+                            //uow.SaveChangesAndClearContext();
+                            //uow = _unitOfWork.GetUniqueUnitOfWork();
                             loopCnt = 0;
                         }
                     }
 
-                    _unitOfWork.SaveChanges();
+                    if (loopCnt > 0) {
+                        _unitOfWork.SaveChangesAndClearContext();
+                        //uow.SaveChangesAndClearContext();
+                        //uow = _unitOfWork.GetUniqueUnitOfWork();
+
+                        loopCnt = 0;
+                    }
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }

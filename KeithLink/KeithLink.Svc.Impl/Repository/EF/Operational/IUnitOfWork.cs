@@ -9,6 +9,11 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 	public interface IUnitOfWork
 	{
 		BEKDBContext Context { get; }
+
+        IUnitOfWork GetUniqueUnitOfWork();
+
 		int SaveChanges();
+		int SaveChangesAndClearContext();
+		
 	}
 }

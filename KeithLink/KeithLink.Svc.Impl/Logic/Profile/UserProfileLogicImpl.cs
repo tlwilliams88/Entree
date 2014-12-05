@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -31,12 +32,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IInvoiceServiceRepository _invoiceServiceRepository;
 		private IEmailClient _emailClient;
 		private IMessagingServiceRepository _messagingServiceRepository;
+		private IEventLogRepository _eventLog;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
                                     IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
-									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository)
+									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
+									IEventLogRepository eventLog)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -49,6 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_invoiceServiceRepository = invoiceServiceRepository;
 			_emailClient = emailClient;
 			_messagingServiceRepository = messagingServiceRepository;
+			_eventLog = eventLog;
         }
         #endregion
 
@@ -300,14 +304,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-			if (generatedPassword)
+			if (generatedPassword) //TODO: Switch to new email client with message templates
 				KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
 			else
 			{
-				var template = _messagingServiceRepository.ReadMessageTemplateForKey("GuestUserWelcome");
+				try
+				{
+					var template = _messagingServiceRepository.ReadMessageTemplateForKey("GuestUserWelcome");
 
-				if (template != null)
-					_emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail(branchId) });
+					if (template != null)
+						_emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail(branchId) });
+				}
+				catch (Exception ex)
+				{
+					//The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
+					_eventLog.WriteErrorLog("Error sending welcome email", ex);
+				}
 			}
 
             return GetUserProfile(emailAddress);
@@ -360,6 +372,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		{
             List<Customer> userCustomers;
 			string dsrRole = string.Empty;
+            
             if (IsInternalAddress(csProfile.Email))
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
@@ -380,7 +393,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     else
                     {
                         // until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
-                        userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                        //userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+                        userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList(); //use the use the user organization object for customer filtering
                     }
                 }
             }
@@ -395,7 +409,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 foreach (var customer in userCustomers)
                     customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
             }
-
+            
 			if (includeTermInformation)
 			{
 				foreach (var cust in userCustomers)
@@ -417,7 +431,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 				}
 			}
-
+            
 
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),

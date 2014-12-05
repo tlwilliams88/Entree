@@ -11,6 +11,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity.Infrastructure;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational
 {
@@ -91,5 +92,13 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 				throw;
 			}
 		}
+		
+		public void UndoDBContextChanges() {
+			foreach (DbEntityEntry entry in this.ChangeTracker.Entries()) {
+                if (entry.Entity != null) {
+				    entry.State = EntityState.Detached;
+                }
+			}
+		} 
 	}
 }
