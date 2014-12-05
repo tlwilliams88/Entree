@@ -120,6 +120,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 int loopCnt = 0;
+                //IUnitOfWork uow = _unitOfWork.GetUniqueUnitOfWork();
 
                 try {
                     StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
@@ -137,14 +138,21 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
-                        if (loopCnt++ == 100) { 
+                        if (loopCnt++ == 100) {
                             _unitOfWork.SaveChangesAndClearContext();
-
+                            //uow.SaveChangesAndClearContext();
+                            //uow = _unitOfWork.GetUniqueUnitOfWork();
                             loopCnt = 0;
                         }
                     }
 
-					_unitOfWork.SaveChangesAndClearContext();
+                    if (loopCnt > 0) {
+                        _unitOfWork.SaveChangesAndClearContext();
+                        //uow.SaveChangesAndClearContext();
+                        //uow = _unitOfWork.GetUniqueUnitOfWork();
+
+                        loopCnt = 0;
+                    }
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
