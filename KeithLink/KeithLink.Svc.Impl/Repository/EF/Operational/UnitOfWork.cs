@@ -5,45 +5,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Repository.EF.Operational
-{
-	public class UnitOfWork : IUnitOfWork
-	{
-		public BEKDBContext Context { get; private set; }
+namespace KeithLink.Svc.Impl.Repository.EF.Operational {
+	public class UnitOfWork : IUnitOfWork {
+        #region ctor
+        public UnitOfWork() {
+            this.Context = new BEKDBContext();
+            this.Context.Configuration.LazyLoadingEnabled = true;
+        }
 
-		public UnitOfWork()
-		{
-			this.Context = new BEKDBContext();
-			this.Context.Configuration.LazyLoadingEnabled = true;
-		}
+        public UnitOfWork(string nameOrConnectionString) {
+            if (string.IsNullOrEmpty(nameOrConnectionString))
+                this.Context = new BEKDBContext();
+            else
+                this.Context = new BEKDBContext(nameOrConnectionString);
+        }
 
-		public UnitOfWork(string nameOrConnectionString)
-		{
-			if (string.IsNullOrEmpty(nameOrConnectionString))
-				this.Context = new BEKDBContext();
-			else
-				this.Context = new BEKDBContext(nameOrConnectionString);
-		}
+        public UnitOfWork(DbConnection existingConnection) {
+            if (existingConnection == null)
+                this.Context = new BEKDBContext();
+            else
+                this.Context = new BEKDBContext(existingConnection);
+        }
+        #endregion
 
-		public UnitOfWork(DbConnection existingConnection)
-		{
-			if (existingConnection == null)
-				this.Context = new BEKDBContext();
-			else
-				this.Context = new BEKDBContext(existingConnection);
-		}
+        #region methods
+        public IUnitOfWork GetUniqueUnitOfWork() {
+            return new UnitOfWork(Context.Database.Connection);
+        }
 
-		public int SaveChanges()
-		{
-			return this.Context.SaveChanges();
-		}
+        public int SaveChanges() {
+            return this.Context.SaveChanges();
+        }
 
 
-		public int SaveChangesAndClearContext()
-		{
-			var returnValue = this.SaveChanges();
-			this.Context.UndoDBContextChanges();
-			return returnValue;
-		}
-	}
+        public int SaveChangesAndClearContext() {
+            var returnValue = this.SaveChanges();
+            this.Context.UndoDBContextChanges();
+            return returnValue;
+        }
+        #endregion
+
+        #region properties
+        public BEKDBContext Context { get; private set; }
+        #endregion
+    }
 }

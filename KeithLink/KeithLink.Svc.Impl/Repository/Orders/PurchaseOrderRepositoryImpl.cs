@@ -34,6 +34,26 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
 		}
 
+        public PurchaseOrder ReadPurchaseOrderByInvoice(string branchId, string invoiceNumber) {
+            var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+            queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+            queryBaskets.SearchCriteria.Model.Properties["BranchId"] = branchId;
+            queryBaskets.SearchCriteria.Model.Properties["MasterNumber"] = invoiceNumber;
+
+            queryBaskets.QueryOptions.RefreshBasket = false;
+
+            var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+            queryBaskets.RelatedOperations.Add(queryLineItems);
+
+            var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+            if (response.OperationResponses.Count == 0)
+                return null;
+
+            CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+            return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
+        }
 
 		public List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId)
 		{
