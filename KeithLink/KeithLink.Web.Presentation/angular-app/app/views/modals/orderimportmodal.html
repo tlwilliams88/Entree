@@ -25,7 +25,8 @@
       <div class="col-sm-9">
         <select name="contents" id="" required ng-model="options.contents">
           <option value="0">Item Only</option>
-          <option value="1">Item Qty</option>
+          <option value="1">Item, Quantity</option>
+          <option value="2">Item, Quantity, Broken Case (Y/N)</option>
         </select>
       </div>
     </div>
@@ -49,6 +50,12 @@
       <label for="ignoreFirstLine" class="col-sm-3 control-label">Ignore first line: </label>
       <div class="col-sm-9">
         <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="importByInventory" class="col-sm-3 control-label">Import by inventory: </label>
+      <div class="col-sm-9">
+        <input type="checkbox" name="importByInventory" ng-model="options.importbyinventory">
       </div>
     </div>
     
