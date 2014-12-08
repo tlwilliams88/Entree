@@ -125,7 +125,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 try {
                     StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
-                    while (rawOrder != null) {
+                    while (rawOrder.Length > 0) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
