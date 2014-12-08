@@ -188,6 +188,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
 
+			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
 			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();

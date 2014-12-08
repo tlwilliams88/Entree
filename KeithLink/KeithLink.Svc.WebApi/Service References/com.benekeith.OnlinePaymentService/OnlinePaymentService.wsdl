@@ -7,11 +7,9 @@
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinePaymentService_DeleteInvoice_InputMessage">
@@ -50,6 +48,12 @@
   <wsdl:message name="IOnlinePaymentService_MakeInvoicePayment_OutputMessage">
     <wsdl:part name="parameters" element="tns:MakeInvoicePaymentResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetInvoiceDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInvoiceDetails" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetInvoiceDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInvoiceDetailsResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOnlinePaymentService">
     <wsdl:operation name="DeleteInvoice">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/DeleteInvoice" message="tns:IOnlinePaymentService_DeleteInvoice_InputMessage" />
@@ -74,6 +78,10 @@
     <wsdl:operation name="MakeInvoicePayment">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" message="tns:IOnlinePaymentService_MakeInvoicePayment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse" message="tns:IOnlinePaymentService_MakeInvoicePayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoiceDetails">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetails" message="tns:IOnlinePaymentService_GetInvoiceDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetailsResponse" message="tns:IOnlinePaymentService_GetInvoiceDetails_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlinePaymentService" type="tns:IOnlinePaymentService">
@@ -125,6 +133,15 @@
     </wsdl:operation>
     <wsdl:operation name="MakeInvoicePayment">
       <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetInvoiceDetails">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetails" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

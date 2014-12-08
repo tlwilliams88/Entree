@@ -3,8 +3,7 @@
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
   <xs:element name="DeleteInvoice">
     <xs:complexType>
       <xs:sequence>
@@ -80,14 +79,29 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q10:UserSelectedContext" />
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q11:userprofile" />
-        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="payments" nillable="true" type="q12:ArrayOfPaymentTransactionModel" />
+        <xs:element minOccurs="0" name="emailAddress" nillable="true" type="xs:string" />
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="payments" nillable="true" type="q11:ArrayOfPaymentTransactionModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="MakeInvoicePaymentResponse">
     <xs:complexType>
       <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInvoiceDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q12:UserSelectedContext" />
+        <xs:element minOccurs="0" name="invoiceNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetInvoiceDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="GetInvoiceDetailsResult" nillable="true" type="q13:Invoice" />
+      </xs:sequence>
     </xs:complexType>
   </xs:element>
 </xs:schema>

@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private void DetermineCorrectStatus(InvoiceModel invoice)
 		{
 			if (invoice.Status == InvoiceStatus.Open && invoice.DueDate < DateTime.UtcNow)
-				invoice.Status = InvoiceStatus.Late;
+				invoice.Status = InvoiceStatus.PastDue;
 
 			invoice.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(invoice.Status, "");
 					
@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (invoice.Items == null || invoice.Items.Count == 0)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, invoice.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, invoice.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
 			
 			Parallel.ForEach(invoice.Items, invoiceItem =>

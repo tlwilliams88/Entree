@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Invoices;
 
 namespace KeithLink.Svc.Core.Extensions.Orders.History {
     public static class OrderHistoryDetailExtension {
@@ -137,6 +138,19 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
             return retVal;
         }
+
+		public static InvoiceItemModel ToInvoiceItem(this EF.OrderHistoryDetail value)
+		{
+			return new InvoiceItemModel()
+			{
+				ItemNumber = value.ItemNumber,
+				ItemPrice = value.SellPrice,
+				QuantityShipped = value.ShippedQuantity,
+				QuantityOrdered = value.OrderQuantity,
+				LineNumber = value.LineNumber.ToString(),
+				ExtSalesNet = value.ShippedQuantity * value.SellPrice
+			};
+		}
         #endregion
     }
 }

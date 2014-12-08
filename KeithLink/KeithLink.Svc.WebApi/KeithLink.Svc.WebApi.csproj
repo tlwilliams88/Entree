@@ -239,6 +239,9 @@
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService61.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -282,13 +285,7 @@
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService52.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService53.xsd">

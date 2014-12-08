@@ -17,7 +17,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 	public enum FileContentType
 	{
 		ItemOnly,
-		ItemQty
+		ItemQty,
+        ItemQtyBrokenCase
 	}
 
 	public enum FileFormat
@@ -33,14 +34,21 @@ namespace KeithLink.Svc.Core.Models.Orders
 	{
 		[DataMember(Name="itemnumber")]
 		public ItemNumberType ItemNumber { get; set; }
+
 		[DataMember(Name = "contents")]
 		public FileContentType Contents { get; set; }
+
 		[DataMember(Name = "fileformat")]
 		public FileFormat FileFormat { get; set; }
+
 		[DataMember(Name = "ignorezero")]
 		public bool IgnoreZeroQuantities { get; set; }
+
 		[DataMember(Name ="ignorefirst")]
 		public bool IgnoreFirstLine { get; set; }
+
+        [DataMember( Name = "importbyinventory" )]
+        public bool ImportByInventory { get; set; }
 
 	}
 

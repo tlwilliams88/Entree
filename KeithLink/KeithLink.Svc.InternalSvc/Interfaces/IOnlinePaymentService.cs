@@ -29,6 +29,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
         List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext);
 
 		[OperationContract]
-		void MakeInvoicePayment(UserSelectedContext userContext, UserProfile user, List<PaymentTransactionModel> payments);
+		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
+
+		[OperationContract]
+		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
     }
 }

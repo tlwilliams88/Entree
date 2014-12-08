@@ -119,6 +119,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Excel">
+      <HintPath>..\packages\ExcelDataReader.2.1.2.3\lib\net45\Excel.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
@@ -190,6 +196,7 @@
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />

@@ -56,8 +56,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			if (!Request.Content.IsMimeMultipartContent())
 				throw new InvalidOperationException();
 
-			String stringFileContent = null;
-			OrderImportOptions importOptions = null;
+            OrderImportFileModel fileModel = new OrderImportFileModel();
 
 			var provider = new MultipartMemoryStreamProvider();
 			await Request.Content.ReadAsMultipartAsync(provider);
@@ -74,20 +73,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 					switch (paramName)
 					{
 						case "file":
-							stringFileContent = s.ReadToEnd();
+                            stream.CopyTo( fileModel.Stream );
+                            fileModel.FileName = file.Headers.ContentDisposition.FileName.Trim('\"');
+                            stream.Seek(0, SeekOrigin.Begin); // Return to the start of the stream
+							fileModel.Contents = s.ReadToEnd();
 							break;
 						case "options":
-							importOptions = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderImportOptions>(s.ReadToEnd());
+							fileModel.Options = Newtonsoft.Json.JsonConvert.DeserializeObject<OrderImportOptions>(s.ReadToEnd());
 							break;
 					}					
 				}
 			}
 
-			if (string.IsNullOrEmpty(stringFileContent) || importOptions == null)
+			if (string.IsNullOrEmpty(fileModel.Contents) || fileModel.Options == null)
 				return new OrderImportModel() { Success = false, ErrorMessage = "Invalid request" };
 
-			return importLogic.ImportOrder(this.AuthenticatedUser, this.SelectedUserContext, importOptions, stringFileContent);
-			//}
+			return importLogic.ImportOrder(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
 		}
     }
 }
