@@ -113,8 +113,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
-                _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName, 
-                                                userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
+                if (!_profileLogic.IsInternalAddress(userInfo.Email))
+                {
+                    _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
+                                                  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
+                }
 
                 UserProfileReturn profile = _profileLogic.GetUserProfile(userInfo.Email);
 
