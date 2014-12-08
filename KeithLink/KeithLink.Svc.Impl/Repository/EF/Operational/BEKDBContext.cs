@@ -93,11 +93,11 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 			}
 		}
 		
-		public void UndoDBContextChanges()
-		{
-			foreach (DbEntityEntry entry in this.ChangeTracker.Entries())
-			{
-				entry.State = EntityState.Detached;
+		public void UndoDBContextChanges() {
+			foreach (DbEntityEntry entry in this.ChangeTracker.Entries()) {
+                if (entry.Entity != null) {
+				    entry.State = EntityState.Detached;
+                }
 			}
 		} 
 	}

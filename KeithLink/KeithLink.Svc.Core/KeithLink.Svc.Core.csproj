@@ -339,6 +339,7 @@
     <Compile Include="Models\Orders\OrderFile.cs" />
     <Compile Include="Models\Orders\OrderHeader.cs" />
     <Compile Include="Models\Orders\OrderHistoryUpdateModel.cs" />
+    <Compile Include="Models\Orders\OrderImportFileModel.cs" />
     <Compile Include="Models\Orders\OrderImportModel.cs" />
     <Compile Include="Models\Orders\OrderImportOptions.cs" />
     <Compile Include="Models\Paging\FilterInfo.cs" />

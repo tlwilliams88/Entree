@@ -124,7 +124,7 @@
 
           <tr
             ng-repeat-start="invoice in (filteredItems = (invoices | filter:selectedFilterView.filter | filter:filterFields | orderBy:sortBy:sortOrder))"
-            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected }">
+            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, overdueHighlight:  invoice.status == 2}">
             <td>
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
             </td>
@@ -145,7 +145,7 @@
               {{invoice.amount | currency}}
             </td>
             <td class="text-center large-icon hidden-xs hidden-sm">
-              <a ng-if="invoice.invoicelink" ng-href="{{invoice.invoicelink}}" class="icon-camera"></a>
+              <a ng-if="invoice.invoicelink" target="_blank" ng-href="{{invoice.invoicelink}}" class="icon-camera"></a>
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input

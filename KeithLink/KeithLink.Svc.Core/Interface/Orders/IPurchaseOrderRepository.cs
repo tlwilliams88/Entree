@@ -10,8 +10,13 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	public interface IPurchaseOrderRepository
 	{
 		PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber);
+
+        PurchaseOrder ReadPurchaseOrderByInvoice(string branchid, string invoiceNumber);
+
 		List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId);
+        
         string UpdatePurchaseOrder(PurchaseOrder order);
+        
         string SubmitChangeOrder(Guid userId, Guid orderGroupId);
 	}
 }

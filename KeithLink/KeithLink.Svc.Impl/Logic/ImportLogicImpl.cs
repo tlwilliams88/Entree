@@ -6,6 +6,9 @@ using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Excel;
+using DocumentFormat;
+using DocumentFormat.OpenXml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,24 +19,28 @@ using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Enumerations.List;
 
-namespace KeithLink.Svc.Impl.Logic
-{
-	public class ImportLogicImpl: IImportLogic
-	{
-		private IListServiceRepository listServiceRepository;
-		private ICatalogLogic catalogLogic;
-		private IEventLogRepository eventLogRepository;
-		private IShoppingCartLogic shoppingCartLogic;
+namespace KeithLink.Svc.Impl.Logic {
+    public class ImportLogicImpl : IImportLogic {
+        private IListServiceRepository listServiceRepository;
+        private ICatalogLogic catalogLogic;
+        private IEventLogRepository eventLogRepository;
+        private IShoppingCartLogic shoppingCartLogic;
 
-		public ImportLogicImpl(IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository,IShoppingCartLogic shoppingCartLogic)
-		{
-			this.listServiceRepository = listServiceRepository;
-			this.catalogLogic = catalogLogic;
-			this.eventLogRepository = eventLogRepository;
-			this.shoppingCartLogic = shoppingCartLogic;
-		}
+        private const char CSV_DELIMITER = ',';
+        private const char TAB_DELIMITER = '\t';
+        private const string BINARY_EXCEL_EXTENSION = ".xls";
 
-		public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile)
+        private const int ITEM_NUMBER_INDEX = 0;
+        private const int ITEM_QUANTITY_INDEX = 1;
+
+        public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic ) {
+            this.listServiceRepository = listServiceRepository;
+            this.catalogLogic = catalogLogic;
+            this.eventLogRepository = eventLogRepository;
+            this.shoppingCartLogic = shoppingCartLogic;
+        }
+        
+        public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile)
 		{
 			try
 			{
@@ -74,85 +81,121 @@ namespace KeithLink.Svc.Impl.Logic
 			}
 		}
 
+        public OrderImportModel ImportOrder( UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file ) {
+            var returnModel = new OrderImportModel();
 
-		public OrderImportModel ImportOrder(UserProfile user, UserSelectedContext catalogInfo, Core.Models.Orders.OrderImportOptions options, string fileContents)
-		{
-			var returnModel = new OrderImportModel();
+            var newCart = new ShoppingCart {
+                Name = string.Format( "Imported Order - {0}", DateTime.Now.ToString( "g" ) ),
+                BranchId = catalogInfo.BranchId
+            };
 
-			var newCart = new ShoppingCart { 
-                Name = string.Format("Imported Order - {0}", DateTime.Now.ToString("g")), 
-				BranchId = catalogInfo.BranchId };
+            var items = new List<ShoppingCartItem>();
 
-			var items = new List<ShoppingCartItem>();
+            try {
+                switch (file.Options.FileFormat) {
+                    case FileFormat.CSV:
+                        items = ParseDelimitedFile( file, CSV_DELIMITER, user, catalogInfo );
+                        break;
+                    case FileFormat.Tab:
+                        items = ParseDelimitedFile( file, TAB_DELIMITER, user, catalogInfo );
+                        break;
+                    case FileFormat.Excel:
+                        items = ParseExcelDocument( file, user, catalogInfo );
+                        break;
+                }
+            } catch (Exception e) {
+                returnModel.Success = false;
+                returnModel.ErrorMessage = e.Message.ToString();
+                KeithLink.Common.Core.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
+            }
 
-			switch (options.FileFormat)
-			{
-				case FileFormat.CSV:
-					var rows = fileContents.Split('\n');
-					items = rows
-                        .Skip(options.IgnoreFirstLine ? 1 : 0)
-                        .Select(i => i.Split(','))
-                        .Where(f => f[0] == "y")
-                        .Select(l => new ShoppingCartItem() { 
-                            ItemNumber = DetermineItemNumber(l, options), 
-                            Quantity = DetermineQuantity(l, options) })
-                        .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
-                        .ToList();
-					break;
-				case FileFormat.Tab:
-					var tabrows = fileContents.Split('\n');
-					items = tabrows
-                        .Skip(options.IgnoreFirstLine ? 1 : 0)
-                        .Select(i => i.Split((char)9))
-                        .Select(l => new ShoppingCartItem() { 
-                            ItemNumber = DetermineItemNumber(l, options), 
-                            Quantity = DetermineQuantity(l, options) })
-                        .Where(x => !string.IsNullOrEmpty(x.ItemNumber))
-                        .ToList();
-					break;
-				case FileFormat.Excel:
-					break;
-			}
+            if (returnModel.ErrorMessage == null) {
+                if (file.Options.IgnoreZeroQuantities)
+                    items = items.Where( i => i.Quantity > 0 ).ToList();
 
-			if (options.IgnoreZeroQuantities)
-				items = items.Where(i => i.Quantity > 0).ToList();
+                newCart.Items = items;
 
+                returnModel.ListId = shoppingCartLogic.CreateCart( user, catalogInfo, newCart );
+                returnModel.Success = true;
+            }
 
-			newCart.Items = items;
+            return returnModel;
+        }
 
-			var cartId = shoppingCartLogic.CreateCart(user, catalogInfo, newCart);
-			
-			return returnModel;
-			
-		}
+        private List<ShoppingCartItem> ParseDelimitedFile(OrderImportFileModel file, char Delimiter, UserProfile user, UserSelectedContext catalogInfo) {
+            List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
 
-		private string DetermineItemNumber(string[] l, OrderImportOptions options)
-		{
-			switch (options.ItemNumber)
-			{
-				case ItemNumberType.ItemNumberOrUPC:
-					//TODO: Determine if UPC or ItemNumber??? Lookup if UPC
+            var rows = file.Contents.Split( new string[] { Environment.NewLine }, StringSplitOptions.None );
+            returnValue = rows
+                        .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
+                        .Select( i => i.Split( Delimiter ) )
+                        // Not sure why this is being checked. .Where( f => f[0] == "y" )
+                        .Select( l => new ShoppingCartItem() {
+                            ItemNumber = DetermineItemNumber( l, file.Options, user, catalogInfo ),
+                            Quantity = DetermineQuantity( l, file.Options )
+                            } )
+                        .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
-					return l[0];
-				case ItemNumberType.UPC:
-					//TODO: Lookup ItemNumber
+          return returnValue;
+        }
 
-					return l[0];
-				default: //ItemNumber
-					//Just return value
-					return l[0];
+        private List<ShoppingCartItem> ParseExcelDocument(OrderImportFileModel file, UserProfile user, UserSelectedContext catalogInfo) {
+            List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
 
-			}
-		}
+            IExcelDataReader rdr = null;
 
-		private decimal DetermineQuantity(string[] l, OrderImportOptions options)
-		{
+            if (System.IO.Path.GetExtension( file.FileName ).Equals(BINARY_EXCEL_EXTENSION,StringComparison.InvariantCultureIgnoreCase)) {
+                rdr = ExcelReaderFactory.CreateBinaryReader( file.Stream );
+            } else {
+                rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
+            }
 
-			if(options.Contents == FileContentType.ItemOnly)
-				return 0;
+            rdr.IsFirstRowAsColumnNames = file.Options.IgnoreFirstLine;
 
-			var returnDecimal = l[1].ToDecimal();
-			return returnDecimal.HasValue ? returnDecimal.Value : 0;
-		}
-	}
+            while (rdr.Read()) {
+                returnValue.Add(new ShoppingCartItem() {
+                    ItemNumber = DetermineItemNumber(new string[] {rdr.GetString(0) }, file.Options, user, catalogInfo),
+                    Quantity = DetermineQuantity(new string[] { rdr.GetString(1) }, file.Options) 
+                });
+            }
+
+            return returnValue;
+        }
+
+        private string DetermineItemNumber( string[] itemAndQuantities, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
+            switch (options.ItemNumber) {
+                case ItemNumberType.ItemNumberOrUPC:
+                    if (itemAndQuantities[0].Length > 6) { // It is a UPC - lookup the item number
+                        return GetItemNumberFromUPC( itemAndQuantities[0], options, user, catalogInfo ); 
+                    }
+                    return itemAndQuantities[0];
+                case ItemNumberType.UPC:
+                    return GetItemNumberFromUPC(itemAndQuantities[0], options, user, catalogInfo);
+                default: //ItemNumber
+                    //Just return value
+                    return itemAndQuantities[0];
+            }
+        }
+
+        private decimal DetermineQuantity( string[] quantities, OrderImportOptions options ) {
+            if (options.Contents == FileContentType.ItemOnly)
+                return 0;
+
+            var returnDecimal = quantities[0].ToDecimal();
+            return returnDecimal.HasValue ? returnDecimal.Value : 0;
+        }
+        
+        private string GetItemNumberFromUPC( string upc, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
+            string returnValue = String.Empty;
+
+            ProductsReturn products = catalogLogic.GetProductsBySearch( catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10 }, user);
+            foreach (Product p in products.Products) {
+                if (p.UPC == upc) {
+                    returnValue = p.ItemNumber;
+                }
+            }
+
+            return returnValue;
+        }
+    }
 }
