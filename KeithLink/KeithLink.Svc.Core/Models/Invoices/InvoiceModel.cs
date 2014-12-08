@@ -61,5 +61,8 @@ namespace KeithLink.Svc.Core.Models.Invoices
 
 		[DataMember(Name = "invoicelink")]
 		public Uri InvoiceLink { get; set; }
+
+		[DataMember(Name = "transactions")]
+		public List<InvoiceTransactionModel> Transactions { get; set; }
 	}
 }

@@ -33,8 +33,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
-        public List<InvoiceModel> InvoiceTransactions(string invoiceNumber) {
-            return _repo.GetInvoiceTransactions(SelectedUserContext, invoiceNumber);
+        public InvoiceModel InvoiceTransactions(string invoiceNumber) {
+            return _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
         }
 
 
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("invoice/payment")]
 		public void Payment(List<PaymentTransactionModel> payments)
 		{
-			_repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser, payments);
+			_repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
 		}
 
 		[HttpGet]

@@ -171,6 +171,7 @@
     <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
     <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
+    <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Invoices\InvoiceTransactionModel.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
     <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />

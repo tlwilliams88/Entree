@@ -40,11 +40,17 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetOpenInvoiceHeaders(userContext).ToList<InvoiceModel>();
         }
        
-		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
-			_client.MakeInvoicePayment(userContext, user, payments.ToArray());
+			_client.MakeInvoicePayment(userContext, emailAddress, payments.ToArray());
 		} 
 		
 		#endregion
+
+
+		public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
+		{
+			return _client.GetInvoiceDetails(userContext, invoiceNumber);
+		}
 	}
 }

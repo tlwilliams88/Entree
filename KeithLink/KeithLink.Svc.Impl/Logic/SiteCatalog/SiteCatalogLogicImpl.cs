@@ -124,7 +124,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
         }
 
-        public ProductsReturn GetProductsByIds(string branch, List<string> ids, UserProfile profile)
+        public ProductsReturn GetProductsByIds(string branch, List<string> ids)
         {
 			int totalProcessed = 0;
 			var products = new ProductsReturn() { Products = new List<Product>() };
