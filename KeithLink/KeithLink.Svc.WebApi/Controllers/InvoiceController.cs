@@ -1,7 +1,9 @@
-﻿//using KeithLink.Svc.Core.Interface.Invoices;
+﻿using KeithLink.Svc.Core.Interface.Configuration;
+//using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
+using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using System;
 using System.Collections.Generic;
@@ -16,12 +18,16 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class InvoiceController : BaseController {
         #region attributes
         private readonly IOnlinePaymentServiceRepository _repo;
-        #endregion
+		private readonly IExportSettingServiceRepository exportSettingRepository;
+		#endregion
 
         #region ctor
         #endregion
-        public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository) : base(profileLogic) {
+		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository, IExportSettingServiceRepository exportSettingRepository)
+			: base(profileLogic)
+		{
             _repo = invoiceRepository;
+			exportSettingRepository = exportSettingRepository;
 		}
 
         #region methods
@@ -31,11 +37,47 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _repo.GetOpenInvoiceHeaders(SelectedUserContext);
         }
 
+		[HttpPost]
+		[ApiKeyedRoute("invoice/export/")]
+		public HttpResponseMessage ExportInvoices(ExportRequestModel exportRequest)
+		{
+			var list = _repo.GetOpenInvoiceHeaders(SelectedUserContext);
+
+			if (exportRequest.Fields != null)
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<InvoiceModel>(list, exportRequest);
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("invoice/export/")]
+		public ExportOptionsModel ExportInvoices()
+		{
+			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
+		}
+
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
         public InvoiceModel InvoiceTransactions(string invoiceNumber) {
             return _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
         }
+
+		[HttpPost]
+		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
+		public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest)
+		{
+			var invoice = _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
+			if (exportRequest.Fields != null)
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+
+			return ExportModel<InvoiceItemModel>(invoice.Items, exportRequest);
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
+		public ExportOptionsModel ExportInvoiceDetail(string invoiceNumber)
+		{
+			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
+		}
 
 
 		[HttpPost]

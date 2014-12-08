@@ -1,8 +1,11 @@
 ﻿using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
@@ -12,7 +15,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Invoices
 {
 	[DataContract(Name = "Invoice")]
-	public class InvoiceModel
+	public class InvoiceModel: IExportableModel
 	{
 		[DataMember (Name = "id")]
 		public long Id { get; set; }
@@ -21,6 +24,7 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public string CustomerNumber { get; set; }
 
 		[DataMember(Name = "invoicenumber")]
+		[Description("Invoice #")]
 		public string InvoiceNumber { get; set; }
 
 		[DataMember(Name = "invoicedate")]
@@ -30,18 +34,21 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		public DateTime? OrderDate { get; set; }
 
 		[DataMember(Name = "duedate")]
+		[Description("Due Date")]
 		public DateTime? DueDate { get; set; }
 
 		[DataMember(Name = "status")]
 		public InvoiceStatus Status { get; set; }
 
 		[DataMember(Name = "statusdescription")]
+		[Description("Status")]
 		public string StatusDescription { get; set; }
 
 		[DataMember(Name = "type")]
 		public InvoiceType Type { get; set; }
 
 		[DataMember(Name = "typedescription")]
+		[Description("Type")]
 		public string TypeDescription { get; set; }
 
 		[DataMember(Name = "amount")]
@@ -64,5 +71,19 @@ namespace KeithLink.Svc.Core.Models.Invoices
 
 		[DataMember(Name = "transactions")]
 		public List<InvoiceTransactionModel> Transactions { get; set; }
+
+		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
+		{
+			var defaultConfig = new List<ExportModelConfiguration>();
+
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 1 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "TypeDescription", Order = 10 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "StatusDescription", Order = 20 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "DueDate", Order = 30 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "Amount", Order = 40 });
+
+
+			return defaultConfig;
+		}
 	}
 }
