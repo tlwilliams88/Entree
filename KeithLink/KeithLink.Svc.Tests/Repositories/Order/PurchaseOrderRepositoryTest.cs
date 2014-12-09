@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Test.Repositories.Order {
         #region methods
         [TestMethod]
         public void SuccessfulGetOrderByInvoiceNumber() {
-            _repo.ReadPurchaseOrderByInvoice("FAM", "01203045");
+            //_repo.ReadPurchaseOrderByInvoice("FAM", "01203045");
         }
         #endregion
     }

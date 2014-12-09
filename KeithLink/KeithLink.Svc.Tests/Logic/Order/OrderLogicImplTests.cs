@@ -72,6 +72,46 @@ namespace KeithLink.Svc.Test.Logic
             orderLogic.ProcessOrders();
         }
 
+        //[TestMethod]
+        //public void CallReadOrders() {
+        //    EventLogRepositoryImpl logRepo = new EventLogRepositoryImpl(Configuration.ApplicationName);
+        //    PurchaseOrderRepositoryImpl poRepo = new PurchaseOrderRepositoryImpl();
+            
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl catRepo = new Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl();
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl catImgRepo = new Impl.Repository.SiteCatalog.ProductImageRepositoryImpl();
+
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl priceRepo = new Impl.Repository.SiteCatalog.PriceRepositoryImpl();
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl priceCache = new Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl();
+        //    KeithLink.Svc.Impl.Logic.PriceLogicImpl priceLogic = new Impl.Logic.PriceLogicImpl(priceRepo, priceCache);
+
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl branchRepo = new Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl branchSvcRepo = new Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl();
+        //    KeithLink.Svc.Impl.Logic.DivisionLogicImpl branchLogic = new Impl.Logic.DivisionLogicImpl(branchRepo, branchSvcRepo);
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository categoryImgRepo = new Impl.Repository.SiteCatalog.CategoryImageRepository(logRepo);
+        //    KeithLink.Svc.Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl catCache = new Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl();
+
+        //    NoOrderServiceRepositoryImpl ordSvcRepo = new NoOrderServiceRepositoryImpl();
+        //    KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl listSvcRepo = new Impl.Repository.Lists.NoListServiceRepositoryImpl();
+
+        //    KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic = new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(catRepo, priceLogic, catImgRepo, listSvcRepo, branchRepo, categoryImgRepo, catCache, branchLogic, ordSvcRepo);
+
+        //    OrderQueueLogicImpl orderQueueLogic = new OrderQueueLogicImpl(logRepo, new OrderQueueRepositoryImpl(), new OrderSocketConnectionRepositoryImpl());
+
+        //    OrderLogicImpl logic = new OrderLogicImpl(poRepo, catLogic, ordSvcRepo, listSvcRepo, orderQueueLogic, priceLogic, logRepo);
+
+        //    System.Collections.Generic.List<KeithLink.Svc.Core.Models.Orders.Order> orders = 
+        //        logic.ReadOrders(new Core.Models.Profile.UserProfile() {
+        //                            UserId = Guid.Parse("{021b7601-8de6-4fd7-b8b0-314dcc6ba83b}"),
+        //                            EmailAddress = "qauser@qa.com"
+        //                         }, 
+        //                         new Core.Models.SiteCatalog.UserSelectedContext() { 
+        //                            BranchId = "FAM",
+        //                            CustomerId = "410300"
+        //                         });
+
+        //    Assert.IsTrue(orders.Count > 0);
+        //}
+
         private string SerializeOrder(OrderFile order) {
             System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
             System.IO.StringWriter xmlWriter = new System.IO.StringWriter();

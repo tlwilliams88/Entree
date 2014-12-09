@@ -13,16 +13,22 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 	{
 		[DataMember(Name = "cartitemid")]
 		public Guid CartItemId { get; set; }
+
 		[DataMember(Name = "quantity")]
 		public decimal Quantity { get; set; }
+
 		[DataMember(Name = "packsize")]
 		public string PackSize { get; set; }
+
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
+
 		[DataMember(Name ="notes")]
 		public string Notes { get; set; }
+
 		[DataMember(Name="each")]
 		public bool Each { get; set; }
+
 		[DataMember(Name = "storagetemp")]
 		public string StorageTemp { get; set; }
 	}

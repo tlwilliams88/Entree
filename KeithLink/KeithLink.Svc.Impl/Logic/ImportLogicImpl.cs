@@ -132,7 +132,8 @@ namespace KeithLink.Svc.Impl.Logic {
                         // Not sure why this is being checked. .Where( f => f[0] == "y" )
                         .Select( l => new ShoppingCartItem() {
                             ItemNumber = DetermineItemNumber( l, file.Options, user, catalogInfo ),
-                            Quantity = DetermineQuantity( l, file.Options )
+                            Quantity = DetermineQuantity( l, file.Options ),
+                            Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( l, file.Options ):false
                             } )
                         .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
@@ -183,6 +184,12 @@ namespace KeithLink.Svc.Impl.Logic {
 
             var returnDecimal = quantities[0].ToDecimal();
             return returnDecimal.HasValue ? returnDecimal.Value : 0;
+        }
+
+        private bool DetermineBrokenCaseItem( string[] brokenCase, OrderImportOptions options ) {
+            bool returnValue = false;
+
+            return returnValue;
         }
         
         private string GetItemNumberFromUPC( string upc, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
