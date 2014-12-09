@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
@@ -96,6 +97,39 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
             retVal.StropNumber = value.StopNumber;
+
+            return retVal;
+        }
+
+        public static Order ToOrder(this EF.OrderHistoryHeader value) {
+            Order retVal = new Order();
+
+            //retVal.OrderNumber = value.ControlNumber;
+
+            switch (value.OrderStatus.Trim()) {
+                case "":
+                    retVal.Status = "Ordered";
+                    break;
+                case "I":
+                    retVal.Status = "Invoiced";
+                    break;
+                case "P":
+                    retVal.Status = "Processing";
+                    break;
+                default:
+                    break;
+            }
+
+		    retVal.DeliveryDate = value.DeliveryDate;
+		    retVal.InvoiceNumber = value.InvoiceNumber;
+		    retVal.InvoiceStatus = "N/A";
+            retVal.ItemCount = value.OrderDetails.Count;
+            retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
+		    retVal.CreatedDate = value.CreatedUtc;
+            retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
+            retVal.IsChangeOrderAllowed = false;
+		    //retVal.Items { get; set; }
+            //retVal.CommerceId { get; set; }
 
             return retVal;
         }

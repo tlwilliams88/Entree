@@ -1,4 +1,5 @@
-﻿using CommerceServer.Foundation;
+﻿using CommerceServer.Core;
+using CommerceServer.Foundation;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Impl.Helpers;
@@ -12,6 +13,32 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 {
 	public class PurchaseOrderRepositoryImpl: IPurchaseOrderRepository
 	{
+        public Guid? GetSoldToIdForPurchaseOrderByInvoice(string poNumber) {
+            System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            SearchClause poCluase = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", poNumber);
+            //SearchClause customerClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "CustomerId", customerNumber);
+            //SearchClause branchClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "BranchId", branchId);
+            //SearchClause invoiceClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Masternumber", invoiceNumber);
+            //SearchClause joinedClause = searchClauseFactory.IntersectClauses(branchClause, invoiceClause);
+
+            // Create search options.
+            SearchOptions options = new SearchOptions();
+            options.PropertiesToReturn = "SoldToId";
+            options.SortProperties = "SoldToId";
+            options.NumberOfRecordsToReturn = 1;
+
+            // Perform the search.
+            System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(poCluase, options);
+
+            if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0) {
+                // Enumerate the results of the search.
+                return Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
+            } else {
+                return null;
+            }
+        }
+
 		public PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
@@ -34,25 +61,32 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
 		}
 
-        public PurchaseOrder ReadPurchaseOrderByInvoice(string branchId, string invoiceNumber) {
-            var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-            queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-            queryBaskets.SearchCriteria.Model.Properties["BranchId"] = branchId;
-            queryBaskets.SearchCriteria.Model.Properties["MasterNumber"] = invoiceNumber;
+        public PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber) {
+            Guid? userId = GetSoldToIdForPurchaseOrderByInvoice(confirmationNumber);
 
-            queryBaskets.QueryOptions.RefreshBasket = false;
+            if (userId.HasValue) {
+                var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+                
+                queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.Value.ToString("B");
+                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+                queryBaskets.SearchCriteria.Model.Properties["TrackingNumber"] = confirmationNumber;
+                
+                queryBaskets.QueryOptions.RefreshBasket = false;
 
-            var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
-            queryBaskets.RelatedOperations.Add(queryLineItems);
+                var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+                queryBaskets.RelatedOperations.Add(queryLineItems);
 
-            var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+                var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
 
-            if (response.OperationResponses.Count == 0)
+                if (response.OperationResponses.Count == 0)
+                    return null;
+
+                CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+                return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
+            } else {
                 return null;
-
-            CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
-
-            return ((PurchaseOrder)basketResponse.CommerceEntities[0]);
+            }
         }
 
 		public List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId)
