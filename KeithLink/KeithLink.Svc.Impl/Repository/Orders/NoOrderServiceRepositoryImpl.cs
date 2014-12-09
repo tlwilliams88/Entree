@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
 
 
-        public List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo)
+        public List<Core.Models.Orders.Order> GetCustomerOrders(UserSelectedContext catalogInfo)
         {
             throw new NotImplementedException();
         }

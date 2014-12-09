@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Orders.Confirmations;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,6 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber);
 
         [OperationContract]
-        List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo);
+        List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
 	}
 }

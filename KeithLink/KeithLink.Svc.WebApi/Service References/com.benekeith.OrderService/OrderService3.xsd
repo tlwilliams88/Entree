@@ -2,6 +2,7 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" />
   <xs:element name="ReadLatestOrderModifiedDateForCustomer">
     <xs:complexType>
       <xs:sequence>
@@ -31,17 +32,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetCustomerOrderHistories">
+  <xs:element name="GetCustomerOrders">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q4:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="GetCustomerOrderHistoriesResponse">
+  <xs:element name="GetCustomerOrdersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" minOccurs="0" name="GetCustomerOrderHistoriesResult" nillable="true" type="q5:ArrayOfOrderHistoryHeader" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetCustomerOrdersResult" nillable="true" type="q5:ArrayOfOrder" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

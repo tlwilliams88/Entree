@@ -7,6 +7,8 @@
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage">
@@ -21,11 +23,11 @@
   <wsdl:message name="IOrderService_GetLastFiveOrderHistory_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetLastFiveOrderHistoryResponse" />
   </wsdl:message>
-  <wsdl:message name="IOrderService_GetCustomerOrderHistories_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetCustomerOrderHistories" />
+  <wsdl:message name="IOrderService_GetCustomerOrders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerOrders" />
   </wsdl:message>
-  <wsdl:message name="IOrderService_GetCustomerOrderHistories_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetCustomerOrderHistoriesResponse" />
+  <wsdl:message name="IOrderService_GetCustomerOrders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerOrdersResponse" />
   </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
@@ -36,9 +38,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistory" message="tns:IOrderService_GetLastFiveOrderHistory_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistoryResponse" message="tns:IOrderService_GetLastFiveOrderHistory_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetCustomerOrderHistories">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetCustomerOrderHistories" message="tns:IOrderService_GetCustomerOrderHistories_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetCustomerOrderHistoriesResponse" message="tns:IOrderService_GetCustomerOrderHistories_OutputMessage" />
+    <wsdl:operation name="GetCustomerOrders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetCustomerOrders" message="tns:IOrderService_GetCustomerOrders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetCustomerOrdersResponse" message="tns:IOrderService_GetCustomerOrders_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
@@ -61,8 +63,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetCustomerOrderHistories">
-      <soap:operation soapAction="http://tempuri.org/IOrderService/GetCustomerOrderHistories" style="document" />
+    <wsdl:operation name="GetCustomerOrders">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetCustomerOrders" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
