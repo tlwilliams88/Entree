@@ -26,6 +26,9 @@ namespace KeithLink.Svc.Impl.Logic {
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
 
+        private StringBuilder _errors;
+        private StringBuilder _warnings;
+
         private const char CSV_DELIMITER = ',';
         private const char TAB_DELIMITER = '\t';
         private const string BINARY_EXCEL_EXTENSION = ".xls";
@@ -38,6 +41,9 @@ namespace KeithLink.Svc.Impl.Logic {
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
+
+            _errors = new StringBuilder();
+            _warnings = new StringBuilder();
         }
         
         public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile)
@@ -105,11 +111,11 @@ namespace KeithLink.Svc.Impl.Logic {
                 }
             } catch (Exception e) {
                 returnModel.Success = false;
-                returnModel.ErrorMessage = e.Message.ToString();
+                Error(String.Format(e.Message.ToString()));
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
             }
 
-            if (returnModel.ErrorMessage == null) {
+            if (_errors.Length < 1) {
                 if (file.Options.IgnoreZeroQuantities)
                     items = items.Where( i => i.Quantity > 0 ).ToList();
 
@@ -119,6 +125,8 @@ namespace KeithLink.Svc.Impl.Logic {
                 returnModel.Success = true;
             }
 
+            returnModel.ErrorMessage = _errors.ToString();
+            returnModel.WarningMessage = _warnings.ToString();
             return returnModel;
         }
 
@@ -129,7 +137,6 @@ namespace KeithLink.Svc.Impl.Logic {
             returnValue = rows
                         .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
                         .Select( i => i.Split( Delimiter ) )
-                        // Not sure why this is being checked. .Where( f => f[0] == "y" )
                         .Select( l => new ShoppingCartItem() {
                             ItemNumber = DetermineItemNumber( l, file.Options, user, catalogInfo ),
                             Quantity = DetermineQuantity( l, file.Options ),
@@ -151,43 +158,69 @@ namespace KeithLink.Svc.Impl.Logic {
                 rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
             }
 
-            rdr.IsFirstRowAsColumnNames = file.Options.IgnoreFirstLine;
+            if ( file.Options.IgnoreFirstLine.Equals( true ) ) {
+                rdr.Read(); // Skip the first line
+            }
 
             while (rdr.Read()) {
                 returnValue.Add(new ShoppingCartItem() {
                     ItemNumber = DetermineItemNumber(new string[] {rdr.GetString(0) }, file.Options, user, catalogInfo),
-                    Quantity = DetermineQuantity(new string[] { rdr.GetString(1) }, file.Options) 
+                    Quantity = DetermineQuantity(new string[] { rdr.GetString(1) }, file.Options),
+                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( new string[] { rdr.GetString(2) }, file.Options ):false
                 });
             }
 
             return returnValue;
         }
 
-        private string DetermineItemNumber( string[] itemAndQuantities, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
-            switch (options.ItemNumber) {
-                case ItemNumberType.ItemNumberOrUPC:
-                    if (itemAndQuantities[0].Length > 6) { // It is a UPC - lookup the item number
-                        return GetItemNumberFromUPC( itemAndQuantities[0], options, user, catalogInfo ); 
-                    }
-                    return itemAndQuantities[0];
-                case ItemNumberType.UPC:
-                    return GetItemNumberFromUPC(itemAndQuantities[0], options, user, catalogInfo);
-                default: //ItemNumber
-                    //Just return value
-                    return itemAndQuantities[0];
+        private string DetermineItemNumber( string[] itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
+            string returnValue = null;
+
+            if (itemNumber[0].ToInt().Equals( null )) {
+                Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber[0] ));
+            } else {
+                switch (options.ItemNumber) {
+                    case ItemNumberType.ItemNumberOrUPC:
+                        if (itemNumber[0].Length > 6) { // It is a UPC - lookup the item number
+                            returnValue = GetItemNumberFromUPC( itemNumber[0], options, user, catalogInfo ); 
+                        }
+                        returnValue = itemNumber[0];
+                        break;
+                    case ItemNumberType.UPC:
+                        returnValue = GetItemNumberFromUPC(itemNumber[0], options, user, catalogInfo);
+                        break;
+                    default: //ItemNumber
+                        //Just return value
+                        returnValue = itemNumber[0];
+                        break;
+                }
             }
+
+            return returnValue;
         }
 
         private decimal DetermineQuantity( string[] quantities, OrderImportOptions options ) {
-            if (options.Contents == FileContentType.ItemOnly)
-                return 0;
+            decimal? returnValue = null;
 
-            var returnDecimal = quantities[0].ToDecimal();
-            return returnDecimal.HasValue ? returnDecimal.Value : 0;
+            if (options.Contents.Equals(FileContentType.ItemOnly) ) {
+                returnValue = 0;
+            } else {
+                returnValue = quantities[0].ToDecimal();
+            }
+
+            if (returnValue.Equals( null )) {
+                Warning( "There was a problem during import. Quantity: {0} does not appear to be a valid number. Some quantities may not have imported properly." );
+            }
+
+            return returnValue.HasValue ? returnValue.Value : 0;
         }
 
         private bool DetermineBrokenCaseItem( string[] brokenCase, OrderImportOptions options ) {
             bool returnValue = false;
+
+            if (brokenCase[0].Equals( "y", StringComparison.InvariantCultureIgnoreCase )) {
+                returnValue = true;
+            }
 
             return returnValue;
         }
@@ -203,6 +236,14 @@ namespace KeithLink.Svc.Impl.Logic {
             }
 
             return returnValue;
+        }
+
+        private void Error( string error ) {
+            _errors.AppendLine( error );
+        }
+
+        private void Warning( string warning ) {
+            _warnings.AppendLine( warning );
         }
     }
 }
