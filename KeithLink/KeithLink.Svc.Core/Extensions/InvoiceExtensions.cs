@@ -19,7 +19,8 @@ namespace KeithLink.Svc.Core.Extensions
 			{
 				BranchId = value.Division.Substring(0, 3),
 				InvoiceNumber = value.InvoiceNumber.Trim(),
-				TypeDescription = value.InvoiceType,
+				Type = DetermineType(value.InvoiceType.Trim()),
+				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
 				Status = InvoiceStatus.Open, //TODO: Determine the correct status???
 				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open),
 				CustomerNumber = value.CustomerNumber,
@@ -28,6 +29,47 @@ namespace KeithLink.Svc.Core.Extensions
 				InvoiceDate = value.InvoiceDate,
 				OrderDate = value.InvoiceDate				
 			};
+		}
+
+		public static InvoiceTransactionModel ToTransationModel(this EFInvoice.Invoice value)
+		{
+			return new InvoiceTransactionModel()
+			{
+				BranchId = value.Division.Substring(0, 3),
+				InvoiceNumber = value.InvoiceNumber.Trim(),
+				Type = DetermineType(value.InvoiceType.Trim()),
+				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
+				CustomerNumber = value.CustomerNumber,
+				Amount = value.AmountDue,
+				DueDate = value.DueDate,
+				InvoiceDate = value.InvoiceDate,
+				OrderDate = value.InvoiceDate
+			};
+		}
+
+		public static InvoiceType DetermineType(string invoiceType)
+		{
+			switch (invoiceType)
+			{
+				case "WO":
+					return InvoiceType.WriteOff;
+				case "BOI":
+					return InvoiceType.BillingOnlyInvoice;
+				case "OA":
+					return InvoiceType.OnAccount;
+				case "WOC":
+					return InvoiceType.WriteOffCredit;
+				case "CM":
+					return InvoiceType.CreditMemo;
+				case "DM":
+					return InvoiceType.DebitMemo;
+				case "PY":
+					return InvoiceType.Payment;
+				case "MT":
+					return InvoiceType.Maintenance;
+				default:
+					return InvoiceType.Invoice;
+			}
 		}
 
 		public static Invoice ToEFInvoice(this InvoiceModel invoice)
@@ -58,6 +100,7 @@ namespace KeithLink.Svc.Core.Extensions
 			};
 		}
 
+		[Obsolete]
 		public static InvoiceModel ToInvoiceModel(this Invoice invoice, bool headerOnly = false)
 		{
 			
@@ -89,6 +132,7 @@ namespace KeithLink.Svc.Core.Extensions
 			};
 		}
 
+		[Obsolete]
 		public static InvoiceItem ToEFInvoiceItem(this InvoiceItemModel item)
 		{
 			return new KeithLink.Svc.Core.Models.EF.InvoiceItem()

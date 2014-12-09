@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
 
         List<Models.OnlinePayments.Invoice.EF.Invoice> GetMainInvoices(string division, string customerNumber);
 
+		Core.Models.OnlinePayments.Invoice.EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber);
+
 		long GetNextConfirmationId();
 
 		void PayInvoice(PaymentTransaction payment);

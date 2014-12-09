@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
     public class NoOnlinePaymentServiceRepository : IOnlinePaymentServiceRepository {
-        #region methods
         public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
             throw new NotImplementedException();
         }
@@ -29,10 +28,14 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
         public List<Core.Models.Invoices.InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
             throw new NotImplementedException();
         }
-        #endregion
+       
+		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		{
+			throw new NotImplementedException();
+		}
 
 
-		public void MakeInvoicePayment(UserSelectedContext userContext, Core.Models.Profile.UserProfile user, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+		public Core.Models.Invoices.InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
 		{
 			throw new NotImplementedException();
 		}

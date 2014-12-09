@@ -150,7 +150,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			if (order.Items == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.Items.Select(l => l.ItemNumber).ToList(), user);
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.Items.Select(l => l.ItemNumber).ToList());
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
 			Parallel.ForEach(order.Items, item => {

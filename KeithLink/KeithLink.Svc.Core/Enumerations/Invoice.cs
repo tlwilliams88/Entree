@@ -14,7 +14,21 @@ namespace KeithLink.Svc.Core.Enumerations
 		[Description("Credit Memo")]
 		CreditMemo,
 		[Description("Adjustment")]
-		Adjustment
+		Adjustment,
+		[Description("Write Off")]
+		WriteOff,
+		[Description("Billing Only Invoice")]
+		BillingOnlyInvoice,
+		[Description("On Account")]
+		OnAccount,
+		[Description("Write Off Credit")]
+		WriteOffCredit,
+		[Description("Debit Memo")]
+		DebitMemo,
+		[Description("Payment")]
+		Payment,
+		[Description("Maintenance")]
+		Maintenance
 	}
 
 	public enum InvoiceStatus
@@ -23,7 +37,7 @@ namespace KeithLink.Svc.Core.Enumerations
 		Open,
 		[Description("Paid")]
 		Paid,
-		[Description("Late")]
-		Late
+		[Description("Past Due")]
+		PastDue
 	}
 }

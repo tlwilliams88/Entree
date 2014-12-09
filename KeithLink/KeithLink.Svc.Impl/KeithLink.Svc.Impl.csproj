@@ -196,6 +196,7 @@
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
