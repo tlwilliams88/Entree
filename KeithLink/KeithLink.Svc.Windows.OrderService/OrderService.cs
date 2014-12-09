@@ -233,7 +233,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new OrderUpdateQueueRepositoryImpl(),
                                                                        uow,
                                                                        confirmationLogic,
-                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                       new PurchaseOrderRepositoryImpl());
 
                 logic.ListenForMainFrameCalls();
             } catch (Exception e) {
@@ -306,7 +307,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                new OrderUpdateQueueRepositoryImpl(), 
                                                                                uow, 
                                                                                confirmationLogic, 
-                                                                               new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+                                                                               new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                               new PurchaseOrderRepositoryImpl());
 
                         OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 
