@@ -101,6 +101,7 @@ namespace KeithLink.Svc.InternalSvc
             // 2nd builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
             builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<OrderUpdateQueueRepositoryImpl>().As<IOrderHistoryQueueRepository>();
 
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
