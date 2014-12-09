@@ -1,10 +1,14 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -33,6 +37,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IOrderHistoryDetailRepository _detailRepo;
         private readonly IOrderHistoryHeaderRepsitory _headerRepo;
         private readonly IOrderHistoryQueueRepository _queue;
+        private readonly IPurchaseOrderRepository _poRepo;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
         //private readonly IUnitOfWork _unitOfWorkOriginal;
@@ -43,11 +48,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #region ctor
         public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IOrderHistoryQueueRepository queueRepo,
-                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket) {
+                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo) {
             _confirmationLogic = confLogic;
             _log = logRepo;
             _headerRepo = headerRepo;
             _detailRepo = detailRepo;
+            _poRepo = poRepo;
             _queue = queueRepo;
             _socket = socket;
             _unitOfWork = unitOfWork;
@@ -159,6 +165,32 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
 
         }
+
+        public List<Order> GetOrders(UserSelectedContext customerInfo) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId), 
+                                                                          d => d.OrderDetails);
+
+            List<Order> customerOrders = new List<Order>();
+
+            Parallel.ForEach(headers, h => {
+                Order currentOrder = h.ToOrder();
+
+                if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
+                    PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+
+                    if (po != null) {
+                        currentOrder.OrderNumber = h.ControlNumber;
+                        currentOrder.Status = po.Status;
+                    }
+                }
+
+                customerOrders.Add(currentOrder);
+            });
+
+            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
 
         /// <summary>
         /// Parse an array of strings as a file

@@ -91,6 +91,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
+            builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             builder.RegisterType<OrderUpdateRequestQueueRepositoryImpl>().As<IOrderHistoryRequestQueueRepository>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();

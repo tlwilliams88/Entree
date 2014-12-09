@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	{
 		PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber);
 
-        PurchaseOrder ReadPurchaseOrderByInvoice(string branchid, string invoiceNumber);
+        PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber);
 
 		List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId);
         
