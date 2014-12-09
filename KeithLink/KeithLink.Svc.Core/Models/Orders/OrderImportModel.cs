@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 	public class OrderImportModel
 	{
 		[DataMember(Name = "listid")]
-		public long? ListId { get; set; }
+		public Guid? ListId { get; set; }
 		[DataMember(Name = "success")]
 		public bool Success { get; set; }
 		[DataMember(Name = "errormsg")]

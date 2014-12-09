@@ -20,6 +20,8 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
 
         List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext);
 
-		void MakeInvoicePayment(UserSelectedContext userContext, UserProfile user, List<PaymentTransactionModel> payments);
+		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
+
+		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
     }
 }

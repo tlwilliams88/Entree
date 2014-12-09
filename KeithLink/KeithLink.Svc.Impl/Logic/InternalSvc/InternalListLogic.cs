@@ -221,7 +221,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null || list.Items.Count == 0)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
+			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
 
 			Parallel.ForEach(list.Items, listItem =>
@@ -303,7 +303,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (returnList == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnList.Select(i => i.ItemNumber).Distinct().ToList(), user);
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnList.Select(i => i.ItemNumber).Distinct().ToList());
 
 			returnList.ForEach(delegate(RecentItem item)
 			{

@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList(), user);
+			var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 			
 			Parallel.ForEach(cart.Items, item =>

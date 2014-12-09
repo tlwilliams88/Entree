@@ -29,6 +29,7 @@
     <MetadataFile FileName="InvoiceService.xsd" MetadataType="Schema" ID="e74880ce-11c5-4b25-980e-c0b87c0c0a0a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd0" />
     <MetadataFile FileName="InvoiceService1.xsd" MetadataType="Schema" ID="2a8a8bf8-c9e3-4d48-b34e-c1eaaa83834a" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd3" />
     <MetadataFile FileName="InvoiceService.wsdl" MetadataType="Wsdl" ID="1b4fdf57-ccd1-4f4c-bf63-c66242e22c47" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?wsdl" />
+    <MetadataFile FileName="InvoiceService7.xsd" MetadataType="Schema" ID="5bdff8ff-e007-4b2a-87cc-b101185683d1" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd8" />
     <MetadataFile FileName="InvoiceService2.xsd" MetadataType="Schema" ID="e1fcc5b7-eb42-467c-b570-a942bdd095ec" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd1" />
     <MetadataFile FileName="InvoiceService3.xsd" MetadataType="Schema" ID="08a2be0c-73e6-41eb-8229-07d9f6eb4d46" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd2" />
     <MetadataFile FileName="InvoiceService4.xsd" MetadataType="Schema" ID="77f19319-b655-4d43-bb26-3302bdc21792" SourceId="1" SourceUrl="http://localhost:1317/InvoiceService.svc?xsd=xsd5" />
