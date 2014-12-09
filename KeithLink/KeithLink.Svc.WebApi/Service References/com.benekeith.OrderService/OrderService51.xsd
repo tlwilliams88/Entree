@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:complexType name="ArrayOfOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrder" nillable="true" type="tns:ArrayOfOrder" />
+  <xs:complexType name="Order">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="commerceid" type="ser:guid" />
+      <xs:element minOccurs="0" name="createddate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="invoicestatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ischangeorderallowed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="itemcount" type="xs:int" />
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderLine" />
+      <xs:element minOccurs="0" name="ordernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ordertotal" type="xs:double" />
+      <xs:element minOccurs="0" name="requestedshipdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Order" nillable="true" type="tns:Order" />
+  <xs:complexType name="ArrayOfOrderLine">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderLine" nillable="true" type="tns:OrderLine" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderLine" nillable="true" type="tns:ArrayOfOrderLine" />
+  <xs:complexType name="OrderLine">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q1:BaseProductInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="each" type="xs:boolean" />
+          <xs:element minOccurs="0" name="eachyn" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="linetotal" type="xs:double" />
+          <xs:element minOccurs="0" name="mainframestatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="price" type="xs:double" />
+          <xs:element minOccurs="0" name="quantity" type="xs:int" />
+          <xs:element minOccurs="0" name="quantityordered" type="xs:int" />
+          <xs:element minOccurs="0" name="quantityshipped" type="xs:int" />
+          <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="substituteditemnumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrderLine" nillable="true" type="tns:OrderLine" />
+</xs:schema>

@@ -56,10 +56,4 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="OrderHistoryHeader" nillable="true" type="tns:OrderHistoryHeader" />
-  <xs:complexType name="ArrayOfOrderHistoryHeader">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHistoryHeader" nillable="true" type="tns:OrderHistoryHeader" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfOrderHistoryHeader" nillable="true" type="tns:ArrayOfOrderHistoryHeader" />
 </xs:schema>

@@ -58,12 +58,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
         {
-            var orders = orderServiceRepository.GetCustomerOrderHistories(catalogInfo);
+            var orders = orderServiceRepository.GetCustomerOrders(catalogInfo);
 
-            var returnOrders = orders.Select(p => ToOrder(p)).ToList();
+            //var returnOrders = orders.Select(p => ToOrder(p)).ToList();
             var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
 
-            return returnOrders;
+            //return returnOrders;
+            return orders;
         }
 
 		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true)

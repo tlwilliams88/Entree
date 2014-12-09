@@ -26,13 +26,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IShoppingCartLogic _shoppingCartLogic;
 		private readonly IOrderServiceRepository _orderServiceRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
-        private readonly IOrderHistoryLogic _orderHistLogic;
         #endregion
 
         #region ctor
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo,
 							   IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository, 
-                               IExportSettingServiceRepository exportSettingRepository, IOrderHistoryLogic orderHistoryLogic)
+                               IExportSettingServiceRepository exportSettingRepository)
 			: base(profileLogic)
 		{
             _historyRequestLogic = historyRequestLogic;
@@ -41,7 +40,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_shoppingCartLogic = shoppingCartLogic;
 			this._orderServiceRepository = orderServiceRepository;
 			this._exportSettingRepository = exportSettingRepository;
-            _orderHistLogic = orderHistoryLogic;
         }
         #endregion
 
@@ -57,7 +55,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public List<Order> Orders()
 		{
             //return _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            return _orderHistLogic.GetOrders(this.SelectedUserContext);
+            return _orderServiceRepository.GetCustomerOrders(this.SelectedUserContext);
 		}
 
 		[HttpPost]
@@ -65,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
 		{
             //var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            var orders = _orderHistLogic.GetOrders(this.SelectedUserContext);
+            var orders = _orderServiceRepository.GetCustomerOrders(this.SelectedUserContext);
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 			
