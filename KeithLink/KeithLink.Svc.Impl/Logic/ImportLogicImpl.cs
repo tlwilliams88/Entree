@@ -111,7 +111,7 @@ namespace KeithLink.Svc.Impl.Logic {
                 }
             } catch (Exception e) {
                 returnModel.Success = false;
-                Error(String.Format(e.Message.ToString());
+                Error(String.Format(e.Message.ToString()));
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
             }
 
@@ -177,7 +177,7 @@ namespace KeithLink.Svc.Impl.Logic {
             string returnValue = null;
 
             if (itemNumber[0].ToInt().Equals( null )) {
-                Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber[0] );
+                Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber[0] ));
             } else {
                 switch (options.ItemNumber) {
                     case ItemNumberType.ItemNumberOrUPC:
