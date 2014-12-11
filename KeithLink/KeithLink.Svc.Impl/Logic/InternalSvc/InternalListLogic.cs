@@ -21,7 +21,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IUnitOfWork unitOfWork;
 		private readonly IListRepository listRepository;
 		private readonly IListItemRepository listItemRepository;
-		private readonly IBasketLogic basketLogic;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IListCacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
@@ -33,14 +32,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
-			IListItemRepository listItemRepository, IBasketLogic basketLogic,
+			IListItemRepository listItemRepository,
 			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
 			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
 			this.listItemRepository = listItemRepository;
-			this.basketLogic = basketLogic;
 			this.catalogLogic = catalogLogic;
 			this.listCacheRepository = listCacheRepository;
 			this.priceLogic = priceLogic;
