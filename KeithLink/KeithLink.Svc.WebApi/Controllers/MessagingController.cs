@@ -67,7 +67,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;
             return ret;
-        }		
+        }
+
+		[HttpPost]
+		[ApiKeyedRoute("messaging/mail")]
+		public void CreateMessage(MailMessageModel mailMessage)
+		{
+			messagingServiceRepository.CreateMailMessage(mailMessage);
+		}
+				
         #endregion
     }
 }

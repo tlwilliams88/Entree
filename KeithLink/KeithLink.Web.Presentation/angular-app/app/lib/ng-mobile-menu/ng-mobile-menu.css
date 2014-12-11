@@ -7,7 +7,7 @@
   /*overflow: hidden;*/
   position: fixed;
   /*top: 0;*/
-  right: 0;
+  left: 0;
   /*height: 100%;*/
 }
 #sp-nav nav,
@@ -26,8 +26,9 @@
   /*position: absolute;*/
   width: 100%;
   min-height: 100%;
-  float: left;
+  float: right;
   z-index: 10;
+  transform-style: flat;
   -webkit-transform: translateX(0);
   transform: translateX(0);
   -webkit-transition-duration: 0.3s;
@@ -35,7 +36,7 @@
 }
 #sp-nav.show,
 #sp-nav.show.wide {
-  right: 0px;
+  left: 0px;
   overflow-x: hidden;
 }
 #sp-nav.show + #sp-page #sp-show-menu,
@@ -49,8 +50,9 @@
 #sp-nav.show + #sp-page,
 #sp-nav.show.wide + #sp-page {
   position: absolute;
-  -webkit-transform: translateX(-80%);
-  transform: translateX(-80%);
+  -webkit-transform: translateX(80%);
+  transform: translateX(80%);
+  transform-style: flat;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
   overflow-x: hidden;
