@@ -27,12 +27,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IPriceLogic priceLogic;
 		private readonly IProductImageRepository productImageRepository;
 		private readonly IListShareRepository listShareRepository;
+		private readonly IUserActiveCartRepository userActiveCartRepository;
+		private readonly IBasketRepository basketRepository;
         #endregion
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository, IBasketLogic basketLogic,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository)
+			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
+			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -43,6 +46,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.priceLogic = priceLogic;
 			this.productImageRepository = productImageRepository;
 			this.listShareRepository = listShareRepository;
+			this.userActiveCartRepository = userActiveCartRepository;
+			this.basketRepository = basketRepository;
 		}
         #endregion
 
@@ -272,7 +277,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
-		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, IEnumerable<KeithLink.Svc.Core.Models.Generated.Basket> activeCart)
+		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Generated.Basket activeCart)
 		{
 			if (list.Items == null)
 				return;
@@ -287,9 +292,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 
 
-				if (activeCart.Any()) //Is there an active cart? If so get item counts
+				if (activeCart != null && activeCart.LineItems != null) //Is there an active cart? If so get item counts
 				{
-					listItem.QuantityInCart = activeCart.First().LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
+					listItem.QuantityInCart = activeCart.LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
 				}
 
 				if (notes != null && notes.Items != null)
@@ -328,8 +333,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
 
+			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(user);
+						
 			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
@@ -354,6 +360,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
 			return returnList;
+		}
+
+		private Core.Models.Generated.Basket GetUserActiveCart(UserProfile user)
+		{
+			var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId).FirstOrDefault();
+
+			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
+
+			if (userActiveCart != null)
+			{
+				activeCart = basketRepository.ReadBasket(userActiveCart.UserId, userActiveCart.CartId);
+			}
+			return activeCart;
 		}
 		
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
@@ -440,7 +459,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
-                var activeCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, Core.Enumerations.List.BasketType.Cart).Where(b => b.Active.Equals(true));
+				KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(user);
 
                 var processedList = new List<ListModel>();
                 //Lookup product details for each item

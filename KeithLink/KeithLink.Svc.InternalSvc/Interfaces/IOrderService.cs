@@ -20,5 +20,11 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
+
+		[OperationContract]
+		UserActiveCartModel GetUserActiveCart(Guid userId);
+
+		[OperationContract]
+		void SaveUserActiveCart(Guid userId, Guid cartId);
 	}
 }

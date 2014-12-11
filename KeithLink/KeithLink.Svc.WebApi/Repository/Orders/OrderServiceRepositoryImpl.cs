@@ -30,5 +30,15 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         {
             return serviceClient.GetCustomerOrders(catalogInfo).ToList();
         }
-    }
+
+		public Core.Models.Orders.UserActiveCartModel GetUserActiveCart(Guid userId)
+		{
+			return serviceClient.GetUserActiveCart(userId);
+		}
+
+		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		{
+			serviceClient.SaveUserActiveCart(userId, cartId);
+		}
+	}
 }

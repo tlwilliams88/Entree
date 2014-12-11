@@ -194,6 +194,8 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
+			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
+
             return builder.Build();
         }
 

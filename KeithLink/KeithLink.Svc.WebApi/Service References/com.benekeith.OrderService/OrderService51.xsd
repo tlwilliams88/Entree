@@ -52,4 +52,11 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="OrderLine" nillable="true" type="tns:OrderLine" />
+  <xs:complexType name="UserActiveCartModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cartid" type="ser:guid" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserActiveCartModel" nillable="true" type="tns:UserActiveCartModel" />
 </xs:schema>

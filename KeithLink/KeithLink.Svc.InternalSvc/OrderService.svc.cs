@@ -50,6 +50,17 @@ namespace KeithLink.Svc.InternalSvc
             //return orderLogic.GetCustomerOrderHistories(catalogInfo);
             return _historyLogic.GetOrders(catalogInfo);
         }
-        #endregion
-    }
+
+		public UserActiveCartModel GetUserActiveCart(Guid userId)
+		{
+			return _orderLogic.GetUserActiveCart(userId);
+		}
+
+		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		{
+			_orderLogic.SaveUserActiveCart(userId, cartId);
+		}
+		
+		#endregion
+	}
 }

@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Interface.Cart;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
@@ -15,11 +16,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class ShoppingCartController : BaseController {
         #region attributes
         private readonly IShoppingCartLogic shoppingCartLogic;
+		private readonly IOrderServiceRepository orderServiceRepository;
         #endregion
 
         #region ctor
-        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic) : base(profileLogic) {
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository) : base(profileLogic) {
 			this.shoppingCartLogic = shoppingCartLogic;
+			this.orderServiceRepository = orderServiceRepository;
 		}
         #endregion
 
@@ -70,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}/active")]
 		public void SetActive(Guid cartId)
 		{
-			shoppingCartLogic.SetActive(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+			orderServiceRepository.SaveUserActiveCart(this.AuthenticatedUser.UserId, cartId);
 		}
 
 		[HttpDelete]

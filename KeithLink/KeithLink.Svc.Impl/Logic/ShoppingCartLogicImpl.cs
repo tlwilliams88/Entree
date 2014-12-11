@@ -31,11 +31,12 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IBasketLogic basketLogic;
 		private readonly IListServiceRepository listServiceRepository;
         private readonly IOrderQueueLogic orderQueueLogic;
-        #endregion
+		private readonly IOrderServiceRepository orderServiceRepository;
+		#endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic, IOrderQueueLogic orderQueueLogic,
-			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepository, IBasketLogic basketLogic)
+			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -45,6 +46,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.listServiceRepository = listServiceRepository;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
+			this.orderServiceRepository = orderServiceRepository;
 		}
         #endregion
 
@@ -90,11 +92,11 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
-			var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+			//var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			
-			MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
-			cart.Active = true;
-			basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
+			//MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
+			//cart.Active = true;
+			//basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
 		}
 
 		
@@ -168,13 +170,13 @@ namespace KeithLink.Svc.Impl.Logic
 		
         private void MarkCurrentActiveCartAsInactive(UserProfile user, UserSelectedContext catalogInfo, string branchId)
 		{
-			var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
+			//var currentlyActiveCart = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart).Where(b => b.BranchId.Equals(branchId) && b.Active.Equals(true)).FirstOrDefault();
 
-			if (currentlyActiveCart != null)
-			{
-				currentlyActiveCart.Active = false;
-				basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
-			}
+			//if (currentlyActiveCart != null)
+			//{
+			//	currentlyActiveCart.Active = false;
+			//	basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
+			//}
 		}
 		
         public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
@@ -192,7 +194,8 @@ namespace KeithLink.Svc.Impl.Logic
 				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
 			else
 			{
-				var returnCart = listForBranch.Select(b => ToShoppingCart(b)).ToList();
+				var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
+				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
 				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 				returnCart.ForEach(delegate(ShoppingCart list)
@@ -208,8 +211,8 @@ namespace KeithLink.Svc.Impl.Logic
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
 				return null;
-
-			var cart = ToShoppingCart(basket);
+			var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
+			var cart = ToShoppingCart(basket, userActiveCart);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
@@ -240,7 +243,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
         
-		private ShoppingCart ToShoppingCart(CS.Basket basket)
+		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
 		{
 			return new ShoppingCart()
 			{
@@ -248,7 +251,7 @@ namespace KeithLink.Svc.Impl.Logic
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
 				RequestedShipDate = basket.RequestedShipDate,
-				Active = basket.Active.HasValue ? basket.Active.Value : false,
+				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
 				{
 					ItemNumber = l.ProductId,
