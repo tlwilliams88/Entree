@@ -111,6 +111,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<ListCachRepositoryImpl>().As<IListCacheRepository>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
+            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();

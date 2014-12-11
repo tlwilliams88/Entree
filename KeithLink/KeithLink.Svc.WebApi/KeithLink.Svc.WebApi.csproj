@@ -182,6 +182,7 @@
     <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
@@ -297,6 +298,12 @@
     <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
     <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.OrderService\OrderService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService51.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

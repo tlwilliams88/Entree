@@ -33,11 +33,11 @@ namespace KeithLink.Svc.Core.Extensions
                 IsReminder = list.Type == ListType.Reminder,
 				IsMandatory = list.Type == ListType.Mandatory,
 				Type = list.Type,
-				SharedWith = list.Shares.Select(s => s.CustomerId).ToList(),
+				SharedWith = list.Shares!= null ? list.Shares.Select(s => s.CustomerId).ToList() : null ,
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
-				IsSharing = list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId),
+                IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId)) : false,
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
                     list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()

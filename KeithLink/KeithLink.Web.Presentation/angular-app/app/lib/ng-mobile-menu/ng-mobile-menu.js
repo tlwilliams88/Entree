@@ -11,7 +11,8 @@ angular.module('shoppinpal.mobile-menu', [])
                var menu = angular.element(document.querySelector('#sp-nav'));
                menu.addClass('show');
 
-               var page = angular.element(document.querySelector('.container-fluid'));
+
+               var page = angular.element(document.querySelector('body'));
                page.addClass('noscroll');
               }
            };
@@ -21,7 +22,7 @@ angular.module('shoppinpal.mobile-menu', [])
                var menu = angular.element(document.querySelector('#sp-nav'));
                menu.removeClass('show');
 
-               var page = angular.element(document.querySelector('.container-fluid'));
+               var page = angular.element(document.querySelector('body'));
                page.removeClass('noscroll');
               }
            };
@@ -30,8 +31,8 @@ angular.module('shoppinpal.mobile-menu', [])
               if (window.innerWidth < 992) {
                var menu = angular.element(document.querySelector('#sp-nav'));
                menu.toggleClass('show');
-               
-               var page = angular.element(document.querySelector('.container-fluid'));
+
+               var page = angular.element(document.querySelector('body'));
                page.toggleClass('noscroll');
               }
            };
