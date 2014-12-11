@@ -133,4 +133,16 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="CreateMailMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="mailMessage" nillable="true" type="q18:MailMessageModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateMailMessageResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

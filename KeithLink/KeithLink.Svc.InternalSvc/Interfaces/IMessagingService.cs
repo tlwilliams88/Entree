@@ -35,5 +35,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
 		[OperationContract]
 		MessageTemplateModel ReadMessageTemplateForKey(string key);
+		[OperationContract]
+		void CreateMailMessage(MailMessageModel mailMessage);
     }
 }

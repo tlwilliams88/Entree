@@ -63,5 +63,11 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
 		{
 			return serviceClient.ReadMessageTemplateForKey(key);
 		}
+
+
+		public void CreateMailMessage(MailMessageModel mailMessage)
+		{
+			serviceClient.CreateMailMessage(mailMessage);
+		}
 	}
 }
