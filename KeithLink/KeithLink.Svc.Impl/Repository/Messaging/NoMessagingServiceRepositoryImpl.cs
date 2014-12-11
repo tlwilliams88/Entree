@@ -66,5 +66,11 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public void CreateMailMessage(MailMessageModel mailMessage)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

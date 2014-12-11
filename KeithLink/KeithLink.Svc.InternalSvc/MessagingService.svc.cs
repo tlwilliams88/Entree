@@ -76,5 +76,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return messageTemplateLogic.ReadForKey(key);
 		}
+
+
+		public void CreateMailMessage(MailMessageModel mailMessage)
+		{
+			messagingLogic.CreateMailMessage(mailMessage);
+		}
 	}
 }

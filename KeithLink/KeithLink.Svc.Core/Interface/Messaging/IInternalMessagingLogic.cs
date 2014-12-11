@@ -15,6 +15,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
     public interface IInternalMessagingLogic
     {
         long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage);
+		void CreateMailMessage(MailMessageModel mailMessage);
+
         List<UserMessageModel> ReadUserMessages(UserProfile user);
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
 		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);

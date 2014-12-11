@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -28,10 +29,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
         private readonly IPushNotificationMessageProvider pushNotificationMessageProvider;
         private readonly Common.Core.Logging.IEventLogRepository eventLogRepository;
+		private readonly IUserProfileLogic userProfileLogic;
 
         public InternalMessagingLogic(IUnitOfWork unitOfWork, IUserMessageRepository userMessageRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository,
             Common.Core.Logging.IEventLogRepository eventLogRepository, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository,
-            IPushNotificationMessageProvider pushNotificationMessageProvider)
+            IPushNotificationMessageProvider pushNotificationMessageProvider, IUserProfileLogic userProfileLogic)
         {
             this.unitOfWork = unitOfWork;
             this.userMessageRepository = userMessageRepository;
@@ -39,6 +41,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
             this.pushNotificationMessageProvider = pushNotificationMessageProvider;
             this.eventLogRepository = eventLogRepository;
+			this.userProfileLogic = userProfileLogic;
         }
 
         private string GetMessageSubjectForNotification(BaseNotification notification)
@@ -256,5 +259,58 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             // now, to create/confirm/update the application endpoint in AWS
             return true;
         }
-    }
+
+
+		public void CreateMailMessage(MailMessageModel mailMessage)
+		{
+			Dictionary<Guid, UserMessage> messages = new Dictionary<Guid, UserMessage>();
+
+			//If CustomerIds are provided, send message to every user for that customer
+			if (mailMessage.CustomerIds != null && mailMessage.CustomerIds.Any())
+			{
+				foreach (var customer in mailMessage.CustomerIds)
+				{
+					var users = userProfileLogic.GetUsers(new UserFilterModel() { CustomerId = customer });
+
+					foreach (var user in users.UserProfiles)
+					{
+						if (!messages.ContainsKey(user.UserId))
+							messages.Add(user.UserId, new UserMessage()
+							{
+								Body = mailMessage.Message.Body,
+								Subject = mailMessage.Message.Subject,
+								Label = mailMessage.Message.Label,
+								Mandatory = mailMessage.Message.Mandatory,
+								UserId = user.UserId,
+								NotificationType = NotificationType.Mail
+							});
+					}
+
+				}
+			}
+
+			//Add any messages to specific users
+			if (mailMessage.UserIds != null && mailMessage.UserIds.Any())
+			{
+				foreach(var user in mailMessage.UserIds)
+					if (!messages.ContainsKey(user))
+						messages.Add(user, new UserMessage()
+						{
+							Body = mailMessage.Message.Body,
+							Subject = mailMessage.Message.Subject,
+							Label = mailMessage.Message.Label,
+							Mandatory = mailMessage.Message.Mandatory,
+							UserId = user,
+							NotificationType = NotificationType.Mail
+						});
+			}
+
+			//Create all of the message records
+			foreach (var message in messages)
+				userMessageRepository.Create(message.Value);
+
+			unitOfWork.SaveChanges();
+
+		}
+	}
 }

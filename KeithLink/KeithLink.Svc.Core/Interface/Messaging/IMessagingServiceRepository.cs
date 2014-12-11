@@ -29,5 +29,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
 
 		MessageTemplateModel ReadMessageTemplateForKey(string key);
+
+		void CreateMailMessage(MailMessageModel mailMessage);
     }
 }

@@ -11,6 +11,9 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 	[DataContract(Name = "NotificationType")]
 	public enum NotificationType
 	{
+		[Description("Undefined")]
+		[EnumMember]
+		Undefined = 0,
         [Description("My Order is Confirmed")]
 		[EnumMember]
 		OrderConfirmation = 1,
@@ -22,7 +25,10 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 		InvoiceAttention = 4,
         [Description("Ben E. Keith Has News For Me")]
 		[EnumMember]
-		HasNews = 8
+		HasNews = 8,
+		[Description("Mail")]
+		[EnumMember]
+		Mail = 16
 	}
 
 	[DataContract(Name = "Channel")]

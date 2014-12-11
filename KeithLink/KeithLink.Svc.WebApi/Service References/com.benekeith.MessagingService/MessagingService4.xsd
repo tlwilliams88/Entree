@@ -2,6 +2,7 @@
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
   <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:complexType name="UserMessage">
     <xs:sequence>
       <xs:element minOccurs="0" name="body" nillable="true" type="xs:string" />
@@ -88,4 +89,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PushDeviceRegistrationModel" nillable="true" type="tns:PushDeviceRegistrationModel" />
+  <xs:complexType name="MailMessageModel">
+    <xs:sequence>
+      <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="customers" nillable="true" type="q7:ArrayOfguid" />
+      <xs:element minOccurs="0" name="message" nillable="true" type="tns:UserMessage" />
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="users" nillable="true" type="q8:ArrayOfguid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MailMessageModel" nillable="true" type="tns:MailMessageModel" />
 </xs:schema>
