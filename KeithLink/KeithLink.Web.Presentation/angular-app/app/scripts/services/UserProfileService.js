@@ -31,7 +31,7 @@ angular.module('bekApp')
             'imageUrl': '../images/placeholder-dsr.jpg'
           };
 
-          profile.imageUrl = '../images/placeholder-user.png';
+          //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
 
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
