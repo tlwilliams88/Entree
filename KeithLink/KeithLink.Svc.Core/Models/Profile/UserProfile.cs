@@ -51,6 +51,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         public Guid UserId {get;set;}
 
 		public bool IsDSR { get { return RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase); } }
+
+        [DataMember( Name = "imageurl" )]
+        public string ImageUrl { get; set; }
         
         //[DataMember(Name = "username")]
         //public string UserName { get; set; }
