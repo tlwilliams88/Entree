@@ -28,5 +28,8 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF {
 
         [Required]
         public long ConfirmationId { get; set; }
+
+        [Column(TypeName="date")]
+        public DateTime ScheduledPaymentDate { get; set; }
     }
 }

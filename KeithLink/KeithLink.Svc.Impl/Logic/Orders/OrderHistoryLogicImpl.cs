@@ -170,8 +170,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
                                                                                h.CustomerNumber.Equals(customerInfo.CustomerId), 
                                                                           d => d.OrderDetails);
-
-            List<Order> customerOrders = new List<Order>();
+            System.Collections.Concurrent.BlockingCollection<Order> customerOrders = new System.Collections.Concurrent.BlockingCollection<Order>();
 
             Parallel.ForEach(headers, h => {
                 Order currentOrder = h.ToOrder();

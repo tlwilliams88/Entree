@@ -65,6 +65,26 @@ namespace KeithLink.Svc.Windows.OrderService {
         #endregion
 
         #region methods
+        private bool CanOpenFile(string filePath) {
+            bool opened = false;
+            int loopCnt = 0;
+
+            while (loopCnt < 30 && !opened) {
+                try {
+                    System.IO.FileStream myFile = System.IO.File.OpenWrite(filePath);
+                    myFile.Close();
+                    myFile.Dispose();
+
+                    opened = true;
+                } catch {
+                    System.Threading.Thread.Sleep(1000);
+                    loopCnt++;
+                }
+            }
+
+            return opened;
+        }
+
         private void HandleCancelledException(CancelledTransactionException ex) {
             StringBuilder msg = new StringBuilder();
 
@@ -276,64 +296,71 @@ namespace KeithLink.Svc.Windows.OrderService {
             if (!_orderUpdateProcessing) {
                 _orderUpdateProcessing = true;
 
-                // if update path does not exist, send an email then suppress messages
-                // disallow processing here until the folder exists, but do not kill the service
-                // to keep other threads running
-                if (Directory.Exists(Configuration.OrderUpdateWatchPath)) {
-                    _allowOrderUpdateProcessing = true;
-                    _silenceOrderUpdateMessages = false;
-                } else {
-                    _allowOrderUpdateProcessing = false;
+                try {
 
-                    if (!_silenceOrderUpdateMessages) {
-                        HandleMissingOrderUpdateWatchPath();
+                    // if update path does not exist, send an email then suppress messages
+                    // disallow processing here until the folder exists, but do not kill the service
+                    // to keep other threads running
+                    if (Directory.Exists(Configuration.OrderUpdateWatchPath)) {
+                        _allowOrderUpdateProcessing = true;
+                        _silenceOrderUpdateMessages = false;
+                    } else {
+                        _allowOrderUpdateProcessing = false;
 
-                        _silenceOrderUpdateMessages = true;
-                    }
-                }
+                        if (!_silenceOrderUpdateMessages) {
+                            HandleMissingOrderUpdateWatchPath();
 
-                if (_allowOrderUpdateProcessing) {
-                    string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
-
-                    foreach (string filePath in files) {
-                        UnitOfWork uow = new UnitOfWork();
-                        
-                        ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                                           new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                           new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
-                        OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log, 
-                                                                               new OrderHistoyrHeaderRepositoryImpl(uow), 
-                                                                               new OrderHistoryDetailRepositoryImpl(uow), 
-                                                                               new OrderUpdateQueueRepositoryImpl(), 
-                                                                               uow, 
-                                                                               confirmationLogic, 
-                                                                               new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                               new PurchaseOrderRepositoryImpl());
-
-                        OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
-
-                        foreach (OrderHistoryFile file in parsedFile.Files) {
-                            try {
-                                StringWriter xmlWriter = new StringWriter();
-                                XmlSerializer xs = new XmlSerializer(file.GetType());
-
-                                xs.Serialize(xmlWriter, file);
-                                
-                                OrderUpdateQueueRepositoryImpl repo = new OrderUpdateQueueRepositoryImpl();
-                                repo.PublishToQueue(xmlWriter.ToString());
-
-                                _silenceOrderUpdateMessages = false;
-                            } catch (Exception ex) {
-                                if (!_silenceOrderUpdateMessages) {
-                                    HandleException(ex);
-                                    _silenceOrderUpdateMessages = true;
-                                    break;
-                                }
-                            }
+                            _silenceOrderUpdateMessages = true;
                         }
-
-                        System.IO.File.Delete(filePath);
                     }
+
+                    if (_allowOrderUpdateProcessing) {
+                        string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
+
+                        foreach (string filePath in files) {
+                            UnitOfWork uow = new UnitOfWork();
+
+                            ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                                                                                               new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                                               new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
+                            OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
+                                                                                   new OrderHistoyrHeaderRepositoryImpl(uow),
+                                                                                   new OrderHistoryDetailRepositoryImpl(uow),
+                                                                                   new OrderUpdateQueueRepositoryImpl(),
+                                                                                   uow,
+                                                                                   confirmationLogic,
+                                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                                                                                   new PurchaseOrderRepositoryImpl());
+
+                            if (CanOpenFile(filePath)) {
+                                OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
+
+                                foreach (OrderHistoryFile file in parsedFile.Files) {
+                                    try {
+                                        StringWriter xmlWriter = new StringWriter();
+                                        XmlSerializer xs = new XmlSerializer(file.GetType());
+
+                                        xs.Serialize(xmlWriter, file);
+
+                                        OrderUpdateQueueRepositoryImpl repo = new OrderUpdateQueueRepositoryImpl();
+                                        repo.PublishToQueue(xmlWriter.ToString());
+
+                                        _silenceOrderUpdateMessages = false;
+                                    } catch (Exception ex) {
+                                        if (!_silenceOrderUpdateMessages) {
+                                            HandleException(ex);
+                                            _silenceOrderUpdateMessages = true;
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                System.IO.File.Delete(filePath);
+                            } // end if CanOpenFile
+                        }
+                    }
+                } catch (Exception ex) {
+                    HandleException(ex);
                 }
 
                 _orderUpdateProcessing = false;
