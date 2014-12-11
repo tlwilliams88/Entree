@@ -186,7 +186,9 @@
     <Compile Include="Models\Invoices\InvoiceTransactionModel.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
+    <Compile Include="Models\Lists\RecommendedItemModel.cs" />
     <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />
+    <Compile Include="Models\Messaging\MailMessageModel.cs" />
     <Compile Include="Models\Messaging\PushDeviceRegistrationModel.cs" />
     <Compile Include="Models\Messaging\ProfileChannelModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />

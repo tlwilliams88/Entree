@@ -298,7 +298,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 		
-		private void PopulateProductDetails(UserSelectedContext catalogInfo, List<RecentItem> returnList, UserProfile user)
+		private void PopulateProductDetails(UserSelectedContext catalogInfo, List<RecentItem> returnList)
 		{
 			if (returnList == null)
 				return;
@@ -310,7 +310,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
 				if (product != null)
 				{
-					item.Images = product.ProductImages;
 					item.Name = product.Name;
 				}
 			});
@@ -386,7 +385,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var list = listRepository.Read(i => i.UserId.Equals(user.UserId) && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
 			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc })).ToList();
-			PopulateProductDetails(catalogInfo, returnItems, user);
+			PopulateProductDetails(catalogInfo, returnItems);
 			returnItems.ForEach(delegate(RecentItem item)
 			{
 				item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
@@ -583,6 +582,35 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		#endregion
 
 
-		
+
+
+
+		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+		{
+			var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
+
+			if (list == null || list.Items == null)
+				return new List<RecommendedItemModel>();
+
+			var returnItems = list.Items.Where(i => (i.FromDate == null || i.FromDate <= DateTime.Now) && (i.ToDate == null || i.ToDate >= DateTime.Now)).Select(r => new RecommendedItemModel() { ItemNumber = r.ItemNumber }).ToList();
+
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnItems.Select(i => i.ItemNumber).Distinct().ToList());
+
+			returnItems.ForEach(delegate(RecommendedItemModel item)
+			{
+				var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				if (product != null)
+				{
+					item.Name = product.Name;
+				}
+			});
+
+			returnItems.ForEach(delegate(RecommendedItemModel item)
+			{
+				item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
+			});
+
+			return returnItems;
+		}
 	}
 }

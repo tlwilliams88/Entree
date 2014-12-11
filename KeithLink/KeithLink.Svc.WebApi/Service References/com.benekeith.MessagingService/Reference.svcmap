@@ -33,6 +33,7 @@
     <MetadataFile FileName="MessagingService3.xsd" MetadataType="Schema" ID="6ad7d5ca-c0d5-43c1-869e-d805082c2321" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd7" />
     <MetadataFile FileName="MessagingService4.xsd" MetadataType="Schema" ID="fbaf9df9-1bc5-4bbd-8cde-d973f2c53cdc" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd3" />
     <MetadataFile FileName="MessagingService.disco" MetadataType="Disco" ID="a5fb6c39-d044-40e7-9f75-8c4e6d2aa98a" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?disco" />
+    <MetadataFile FileName="MessagingService8.xsd" MetadataType="Schema" ID="daf1faad-dbd9-43f2-9aad-84f4e85c4ca3" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd8" />
     <MetadataFile FileName="MessagingService5.xsd" MetadataType="Schema" ID="4d0197cd-54aa-4606-8063-fb5b537f5584" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd2" />
     <MetadataFile FileName="MessagingService.wsdl" MetadataType="Wsdl" ID="da1c5c9e-4de8-4cae-af01-6903cf92565c" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?wsdl" />
     <MetadataFile FileName="MessagingService6.xsd" MetadataType="Schema" ID="1dfbe451-934d-4805-a106-9eb08b6e536a" SourceId="1" SourceUrl="http://localhost:1317/MessagingService.svc?xsd=xsd4" />

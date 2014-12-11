@@ -68,6 +68,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
+        void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
+        System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -167,6 +173,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key) {
             return base.Channel.ReadMessageTemplateForKeyAsync(key);
+        }
+        
+        public void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
+            base.Channel.CreateMailMessage(mailMessage);
+        }
+        
+        public System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
+            return base.Channel.CreateMailMessageAsync(mailMessage);
         }
     }
 }

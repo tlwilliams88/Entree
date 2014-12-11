@@ -75,5 +75,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		void ShareList(ListCopyShareModel shareListModel);
+
+		[OperationContract]
+		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
     }
 }

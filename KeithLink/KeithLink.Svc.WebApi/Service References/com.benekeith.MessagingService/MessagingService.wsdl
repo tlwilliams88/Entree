@@ -10,6 +10,7 @@
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IMessagingService_CreateUserMessage_InputMessage">
@@ -66,6 +67,12 @@
   <wsdl:message name="IMessagingService_ReadMessageTemplateForKey_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadMessageTemplateForKeyResponse" />
   </wsdl:message>
+  <wsdl:message name="IMessagingService_CreateMailMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMailMessage" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_CreateMailMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMailMessageResponse" />
+  </wsdl:message>
   <wsdl:portType name="IMessagingService">
     <wsdl:operation name="CreateUserMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateUserMessage" message="tns:IMessagingService_CreateUserMessage_InputMessage" />
@@ -102,6 +109,10 @@
     <wsdl:operation name="ReadMessageTemplateForKey">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" message="tns:IMessagingService_ReadMessageTemplateForKey_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse" message="tns:IMessagingService_ReadMessageTemplateForKey_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateMailMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessage" message="tns:IMessagingService_CreateMailMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessageResponse" message="tns:IMessagingService_CreateMailMessage_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
@@ -180,6 +191,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadMessageTemplateForKey">
       <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateMailMessage">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/CreateMailMessage" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

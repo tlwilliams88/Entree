@@ -141,5 +141,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		} 
 		
 		#endregion
+
+
+		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+		{
+			return serviceClient.ReadRecommendedItemsList(catalogInfo).ToList();
+		}
 	}
 }

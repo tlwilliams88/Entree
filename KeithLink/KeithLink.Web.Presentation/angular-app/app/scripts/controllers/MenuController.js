@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, $window, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -49,7 +49,7 @@ angular.module('bekApp')
       LocalStorage.setSelectedCustomerInfo($scope.selectedUserContext);
 
       angular.copy([], CartService.shipDates);
-      
+
       $state.transitionTo($state.current, $state.params, {
         reload: true,
         inherit: false,
@@ -66,8 +66,13 @@ angular.module('bekApp')
     };
 
     $scope.print = function () {
-      window.print(); 
+      window.print();
     };
+
+      $scope.backfunction = function(){
+        console.log('back');
+        $window.history.back();
+      };
 
     $scope.openTechnicalSupportModal = function() {
       var modalInstance = $modal.open({
@@ -88,7 +93,7 @@ angular.module('bekApp')
     function refreshAccessPermissions() {
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
-      
+
       // $scope.isInternalUser = AccessService.isInternalUser();
       // $scope.isBekAdmin = AccessService.isBekAdmin();
 

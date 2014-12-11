@@ -16,6 +16,7 @@
         <xs:sequence>
           <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q2:ListType" />
           <xs:element minOccurs="0" name="category" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="fromdate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="label" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="listitemid" type="xs:long" />
           <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
@@ -23,6 +24,7 @@
           <xs:element minOccurs="0" name="position" type="xs:int" />
           <xs:element minOccurs="0" name="quantityincart" nillable="true" type="xs:decimal" />
           <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="todate" nillable="true" type="xs:dateTime" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -34,6 +36,7 @@
       <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
       <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
       <xs:element minOccurs="0" name="ismandatory" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isrecommended" type="xs:boolean" />
       <xs:element minOccurs="0" name="isreminder" type="xs:boolean" />
       <xs:element minOccurs="0" name="isshared" type="xs:boolean" />
       <xs:element minOccurs="0" name="issharing" type="xs:boolean" />
@@ -73,4 +76,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListCopyShareModel" nillable="true" type="tns:ListCopyShareModel" />
+  <xs:complexType name="ArrayOfrecommendeditem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="recommendeditem" nillable="true" type="tns:recommendeditem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfrecommendeditem" nillable="true" type="tns:ArrayOfrecommendeditem" />
+  <xs:complexType name="recommendeditem">
+    <xs:sequence>
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q7:ArrayOfProductImage" />
+      <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="recommendeditem" nillable="true" type="tns:recommendeditem" />
 </xs:schema>

@@ -130,5 +130,11 @@ namespace KeithLink.Svc.InternalSvc
 		}
 		
 		#endregion
+
+
+		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+		{
+			return listLogic.ReadRecommendedItemsList(catalogInfo);
+		}
 	}
 }

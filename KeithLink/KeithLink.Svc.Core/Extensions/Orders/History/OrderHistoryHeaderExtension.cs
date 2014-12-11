@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         public static Order ToOrder(this EF.OrderHistoryHeader value) {
             Order retVal = new Order();
 
-            //retVal.OrderNumber = value.ControlNumber;
+            retVal.OrderNumber = value.InvoiceNumber;
 
             switch (value.OrderStatus.Trim()) {
                 case "":
