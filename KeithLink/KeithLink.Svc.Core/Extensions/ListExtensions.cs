@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Core.Extensions
 				IsWorksheet = list.Type == ListType.Worksheet,
                 IsReminder = list.Type == ListType.Reminder,
 				IsMandatory = list.Type == ListType.Mandatory,
+				IsRecommended = list.Type == ListType.RecommendedItems,
 				Type = list.Type,
 				SharedWith = list.Shares!= null ? list.Shares.Select(s => s.CustomerId).ToList() : null ,
 				ListId = list.Id,
@@ -40,7 +41,7 @@ namespace KeithLink.Svc.Core.Extensions
                 IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId)) : false,
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc }).ToList()
+                    list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate }).ToList()
 			};
 		}
 	}

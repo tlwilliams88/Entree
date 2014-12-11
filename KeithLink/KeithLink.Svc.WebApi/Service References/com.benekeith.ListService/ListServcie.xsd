@@ -3,20 +3,9 @@
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:simpleType name="NotificationType">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="OrderConfirmation">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="OrderUpdate">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
+      <xs:enumeration value="Undefined" />
+      <xs:enumeration value="OrderConfirmation" />
+      <xs:enumeration value="OrderUpdate" />
       <xs:enumeration value="InvoiceAttention">
         <xs:annotation>
           <xs:appinfo>
@@ -28,6 +17,13 @@
         <xs:annotation>
           <xs:appinfo>
             <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="Mail">
+        <xs:annotation>
+          <xs:appinfo>
+            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
           </xs:appinfo>
         </xs:annotation>
       </xs:enumeration>

@@ -134,5 +134,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
