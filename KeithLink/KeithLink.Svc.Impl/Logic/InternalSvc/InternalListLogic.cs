@@ -451,7 +451,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsWorksheet = l.Type == ListType.Worksheet, 
 					IsReminder = l.Type == ListType.Reminder,
  					IsMandatory = l.Type == ListType.Mandatory,
-					ReadOnly = l.ReadOnly,
+					IsRecommended = l.Type == ListType.RecommendedItems,
+					ReadOnly = l.ReadOnly || (!user.IsDSR && l.Type.Equals(ListType.RecommendedItems)),
 					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
@@ -489,7 +490,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
 				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
-				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
+				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)  || l.Type.Equals(ListType.RecommendedItems) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
 			return list;
 		}
 		
