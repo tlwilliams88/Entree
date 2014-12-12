@@ -4,7 +4,7 @@
   @include make-sm-column(3);
   @include make-md-column(6);
   @include make-lg-column(3);
-  
+
   strong {
     display: block;
   }
@@ -33,7 +33,7 @@
   (min-width: $screen-lg-min) {
   .term-amount-2 {
     border-right: 1px solid $color-border;
-  }    
+  }
 }
 
 .account-summary__graph {
@@ -44,7 +44,7 @@
 .notification {
   @include make-row();
   overflow:  hidden;
-  
+
   .notification__icon {
     @include make-md-column(3);
     text-align: center;
@@ -98,7 +98,6 @@
   &.notification--activity {
     .notification__icon {
       padding-top: 20px;
-      padding-left: 9.5%;
 
       div.icon {
         height: 25px;
@@ -107,6 +106,7 @@
         border: 1px solid $color-font;
         border-radius: 100px;
         background-color: $color-white;
+        display: inline-block;
       }
     }
   }
@@ -151,7 +151,7 @@ $order-col__background: #f1efe5;
       color: $color-red;
     }
   }
-  
+
   // order table columns
   .table-col {
     padding: 34px 0;
@@ -194,7 +194,7 @@ $order-col__background: #f1efe5;
         border-top: 3px solid $color-green;
       }
     }
-    
+
     .order-col {
       border-bottom: 1px solid $color-border;
       border-top: 1px solid $color-border;
@@ -216,7 +216,7 @@ $order-col__background: #f1efe5;
       > .details-item {
         @include make-row();
         padding-top: 10px;
-        
+
         > div {
           @include make-xs-column(6);
         }
@@ -226,7 +226,7 @@ $order-col__background: #f1efe5;
         .item-title {
           font-weight: 600;
         }
-      }      
+      }
     }
   }
 }

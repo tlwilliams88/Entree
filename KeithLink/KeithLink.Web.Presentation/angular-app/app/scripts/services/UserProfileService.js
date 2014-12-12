@@ -28,7 +28,7 @@ angular.module('bekApp')
             'name': 'Heather Hill',
             'phone': '(888) 912-2342',
             'email': 'heather.hill@benekeith.com',
-            'imageUrl': '../images/placeholder-dsr.jpg'
+            'imageUrl': './images/placeholder-dsr.jpg'
           };
 
           //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
