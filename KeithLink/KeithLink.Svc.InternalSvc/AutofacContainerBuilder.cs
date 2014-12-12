@@ -84,7 +84,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.RegisterType<NoCachePriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
+            builder.RegisterType<PriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
             builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
