@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceItemsController', ['$scope', '$stateParams', 'transactions', 'order',
-  function ($scope, $stateParams, transactions, order) {
+.controller('InvoiceItemsController', ['$scope', '$stateParams', 'invoice',
+  function ($scope, $stateParams, invoice) {
 
-  $scope.invoice = transactions[0];
-  $scope.invoice.items = order.items;
-  $scope.transactions = transactions;
+  $scope.invoice = invoice;
 
 }]);

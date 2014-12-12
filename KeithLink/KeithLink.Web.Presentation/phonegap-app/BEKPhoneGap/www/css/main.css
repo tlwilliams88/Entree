@@ -6664,38 +6664,38 @@ html, body {
   height: 100%;
 }
 
-/* line 6, ../scss/scaffolding/_globals.scss */
-body {
+/* line 10, ../scss/scaffolding/_globals.scss */
+#sp-page {
   background-image: url("../images/Textured-BG.jpg");
 }
 
-/* line 12, ../scss/scaffolding/_globals.scss */
+/* line 15, ../scss/scaffolding/_globals.scss */
 .container-fluid {
   height: 100%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 17, ../scss/scaffolding/_globals.scss */
+/* line 20, ../scss/scaffolding/_globals.scss */
 .page-content {
   width: calc(100% - 175px);
   margin-left: 175px;
 }
 
-/* line 21, ../scss/scaffolding/_globals.scss */
+/* line 24, ../scss/scaffolding/_globals.scss */
 .view {
   padding-bottom: 15px;
 }
 
 @media (max-width: 991px) {
-  /* line 26, ../scss/scaffolding/_globals.scss */
+  /* line 29, ../scss/scaffolding/_globals.scss */
   .page-content {
     width: inherit;
     margin-left: 0;
   }
 }
 @media print {
-  /* line 33, ../scss/scaffolding/_globals.scss */
+  /* line 36, ../scss/scaffolding/_globals.scss */
   .page-content {
     margin-left: 0;
   }
@@ -7592,7 +7592,7 @@ form.style-validation-errors .form-error-message {
 }
 /* line 37, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-logo img {
-  height: 75px;
+  height: 60px;
 }
 /* line 45, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-nav ul {
@@ -7769,34 +7769,50 @@ form.style-validation-errors .form-error-message {
 .user-bar-mobile {
   background-color: #f3f1eb;
   border-bottom: 1px solid #c3bc9c;
+  text-align: center;
 }
-/* line 65, ../scss/components/_user-bar.scss */
+/* line 67, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile {
-  height: 64px;
-  padding: 5px 15px;
-  float: left;
+  height: 50px;
+  padding: 5px 0;
+  display: inline-block;
 }
-/* line 71, ../scss/components/_user-bar.scss */
+/* line 73, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul {
   padding: 0;
   float: right;
   margin: 0;
 }
-/* line 76, ../scss/components/_user-bar.scss */
+/* line 78, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a, .user-bar-mobile ul .nav-tabs li a:hover, .nav-tabs li .user-bar-mobile ul a:hover {
-  font-size: 28px;
+  font-size: 24px;
   color: #9E987E;
   text-decoration: none;
 }
-/* line 80, ../scss/components/_user-bar.scss */
+/* line 82, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a li, .user-bar-mobile ul .nav-tabs li a:hover li, .nav-tabs li .user-bar-mobile ul a:hover li {
   display: inline-block;
+  padding: 8px 10px;
+}
+/* line 89, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.left-mobile-menu {
+  float: left;
+}
+/* line 92, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.left-mobile-menu a li, .user-bar-mobile ul.left-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.left-mobile-menu a:hover li {
+  border-right: 1px solid #c3bc9c;
+}
+/* line 97, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.right-mobile-menu {
+  float: right;
+}
+/* line 101, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.right-mobile-menu a li, .user-bar-mobile ul.right-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.right-mobile-menu a:hover li {
   border-left: 1px solid #c3bc9c;
-  padding: 12px 16px;
 }
 
 @media (max-width: 991px) {
-  /* line 90, ../scss/components/_user-bar.scss */
+  /* line 109, ../scss/components/_user-bar.scss */
   .hide-searchbar {
     display: none;
   }
@@ -8158,9 +8174,8 @@ form.style-validation-errors .form-error-message {
 /* line 99, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon {
   padding-top: 20px;
-  padding-left: 9.5%;
 }
-/* line 103, ../scss/pages/_home.scss */
+/* line 102, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon div.icon {
   height: 25px;
   width: 25px;
@@ -8168,6 +8183,7 @@ form.style-validation-errors .form-error-message {
   border: 1px solid #504938;
   border-radius: 100px;
   background-color: #fff;
+  display: inline-block;
 }
 /* line 114, ../scss/pages/_home.scss */
 .notification.notification--message .notification__icon {
@@ -9061,6 +9077,11 @@ ul.horizontal-slide .product-placeholder-image {
 /* line 23, ../scss/pages/_invoice.scss */
 .datepicker ul .btn-default {
   border: none;
+}
+
+/* line 28, ../scss/pages/_invoice.scss */
+.overdueHighlight td {
+  background-color: rgba(234, 56, 24, 0.5) !important;
 }
 
 /* line 2, ../scss/pages/_notifications.scss */

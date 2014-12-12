@@ -5,6 +5,7 @@ angular.module('bekApp')
   function ($scope, $filter, $modal, invoices, accounts, InvoiceService) {
 
   $scope.invoices = invoices;
+    console.log($scope.invoices);
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
 
