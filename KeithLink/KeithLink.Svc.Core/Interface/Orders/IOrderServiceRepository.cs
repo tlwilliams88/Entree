@@ -15,5 +15,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
         List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
         Order GetOrder(string branchId, string invoiceNumber);
+		UserActiveCartModel GetUserActiveCart(Guid userId);
+		void SaveUserActiveCart(Guid userId, Guid cartId);
 	}
 }

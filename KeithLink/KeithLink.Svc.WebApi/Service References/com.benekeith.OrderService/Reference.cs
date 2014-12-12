@@ -38,6 +38,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrder", ReplyAction="http://tempuri.org/IOrderService/GetOrderResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
+        KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SaveUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/SaveUserActiveCartResponse")]
+        void SaveUserActiveCart(System.Guid userId, System.Guid cartId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SaveUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/SaveUserActiveCartResponse")]
+        System.Threading.Tasks.Task SaveUserActiveCartAsync(System.Guid userId, System.Guid cartId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -97,6 +109,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber) {
             return base.Channel.GetOrderAsync(branchId, invoiceNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(System.Guid userId) {
+            return base.Channel.GetUserActiveCart(userId);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(System.Guid userId) {
+            return base.Channel.GetUserActiveCartAsync(userId);
+        }
+        
+        public void SaveUserActiveCart(System.Guid userId, System.Guid cartId) {
+            base.Channel.SaveUserActiveCart(userId, cartId);
+        }
+        
+        public System.Threading.Tasks.Task SaveUserActiveCartAsync(System.Guid userId, System.Guid cartId) {
+            return base.Channel.SaveUserActiveCartAsync(userId, cartId);
         }
     }
 }

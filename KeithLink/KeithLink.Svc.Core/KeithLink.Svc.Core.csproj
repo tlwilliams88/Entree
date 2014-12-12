@@ -175,6 +175,7 @@
     <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="Models\Invoices\InvoiceTransactionModel.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
+    <Compile Include="Models\Lists\RecommendedItemModel.cs" />
     <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />
     <Compile Include="Models\Messaging\MailMessageModel.cs" />
     <Compile Include="Models\Messaging\PushDeviceRegistrationModel.cs" />
@@ -229,6 +231,7 @@
     <Compile Include="Models\OnlinePayments\Profile\EF\UserGroup.cs" />
     <Compile Include="Models\OnlinePayments\Customer\EF\State.cs" />
     <Compile Include="Models\OnlinePayments\Profile\UserGroup.cs" />
+    <Compile Include="Models\Orders\EF\UserActiveCart.cs" />
     <Compile Include="Models\Orders\History\OrderHistoryRequest.cs" />
     <Compile Include="Interface\Email\IMessageTemplateLogic.cs" />
     <Compile Include="Interface\Email\IMessageTemplateRepository.cs" />
@@ -344,6 +347,7 @@
     <Compile Include="Models\Orders\OrderImportFileModel.cs" />
     <Compile Include="Models\Orders\OrderImportModel.cs" />
     <Compile Include="Models\Orders\OrderImportOptions.cs" />
+    <Compile Include="Models\Orders\UserActiveCartModel.cs" />
     <Compile Include="Models\Paging\FilterInfo.cs" />
     <Compile Include="Models\Paging\PagedResults.cs" />
     <Compile Include="Models\Paging\PagingModel.cs" />

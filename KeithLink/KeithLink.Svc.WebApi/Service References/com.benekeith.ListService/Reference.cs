@@ -134,6 +134,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ShareList", ReplyAction="http://tempuri.org/IListServcie/ShareListResponse")]
         System.Threading.Tasks.Task ShareListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadRecommendedItemsList", ReplyAction="http://tempuri.org/IListServcie/ReadRecommendedItemsListResponse")]
+        KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[] ReadRecommendedItemsList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadRecommendedItemsList", ReplyAction="http://tempuri.org/IListServcie/ReadRecommendedItemsListResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[]> ReadRecommendedItemsListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -321,6 +327,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task ShareListAsync(KeithLink.Svc.Core.Models.Lists.ListCopyShareModel shareListModel) {
             return base.Channel.ShareListAsync(shareListModel);
+        }
+        
+        public KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[] ReadRecommendedItemsList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.ReadRecommendedItemsList(catalogInfo);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[]> ReadRecommendedItemsListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.ReadRecommendedItemsListAsync(catalogInfo);
         }
     }
 }

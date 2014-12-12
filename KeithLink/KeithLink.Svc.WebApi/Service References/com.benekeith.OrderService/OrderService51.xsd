@@ -40,7 +40,6 @@
           <xs:element minOccurs="0" name="linenumber" type="xs:int" />
           <xs:element minOccurs="0" name="linetotal" type="xs:double" />
           <xs:element minOccurs="0" name="mainframestatus" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="price" type="xs:double" />
           <xs:element minOccurs="0" name="quantity" type="xs:int" />
           <xs:element minOccurs="0" name="quantityordered" type="xs:int" />
@@ -53,4 +52,11 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="OrderLine" nillable="true" type="tns:OrderLine" />
+  <xs:complexType name="UserActiveCartModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="cartid" type="ser:guid" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserActiveCartModel" nillable="true" type="tns:UserActiveCartModel" />
 </xs:schema>

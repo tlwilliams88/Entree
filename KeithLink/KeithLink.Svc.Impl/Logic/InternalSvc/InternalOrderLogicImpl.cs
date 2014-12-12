@@ -15,11 +15,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	{
 		private readonly IOrderHistoryHeaderRepsitory orderHistoryHeaderRepository;
 		private readonly IUnitOfWork unitOfWork;
+		private readonly IUserActiveCartRepository userActiveCartRepository;
 
-		public InternalOrderLogicImpl(IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork)
+
+		public InternalOrderLogicImpl(IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, IUserActiveCartRepository userActiveCartRepository)
 		{
 			this.orderHistoryHeaderRepository = orderHistoryRepository;
 			this.unitOfWork = unitOfWork;
+			this.userActiveCartRepository = userActiveCartRepository;
 		}
 
 		public DateTime? ReadLatestUpdatedDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
@@ -89,5 +92,32 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return orderHistories;
         }
 
-    }
+
+
+		public Core.Models.Orders.UserActiveCartModel GetUserActiveCart(Guid userId)
+		{
+			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId).FirstOrDefault();
+
+			if (activeCart == null)
+				return null;
+
+			return new Core.Models.Orders.UserActiveCartModel() { UserId = activeCart.UserId, CartId = activeCart.CartId };
+
+		}
+
+		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		{
+			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId).FirstOrDefault();
+
+			if (activeCart == null)
+				userActiveCartRepository.Create(new Core.Models.Orders.EF.UserActiveCart() { CartId = cartId, UserId = userId });
+			else
+			{
+				activeCart.CartId = cartId;
+				userActiveCartRepository.Update(activeCart);
+			}
+
+			unitOfWork.SaveChanges();
+		}
+	}
 }

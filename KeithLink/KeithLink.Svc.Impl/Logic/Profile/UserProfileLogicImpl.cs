@@ -443,6 +443,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 BranchId = csProfile.DefaultBranch,
                 RoleName = !String.IsNullOrEmpty(dsrRole) ? "dsr" : GetUserRole(csProfile.Email),
                 UserCustomers = userCustomers,
+                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
                                 //        new Customer() { CustomerName = "Julie's Taco Cabana", CustomerNumber = "709333", CustomerBranch = "fdf" }
@@ -767,6 +768,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
+
         public AccountReturn GetAccount(Guid accountId)
         {
             List<Account> allAccounts = _accountRepo.GetAccounts();
@@ -775,11 +777,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
             return new AccountReturn() { Accounts = new List<Account>() { acct } };
         }
+
         public void AddCustomerToAccount(Guid accountId, Guid customerId)
         {
             _accountRepo.AddCustomerToAccount(accountId, customerId);
         }
-
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters)
         {
@@ -841,6 +843,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return retVal;
         }
 
+        public string AddProfileImageUrl( Guid userId ) {
+            return String.Format( "{0}{1}{2}", Configuration.MultiDocsProxyUrl, "avatar/", userId );
+        }
 
         public void AddUserToCustomer(Guid customerId, Guid userId)
         {

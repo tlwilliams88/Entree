@@ -64,7 +64,7 @@ angular.module('bekApp')
         var deferred = $q.defer();
 
         $upload.upload({
-          url: 'import/order',
+          url: '/import/order',
           method: 'POST',
           data: { options: options },
           file: file, // or list of files ($files) for html5 only

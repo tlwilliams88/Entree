@@ -35,5 +35,15 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         public Order GetOrder(string branchId, string invoiceNumber) {
             throw new NotImplementedException();
         }
-    }
+
+		public UserActiveCartModel GetUserActiveCart(Guid userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

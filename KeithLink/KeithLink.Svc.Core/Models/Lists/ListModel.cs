@@ -48,6 +48,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember(Name = "ismandatory")]
 		public bool IsMandatory { get; set; }
+
+		[DataMember(Name = "isrecommended")]
+		public bool IsRecommended { get; set; }
 		
         public string BranchId { get; set; }
 

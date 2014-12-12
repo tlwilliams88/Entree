@@ -51,5 +51,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
 		void CopyList(ListCopyShareModel copyListModel);
 		void ShareList(ListCopyShareModel shareListModel);
+
+		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 	}
 }

@@ -52,7 +52,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
 		}
 
-
+		[HttpGet]
+		[ApiKeyedRoute("list/recommended")]
+		public List<RecommendedItemModel> ReadRecommendedItemsList()
+		{
+			return listServiceRepository.ReadRecommendedItemsList(this.SelectedUserContext);
+		}
 
         [HttpGet]
 		[ApiKeyedRoute("list/")]

@@ -1,7 +1,7 @@
 <!-- Mobile Sidebar -->
 <div id="sp-nav" ng-swipe-left="$spMenu.hide()" class="sidebar sidebar-mobile">
  <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
-    <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
         <span class="text-white user-info__name">{{userProfile.displayname}}</span>
@@ -141,7 +141,7 @@
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
-    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageurl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <span class="text-white">{{userProfile.salesRep.name}}</span>
       <span class="text-white">{{userProfile.salesRep.phone}}</span>
@@ -248,7 +248,7 @@
 
     <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer">
       <p>Your Sales Rep</p>
-      <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{userProfile.salesRep.imageUrl}}" alt="dsr image" />
+      <img ng-show="userProfile.salesRep.imageurl" ng-src="{{userProfile.salesRep.imageurl}}" alt="dsr image" />
       <p class="contact-info">
         <span>{{userProfile.salesRep.name}}</span>
         <span>{{userProfile.salesRep.phone}}</span>
@@ -311,7 +311,7 @@
               <div class="person-info__section">
                 <span class="icon-arrow-down5"></span>
               </div>
-              <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+              <div class="person-info__section" ng-show="userProfile.imageurl"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
             </div>
           </div>
         </div>

@@ -35,6 +35,13 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[Description("Category")]
 		public string Category { get; set; }
 
+		[DataMember(Name = "fromdate")]
+		[Description("From Date")]
+		public DateTime? FromDate { get; set; }
+		[DataMember(Name = "todate")]
+		[Description("To Date")]
+		public DateTime? ToDate { get; set; }
+
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
 

@@ -36,5 +36,15 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         public Order GetOrder(string branchId, string invoiceNumber) {
             return serviceClient.GetOrder(branchId, invoiceNumber);
         }
-    }
+
+        public UserActiveCartModel GetUserActiveCart(Guid userId)
+		{
+			return serviceClient.GetUserActiveCart(userId);
+		}
+
+		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		{
+			serviceClient.SaveUserActiveCart(userId, cartId);
+		}
+	}
 }

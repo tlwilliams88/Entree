@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
+using KeithLink.Svc.Core.Models.Orders.EF;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational
 {
@@ -38,6 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
         public DbSet<UserPushNotificationDevice> UserPushNotificationDevices { get; set; }
         public DbSet<UserTopicSubscription> UserTopicSubscriptions { get; set; }
 		public DbSet<ExportSetting> ExportSettings { get; set; }
+		public DbSet<UserActiveCart> UserActiveCarts { get; set; }
         
 		protected override void OnModelCreating(DbModelBuilder modelBuilder)
 		{
@@ -60,6 +62,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
             modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+			modelBuilder.Entity<UserActiveCart>().ToTable("UserActiveCarts", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 		
 		public override int SaveChanges()
