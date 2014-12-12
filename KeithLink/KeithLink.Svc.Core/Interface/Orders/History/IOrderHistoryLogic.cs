@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
         OrderHistoryFileReturn ParseMainframeFile(string rawFlatFile);
 
+        Order ReadOrder(string branchId, string orderNumber);
+
         void Save(OrderHistoryFile currentFile);
 
         void StopListening();

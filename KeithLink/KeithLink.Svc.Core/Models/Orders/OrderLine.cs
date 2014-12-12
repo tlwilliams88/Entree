@@ -13,24 +13,26 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Orders
 {
 	[DataContract(Name = "OrderLine")]
-	public class OrderLine : BaseProductInfo, IExportableModel
-	{
+	public class OrderLine : BaseProductInfo, IExportableModel {
+        [DataMember(Name = "linenumber")]
+        public int LineNumber { get; set; }
+
 		[DataMember(Name = "linetotal")]
-		public double LineTotal { get { return this.Quantity * this.Price; } }
+        public double LineTotal { get { return this.Quantity * this.Price; } set { } }
 
 		[DataMember(Name = "quantity")]
 		[Description("# Requested")]
 		public int Quantity { get; set; }
 				
-		[DataMember(Name = "packsize")]
-		public string PackSize { get; set; }
+        //[DataMember(Name = "packsize")]
+        //public string PackSize { get; set; }
 		
 		[DataMember(Name = "each")]
 		public bool Each { get; set; }
 
 		[DataMember(Name = "eachyn")]
 		[Description("Each")]
-		public string EachYN { get { return this.Each ? "Y" : "N"; } set { } }
+        public string EachYN { get { return this.Each ? "Y" : "N"; } set { } }
 		
 		[DataMember(Name = "storagetemp")]
 		public string StorageTemp { get; set; }

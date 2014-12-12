@@ -32,6 +32,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetCustomerOrders", ReplyAction="http://tempuri.org/IOrderService/GetCustomerOrdersResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrder", ReplyAction="http://tempuri.org/IOrderService/GetOrderResponse")]
+        KeithLink.Svc.Core.Models.Orders.Order GetOrder(string branchId, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrder", ReplyAction="http://tempuri.org/IOrderService/GetOrderResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -83,6 +89,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             return base.Channel.GetCustomerOrdersAsync(catalogInfo);
+        }
+        
+        public KeithLink.Svc.Core.Models.Orders.Order GetOrder(string branchId, string invoiceNumber) {
+            return base.Channel.GetOrder(branchId, invoiceNumber);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber) {
+            return base.Channel.GetOrderAsync(branchId, invoiceNumber);
         }
     }
 }

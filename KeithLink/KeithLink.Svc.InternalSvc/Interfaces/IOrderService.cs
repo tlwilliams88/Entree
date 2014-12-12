@@ -20,5 +20,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
+
+        [OperationContract]
+        Order GetOrder(string branchId, string invoiceNumber);
 	}
 }

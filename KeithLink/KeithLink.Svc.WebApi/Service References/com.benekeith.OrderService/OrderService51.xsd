@@ -37,6 +37,7 @@
         <xs:sequence>
           <xs:element minOccurs="0" name="each" type="xs:boolean" />
           <xs:element minOccurs="0" name="eachyn" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="linenumber" type="xs:int" />
           <xs:element minOccurs="0" name="linetotal" type="xs:double" />
           <xs:element minOccurs="0" name="mainframestatus" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />

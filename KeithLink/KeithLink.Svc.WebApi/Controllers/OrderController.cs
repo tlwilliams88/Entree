@@ -81,7 +81,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("order/{orderNumber}")]
 		public Order Orders(string orderNumber)
 		{
-			return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+			//return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+            try {
+                return _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber);
+            } catch (Exception ex) {
+                return null;
+            }
 		}
 
 		[HttpPost]

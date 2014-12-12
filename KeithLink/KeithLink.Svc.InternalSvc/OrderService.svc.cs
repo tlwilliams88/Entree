@@ -38,17 +38,20 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region methods
-        public DateTime? ReadLatestOrderModifiedDateForCustomer(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+        public DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
 			return _orderLogic.ReadLatestUpdatedDate(catalogInfo);
 		}
 
-        public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
+        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber ) {
             return _orderLogic.GetLastFiveOrderHistory( catalogInfo, itemNumber );
         }
 
-        public List<Order> GetCustomerOrders(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            //return orderLogic.GetCustomerOrderHistories(catalogInfo);
+        public List<Order> GetCustomerOrders(UserSelectedContext catalogInfo) {
             return _historyLogic.GetOrders(catalogInfo);
+        }
+
+        public Order GetOrder(string branchId, string invoiceNumber) {
+            return _historyLogic.GetOrder(branchId, invoiceNumber);
         }
         #endregion
     }

@@ -162,7 +162,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				{
 					item.Name = prod.Name;
 					item.Description = prod.Description;
-					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                    item.Pack = prod.Pack;
+                    item.Size = prod.Size;
 					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
 					item.BrandExtendedDescription = prod.BrandExtendedDescription;
