@@ -17,8 +17,13 @@ angular.module('bekApp')
         method: 'GET'
       },
 
-      exportConfig: {
+      getInvoiceExportConfig: {
         url: '/invoice/export',
+        method: 'GET'
+      },
+
+      getDetailExportConfig: {
+        url: '/invoice/export/:invoiceNumber',
         method: 'GET'
       }
 

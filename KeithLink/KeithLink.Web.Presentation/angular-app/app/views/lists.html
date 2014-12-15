@@ -111,7 +111,9 @@
         </a>
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
+
       <li ng-if="isDsr && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
+      <li ng-if="isDsr && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
 
     </ul>
   </div>
@@ -182,6 +184,18 @@
           ng-if="isDsr && !hideMandatoryListCreateButton">
           Create Mandatory <br>List for Customer...
         </button>
+
+        <button
+          type="button" 
+          ng-click="createRecommendedList()" 
+          data-drop="isDragging" 
+          data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+          jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
+          class="btn btn-default btn-list text-left text-light btn-lg"
+          style="margin-top:10px;"
+          ng-if="isDsr && !hideRecommendedListCreateButton">
+          Create Recommended <br>List for Customer...
+        </button>
         
         <button 
           ng-if="selectedList.permissions.canDeleteItems" 
@@ -217,7 +231,7 @@
         </span>
       </div>
     </div>
-    
+
     <!-- Multi-select menu -->
     <div class="row" ng-show="(filteredItems | filter:{isSelected:'true'}).length > 0">
       <div class="col-xs-12 col-sm-6">

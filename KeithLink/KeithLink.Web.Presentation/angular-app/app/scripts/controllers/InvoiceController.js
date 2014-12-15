@@ -55,10 +55,6 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
-  $scope.isTypeInvoice = function(invoice) {
-    return invoice.typedescription === 'IN ';
-  };
-
   //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
   $scope.filterFields = {};
   $scope.setSelectedFilter = function(selectedFilter) {

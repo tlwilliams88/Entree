@@ -17,7 +17,7 @@ angular.module('bekApp')
         return Invoice.query().$promise;
       },
 
-      getInvoice: function() {
+      getInvoice: function(invoiceNumber) {
         return Invoice.getInvoice({
           invoiceNumber: invoiceNumber
         }).$promise;
@@ -37,11 +37,21 @@ angular.module('bekApp')
       ********************/
 
       getExportConfig: function() {
-        return Invoice.exportConfig({}).$promise;
+        return Invoice.getInvoiceExportConfig({}).$promise;
       },
 
       exportInvoice: function(config) {
         ExportService.export('/invoice/export/', config);
+      },
+
+      getDetailExportConfig: function(invoiceNumber) {
+        return Invoice.getDetailExportConfig({
+          invoiceNumber: invoiceNumber
+        }).$promise;
+      },
+
+      exportInvoiceDetails: function(config, invoiceNumber) {
+        ExportService.export('/invoice/export/' + invoiceNumber, config);
       }
 
     };
