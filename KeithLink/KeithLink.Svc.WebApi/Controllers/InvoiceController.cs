@@ -18,7 +18,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class InvoiceController : BaseController {
         #region attributes
         private readonly IOnlinePaymentServiceRepository _repo;
-		private readonly IExportSettingServiceRepository exportSettingRepository;
+		private readonly IExportSettingServiceRepository _exportSettingRepository;
 		#endregion
 
         #region ctor
@@ -27,7 +27,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			: base(profileLogic)
 		{
             _repo = invoiceRepository;
-			exportSettingRepository = exportSettingRepository;
+			_exportSettingRepository = exportSettingRepository;
 		}
 
         #region methods
@@ -44,7 +44,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var list = _repo.GetOpenInvoiceHeaders(SelectedUserContext);
 
 			if (exportRequest.Fields != null)
-				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);
 			return ExportModel<InvoiceModel>(list, exportRequest);
 		}
 
@@ -52,7 +52,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("invoice/export/")]
 		public ExportOptionsModel ExportInvoices()
 		{
-			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
 		}
 
         [HttpGet]
@@ -67,7 +67,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			var invoice = _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
 			if (exportRequest.Fields != null)
-				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
 			return ExportModel<InvoiceItemModel>(invoice.Items, exportRequest);
 		}
@@ -76,7 +76,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
 		public ExportOptionsModel ExportInvoiceDetail(string invoiceNumber)
 		{
-			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
 		}
 
 

@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using System;
 using System.Collections.Generic;
 
@@ -21,6 +22,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
+
+		PagedResults<Customer> CustomerSearch(Guid userId, string searchTerms, PagingModel paging);
+
 
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);

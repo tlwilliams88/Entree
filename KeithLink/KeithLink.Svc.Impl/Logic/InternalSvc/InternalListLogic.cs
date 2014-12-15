@@ -372,6 +372,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel(catalogInfo);
+			returnList.ReadOnly = returnList.ReadOnly || (!user.IsDSR && returnList.Type.Equals(ListType.RecommendedItems));
 
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
