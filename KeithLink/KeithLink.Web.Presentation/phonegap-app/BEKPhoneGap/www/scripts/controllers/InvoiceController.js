@@ -36,7 +36,7 @@ angular.module('bekApp')
   }, {
     name: 'Past Due Invoices',
     filter: function(invoice) {
-      return invoice.statusdescription === 'Late';
+      return invoice.statusdescription === 'Past Due';
     }
   }, {
     name: 'Paid Invoices',
