@@ -55,7 +55,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public List<Order> Orders()
 		{
             //return _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            return _orderServiceRepository.GetCustomerOrders(this.SelectedUserContext);
+            return _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
 		}
 
 		[HttpPost]
@@ -63,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
 		{
             //var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            var orders = _orderServiceRepository.GetCustomerOrders(this.SelectedUserContext);
+            var orders = _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 			

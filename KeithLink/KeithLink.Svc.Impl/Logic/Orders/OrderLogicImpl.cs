@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
         {
-            var orders = orderServiceRepository.GetCustomerOrders(catalogInfo);
+            var orders = orderServiceRepository.GetCustomerOrders(userProfile.UserId, catalogInfo);
 
             //var returnOrders = orders.Select(p => ToOrder(p)).ToList();
             var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
