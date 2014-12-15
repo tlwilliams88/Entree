@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			{
 				LookupProductDetails(userProfile, catalogInfo, order, notes);
                 if (omitDeletedItems)
-                    order.Items = order.Items.Where(x => x.Status != "deleted").ToList();
+                    order.Items = order.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
 			});
 
 			return returnOrders;
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // handel special change order logic to hide deleted line items
             if (returnOrder.IsChangeOrderAllowed && omitDeletedItems) // change order eligible - remove lines marked as 'deleted'
-                returnOrder.Items = returnOrder.Items.Where(x => x.Status != "deleted").ToList();
+                returnOrder.Items = returnOrder.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
 			return returnOrder;
 		}
 
@@ -122,7 +122,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				Price = (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
-                Status = lineItem.Status,
+                //Status = lineItem.Status,
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
@@ -138,7 +138,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 Price = (double)lineItem.SellPrice,
                 QuantityOrdered = lineItem.OrderQuantity,
                 QantityShipped = lineItem.ShippedQuantity,
-                Status = lineItem.ItemStatus,
+                //Status = lineItem.ItemStatus,
                 SubstitutedItemNumber = !String.IsNullOrEmpty(lineItem.ReplacedOriginalItemNumber.Trim()) ? lineItem.ReplacedOriginalItemNumber :
                     !String.IsNullOrEmpty(lineItem.SubbedOriginalItemNumber.Trim()) ? lineItem.SubbedOriginalItemNumber : string.Empty,
                 MainFrameStatus = lineItem.ItemStatus,
@@ -219,7 +219,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             foreach (OrderLine line in existingOrder.Items)
             {
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight  });
+                //itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
@@ -238,12 +239,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     {
                         existingLine.Quantity = newLine.Quantity;
                         existingLine.Each = newLine.Each;
-                        existingLine.Status = "changed";
+                        existingLine.MainFrameStatus = "changed";
                     }
                 }
                 else
                 { // new line
-                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Status = "added" });
+                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, MainFrameStatus = "added" });
                 }
             }
             // handle deletes
@@ -252,7 +253,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
                 if (newLine == null)
                 {
-                    existingLine.Status = "deleted";
+                    existingLine.MainFrameStatus = "deleted";
                     eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
                 }
             }
