@@ -245,7 +245,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
                     continue;
 
-                newOrderFile.Details.Add(new OrderDetail()
+                OrderDetail detail = new OrderDetail()
                 {
                     ItemNumber = item.ProductId,
                     OrderedQuantity = (short)item.Quantity,
@@ -253,11 +253,28 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
-                    ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    ItemStatus = orderType == OrderType.NormalOrder ? string.Empty : item.Status == "added" ? "A" : item.Status == "changed" ? "C" : "D"
-                });
+                    ReplacedOriginalItemNumber = string.Empty
+                };
+
+                if (orderType == OrderType.NormalOrder){
+                    switch (item.Status){
+                        case "added":
+                            detail.ItemChange = LineType.Add;
+                            break;
+                        case "changed":
+                            detail.ItemChange = LineType.Change;
+                            break;
+                        case "deleted":
+                            detail.ItemChange = LineType.Delete;
+                            break;
+		                default:
+                            detail.ItemChange = LineType.NoChange;
+                            break;
+	                }                        
+                }
+
+                newOrderFile.Details.Add(detail);   
             }
 
             System.IO.StringWriter sw = new System.IO.StringWriter();
