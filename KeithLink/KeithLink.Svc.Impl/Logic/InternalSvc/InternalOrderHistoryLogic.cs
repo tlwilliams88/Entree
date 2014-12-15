@@ -20,6 +20,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region methods
+        public Order GetOrder(string branchId, string invoiceNumber) {
+            return _histLogic.ReadOrder(branchId, invoiceNumber);
+        }
+
         public List<Order> GetOrders(UserSelectedContext customerInfo) {
             return _histLogic.GetOrders(customerInfo);
         }

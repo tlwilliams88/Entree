@@ -128,8 +128,17 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 		    retVal.CreatedDate = value.CreatedUtc;
             retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
             retVal.IsChangeOrderAllowed = false;
-		    //retVal.Items { get; set; }
-            //retVal.CommerceId { get; set; }
+            retVal.CommerceId = Guid.Empty;
+
+            if (value.OrderDetails.Count > 0) {
+                System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
+
+                Parallel.ForEach(value.OrderDetails, d => {
+                    lineItems.Add(d.ToOrderLine());
+                });
+
+                retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
+            }
 
             return retVal;
         }

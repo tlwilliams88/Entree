@@ -247,6 +247,22 @@ namespace KeithLink.Svc.Windows.OrderService {
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                                    new Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl() );
+                
+                KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
+
+                KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
+                new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
+                                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
+                                                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl()),
+                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
+                                                                              new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
+                                                                              divRepo,
+                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
+                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl(),
+                                                                              new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
+                                                                                                                             new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
+                                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
+
                 OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                        new OrderHistoyrHeaderRepositoryImpl(uow),
                                                                        new OrderHistoryDetailRepositoryImpl(uow),
@@ -254,7 +270,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        uow,
                                                                        confirmationLogic,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                       new PurchaseOrderRepositoryImpl());
+                                                                       new PurchaseOrderRepositoryImpl(),
+                                                                       catLogic);
 
                 logic.ListenForMainFrameCalls();
             } catch (Exception e) {
@@ -323,6 +340,21 @@ namespace KeithLink.Svc.Windows.OrderService {
                             ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                                                new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                                                new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
+
+                            KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
+
+                            KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic = 
+                            new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(), 
+                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(), 
+                                                                                                                                      new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl()),
+                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(), 
+                                                                                          new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
+                                                                                          divRepo,
+                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log), 
+                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl(),
+                                                                                          new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo, 
+                                                                                                                                         new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
+                                                                                          new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
                             OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                                    new OrderHistoyrHeaderRepositoryImpl(uow),
                                                                                    new OrderHistoryDetailRepositoryImpl(uow),
@@ -330,7 +362,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    uow,
                                                                                    confirmationLogic,
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                   new PurchaseOrderRepositoryImpl());
+                                                                                   new PurchaseOrderRepositoryImpl(), 
+                                                                                   catLogic);
 
                             if (CanOpenFile(filePath)) {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);

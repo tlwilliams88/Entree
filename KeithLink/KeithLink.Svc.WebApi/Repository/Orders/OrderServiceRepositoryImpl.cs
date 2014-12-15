@@ -1,4 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -22,16 +24,20 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
 			return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
 		}
 
-        public List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber ) {
+        public List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber ) {
             return serviceClient.GetLastFiveOrderHistory( catalogInfo, itemNumber ).ToList();
         }
 
-        public List<Core.Models.Orders.Order> GetCustomerOrders(UserSelectedContext catalogInfo)
+        public List<Order> GetCustomerOrders(UserSelectedContext catalogInfo)
         {
             return serviceClient.GetCustomerOrders(catalogInfo).ToList();
         }
 
-		public Core.Models.Orders.UserActiveCartModel GetUserActiveCart(Guid userId)
+        public Order GetOrder(string branchId, string invoiceNumber) {
+            return serviceClient.GetOrder(branchId, invoiceNumber);
+        }
+
+        public UserActiveCartModel GetUserActiveCart(Guid userId)
 		{
 			return serviceClient.GetUserActiveCart(userId);
 		}

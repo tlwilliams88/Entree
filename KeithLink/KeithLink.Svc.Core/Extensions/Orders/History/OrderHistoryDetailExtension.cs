@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using System;
@@ -137,6 +138,22 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.SellPrice = (double)value.SellPrice;
 
             return retVal;
+        }
+
+        public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value) {
+            return new OrderLine() {
+                LineNumber = value.LineNumber,
+                ItemNumber = value.ItemNumber,
+                Quantity = (short)value.ShippedQuantity,
+                Price = (double)value.SellPrice,
+                QuantityOrdered = value.OrderQuantity,
+                QantityShipped = value.ShippedQuantity,
+                Status = value.ItemStatus,
+                SubstitutedItemNumber = (!String.IsNullOrEmpty(value.ReplacedOriginalItemNumber.Trim()) ? value.ReplacedOriginalItemNumber :
+                    (!String.IsNullOrEmpty(value.SubbedOriginalItemNumber.Trim()) ? value.SubbedOriginalItemNumber : string.Empty)),
+                MainFrameStatus = value.ItemStatus,
+                Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false
+            };
         }
 
 		public static InvoiceItemModel ToInvoiceItem(this EF.OrderHistoryDetail value)
