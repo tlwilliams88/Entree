@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -880,5 +881,55 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _customerRepo.ClearCustomerCache();
             return true;
         }
-    }
+
+
+		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(Guid userId, string searchTerms, Core.Models.Paging.PagingModel paging)
+		{
+			List<Customer> allCustomers = _customerRepo.GetCustomersForUser(userId);
+
+			if (!string.IsNullOrEmpty(searchTerms))
+			{
+				//Build filter
+				paging.Filter = new FilterInfo()
+				{
+					Field = "CustomerName",
+					FilterType = "contains",
+					Value = searchTerms,
+					Condition = "||",
+					Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
+				};
+			}
+			
+			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerNumber");
+
+			
+			//Populate the Last order updated date for each customer
+			foreach (var customer in returnValue.Results)
+				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
+
+
+
+			foreach (var cust in returnValue.Results)
+			{
+				if (string.IsNullOrEmpty(cust.TermCode))
+					continue;
+
+				//Lookup Term info
+				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+				if (term != null)
+				{
+					cust.TermDescription = term.Description;
+					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+				}
+
+			}
+			
+
+			return returnValue;
+		}
+	}
 }
