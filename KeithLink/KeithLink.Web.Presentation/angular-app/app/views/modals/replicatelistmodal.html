@@ -4,7 +4,7 @@
       Sharing a list with another customer allows all users under that customer to view a living copy of the list.  Any edits you make will also occur on all shared versions of the list.  Users who have a shared copy will not be able to make any edits. 
     </p>
     <form name="shareForm">
-      <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customerNumber !== customer.customerNumber">
+      <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber">
         <label>
           <input type="checkbox"
             name="customers"
@@ -27,7 +27,7 @@
       Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
     </p>
     <form name="copyForm">
-      <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customerNumber !== customer.customerNumber">
+      <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber">
         <label>
           <input type="checkbox"
             name="customers"

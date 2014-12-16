@@ -34,15 +34,17 @@ angular.module('bekApp')
           //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
 
           LocalStorage.setProfile(profile);
-          // // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
+          // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
           if (profile.rolename === 'guest') {
             LocalStorage.setSelectedBranchInfo(profile.branchid);
-          } //else {
-          //   LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]); // select first customer by default
-          // }
-
-          // LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]); // select first customer by default
-          // delete profile.user_customers;
+          } else {
+            var userSelectedContext = {
+              id: profile.defaultcustomer.customerNumber,
+              text: profile.defaultcustomer.displayname,
+              customer: profile.defaultcustomer
+            };
+            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+          }
 
           return profile;
         });
@@ -61,8 +63,15 @@ angular.module('bekApp')
       },
 
       searchUserCustomers: function(searchTerm, size, from) {
-        return $http.get('/profile/customer?size=15&terms=' + searchTerm + '&from=0').then(function(response) {
-          return response.data.results;
+        var data = {
+          params: {
+            size: size,
+            from: from,
+            terms: searchTerm
+          }
+        };
+        return $http.get('/profile/customer', data).then(function(response) {
+          return response.data;
         });
       },
 

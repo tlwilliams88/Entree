@@ -14,7 +14,7 @@
     </div>
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default" title="Print"><span class="icon-printer"></span></button>
+    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
     <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button>
   </div>
 </div>
@@ -25,9 +25,9 @@
       <div class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
         <address class="text-light">
-          {{selectedUserContext.customerName}}<br>
-          {{selectedUserContext.address.street}}<br>
-          {{selectedUserContext.address.city}}, {{selectedUserContext.address.regioncode}} {{selectedUserContext.address.postalcode}}<br>
+          {{selectedUserContext.customer.customerName}}<br>
+          {{selectedUserContext.customer.address.street}}<br>
+          {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
         </address>
         <h3>Bank Account Info</h3>
 
@@ -124,7 +124,7 @@
 
           <tr
             ng-repeat-start="invoice in (filteredItems = (invoices | filter:selectedFilterView.filter | filter:filterFields | orderBy:sortBy:sortOrder))"
-            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, overdueHighlight:  invoice.status == 2}">
+            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, overdueHighlight:  invoice.status === 2}">
             <td>
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
             </td>
@@ -162,7 +162,7 @@
                 ng-required="invoice.isSelected">
             </td>
             <td class="hidden-xs hidden-sm datepicker">
-              <a
+             <!--  <a
                 ng-click="openDatepicker = true"
                 ng-if="invoice.ispayable"
                 class="icon-calendar"
@@ -173,7 +173,7 @@
                 max-date="datepickerOptions.maxDate"
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
-                close-text="Close"></a>
+                close-text="Close"></a> -->
               {{invoice.date | date:shortDate}}
             </td>
             <td class="large-icon icon-col">
@@ -217,7 +217,7 @@
                     Schedule Date
                   </td>
                   <td class="datepicker">
-                    <a
+                   <!--  <a
                       ng-click="openDatepicker = true"
                       class="icon-calendar"
                       datepicker-popup="{{datepickerOptions.options.dateFormat}}"
@@ -227,7 +227,7 @@
                       max-date="datepickerOptions.maxDate"
                       datepicker-options="datepickerOptions.options"
                       date-disabled="disabled(date, mode)"
-                      close-text="Close"></a>
+                      close-text="Close"></a> -->
                       {{invoice.date | date:shortDate}}
                   </td>
                 </tr>
