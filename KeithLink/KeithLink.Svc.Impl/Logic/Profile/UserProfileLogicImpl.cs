@@ -373,65 +373,70 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		{
             List<Customer> userCustomers;
 			string dsrRole = string.Empty;
-            
+			string dsrNumber = string.Empty;
+			string dsmRole = string.Empty;
             if (IsInternalAddress(csProfile.Email))
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
-                if (!String.IsNullOrEmpty(dsrRole))
-                {
-                    // lookup customers by their assigned dsr number
-                    userCustomers = _customerRepo.GetCustomers().Where(x => x.DsrNumber == user.Description).OrderBy(x => x.CustomerName).ToList();
-                }
-                else
-                {
-                    string dsmRole = GetUserDsmRole(user);
-                    if (!String.IsNullOrEmpty(dsmRole))
-                    {
-                        // lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
-                        userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList(); // TODO: reduce list to only the DSM's DSRs
-                    }
-                    else
-                    {
-                        // until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
-                        //userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
-                        userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList(); //use the use the user organization object for customer filtering
-                    }
-                }
-            }
-            else
-            {
-                 userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList();
-            }
+				dsrNumber = user.Description;
+				if (String.IsNullOrEmpty(dsrRole))
+					dsmRole = GetUserDsmRole(user);
 
-            if (includeLastOrderDate)
-            {
-                //Populate the Last order updated date for each customer
-                foreach (var customer in userCustomers)
-                    customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
-            }
-            
-			if (includeTermInformation)
-			{
-				foreach (var cust in userCustomers)
-				{
-					if (string.IsNullOrEmpty(cust.TermCode))
-						continue;
-
-					//Lookup Term info
-					var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-					if (term != null)
-					{
-						cust.TermDescription = term.Description;
-						cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-						cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-						cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-						cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-					}
-
-				}
+				//if (!String.IsNullOrEmpty(dsrRole))
+				//{
+				//	// lookup customers by their assigned dsr number
+				//	userCustomers = _customerRepo.GetCustomers().Where(x => x.DsrNumber == user.Description).OrderBy(x => x.CustomerName).ToList();
+				//}
+				//else
+				//{
+				//	string dsmRole = GetUserDsmRole(user);
+				//	if (!String.IsNullOrEmpty(dsmRole))
+				//	{
+				//		// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
+				//		userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList(); // TODO: reduce list to only the DSM's DSRs
+				//	}
+				//	else
+				//	{
+				//		// until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
+				//		//userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+				//		userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList(); //use the use the user organization object for customer filtering
+				//	}
+				//}
 			}
+			//else
+			//{
+			//	 userCustomers = _customerRepo.GetCustomersForUser(Guid.Parse(csProfile.Id)).OrderBy(x => x.CustomerName).ToList();
+			//}
+
+			//if (includeLastOrderDate)
+			//{
+			//	//Populate the Last order updated date for each customer
+			//	foreach (var customer in userCustomers)
+			//		customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
+			//}
+            
+			//if (includeTermInformation)
+			//{
+			//	foreach (var cust in userCustomers)
+			//	{
+			//		if (string.IsNullOrEmpty(cust.TermCode))
+			//			continue;
+
+			//		//Lookup Term info
+			//		var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+			//		if (term != null)
+			//		{
+			//			cust.TermDescription = term.Description;
+			//			cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+			//			cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+			//			cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+			//			cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+			//		}
+
+			//	}
+			//}
             
 
             return new UserProfile() {
@@ -443,7 +448,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 CustomerNumber = csProfile.DefaultCustomer,
                 BranchId = csProfile.DefaultBranch,
                 RoleName = !String.IsNullOrEmpty(dsrRole) ? "dsr" : GetUserRole(csProfile.Email),
-                UserCustomers = userCustomers,
+				DSMRole = dsmRole,
+				DSRNumber = dsrNumber,
+                //UserCustomers = userCustomers,
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 //new List<Customer>() { // for testing only
                                 //        new Customer() { CustomerName = "Bob's Crab Shack", CustomerNumber = "709333", CustomerBranch = "fdf" },
@@ -883,9 +890,41 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
 
-		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(Guid userId, string searchTerms, Core.Models.Paging.PagingModel paging)
+		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging)
 		{
-			List<Customer> allCustomers = _customerRepo.GetCustomersForUser(userId);
+			List<Customer> allCustomers = new List<Customer>();
+
+			if (IsInternalAddress(user.EmailAddress))
+			{
+				//UserPrincipal userP = _intAd.GetUser(user.EmailAddress);
+				//dsrRole = GetUserDsrRole(user);
+				//dsrNumber = user.Description;
+				if (!String.IsNullOrEmpty(user.DSRNumber))
+				{
+					// lookup customers by their assigned dsr number
+					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber);
+				}
+				else
+				{
+					if (!String.IsNullOrEmpty(user.DSMRole))
+					{
+						// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
+						allCustomers = _customerRepo.GetCustomers(); // TODO: reduce list to only the DSM's DSRs
+					}
+					else
+					{
+						// until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
+						//userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+					}
+				}
+			}
+			else
+			{
+				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+			}
+
+
 
 			if (!string.IsNullOrEmpty(searchTerms))
 			{
