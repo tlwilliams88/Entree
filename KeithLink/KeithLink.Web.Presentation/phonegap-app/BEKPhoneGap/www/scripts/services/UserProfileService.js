@@ -28,10 +28,10 @@ angular.module('bekApp')
             'name': 'Heather Hill',
             'phone': '(888) 912-2342',
             'email': 'heather.hill@benekeith.com',
-            'imageUrl': '../images/placeholder-dsr.jpg'
+            'imageUrl': './images/placeholder-dsr.jpg'
           };
 
-          profile.imageUrl = '../images/placeholder-user.png';
+          profile.imageUrl = './images/placeholder-user.png';
 
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns

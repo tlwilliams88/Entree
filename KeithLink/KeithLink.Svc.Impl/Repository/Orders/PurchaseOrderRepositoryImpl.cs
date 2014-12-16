@@ -108,8 +108,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
-			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
-
+            return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null && c.Properties["CustomerId"].ToString().Equals(customerId)).Select(p => (PurchaseOrder)p).ToList();
+            //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
 
         public string UpdatePurchaseOrder(PurchaseOrder order)

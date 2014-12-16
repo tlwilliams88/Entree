@@ -79,7 +79,7 @@
       </td>
       <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
       <td>{{order.status}}</td>
-      <td class="hidden-xs hidden-sm">{{order.deliverydate || 'N/A'}}</td>
+      <td class="hidden-xs hidden-sm">{{order.deliverydate || 'N/A' | date:shortDate }}</td>
       <td class="hidden-xs hidden-sm">{{order.itemcount}}</td>
       <td class="hidden-xs hidden-sm text-right">{{order.ordertotal | currency}}</td>
       <td class="hidden-xs hidden-sm">{{order.invoicenumber || 'N/A'}}</td>

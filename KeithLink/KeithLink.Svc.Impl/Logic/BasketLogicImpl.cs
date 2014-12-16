@@ -17,11 +17,13 @@ namespace KeithLink.Svc.Impl.Logic
 	{
 		private readonly IBasketRepository basketRepository;
 		private readonly IUserProfileRepository userProfileRepository;
+		private readonly ICustomerRepository customerRepository;
 
-		public BasketLogicImpl(IBasketRepository basketRepository, IUserProfileRepository userProfileRepository)
+		public BasketLogicImpl(IBasketRepository basketRepository, IUserProfileRepository userProfileRepository, ICustomerRepository customerRepository)
 		{
 			this.basketRepository = basketRepository;
 			this.userProfileRepository = userProfileRepository;
+			this.customerRepository = customerRepository;
 		}
 
 		public CS.Basket RetrieveSharedCustomerBasket(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
@@ -34,7 +36,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return basket;
 
 			//Basket belongs to another user for this customer...find it.
-			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(user.UserCustomers.Where(c => c.CustomerNumber.Equals(catalogInfo.CustomerId)).First().CustomerId).Where(b => !b.UserId.Equals(user.UserId)).ToList();
+			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId).CustomerId).Where(b => !b.UserId.Equals(user.UserId)).ToList();
 
 
 			foreach (var sharedUser in sharedUsers)
@@ -49,7 +51,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, BasketType type, bool includeFavorites = false)
 		{
-			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(user.UserCustomers.Where(c => c.CustomerNumber.Equals(catalogInfo.CustomerId)).First().CustomerId).ToList();
+			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId).CustomerId).ToList();
 
 			var returnBaskets = new List<CS.Basket>();
 

@@ -92,8 +92,10 @@ angular.module('bekApp')
         ExportService.export('/order/export', config);
       },
 
-      getDetailExportConfig: function() {
-        return Order.getDetailExportConfig({}).$promise;
+      getDetailExportConfig: function(orderNumber) {
+        return Order.getDetailExportConfig({
+          orderNumber: orderNumber
+        }).$promise;
       },
 
       exportOrderDetails: function(config, orderNumber) {

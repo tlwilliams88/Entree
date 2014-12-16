@@ -6,13 +6,15 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IOrderHistoryLogic {
-        List<Order> GetOrders(UserSelectedContext customerInfo);
+        List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo);
 
         void ListenForMainFrameCalls();
 
         void ListenForQueueMessages();
 
         OrderHistoryFileReturn ParseMainframeFile(string rawFlatFile);
+
+        Order ReadOrder(string branchId, string orderNumber);
 
         void Save(OrderHistoryFile currentFile);
 

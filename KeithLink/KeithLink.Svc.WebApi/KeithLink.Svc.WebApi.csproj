@@ -183,6 +183,8 @@
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">

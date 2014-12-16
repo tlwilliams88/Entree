@@ -1,5 +1,5 @@
 'use strict';
- 
+
 /**
  * @ngdoc function
  * @name bekApp.service:InvoiceService
@@ -8,17 +8,17 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('InvoiceService', ['ExportService', 'Invoice', 
+  .factory('InvoiceService', ['ExportService', 'Invoice',
     function (ExportService, Invoice) {
-    
+
     var Service = {
-      
+
       getAllInvoices: function() {
         return Invoice.query().$promise;
       },
 
-      getInvoiceTransactions: function(invoiceNumber) {
-        return Invoice.getTransactions({
+      getInvoice: function() {
+        return Invoice.getInvoice({
           invoiceNumber: invoiceNumber
         }).$promise;
       },
@@ -45,7 +45,7 @@ angular.module('bekApp')
       }
 
     };
- 
+
     return Service;
- 
+
   }]);

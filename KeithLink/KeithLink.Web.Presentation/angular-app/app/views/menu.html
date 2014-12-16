@@ -1,7 +1,7 @@
 <!-- Mobile Sidebar -->
-<div id="sp-nav" ng-swipe-left="$spMenu.hide()" class="sidebar sidebar-mobile">
+<div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
  <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
-    <div class="person-info__section"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <div>
         <span class="text-white user-info__name">{{userProfile.displayname}}</span>
@@ -144,7 +144,7 @@
     <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
     <div class="person-info__section person-info__details">
       <span class="text-white">{{userProfile.salesRep.name}}</span>
-      <span class="text-white">{{userProfile.salesRep.phone}}</span>
+      <a ng-href="{{'tel:' + userProfile.salesRep.phone}}" class="text-white">{{userProfile.salesRep.phone}}</a>
       <span><a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a></span>
     </div>
   </div>
@@ -279,8 +279,42 @@
         <div class="col-md-4 hidden-sm hidden-xs">
           <!-- <div class="select-div"> -->
             <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
-            <select class="input-lg form-control" ng-show="isOrderEntryCustomer" ng-options="customer.customerName for customer in userProfile.user_customers" ng-model="selectedUserContext" ng-change="changeCustomerLocation()" ></select>
+            <!-- <select class="input-lg form-control" ng-show="isOrderEntryCustomer" ng-options="customer.customerName for customer in userProfile.user_customers" ng-model="selectedUserContext" ng-change="changeCustomerLocation()" ></select> -->
           <!-- </div> -->
+
+          <div ng-show="isOrderEntryCustomer" class="dropdown-toggle" dropdown is-open="showAutocomplete">
+            <div class="input-group input-group-lg">
+              <input class="form-control input-lg" type="text" ng-model-options="{debounce: 300}" ng-change="searchCustomers(selectedUserContext.customerName)" ng-model="selectedUserContext.customerName" />
+              <span class="input-group-btn">
+                <button class="btn-default btn" type="button" ng-click="searchCustomers(selectedUserContext.customerName)"><span class="icon-arrow-down5"></span></button>
+              </span>
+            </div>
+            <div class="dropdown-menu">
+
+              <table class="table no-margin">
+                <tr ng-repeat="customer in customers" ng-click="changeCustomerLocation(customer)">
+                  <td>
+                    {{customer.customerName}}
+                  </td>
+                  <td>
+                    {{customer.customerNumber}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <!-- <ui-select ng-model="person.selected" theme="select2" ng-disabled="disabled" style="min-width: 300px;">
+            <ui-select-match placeholder="Select a person in the list or search his name/age...">{{$select.selected.name}}</ui-select-match>
+            <ui-select-choices repeat="person in people | propsFilter: {name: $select.search, age: $select.search}">
+              <div ng-bind-html="person.name | highlight: $select.search"></div>
+              <small>
+                email: {{person.email}}
+                age: <span ng-bind-html="''+person.age | highlight: $select.search"></span>
+              </small>
+            </ui-select-choices>
+          </ui-select> -->
+
         </div>
         <div class="col-md-4">
           <form name="universalSearchForm" novalidate ng-if="canBrowseCatalog">

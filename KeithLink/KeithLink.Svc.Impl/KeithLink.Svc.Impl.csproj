@@ -406,6 +406,14 @@
     <Compile Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.Designer.cs">
       <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201412111648071_Add_Dates_To_ListItems.cs" />
+    <Compile Include="Repository\EF\Migrations\201412111648071_Add_Dates_To_ListItems.Designer.cs">
+      <DependentUpon>201412111648071_Add_Dates_To_ListItems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201412112133057_Add_UserActiveCart.cs" />
+    <Compile Include="Repository\EF\Migrations\201412112133057_Add_UserActiveCart.Designer.cs">
+      <DependentUpon>201412112133057_Add_UserActiveCart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -433,6 +441,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
+    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
@@ -469,7 +478,9 @@
     <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\UserActiveCartRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
+    <Compile Include="Repository\Profile\AvatarRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\Cache\NoCacheCustomerCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\Cache\CustomerCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\BaseOrgRepository.cs" />
@@ -868,6 +879,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.resx">
       <DependentUpon>201411252130134_add SellPrice to EF OrderHistoryDetail 20141125.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201412111648071_Add_Dates_To_ListItems.resx">
+      <DependentUpon>201412111648071_Add_Dates_To_ListItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201412112133057_Add_UserActiveCart.resx">
+      <DependentUpon>201412112133057_Add_UserActiveCart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -28,18 +28,22 @@ angular.module('bekApp')
             'name': 'Heather Hill',
             'phone': '(888) 912-2342',
             'email': 'heather.hill@benekeith.com',
-            'imageUrl': '../images/placeholder-dsr.jpg'
+            'imageUrl': './images/placeholder-dsr.jpg'
           };
 
-          profile.imageUrl = '../images/placeholder-user.png';
+          //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
 
           LocalStorage.setProfile(profile);
-          // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
+          // // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
           if (profile.rolename === 'guest') {
             LocalStorage.setSelectedBranchInfo(profile.branchid);
-          } else {
-            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
-          }
+          } //else {
+          //   LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]); // select first customer by default
+          // }
+
+          // LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]); // select first customer by default
+          // delete profile.user_customers;
+
           return profile;
         });
       },
@@ -53,6 +57,12 @@ angular.module('bekApp')
 
         return $http.get('/profile', data).then(function(response){
           return response.data.userProfiles[0];
+        });
+      },
+
+      searchUserCustomers: function(searchTerm, size, from) {
+        return $http.get('/profile/customer?size=15&terms=' + searchTerm + '&from=0').then(function(response) {
+          return response.data.results;
         });
       },
 

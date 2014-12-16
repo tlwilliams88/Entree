@@ -10,6 +10,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -287,6 +288,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/customer/")]
+		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging)
+		{
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging);
+		}
+
 
         [Authorize]
         [HttpGet]

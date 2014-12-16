@@ -18,7 +18,7 @@ angular.module('bekApp')
           return OrderService.exportOrderDetails;
         },
         exportConfig: function() {
-          return OrderService.getDetailExportConfig();
+          return OrderService.getDetailExportConfig(order.ordernumber);
         },
         exportParams: function() {
           return order.ordernumber;

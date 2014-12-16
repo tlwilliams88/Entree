@@ -5,7 +5,6 @@ angular.module('bekApp')
   function ($scope, $filter, $modal, invoices, accounts, InvoiceService) {
 
   $scope.invoices = invoices;
-    console.log($scope.invoices);
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
 
@@ -36,7 +35,7 @@ angular.module('bekApp')
   }, {
     name: 'Past Due Invoices',
     filter: function(invoice) {
-      return invoice.statusdescription === 'Late';
+      return invoice.statusdescription === 'Past Due';
     }
   }, {
     name: 'Paid Invoices',
@@ -53,10 +52,6 @@ angular.module('bekApp')
 
   $scope.selectAccount = function(account) {
     $scope.selectedAccount = account;
-  };
-
-  $scope.isTypeInvoice = function(invoice) {
-    return invoice.typedescription === 'IN ';
   };
 
   //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
