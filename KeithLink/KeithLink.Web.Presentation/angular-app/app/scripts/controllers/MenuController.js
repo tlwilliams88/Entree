@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'UserProfileService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, $window, branches, UserProfileService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -23,15 +23,23 @@ angular.module('bekApp')
 
     // get selected user context
     if ($scope.isOrderEntryCustomer) { // if order entry customer, use customer number
-      var customerNumber = LocalStorage.getCustomerNumber();
-      angular.forEach($scope.userProfile.user_customers, function(customer) {
-        if (customer.customerNumber === customerNumber) {
-          $scope.selectedUserContext = customer;
-        }
-      });
+      // var customerNumber = LocalStorage.getCustomerNumber();
+      // angular.forEach($scope.userProfile.user_customers, function(customer) {
+      //   if (customer.customerNumber === customerNumber) {
+      //     $scope.selectedUserContext = customer;
+      //   }
+      // });
+      $scope.selectedUserContext = LocalStorage.getCurrentCustomer();
     } else { // if guest user, use branch id
       $scope.selectedUserContext = LocalStorage.getBranchId();
     }
+
+    $scope.searchCustomers = function(term) {
+      // console.log(term);
+      UserProfileService.searchUserCustomers(term).then(function(customers) {
+        $scope.customers = customers;
+      });
+    };
 
     // for guest users
     $scope.changeBranch = function() {
@@ -45,8 +53,9 @@ angular.module('bekApp')
     };
 
     // for order-entry customers
-    $scope.changeCustomerLocation = function() {
-      LocalStorage.setSelectedCustomerInfo($scope.selectedUserContext);
+    $scope.changeCustomerLocation = function(customer) {
+      $scope.selectedUserContext = customer;
+      LocalStorage.setSelectedCustomerInfo(customer);
 
       angular.copy([], CartService.shipDates);
 
