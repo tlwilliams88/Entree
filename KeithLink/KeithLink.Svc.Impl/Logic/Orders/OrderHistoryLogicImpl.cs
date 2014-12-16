@@ -436,8 +436,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                   h.InvoiceNumber.Equals(orderNumber),
                                                              d => d.OrderDetails).FirstOrDefault();
+            Order returnOrder = null;
 
-            Order returnOrder = myOrder.ToOrder();
+            if (myOrder == null) {
+                PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(orderNumber);
+                returnOrder = po.ToOrder();
+            } else {
+                 returnOrder = myOrder.ToOrder();
+            }
 
             LookupProductDetails(branchId, returnOrder);
 
