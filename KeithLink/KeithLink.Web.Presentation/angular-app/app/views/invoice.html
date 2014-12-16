@@ -129,8 +129,8 @@
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
             </td>
             <td>
-              <a ng-if="isTypeInvoice(invoice)" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
-              <span ng-if="!isTypeInvoice(invoice)">{{invoice.invoicenumber}}</span>
+              <a ng-if="invoice.typedescription === 'Invoice'" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
+              <span ng-if="invoice.typedescription !== 'Invoice'">{{invoice.invoicenumber}}</span>
             </td>
             <td>
               {{invoice.typedescription}}

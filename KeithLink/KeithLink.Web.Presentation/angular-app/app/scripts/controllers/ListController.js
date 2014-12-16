@@ -19,6 +19,9 @@ angular.module('bekApp')
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
     }
+    if (ListService.findRecommendedList()) {
+      $scope.hideRecommendedListCreateButton = true;
+    }
 
     function resetPage(list) {
       $scope.selectedList = list;
@@ -79,6 +82,22 @@ angular.module('bekApp')
     $scope.createMandatoryListFromDrag = function(event, helper) {
       var dragSelection = getSelectedItemsFromDrag(helper);
       $scope.createMandatoryList(dragSelection);
+    };
+
+    /**********
+    CREATE RECOMMENDED LIST
+    **********/
+
+    $scope.createRecommendedList = function(items) {
+      ListService.createRecommendedList(items).then(function(list) {
+        $scope.hideRecommendedListCreateButton = true;
+        return list;
+      }).then(goToNewList);
+    };
+
+    $scope.createRecommendedListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createRecommendedList(dragSelection);
     };
 
     /**********

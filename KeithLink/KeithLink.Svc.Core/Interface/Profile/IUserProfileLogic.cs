@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 
-		PagedResults<Customer> CustomerSearch(Guid userId, string searchTerms, PagingModel paging);
+		PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging);
 
 
         // admin functions
