@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             output.Append(GetLineType(value.ItemChange));
             output.Append(value.SubOriginalItemNumber.PadRight(6));
             output.Append(value.ReplacedOriginalItemNumber.PadRight(6));
-            output.Append(value.ItemStatus.PadRight(1));
+            output.Append(value.ItemStatus == null ? string.Empty : value.ItemStatus.PadRight(1));
 
             return output.ToString();
         }

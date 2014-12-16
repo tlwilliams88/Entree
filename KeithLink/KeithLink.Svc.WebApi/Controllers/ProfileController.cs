@@ -294,7 +294,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("profile/customer/")]
 		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging)
 		{
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser.UserId, terms, paging);
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging);
 		}
 
 
