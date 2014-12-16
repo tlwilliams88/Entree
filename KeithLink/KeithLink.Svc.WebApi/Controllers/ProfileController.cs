@@ -84,7 +84,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
-
+				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }).Results.FirstOrDefault();
                 return retVal;
             } else {
                 return _profileLogic.GetUserProfile(email, true);
@@ -125,8 +125,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 // handle customer updates - will need to add security here
                 if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
                 {
-                    IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c =>c.CustomerId).Except(profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId));
-                    IEnumerable<Guid> custsToRemove = profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
+					var customers = _profileLogic.GetCustomersForUser(this.AuthenticatedUser);
+
+					IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
+					IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
                     foreach (Guid c in custsToAdd)
                         _profileLogic.AddUserToCustomer(c, profile.UserProfiles[0].UserId);
                     foreach (Guid c in custsToRemove)
