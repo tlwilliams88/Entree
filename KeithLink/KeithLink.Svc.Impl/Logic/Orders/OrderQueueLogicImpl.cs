@@ -207,19 +207,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 rawOrder = _orderQueue.ConsumeFromQueue();
             } 
         }
-        #endregion
 
-        #region properties
-        public bool AllowOrderProcessing { get; set; }
-        #endregion
-
-
-        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType)
-        {
-            var newOrderFile = new OrderFile()
-            {
-                Header = new OrderHeader()
-                {
+        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType) {
+            var newOrderFile = new OrderFile() {
+                Header = new OrderHeader() {
                     OrderingSystem = OrderSource.Entree,
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
@@ -238,15 +229,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 Details = new List<OrderDetail>()
             };
 
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-            {
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"])) {
                 var item = (CS.LineItem)lineItem.Target;
                 if ((orderType == OrderType.ChangeOrder && String.IsNullOrEmpty(item.Status))
                     || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
                     continue;
 
-                OrderDetail detail = new OrderDetail()
-                {
+                OrderDetail detail = new OrderDetail() {
                     ItemNumber = item.ProductId,
                     OrderedQuantity = (short)item.Quantity,
                     UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
@@ -257,8 +246,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     ReplacedOriginalItemNumber = string.Empty
                 };
 
-                if (orderType == OrderType.NormalOrder){
-                    switch (item.Status){
+                if (orderType == OrderType.NormalOrder) {
+                    switch (item.Status) {
                         case "added":
                             detail.ItemChange = LineType.Add;
                             break;
@@ -268,13 +257,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         case "deleted":
                             detail.ItemChange = LineType.Delete;
                             break;
-		                default:
+                        default:
                             detail.ItemChange = LineType.NoChange;
                             break;
-	                }                        
+                    }
                 }
 
-                newOrderFile.Details.Add(detail);   
+                newOrderFile.Details.Add(detail);
             }
 
             System.IO.StringWriter sw = new System.IO.StringWriter();
@@ -284,5 +273,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _orderQueue.PublishToQueue(sw.ToString());
         }
+        #endregion
+
+        #region properties
+        public bool AllowOrderProcessing { get; set; }
+        #endregion
+
+
     }
 }
