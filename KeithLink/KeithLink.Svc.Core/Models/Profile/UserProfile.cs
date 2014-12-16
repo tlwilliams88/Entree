@@ -57,6 +57,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		public string DSRNumber { get; set; }
 		public string DSMRole { get; set; }
+		public bool IsInternalUser { get; set; }
         //[DataMember(Name = "username")]
         //public string UserName { get; set; }
 
