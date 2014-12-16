@@ -5,7 +5,6 @@ angular.module('bekApp')
   function ($scope, $filter, $modal, invoices, accounts, InvoiceService) {
 
   $scope.invoices = invoices;
-    console.log($scope.invoices);
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
 
@@ -36,7 +35,7 @@ angular.module('bekApp')
   }, {
     name: 'Past Due Invoices',
     filter: function(invoice) {
-      return invoice.statusdescription === 'Late';
+      return invoice.statusdescription === 'Past Due';
     }
   }, {
     name: 'Paid Invoices',

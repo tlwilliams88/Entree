@@ -163,6 +163,7 @@
           <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a>
         </h5>
         
+        <div class="btn-group-vertical">
         <button 
           type="button" 
           ng-click="createList()" 
@@ -180,9 +181,9 @@
           data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
           jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
           class="btn btn-default btn-list text-left text-light btn-lg"
-          style="margin-top:10px;"
-          ng-if="isDsr && !hideMandatoryListCreateButton">
-          Create Mandatory <br>List for Customer...
+          ng-if="isDsr && !hideMandatoryListCreateButton"
+          title="Create Mandatory Items List for Customer">
+          Create <br>Mandatory...
         </button>
 
         <button
@@ -192,10 +193,11 @@
           data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
           jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
           class="btn btn-default btn-list text-left text-light btn-lg"
-          style="margin-top:10px;"
-          ng-if="isDsr && !hideRecommendedListCreateButton">
-          Create Recommended <br>List for Customer...
+          ng-if="isDsr && !hideRecommendedListCreateButton"
+          title="Create Recommended Items List for Customer">
+          Create <br>Recommended...
         </button>
+        </div>
         
         <button 
           ng-if="selectedList.permissions.canDeleteItems" 
