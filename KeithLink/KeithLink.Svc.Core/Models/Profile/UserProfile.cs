@@ -61,9 +61,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         //[DataMember(Name = "username")]
         //public string UserName { get; set; }
 
-        [DataMember(Name = "user_customers")]
-        public List<Customer> UserCustomers { get; set; }
-
+        
+		[DataMember(Name = "defaultcustomer")]
+		public Customer DefaultCustomer { get; set; }
         [DataMember(Name = "messagingpreferences")]
         public List<ProfileMessagingPreferenceModel> MessagingPreferences { get; set; }
     }
