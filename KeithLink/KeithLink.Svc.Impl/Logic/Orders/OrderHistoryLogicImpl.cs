@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
 using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Models.Generated;
@@ -169,9 +170,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         }
 
-        public List<Order> GetOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId), 
+        private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
+            List<PurchaseOrder> orders = _poRepo.ReadPurchaseOrders(userId, customerInfo.CustomerId);
+
+            return orders.Select(o => o.ToOrder()).ToList();
+        }
+
+        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
+            List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo) ,
+                                                         GetOrderHistoryOrders(customerInfo));
+
+            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
+        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                           d => d.OrderDetails);
             System.Collections.Concurrent.BlockingCollection<Order> customerOrders = new System.Collections.Concurrent.BlockingCollection<Order>();
 
@@ -190,7 +204,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 customerOrders.Add(currentOrder);
             });
 
-            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            return customerOrders.ToList();
         }
 
         private void LookupProductDetails(string branchId, Order order) {
@@ -239,6 +253,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 //}
             });
 
+        }
+
+        private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
+            System.Collections.Concurrent.BlockingCollection<Order> mergedOrdeList = new System.Collections.Concurrent.BlockingCollection<Order>();
+
+            Parallel.ForEach(commerceServerOrders, csOrder => {
+                if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
+                    mergedOrdeList.Add(csOrder);
+                }
+            });
+
+            Parallel.ForEach(orderHistoryOrders, ohOrder => {
+                mergedOrdeList.Add(ohOrder);
+            });
+
+            return mergedOrdeList.ToList();
         }
 
         /// <summary>

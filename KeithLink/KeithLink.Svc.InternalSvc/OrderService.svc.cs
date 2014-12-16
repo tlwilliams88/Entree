@@ -43,8 +43,8 @@ namespace KeithLink.Svc.InternalSvc {
             return _orderLogic.GetLastFiveOrderHistory( catalogInfo, itemNumber );
         }
 
-        public List<Order> GetCustomerOrders(UserSelectedContext catalogInfo) {
-            return _historyLogic.GetOrders(catalogInfo);
+        public List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo) {
+            return _historyLogic.GetOrders(userId, catalogInfo);
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {

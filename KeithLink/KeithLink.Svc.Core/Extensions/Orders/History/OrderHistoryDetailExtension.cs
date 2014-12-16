@@ -148,7 +148,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                 Price = (double)value.SellPrice,
                 QuantityOrdered = value.OrderQuantity,
                 QantityShipped = value.ShippedQuantity,
-                Status = value.ItemStatus,
                 SubstitutedItemNumber = (!String.IsNullOrEmpty(value.ReplacedOriginalItemNumber.Trim()) ? value.ReplacedOriginalItemNumber :
                     (!String.IsNullOrEmpty(value.SubbedOriginalItemNumber.Trim()) ? value.SubbedOriginalItemNumber : string.Empty)),
                 MainFrameStatus = value.ItemStatus,

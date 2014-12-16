@@ -28,10 +28,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile[]> GetLastFiveOrderHistoryAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetCustomerOrders", ReplyAction="http://tempuri.org/IOrderService/GetCustomerOrdersResponse")]
-        KeithLink.Svc.Core.Models.Orders.Order[] GetCustomerOrders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        KeithLink.Svc.Core.Models.Orders.Order[] GetCustomerOrders(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetCustomerOrders", ReplyAction="http://tempuri.org/IOrderService/GetCustomerOrdersResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrder", ReplyAction="http://tempuri.org/IOrderService/GetOrderResponse")]
         KeithLink.Svc.Core.Models.Orders.Order GetOrder(string branchId, string invoiceNumber);
@@ -95,12 +95,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
             return base.Channel.GetLastFiveOrderHistoryAsync(catalogInfo, itemNumber);
         }
         
-        public KeithLink.Svc.Core.Models.Orders.Order[] GetCustomerOrders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.GetCustomerOrders(catalogInfo);
+        public KeithLink.Svc.Core.Models.Orders.Order[] GetCustomerOrders(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.GetCustomerOrders(userId, catalogInfo);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            return base.Channel.GetCustomerOrdersAsync(catalogInfo);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetCustomerOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return base.Channel.GetCustomerOrdersAsync(userId, catalogInfo);
         }
         
         public KeithLink.Svc.Core.Models.Orders.Order GetOrder(string branchId, string invoiceNumber) {

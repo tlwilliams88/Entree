@@ -88,9 +88,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPost]
 		[ApiKeyedRoute("list/")]
-		public NewListItem List(ListModel list, bool isMandatory = false)
+		public NewListItem List(ListModel list, bool isMandatory = false, bool isRecommended = false)
         {
-			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : ListType.Custom) };
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : isRecommended ? ListType.RecommendedItems : ListType.Custom) };
         }
 		
         [HttpPost]
