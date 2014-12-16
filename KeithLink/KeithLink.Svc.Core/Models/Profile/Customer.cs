@@ -34,6 +34,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "customerName")]
         public string CustomerName { get; set; }
 
+		[DataMember(Name = "displayname")]
+		public string DisplayName { get; set; }
+
         [DataMember(Name = "customerBranch")]
         public string CustomerBranch { get; set; }
 

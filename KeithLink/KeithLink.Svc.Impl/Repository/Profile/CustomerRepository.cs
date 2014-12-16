@@ -157,6 +157,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 CustomerId = Guid.Parse(org.Id),
                 AccountId = String.IsNullOrEmpty(org.ParentOrganizationId) ? new Nullable<Guid>() : Guid.Parse(org.ParentOrganizationId),
                 ContractId = org.ContractNumber,
+				DisplayName = string.Format("{0} - {1}", org.CustomerNumber, org.Name),
                 CustomerBranch = org.BranchNumber,
                 CustomerName = org.Name,
                 CustomerNumber = org.CustomerNumber,
