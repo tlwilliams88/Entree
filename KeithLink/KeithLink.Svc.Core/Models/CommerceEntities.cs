@@ -6876,7 +6876,7 @@ namespace KeithLink.Svc.Core.Models.Generated
             /// <summary>
             /// Constant for accessing AchType property.
             /// </summary>
-            public const string AchType = "AchType";
+            public const string AchType = "GeneralInfo.customer_ach_type";
 
 			/// <summary>
 	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
