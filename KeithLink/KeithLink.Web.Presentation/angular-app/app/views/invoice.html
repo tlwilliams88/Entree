@@ -50,43 +50,55 @@
         </div>
       </div>
 
-      <div class="info-box" ng-if="!hasPayableInvoices">
+      <div class="info-box" ng-if="!hasPayableInvoices && !loadingResults">
         <p>You have no payable invoices at this time.</p>
         <p>Contact your DSR to pay invoices online.</p>
+      </div>
+
+      <div class="row sub-content" ng-if="hasPayableInvoices">
+        <div class="col-xs-12 text-right">
+          Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() | currency}}</span>
+        </div>
+      </div>
+
+      <div class="row sub-content" ng-if="hasPayableInvoices">
+        <div class="col-xs-12 text-right">
+          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
+        </div>
       </div>
     </div>
 
     <div class="col-sm-12 col-xs-12 col-md-8 padding-top-xs padding-top-sm">
 
       <div class="text-right">
-        Showing {{filteredItems.length}} of {{invoices.length}} Invoices
+        Showing {{invoices.length}} of {{totalInvoices}} Invoices
       </div>
 
-      <table class="table table-border table-striped-rows invoice-table" navigate-table>
+      <table class="table table-border table-striped-rows invoice-table" navigate-table infinite-scroll="infiniteScrollLoadMore()">
         <thead>
           <tr>
             <th class="input-col">
               <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll()">
             </th>
-            <th class="sort-col-header" ng-click="sortBy='invoicenumber';sortOrder=!sortOrder;">
+            <th class="sort-col-header" ng-click="sortInvoices('invoicenumber', !sortOrder)">
               Reference #
-              <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
             </th>
-            <th class="sort-col-header" ng-click="sortBy='typedescription';sortOrder=!sortOrder;">
+            <th class="sort-col-header" ng-click="sortInvoices('type', !sortOrder)">
               Type
-              <span sort-icons field="'typedescription'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'type'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
             </th>
-            <th class="hidden-xs hidden-sm sort-col-header" ng-click="sortBy='statusdescription';sortOrder=!sortOrder;">
+            <th class="hidden-xs hidden-sm sort-col-header" ng-click="sortInvoices('status', !sortOrder)">
               Status
-              <span sort-icons field="'statusdescription'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'status'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
             </th>
-            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortBy='duedate';sortOrder=!sortOrder;">
+            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortInvoices('duedate', !sortOrder)">
               Due Date
-              <span sort-icons field="'duedate'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'duedate'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
             </th>
-            <th class="sort-col-header" ng-click="sortBy='amount';sortOrder=!sortOrder;">
+            <th class="sort-col-header" ng-click="sortInvoices('amount', !sortOrder)">
               Amount Due
-              <span sort-icons field="'amount'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span sort-icons field="'amount'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
             </th>
             <th class="text-center hidden-xs hidden-sm">Invoice Image</th>
             <th class="hidden-xs hidden-sm">Payment Amt</th>
@@ -101,7 +113,7 @@
           <!-- Filter Row -->
           <tr class="filter-row" ng-show="showFilter">
             <td class="input-col">
-              <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterFields.isSelected)"/>
+              <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterFields.isSelected)"/> -->
             </td>
             <td class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
@@ -117,13 +129,14 @@
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm"></td>
-            <td class="large-icon icon-col">
-              <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+            <td class="input-col nowrap">
+              <button type="button" class="btn btn-primary btn-sm" ng-click="filterInvoices(filterFields)">Filter</button>
+              <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
             </td>
           </tr> <!-- end Filter Row -->
 
           <tr
-            ng-repeat-start="invoice in (filteredItems = (invoices | filter:selectedFilterView.filter | filter:filterFields | orderBy:sortBy:sortOrder))"
+            ng-repeat-start="invoice in invoices"
             ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
             <td>
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
@@ -245,24 +258,14 @@
 
         </tbody>
 
-        <tfoot ng-show="filteredItems.length === 0">
+        <tfoot ng-show="invoices.length === 0 && !loadingResults">
           <tr>
             <td colspan="10">There are no invoices to display.</td>
           </tr>
         </tfoot>
       </table>
 
-      <div class="row" ng-if="hasPayableInvoices">
-        <div class="col-xs-12 text-right">
-          Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() | currency}}</span>
-        </div>
-      </div>
-
-      <div class="row sub-content" ng-if="hasPayableInvoices">
-        <div class="col-xs-12 text-right">
-          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
-        </div>
-      </div>
+      <div class="text-center" loading-spinner="loadingResults"></div>
 
     </div>
   </form>
