@@ -1,10 +1,28 @@
-﻿#region Using
+﻿#region using__common
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Impl.Repository.Configurations;
 using Autofac;
 using Autofac.Features.Indexed;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Impl.ETL;
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.Messaging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+#endregion
+#region using__interface
 using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
@@ -21,16 +39,9 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.ContentManagement;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Logic.SiteCatalog;
-using KeithLink.Svc.Impl.Logic.Messaging;
-using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Reports;
+#endregion
+#region using__repository
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Email;
@@ -50,12 +61,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Queue;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using KeithLink.Svc.Core.Interface.Configuration;
-using KeithLink.Svc.Impl.Repository.Configurations;
+using KeithLink.Svc.Impl.Repository.Reports;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -75,6 +81,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<PipelineService>();
             builder.RegisterType<ContentManagementService>();
 			builder.RegisterType<ConfigurationService>();
+            builder.RegisterType<ReportService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -196,11 +203,10 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
+            builder.RegisterType<ReportRepository>().As<IReportRepository>();
+            builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
+
             return builder.Build();
         }
-
-
-
-		
 	}
 }
