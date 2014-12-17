@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 //using EFCustomer = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
@@ -25,8 +26,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
         [OperationContract]
         List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber);
 
-        [OperationContract]
-        List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext);
+		[OperationContract]
+		InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging);
 
 		[OperationContract]
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);

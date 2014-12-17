@@ -5,7 +5,7 @@ angular.module('bekApp')
   function ($resource) {
     return $resource('/invoice', { }, {
 
-      // defaults: GET, QUERY
+      // defaults: GET, SAVE
 
       pay: {
         url: '/invoice/payment',

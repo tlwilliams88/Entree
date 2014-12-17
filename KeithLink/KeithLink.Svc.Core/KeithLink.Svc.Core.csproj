@@ -197,6 +197,7 @@
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Invoices\InvoiceHeaderReturnModel.cs" />
     <Compile Include="Models\Invoices\InvoiceTransactionModel.cs" />
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
