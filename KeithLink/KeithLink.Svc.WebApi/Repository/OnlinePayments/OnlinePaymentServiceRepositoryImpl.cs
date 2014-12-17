@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -36,8 +37,9 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetInvoiceTransactions(userContext, invoiceNumber).ToList<InvoiceModel>();
         }
 
-        public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
-            return _client.GetOpenInvoiceHeaders(userContext).ToList<InvoiceModel>();
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
+		{
+            return _client.GetInvoiceHeaders(userContext, paging);
         }
        
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)

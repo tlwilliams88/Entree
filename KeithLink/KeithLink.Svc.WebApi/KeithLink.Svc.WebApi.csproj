@@ -186,6 +186,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
@@ -290,6 +291,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService5.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService51.xsd">

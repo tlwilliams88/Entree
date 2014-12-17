@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -39,12 +40,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this._catalogLogic = catalogLogic;
 		}
 
-		public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext)
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
 		{
 			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-			List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
 
-			foreach (var inv in returnInvoices.Where(i => i.Type == InvoiceType.Invoice))
+			//TODO: Need to determine if customer is KPay customer
+			var returnModel = new InvoiceHeaderReturnModel() { HasPayableInvoices = kpayInvoices.Where(i => i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).Any() };
+
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+			foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice && i.Status == InvoiceStatus.Open))
 			{
 				//TODO: add check to see if customer is KPay customer
 				inv.IsPayable = true;
@@ -55,7 +60,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 			}
 
-			return returnInvoices;
+			returnModel.PagedResults = pagedInvoices;
+
+			return returnModel;
 		}
 
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
