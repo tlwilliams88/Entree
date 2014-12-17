@@ -54,6 +54,14 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
+  $scope.selectInvoice = function(invoice, isSelected) {
+    if (isSelected) {
+      invoice.paymentAmount = invoice.amount.toString();
+    } else {
+      invoice.paymentAmount = '0';
+    }
+  };
+
   //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
   $scope.filterFields = {};
   $scope.setSelectedFilter = function(selectedFilter) {
@@ -68,6 +76,7 @@ angular.module('bekApp')
     angular.forEach($scope.filteredItems, function(item, index) {
       if (item.ispayable) {
         item.isSelected = $scope.selectAllPayable;
+        $scope.selectInvoice(item, item.isSelected);
       }
     });
   };
@@ -77,6 +86,7 @@ angular.module('bekApp')
     $scope.filteredItems.forEach(function(invoice) {
       total += parseFloat(invoice.paymentAmount || 0);
     });
+    $scope.total = total;
     return total;
   };
 

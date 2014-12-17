@@ -124,9 +124,9 @@
 
           <tr
             ng-repeat-start="invoice in (filteredItems = (invoices | filter:selectedFilterView.filter | filter:filterFields | orderBy:sortBy:sortOrder))"
-            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, overdueHighlight:  invoice.status === 2}">
+            ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
             <td>
-              <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected">
+              <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td>
               <a ng-if="invoice.typedescription === 'Invoice'" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
@@ -158,7 +158,8 @@
                   'addMissingDecimals': true,
                   'preventInvalidInput': true,
                   'prepend': '$',
-                  'min': 0 }"
+                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}}
+                }"
                 ng-required="invoice.isSelected">
             </td>
             <td class="hidden-xs hidden-sm datepicker">
@@ -200,6 +201,7 @@
                   <td>Payment Amount</td>
                   <td>
                     <input
+                      ng-if="invoice.ispayable"
                       class="form-control text-right"
                       type="text"
                       ng-model="invoice.paymentAmount"
@@ -208,7 +210,8 @@
                         'addMissingDecimals': true,
                         'preventInvalidInput': true,
                         'prepend': '$',
-                        'min': 0 }"
+                        'min': {{invoice.amount > 0 ? 0 : invoice.amount}}
+                      }"
                       ng-required="invoice.isSelected">
                   </td>
                 </tr>
@@ -251,7 +254,7 @@
 
       <div class="row" ng-if="hasPayableInvoices">
         <div class="col-xs-12 text-right">
-          Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() || 0 | currency}}</span>
+          Total: <span style="font-size: 18px; font-weight: 600;">{{totalPaymentAmount() | currency}}</span>
         </div>
       </div>
 
