@@ -6681,6 +6681,25 @@ namespace KeithLink.Svc.Core.Models.Generated
 				this._commerceEntity.SetPropertyValue(PropertyName.BalanceAge4, value);
 			}
 		}
+
+        /// <summary>
+        /// Gets or sets the AchType property.
+        /// </summary>
+        /// <value>
+        /// The AchType property from the property collection.
+        /// </value>
+        public virtual string AchType
+        {
+            get
+            {
+                return this._commerceEntity.GetPropertyValue(PropertyName.AchType) as string;
+            }
+
+            set
+            {
+                this._commerceEntity.SetPropertyValue(PropertyName.AchType, value);
+            }
+        }
 	
 		/// <summary>
 	    /// Gets or sets the ProfileSystemuserIdChangedBy property.
@@ -6853,7 +6872,12 @@ namespace KeithLink.Svc.Core.Models.Generated
 	        /// Constant for accessing BalanceAge4 property.
 	        /// </summary>
 			public const string BalanceAge4 = "BalanceAge4";
-	
+
+            /// <summary>
+            /// Constant for accessing AchType property.
+            /// </summary>
+            public const string AchType = "AchType";
+
 			/// <summary>
 	        /// Constant for accessing ProfileSystem.user_id_changed_by property.
 	        /// </summary>
