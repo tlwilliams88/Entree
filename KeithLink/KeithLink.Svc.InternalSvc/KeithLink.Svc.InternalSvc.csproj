@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ContentManagementService.svc" />
+    <Content Include="ReportService.svc" />
     <Content Include="DivisionService.svc" />
     <Content Include="ConfigurationService.svc" />
     <Content Include="MessagingService.svc" />
@@ -160,6 +161,10 @@
     <Compile Include="AutofacContainerBuilder.cs" />
     <Compile Include="ContentManagementService.svc.cs">
       <DependentUpon>ContentManagementService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\IReportService.cs" />
+    <Compile Include="ReportService.svc.cs">
+      <DependentUpon>ReportService.svc</DependentUpon>
     </Compile>
     <Compile Include="DivisionService.svc.cs">
       <DependentUpon>DivisionService.svc</DependentUpon>

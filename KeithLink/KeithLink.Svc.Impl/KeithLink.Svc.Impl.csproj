@@ -199,6 +199,7 @@
     <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
@@ -414,6 +415,10 @@
     <Compile Include="Repository\EF\Migrations\201412112133057_Add_UserActiveCart.Designer.cs">
       <DependentUpon>201412112133057_Add_UserActiveCart.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201412170316258_gs add order history header parent.cs" />
+    <Compile Include="Repository\EF\Migrations\201412170316258_gs add order history header parent.Designer.cs">
+      <DependentUpon>201412170316258_gs add order history header parent.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -497,6 +502,7 @@
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Reports\ReportRepository.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
@@ -885,6 +891,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201412112133057_Add_UserActiveCart.resx">
       <DependentUpon>201412112133057_Add_UserActiveCart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201412170316258_gs add order history header parent.resx">
+      <DependentUpon>201412170316258_gs add order history header parent.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

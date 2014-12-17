@@ -27,13 +27,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public DateTime? ReadLatestUpdatedDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
 		{
-			var orders = orderHistoryHeaderRepository.Read(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
-				o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase));
-
-			if (orders.Any())
-				return orders.Max(m => m.ModifiedUtc);
-			else
-				return null;
+			return orderHistoryHeaderRepository.ReadLatestOrderDate(catalogInfo);
+					
 		}
 
         public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {

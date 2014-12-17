@@ -33,5 +33,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         {
             return this.Entities.Where(o => o.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && o.CustomerNumber.Equals(customerNumber)).OrderByDescending(o => o.CreatedUtc);
         }
-    }
+
+
+		public DateTime? ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+		{
+			return this.Entities.Where(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
+				o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max();
+		}
+	}
 }
