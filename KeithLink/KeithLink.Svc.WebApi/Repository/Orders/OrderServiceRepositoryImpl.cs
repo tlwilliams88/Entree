@@ -10,41 +10,41 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.WebApi.Repository.Orders
 {
-	public class OrderServiceRepositoryImpl: IOrderServiceRepository
-	{
-		private com.benekeith.OrderService.IOrderService serviceClient;
+	public class OrderServiceRepositoryImpl: IOrderServiceRepository {
+        #region attributes
+        private com.benekeith.OrderService.IOrderService serviceClient;
+        #endregion
 
-		public OrderServiceRepositoryImpl(com.benekeith.OrderService.IOrderService serviceClient)
-		{
+        #region ctor
+        public OrderServiceRepositoryImpl(com.benekeith.OrderService.IOrderService serviceClient) {
 			this.serviceClient = serviceClient;
 		}
+        #endregion
 
-		public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
-		}
-
-        public List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber ) {
-            return serviceClient.GetLastFiveOrderHistory( catalogInfo, itemNumber ).ToList();
+        #region methods
+        public List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo) {
+            return serviceClient.GetCustomerOrders(userId, catalogInfo).ToList();
         }
 
-        public List<Order> GetCustomerOrders(UserSelectedContext catalogInfo)
-        {
-            return serviceClient.GetCustomerOrders(catalogInfo).ToList();
+        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
+            return serviceClient.GetLastFiveOrderHistory(catalogInfo, itemNumber).ToList();
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {
             return serviceClient.GetOrder(branchId, invoiceNumber);
         }
 
-        public UserActiveCartModel GetUserActiveCart(Guid userId)
-		{
-			return serviceClient.GetUserActiveCart(userId);
-		}
+        public UserActiveCartModel GetUserActiveCart(Guid userId) {
+            return serviceClient.GetUserActiveCart(userId);
+        }
 
-		public void SaveUserActiveCart(Guid userId, Guid cartId)
-		{
-			serviceClient.SaveUserActiveCart(userId, cartId);
-		}
+        public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
+            return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
+        }
+
+        public void SaveUserActiveCart(Guid userId, Guid cartId) {
+            serviceClient.SaveUserActiveCart(userId, cartId);
+        }
+        #endregion
 	}
 }

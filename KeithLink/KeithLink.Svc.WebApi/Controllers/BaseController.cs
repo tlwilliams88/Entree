@@ -59,21 +59,28 @@ namespace KeithLink.Svc.WebApi.Controllers
                     GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { "Owner" });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
-                    if (Request.Headers.Contains("userSelectedContext"))
+                    if (Request.Headers.Contains("userSelectedContext")) 
                     {
                         this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
 
-                        //Verify that the authenticated user has access to this customer/branch
-                        bool isGuest = _user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase);
-                        bool isCustomerSelected = (!string.IsNullOrEmpty(this.SelectedUserContext.CustomerId));
-                        bool userHasAccessToCustomer = (_user.UserCustomers != null &&
-                            _user.UserCustomers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase)
-                                && c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any());
+						if (!_user.IsInternalUser)//For now, don't verify internal users
+						{
+							//TODO: Need to update check now that customers are no longer included with the user profile
+							//Verify that the authenticated user has access to this customer/branch
+							bool isGuest = _user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase);
+							bool isCustomerSelected = (!string.IsNullOrEmpty(this.SelectedUserContext.CustomerId));
 
-                        if ((isGuest && isCustomerSelected) || (!isGuest && !userHasAccessToCustomer))
-                        {
-                            throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
-                        }
+							var customers = _profileLogic.GetCustomersForUser(_user);
+
+							bool userHasAccessToCustomer = (customers != null &&
+								customers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase)
+									&& c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any());
+
+							if ((isGuest && isCustomerSelected) || (!isGuest && !userHasAccessToCustomer))
+							{
+								throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+							}
+						}
                     }
 
                 }

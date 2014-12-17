@@ -148,6 +148,7 @@
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
+    <Compile Include="Extensions\Orders\PurchaseOrderExtension.cs" />
     <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />

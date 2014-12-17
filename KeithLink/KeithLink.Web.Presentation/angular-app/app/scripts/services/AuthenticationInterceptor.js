@@ -27,7 +27,7 @@ angular.module('bekApp')
         }
 
         // add branch and customer information header
-        var urlsWithoutCustomerInfo = ['/profile/users','/profile', '/authen'];
+        var urlsWithoutCustomerInfo = ['/profile/users', '/profile', '/authen', '/profile/customer'];
         if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
           var catalogInfo = {
             customerid: LocalStorage.getCustomerNumber(), //'020348', //

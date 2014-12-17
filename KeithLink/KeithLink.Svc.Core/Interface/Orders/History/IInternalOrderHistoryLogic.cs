@@ -6,6 +6,6 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IInternalOrderHistoryLogic {
         Order GetOrder(string branchId, string invoiceNumber);
 
-        List<Order> GetOrders(UserSelectedContext customerInfo);
+        List<Order> GetOrders(System.Guid userId, UserSelectedContext customerInfo);
     }
 }

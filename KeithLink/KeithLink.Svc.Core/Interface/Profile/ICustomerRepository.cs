@@ -15,6 +15,9 @@ namespace KeithLink.Svc.Core.Interface.Profile
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
         List<Customer> GetCustomersByNameSearch(string searchText);
+		List<Customer> GetCustomersForDSR(string dsrNumber);
+		List<Customer> GetCustomersForAccount(string accountId);
+		List<Customer> GetCustomersByNameOrNumber(string search);
         void ClearCustomerCache();
     }
 }

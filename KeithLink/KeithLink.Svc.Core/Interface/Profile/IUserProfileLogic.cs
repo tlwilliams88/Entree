@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using System;
 using System.Collections.Generic;
 
@@ -22,6 +23,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 
+		PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging);
+
+
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
@@ -32,5 +36,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void AddCustomerToAccount(Guid accountId, Guid customerId);
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
+		List<Customer> GetCustomersForUser(UserProfile user);
     }
 }

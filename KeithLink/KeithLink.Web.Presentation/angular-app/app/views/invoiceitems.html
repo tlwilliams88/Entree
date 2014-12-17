@@ -4,7 +4,7 @@
   </div>
   <div header-buttons>
     <button title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-    <button title="Export" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>
 </div>
 
@@ -39,7 +39,7 @@
     </div>
   </div>
 
-  <div class="col-sm-12 col-md-4 col-lg-4 padding-top-xs padding-top-sm" ng-if="transactions.length > 1">
+  <div class="col-sm-12 col-md-4 col-lg-4 padding-top-xs padding-top-sm" ng-if="invoice.transactions.length > 1">
     <h4 class="no-margin-top">TRANSACTIONS</h4>
     <table class="table table-striped-rows table-border table-narrow">
       <thead>
@@ -49,7 +49,7 @@
           <th>Amount</th>
         </tr>
       </thead>
-      <tr ng-repeat="transaction in transactions" ng-class="{ odd : $odd, even: $even}">
+      <tr ng-repeat="transaction in invoice.transactions" ng-class="{ odd : $odd, even: $even}">
         <td>{{transaction.invoicedate | date:short}}</td>
         <td>{{transaction.typedescription}}</td>
         <td>{{transaction.amount | currency}}</td>
@@ -60,7 +60,7 @@
 
 <div class="row sub-content">
   <div class="col-xs-12 text-right">
-    Showing {{filteredItems.length}} of {{invoice.items.length}} Items
+    Showing {{filteredItems.length || 0}} of {{invoice.items.length || 0}} Items
   </div>
 </div>
 
@@ -219,7 +219,7 @@
       </td>
     </tr>
   </tbody>
-  <tfoot ng-show="(invoice.items.length === 0 || !invoice.items || filteredItems.length === 0) && order">
+  <tfoot ng-show="(invoice.items.length === 0 || !invoice.items || filteredItems.length === 0) && invoice">
     <tr>
       <td colspan="15">
         There are no products to display.

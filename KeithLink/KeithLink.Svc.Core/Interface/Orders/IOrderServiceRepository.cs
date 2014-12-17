@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	{
 		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
-        List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
+        List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo);
         Order GetOrder(string branchId, string invoiceNumber);
 		UserActiveCartModel GetUserActiveCart(Guid userId);
 		void SaveUserActiveCart(Guid userId, Guid cartId);

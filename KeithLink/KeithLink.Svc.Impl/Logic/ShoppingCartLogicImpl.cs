@@ -137,11 +137,18 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+
+			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
+			var notesHash = new Dictionary<string, KeithLink.Svc.Core.Models.Lists.ListItemModel>();
+			if (notes != null)
+				notesHash = notes.ToDictionary(n => n.ItemNumber);
 			
+
 			Parallel.ForEach(cart.Items, item =>
 			{
-				var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-				var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+				var prod = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
+				var price = priceHash.ContainsKey(item.ItemNumber) ? priceHash[item.ItemNumber] : null;
 				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
@@ -162,8 +169,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 
 				}
-				if (note != null)
-					item.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+
+				item.Notes = notesHash.ContainsKey(item.ItemNumber) ? notesHash[item.ItemNumber].Notes : null;
 			});			
 			
 		}

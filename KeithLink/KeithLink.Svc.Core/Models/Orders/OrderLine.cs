@@ -49,7 +49,32 @@ namespace KeithLink.Svc.Core.Models.Orders
         public int QantityShipped { get; set; }
 
         [DataMember(Name = "status")]
-        public string Status { get; set; }
+        public string Status { 
+            get {
+                string mfStatus = MainFrameStatus == null ? string.Empty : MainFrameStatus.ToUpper().Trim();
+
+                switch (mfStatus) {
+                    case Constants.CONFIRMATION_DETAIL_FILLED_CODE:
+                        return Constants.CONFIRMATION_DETAIL_FILLED_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_CODE:
+                        return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE:
+                        return Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_CODE:
+                        return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_CODE:
+                        return Constants.CONFIRMATION_DETAIL_ITEM_REPLACED_OUT_OF_STOCK_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_CODE:
+                        return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS;
+                    case Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE:
+                        return Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS;
+                    default:
+                        // this could contain messages such as "added", "changed", or "deleted"
+                        return mfStatus;
+                }
+            }
+            set { }
+        }
 
         [DataMember(Name = "mainframestatus")]
         public string MainFrameStatus { get; set; }

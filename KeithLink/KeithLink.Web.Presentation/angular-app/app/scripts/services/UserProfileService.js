@@ -38,8 +38,14 @@ angular.module('bekApp')
           if (profile.rolename === 'guest') {
             LocalStorage.setSelectedBranchInfo(profile.branchid);
           } else {
-            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
+            var userSelectedContext = {
+              id: profile.defaultcustomer.customerNumber,
+              text: profile.defaultcustomer.displayname,
+              customer: profile.defaultcustomer
+            };
+            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
           }
+
           return profile;
         });
       },
@@ -53,6 +59,19 @@ angular.module('bekApp')
 
         return $http.get('/profile', data).then(function(response){
           return response.data.userProfiles[0];
+        });
+      },
+
+      searchUserCustomers: function(searchTerm, size, from) {
+        var data = {
+          params: {
+            size: size,
+            from: from,
+            terms: searchTerm
+          }
+        };
+        return $http.get('/profile/customer', data).then(function(response) {
+          return response.data;
         });
       },
 

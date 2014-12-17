@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
 
 
-        public List<Order> GetCustomerOrders(UserSelectedContext catalogInfo)
+        public List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo)
         {
             throw new NotImplementedException();
         }

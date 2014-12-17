@@ -17,27 +17,27 @@
       <h4><strong>Account Balance</strong></h4>
       
       <p class="text-red currency-value">
-        {{selectedUserContext.currentbalance || 0 | currency}}
+        {{selectedUserContext.customer.currentbalance || 0 | currency}}
       </p>
       
-      <p class="">Your Terms: {{selectedUserContext.termdescription || 'N/A'}}</p>
+      <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
       
       <div class="row text-center">
         <div class="balance__term--amount term-amount-1">
-          <strong>{{selectedUserContext.balanceage1label}}</strong>
-          {{selectedUserContext.balanceage1 | currency}}
+          <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
+          {{selectedUserContext.customer.balanceage1 | currency}}
         </div>
         <div class="balance__term--amount term-amount-2">
-          <strong>{{selectedUserContext.balanceage2label}}</strong>
-          {{selectedUserContext.balanceage2 | currency}}
+          <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
+          {{selectedUserContext.customer.balanceage2 | currency}}
         </div>
         <div class="balance__term--amount term-amount-3">
-          <strong>{{selectedUserContext.balanceage3label}}</strong>
-          {{selectedUserContext.balanceage3 | currency}}
+          <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
+          {{selectedUserContext.customer.balanceage3 | currency}}
         </div>
         <div class="balance__term--amount term-amount-4">
-          <strong>{{selectedUserContext.balanceage4label}}</strong>
-          {{selectedUserContext.balanceage4 | currency}}
+          <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
+          {{selectedUserContext.customer.balanceage4 | currency}}
         </div>
       </div>
     </div>

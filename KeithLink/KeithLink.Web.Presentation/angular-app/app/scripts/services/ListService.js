@@ -57,6 +57,14 @@ angular.module('bekApp')
         // WORKSHEET
         } else if (list.isworksheet) {
 
+        // RECOMMENDED -- only shown to DSRs
+        } else if (list.isrecommended) {
+          permissions.canDeleteList = true;
+          permissions.canAddItems = true;
+          permissions.canDeleteItems = true;
+          permissions.canDeleteList = true;
+          permissions.canReorderItems = true;
+
         // MANDATORY -- only shown to DSRs
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
@@ -102,6 +110,20 @@ angular.module('bekApp')
 
           // }
 
+        }
+
+        // overwrite read only lists
+        if (list.read_only) {
+          permissions.canEditList = false;
+          permissions.canReorderItems = false;
+          permissions.canDeleteList = false;
+          permissions.canDeleteItems = false;
+          permissions.canAddItems = false;
+          permissions.canRenameList = false;
+          permissions.canEditLabels = false;
+          permissions.canEditParlevel = false;
+          permissions.canShareList = false;
+          permissions.canCopyList = false;
         }
 
         list.permissions = permissions;        
@@ -197,6 +219,8 @@ angular.module('bekApp')
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
+          } else if (params.isRecommended === true) {
+            newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
           }
@@ -425,11 +449,28 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getReminderList().$promise;
+          return List.getCriticalItems().$promise;
         },
 
         findMandatoryList: function() {
           return UtilityService.findObjectByField(Service.lists, 'ismandatory', true);
+        },
+
+        /**********************
+        RECOMMENDED ITEMS LISTS
+        ***********************/
+
+        createRecommendedList: function(items) {
+          var params = { isRecommended: true };
+          return Service.createList(items, params);
+        },
+
+        getRecommendedItems: function() {
+          return List.getRecommendedItems().$promise;
+        },
+
+        findRecommendedList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
         },
 
         /***************
