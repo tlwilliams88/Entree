@@ -107,7 +107,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "termdescription")]
 		public string TermDescription { get; set; }
 
-        [DataMember(Name = "ach_type")]
+        [DataMember(Name = "achtype")]
         public string AchType { get; set; }
     }
 
