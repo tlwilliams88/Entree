@@ -21,13 +21,13 @@ namespace KeithLink.Svc.Core.Extensions
 				InvoiceNumber = value.InvoiceNumber.Trim(),
 				Type = DetermineType(value.InvoiceType.Trim()),
 				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
-				Status = InvoiceStatus.Open, //TODO: Determine the correct status???
+				Status = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ? InvoiceStatus.Open : InvoiceStatus.Paid,
 				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open),
 				CustomerNumber = value.CustomerNumber,
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
-				OrderDate = value.InvoiceDate				
+				OrderDate = value.InvoiceDate
 			};
 		}
 

@@ -9,7 +9,8 @@
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinePaymentService_DeleteInvoice_InputMessage">
@@ -36,11 +37,11 @@
   <wsdl:message name="IOnlinePaymentService_GetInvoiceTransactions_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetInvoiceTransactionsResponse" />
   </wsdl:message>
-  <wsdl:message name="IOnlinePaymentService_GetOpenInvoiceHeaders_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetOpenInvoiceHeaders" />
+  <wsdl:message name="IOnlinePaymentService_GetInvoiceHeaders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetInvoiceHeaders" />
   </wsdl:message>
-  <wsdl:message name="IOnlinePaymentService_GetOpenInvoiceHeaders_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetOpenInvoiceHeadersResponse" />
+  <wsdl:message name="IOnlinePaymentService_GetInvoiceHeaders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetInvoiceHeadersResponse" />
   </wsdl:message>
   <wsdl:message name="IOnlinePaymentService_MakeInvoicePayment_InputMessage">
     <wsdl:part name="parameters" element="tns:MakeInvoicePayment" />
@@ -71,9 +72,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactions" message="tns:IOnlinePaymentService_GetInvoiceTransactions_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactionsResponse" message="tns:IOnlinePaymentService_GetInvoiceTransactions_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetOpenInvoiceHeaders">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders" message="tns:IOnlinePaymentService_GetOpenInvoiceHeaders_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse" message="tns:IOnlinePaymentService_GetOpenInvoiceHeaders_OutputMessage" />
+    <wsdl:operation name="GetInvoiceHeaders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeaders" message="tns:IOnlinePaymentService_GetInvoiceHeaders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeadersResponse" message="tns:IOnlinePaymentService_GetInvoiceHeaders_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="MakeInvoicePayment">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" message="tns:IOnlinePaymentService_MakeInvoicePayment_InputMessage" />
@@ -122,8 +123,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetOpenInvoiceHeaders">
-      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders" style="document" />
+    <wsdl:operation name="GetInvoiceHeaders">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeaders" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
