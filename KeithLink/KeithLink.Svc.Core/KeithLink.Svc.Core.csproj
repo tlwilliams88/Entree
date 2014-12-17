@@ -177,6 +177,9 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
+    <Compile Include="Interface\Reports\IReportRepository.cs" />
+    <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
@@ -363,6 +366,8 @@
     <Compile Include="Models\Orders\ShipDateReturn.cs" />
     <Compile Include="Models\Orders\OrderLine.cs" />
     <Compile Include="Models\Profile\Customer.cs" />
+    <Compile Include="Models\Reports\ItemUsageReportItemModel.cs" />
+    <Compile Include="Models\Reports\ItemUsageReportQueryModel.cs" />
     <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />
