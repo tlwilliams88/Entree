@@ -53,6 +53,15 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>KeithLink.Svc.FoundationSvc.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
+    <OutputPath>bin\Stage\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="BEKlibrary, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd9c094739479d18, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

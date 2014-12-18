@@ -153,11 +153,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
-        private void ImportCustomers()
-        {
-
-        }
-
         private void ImportCatalog()
         {
 			//For performance debugging purposes

@@ -107,8 +107,12 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "termdescription")]
 		public string TermDescription { get; set; }
 
+        [DataMember(Name = "achtype")]
+        public string AchType { get; set; }
+
 		[DataMember(Name = "porequired")]
 		public bool PORequired { get; set; }
+
     }
 
     public class CustomerAddUserModel
