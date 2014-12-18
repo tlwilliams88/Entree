@@ -176,7 +176,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 BalanceAge3 = org.BalanceAge3,
                 BalanceAge4 = org.BalanceAge4,
                 TermCode = org.TermCode,
-                AchType = org.AchType
+				KPayCustomer = org.AchType == "2"
             };
         }
 
