@@ -259,6 +259,7 @@ namespace KeithLink.Svc.Impl.Logic
 				BranchId = basket.BranchId,
 				RequestedShipDate = basket.RequestedShipDate,
 				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
+				PONumber = basket.PONumber,
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
 				{
 					ItemNumber = l.ProductId,
@@ -282,6 +283,7 @@ namespace KeithLink.Svc.Impl.Logic
 			updateCart.Name = CartName(cart.Name, catalogInfo);
 						
 			updateCart.RequestedShipDate = cart.RequestedShipDate;
+			updateCart.PONumber = cart.PONumber;
 
 			var itemsToRemove = new List<Guid>();
 			var lineItems = new List<CS.LineItem>();

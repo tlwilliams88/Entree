@@ -107,8 +107,9 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "termdescription")]
 		public string TermDescription { get; set; }
 
-		[DataMember(Name = "porequired")]
-		public bool PORequired { get; set; }
+		[DataMember(Name = "kpay")]
+		public bool KPayCustomer { get; set; }
+		
     }
 
     public class CustomerAddUserModel
@@ -117,4 +118,6 @@ namespace KeithLink.Svc.Core.Models.Profile
         public Guid userId { get; set; }
         public string role { get; set; }
     }
+
+	
 }
