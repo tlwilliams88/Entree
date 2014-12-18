@@ -52,14 +52,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
-			foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice && i.Status == InvoiceStatus.Open))
+			foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice))
 			{
-				inv.IsPayable = customer.KPayCustomer;
-				if (inv.DueDate <= DateTime.Now)
-				{
-					inv.Status = InvoiceStatus.PastDue;
-					inv.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
-				}
+				inv.IsPayable = customer.KPayCustomer;		
 			}
 
 			returnModel.PagedResults = pagedInvoices;
