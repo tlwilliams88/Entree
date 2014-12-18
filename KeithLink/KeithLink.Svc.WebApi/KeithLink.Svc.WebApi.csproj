@@ -186,6 +186,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
+    <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
@@ -554,6 +555,9 @@
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Stage.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -610,6 +614,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>

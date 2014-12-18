@@ -65,8 +65,6 @@ namespace KeithLink.Svc.InternalSvc
             Task.Factory.StartNew(() => categoryLogic.ProcessElasticSearchData()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            Task.Factory.StartNew(() => categoryLogic.ProcessElasticSearchData()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
             return true;
         }
         

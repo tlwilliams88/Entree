@@ -78,6 +78,7 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
                     prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
                     prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
+                    prof.Properties["GeneralInfo.customer_ach_type"].Value = org.AchType;
 
                     Profile addressProfile = null;
                     if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
@@ -144,7 +145,9 @@ namespace KeithLink.Svc.Impl.ETL
                 BalanceAge1 = row.GetNullableDecimal("BalanceAge1"),
                 BalanceAge2 = row.GetNullableDecimal("BalanceAge2"),
                 BalanceAge3 = row.GetNullableDecimal("BalanceAge3"),
-                BalanceAge4 = row.GetNullableDecimal("BalanceAge4")
+                BalanceAge4 = row.GetNullableDecimal("BalanceAge4"),
+                AchType = row.GetString("AchType")
+                
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
             };

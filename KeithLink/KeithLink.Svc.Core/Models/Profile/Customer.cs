@@ -110,6 +110,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "kpay")]
 		public bool KPayCustomer { get; set; }
 		
+
     }
 
     public class CustomerAddUserModel

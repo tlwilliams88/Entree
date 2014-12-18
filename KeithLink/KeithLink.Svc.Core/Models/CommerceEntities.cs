@@ -7929,7 +7929,8 @@ public partial class Organization : ICommerceEntity
 		}
 	}
 
-
+	      
+	
 	/// <summary>
     /// Gets or sets the ProfileSystemuserIdChangedBy property.
     /// </summary>
