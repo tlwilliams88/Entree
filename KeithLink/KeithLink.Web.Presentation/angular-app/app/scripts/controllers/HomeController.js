@@ -45,4 +45,47 @@ angular.module('bekApp')
       });
     };
 
+    var chart = c3.generate({
+      bindto: '#chart_div',
+      data: {
+        x: 'x',
+        columns: [
+          ['x', 'J', 'F', 'M', 'A', 'M', 'J'],
+          ['data1', 30, 200, 100, 400, 150, 250], // bar
+          ['data2', 130, 340, 200, 500, 250, 350] // line
+        ],
+        types: {
+            data1: 'bar',
+            data2: 'line'
+        }
+      },
+      axis: {
+        x: {
+          type: 'category'
+        },
+        y: {
+          tick: {
+            values: [100, 1000, 10000]
+          }
+        }
+      },
+      legend: {
+        hide: true
+      },
+      color: {
+        pattern: ['#f3f1eb', '#489ecf'] // background, blue
+      },
+      padding: {
+        bottom: -15
+      },
+      interaction: {
+        enabled: false
+      },
+      grid: {
+        y: {
+          show: true
+        }
+      }
+    });
+
   }]);
