@@ -695,7 +695,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public AccountReturn GetAccounts(AccountFilterModel accountFilters)
         {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
             List<Account> retAccounts = new List<Account>();
 
             if (accountFilters != null) {
@@ -704,11 +703,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
-                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.Contains(accountFilters.Wildcard)));
                 }
             }
             else
-                retAccounts = allAccounts;
+				retAccounts = _accountRepo.GetAccounts();
 
             foreach (var acct in retAccounts)
             {
