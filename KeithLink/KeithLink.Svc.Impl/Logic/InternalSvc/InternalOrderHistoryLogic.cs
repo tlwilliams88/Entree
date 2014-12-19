@@ -25,8 +25,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            return _histLogic.GetOrders(userId, customerInfo);
+			return _histLogic.GetOrders(userId, customerInfo);
         }
+		
+		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate){
+			return _histLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
+		}
+
         #endregion
-    }
+
+
+		
+	}
 }

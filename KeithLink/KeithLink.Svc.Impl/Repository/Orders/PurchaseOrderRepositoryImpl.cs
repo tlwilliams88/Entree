@@ -114,6 +114,33 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
 
+
+		public List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid userId, string customerId, DateTime startDate, DateTime endDate)
+		{
+			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerId;
+			queryBaskets.SearchCriteria.Model.Properties["CreatedDateStart"] = customerId;
+			queryBaskets.SearchCriteria.Model.Properties["CreatedDateEnd"] = customerId;
+
+
+			queryBaskets.QueryOptions.RefreshBasket = false;
+
+			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+			if (response.OperationResponses.Count == 0)
+				return null;
+
+			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null &&
+																					 c.Properties["CustomerId"].ToString().Equals(customerId)
+																					 && c.DateCreated >= startDate && c.DateCreated <= endDate
+																				).Select(p => (PurchaseOrder)p).ToList();
+			//return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
+		}
+
         public string UpdatePurchaseOrder(PurchaseOrder order)
         {
             throw new NotImplementedException();
