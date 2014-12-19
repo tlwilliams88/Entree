@@ -1,11 +1,12 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Orders
 {
     [DataContract(Name="OrderFile")]
-    public class OrderFile
+    public class OrderFile : BaseQueueMessage
     {
         #region ctor
         public OrderFile() {

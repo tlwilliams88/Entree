@@ -15,9 +15,10 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.ServiceProcess;
-using System.Threading;
 using System.Text;
+using System.Threading;
 using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Windows.OrderService {
@@ -369,6 +370,10 @@ namespace KeithLink.Svc.Windows.OrderService {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 
                                 foreach (OrderHistoryFile file in parsedFile.Files) {
+
+                                    file.SenderApplicationName = Configuration.ApplicationName;
+                                    file.SenderProcessName = "Process Order History Updates From Mainframe";
+
                                     try {
                                         StringWriter xmlWriter = new StringWriter();
                                         XmlSerializer xs = new XmlSerializer(file.GetType());
@@ -377,6 +382,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                                         OrderUpdateQueueRepositoryImpl repo = new OrderUpdateQueueRepositoryImpl();
                                         repo.PublishToQueue(xmlWriter.ToString());
+
+                                        _log.WriteInformationLog(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
 
                                         _silenceOrderUpdateMessages = false;
                                     } catch (Exception ex) {

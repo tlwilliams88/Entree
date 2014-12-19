@@ -112,7 +112,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Service References\IS_OrderService\OrderService.wsdl" />
     <None Include="Service References\IS_OrderService\OrderService.xsd">

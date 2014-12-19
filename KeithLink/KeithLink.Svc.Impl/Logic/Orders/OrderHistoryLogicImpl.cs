@@ -139,6 +139,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     while (rawOrder.Length > 0) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
+                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
                         System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
 
