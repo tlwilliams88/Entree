@@ -3,13 +3,15 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.WebApi.Models;
+using KeithLink.Svc.WebApi.Attribute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using KeithLink.Svc.WebApi.Attribute;
+using System.Threading.Tasks;
+
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -19,15 +21,18 @@ namespace KeithLink.Svc.WebApi.Controllers
         private ICustomerContainerRepository    _custRepo;
         private IEventLogRepository             _log;
         private IUserProfileLogic               _profileLogic;
+        private IAvatarRepository               _avatarRepository;
         #endregion
 
         #region ctor
         public ProfileController(ICustomerContainerRepository customerRepo, 
                                  IEventLogRepository logRepo,
-                                 IUserProfileLogic profileLogic) : base(profileLogic) {
+                                 IUserProfileLogic profileLogic,
+                                 IAvatarRepository avatarRepository) : base(profileLogic) {
             _custRepo = customerRepo;
             _profileLogic = profileLogic;
             _log = logRepo;
+            _avatarRepository = avatarRepository;
         }
         #endregion
 
@@ -372,6 +377,49 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute( "profile/avatar" )]
+        public async Task<OperationReturnModel<bool>> UploadAvatar() {
+            if (!Request.Content.IsMimeMultipartContent())
+				throw new InvalidOperationException();
+
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool> { ErrorMessage = null, SuccessResponse = false };
+
+			var provider = new MultipartMemoryStreamProvider();
+			await Request.Content.ReadAsMultipartAsync(provider);
+
+            string base64FileString = null;
+            string fileName = null;
+
+			foreach (var content in provider.Contents)
+			{
+			    var data = content;
+				var paramName = data.Headers.ContentDisposition.Name.Trim('\"');
+                var buffer = await data.ReadAsByteArrayAsync();
+                var stream = new System.IO.MemoryStream(buffer);
+
+                if (paramName.Equals("file")) {
+                    base64FileString = Convert.ToBase64String(buffer, Base64FormattingOptions.None);
+                }
+
+                if (paramName.Equals("name")) {
+                    using (var s = new System.IO.StreamReader(stream)) {
+                        fileName = s.ReadToEnd();
+                    }
+                }
+            }
+
+            try {
+                returnValue.SuccessResponse = _avatarRepository.SaveAvatar( this.AuthenticatedUser.UserId, fileName, base64FileString );
+            } catch (Exception e) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = e.Message;
+            }
+
+            return returnValue; 
+        }
         #endregion
     }
 }
