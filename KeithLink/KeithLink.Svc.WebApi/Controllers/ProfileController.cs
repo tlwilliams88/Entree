@@ -10,13 +10,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-<<<<<<< HEAD
 using System.Threading.Tasks;
-
-=======
 using KeithLink.Svc.WebApi.Attribute;
 using KeithLink.Svc.Core.Models.Paging;
->>>>>>> e54b6b211f37338ea8431647b88f157629d67da1
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
