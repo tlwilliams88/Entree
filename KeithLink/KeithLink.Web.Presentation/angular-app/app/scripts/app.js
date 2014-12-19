@@ -342,6 +342,23 @@ angular
     })
 
     /**********
+    REPORT
+    **********/
+    .state('menu.reports', {
+        url: '/reports/',
+        templateUrl: 'views/reports.html',
+        controller: 'ReportsController',
+        data: {
+            authorize: 'canPayInvoices'
+        },
+        resolve: {
+             /*items: [ '$stateParams', 'ReportService', function($stateParams, ReportService) {
+               return loadItemUsage();
+             }]*/
+        }
+    })
+
+    /**********
     ADMIN
     **********/
     .state('menu.admin', {

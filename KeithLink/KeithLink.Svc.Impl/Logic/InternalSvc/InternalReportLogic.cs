@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +50,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     }
                 });
             
+            // handle name sort in code...
+            if (usageQuery.sortField != null && usageQuery.sortField.Equals("name", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (usageQuery.sortDir.Equals("asc", StringComparison.InvariantCultureIgnoreCase))
+                    itemUsageReports.Sort((i1, i2) => i1.Name.CompareTo(i2.Name));
+                else
+                    itemUsageReports.Sort((i1, i2) => i2.Name.CompareTo(i1.Name));
+            }
             return itemUsageReports;
         }
 
