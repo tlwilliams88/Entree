@@ -14,14 +14,14 @@ angular.module('bekApp')
         $scope.itemUsageForm = {};
         $scope.itemusagequery.fromDate = '1/23/2014';
         $scope.itemusagequery.toDate = '1/11/2015';
-        $scope.itemusagequery.sortDir = 'asc';
-        $scope.itemusagequery.sortField = 'ItemNumber';
         $scope.getItemUsage = ReportService.getItemUsageReport;
+        $scope.sortField = 'TotalQuantityOrdered';
+        $scope.sortReverse = true;
 
         function loadItemUsage() {
             $scope.loadingResults = true;
             $scope.getItemUsage($scope.itemusagequery.fromDate, $scope.itemusagequery.toDate,
-                                                         $scope.itemusagequery.sortField, $scope.itemusagequery.sortDir)
+                                                         $scope.sortField, $scope.sortReverse == true ? 'desc' : 'asc')
                 .then(function (items) {
                     $scope.itemusages = items;
                     $scope.loadingResults = false;
@@ -44,16 +44,11 @@ angular.module('bekApp')
             $scope.itemIndex = 0;
 
             if (field !== 'caseprice' || $scope.totalItems <= $scope.maxSortCount) {
-                if ($scope.itemusagequery.sortField !== field) { // different field
-                    $scope.itemusagequery.sortField = field;
-                    $scope.itemusagequery.sortDir = 'desc';
+                if ($scope.sortField !== field) { // different field
+                    $scope.sortField = field;
+                    $scope.sortReverse = true;
                 } else { // same field
-                    if ($scope.itemusagequery.sortDir == 'desc') {
-                        $scope.itemusagequery.sortDir = 'asc';
-                    }
-                    else {
-                        $scope.itemusagequery.sortDir = 'desc';
-                    }
+                    $scope.sortReverse = !$scope.sortReverse;
                 }
                 loadItemUsage();
             }

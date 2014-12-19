@@ -11,8 +11,6 @@
         <input type="text" name="fromDate" id="fromDate" ng-model="itemusagequery.fromDate" />
         <label for="toDate" style="margin-left:10px;">To:</label>
         <input type="text" name="toDate" id="toDate" ng-model="itemusagequery.toDate" />
-        <input type="text" style="display:none;" name="sortDir" id="sortDir" ng-model="itemusagequery.sortDir" />
-        <input type="text" style="display:none;" name="sortField" id="sortField" ng-model="itemusagequery.sortField" />
         <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
     </form>
 
@@ -29,15 +27,15 @@
             Item #
             <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
-          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('Name')">
+          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('Name')" >
             Name
             <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
           <th class="sort-col-header" ng-click="sortTable('TotalQuantityOrdered')">
             # Ordered
-            <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
+            <span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
-          <th class="hidden-sm hidden-xs"  ng-click="sortTable('TotalQuantityShipped')">
+          <th class="sort-col-header"  ng-click="sortTable('TotalQuantityShipped')">
             # Shipped
 			<span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
