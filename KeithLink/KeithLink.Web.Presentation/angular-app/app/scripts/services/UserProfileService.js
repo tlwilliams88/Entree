@@ -172,7 +172,8 @@ angular.module('bekApp')
           url: '/profile/avatar',
           method: 'POST',
           // data: { options: options },
-          file: file, // or list of files ($files) for html5 only
+          file: file.file, // or list of files ($files) for html5 only
+          data: { name: file.name },
         }).then(function(response) {
           var data = response.data;
           if (data.successResponse) {
