@@ -676,7 +676,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (customerFilters != null)
             {
                 if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
-					retCustomers = _customerRepo.GetCustomersForAccount(customerFilters.AccountId);
+					retCustomers = _customerRepo.GetCustomersForParentAccountOrganization(customerFilters.AccountId.ToGuid().ToCommerceServerFormat());
                 }
                 if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
                     retCustomers.AddRange(GetCustomersForUser(GetUserProfile(customerFilters.UserId.ToGuid()).UserProfiles[0]));
@@ -690,12 +690,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             
             // TODO: add logic to filter down for internal administration versus external owner
 
-            return new CustomerReturn() { Customers = retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
+            return new CustomerReturn() { Customers = retCustomers == null ? null : retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
         }
 
         public AccountReturn GetAccounts(AccountFilterModel accountFilters)
         {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
             List<Account> retAccounts = new List<Account>();
 
             if (accountFilters != null) {
@@ -704,11 +703,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
-                    retAccounts.AddRange(allAccounts.Where(x => x.Name.Contains(accountFilters.Wildcard)));
+					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.Contains(accountFilters.Wildcard)));
                 }
             }
             else
-                retAccounts = allAccounts;
+				retAccounts = _accountRepo.GetAccounts();
 
             foreach (var acct in retAccounts)
             {

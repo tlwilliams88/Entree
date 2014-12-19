@@ -90,4 +90,21 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetOrderHeaderInDateRange">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q12:guid" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="customerInfo" nillable="true" type="q13:UserSelectedContext" />
+        <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetOrderHeaderInDateRangeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetOrderHeaderInDateRangeResult" nillable="true" type="q14:ArrayOfOrder" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

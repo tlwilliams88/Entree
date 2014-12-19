@@ -18,5 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
         string UpdatePurchaseOrder(PurchaseOrder order);
         
         string SubmitChangeOrder(Guid userId, Guid orderGroupId);
+
+		List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid userId, string customerId, DateTime startDate, DateTime endDate);
 	}
 }

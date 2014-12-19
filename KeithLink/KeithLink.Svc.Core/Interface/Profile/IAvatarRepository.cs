@@ -6,6 +6,6 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IAvatarRepository {
-        void SaveAvatar(Guid userId, string fileName, string base64String);
+        bool SaveAvatar(Guid userId, string fileName, string base64String);
     }
 }

@@ -10,6 +10,7 @@ using System.IO;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.WebApi.Models;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -71,9 +72,19 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		[HttpPost]
 		[ApiKeyedRoute("messaging/mail")]
-		public void CreateMessage(MailMessageModel mailMessage)
+		public OperationReturnModel<bool> CreateMessage(MailMessageModel mailMessage)
 		{
-			messagingServiceRepository.CreateMailMessage(mailMessage);
+			try
+			{
+				messagingServiceRepository.CreateMailMessage(mailMessage);
+				return new OperationReturnModel<bool>() { SuccessResponse = true };
+			}
+			catch (Exception ex)
+			{
+				return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false };
+				throw ex;
+			}
+
 		}
 				
         #endregion

@@ -47,6 +47,12 @@
   <wsdl:message name="IOrderService_SaveUserActiveCart_OutputMessage">
     <wsdl:part name="parameters" element="tns:SaveUserActiveCartResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRange" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRangeResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer" message="tns:IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage" />
@@ -71,6 +77,10 @@
     <wsdl:operation name="SaveUserActiveCart">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/SaveUserActiveCart" message="tns:IOrderService_SaveUserActiveCart_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/SaveUserActiveCartResponse" message="tns:IOrderService_SaveUserActiveCart_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHeaderInDateRange">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" message="tns:IOrderService_GetOrderHeaderInDateRange_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse" message="tns:IOrderService_GetOrderHeaderInDateRange_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
@@ -122,6 +132,15 @@
     </wsdl:operation>
     <wsdl:operation name="SaveUserActiveCart">
       <soap:operation soapAction="http://tempuri.org/IOrderService/SaveUserActiveCart" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderHeaderInDateRange">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

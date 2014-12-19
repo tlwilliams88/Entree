@@ -26,6 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 using System.ComponentModel;
+using System.Collections.Concurrent;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -187,34 +188,44 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                                h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                           d => d.OrderDetails);
-            System.Collections.Concurrent.BlockingCollection<Order> customerOrders = new System.Collections.Concurrent.BlockingCollection<Order>();
-
-            Parallel.ForEach(headers, h => {
-                Order currentOrder = h.ToOrder();
-
-                if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
-                    PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-
-                    if (po != null) {
-                        currentOrder.OrderNumber = h.ControlNumber;
-                        currentOrder.Status = po.Status;
-                    }
-                }
-
-                customerOrders.Add(currentOrder);
-            });
-
-            return customerOrders.ToList();
+            return LookupControlNumberAndStatus(headers);
         }
+
+		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
+		{
+			var customerOrders = new BlockingCollection<Order>();
+			Parallel.ForEach(headers, h =>
+			{
+				Order currentOrder = h.ToOrderHeaderOnly();
+
+				if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+				{
+					PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+
+					if (po != null)
+					{
+						currentOrder.OrderNumber = h.ControlNumber;
+						currentOrder.Status = po.Status;
+					}
+				}
+
+				customerOrders.Add(currentOrder);
+			});
+
+			return customerOrders.ToList();
+		}
 
         private void LookupProductDetails(string branchId, Order order) {
             if (order.Items == null) { return; }
 
             var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
 
+			var productDict = products.Products.ToDictionary(p => p.ItemNumber);
+
             Parallel.ForEach(order.Items, item => {
-                var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                if (prod != null) {
+				var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
+				if (prod != null)
+				{
                     item.Name = prod.Name;
                     item.Description = prod.Description;
                     item.Pack = prod.Pack;
@@ -482,6 +493,23 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             //_unitOfWork.SaveChanges();
         }
+
+		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		{
+			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
+
+			return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
+		}
+
+		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		{
+			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate);
+			return LookupControlNumberAndStatus(headers);
+		}
+
+
 
         public void StopListening() {
             _keepListening = false;

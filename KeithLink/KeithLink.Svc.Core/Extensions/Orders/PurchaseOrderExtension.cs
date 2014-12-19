@@ -19,14 +19,34 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 Status = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2"),
                 RequestedShipDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"],
                 InvoiceStatus = "N/A",
-                Items = ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
+				Items = value.Properties["LineItems"] == null ? null : ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(value.Id)
             };
 
-            retVal.ItemCount = retVal.Items.Count;
+            retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
 
             return retVal;
         }
+
+		public static Order ToOrderHeader(this CS.PurchaseOrder value)
+		{
+			Order retVal = new Order()
+			{
+				CreatedDate = DateTime.Parse(value.Properties["DateCreated"].ToString()),
+				OrderNumber = value.Properties["OrderNumber"].ToString(),
+				OrderTotal = Double.Parse(value.Properties["Total"].ToString()),
+				InvoiceNumber = value.Properties["MasterNumber"] == null ? "Pending" : value.Properties["MasterNumber"].ToString(),
+				IsChangeOrderAllowed = (value.Properties["MasterNumber"] != null && (value.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
+				Status = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2"),
+				RequestedShipDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"],
+				InvoiceStatus = "N/A",
+				CommerceId = Guid.Parse(value.Id)
+			};
+
+			retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
+
+			return retVal;
+		} 
 
         private static OrderLine ToOrderLine(this CS.LineItem lineItem) {
             return new OrderLine() {
