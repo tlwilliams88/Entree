@@ -37,14 +37,16 @@ angular.module('bekApp')
         $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
         UserProfileService.searchUserCustomers(query.term, $scope.customerInfiniteScroll.size, $scope.customerInfiniteScroll.from).then(function(data) {
+          // convert data to match select2 data object
           var obj = {
             results: [],
-            more: query.page * 15 < data.totalResults
+            more: query.page * 15 < data.totalResults // boolean if there are more results to display using infinite scroll
           };
+
           data.results.forEach(function(customer) {
             obj.results.push({
-              id: customer.customerNumber,
-              text: customer.displayname,
+              id: customer.customerNumber, // value
+              text: customer.displayname,  // display text
               customer: customer
             });
           });

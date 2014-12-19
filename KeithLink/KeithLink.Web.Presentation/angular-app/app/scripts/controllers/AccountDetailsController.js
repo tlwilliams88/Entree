@@ -72,6 +72,18 @@ angular.module('bekApp')
         $scope.updateProfileForm.$setPristine();
       };
 
+      $scope.updateUserProfile = function(userProfile) {
+        userProfile.email = userProfile.emailaddress;
+        $scope.updateProfileErrorMessage = null;
+        
+        UserProfileService.updateUser(userProfile).then(function(profile) {
+          $scope.$parent.userProfile = profile;
+          $scope.displayMessage('success', 'Successfully updated profile.');
+        }, function(errorMessage) {
+          $scope.updateProfileErrorMessage = errorMessage;
+        });
+      };
+
       $scope.changePassword = function (changePasswordData) {
         $scope.changePasswordErrorMessage = null;
         changePasswordData.email = $scope.userProfile.emailaddress;

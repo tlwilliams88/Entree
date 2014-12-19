@@ -60,11 +60,6 @@ angular.module('bekApp')
           profile.displayname = profile.firstname + ' ' + profile.lastname;
         }
 
-        // // fix for large list of customers, needs to be removed
-        // if (profile.user_customers.length > 50) {
-        //   profile.user_customers = profile.user_customers.splice(0, 5);
-        // }
-
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 

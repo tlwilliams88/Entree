@@ -34,7 +34,7 @@ angular.module('bekApp')
 
       export: function(httpPath, config) {
 
-        $http.post(httpPath, config, { responseType: 'arraybuffer' })
+        return $http.post(httpPath, config, { responseType: 'arraybuffer' })
           .success( function(data, status, headers) {
 
             var octetStreamMime = 'application/octet-stream';

@@ -19,6 +19,10 @@ angular.module('bekApp')
     $scope.invoices = invoices;
   }
 
+  /******************************
+  PAGING, SORTING, FILTERING
+  ******************************/
+
   $scope.filterInvoices = function(filterFields) {
 
     // create array of filter fields
@@ -60,7 +64,6 @@ angular.module('bekApp')
     $scope.invoiceParams.from = 0;
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
-
   };
 
   $scope.clearFilters = function() {
@@ -101,73 +104,55 @@ angular.module('bekApp')
     });
   };
 
-  $scope.invoices = [];
-  $scope.accounts = accounts;
-  $scope.selectedAccount = accounts[0];
-
-  $scope.datepickerOptions = {
-    minDate: new Date(),
-    maxDate: '2015-06-22',
-    options: {
-      dateFormat: 'yyyy-MM-dd',
-      showWeeks: false
-    }
-  };
-
-  $scope.sortBy = 'invoicenumber';
-  $scope.sortOrder = true;
-
-  $scope.invoiceParams = {
-    size: Constants.infiniteScrollPageSize,
-    from: 0
-    // sort: [{
-    //   field: 'messagecreatedutc',
-    //   order: 'desc'
-    // }]
-    // filter: {
-    //   field: 'subject',
-    //   value: 'value',
-    //   filter: [
-    //      {
-    //        field: 'name',
-    //        value: 'value'
-    //      }
-    //   ]
-    // }
-  };
-
-  loadInvoices($scope.invoiceParams).then(setInvoices);
+  
+  /************
+  Filter Views
+  ************/
 
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
-    name: 'All Invoices'
+    name: 'All Invoices',
+    filterFields: []
   }, {
     name: 'Invoices to Pay',
-    filter: function(invoice) {
-      return invoice.ispayable;
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Open',
+      filter: [{
+        field: 'statusdescription',
+        value: 'Past Due'
+      }]
     }
-  }, {
+  },
+   {
     name: 'Open Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Open';
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Open'
     }
   }, {
     name: 'Past Due Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Past Due';
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Past Due'
     }
   }, {
     name: 'Paid Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Paid';
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Paid'
     }
   }];
 
   $scope.selectFilterView = function(filterView) {
     $scope.selectedFilterView = filterView;
-  };
 
-  $scope.selectFilterView($scope.filterViews[0]);
+    $scope.invoiceParams.filter = filterView.filterFields;
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
+
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
 
   $scope.selectAccount = function(account) {
     $scope.selectedAccount = account;
@@ -178,16 +163,6 @@ angular.module('bekApp')
       invoice.paymentAmount = invoice.amount.toString();
     } else {
       invoice.paymentAmount = '0';
-    }
-  };
-
-  //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
-  $scope.filterFields = {};
-  $scope.setSelectedFilter = function(selectedFilter) {
-    if (selectedFilter) {
-      delete $scope.filterFields.isSelected;
-    } else {
-      $scope.filterFields.isSelected = true;
     }
   };
 
@@ -229,10 +204,49 @@ angular.module('bekApp')
           return InvoiceService.getExportConfig();
         },
         exportParams: function() {
-          return null;
+          return;
         }
       }
     });
   };
+
+
+  $scope.invoices = [];
+  $scope.accounts = accounts;
+  $scope.selectedAccount = accounts[0];
+
+  $scope.datepickerOptions = {
+    minDate: new Date(),
+    maxDate: '2015-06-22',
+    options: {
+      dateFormat: 'yyyy-MM-dd',
+      showWeeks: false
+    }
+  };
+
+  $scope.sortBy = 'invoicenumber';
+  $scope.sortOrder = true;
+
+  $scope.invoiceParams = {
+    size: Constants.infiniteScrollPageSize,
+    from: 0
+    // sort: [{
+    //   field: 'messagecreatedutc',
+    //   order: 'desc'
+    // }]
+    // filter: {
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+  };
+
+  $scope.selectedFilterView = $scope.filterViews[0];
+  loadInvoices($scope.invoiceParams).then(setInvoices);
 
 }]);

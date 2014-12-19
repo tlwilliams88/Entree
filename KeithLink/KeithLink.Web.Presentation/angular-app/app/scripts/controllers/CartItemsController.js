@@ -35,7 +35,12 @@ angular.module('bekApp')
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
     } else {
+      $scope.mandatoryList = {};
+    }
+    if ($scope.reminderList) {
       $scope.reminderList.active = true;
+    } else {
+      $scope.reminderList = {};
     }
 
     $scope.goToCart = function(cartId, isChangeOrder) {

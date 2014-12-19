@@ -1,5 +1,14 @@
 'use strict';
 
+/******
+used to share and copy lists to other customers
+
+takes 2 resolve values
+
+list      : obj - list to share/copy
+customers : array - list of customer objects the current user has access to share with
+******/
+
 angular.module('bekApp')
 .controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'list', 'customers',
   function ($scope, $modalInstance, ListService, list, customers) {

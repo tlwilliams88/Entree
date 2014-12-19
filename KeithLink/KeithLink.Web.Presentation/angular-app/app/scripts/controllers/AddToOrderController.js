@@ -216,4 +216,10 @@ angular.module('bekApp')
       }
     };
 
+
+    // create new cart if no cart was selected
+    if (!selectedCart.items) {
+      $scope.createNewCart();
+    }
+
   }]);

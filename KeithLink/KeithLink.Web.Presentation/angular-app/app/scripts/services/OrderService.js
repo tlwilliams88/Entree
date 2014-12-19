@@ -23,6 +23,13 @@ angular.module('bekApp')
         }).$promise;
       },
 
+      getOrdersByDate: function(startDate, endDate) {
+        return Order.getOrdersByDate({
+          from: startDate,
+          to: endDate
+        }).$promise;
+      },
+
       /*************
       CHANGE ORDERS
       *************/
