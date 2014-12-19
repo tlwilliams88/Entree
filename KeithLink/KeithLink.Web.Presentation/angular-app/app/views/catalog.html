@@ -67,6 +67,9 @@
         </slide>
       </carousel>
     </div>
+
+    <h4 ng-if="recentlyViewedItems.length === 0">No recently viewed items to display.</h4>
+
 	</div>
 </div>  <!-- end Recently Viewed Items -->
 
@@ -74,19 +77,47 @@
 <div class="row" ng-if="isOrderEntryCustomer">
 	<div class="col-sm-12">
 		<h2>Recommended Items</h2>
-		<h4>Coming soon</h4>
-		<!-- <ul class="horizontal-slide hidden-xs hidden-sm">
-			<li ng-repeat="product in featuredProducts | orderBy: ['name']" class="item-holder">
-				<div class="featured-item text-center">
-					<img src="images/Walnuts.jpg" alt="image">
-					<div class="featured-item__detail">
-						{{product.name}}
-						<a ui-sref="menu.catalog.products.details({ itemId : product.id })" link="'menu.catalog.products.details({ itemId : item.id })'" class="text-uppercase">view details</a>
-					</div>
-				</div>
-			</li>
-		</ul>
-		<div class="visible-xs visible-sm sub-content" featured-item-carousel items="featuredProducts"></div> -->
+		<div loading-spinner="loadingRecommendedItems" ng-show="loadingRecommendedItems"></div>
+
+    <ul class="horizontal-slide hidden-xs hidden-sm">
+      <li ng-repeat="item in recommendedItems" class="item-holder">
+        <div class="featured-item text-center">
+          <img 
+            ng-if="item.images.length > 0" 
+            class="hand" 
+            ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" 
+            ng-src="{{item.images[0].url}}" 
+            alt="product image">
+          <img 
+            ng-if="item.images.length === 0" 
+            class="product-placeholder-image" 
+            src="images/bek-logo.png" 
+            alt="default product image">
+          <span class="featured-item__detail">
+            {{item.name}}
+            <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase">#{{item.itemnumber}}</a>
+          </span>
+        </div>
+      </li>
+    </ul>
+
+    <div class="featured-item-mobile visible-xs visible-sm">
+      <carousel interval="myInterval" disable-ng-animate>
+        <slide ng-repeat="item in recommendedItems" active="item.active">
+          <div class="col-xs-4 no-padding text-left">
+            <img ng-if="item.images.length > 0" class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
+            <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+          </div>
+          <div class="col-xs-8 no-padding featured-item-mobile__detail">
+            {{item.name}}<br />
+            <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" class="text-uppercase"># {{item.itemnumber}}</a>
+          </div>
+        </slide>
+      </carousel>
+    </div>
+
+    <h4 ng-if="recommendedItems.length === 0">No recommended items to display.</h4>
+
 	</div>
 </div>
 

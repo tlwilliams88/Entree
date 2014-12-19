@@ -1,11 +1,107 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('InvoiceController', ['$scope', '$filter', '$modal', 'invoices', 'accounts', 'InvoiceService',
-  function ($scope, $filter, $modal, invoices, accounts, InvoiceService) {
+.controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants',
+  function ($scope, $filter, $modal, accounts, InvoiceService, Constants) {
 
-  $scope.invoices = invoices;
-    console.log($scope.invoices);
+  function loadInvoices(params) {
+    $scope.loadingResults = true;
+    return InvoiceService.getInvoices(params).then(function(data) {
+      $scope.loadingResults = false;
+      $scope.totalInvoices = data.pagedresults.totalResults;
+      $scope.hasPayableInvoices = data.haspayableinvoices;
+
+      return data.pagedresults.results; // return array of invoices
+    });
+  }
+
+  function setInvoices(invoices) {
+    $scope.invoices = invoices;
+  }
+
+  $scope.filterInvoices = function(filterFields) {
+
+    // create array of filter fields
+    // example filter object
+    // filter: {
+    //   field: 'subject', // this contains the info for the first filter
+    //   value: 'value',
+    //   filter: [ // use this array if filtering by more than one field
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+    var filterList = [];
+    for(var propertyName in filterFields) {
+      if (filterFields[propertyName] && filterFields[propertyName] !== '') {
+        var filterObject = {
+          field: propertyName,
+          value: filterFields[propertyName] 
+        };
+        filterList.push(filterObject);  
+      }
+    }
+
+    var firstFilter = filterList[0];
+    filterList.splice(0,1);
+
+    var filterParamObject = {
+      field: firstFilter.field,
+      value: firstFilter.value,
+      filter: filterList
+    };
+
+    $scope.invoiceParams.filter = filterParamObject;
+
+    // reset paging
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
+
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+
+  };
+
+  $scope.clearFilters = function() {
+    $scope.filterFields = {};
+    $scope.invoiceParams.filter = [];
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
+
+  $scope.sortInvoices = function(field, order) {
+    $scope.sortOrder = order;
+    
+    $scope.invoiceParams.sort = [{
+      field: field
+    }];
+
+    if (order === true) {
+      $scope.invoiceParams.sort[0].order = 'desc';
+    } else {
+      $scope.invoiceParams.sort[0].order = 'asc';
+    }
+
+    // reset paging
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
+
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
+
+  $scope.infiniteScrollLoadMore = function() {
+    if (($scope.invoices && $scope.invoices.length >= $scope.totalInvoices) || $scope.loadingResults) {
+      return;
+    }
+
+    $scope.invoiceParams.from += $scope.invoiceParams.size;
+
+    loadInvoices($scope.invoiceParams).then(function(invoices) {
+      $scope.invoices = $scope.invoices.concat(invoices);
+    });
+  };
+
+  $scope.invoices = [];
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
 
@@ -18,7 +114,29 @@ angular.module('bekApp')
     }
   };
 
-  $scope.hasPayableInvoices = $filter('filter')(invoices, { ispayable: true }).length > 0;
+  $scope.sortBy = 'invoicenumber';
+  $scope.sortOrder = true;
+
+  $scope.invoiceParams = {
+    size: Constants.infiniteScrollPageSize,
+    from: 0
+    // sort: [{
+    //   field: 'messagecreatedutc',
+    //   order: 'desc'
+    // }]
+    // filter: {
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+  };
+
+  loadInvoices($scope.invoiceParams).then(setInvoices);
 
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
@@ -36,7 +154,7 @@ angular.module('bekApp')
   }, {
     name: 'Past Due Invoices',
     filter: function(invoice) {
-      return invoice.statusdescription === 'Late';
+      return invoice.statusdescription === 'Past Due';
     }
   }, {
     name: 'Paid Invoices',
@@ -55,8 +173,12 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
-  $scope.isTypeInvoice = function(invoice) {
-    return invoice.typedescription === 'IN ';
+  $scope.selectInvoice = function(invoice, isSelected) {
+    if (isSelected) {
+      invoice.paymentAmount = invoice.amount.toString();
+    } else {
+      invoice.paymentAmount = '0';
+    }
   };
 
   //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
@@ -70,23 +192,25 @@ angular.module('bekApp')
   };
 
   $scope.selectAll = function() {
-    angular.forEach($scope.filteredItems, function(item, index) {
+    angular.forEach($scope.invoices, function(item, index) {
       if (item.ispayable) {
         item.isSelected = $scope.selectAllPayable;
+        $scope.selectInvoice(item, item.isSelected);
       }
     });
   };
 
   $scope.totalPaymentAmount = function() {
     var total = 0;
-    $scope.filteredItems.forEach(function(invoice) {
+    $scope.invoices.forEach(function(invoice) {
       total += parseFloat(invoice.paymentAmount || 0);
     });
+    $scope.total = total;
     return total;
   };
 
   $scope.payInvoices = function() {
-    var payments = $filter('filter')($scope.filteredItems, { isSelected: true});
+    var payments = $filter('filter')($scope.invoices, { isSelected: true});
     InvoiceService.payInvoices(payments, $scope.selectedAccount);
   };
 

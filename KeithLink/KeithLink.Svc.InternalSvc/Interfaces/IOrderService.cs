@@ -19,7 +19,10 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber);
 
         [OperationContract]
-        List<Order> GetCustomerOrders(UserSelectedContext catalogInfo);
+        List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo);
+
+        [OperationContract]
+        Order GetOrder(string branchId, string invoiceNumber);
 
 		[OperationContract]
 		UserActiveCartModel GetUserActiveCart(Guid userId);

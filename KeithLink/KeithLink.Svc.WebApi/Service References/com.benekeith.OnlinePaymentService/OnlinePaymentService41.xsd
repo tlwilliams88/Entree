@@ -2,6 +2,7 @@
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
   <xs:complexType name="ArrayOfInvoice">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Invoice" nillable="true" type="tns:Invoice" />
@@ -77,4 +78,11 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="InvoiceTransactionModel" nillable="true" type="tns:InvoiceTransactionModel" />
+  <xs:complexType name="InvoiceHeaderReturnModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="haspayableinvoices" type="xs:boolean" />
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="pagedresults" nillable="true" type="q5:PagedResultsOfInvoicebHFuqxhQ" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InvoiceHeaderReturnModel" nillable="true" type="tns:InvoiceHeaderReturnModel" />
 </xs:schema>

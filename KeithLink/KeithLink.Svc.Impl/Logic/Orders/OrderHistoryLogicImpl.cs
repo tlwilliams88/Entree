@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
 using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Models.Generated;
@@ -14,6 +15,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Orders.History;
 using System;
@@ -32,6 +34,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int RECORDTYPE_STARTPOS = 0;
         private const int THREAD_SLEEP_DURATION = 2000;
 
+        private readonly ICatalogLogic _catalogLogic;
         private readonly IConfirmationLogic _confirmationLogic;
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryDetailRepository _detailRepo;
@@ -48,7 +51,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #region ctor
         public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IOrderHistoryQueueRepository queueRepo,
-                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo) {
+                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic) {
+            _catalogLogic = catalogLogic;
             _confirmationLogic = confLogic;
             _log = logRepo;
             _headerRepo = headerRepo;
@@ -166,9 +170,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         }
 
-        public List<Order> GetOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId), 
+        private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
+            List<PurchaseOrder> orders = _poRepo.ReadPurchaseOrders(userId, customerInfo.CustomerId);
+
+            return orders.Select(o => o.ToOrder()).ToList();
+        }
+
+        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
+            List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo) ,
+                                                         GetOrderHistoryOrders(customerInfo));
+
+            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
+        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
                                                                           d => d.OrderDetails);
             System.Collections.Concurrent.BlockingCollection<Order> customerOrders = new System.Collections.Concurrent.BlockingCollection<Order>();
 
@@ -187,9 +204,72 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 customerOrders.Add(currentOrder);
             });
 
-            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            return customerOrders.ToList();
         }
 
+        private void LookupProductDetails(string branchId, Order order) {
+            if (order.Items == null) { return; }
+
+            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
+
+            Parallel.ForEach(order.Items, item => {
+                var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+                if (prod != null) {
+                    item.Name = prod.Name;
+                    item.Description = prod.Description;
+                    item.Pack = prod.Pack;
+                    item.Size = prod.Size;
+                    item.StorageTemp = prod.Nutritional.StorageTemp;
+                    item.Brand = prod.Brand;
+                    item.BrandExtendedDescription = prod.BrandExtendedDescription;
+                    item.ReplacedItem = prod.ReplacedItem;
+                    item.ReplacementItem = prod.ReplacementItem;
+                    item.NonStock = prod.NonStock;
+                    item.ChildNutrition = prod.ChildNutrition;
+                    item.CatchWeight = prod.CatchWeight;
+                    item.TempZone = prod.TempZone;
+                    item.ItemClass = prod.ItemClass;
+                    item.CategoryId = prod.CategoryId;
+                    item.CategoryName = prod.CategoryName;
+                    item.UPC = prod.UPC;
+                    item.VendorItemNumber = prod.VendorItemNumber;
+                    item.Cases = prod.Cases;
+                    item.Kosher = prod.Kosher;
+                    item.ManufacturerName = prod.ManufacturerName;
+                    item.ManufacturerNumber = prod.ManufacturerNumber;
+                    item.Nutritional = new Nutritional() {
+                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                        GrossWeight = prod.Nutritional.GrossWeight,
+                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                        Height = prod.Nutritional.Height,
+                        Length = prod.Nutritional.Length,
+                        Ingredients = prod.Nutritional.Ingredients,
+                        Width = prod.Nutritional.Width
+                    };
+                }
+                //if (price != null) {
+                //    item.PackagePrice = price.PackagePrice.ToString();
+                //    item.CasePrice = price.CasePrice.ToString();
+                //}
+            });
+
+        }
+
+        private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
+            System.Collections.Concurrent.BlockingCollection<Order> mergedOrdeList = new System.Collections.Concurrent.BlockingCollection<Order>();
+
+            Parallel.ForEach(commerceServerOrders, csOrder => {
+                if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
+                    mergedOrdeList.Add(csOrder);
+                }
+            });
+
+            Parallel.ForEach(orderHistoryOrders, ohOrder => {
+                mergedOrdeList.Add(ohOrder);
+            });
+
+            return mergedOrdeList.ToList();
+        }
 
         /// <summary>
         /// Parse an array of strings as a file
@@ -350,6 +430,25 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             //confirmation.Header.TotalWeight
 
             _confirmationLogic.ProcessIncomingConfirmation(confirmation);
+        }
+
+        public Order ReadOrder(string branchId, string orderNumber) {
+            EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                  h.InvoiceNumber.Equals(orderNumber),
+                                                             d => d.OrderDetails).FirstOrDefault();
+            Order returnOrder = null;
+
+            if (myOrder == null) {
+                PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(orderNumber);
+                returnOrder = po.ToOrder();
+            } else {
+                 returnOrder = myOrder.ToOrder();
+            }
+
+            LookupProductDetails(branchId, returnOrder);
+
+            
+            return returnOrder;
         }
 
         public void Save(OrderHistoryFile currentFile) {

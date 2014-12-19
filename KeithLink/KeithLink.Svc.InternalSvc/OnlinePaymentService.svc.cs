@@ -17,6 +17,7 @@ using System.ServiceModel;
 using System.Text;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.InternalSvc {
     public class OnlinePaymentService : IOnlinePaymentService {
@@ -84,8 +85,9 @@ namespace KeithLink.Svc.InternalSvc {
 			return kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
         }
 
-        public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext) {
-			return _onlinePaymentsLogic.GetOpenInvoiceHeaders(userContext);
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
+		{
+			return _onlinePaymentsLogic.GetInvoiceHeaders(userContext, paging);
         }
        
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)

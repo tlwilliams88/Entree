@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Core.Extensions
 			if (filter == null)
 				return queryable;
 
-			return queryable.Where(BuildFilterExpresion<TEntity>(filter, ConditionalLogic.And, multipleValuePropertyNames));
+			return queryable.Where(BuildFilterExpresion<TEntity>(filter, filter.Logic, multipleValuePropertyNames));
 		}
 
 		private static string BuildFilterExpresion<TEntity>(FilterInfo activeFilter, ConditionalLogic parentLogic, string[] multipleValuePropertyNames)
@@ -169,10 +169,10 @@ namespace KeithLink.Svc.Core.Extensions
 					return string.Format("{0}.EndsWith({1})", propertyExpression, formattedValue);
 				case Operator.Contains:
 					CheckForStringTypeOperator(propertyExpression, fieldType, Operator.Contains);
-					return string.Format("{0}.Contains({1})", propertyExpression, formattedValue);
+					return string.Format("{0}.ToUpper().Contains({1})", propertyExpression, formattedValue.ToUpper());
 				case Operator.NotContains:
 					CheckForStringTypeOperator(propertyExpression, fieldType, Operator.NotContains);
-					return string.Format("!{0}.Contains({1})", propertyExpression, formattedValue);
+					return string.Format("!{0}.ToUpper().Contains({1})", propertyExpression, formattedValue.ToUpper());
 				default:
 					throw new Exception(string.Format("Operator '{0}' not defined for switch", op));
 			}

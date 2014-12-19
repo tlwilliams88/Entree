@@ -10,8 +10,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+<<<<<<< HEAD
 using System.Threading.Tasks;
 
+=======
+using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.Core.Models.Paging;
+>>>>>>> e54b6b211f37338ea8431647b88f157629d67da1
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -88,7 +93,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
-
+				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }).Results.FirstOrDefault();
                 return retVal;
             } else {
                 return _profileLogic.GetUserProfile(email, true);
@@ -129,8 +134,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 // handle customer updates - will need to add security here
                 if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
                 {
-                    IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c =>c.CustomerId).Except(profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId));
-                    IEnumerable<Guid> custsToRemove = profile.UserProfiles[0].UserCustomers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
+					var customers = _profileLogic.GetCustomersForUser(this.AuthenticatedUser);
+
+					IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
+					IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
                     foreach (Guid c in custsToAdd)
                         _profileLogic.AddUserToCustomer(c, profile.UserProfiles[0].UserId);
                     foreach (Guid c in custsToRemove)
@@ -292,6 +299,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/customer/")]
+		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging)
+		{
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging);
+		}
+
 
         [Authorize]
         [HttpGet]

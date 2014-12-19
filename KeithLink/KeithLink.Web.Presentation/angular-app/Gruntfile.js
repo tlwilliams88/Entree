@@ -364,7 +364,7 @@ module.exports = function (grunt) {
                     '*.html',
                     'views/{,*/}*.html',
                     'scripts/**/*.js',
-                    'images/{,*/}*.{webp}',
+                    'images/{,*/}*.{webp,png,gif}',
                     'lib/**/*.{js,css,eot,svg,ttf,woff}',
                     'fonts/{,*/}*'
                   ]
@@ -496,6 +496,16 @@ module.exports = function (grunt) {
                       loggingEnabled: false
                   }
               }
+          },
+          stage: {
+              constants: {
+                  ENV: {
+                      name: 'stage',
+                      apiKey: 'web_stage_v1',
+                      apiEndpoint: 'https://shopstaging.benekeith.com/api',
+                      loggingEnabled: false
+                  }
+              }
           }
       }
   });
@@ -575,6 +585,23 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin'
+  ]);
+
+  grunt.registerTask('build-for-stage', [
+      'clean:dist',
+      // 'includeSource:dist',
+      'ngconstant:stage',
+      'useminPrepare',
+      'concurrent:dist',
+      'autoprefixer',
+      'concat',
+      'ngmin',
+      'copy:dist',
+      'cssmin',
+      'uglify',
+      'filerev',
+      'usemin',
+      'htmlmin'
   ]);
 
   grunt.registerTask('build', [

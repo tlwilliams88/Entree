@@ -18,10 +18,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-namespace KeithLink.Svc.InternalSvc
-{
-	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "PipelineService" in code, svc and config file together.
-	// NOTE: In order to launch WCF Test Client for testing this service, please select PipelineService.svc or PipelineService.svc.cs at the Solution Explorer and start debugging.
+namespace KeithLink.Svc.InternalSvc {
 	public class OrderService : IOrderService {
         #region attributes
         private readonly IEventLogRepository _eventLog;
@@ -38,29 +35,29 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region methods
-        public DateTime? ReadLatestOrderModifiedDateForCustomer(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+        public DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
 			return _orderLogic.ReadLatestUpdatedDate(catalogInfo);
 		}
 
-        public List<OrderHistoryFile> GetLastFiveOrderHistory( Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber ) {
+        public List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber ) {
             return _orderLogic.GetLastFiveOrderHistory( catalogInfo, itemNumber );
         }
 
-        public List<Order> GetCustomerOrders(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-            //return orderLogic.GetCustomerOrderHistories(catalogInfo);
-            return _historyLogic.GetOrders(catalogInfo);
+        public List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo) {
+            return _historyLogic.GetOrders(userId, catalogInfo);
         }
 
-		public UserActiveCartModel GetUserActiveCart(Guid userId)
-		{
-			return _orderLogic.GetUserActiveCart(userId);
-		}
+        public Order GetOrder(string branchId, string invoiceNumber) {
+            return _historyLogic.GetOrder(branchId, invoiceNumber);
+        }
 
-		public void SaveUserActiveCart(Guid userId, Guid cartId)
-		{
-			_orderLogic.SaveUserActiveCart(userId, cartId);
-		}
-		
-		#endregion
-	}
+        public UserActiveCartModel GetUserActiveCart(Guid userId) {
+            return _orderLogic.GetUserActiveCart(userId);
+        }
+
+        public void SaveUserActiveCart(Guid userId, Guid cartId) {
+            _orderLogic.SaveUserActiveCart(userId, cartId);
+        }
+        #endregion
+    }		
 }

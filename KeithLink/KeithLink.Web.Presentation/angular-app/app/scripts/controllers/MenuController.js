@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, branches, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'UserProfileService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, $window, branches, UserProfileService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
     $scope.$state = $state;
     $scope.userBar = {};
@@ -21,17 +21,37 @@ angular.module('bekApp')
     refreshAccessPermissions();
     $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
 
-    // get selected user context
-    if ($scope.isOrderEntryCustomer) { // if order entry customer, use customer number
-      var customerNumber = LocalStorage.getCustomerNumber();
-      angular.forEach($scope.userProfile.user_customers, function(customer) {
-        if (customer.customerNumber === customerNumber) {
-          $scope.selectedUserContext = customer;
-        }
-      });
-    } else { // if guest user, use branch id
+    // get default selected user context
+    if ($scope.isOrderEntryCustomer) {
+      $scope.selectedUserContext = LocalStorage.getCurrentCustomer();
+    } else {
       $scope.selectedUserContext = LocalStorage.getBranchId();
     }
+
+    $scope.customerInfiniteScroll = {
+      from: 0,
+      size: 15
+    };
+    $scope.customerSelectOptions = {
+      query: function (query){
+        $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
+
+        UserProfileService.searchUserCustomers(query.term, $scope.customerInfiniteScroll.size, $scope.customerInfiniteScroll.from).then(function(data) {
+          var obj = {
+            results: [],
+            more: query.page * 15 < data.totalResults
+          };
+          data.results.forEach(function(customer) {
+            obj.results.push({
+              id: customer.customerNumber,
+              text: customer.displayname,
+              customer: customer
+            });
+          });
+          query.callback(obj);
+        });
+      }
+    };
 
     // for guest users
     $scope.changeBranch = function() {
@@ -45,8 +65,8 @@ angular.module('bekApp')
     };
 
     // for order-entry customers
-    $scope.changeCustomerLocation = function() {
-      LocalStorage.setSelectedCustomerInfo($scope.selectedUserContext);
+    $scope.changeCustomerLocation = function(selectedUserContext) {
+      LocalStorage.setSelectedCustomerInfo(selectedUserContext);
 
       angular.copy([], CartService.shipDates);
 
@@ -80,11 +100,15 @@ angular.module('bekApp')
         controller: 'TechnicalSupportModalController',
         windowClass: 'color-background-modal',
         resolve: {
-          branchId: function() {
-            return LocalStorage.getBranchId();
-          },
-          branches: function() {
-            return branches;
+          branch: function() {
+            var branchFound,
+              branchId = LocalStorage.getBranchId();
+            angular.forEach(branches, function(branch) {
+              if (branch.id.toUpperCase() === branchId.toUpperCase()) {
+                branchFound = branch;
+              }
+            });
+            return branchFound;
           }
         }
       });

@@ -153,11 +153,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
-        private void ImportCustomers()
-        {
-
-        }
-
         private void ImportCatalog()
         {
 			//For performance debugging purposes
@@ -207,7 +202,7 @@ namespace KeithLink.Svc.Impl.ETL
                     if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
                         continue;
 
-                    List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfile.UserCustomers;
+					List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfileLogic.GetCustomersForUser(userProfile);
 
                     foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
                     {

@@ -227,10 +227,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
 			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
 
+
+			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+
 			Parallel.ForEach(list.Items, listItem =>
 			{
-				var prod = products.Products.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
-				var price = prices.Prices.Where(p => p.ItemNumber.Equals(listItem.ItemNumber)).FirstOrDefault();
+				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+				var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
@@ -282,21 +286,36 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
 			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId)).FirstOrDefault();
+
+			var notesHash = new Dictionary<string, ListItem>();
+			var favHash = new Dictionary<string, ListItem>();
+			var cartHash = new Dictionary<string, decimal>();
+
+			if (notes != null && notes.Items != null)
+				notesHash = notes.Items.ToDictionary(n => n.ItemNumber);
+			if (favorites != null && favorites.Items != null)
+				favHash = favorites.Items.ToDictionary(f => f.ItemNumber);
+
+			if (activeCart != null && activeCart.LineItems != null)
+			{
+				foreach (var item in activeCart.LineItems)
+					if (cartHash.ContainsKey(item.ProductId))
+						cartHash[item.ProductId] += item.Quantity.HasValue ? item.Quantity.Value : 0;
+					else
+						cartHash.Add(item.ProductId, item.Quantity.HasValue ? item.Quantity.Value : 0);
+			}
+
 			Parallel.ForEach(list.Items, listItem =>
 			{
-				if (favorites != null && favorites.Items != null)
-				{
-					listItem.Favorite = favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
-				}
+				listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);// favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
+				listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;// notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+				listItem.QuantityInCart = cartHash.ContainsKey(listItem.ItemNumber) ? cartHash[listItem.ItemNumber] : 0;
+				//if (activeCart != null && activeCart.LineItems != null) //Is there an active cart? If so get item counts
+				//{
+				//	listItem.QuantityInCart = activeCart.LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
+				//}
 
-
-				if (activeCart != null && activeCart.LineItems != null) //Is there an active cart? If so get item counts
-				{
-					listItem.QuantityInCart = activeCart.LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
-				}
-
-				if (notes != null && notes.Items != null)
-					listItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+				
 			});
 
 		}
@@ -353,6 +372,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel(catalogInfo);
+			returnList.ReadOnly = returnList.ReadOnly || (!user.IsDSR && returnList.Type.Equals(ListType.RecommendedItems));
 
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
@@ -451,7 +471,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsWorksheet = l.Type == ListType.Worksheet, 
 					IsReminder = l.Type == ListType.Reminder,
  					IsMandatory = l.Type == ListType.Mandatory,
-					ReadOnly = l.ReadOnly,
+					IsRecommended = l.Type == ListType.RecommendedItems,
+					ReadOnly = l.ReadOnly || (!user.IsDSR && l.Type.Equals(ListType.RecommendedItems)),
 					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
 					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
@@ -489,7 +510,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var list = listRepository.ReadListForCustomer(user, catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
 				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
-				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
+				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)  || l.Type.Equals(ListType.RecommendedItems) || (user.IsDSR && l.Type.Equals(ListType.Mandatory))).ToList();
 			return list;
 		}
 		

@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IInternalOrderHistoryLogic {
-        List<Order> GetOrders(UserSelectedContext customerInfo);
+        Order GetOrder(string branchId, string invoiceNumber);
+
+        List<Order> GetOrders(System.Guid userId, UserSelectedContext customerInfo);
     }
 }

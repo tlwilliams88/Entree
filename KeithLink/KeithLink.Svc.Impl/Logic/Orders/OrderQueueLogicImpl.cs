@@ -207,24 +207,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 rawOrder = _orderQueue.ConsumeFromQueue();
             } 
         }
-        #endregion
 
-        #region properties
-        public bool AllowOrderProcessing { get; set; }
-        #endregion
-
-
-        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType)
-        {
-            var newOrderFile = new OrderFile()
-            {
-                Header = new OrderHeader()
-                {
+        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType) {
+            var newOrderFile = new OrderFile() {
+                Header = new OrderHeader() {
                     OrderingSystem = OrderSource.Entree,
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
                     DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-                    PONumber = string.Empty,
+                    PONumber = newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,
@@ -238,26 +229,41 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 Details = new List<OrderDetail>()
             };
 
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
-            {
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"])) {
                 var item = (CS.LineItem)lineItem.Target;
                 if ((orderType == OrderType.ChangeOrder && String.IsNullOrEmpty(item.Status))
                     || orderType == OrderType.DeleteOrder) // do not include line items a) during a change order with no change or b) during a delete order
                     continue;
 
-                newOrderFile.Details.Add(new OrderDetail()
-                {
+                OrderDetail detail = new OrderDetail() {
                     ItemNumber = item.ProductId,
                     OrderedQuantity = (short)item.Quantity,
                     UnitOfMeasure = ((bool)item.Each ? UnitOfMeasure.Package : UnitOfMeasure.Case),
                     SellPrice = (double)item.PlacedPrice,
                     Catchweight = (bool)item.CatchWeight,
                     LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
-                    ItemChange = LineType.Add,
                     SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty,
-                    ItemStatus = orderType == OrderType.NormalOrder ? string.Empty : item.Status == "added" ? "A" : item.Status == "changed" ? "C" : "D"
-                });
+                    ReplacedOriginalItemNumber = string.Empty
+                };
+
+                if (orderType == OrderType.NormalOrder) {
+                    switch (item.Status) {
+                        case "added":
+                            detail.ItemChange = LineType.Add;
+                            break;
+                        case "changed":
+                            detail.ItemChange = LineType.Change;
+                            break;
+                        case "deleted":
+                            detail.ItemChange = LineType.Delete;
+                            break;
+                        default:
+                            detail.ItemChange = LineType.NoChange;
+                            break;
+                    }
+                }
+
+                newOrderFile.Details.Add(detail);
             }
 
             System.IO.StringWriter sw = new System.IO.StringWriter();
@@ -267,5 +273,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _orderQueue.PublishToQueue(sw.ToString());
         }
+        #endregion
+
+        #region properties
+        public bool AllowOrderProcessing { get; set; }
+        #endregion
+
+
     }
 }

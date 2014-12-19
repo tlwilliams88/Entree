@@ -28,6 +28,7 @@ angular
     'angularFileUpload', // csv file uploads for lists and orders
     'naif.base64', // base64 file uploads for images
     'fcsa-number',
+    'ui.select2',
     'configenv'
   ])
 .config(['$stateProvider', '$compileProvider', '$tooltipProvider', '$urlRouterProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
@@ -301,9 +302,9 @@ angular
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoices: [ 'InvoiceService', function(InvoiceService) {
-          return InvoiceService.getAllInvoices();
-        }],
+        // invoices: [ 'InvoiceService', function(InvoiceService) {
+        //   return InvoiceService.getAllInvoices();
+        // }],
         accounts: ['BankAccountService', function(BankAccountService) {
           return BankAccountService.getAllBankAccounts();
         }]

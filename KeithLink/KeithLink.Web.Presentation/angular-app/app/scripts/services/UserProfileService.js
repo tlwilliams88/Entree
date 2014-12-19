@@ -28,7 +28,7 @@ angular.module('bekApp')
             'name': 'Heather Hill',
             'phone': '(888) 912-2342',
             'email': 'heather.hill@benekeith.com',
-            'imageUrl': '../images/placeholder-dsr.jpg'
+            'imageUrl': './images/placeholder-dsr.jpg'
           };
 
           //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
@@ -38,8 +38,14 @@ angular.module('bekApp')
           if (profile.rolename === 'guest') {
             LocalStorage.setSelectedBranchInfo(profile.branchid);
           } else {
-            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
+            var userSelectedContext = {
+              id: profile.defaultcustomer.customerNumber,
+              text: profile.defaultcustomer.displayname,
+              customer: profile.defaultcustomer
+            };
+            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
           }
+
           return profile;
         });
       },
@@ -53,6 +59,19 @@ angular.module('bekApp')
 
         return $http.get('/profile', data).then(function(response){
           return response.data.userProfiles[0];
+        });
+      },
+
+      searchUserCustomers: function(searchTerm, size, from) {
+        var data = {
+          params: {
+            size: size,
+            from: from,
+            terms: searchTerm
+          }
+        };
+        return $http.get('/profile/customer', data).then(function(response) {
+          return response.data;
         });
       },
 

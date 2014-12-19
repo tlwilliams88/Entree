@@ -34,6 +34,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "customerName")]
         public string CustomerName { get; set; }
 
+		[DataMember(Name = "displayname")]
+		public string DisplayName { get; set; }
+
         [DataMember(Name = "customerBranch")]
         public string CustomerBranch { get; set; }
 
@@ -103,6 +106,11 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public string TermCode { get; set; }
 		[DataMember(Name = "termdescription")]
 		public string TermDescription { get; set; }
+
+		[DataMember(Name = "kpay")]
+		public bool KPayCustomer { get; set; }
+		
+
     }
 
     public class CustomerAddUserModel
@@ -111,4 +119,6 @@ namespace KeithLink.Svc.Core.Models.Profile
         public Guid userId { get; set; }
         public string role { get; set; }
     }
+
+	
 }

@@ -54,13 +54,16 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember( Name = "imageurl" )]
         public string ImageUrl { get; set; }
-        
+
+		public string DSRNumber { get; set; }
+		public string DSMRole { get; set; }
+		public bool IsInternalUser { get; set; }
         //[DataMember(Name = "username")]
         //public string UserName { get; set; }
 
-        [DataMember(Name = "user_customers")]
-        public List<Customer> UserCustomers { get; set; }
-
+        
+		[DataMember(Name = "defaultcustomer")]
+		public Customer DefaultCustomer { get; set; }
         [DataMember(Name = "messagingpreferences")]
         public List<ProfileMessagingPreferenceModel> MessagingPreferences { get; set; }
     }

@@ -39,11 +39,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactions", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceTransactionsResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetInvoiceTransactionsAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse")]
-        KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetOpenInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeadersResponse")]
+        KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel GetInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetOpenInvoiceHeadersResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeaders", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceHeadersResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel> GetInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment", ReplyAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse")]
         void MakeInvoicePayment(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string emailAddress, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments);
@@ -117,12 +117,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
             return base.Channel.GetInvoiceTransactionsAsync(userContext, invoiceNumber);
         }
         
-        public KeithLink.Svc.Core.Models.Invoices.InvoiceModel[] GetOpenInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
-            return base.Channel.GetOpenInvoiceHeaders(userContext);
+        public KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel GetInvoiceHeaders(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.GetInvoiceHeaders(userContext, paging);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel[]> GetOpenInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext) {
-            return base.Channel.GetOpenInvoiceHeadersAsync(userContext);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel> GetInvoiceHeadersAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.GetInvoiceHeadersAsync(userContext, paging);
         }
         
         public void MakeInvoicePayment(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string emailAddress, KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel[] payments) {

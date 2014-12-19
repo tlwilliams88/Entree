@@ -185,6 +185,9 @@
     <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
+    <None Include="Properties\PublishProfiles\Stage.pubxml" />
+    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
     <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
@@ -291,6 +294,9 @@
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService41.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService51.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -324,6 +330,13 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Service References\com.benekeith.ReportService\ReportService.disco" />
+    <Content Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
+    <Content Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
+    <Content Include="Service References\com.benekeith.ReportService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -342,6 +355,7 @@
     <Compile Include="Controllers\BrandController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ContentManagementController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\MessagingController.cs" />
     <Compile Include="Controllers\ImportController.cs" />
     <Compile Include="Controllers\InvoiceController.cs" />
@@ -370,6 +384,7 @@
     <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
     <Compile Include="Service References\com.benekeith.ConfigurationService\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -407,6 +422,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\com.benekeith.ReportService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -513,6 +533,19 @@
     <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Service References\com.benekeith.ReportService\ReportService.wsdl" />
+    <None Include="Service References\com.benekeith.ReportService\ReportService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ReportService\ReportService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ReportService\ReportService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ReportService\ReportService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -520,6 +553,9 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Stage.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Test.config">
@@ -562,6 +598,7 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.ReportService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -577,6 +614,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Stage|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
