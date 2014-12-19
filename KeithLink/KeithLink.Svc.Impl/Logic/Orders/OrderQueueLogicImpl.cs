@@ -215,7 +215,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
                     DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-                    PONumber = newPurchaseOrder.Properties["PONumber"].ToString(),
+                    PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,
