@@ -100,11 +100,15 @@ angular.module('bekApp')
         controller: 'TechnicalSupportModalController',
         windowClass: 'color-background-modal',
         resolve: {
-          branchId: function() {
-            return LocalStorage.getBranchId();
-          },
-          branches: function() {
-            return branches;
+          branch: function() {
+            var branchFound,
+              branchId = LocalStorage.getBranchId();
+            angular.forEach(branches, function(branch) {
+              if (branch.id.toUpperCase() === branchId.toUpperCase()) {
+                branchFound = branch;
+              }
+            });
+            return branchFound;
           }
         }
       });
