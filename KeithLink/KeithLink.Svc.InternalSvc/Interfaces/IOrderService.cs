@@ -29,5 +29,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		void SaveUserActiveCart(Guid userId, Guid cartId);
+
+		[OperationContract]
+		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 	}
 }

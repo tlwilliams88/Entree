@@ -39,11 +39,23 @@ angular.module('bekApp')
 
       init();
 
-      $scope.uploadAvatar = function(avatarFile) {
-        console.log(avatarFile);
+      var files = [];
+      $scope.onFileSelect = function($files) {
+        files = [];
+        for (var i = 0; i < $files.length; i++) {
+          files.push($files[i]);
+        }
+      };
+
+      $scope.uploadAvatar = function() {
+        // console.log(avatarFile);
+        // var file = {
+        //   name: avatarFile.filename,
+        //   file: avatarFile.base64
+        // };
         var file = {
-          name: avatarFile.filename,
-          file: avatarFile.base64
+          name: files[0].name, 
+          file: files[0]
         };
         UserProfileService.uploadAvatar(file);
         // TODO: update user profile in local storage

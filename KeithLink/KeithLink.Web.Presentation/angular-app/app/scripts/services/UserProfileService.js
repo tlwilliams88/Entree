@@ -8,10 +8,13 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 
+    function ($http, $q, $log, $upload, toaster, LocalStorage) {
 
     var Service = {
-      getProfile: function(email) {
+
+      // gets and sets current user profile
+      getProfile: function(email) { 
         var data = {
           params: {
             email: email
@@ -156,9 +159,36 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
-      uploadAvatar: function() {
+      uploadAvatar: function(file) {
         // TODO: add upload avatar api call
         // needs to return url so you can refresh the profile object
+        // /profile/avatar
+        // file, name as params
+        // binary not base64
+
+        var deferred = $q.defer();
+
+        $upload.upload({
+          url: '/profile/avatar',
+          method: 'POST',
+          // data: { options: options },
+          file: file.file, // or list of files ($files) for html5 only
+          data: { name: file.name },
+        }).then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+
+            // TODO: update url locally 
+
+            toaster.pop('success', null, 'Successfully uploaded avatar');
+            deferred.resolve(data);
+          } else {
+            toaster.pop('error', null, data.errormsg);
+            deferred.reject(data.errormsg);
+          }
+        });
+
+        return deferred.promise;
       },
 
       removeAvatar: function() {

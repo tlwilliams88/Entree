@@ -1658,6 +1658,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="BalanceAge4"						csProperty="GeneralInfo.balance_age_4" />
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
+							<PropertyMapping property="AchType" csProperty="GeneralInfo.customer_ach_type" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2126,6 +2127,7 @@ This file contains the Metadata Repository
 							<PropertyMapping property="ListType" csProperty="ListType"/>
               <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
               <PropertyMapping property="OriginalOrderNumber" csProperty="OriginalOrderNumber"/>
+							<PropertyMapping property="PONumber" csProperty="PONumber"/>
 
             </PropertyMappings>
           </EntityMapping>
@@ -2198,6 +2200,9 @@ This file contains the Metadata Repository
           </Property>
 					<Property name="DisplayName" dataType="String" >
 						<DisplayName value="Display Name"/>
+					</Property>
+					<Property name="PONumber" dataType="String" >
+						<DisplayName value="PONumber"/>
 					</Property>
 					
 					<Property name="RequestedShipDate" dataType="DateTime">

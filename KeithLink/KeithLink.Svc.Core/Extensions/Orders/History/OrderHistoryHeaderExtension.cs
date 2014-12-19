@@ -101,47 +101,86 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return retVal;
         }
 
-        public static Order ToOrder(this EF.OrderHistoryHeader value) {
-            Order retVal = new Order();
+		public static Order ToOrder(this EF.OrderHistoryHeader value)
+		{
+			Order retVal = new Order();
 
-            retVal.OrderNumber = value.InvoiceNumber;
+			retVal.OrderNumber = value.InvoiceNumber;
 
-            switch (value.OrderStatus.Trim()) {
-                case "":
-                    retVal.Status = "Ordered";
-                    break;
-                case "I":
-                    retVal.Status = "Invoiced";
-                    break;
-                case "P":
-                    retVal.Status = "Processing";
-                    break;
-                default:
-                    break;
-            }
+			switch (value.OrderStatus.Trim())
+			{
+				case "":
+					retVal.Status = "Ordered";
+					break;
+				case "I":
+					retVal.Status = "Invoiced";
+					break;
+				case "P":
+					retVal.Status = "Processing";
+					break;
+				default:
+					break;
+			}
 
-		    retVal.DeliveryDate = value.DeliveryDate;
-		    retVal.InvoiceNumber = value.InvoiceNumber;
-		    retVal.InvoiceStatus = "N/A";
-            retVal.ItemCount = value.OrderDetails.Count;
-            retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
-		    retVal.CreatedDate = value.CreatedUtc;
-            retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
-            retVal.IsChangeOrderAllowed = false;
-            retVal.CommerceId = Guid.Empty;
+			retVal.DeliveryDate = value.DeliveryDate;
+			retVal.InvoiceNumber = value.InvoiceNumber;
+			retVal.InvoiceStatus = "N/A";
+			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
+			retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
+			retVal.CreatedDate = value.CreatedUtc;
+			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
+			retVal.IsChangeOrderAllowed = false;
+			retVal.CommerceId = Guid.Empty;
 
-            if (value.OrderDetails.Count > 0) {
-                System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
+			if (value.OrderDetails != null && value.OrderDetails.Count > 0)
+			{
+				System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
 
-                Parallel.ForEach(value.OrderDetails, d => {
-                    lineItems.Add(d.ToOrderLine());
-                });
+				Parallel.ForEach(value.OrderDetails, d =>
+				{
+					lineItems.Add(d.ToOrderLine());
+				});
 
-                retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
-            }
+				retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
+
+		public static Order ToOrderHeaderOnly(this EF.OrderHistoryHeader value)
+		{
+			Order retVal = new Order();
+
+			retVal.OrderNumber = value.InvoiceNumber;
+
+			switch (value.OrderStatus.Trim())
+			{
+				case "":
+					retVal.Status = "Ordered";
+					break;
+				case "I":
+					retVal.Status = "Invoiced";
+					break;
+				case "P":
+					retVal.Status = "Processing";
+					break;
+				default:
+					break;
+			}
+
+			retVal.DeliveryDate = value.DeliveryDate;
+			retVal.InvoiceNumber = value.InvoiceNumber;
+			retVal.InvoiceStatus = "N/A";
+			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
+			retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
+			retVal.CreatedDate = value.CreatedUtc;
+			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
+			retVal.IsChangeOrderAllowed = false;
+			retVal.CommerceId = Guid.Empty;
+			
+			return retVal;
+		}
+
 
         public static OrderHistoryHeader ToOrderHistoryHeader(this EF.OrderHistoryHeader value)
         {
@@ -159,7 +198,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
             retVal.StopNumber = value.StropNumber;
-
+			
             return retVal;
         }
         #endregion

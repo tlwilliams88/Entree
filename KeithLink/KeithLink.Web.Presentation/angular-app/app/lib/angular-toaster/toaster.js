@@ -42,6 +42,7 @@ angular.module('toaster', ['ngAnimate'])
     // 'on-fade-out': undefined,  // not implemented
     //'extended-time-out': 1000,    // not implemented
     'time-out': 5000, // Set timeOut and extendedTimeout to 0 to make it sticky
+    'error-time-out': 0,
     'icon-classes': {
         error: 'toast-error',
         info: 'toast-info',
@@ -79,6 +80,9 @@ function ($compile, $timeout, $sce, toasterConfig, toaster) {
 
             scope.configureTimer = function configureTimer(toast) {
                 var timeout = typeof (toast.timeout) == "number" ? toast.timeout : mergedConfig['time-out'];
+                if (toast.type === 'toast-error') {
+                    timeout = mergedConfig['error-time-out'];
+                }
                 if (timeout > 0)
                     setTimeout(toast, timeout);
             };
