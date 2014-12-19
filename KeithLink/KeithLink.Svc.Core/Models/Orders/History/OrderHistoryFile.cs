@@ -1,10 +1,11 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Common;
+using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Orders.History {
     [DataContract()]
-    public class OrderHistoryFile {
+    public class OrderHistoryFile : BaseQueueMessage {
         #region ctor
         public OrderHistoryFile() {
             Header = new OrderHistoryHeader();

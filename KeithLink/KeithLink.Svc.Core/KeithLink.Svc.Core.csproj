@@ -190,6 +190,7 @@
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
+    <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
