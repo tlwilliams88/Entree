@@ -302,9 +302,9 @@ angular
         authorize: 'canPayInvoices'
       },
       resolve: {
-        invoices: [ 'InvoiceService', function(InvoiceService) {
-          return InvoiceService.getAllInvoices();
-        }],
+        // invoices: [ 'InvoiceService', function(InvoiceService) {
+        //   return InvoiceService.getAllInvoices();
+        // }],
         accounts: ['BankAccountService', function(BankAccountService) {
           return BankAccountService.getAllBankAccounts();
         }]

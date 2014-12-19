@@ -21,7 +21,13 @@ angular.module('bekApp')
     refreshAccessPermissions();
     $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
 
-    $scope.selectedUserContext = LocalStorage.getCurrentCustomer();
+    // get default selected user context
+    if ($scope.isOrderEntryCustomer) {
+      $scope.selectedUserContext = LocalStorage.getCurrentCustomer();
+    } else {
+      $scope.selectedUserContext = LocalStorage.getBranchId();
+    }
+
     $scope.customerInfiniteScroll = {
       from: 0,
       size: 15
@@ -94,11 +100,15 @@ angular.module('bekApp')
         controller: 'TechnicalSupportModalController',
         windowClass: 'color-background-modal',
         resolve: {
-          branchId: function() {
-            return LocalStorage.getBranchId();
-          },
-          branches: function() {
-            return branches;
+          branch: function() {
+            var branchFound,
+              branchId = LocalStorage.getBranchId();
+            angular.forEach(branches, function(branch) {
+              if (branch.id.toUpperCase() === branchId.toUpperCase()) {
+                branchFound = branch;
+              }
+            });
+            return branchFound;
           }
         }
       });

@@ -20,6 +20,8 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -29,33 +31,35 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly ICustomerBankRepository _bankRepo;
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
+		private readonly ICustomerRepository _customerRepository;
 		
 		public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic)
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository)
 		{
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
 			this._catalogLogic = catalogLogic;
+			this._customerRepository = customerRepository;
 		}
 
-		public List<InvoiceModel> GetOpenInvoiceHeaders(UserSelectedContext userContext)
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
 		{
 			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-			List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+			
+			var returnModel = new InvoiceHeaderReturnModel() { HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Where(i => i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).Any() };
 
-			foreach (var inv in returnInvoices.Where(i => i.Type == InvoiceType.Invoice))
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+			foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice))
 			{
-				//TODO: add check to see if customer is KPay customer
-				inv.IsPayable = true;
-				if (inv.DueDate <= DateTime.Now)
-				{
-					inv.Status = InvoiceStatus.PastDue;
-					inv.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
-				}
+				inv.IsPayable = customer.KPayCustomer;		
 			}
 
-			return returnInvoices;
+			returnModel.PagedResults = pagedInvoices;
+
+			return returnModel;
 		}
 
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
@@ -122,7 +126,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
 		{
 			var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-
+			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+			
 			if (kpayInvoiceHeader == null) //Invoice not found
 				return null;
 
@@ -147,8 +152,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				invoiceModel.Items = details.OrderDetails.Select(d => d.ToInvoiceItem()).ToList();
 			}
-			//TODO: add check to see if customer is KPay customer
-			invoiceModel.IsPayable = true;
+
+			invoiceModel.IsPayable = customer.KPayCustomer;
 
 			//look up product details
 			LookupProductDetails(invoiceModel, userContext);

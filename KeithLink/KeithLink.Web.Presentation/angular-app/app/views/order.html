@@ -1,11 +1,11 @@
 <div page-header-bar>
   <div header-message>
     Order History 
-    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg btn btn-lg btn-success pull-right">Get Latest Updates</button>
+    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right">Get Latest Updates</button>
   </div>
   <div header-buttons>
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
-    <button title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
+    <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>
 </div>
@@ -19,9 +19,9 @@
 <table class="table table-border table-striped-rows">
   <thead>
     <tr>
-      <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortBy='ordernumber'">
-        Order #
-        <span sort-icons field="'ordernumber'" sortorder="sortOrder" sortby="sortBy"></span>
+      <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortBy='invoicenumber'">
+        Invoice #
+        <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
       <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortBy='createddate'">
         Order Date
@@ -31,17 +31,17 @@
         Status
         <span sort-icons field="'status'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortOrder=!sortOrder;sortBy='deliverydate'">
+      <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortOrder=!sortOrder;sortBy='deliverydate'">
         Delivery Date
         <span sort-icons field="'deliverydate'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="hidden-xs hidden-sm">Item Count</th>
-      <th class="sort-col-header text-right hidden-xs hidden-sm" ng-click="sortOrder=!sortOrder;sortBy='ordertotal'">
+      <th class="hidden-mobile-visible-print">Item Count</th>
+      <th class="sort-col-header text-right hidden-mobile-visible-print" ng-click="sortOrder=!sortOrder;sortBy='ordertotal'">
         Total
         <span sort-icons field="'ordertotal'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
-      <th class="hidden-xs hidden-sm">Invoice #</th>
-      <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortOrder=!sortOrder;sortBy='invoicestatus'">
+      <!-- <th class="hidden-mobile-visible-print">Invoice #</th> -->
+      <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortOrder=!sortOrder;sortBy='invoicestatus'">
         Invoice Status
         <span sort-icons field="'invoicestatus'" sortorder="sortOrder" sortby="sortBy"></span>
       </th>
@@ -55,17 +55,16 @@
     <!-- Filter Row -->
     <tr class="filter-row" ng-show="showFilter">
       <td class="input-col">
-        <input type="text" placeholder="Filter..." ng-model="filterFields.ordernumber">
+        <input type="text" placeholder="Filter..." ng-model="filterFields.invoicenumber">
       </td>
       <td></td>
       <td class="input-col">
         <input type="text" placeholder="Filter..." ng-model="filterFields.status">
       </td>
-      <td class="hidden-xs hidden-sm"></td>
-      <td class="hidden-xs hidden-sm"></td>
-      <td class="hidden-xs hidden-sm"></td>
-      <td class="hidden-xs hidden-sm"></td>
-      <td class="hidden-xs hidden-sm input-col">
+      <td class="hidden-mobile-visible-print"></td>
+      <td class="hidden-mobile-visible-print"></td>
+      <td class="hidden-mobile-visible-print"></td>
+      <td class="hidden-mobile-visible-print input-col">
         <input type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
       </td>
       <td class="large-icon icon-col">
@@ -75,15 +74,16 @@
 
     <tr ng-repeat-start="order in (filteredItems = (orders | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
       <td>
-        <a ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.ordernumber}}</a>
+        <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
+        <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.invoicenumber}}</a>
       </td>
       <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
       <td>{{order.status}}</td>
-      <td class="hidden-xs hidden-sm">{{order.deliverydate || 'N/A' | date:shortDate }}</td>
-      <td class="hidden-xs hidden-sm">{{order.itemcount}}</td>
-      <td class="hidden-xs hidden-sm text-right">{{order.ordertotal | currency}}</td>
-      <td class="hidden-xs hidden-sm">{{order.invoicenumber || 'N/A'}}</td>
-      <td class="hidden-xs hidden-sm">{{order.invoicestatus || 'N/A'}}</td>
+      <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | date:shortDate }}</td>
+      <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
+      <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
+      <!-- <td class="hidden-mobile-visible-print">{{order.invoicenumber || 'N/A'}}</td> -->
+      <td class="hidden-mobile-visible-print">{{order.invoicestatus || 'N/A'}}</td>
       <td class="large-icon icon-col">
         <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
       </td>
@@ -97,7 +97,7 @@
           </colgroup>
           <tr>
             <td>Delivery Date</td>
-            <td>{{order.deliverydate || 'N/A'}}</td>
+            <td>{{order.deliverydate || 'N/A' | date:shortDate}}</td>
           </tr>
           <tr>
             <td>Item Count</td>
@@ -107,10 +107,10 @@
             <td>Total</td>
             <td>{{order.ordertotal | currency}}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>Invoice #</td>
             <td>{{order.invoicenumber || 'N/A'}}</td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Invoice Status</td>
             <td>{{order.invoicestatus || 'N/A'}}</td>

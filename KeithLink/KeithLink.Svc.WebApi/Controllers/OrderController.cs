@@ -58,6 +58,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
 		}
 
+		[HttpGet]
+		[ApiKeyedRoute("order/date")]
+		public List<Order> OrdersIndate(DateTime from, DateTime to)
+		{
+			return _orderServiceRepository.GetOrderHeaderInDateRange(this.AuthenticatedUser.UserId, this.SelectedUserContext, from, to);
+		}
+
+
 		[HttpPost]
 		[ApiKeyedRoute("order/export/")]
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)

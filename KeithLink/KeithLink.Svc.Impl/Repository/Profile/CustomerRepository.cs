@@ -175,7 +175,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 BalanceAge2 = org.BalanceAge2,
                 BalanceAge3 = org.BalanceAge3,
                 BalanceAge4 = org.BalanceAge4,
-                TermCode = org.TermCode
+                TermCode = org.TermCode,
+				KPayCustomer = org.AchType == "2"
             };
         }
 
@@ -269,6 +270,39 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]));
 				
+				return customers;
+			}
+			else
+				return null;
+		}
+
+
+		public List<Customer> GetCustomersForParentAccountOrganization(string accountId)
+		{
+			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)));
+			if (customerFromCache != null)
+				return customerFromCache;
+
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.parent_organization = '" + accountId + "'"; // org type of customer
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+			if (res.CommerceEntities.Count > 0)
+			{
+				List<Customer> customers = new List<Customer>();
+				foreach (CommerceEntity ent in res.CommerceEntities)
+				{
+					Organization org = new Organization(ent);
+					if (org.OrganizationType == "0")
+					{
+						customers.Add(OrgToCustomer(org));
+					}
+				}
+
+				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]));
+				_customerCacheRepository.AddItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)), customers);
+
 				return customers;
 			}
 			else

@@ -18,6 +18,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
 		List<Customer> GetCustomersForDSR(string dsrNumber);
 		List<Customer> GetCustomersForAccount(string accountId);
 		List<Customer> GetCustomersByNameOrNumber(string search);
+		List<Customer> GetCustomersForParentAccountOrganization(string accountId);
         void ClearCustomerCache();
     }
 }

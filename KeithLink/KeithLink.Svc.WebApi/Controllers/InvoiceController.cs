@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.Paging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,21 +32,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
         #region methods
-        [HttpGet]
+        [HttpPost]
         [ApiKeyedRoute("invoice/")]
-        public List<InvoiceModel> Invoice() {
-            return _repo.GetOpenInvoiceHeaders(SelectedUserContext);
+		public InvoiceHeaderReturnModel Invoice(PagingModel paging)
+		{
+            return _repo.GetInvoiceHeaders(SelectedUserContext, paging);
         }
 
 		[HttpPost]
 		[ApiKeyedRoute("invoice/export/")]
 		public HttpResponseMessage ExportInvoices(ExportRequestModel exportRequest)
 		{
-			var list = _repo.GetOpenInvoiceHeaders(SelectedUserContext);
+			var list = _repo.GetInvoiceHeaders(SelectedUserContext, new PagingModel() { Size = 500, From = 0});
 
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);
-			return ExportModel<InvoiceModel>(list, exportRequest);
+			return ExportModel<InvoiceModel>(list.PagedResults.Results, exportRequest);
 		}
 
 		[HttpGet]

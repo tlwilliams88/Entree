@@ -98,6 +98,7 @@
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
           <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
+          <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
 
         </div>
       </div>
@@ -154,11 +155,18 @@
         </div>
       </div>
 
-      <div class="form-group no-margin">
+      <div class="form-group">
         <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
         <div class="col-sm-6">
           <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime}}</p>
           <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
+        </div>
+      </div>
+
+      <div class="form-group no-margin">
+        <label for="shipDate" class="col-sm-3 control-label">PO Number:</label>
+        <div class="col-sm-6">
+          <input class="form-control" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
         </div>
       </div>
 

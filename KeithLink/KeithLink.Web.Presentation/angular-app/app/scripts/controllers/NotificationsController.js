@@ -23,18 +23,19 @@ angular.module('bekApp')
   }
 
   $scope.filterNotifications = function(filterFields) {
+
+    // create array of filter fields
     // example filter object
     // filter: {
-    //   field: 'subject',
+    //   field: 'subject', // this contains the info for the first filter
     //   value: 'value',
-    //   filter: [
+    //   filter: [ // use this array if filtering by more than one field
     //      {
     //        field: 'name',
     //        value: 'value'
     //      }
     //   ]
     // }
-
     var filterList = [];
     for(var propertyName in filterFields) {
       if (filterFields[propertyName] && filterFields[propertyName] !== '') {
@@ -136,14 +137,14 @@ angular.module('bekApp')
       order: 'desc'
     }]
     // filter: {
-      // field: 'subject',
-      // value: 'value',
-      // filter: [
-      //    {
-      //      field: 'name',
-      //      value: 'value'
-      //    }
-      // ]
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
     // }
   };
 

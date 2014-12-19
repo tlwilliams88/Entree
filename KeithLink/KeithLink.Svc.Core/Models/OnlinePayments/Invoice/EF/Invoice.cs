@@ -42,6 +42,8 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF {
 
         [Required]
         public bool DeleteFlag { get; set; }
+
+		public string InvoiceStatus { get; set; }
         #endregion
     }
 }
