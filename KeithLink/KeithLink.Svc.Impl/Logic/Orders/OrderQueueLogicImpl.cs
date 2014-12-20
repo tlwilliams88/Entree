@@ -12,6 +12,7 @@ using CS = KeithLink.Svc.Core.Models.Generated;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -210,12 +211,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType) {
             var newOrderFile = new OrderFile() {
+                SenderApplicationName = Configuration.ApplicationName,
+                SenderProcessName = "Send order to queue",
+
                 Header = new OrderHeader() {
                     OrderingSystem = OrderSource.Entree,
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
                     DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
-                    PONumber = newPurchaseOrder.Properties["PONumber"].ToString(),
+                    PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,

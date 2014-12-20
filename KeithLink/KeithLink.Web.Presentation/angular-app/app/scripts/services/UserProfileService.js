@@ -130,6 +130,7 @@ angular.module('bekApp')
           url: '/profile/avatar',
           method: 'POST',
           file: file,
+          data: { name: file.name },
         });
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {

@@ -139,6 +139,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     while (rawOrder.Length > 0) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
+                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
                         System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
 
@@ -505,7 +507,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
 		{
 			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate);
+																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
 			return LookupControlNumberAndStatus(headers);
 		}
 

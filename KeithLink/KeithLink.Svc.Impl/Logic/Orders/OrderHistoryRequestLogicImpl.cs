@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
@@ -26,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        private OrderHistoryRequest Desiarlize(string rawXml){
+        private OrderHistoryRequest Deserialize(string rawXml){
             OrderHistoryRequest request = new OrderHistoryRequest();
 
             System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(request.GetType());
@@ -39,7 +40,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             string rawRequest = _queue.ConsumeFromQueue();
 
             while (rawRequest != null) {
-                OrderHistoryRequest request = Desiarlize(rawRequest);
+                OrderHistoryRequest request = Deserialize(rawRequest);
+
+                _log.WriteInformationLog(string.Format("Consuming order history request from queue for message ({0}).", request.MessageId));
 
                 if (request.InvoiceNumber == null) { request.InvoiceNumber = string.Empty; }
 
@@ -61,27 +64,33 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void RequestAllOrdersForCustomer(UserSelectedContext context) {
-            _queue.PublishToQueue(
-                    SerializeRequest(
-                        new OrderHistoryRequest() {
-                            BranchId = context.BranchId.ToUpper(),
-                            CustomerNumber = context.CustomerId
-                        }
-                    )
-                );
+            OrderHistoryRequest request = new OrderHistoryRequest() {
+                SenderApplicationName = Configuration.ApplicationName,
+                SenderProcessName = "Publish Order History Request for customer to queue",
+
+                BranchId = context.BranchId.ToUpper(),
+                CustomerNumber = context.CustomerId
+            };
+                        
+            _queue.PublishToQueue(SerializeRequest(request));
+
+            _log.WriteInformationLog(string.Format("Publishing order history request to queue for message ({0}).", request.MessageId));
             _log.WriteInformationLog(string.Format("Request for all orders sent to queue - Branch: {0}, CustomerNumber: {1}", context.BranchId, context.CustomerId));
         }
 
         public void RequestOrderForCustomer(UserSelectedContext context, string invoiceNumber) {
-            _queue.PublishToQueue(
-                    SerializeRequest(
-                        new OrderHistoryRequest() {
-                            BranchId = context.BranchId.ToUpper(),
-                            CustomerNumber = context.CustomerId,
-                            InvoiceNumber = invoiceNumber
-                        }
-                    )
-                );
+            OrderHistoryRequest request = new OrderHistoryRequest() {
+                SenderApplicationName = Configuration.ApplicationName,
+                SenderProcessName = "Publish Order History Request for specific invoice to queue",
+
+                BranchId = context.BranchId.ToUpper(),
+                CustomerNumber = context.CustomerId,
+                InvoiceNumber = invoiceNumber
+            };
+
+            _queue.PublishToQueue(SerializeRequest(request));
+
+            _log.WriteInformationLog(string.Format("Publishing order history request to queue for message ({0}).", request.MessageId));
             _log.WriteInformationLog(string.Format("Request for order sent to queue - Branch: {0}, CustomerNumber: {1}, InvoiceNumber: {2}", context.BranchId, context.CustomerId, invoiceNumber));
         }
 
