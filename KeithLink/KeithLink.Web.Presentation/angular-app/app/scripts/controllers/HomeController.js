@@ -16,13 +16,20 @@ angular.module('bekApp')
     $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
+      delete $scope.ordersMessage;
+    }, function(error) {
+      $scope.ordersMessage = 'Error loading orders.';
+    }).finally(function() {
       $scope.loadingOrders = false;
     });
 
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      console.log(items);
       $scope.promoItems = items;
+      delete $scope.promoMessage;
+    }, function(error) {
+      $scope.promoMessage = 'Error loading promo items.';
+    }).finally(function() {
       $scope.loadingPromoItems = false;
     });
  
