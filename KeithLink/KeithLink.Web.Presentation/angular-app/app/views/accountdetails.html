@@ -16,8 +16,8 @@
         <form name="uploadAvatarForm">
           <!-- <input type="file" name="avatarFile" ng-model="userAvatar" base-sixty-four-input required> -->
           <input type="file" ng-file-select="onFileSelect($files)">
-          <span><a ng-disabled="uploadAvatarForm.$invalid" ng-click="uploadAvatar()">Upload Photo</a></span>
-          <span ng-show="userProfile.imageurl">| <a ng-click="removeAvatar()">Remove Photo</a></span>
+          <span><button class="btn-no-style text-blue" ng-disabled="files.length === 0" ng-click="uploadAvatar()">Upload Photo</button></span>
+          <!-- <span ng-show="userProfile.imageurl">| <a ng-click="removeAvatar()">Remove Photo</a></span> -->
         </form>
       </div>
     </div>

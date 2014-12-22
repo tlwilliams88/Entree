@@ -184,9 +184,15 @@ angular.module('bekApp')
     return total;
   };
 
+  var processingPayInvoices = false;
   $scope.payInvoices = function() {
-    var payments = $filter('filter')($scope.invoices, { isSelected: true});
-    InvoiceService.payInvoices(payments, $scope.selectedAccount);
+    if (!processingPayInvoices) {
+      processingPayInvoices = true;
+      var payments = $filter('filter')($scope.invoices, { isSelected: true});
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function() {
+        processingPayInvoices = false;
+      });
+    }
   };
 
   $scope.openExportModal = function() {
