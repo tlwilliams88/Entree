@@ -8,7 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CustomerService', [ '$q', '$http', 'Customer', function ($q, $http, Customer) {
+  .factory('CustomerService', [ '$q', '$http', 'Customer', 'UtilityService', 
+    function ($q, $http, Customer, UtilityService) {
 
     var categories;
 
@@ -17,10 +18,10 @@ angular.module('bekApp')
         var deferred = $q.defer();
 
         var data = {
-            params: {
-              accountid: accountId
-            }
-          };
+          params: {
+            accountid: accountId
+          }
+        };
 
         $http.get('/profile/customers', data).then(function(response) {
           var data = response.data;
