@@ -2,8 +2,8 @@
   <div class="col-md-7 page-header-bar__message">
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
-        <button type="button" class="btn-lg btn btn-default dropdown-toggle">
-          {{currentCart.name || '# ' + currentCart.ordernumber}} <span class="icon-arrow-down6"></span>
+        <button type="button" class="select-cart btn-lg btn btn-default dropdown-toggle">
+          {{currentCart.name || '# ' + currentCart.ordernumber}} <span class="hidden-print icon-arrow-down6"></span>
         </button>
         <div class="dropdown-menu">
           
@@ -97,6 +97,7 @@
           
           <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
           <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+          <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
           <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
           <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
 
@@ -175,7 +176,7 @@
     </div>
   </div>
 
-  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
+  <div class="hidden-print col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
     <tabset class="tabset critical-items__tabset tab-border">
 
       <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
@@ -294,15 +295,15 @@
             Item #
             <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="sort-col-header hidden-xs hidden-sm visible-md visible-lg visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
             Notes
             <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm"></th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+          <th class="hidden-mobile-visible-print"></th>
+          <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
-          <th class="sort-col-header hidden-xs hidden-sm visible-md visible-lg visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
             Brand
             <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
@@ -310,25 +311,25 @@
             Name
             <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print">
+          <th class="hidden-mobile-visible-print">
             
           </th>
           <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder">
             Qty
             <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder">
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder">
             Each
             <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
             Price
             <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
           </th>
-          <th class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <th class="hidden-mobile-visible-print ">
             Ext Price
           </th>
-          <th class="hidden-print large-icon icon-col">
+          <th class="large-icon icon-col">
             <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
           </th>
         </tr>
@@ -354,7 +355,7 @@
           <td class="hidden-xs hidden-sm"></td>
           <td class="hidden-xs hidden-sm"></td>
           <td class="large-icon icon-col">
-            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+            <a class="hidden-print" ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
           </td>
         </tr> <!-- end Filter row -->
 
@@ -363,22 +364,22 @@
           <td>
             <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print notes-col">
+          <td class="hidden-mobile-visible-print notes-col">
             {{item.notes}}
           </td>
-          <td class="hidden-sm hidden-xs">
+          <td class="hidden-mobile-visible-print">
             <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td class="hidden-mobile-visible-print ">
             {{item.packsize}}
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td class="hidden-mobile-visible-print ">
             {{item.brand}}
           </td>
           <td>
             {{item.name}}
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print " item-icons>
+          <td class="hidden-mobile-visible-print " item-icons>
           </td>
           <td class="input-col nowrap">
             <ng-form class="hidden-print" name="quantityForm">
@@ -386,33 +387,33 @@
               <div counter ng-model="item.quantity" min="0"></div>
             </ng-form>
           </td>
-          <td class="hidden-xs hidden-sm visible-md visible-lg visible-print input-col">
+          <td class="hidden-mobile-visible-print input-col">
             <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
               <input type="checkbox" ng-model="item.each" id="each" name="each" />
               <label for="each"></label>
             </ng-form>
           </td>
 
-          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="!isChangeOrder" class="hidden-mobile-visible-print ">
             {{item.each ? item.packageprice : item.caseprice | currency}}
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td ng-if="!isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="!isChangeOrder" class="hidden-mobile-visible-print ">
             {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
           </td>
 
-          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="isChangeOrder" class="hidden-mobile-visible-print ">
             {{item.price | currency}}
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td ng-if="isChangeOrder" class="hidden-xs hidden-sm visible-md visible-lg visible-print ">
+          <td ng-if="isChangeOrder" class="hidden-mobile-visible-print ">
             {{item.linetotal | currency}}
           </td>
 
 
-          <td class="hidden-print large-icon icon-col">
-            <a class="visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-            <a class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+          <td class="large-icon icon-col">
+            <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+            <a class="hidden-print hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
           </td>
         </tr>
 

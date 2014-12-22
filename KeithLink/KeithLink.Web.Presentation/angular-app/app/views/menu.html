@@ -82,8 +82,8 @@
         <button
           class="btn-no-style"
           ng-disabled="!canPayInvoices"
-          ui-sref="blank"
-          ui-sref-active="is-selected" >
+          ui-sref="menu.reports"
+          ng-class="{'is-selected': $state.includes('menu.reports')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-pie"></span></div>
             Reports
@@ -201,8 +201,8 @@
         <button
           class="btn-no-style"
           ng-disabled="!canPayInvoices"
-          ui-sref="blank"
-          ui-sref-active="is-selected" >
+          ui-sref="menu.reports"
+          ng-class="{'is-selected': $state.includes('menu.reports')}" >
           <li>
             <span class="icon-pie sidebar-nav__icon"></span>
             Reports
@@ -319,7 +319,7 @@
               <div class="person-info__section">
                 <span class="icon-arrow-down5"></span>
               </div>
-              <div class="person-info__section" ng-show="userProfile.imageUrl"><img ng-src="{{userProfile.imageUrl}}" alt=""></div>
+              <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
             </div>
           </div>
         </div>

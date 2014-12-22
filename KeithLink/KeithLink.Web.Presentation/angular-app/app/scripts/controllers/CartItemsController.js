@@ -35,7 +35,12 @@ angular.module('bekApp')
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
     } else {
+      $scope.mandatoryList = {};
+    }
+    if ($scope.reminderList) {
       $scope.reminderList.active = true;
+    } else {
+      $scope.reminderList = {};
     }
 
     $scope.goToCart = function(cartId, isChangeOrder) {
@@ -66,34 +71,47 @@ angular.module('bekApp')
       }
     };
 
+    var processingSaveCart = false;
     $scope.saveCart = function(cart) {
-      var updatedCart = angular.copy(cart);
+      if (!processingSaveCart) {
+        processingSaveCart = true;
+        var updatedCart = angular.copy(cart);
 
-      // delete items if quantity is 0
-      updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
+        // delete items if quantity is 0
+        updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
 
-      return CartService.updateCart(updatedCart).then(function() {
-        $scope.currentCart.isRenaming = false;
-        $scope.sortBy = null;
-        $scope.sortOrder = false;
-        $scope.currentCart = updatedCart;
-        $scope.cartForm.$setPristine();
-        $scope.displayMessage('success', 'Successfully saved cart ' + cart.name);
-        return updatedCart.id;
-      }, function() {
-        $scope.displayMessage('error', 'Error saving cart ' + cart.name);
-      });
+        return CartService.updateCart(updatedCart).then(function() {
+          $scope.currentCart.isRenaming = false;
+          $scope.sortBy = null;
+          $scope.sortOrder = false;
+          $scope.currentCart = updatedCart;
+          $scope.cartForm.$setPristine();
+          $scope.displayMessage('success', 'Successfully saved cart ' + cart.name);
+          return updatedCart.id;
+        }, function() {
+          $scope.displayMessage('error', 'Error saving cart ' + cart.name);
+        }).finally(function() {
+          processingSaveCart = false;
+        });
+      }
     };
 
+    var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
-      $scope.saveCart(cart)
-        .then(CartService.submitOrder)
-        .then(function(data) {
-          $state.go('menu.orderitems', { orderNumber: data.ordernumber });
-          $scope.displayMessage('success', 'Successfully submitted order.');
-        }, function(error) {
-          $scope.displayMessage('error', 'Error submitting order.');
-        });
+      if (!processingSubmitOrder) {
+        processingSubmitOrder = true;
+
+        $scope.saveCart(cart)
+          .then(CartService.submitOrder)
+          .then(function(data) {
+            $state.go('menu.orderitems', { orderNumber: data.ordernumber });
+            $scope.displayMessage('success', 'Successfully submitted order.');
+          }, function(error) {
+            $scope.displayMessage('error', 'Error submitting order.');
+          }).finally(function() {
+            processingSubmitOrder = false;
+          });
+      }
     };
 
     $scope.renameCart = function (cartId, cartName) {
@@ -146,45 +164,66 @@ angular.module('bekApp')
     CHANGE ORDERS
     ************/
 
+    var processingSaveChangeOrder = false;
     $scope.saveChangeOrder = function(order) {
-      var changeOrder = angular.copy(order);
-      changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
+      if (!processingSaveChangeOrder) {
+        processingSaveChangeOrder = true;
 
-      return OrderService.updateOrder(changeOrder).then(function(order) {
-        $scope.currentCart = order;
-        $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
-        return order.ordernumber;
-      });
-    };
+        var changeOrder = angular.copy(order);
+        changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
 
-    $scope.resubmitOrder = function(order) {
-
-      $scope.saveChangeOrder(order)
-        .then(OrderService.resubmitOrder)
-        .then(function(orderNumber) {
-          // update changeOrders object
-          angular.forEach($scope.changeOrders, function(changeOrder) {
-            if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
-              changeOrder.ordernumber = orderNumber;
-            }
-          });
-          $scope.currentCart.ordernumber = orderNumber;
-          $scope.displayMessage('success', 'Successfully submitted change order.');
-        }, function(error) {
-          $scope.displayMessage('error', 'Error re-submitting order.');
+        return OrderService.updateOrder(changeOrder).then(function(order) {
+          $scope.currentCart = order;
+          $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+          return order.ordernumber;
+        }).finally(function() {
+          processingSaveChangeOrder = false;
         });
+      }
     };
 
+    var processingResubmitOrder = false;
+    $scope.resubmitOrder = function(order) {
+      if (!processingResubmitOrder) {
+        processingResubmitOrder = true;
+
+        $scope.saveChangeOrder(order)
+          .then(OrderService.resubmitOrder)
+          .then(function(orderNumber) {
+            // update changeOrders object
+            angular.forEach($scope.changeOrders, function(changeOrder) {
+              if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
+                changeOrder.ordernumber = orderNumber;
+              }
+            });
+            $scope.currentCart.ordernumber = orderNumber;
+            $scope.displayMessage('success', 'Successfully submitted change order.');
+          }, function(error) {
+            $scope.displayMessage('error', 'Error re-submitting order.');
+          }).finally(function() {
+            processingResubmitOrder = false;
+          });
+      }
+      
+    };
+
+    var processingCancelOrder = false;
     $scope.cancelOrder = function(changeOrder) {
-      OrderService.cancelOrder(changeOrder.commerceid).then(function() {
-        var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
-        var idx = $scope.changeOrders.indexOf(changeOrderFound);
-        $scope.changeOrders.splice(idx, 1);
-        $scope.goToCart();
-        $scope.displayMessage('success', 'Successfully cancelled order ' + changeOrder.ordernumber + '.');
-      }, function(error) {
-        $scope.displayMessage('error', 'Error cancelling order ' + changeOrder.ordernumber + '.');
-      });
+      if (!processingCancelOrder) {
+        processingCancelOrder = true;
+        
+        OrderService.cancelOrder(changeOrder.commerceid).then(function() {
+          var changeOrderFound = UtilityService.findObjectByField($scope.changeOrders, 'commerceid', changeOrder.commerceid);
+          var idx = $scope.changeOrders.indexOf(changeOrderFound);
+          $scope.changeOrders.splice(idx, 1);
+          $scope.goToCart();
+          $scope.displayMessage('success', 'Successfully cancelled order ' + changeOrder.ordernumber + '.');
+        }, function(error) {
+          $scope.displayMessage('error', 'Error cancelling order ' + changeOrder.ordernumber + '.');
+        }).finally(function() {
+          processingCancelOrder = false;
+        });
+      }
     };
 
     // INFINITE SCROLL

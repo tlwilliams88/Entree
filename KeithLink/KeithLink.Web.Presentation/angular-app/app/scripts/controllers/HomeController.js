@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$state', '$modal', 'CartService', 'OrderService', 'MarketingService',
-    function($scope, $state, $modal, CartService, OrderService, MarketingService) {
+  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService',
+    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService) {
     
     $scope.myInterval = -1;
 
@@ -45,47 +45,96 @@ angular.module('bekApp')
       });
     };
 
-    var chart = c3.generate({
-      bindto: '#chart_div',
-      data: {
-        x: 'x',
-        columns: [
-          ['x', 'J', 'F', 'M', 'A', 'M', 'J'],
-          ['data1', 30, 200, 100, 400, 150, 250], // bar
-          ['data2', 130, 340, 200, 500, 250, 350] // line
-        ],
-        types: {
-            data1: 'bar',
-            data2: 'line'
+    /**********
+    order summary graph data
+    **********/
+
+    // get date range
+    var from = new Date(),
+      to = new Date();
+    from.setMonth(from.getMonth()-6);
+    from.setDate(1);
+    to.setMonth(to.getMonth()+1);
+    to.setDate(1);
+
+    from = $filter('date')(from, 'yyyy-MM-dd');
+    to = $filter('date')(to, 'yyyy-MM-dd');
+
+    // get order summary data
+    OrderService.getOrdersByDate(from, to).then(function(orders) {
+
+      // get order totals for each month
+      var months = {};
+      orders.forEach(function(order) {
+        var date = new Date(order.createddate);
+        var month = date.getMonth() + 1;
+        var total = months[month];
+        if (total) {
+          months[month] += order.ordertotal;
+        } else {
+          months[month] = order.ordertotal;
         }
-      },
-      axis: {
-        x: {
-          type: 'category'
+      });
+      
+      // format data to match graph 
+      var monthData = ['x'],
+        barData = ['bar'],
+        lineData = ['line'];
+
+      for (var month in months) {
+        var total = months[month];
+        monthData.push(month); 
+        barData.push(total);
+        lineData.push(total);
+      }
+
+      var chart = c3.generate({
+        bindto: '#chart_div',
+        data: {
+          x: 'x',
+          columns: [
+            // ['x', 'J', 'F', 'M', 'A', 'M', 'J'],
+            // ['data1', 130, 340, 200, 500, 250, 350], // bar
+            // ['data2', 130, 340, 200, 500, 250, 350] // line
+            monthData,
+            barData,
+            lineData
+          ],
+          types: {
+              bar: 'bar',
+              line: 'line'
+          }
         },
-        y: {
-          tick: {
-            values: [100, 1000, 10000]
+        axis: {
+          x: {
+            type: 'category'
+          }
+          // ,
+          // y: {
+          //   tick: {
+          //     values: [100, 1000, 10000]
+          //   }
+          // }
+        },
+        legend: {
+          hide: true
+        },
+        color: {
+          pattern: ['#f3f1eb', '#489ecf'] // background, blue
+        },
+        padding: {
+          bottom: -15
+        },
+        interaction: {
+          enabled: false
+        },
+        grid: {
+          y: {
+            show: true
           }
         }
-      },
-      legend: {
-        hide: true
-      },
-      color: {
-        pattern: ['#f3f1eb', '#489ecf'] // background, blue
-      },
-      padding: {
-        bottom: -15
-      },
-      interaction: {
-        enabled: false
-      },
-      grid: {
-        y: {
-          show: true
-        }
-      }
+      });
+
     });
 
   }]);

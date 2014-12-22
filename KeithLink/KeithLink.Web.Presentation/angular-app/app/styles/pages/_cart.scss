@@ -18,3 +18,11 @@
     @include scroll-div-vertical(150px);
   }
 }
+
+@media print {
+  .select-cart {
+    border: none;
+    padding: none;
+    font-size: 16px;
+  }
+}

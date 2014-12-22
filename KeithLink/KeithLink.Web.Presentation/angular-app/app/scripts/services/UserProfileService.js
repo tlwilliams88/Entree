@@ -8,24 +8,14 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 
-    function ($http, $q, $log, $upload, toaster, LocalStorage) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService) {
 
     var Service = {
 
       // gets and sets current user profile
       getProfile: function(email) { 
-        var data = {
-          params: {
-            email: email
-          }
-        };
-
-        return $http.get('/profile', data).then(function (response) {
-          var profile = response.data.userProfiles[0];
-
-          $log.debug(profile);
-
+        return Service.getUserProfile(email).then(function (profile) {
           profile.salesRep = {
             'id': 34234,
             'name': 'Heather Hill',
@@ -61,6 +51,7 @@ angular.module('bekApp')
         };
 
         return $http.get('/profile', data).then(function(response){
+          $log.debug(response.data);
           return response.data.userProfiles[0];
         });
       },
@@ -93,55 +84,24 @@ angular.module('bekApp')
       },
 
       createUser: function(userProfile) {
-        var deferred = $q.defer();
-
-        $http.post('/profile/register', userProfile).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-
-        return deferred.promise;
+        var promise = $http.post('/profile/register', userProfile);
+        return UtilityService.resolvePromise(promise);
       },
 
+      // TODO: updateUser and updateProfile are duplicates
+
       updateUser: function(userProfile) {
-        var deferred = $q.defer();
+        var promise = $http.put('/profile', userProfile);
 
-        $http.put('/profile', userProfile).then(function(response) {
-
-          var data = response.data;
-
-          if (data.successResponse) {
-            var profile = data.successResponse.userProfiles[0];
-            $log.debug(profile);
-            LocalStorage.setProfile(profile);
-            deferred.resolve(profile);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var profile = successResponse.userProfiles[0];
+          $log.debug(profile);
+          LocalStorage.setProfile(profile);
         });
-        return deferred.promise;
       },
 
       updateProfile: function(userProfile) {
-        var deferred = $q.defer();
-
-        $http.put('/profile', userProfile).then(function(response) {
-
-          var data = response.data;
-
-          if (data.successResponse) {
-            var profile = data.successResponse.userProfiles[0];
-            $log.debug(profile);
-            deferred.resolve(profile);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
+        return Service.updateUser(userProfile);
       },
 
       changePassword: function(passwordData) {
@@ -166,29 +126,19 @@ angular.module('bekApp')
         // file, name as params
         // binary not base64
 
-        var deferred = $q.defer();
-
-        $upload.upload({
+        var promise = $upload.upload({
           url: '/profile/avatar',
           method: 'POST',
-          // data: { options: options },
-          file: file.file, // or list of files ($files) for html5 only
+          file: file,
           data: { name: file.name },
-        }).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-
-            // TODO: update url locally 
-
-            toaster.pop('success', null, 'Successfully uploaded avatar');
-            deferred.resolve(data);
-          } else {
-            toaster.pop('error', null, data.errormsg);
-            deferred.reject(data.errormsg);
-          }
         });
 
-        return deferred.promise;
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          // TODO: update url locally 
+          toaster.pop('success', null, 'Successfully uploaded avatar');
+        }, function(error) {
+          toaster.pop('error', null, error);
+        });
       },
 
       removeAvatar: function() {

@@ -74,36 +74,33 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private void ListenForQueueMessagesInTask()
         {
-            while (_keepQueueListening)
-            {
-                try
-                {
+            while (_keepQueueListening) {
+                try {
                     System.Threading.Thread.Sleep(queueListenerSleepTimeMs);
 
                     ConfirmationFile confirmation = GetFileFromQueue();
-                    if (confirmation != null)
-                    {
-                        try
-                        {
-                            if (ProcessIncomingConfirmation(confirmation) == false)
-                            {
-                                // If it fails we need to put the message back in the queue
-                                PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            //HandleConfirmationQueueProcessingerror(e);
-                            PublishToQueue(confirmation, ConfirmationQueueLocation.Default);
+                    if (confirmation != null) {
+                        try {
+                            _log.WriteInformationLog(string.Format("Pulling confirmation from queue using message ({0})", confirmation.MessageId));
+
+                            ProcessIncomingConfirmation(confirmation);
+                        } catch (Exception e) {
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e);
+                            _log.WriteErrorLog("Error processing confirmation in internal service", e);
+
+                            confirmation.ErrorMessage = e.Message;
+                            confirmation.ErrorStack = e.StackTrace;
+
+                            PublishToQueue(confirmation, ConfirmationQueueLocation.Error);
                         }
                     }
                 }
-                catch (Exception ex)
-                {
+                catch (Exception ex) {
                     _log.WriteErrorLog("Error in MoveConfirmationsToCommerceServer", ex);
                 }
             }
         }
+
         /// <summary>
         /// Deserialize the confirmation
         /// </summary>
@@ -123,10 +120,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// Send serialized file to RabbitMQ, send object to commerce server
         /// </summary>
         /// <param name="file"></param>
-        public void ProcessFileData(string[] file)
-        {
+        public void ProcessFileData(string[] file) {
             try {
                 ConfirmationFile confirmation = ParseFile( file );
+
+                confirmation.SenderApplicationName = Configuration.ApplicationName;
+                confirmation.SenderProcessName = "Receive Confirmation From Mainframe";
+
                 PublishToQueue( confirmation, ConfirmationQueueLocation.Default );
             } catch (Exception e) {
                 throw e;
@@ -140,8 +140,21 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <param name="location"></param>
         public void PublishToQueue( ConfirmationFile file, ConfirmationQueueLocation location ) {
             string serializedConfirmation = SerializeConfirmation( file );
-            genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher,
-                Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeConfirmation);
+
+            _log.WriteInformationLog(string.Format("Writing confirmation to the queue for message ({0}).{1}{1}{2}", file.MessageId, "\r\n", serializedConfirmation));
+
+            switch (location) {
+                case ConfirmationQueueLocation.Default:
+                    genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher,
+                        Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeConfirmation);
+                    break;
+                case ConfirmationQueueLocation.Error:
+                    genericeQueueRepository.PublishToQueue(serializedConfirmation, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher,
+                        Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeConfirmationErrors);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -202,56 +215,49 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public bool ProcessIncomingConfirmation(ConfirmationFile confirmation)
         {
-            try
+            if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
+                throw new ApplicationException("Confirmation Number is Required");
+            if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
+                throw new ApplicationException("Invoice number is required");
+            if (confirmation.Header.ConfirmationStatus == null)
+                throw new ApplicationException("Confirmation Status is Required");
+
+            var poNum = confirmation.Header.ConfirmationNumber;
+            PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
+            _log.WriteInformationLog("Processing confirmation for control number: " + confirmation.Header.ConfirmationNumber + ", did " + (po == null ? " not " : "") + "get purchase order");
+
+            if (po == null)
             {
-                if (String.IsNullOrEmpty(confirmation.Header.ConfirmationNumber))
-                    throw new ApplicationException("Confirmation Number is Required");
-                if (String.IsNullOrEmpty(confirmation.Header.InvoiceNumber))
-                    throw new ApplicationException("Invoice number is required");
-                if (confirmation.Header.ConfirmationStatus == null)
-                    throw new ApplicationException("Confirmation Status is Required");
+                // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
+            }
+            else
+            {
+                // need to save away pre and post status info, then if different, add something to the messaging
+                LineItem[] currLineItems = new LineItem[po.LineItemCount];
+                LineItem[] origLineItems = new LineItem[po.LineItemCount];
+                po.OrderForms[0].LineItems.CopyTo(currLineItems, 0);
+                po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
+                string originalStatus = po.Status;
 
-                var poNum = confirmation.Header.ConfirmationNumber;
-                PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
-                _log.WriteInformationLog("Processing confirmation for control number: " + confirmation.Header.ConfirmationNumber + ", did " + (po == null ? " not " : "") + "get purchase order");
+                SetCsLineInfo(currLineItems, confirmation);
 
-                if (po == null)
+                SetCsHeaderInfo(confirmation, po, currLineItems);
+
+                po.Save();
+
+                // use internal messaging logic to put order up message on the queue
+                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus);
+                if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0)
                 {
-                    // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
-                }
-                else
-                {
-                    // need to save away pre and post status info, then if different, add something to the messaging
-                    LineItem[] currLineItems = new LineItem[po.LineItemCount];
-                    LineItem[] origLineItems = new LineItem[po.LineItemCount];
-                    po.OrderForms[0].LineItems.CopyTo(currLineItems, 0);
-                    po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
-                    string originalStatus = po.Status;
-
-                    SetCsLineInfo(currLineItems, confirmation);
-
-                    SetCsHeaderInfo(confirmation, po, currLineItems);
-
-                    po.Save();
-
-                    // use internal messaging logic to put order up message on the queue
-                    Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus);
-                    if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0)
-                    {
-                        Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
-                        orderConfNotification.OrderChange = orderChange;
-                        orderConfNotification.CustomerNumber = (string)po["CustomerId"];
-                        genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer, 
-                            Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
-                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
-                    }
+                    Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+                    orderConfNotification.OrderChange = orderChange;
+                    orderConfNotification.CustomerNumber = (string)po["CustomerId"];
+                    genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer, 
+                        Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                        Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
                 }
             }
-            catch (Exception ex)
-            {
-                _log.WriteErrorLog("Error processing confirmation in internal service", ex);
-                return false;
-            }
+
             return true;
         }
 
