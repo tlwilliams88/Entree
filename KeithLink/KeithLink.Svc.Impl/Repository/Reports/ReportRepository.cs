@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,34 +28,42 @@ namespace KeithLink.Svc.Impl.Repository.Reports
                 .Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber
                     && c.OrderHistoryHeader.DeliveryDate >= fromDateTime
                     && c.OrderHistoryHeader.DeliveryDate <= toDateTime)
-                .GroupBy(x => x.ItemNumber)
-                .OrderByDescending(x => x.Sum(a => a.OrderQuantity))
-                .Select(g => new ItemUsageReportItemModel()
+                .GroupBy(x => x.ItemNumber);
+                //.AsQueryable()
+                //.Sort(new List<Core.Models.Paging.SortInfo>() { new Core.Models.Paging.SortInfo() { Field = sortField, Order = sortDir } })
+                //.Select(g => new ItemUsageReportItemModel()
+                //{
+                //    ItemNumber = g.Key,
+                //    TotalQuantityOrdered = g.Sum(a => a.OrderQuantity),
+                //    TotalQuantityShipped = g.Sum(a => a.ShippedQuantity)
+                //}); // TODO - get sort working in db?
+
+            // handle sorting - would be nice to do this generically but don't have an example that used 'group by'
+            if (sortDir != null && sortField != null && sortDir.Equals("asc", StringComparison.InvariantCultureIgnoreCase))
+            {
+                if (sortField.Equals("ItemNumber", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderBy(x => x.Key);
+                else if (sortField.Equals("TotalQuantityOrdered", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderBy(x => x.Sum(a => a.OrderQuantity));
+                else if (sortField.Equals("TotalQuantityShipped", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderBy(x => x.Sum(a => a.ShippedQuantity));
+            }
+            else if (sortDir != null && sortField != null)
+            {
+                if (sortField.Equals("ItemNumber", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderByDescending(x => x.Key);
+                else if (sortField.Equals("TotalQuantityOrdered", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderByDescending(x => x.Sum(a => a.OrderQuantity));
+                else if (sortField.Equals("TotalQuantityShipped", StringComparison.InvariantCultureIgnoreCase))
+                    query = query.OrderByDescending(x => x.Sum(a => a.ShippedQuantity));
+            }
+
+            return query.Select(g => new ItemUsageReportItemModel()
                 {
                     ItemNumber = g.Key,
                     TotalQuantityOrdered = g.Sum(a => a.OrderQuantity),
                     TotalQuantityShipped = g.Sum(a => a.ShippedQuantity)
                 }); // TODO - get sort working in db?
-            // handle sorting
-            if (sortDir != null && sortField != null && sortDir.Equals("asc", StringComparison.InvariantCultureIgnoreCase))
-            {
-                if (sortField.Equals("ItemNumber", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderBy(x => x.ItemNumber);
-                else if (sortField.Equals("TotalQuantityOrdered", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderBy(x => x.TotalQuantityOrdered);
-                else if (sortField.Equals("TotalQuantityShipped", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderBy(x => x.TotalQuantityShipped);
-            }
-            else if (sortDir != null && sortField != null)
-            {
-                if (sortField.Equals("ItemNumber", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderByDescending(x => x.ItemNumber);
-                else if (sortField.Equals("TotalQuantityOrdered", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderByDescending(x => x.TotalQuantityOrdered);
-                else if (sortField.Equals("TotalQuantityShipped", StringComparison.InvariantCultureIgnoreCase))
-                    query.OrderByDescending(x => x.TotalQuantityShipped);
-            }
-            return query;
         }
     }
 }
