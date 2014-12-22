@@ -61,6 +61,7 @@ namespace KeithLink.Svc.Impl
 
         // Rabbit MQ Constants
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
@@ -69,6 +70,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION = "RabbitMQNotificationExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
+        private const string KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
@@ -467,6 +469,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQExchangeConfirmationErrors {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS, string.Empty);
+            }
+        }
+        
         public static string RabbitMQExchangeHourlyUpdates {
             get { return GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
         }
@@ -515,6 +523,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQQueueConfirmationErrors {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS, string.Empty);
+            }
+        }
+
         public static string RabbitMQQueueHourlyUpdates {
             get { return GetValue(KEY_RABBITMQ_QUEUE_HOURLYUPDATES, string.Empty); }
         }
@@ -550,6 +564,7 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
             }
         }
+
         public static string RabbitMQQueueOrderUpdateRequest {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
@@ -647,7 +662,13 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_RABBITMQ_VHOST_CONFIRMATION, string.Empty);
             }
         }
-        
+
+        public static string RabbitMQVHostNotification {
+            get {
+                return GetValue(KEY_RABBITMQ_VHOST_NOTIFICATION, string.Empty);
+            }
+        }
+
         public static string RabbitMQVHostOrder
         {
             get
@@ -696,13 +717,6 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQVHostNotification
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_VHOST_NOTIFICATION, string.Empty);
-            }
-        }
 
 		public static bool RequireHttps
 		{

@@ -47,25 +47,26 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                             prop.Value = po[prop.Key];
                     }
                     // next do line items
-                    foreach (var l in (e.Properties["LineItems"] as CommerceRelationshipList))
-                    {
-                        List<CommercePropertyItem> items = l.Target.Properties.Where(x => x.Value == null).ToList();
-                        CommerceServer.Core.Runtime.Orders.LineItem poLineItem = lineItems.Where(x => x.LineItemId.ToCommerceServerFormat() == l.Target.Id).FirstOrDefault();
-                        skip = true;
-                        foreach (var prop in l.Target.Properties)
-                        {
-                            if (skip)
-                            {
-                                if (prop.Key == "LinePosition") // only lookup BEK custom properties
-                                    skip = false;
-                                if (skip)
-                                    continue;
+					if(e.Properties["LineItems"] != null)
+						foreach (var l in (e.Properties["LineItems"] as CommerceRelationshipList))
+						{
+							List<CommercePropertyItem> items = l.Target.Properties.Where(x => x.Value == null).ToList();
+							CommerceServer.Core.Runtime.Orders.LineItem poLineItem = lineItems.Where(x => x.LineItemId.ToCommerceServerFormat() == l.Target.Id).FirstOrDefault();
+							skip = true;
+							foreach (var prop in l.Target.Properties)
+							{
+								if (skip)
+								{
+									if (prop.Key == "LinePosition") // only lookup BEK custom properties
+										skip = false;
+									if (skip)
+										continue;
                                 
-                            }
-                            if (poLineItem[prop.Key] != null)
-                                prop.Value = poLineItem[prop.Key];
-                        }
-                    }
+								}
+								if (poLineItem[prop.Key] != null)
+									prop.Value = poLineItem[prop.Key];
+							}
+						}
                 }
             }
         }

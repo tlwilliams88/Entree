@@ -1,0 +1,69 @@
+<div page-header-bar>
+  <div header-message>
+    Item Usage
+  </div>
+  <div header-buttons></div>
+</div>
+
+<div class="row">
+    <form id="itemUsageForm" >
+        <label for="fromDate" style="margin-left:10px;">From:</label>
+        <input type="text" name="fromDate" id="fromDate" ng-model="itemusagequery.fromDate" />
+        <label for="toDate" style="margin-left:10px;">To:</label>
+        <input type="text" name="toDate" id="toDate" ng-model="itemusagequery.toDate" />
+        <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+    </form>
+
+	<div class="col-md-9 col-xs-12">
+		<div class="row">
+			<h2 class="col-xs-6">Item Usage</h2>
+      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{itemusages.length}} results</span>
+		</div>
+		
+		<table class="table table-striped-rows table-border">
+			<thead>
+				<tr>
+          <th class="sort-col-header" ng-click="sortTable('ItemNumber')">
+            Item #
+            <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span>
+          </th>
+          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('Name')" >
+            Name
+            <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortTable('TotalQuantityOrdered')">
+            # Ordered
+            <span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span>
+          </th>
+          <th class="sort-col-header"  ng-click="sortTable('TotalQuantityShipped')">
+            # Shipped
+			<span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span>
+          </th>
+        </tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in itemusages" ng-class="{ odd : $odd, even: $even }">
+          <td>
+            <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+          </td>
+          <td class="hidden-sm hidden-xs">
+            {{item.name}}
+          </td>
+          <td>
+            {{item.totalquantityordered}}
+          </td>
+          <td class="hidden-sm hidden-xs">
+            {{item.totalquantityshipped}}
+          </td>
+        </tr>
+			</tbody>
+			<tfoot>
+				<tr ng-show="itemusages.length === 0 && !loadingResults">
+					<td colspan="8">No orders found.</td>
+				</tr>
+			</tfoot>
+		</table>
+
+		<div class="text-center" loading-spinner="loadingResults"></div>
+	</div>
+</div>

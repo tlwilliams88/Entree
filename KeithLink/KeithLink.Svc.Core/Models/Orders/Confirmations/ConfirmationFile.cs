@@ -1,19 +1,14 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Models.Common;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 {
     [DataContract(Name = "ConfirmationFile")]
-    public class ConfirmationFile
-    {
+    public class ConfirmationFile : BaseQueueMessage {
         #region constructor
-
-        public ConfirmationFile()
-        {
+        public ConfirmationFile() {
             Header = new ConfirmationHeader();
             Detail = new List<ConfirmationDetail>();
         }

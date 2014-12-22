@@ -2,6 +2,7 @@
 {
     public enum ConfirmationQueueLocation
     {
-        Default
+        Default,
+        Error
     }
 }

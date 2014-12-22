@@ -1,11 +1,14 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage',
-  function ($q, $location, $log, ENV, LocalStorage) {
+.factory('AuthenticationInterceptor', ['$injector', '$q', '$location', '$log', 'ENV', 'LocalStorage',
+  function ($injector, $q, $location, $log, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
+
+      // var $http = $injector.get('$http');
+      // console.log($http.pendingRequests);
 
       // do not alter requests for html templates, all api requests start with a '/'
       if (config.url.indexOf('/') === 0) {

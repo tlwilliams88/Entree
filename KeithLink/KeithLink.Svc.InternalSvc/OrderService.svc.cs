@@ -58,6 +58,12 @@ namespace KeithLink.Svc.InternalSvc {
         public void SaveUserActiveCart(Guid userId, Guid cartId) {
             _orderLogic.SaveUserActiveCart(userId, cartId);
         }
-        #endregion
-    }		
+        
+		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		{
+			return _historyLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
+		}
+
+		#endregion
+	}		
 }

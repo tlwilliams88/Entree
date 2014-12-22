@@ -19,6 +19,10 @@ angular.module('bekApp')
     $scope.invoices = invoices;
   }
 
+  /******************************
+  PAGING, SORTING, FILTERING
+  ******************************/
+
   $scope.filterInvoices = function(filterFields) {
 
     // create array of filter fields
@@ -60,7 +64,6 @@ angular.module('bekApp')
     $scope.invoiceParams.from = 0;
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
-
   };
 
   $scope.clearFilters = function() {
@@ -101,6 +104,119 @@ angular.module('bekApp')
     });
   };
 
+  
+  /************
+  Filter Views
+  ************/
+
+  // different filter views for users to choose in the header dropdown
+  $scope.filterViews = [{
+    name: 'All Invoices',
+    filterFields: []
+  }, {
+    name: 'Invoices to Pay',
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Open',
+      filter: [{
+        field: 'statusdescription',
+        value: 'Past Due'
+      }]
+    }
+  },
+   {
+    name: 'Open Invoices',
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Open'
+    }
+  }, {
+    name: 'Past Due Invoices',
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Past Due'
+    }
+  }, {
+    name: 'Paid Invoices',
+    filterFields: {
+      field: 'statusdescription',
+      value: 'Paid'
+    }
+  }];
+
+  $scope.selectFilterView = function(filterView) {
+    $scope.selectedFilterView = filterView;
+
+    $scope.invoiceParams.filter = filterView.filterFields;
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
+
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
+
+  $scope.selectAccount = function(account) {
+    $scope.selectedAccount = account;
+  };
+
+  $scope.selectInvoice = function(invoice, isSelected) {
+    if (isSelected) {
+      invoice.paymentAmount = invoice.amount.toString();
+    } else {
+      invoice.paymentAmount = '0';
+    }
+  };
+
+  $scope.selectAll = function() {
+    angular.forEach($scope.invoices, function(item, index) {
+      if (item.ispayable) {
+        item.isSelected = $scope.selectAllPayable;
+        $scope.selectInvoice(item, item.isSelected);
+      }
+    });
+  };
+
+  $scope.totalPaymentAmount = function() {
+    var total = 0;
+    $scope.invoices.forEach(function(invoice) {
+      total += parseFloat(invoice.paymentAmount || 0);
+    });
+    $scope.total = total;
+    return total;
+  };
+
+  var processingPayInvoices = false;
+  $scope.payInvoices = function() {
+    if (!processingPayInvoices) {
+      processingPayInvoices = true;
+      var payments = $filter('filter')($scope.invoices, { isSelected: true});
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function() {
+        processingPayInvoices = false;
+      });
+    }
+  };
+
+  $scope.openExportModal = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Invoices';
+        },
+        exportMethod: function() {
+          return InvoiceService.exportInvoice;
+        },
+        exportConfig: function() {
+          return InvoiceService.getExportConfig();
+        },
+        exportParams: function() {
+          return;
+        }
+      }
+    });
+  };
+
+
   $scope.invoices = [];
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
@@ -136,103 +252,7 @@ angular.module('bekApp')
     // }
   };
 
+  $scope.selectedFilterView = $scope.filterViews[0];
   loadInvoices($scope.invoiceParams).then(setInvoices);
-
-  // different filter views for users to choose in the header dropdown
-  $scope.filterViews = [{
-    name: 'All Invoices'
-  }, {
-    name: 'Invoices to Pay',
-    filter: function(invoice) {
-      return invoice.ispayable;
-    }
-  }, {
-    name: 'Open Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Open';
-    }
-  }, {
-    name: 'Past Due Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Past Due';
-    }
-  }, {
-    name: 'Paid Invoices',
-    filter: function(invoice) {
-      return invoice.statusdescription === 'Paid';
-    }
-  }];
-
-  $scope.selectFilterView = function(filterView) {
-    $scope.selectedFilterView = filterView;
-  };
-
-  $scope.selectFilterView($scope.filterViews[0]);
-
-  $scope.selectAccount = function(account) {
-    $scope.selectedAccount = account;
-  };
-
-  $scope.selectInvoice = function(invoice, isSelected) {
-    if (isSelected) {
-      invoice.paymentAmount = invoice.amount.toString();
-    } else {
-      invoice.paymentAmount = '0';
-    }
-  };
-
-  //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
-  $scope.filterFields = {};
-  $scope.setSelectedFilter = function(selectedFilter) {
-    if (selectedFilter) {
-      delete $scope.filterFields.isSelected;
-    } else {
-      $scope.filterFields.isSelected = true;
-    }
-  };
-
-  $scope.selectAll = function() {
-    angular.forEach($scope.invoices, function(item, index) {
-      if (item.ispayable) {
-        item.isSelected = $scope.selectAllPayable;
-        $scope.selectInvoice(item, item.isSelected);
-      }
-    });
-  };
-
-  $scope.totalPaymentAmount = function() {
-    var total = 0;
-    $scope.invoices.forEach(function(invoice) {
-      total += parseFloat(invoice.paymentAmount || 0);
-    });
-    $scope.total = total;
-    return total;
-  };
-
-  $scope.payInvoices = function() {
-    var payments = $filter('filter')($scope.invoices, { isSelected: true});
-    InvoiceService.payInvoices(payments, $scope.selectedAccount);
-  };
-
-  $scope.openExportModal = function() {
-    var modalInstance = $modal.open({
-      templateUrl: 'views/modals/exportmodal.html',
-      controller: 'ExportModalController',
-      resolve: {
-        headerText: function () {
-          return 'Invoices';
-        },
-        exportMethod: function() {
-          return InvoiceService.exportInvoice;
-        },
-        exportConfig: function() {
-          return InvoiceService.getExportConfig();
-        },
-        exportParams: function() {
-          return null;
-        }
-      }
-    });
-  };
 
 }]);

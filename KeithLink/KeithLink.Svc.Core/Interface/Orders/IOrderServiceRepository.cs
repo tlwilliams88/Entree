@@ -17,5 +17,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
         Order GetOrder(string branchId, string invoiceNumber);
 		UserActiveCartModel GetUserActiveCart(Guid userId);
 		void SaveUserActiveCart(Guid userId, Guid cartId);
+		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 	}
 }

@@ -70,7 +70,6 @@ angular.module('bekApp')
           file: file, // or list of files ($files) for html5 only
         }).then(function(response) {
           var data = response.data;
-          debugger;
           if (data.success) {
             var cart = {
               id: data.listid, // ****
