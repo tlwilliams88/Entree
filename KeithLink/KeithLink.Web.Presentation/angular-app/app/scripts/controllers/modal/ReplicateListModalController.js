@@ -23,6 +23,7 @@ angular.module('bekApp')
   var customersPerPage = 30;
 
   function loadCustomers(size, from) {
+    $scope.loadingResults = true;
     return UserProfileService.searchUserCustomers('', size, from).then(function(data) {
       $scope.loadingResults = false;
       $scope.totalCustomers = data.totalResults;
@@ -53,7 +54,9 @@ angular.module('bekApp')
 
     customersStartingIndex += customersPerPage;
 
-    loadCustomers(customersPerPage, customersStartingIndex).then(function(invoices) {
+    console.log('load customers: ' + customersStartingIndex + ' ' + customersPerPage);
+
+    loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
       $scope.customers = $scope.customers.concat(customers);
     });
   };

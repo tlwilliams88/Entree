@@ -5,15 +5,21 @@
     </p>
     <form name="shareForm">
       <div class="share-customers">
-        <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.share-customers'">
-          <label>
-            <input type="checkbox"
-              name="customers"
-              value="{{customer.customerName}}"
-              ng-checked="selectedShareCustomers.indexOf(customer) > -1"
-              ng-click="toggleCustomerSelection(selectedShareCustomers, customer)">
-            {{customer.customerName}}
-          </label>
+        <div infinite-scroll="infiniteScrollLoadMore()" 
+          infinite-scroll-container="'.share-customers'">
+          <div 
+            class="checkbox" 
+            ng-repeat="customer in customers" 
+            ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber">
+            <label>
+              <input type="checkbox"
+                name="customers"
+                value="{{customer.customerName}}"
+                ng-checked="selectedShareCustomers.indexOf(customer) > -1"
+                ng-click="toggleCustomerSelection(selectedShareCustomers, customer)">
+              {{customer.customerName}}
+            </label>
+          </div>
         </div>
       </div>
       <div class="text-center" loading-spinner="loadingResults"></div>
@@ -30,15 +36,20 @@
       Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
     </p>
     <form name="copyForm">
-      <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber">
-        <label>
-          <input type="checkbox"
-            name="customers"
-            value="{{customer.customerName}}"
-            ng-checked="selectedCopyCustomers.indexOf(customer) > -1"
-            ng-click="toggleCustomerSelection(selectedCopyCustomers, customer)">
-          {{customer.customerName}}
-        </label>
+      <div class="copy-customers">
+        <div infinite-scroll="infiniteScrollLoadMore()" 
+          infinite-scroll-container="'.copy-customers'">
+          <div class="checkbox" ng-repeat="customer in customers" ng-if="selectedUserContext.customer.customerNumber !== customer.customerNumber">
+            <label>
+              <input type="checkbox"
+                name="customers"
+                value="{{customer.customerName}}"
+                ng-checked="selectedCopyCustomers.indexOf(customer) > -1"
+                ng-click="toggleCustomerSelection(selectedCopyCustomers, customer)">
+              {{customer.customerName}}
+            </label>
+          </div>
+        </div>
       </div>
       <div class="text-center" loading-spinner="loadingResults"></div>
       <div class="sub-content text-right">
