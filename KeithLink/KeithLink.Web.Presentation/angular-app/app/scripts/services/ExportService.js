@@ -12,17 +12,26 @@ angular.module('bekApp')
     function ($http) {
     
     var Service = {
-      
 
-      /* CONFIG OBJECT EXAMPLE
+      /* 
+      httpPath : string - url used to export file
+      config   : obj - selected options and fields for export, see example
+
+      CONFIG OBJECT EXAMPLE
       {
-        selectedtype: 'csv',
+        selectedtype: "CSV",
 
         // only custom exports should have this object
         fields: [{
-          label: 'Description',
-          field: 'description',
-          order: 1
+          field: "Notes",
+          label: "Note",
+          order: 0,
+          selected: false,
+        }, {
+          field: "ItemNumber",
+          label: "Item",
+          order: 1,
+          selected: true,
         }]
       }
       */
