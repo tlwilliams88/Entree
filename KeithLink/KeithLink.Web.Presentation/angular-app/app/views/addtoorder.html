@@ -2,10 +2,10 @@
   <div header-message>
     Add To Order
 
-    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
   </div>
   <div header-buttons>
-    <button class="btn-lg btn btn-primary pull-right-sm" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="addItemsToCart(selectedList, selectedCart)" ng-disabled="getListItemsWithQuantity(selectedList.items) <= 0 || addToOrderForm.$invalid">Add to Cart</button>
     <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
     <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
   </div>
@@ -27,7 +27,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row hidden-print">
   <div class="col-xs-12">
     <div class="row select-nav-bar no-margin">
       <div class="no-border-right-sm info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group dropdown-toggle hand" dropdown is-open="showLists" ng-disabled="lists.length === 1">
@@ -103,6 +103,14 @@
   </div>
 </div>
 
+<div class="visible-print row sub-content">
+  <div class="col-xs-3">{{selectedList.name}}</div>
+  <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
+  <div class="col-xs-2">{{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}</div>
+  <div class="col-xs-2">{{getItemCount(selectedCart, selectedList) || '0'}} Items</div>
+  <div class="col-xs-2 text-right">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</div>
+</div>
+
 <form 
   unsaved-warning-form 
   novalidate 
@@ -125,12 +133,12 @@
           Item #
           <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-sm hidden-xs sort-col-header notes-col" ng-click="sortBy='notes';sortOrder=!sortOrder;">
+        <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortBy='notes';sortOrder=!sortOrder;">
           Notes
           <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-sm hidden-xs"></th>
-        <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy='label';sortOrder=!sortOrder;">
+        <th class="hidden-xs hidden-sm"></th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='label';sortOrder=!sortOrder;">
           Label
           <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
@@ -138,39 +146,39 @@
           Name
           <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class=" hidden-sm hidden-xs">
+        <th class="hidden-mobile-visible-print">
           Pack/Size
         </th>
-        <th class="hidden-sm hidden-xs sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
           Brand
           <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-xs hidden-sm" ng-hide="isChangeOrder || selectedCart.id === 'New'">
+        <th class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
           # in Cart
         </th>
-        <th class="hidden-xs hidden-sm" ng-show="useParlevel">
+        <th class="hidden-mobile-visible-print" ng-show="useParlevel">
           PAR
         </th>
-        <th class="hidden-xs hidden-sm" ng-show="useParlevel">
+        <th class="hidden-mobile-visible-print" ng-show="useParlevel">
           On Hand
         </th>
         <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
           Qty
           <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy='each';sortOrder=!sortOrder;">
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
           Each
           <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
           Price
           <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
         </th>
-        <th class="hidden-sm hidden-xs">
+        <th class="hidden-mobile-visible-print">
           Ext Price
         </th>
         <th class="large-icon icon-col">
-          <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </th>
       </tr>
     </thead>
@@ -179,27 +187,27 @@
       <tr class="filter-row" ng-show="showFilter">
         <td></td>
         <td></td>
-        <td class="hidden-xs hidden-sm input-col">
+        <td class="hidden-mobile-visible-print input-col">
           <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
         </td>
-        <td class="hidden-sm hidden-xs"></td>
-        <td class="hidden-xs hidden-sm input-col">
+        <td class="hidden-xs hidden-sm"></td>
+        <td class="hidden-mobile-visible-print input-col">
           <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
         </td>
         <td class="input-col">
           <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.name">
         </td>
-        <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-xs hidden-sm input-col">
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
         </td>
-        <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-xs hidden-sm" ng-show="useParlevel" ></td>
-        <td class="hidden-xs hidden-sm" ng-show="useParlevel" ></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
+        <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
         <td></td>
-        <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-xs hidden-sm"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
         <td class="large-icon icon-col">
           <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
         </td>
@@ -214,31 +222,31 @@
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
         </td>
-        <td class="hidden-xs hidden-sm notes-col">
+        <td class="hidden-mobile-visible-print notes-col">
           {{item.notes}}
         </td>
-        <td class="hidden-sm hidden-xs">
+        <td class="hidden-xs hidden-sm">
           <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-mobile-visible-print">
           {{item.label}}
         </td>
         <td>
           {{item.name}}
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-mobile-visible-print">
           {{item.packsize}}
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-mobile-visible-print">
           {{item.brand}}
         </td>
-        <td class="hidden-xs hidden-sm" ng-hide="isChangeOrder || selectedCart.id === 'New'">
+        <td class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
           {{item.quantityincart}}
         </td>
-        <td ng-show="useParlevel" class="hidden-xs hidden-sm">
+        <td ng-show="useParlevel" class="hidden-mobile-visible-print">
           {{item.parlevel}}
         </td>
-        <td ng-show="useParlevel" class="hidden-xs hidden-sm input-col">
+        <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
           <ng-form name="parlevelForm">
             <input 
               type="text" 
@@ -255,17 +263,17 @@
             <div counter ng-model="item.quantity" min="0"></div>
           </ng-form>
         </td>
-        <td class="input-col hidden-xs hidden-sm">
-          <ng-form name="eachForm" ng-if="item.packageprice !== '0'" class="hidden-xs hidden-sm">
+        <td class="input-col hidden-mobile-visible-print">
+          <ng-form name="eachForm" ng-if="item.packageprice !== '0'" class="hidden-mobile-visible-print">
             <input type="checkbox" ng-model="item.each" id="each" name="each" />
             <label for="each"></label>
           </ng-form>
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-mobile-visible-print">
           {{item.each ? item.packageprice : item.caseprice | currency}}
           <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
         </td>
-        <td class="hidden-xs hidden-sm">
+        <td class="hidden-mobile-visible-print">
           {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
         </td>
         <td class="large-icon icon-col">
