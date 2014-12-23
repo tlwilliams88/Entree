@@ -8,13 +8,13 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
     public interface IKPayInvoiceRepository {
         void DeleteInvoice(string division, string customerNumber, string invoiceNumber);
 
-        //List<EF.Invoice> GetAllOpenInvoices(string division, string customerNumber);
+        List<EF.Invoice> GetAllOpenInvoices(string division, string customerNumber);
 
-        //List<EF.Invoice> GetAllPaidInvoices(string division, string customerNumber);
+        List<EF.Invoice> GetAllPaidInvoices(string division, string customerNumber);
 
-        //List<EF.Invoice> GetAllPastDueInvoices(string division, string customerNumber);
+        List<EF.Invoice> GetAllPastDueInvoices(string division, string customerNumber);
 
-        //List<EF.Invoice> GetAllPayableInvoices(string division, string customerNumber);
+        List<EF.Invoice> GetAllPayableInvoices(string division, string customerNumber);
 
         List<EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber);
 
