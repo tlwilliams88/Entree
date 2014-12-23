@@ -224,7 +224,8 @@
     <div class="hidden-print" ng-hide="(filteredItems | filter:{isSelected:'true'}).length > 0">
       <div class="input-group input-group-lg">
         <input 
-          ng-model="listSearchTerm" 
+          ng-model="listSearchTerm"
+          ng-model-options="{debounce: 400}" 
           type="text" 
           class="form-control" 
           placeholder="Search current list by keyword, item # or label" />
@@ -604,7 +605,7 @@
 
         <tfoot ng-show="filteredItems.length === 0">
           <tr>
-            <td colspan="13">
+            <td colspan="10">
               No products to display.
             </td>
           </tr>
