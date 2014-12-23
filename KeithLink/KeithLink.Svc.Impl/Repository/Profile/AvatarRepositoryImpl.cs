@@ -37,9 +37,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
                 {
                     System.Net.Http.HttpResponseMessage response = client.PostAsJsonAsync( endPoint,  values  ).Result;
 
-                    if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent))
-                    {
+                    if (response.StatusCode.Equals( System.Net.HttpStatusCode.OK ) || response.StatusCode.Equals( System.Net.HttpStatusCode.NoContent )) {
                         returnValue = true;
+                    } else {
+                        _log.WriteErrorLog( String.Format( "Error uploading avatar for user: {0} - HttpResposne: {1}", userId, response.StatusCode ) );
+                        throw new Exception( "There was an error uploading this image" );
                     }
                 }
                 catch (Exception ex)

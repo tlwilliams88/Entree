@@ -129,7 +129,7 @@ angular.module('bekApp')
         var promise = $upload.upload({
           url: '/profile/avatar',
           method: 'POST',
-          file: file,
+          file: file.file,
           data: { name: file.name },
         });
 

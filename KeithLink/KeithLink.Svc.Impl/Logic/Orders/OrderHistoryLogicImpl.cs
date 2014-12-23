@@ -271,14 +271,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
             System.Collections.Concurrent.BlockingCollection<Order> mergedOrdeList = new System.Collections.Concurrent.BlockingCollection<Order>();
 
-            Parallel.ForEach(commerceServerOrders, csOrder => {
-                if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
-                    mergedOrdeList.Add(csOrder);
-                }
-            });
-
             Parallel.ForEach(orderHistoryOrders, ohOrder => {
                 mergedOrdeList.Add(ohOrder);
+            });
+
+            Parallel.ForEach(commerceServerOrders, csOrder => {
+                if (mergedOrdeList.Where(o => o.InvoiceNumber.Equals(csOrder.InvoiceNumber)).Count() == 0) {
+                    mergedOrdeList.Add(csOrder);
+                }
+                //if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
+                //    mergedOrdeList.Add(csOrder);
+                //}
             });
 
             return mergedOrdeList.ToList();
