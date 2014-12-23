@@ -29,10 +29,14 @@ angular.module('bekApp')
           scope.value = 0;
         }
         
+		//alert( parseInt( scope.value.toString().length ) );
+		
         var min = angular.isUndefined(attributes.min) ? null : parseInt(attributes.min);
         var max = angular.isUndefined(attributes.max) ? null : parseInt(attributes.max);
         var step = angular.isUndefined(attributes.step) ? 1 : parseInt(attributes.step);
+		var length = angular.isUndefined(attributes.length) ? null : parseInt(attributes.length);
         
+		
         // If the 'editable' attribute is set, we will make the field editable.
         scope.readonly = angular.isUndefined(attributes.editable) ? true : false;
         
@@ -90,15 +94,25 @@ angular.module('bekApp')
          * correct values from within the restrictions.
          */
         scope.changed = function() {
-            // If the user decides to delete the number, we will set it to 0.
-          if ( !scope.value ) { setValue( 0 ); }
+          var curLength = parseInt(scope.value.toString().length);
+		  
+		  // If the user decides to delete the number, we will set it to 0. 
+		  if ( !scope.value ) { setValue( 0 ); }
           
           // Check if what's typed is numeric or if it has any letters.
-          if ( /[0-9]/.test(scope.value) ) {
-            setValue( scope.value );
+          if ( /[0-9]*/.test(scope.value) ) {
+            
+			if(length != null){
+				if(curLength <= length){
+					setValue(scope.value);
+				}
+				else{
+					setValue( parseInt( scope.value.toString().substring(0,length) ) );
+				}
+			}
           }
           else {
-            setValue( scope.min );
+            setValue( parseInt(scope.value.toString().substring(0,curLength - 1)) );
           }
           
           // If a minimum is set, let's make sure we're within the limit.
@@ -112,6 +126,7 @@ angular.module('bekApp')
             setValue( max );
             return false;
           }
+		  
           
           // Re-set the value as an integer.
           setValue( scope.value );
