@@ -16,7 +16,7 @@ angular.module('bekApp')
       clearAll: function() {
         localStorageService.remove(Constants.localStorage.userProfile);
         localStorageService.remove(Constants.localStorage.userToken);
-        localStorageService.remove(Constants.localStorage.currentLocation);
+        localStorageService.remove(Constants.localStorage.currentCustomer);
         localStorageService.remove(Constants.localStorage.branchId);
         localStorageService.remove(Constants.localStorage.customerNumber);
       },

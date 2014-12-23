@@ -4,11 +4,26 @@ angular.module('bekApp')
   .controller('AccountDetailsController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'MessagePreferenceService',
     function ($scope, UserProfileService, branches, LocalStorage, $state, MessagePreferenceService) {
 
+      var customersStartingIndex = 0;
+      var customersPerPage = 30;
+
+      function loadCustomers(searchTerm, size, from) {
+        $scope.loadingCustomers = true;
+        return UserProfileService.searchUserCustomers(searchTerm, size, from).then(function(data) {
+          $scope.loadingCustomers = false;
+          $scope.totalCustomers = data.totalResults;
+          return data.results;
+        });
+      }
+
       var init = function(){
         /*---init---*/
         $scope.userProfile = angular.copy(LocalStorage.getProfile());
         $scope.branches = branches;
-        $scope.customers = $scope.userProfile.user_customers;
+        
+        loadCustomers('', customersPerPage, customersStartingIndex).then(function(customers) {
+          $scope.customers = customers;
+        });
 
         /*---process user preferences---*/
         var prefArray = [];
@@ -39,6 +54,29 @@ angular.module('bekApp')
 
       init();
 
+      // CUSTOMERS
+      $scope.searchCustomers = function (searchTerm) {
+        customersStartingIndex = 0;
+        loadCustomers(searchTerm, customersPerPage, customersStartingIndex).then(function(customers) {
+          $scope.customers = customers;
+        });
+      };
+
+      $scope.infiniteScrollLoadMore = function() {
+        if (($scope.customers && $scope.customers.length >= $scope.totalCustomers) || $scope.loadingCustomers) {
+          return;
+        }
+
+        customersStartingIndex += customersPerPage;
+
+        loadCustomers('', customersPerPage, customersStartingIndex).then(function(customers) {
+          $scope.customers = $scope.customers.concat(customers);
+        });
+      };
+
+      /*********
+      AVATAR
+      *********/
       $scope.files = [];
       $scope.onFileSelect = function($files) {
         $scope.files = [];

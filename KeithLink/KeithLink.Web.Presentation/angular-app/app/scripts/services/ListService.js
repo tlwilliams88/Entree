@@ -105,11 +105,6 @@ angular.module('bekApp')
             permissions.canCopyList = true;
             permissions.canReorderItems = true;
           }
-          // SHARING WITH OTHERS -- used to show icon on lists page
-          // else if (list.issharing) {
-
-          // }
-
         }
 
         // overwrite read only lists

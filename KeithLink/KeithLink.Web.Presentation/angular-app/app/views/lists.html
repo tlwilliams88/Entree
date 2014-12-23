@@ -221,10 +221,11 @@
       <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
     </div>
     
-    <div ng-hide="(filteredItems | filter:{isSelected:'true'}).length > 0">
-      <div class="input-group hidden-print input-group-lg">
+    <div class="hidden-print" ng-hide="(filteredItems | filter:{isSelected:'true'}).length > 0">
+      <div class="input-group input-group-lg">
         <input 
-          ng-model="listSearchTerm" 
+          ng-model="listSearchTerm"
+          ng-model-options="{debounce: 400}" 
           type="text" 
           class="form-control" 
           placeholder="Search current list by keyword, item # or label" />
@@ -235,7 +236,7 @@
     </div>
 
     <!-- Multi-select menu -->
-    <div class="row" ng-show="(filteredItems | filter:{isSelected:'true'}).length > 0">
+    <div class="hidden-print row" ng-show="(filteredItems | filter:{isSelected:'true'}).length > 0">
       <div class="col-xs-12 col-sm-6">
         <div class="btn-group custom-lists__multi-actions">
           <!-- Add to List -->
@@ -337,7 +338,7 @@
         <thead>
           <tr>
             <th class="nowrap input-col">
-              <input type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
+              <input class="hidden-print" type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
               <span class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('position',sortOrder)"> 
                 #
                 <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
@@ -351,35 +352,43 @@
               Name
               <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-xs hidden-sm sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
+            <th class="hidden-mobile-visible-print sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
               Brand
               <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-sm hidden-xs">
+            <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
-            <th class="hidden-xs hidden-sm"></th>
-            <th class="hidden-xs hidden-sm">
+            <th class="hidden-mobile-visible-print"></th>
+            <th class="hidden-mobile-visible-print">
               # in Cart
             </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="selectedList.permissions.alternativeFieldHeader" ng-click="sortOrder=!sortOrder;sortList(selectedList.permissions.alternativeFieldName,sortOrder)">
+            <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.alternativeFieldHeader" ng-click="sortOrder=!sortOrder;sortList(selectedList.permissions.alternativeFieldName,sortOrder)">
               {{selectedList.permissions.alternativeFieldHeader}}
               <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
+            <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
               Label
               <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
               Notes
               <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-sm hidden-xs"></th>
-            <th class="hidden-sm hidden-xs sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
+            <th class="hidden-xs hidden-sm"></th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
               {{permissions.alternativeParHeader || 'PAR'}}
               <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th></th>
+            
+            <th class="list-print-column"></th>
+            <th class="list-print-column"></th>
+            <th class="list-print-column"></th>
+            <th class="list-print-column"></th>
+            <th class="list-print-column"></th>
+            <th class="list-print-column"></th>
+
+            <th class="hidden-print"></th>
           </tr> 
         </thead>
 
@@ -398,7 +407,7 @@
          
           <tr ng-class="{ odd : $odd, even: $even}">
             <td class="nowrap hidden-drag bek-drag-handle large-icon icon-col">
-              <input type="checkbox" class="bek-no-drag" ng-model="item.isSelected" no-dirty-check>
+              <input type="checkbox" class="hidden-print bek-no-drag" ng-model="item.isSelected" no-dirty-check>
               <span style="font-size:11px;">
                 {{item.position}}
               </span>
@@ -410,17 +419,17 @@
             <td class="bek-drag-handle">
               {{item.name}}
             </td>
-            <td class="hidden-xs hidden-sm bek-drag-handle">
+            <td class="hidden-mobile-visible-print bek-drag-handle">
               {{item.brand}}
             </td>
-            <td class="hidden-sm hidden-xs bek-drag-handle">
+            <td class="hidden-mobile-visible-print bek-drag-handle">
               {{item.packsize}}
             </td>
-            <td class="hidden-xs hidden-sm" item-icons></td>
-            <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
+            <td class="hidden-mobile-visible-print" item-icons></td>
+            <td class="text-center hidden-drag hidden-mobile-visible-print bek-drag-handle">
               {{item.quantityincart}}
             </td>
-            <td ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm">
+            <td ng-if="selectedList.permissions.alternativeFieldName" class="hidden-mobile-visible-print">
               {{item[selectedList.permissions.alternativeFieldName]}}
             </td>
             <!-- Label -->
@@ -446,11 +455,15 @@
                 <a ng-click="item.isEditing = false; item.label = item.label;"><span class="large-icon text-red icon-cross"></span></a>
               </ng-form>
             </td>
-            <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
+            <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
+              {{item.label}}
+            </td>
+            <!-- Label for Print -->
+            <td class="visible-print" ng-show="selectedList.permissions.canSeeLabels">
               {{item.label}}
             </td>
             <!-- Notes -->
-            <td class="hidden-xs hidden-sm notes-col hidden-drag">
+            <td class="hidden-mobile-visible-print notes-col hidden-drag">
               {{item.notes}}
             </td>
             <td class="hidden-sm hidden-xs hidden-drag">
@@ -472,7 +485,19 @@
             <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel">
               {{item.parlevel}}
             </td>
-            <td class="nowrap hidden-drag bek-no-drag large-icon icon-col">
+            <!-- Parlevel for Print -->
+            <td class="visible-print" ng-show="selectedList.permissions.canSeeParlevel">
+              {{item.parlevel}}
+            </td>
+
+            <td class="list-print-column"></td>
+            <td class="list-print-column"></td>
+            <td class="list-print-column"></td>
+            <td class="list-print-column"></td>
+            <td class="list-print-column"></td>
+            <td class="list-print-column"></td>
+
+            <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
               <span context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
 
               <a ng-if="selectedList.permissions.canDeleteItems" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
@@ -483,8 +508,9 @@
                 style="cursor:move;">
               </span>
               
-              <a class="bek-no-drag"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+              <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
+
           </tr>
           <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
             <td colspan="10">
@@ -579,7 +605,7 @@
 
         <tfoot ng-show="filteredItems.length === 0">
           <tr>
-            <td colspan="13">
+            <td colspan="10">
               No products to display.
             </td>
           </tr>

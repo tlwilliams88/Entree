@@ -24,7 +24,7 @@ exportConfig  : obj - config object which gives the available export types and f
 }
 
 exportMethod  : function - export function which takes the config obj and optional params as arguments
-exportParams  : text,obj - export specific params such as listId or search url for catalog export, passed as the second arguement to the export method
+exportParams  : text,obj - export specific params such as listId or search url for catalog export, passed as the second argument to the export method
 headerText    : text - value displayed at the top of the export window ('Invoice', 'Invoice # 12345')
 ******/
 

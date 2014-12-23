@@ -108,6 +108,13 @@
   @include scroll-div-vertical(250px);
 }
 
+.list-print-column {
+  @extend .visible-print;
+
+  border: 1px solid $color-border;
+  width: 25px;
+}
+
 @media (min-width: $screen-sm-min) {
   .list-names {
     max-height: 463px;
