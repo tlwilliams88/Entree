@@ -31,6 +31,9 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF {
         [Key, Column(TypeName="char", Order=5), MaxLength(3)]
         public string InvoiceType { get; set; }
 
+        [Key, Column(Order=6)]
+        public int ItemLine { get; set; }
+
         [Required]
         public DateTime InvoiceDate { get; set; }
 

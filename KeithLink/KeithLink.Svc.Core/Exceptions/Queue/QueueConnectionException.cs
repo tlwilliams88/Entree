@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Exceptions.Queue {
                 msg.AppendLine(string.Concat("Queue: ", Queue));
                 msg.AppendLine(string.Concat("Inner Exception Message: ", base.Message));
 
-                return base.Message;
+                return msg.ToString();
             }
         }
 
