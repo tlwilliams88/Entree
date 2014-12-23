@@ -11,13 +11,17 @@ angular.module('bekApp')
   .factory('BankAccountService', [ 'BankAccount', function (BankAccount) {
 
   var Service = {
-  
+
+    // gets all bank accounts for a given customer using the userSelectedContext header
     getAllBankAccounts: function() {
       return BankAccount.query({}).$promise;
     },
 
-    getBankAccountByAccountNumber: function() {
-      return BankAccount.get({}).$promise;
+    // gets one bank account
+    getBankAccountByAccountNumber: function(bankAccountNumber) {
+      return BankAccount.get({
+        bankAccountNumber: bankAccountNumber
+      }).$promise;
     }
 
   };

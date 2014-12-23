@@ -54,8 +54,6 @@ angular.module('bekApp')
 
     customersStartingIndex += customersPerPage;
 
-    console.log('load customers: ' + customersStartingIndex + ' ' + customersPerPage);
-
     loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
       $scope.customers = $scope.customers.concat(customers);
     });

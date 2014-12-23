@@ -16,13 +16,20 @@ angular.module('bekApp')
     $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
+      delete $scope.ordersMessage;
+    }, function(error) {
+      $scope.ordersMessage = 'Error loading orders.';
+    }).finally(function() {
       $scope.loadingOrders = false;
     });
 
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
-      console.log(items);
       $scope.promoItems = items;
+      delete $scope.promoMessage;
+    }, function(error) {
+      $scope.promoMessage = 'Error loading promo items.';
+    }).finally(function() {
       $scope.loadingPromoItems = false;
     });
  
@@ -57,29 +64,48 @@ angular.module('bekApp')
     to.setMonth(to.getMonth()+1);
     to.setDate(1);
 
-    from = $filter('date')(from, 'yyyy-MM-dd');
-    to = $filter('date')(to, 'yyyy-MM-dd');
+    var fromString = $filter('date')(from, 'yyyy-MM-dd');
+    var toString = $filter('date')(to, 'yyyy-MM-dd');
 
     // get order summary data
-    OrderService.getOrdersByDate(from, to).then(function(orders) {
+    OrderService.getOrdersByDate(fromString, toString).then(function(orders) {
 
-      // get order totals for each month
+      // get order totals for each month in form...
+      /*
+      {
+        10: 2354,
+        11: 5432,
+        ...
+      }
+      */
       var months = {};
       orders.forEach(function(order) {
         var date = new Date(order.createddate);
         var month = date.getMonth() + 1;
         var total = months[month];
-        if (total) {
+        if (total) { // check if month already exists in object
           months[month] += order.ordertotal;
         } else {
           months[month] = order.ordertotal;
         }
       });
+
+      // add 0 amount for months with no data
+      var startDate = from;
+      for (var i = 0; i < 6; i ++) {
+        var monthNum = startDate.getMonth()+1;
+        if (!months.hasOwnProperty(monthNum)) {
+          months[monthNum] = 0;
+        }
+        startDate.setMonth(startDate.getMonth()+1)  
+      }
+      
       
       // format data to match graph 
-      var monthData = ['x'],
-        barData = ['bar'],
-        lineData = ['line'];
+      // [0, 2354, 5432, 0, ...]
+      var monthData = [],
+        barData = [],
+        lineData = [];
 
       for (var month in months) {
         var total = months[month];
@@ -87,6 +113,19 @@ angular.module('bekApp')
         barData.push(total);
         lineData.push(total);
       }
+
+      // determine y axis values
+      var max = Math.max.apply(null, barData);
+      var yAxisValues = [];
+
+      for (var i = 0; i < 5; i++) {
+        var yValue = Math.ceil(max * i / 4 / 1000) * 1000; // round up to nearest thousand
+        yAxisValues.push(yValue);
+      }
+
+      monthData.unshift('x');
+      barData.unshift('bar');
+      lineData.unshift('line');
 
       var chart = c3.generate({
         bindto: '#chart_div',
@@ -108,13 +147,12 @@ angular.module('bekApp')
         axis: {
           x: {
             type: 'category'
+          },
+          y: {
+            tick: {
+              values: yAxisValues
+            }
           }
-          // ,
-          // y: {
-          //   tick: {
-          //     values: [100, 1000, 10000]
-          //   }
-          // }
         },
         legend: {
           hide: true

@@ -238,6 +238,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 			if (basket.RequestedShipDate == null)
 				throw new ApplicationException("Requested Ship Date is required before submitting an order");
+            if (basket.LineItems == null || basket.LineItems.Count == 0)
+                throw new ApplicationException("Cannot submit order with 0 line items");
 
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();

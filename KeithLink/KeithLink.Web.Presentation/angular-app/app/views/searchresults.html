@@ -271,11 +271,13 @@
         </tr>
 			</tbody>
 			<tfoot>
-				<tr ng-show="products.length === 0 && !loadingResults">
+				<tr ng-show="!searchMessage && products.length === 0 && !loadingResults">
 					<td colspan="8">No products found.</td>
 				</tr>
 			</tfoot>
 		</table>
+
+    <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
 
 		<div class="text-center" loading-spinner="loadingResults"></div>
 	</div>

@@ -1,20 +1,23 @@
 'use strict';
 
+/**********
+AuthenticationInterceptor
+
+adds Authorization, apiKey, and userSelectedContext headers to http requests
+***********/
+
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$injector', '$q', '$location', '$log', 'ENV', 'LocalStorage',
-  function ($injector, $q, $location, $log, ENV, LocalStorage) {
+.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage',
+  function ($q, $location, $log, ENV, LocalStorage) {
 
   var authInterceptorServiceFactory = {
     request: function (config) {
-
-      // var $http = $injector.get('$http');
-      // console.log($http.pendingRequests);
 
       // do not alter requests for html templates, all api requests start with a '/'
       if (config.url.indexOf('/') === 0) {
         config.headers = config.headers || {};
 
-        // add authorization token header if token is present and endpoint requires authorization
+        // Authorization - add authorization token header if token is present and endpoint requires authorization
         var authData = LocalStorage.getToken();
         if (authData) {
           var urlsWithoutToken = ['/authen', '/catalog/divisions'];
@@ -23,13 +26,13 @@ angular.module('bekApp')
           }
         }
 
-        // add api key to request headers
+        // apiKey - add api key to request headers
         var urlsWithoutApiKey = ['/authen'];
         if (doesUrlRequireHeader(config.url, urlsWithoutApiKey)) {
           config.headers.apiKey = ENV.apiKey;
         }
 
-        // add branch and customer information header
+        // userSelectedContext - add branch and customer information header based on the customer dropdown
         var urlsWithoutCustomerInfo = ['/profile/users', '/profile', '/authen', '/profile/customer'];
         if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
           var catalogInfo = {
@@ -38,7 +41,6 @@ angular.module('bekApp')
           };
           config.headers.userSelectedContext = JSON.stringify(catalogInfo);
         }
-
 
         // add api url to request url
         config.url = ENV.apiEndpoint + config.url;
