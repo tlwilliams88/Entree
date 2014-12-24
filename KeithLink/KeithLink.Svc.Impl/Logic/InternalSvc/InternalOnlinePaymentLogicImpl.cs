@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
@@ -25,15 +26,18 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
-	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic
-	{
-		private readonly IKPayInvoiceRepository _invoiceRepo;
+	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
+
+        #region attributes
+        private readonly IKPayInvoiceRepository _invoiceRepo;
 		private readonly ICustomerBankRepository _bankRepo;
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
-		
-		public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
+        #endregion
+
+        #region ctor
+        public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
 			ICatalogLogic catalogLogic, ICustomerRepository customerRepository)
 		{
 			this._invoiceRepo = invoiceRepo;
@@ -42,126 +46,42 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this._catalogLogic = catalogLogic;
 			this._customerRepository = customerRepository;
 		}
+        #endregion
 
-		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
-		{
-			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-			
-			var returnModel = new InvoiceHeaderReturnModel() { HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Where(i => i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).Any() };
+        #region methods
+        public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
+            _invoiceRepo.DeleteInvoice(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+        }
 
-			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+        public List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext) {
+            List<EFCustomer.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(GetDivision(userContext.BranchId), userContext.CustomerId);
 
-			foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice))
-			{
-				inv.IsPayable = customer.KPayCustomer;		
-			}
+            List<CustomerBank> banks = new List<CustomerBank>();
 
-			returnModel.PagedResults = pagedInvoices;
+            foreach (EFCustomer.CustomerBank entity in bankEntities) {
+                if (entity != null) {
+                    CustomerBank bank = new CustomerBank();
+                    bank.Parse(entity);
 
-			return returnModel;
-		}
+                    banks.Add(bank);
+                }
+            }
 
-		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
-		{
-			var confId = _invoiceRepo.GetNextConfirmationId();
+            return banks;
+        }
 
-			foreach (var payment in payments)
-				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
-				{
-					AccountNumber = payment.AccountNumber,
-					BranchId = GetDivision(userContext.BranchId),
-					ConfirmationId = confId,
-					CustomerNumber = userContext.CustomerId,
-					InvoiceNumber = payment.InvoiceNumber,
-					PaymentAmount = payment.PaymentAmount,
-					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
-					UserName = emailAddress
-				});
-		}
+        public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
+            EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
 
-		public List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext)
-		{
-			List<EFCustomer.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(GetDivision(userContext.BranchId), userContext.CustomerId);
+            if (bankEntity == null)
+                return null;
+            else {
+                CustomerBank bank = new CustomerBank();
+                bank.Parse(bankEntity);
 
-			List<CustomerBank> banks = new List<CustomerBank>();
-
-			foreach (EFCustomer.CustomerBank entity in bankEntities)
-			{
-				if (entity != null)
-				{
-					CustomerBank bank = new CustomerBank();
-					bank.Parse(entity);
-
-					banks.Add(bank);
-				}
-			}
-
-			return banks;
-		}
-		
-
-		public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber)
-		{
-			EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
-
-			if (bankEntity == null)
-				return null;
-			else
-			{
-				CustomerBank bank = new CustomerBank();
-				bank.Parse(bankEntity);
-
-				return bank;
-			}
-		}
-
-
-		public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber)
-		{
-			_invoiceRepo.DeleteInvoice(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-		}
-
-
-		public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
-		{
-			var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-			
-			if (kpayInvoiceHeader == null) //Invoice not found
-				return null;
-
-			//Convert to invoice model
-			var invoiceModel = kpayInvoiceHeader.ToInvoiceModel();
-
-			if (invoiceModel.DueDate < DateTime.Now)
-			{
-				invoiceModel.Status = InvoiceStatus.PastDue;
-				invoiceModel.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
-			}
-
-			//Get transactions
-			var transactions = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-			invoiceModel.Transactions = transactions.Select(t => t.ToTransationModel()).ToList();
-
-			//Retrieve invoice details, from order history
-
-			var details = _orderHistoryRepo.Read(o => o.InvoiceNumber.Equals(invoiceNumber), d => d.OrderDetails).FirstOrDefault();
-
-			if (details != null && details.OrderDetails != null)
-			{
-				invoiceModel.Items = details.OrderDetails.Select(d => d.ToInvoiceItem()).ToList();
-			}
-
-			invoiceModel.IsPayable = customer.KPayCustomer;
-
-			//look up product details
-			LookupProductDetails(invoiceModel, userContext);
-			
-			return invoiceModel;
-		}
-
-		#region Helper Methods
+                return bank;
+            }
+        }
 
 		private string GetDivision(string branchId)
 		{
@@ -199,6 +119,77 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
 
+        public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
+            var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+
+            if (kpayInvoiceHeader == null) //Invoice not found
+                return null;
+
+            //Convert to invoice model
+            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel();
+
+            // set link to web now
+            System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
+            dictionary.Add("branch", userContext.BranchId);
+            dictionary.Add("customer", userContext.CustomerId);
+            dictionary.Add("invoice", invoiceNumber);
+
+            invoiceModel.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
+
+            if (invoiceModel.DueDate < DateTime.Now) {
+                invoiceModel.Status = InvoiceStatus.PastDue;
+                invoiceModel.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
+            }
+
+            //Get transactions
+            var transactions = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+            invoiceModel.Transactions = transactions.Select(t => t.ToTransationModel()).ToList();
+
+            //Retrieve invoice details, from order history
+
+            var details = _orderHistoryRepo.Read(o => o.InvoiceNumber.Equals(invoiceNumber), d => d.OrderDetails).FirstOrDefault();
+
+            if (details != null && details.OrderDetails != null) {
+                invoiceModel.Items = details.OrderDetails.Select(d => d.ToInvoiceItem()).ToList();
+            }
+
+            invoiceModel.IsPayable = customer.KPayCustomer;
+
+            //look up product details
+            LookupProductDetails(invoiceModel, userContext);
+
+            return invoiceModel;
+        }
+
+        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
+		{
+			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+			
+			var returnModel = new InvoiceHeaderReturnModel() { HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Where(i => i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).Any() };
+
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+			//foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice))
+            foreach (var inv in pagedInvoices.Results) {
+                if (inv.Status == InvoiceStatus.Open || inv.Status == InvoiceStatus.PastDue) {
+				    inv.IsPayable = customer.KPayCustomer;		
+                }
+
+                // set link to web now
+                System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
+                dictionary.Add("branch", userContext.BranchId);
+                dictionary.Add("customer", userContext.CustomerId);
+                dictionary.Add("invoice", inv.InvoiceNumber);
+
+                inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
+			}
+
+			returnModel.PagedResults = pagedInvoices;
+
+			return returnModel;
+		}
 
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{
@@ -248,10 +239,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
-		#endregion
+        public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
+		{
+			var confId = _invoiceRepo.GetNextConfirmationId();
 
-
-		
-
-	}
+			foreach (var payment in payments)
+				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
+				{
+					AccountNumber = payment.AccountNumber,
+					BranchId = GetDivision(userContext.BranchId),
+					ConfirmationId = confId,
+					CustomerNumber = userContext.CustomerId,
+					InvoiceNumber = payment.InvoiceNumber,
+					PaymentAmount = payment.PaymentAmount,
+					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+					UserName = emailAddress
+				});
+		}
+        #endregion
+    }
 }

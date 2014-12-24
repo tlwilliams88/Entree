@@ -107,6 +107,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_SITE_NAME = "CS_SiteName";
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
+        private const string KEY_URL_WEBNOW = "WebNowUrl";
 
 
 		//Email
@@ -117,7 +118,6 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_SMTP_USERNAME = "SMTPUsername";
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
-		private const string KEY_INVOICE_LINK_URL_FORMAT = "InvoiceLinkURLFormat";
 		private const string KEY_CONTACT_EMAIL_FORMAT = "{0}_ContactEmail";
 
 
@@ -137,14 +137,6 @@ namespace KeithLink.Svc.Impl
 		{
 			return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
 
-		}
-
-		public static string InvoiceLinkURLFormat
-		{
-			get
-			{
-				return GetValue(KEY_INVOICE_LINK_URL_FORMAT, string.Empty);
-			}
 		}
 
         public static string ActiveDirectoryExternalDomain { 
@@ -717,7 +709,6 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-
 		public static bool RequireHttps
 		{
 			get
@@ -773,6 +764,12 @@ namespace KeithLink.Svc.Impl
 		{
 			get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
 		}
+
+        public static string WebNowUrl {
+            get {
+                return GetValue(KEY_URL_WEBNOW, string.Empty);
+            }
+        }
 
         #endregion
     }

@@ -14,8 +14,6 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
 
         List<EF.Invoice> GetAllPastDueInvoices(string division, string customerNumber);
 
-        List<EF.Invoice> GetAllPayableInvoices(string division, string customerNumber);
-
         List<EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber);
 
         List<EF.Invoice> GetMainInvoices(string division, string customerNumber);
