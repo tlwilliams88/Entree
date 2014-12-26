@@ -29,6 +29,22 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetAllBankAccounts(userContext).ToList<CustomerBank>();
         }
 
+        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllOpenInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPaidInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPastDueInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPayableInvoices(userContext, paging);
+        }
+
         public Core.Models.OnlinePayments.Customer.CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             return _client.GetBankAccount(userContext, accountNumber);
         }

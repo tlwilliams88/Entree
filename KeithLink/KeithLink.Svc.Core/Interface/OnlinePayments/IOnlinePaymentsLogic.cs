@@ -15,7 +15,15 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments{
 		
         List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext);
 
-		CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
+        InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging);
+
+        InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging);
+
+        InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging);
+
+        InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging);
+        
+        CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
 
 		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
         

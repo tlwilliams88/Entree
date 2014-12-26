@@ -45,6 +45,22 @@ namespace KeithLink.Svc.InternalSvc {
 			return _onlinePaymentsLogic.GetAllBankAccounts(userContext);
         }
 
+        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllOpenInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPaidInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPastDueInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPayableInvoices(userContext, paging);
+        }
+
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
 			return _onlinePaymentsLogic.GetBankAccount(userContext, accountNumber);
                 

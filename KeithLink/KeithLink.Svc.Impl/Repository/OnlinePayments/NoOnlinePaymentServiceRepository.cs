@@ -17,6 +17,22 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
             throw new NotImplementedException();
         }
 
+        public Core.Models.Invoices.InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, Core.Models.Paging.PagingModel paging) {
+            throw new NotImplementedException();
+        }
+
+        public Core.Models.Invoices.InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, Core.Models.Paging.PagingModel paging) {
+            throw new NotImplementedException();
+        }
+
+        public Core.Models.Invoices.InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, Core.Models.Paging.PagingModel paging) {
+            throw new NotImplementedException();
+        }
+
+        public Core.Models.Invoices.InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, Core.Models.Paging.PagingModel paging) {
+            throw new NotImplementedException();
+        }
+
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             throw new NotImplementedException();
         }

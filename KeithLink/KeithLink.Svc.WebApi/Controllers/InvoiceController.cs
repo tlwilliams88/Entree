@@ -23,13 +23,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		#endregion
 
         #region ctor
-        #endregion
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository, IExportSettingServiceRepository exportSettingRepository)
 			: base(profileLogic)
 		{
             _repo = invoiceRepository;
 			_exportSettingRepository = exportSettingRepository;
 		}
+        #endregion
 
         #region methods
         [HttpPost]
@@ -37,6 +37,30 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public InvoiceHeaderReturnModel Invoice(PagingModel paging)
 		{
             return _repo.GetInvoiceHeaders(SelectedUserContext, paging);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("invoice/open")]
+        public InvoiceHeaderReturnModel GetOpenInvoices(PagingModel paging){
+            return _repo.GetAllOpenInvoices(SelectedUserContext, paging);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("invoice/paid")]
+        public InvoiceHeaderReturnModel GetPaidInvoices(PagingModel paging) {
+            return _repo.GetAllPaidInvoices(SelectedUserContext, paging);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("invoice/pastdue")]
+        public InvoiceHeaderReturnModel GetPastDueInvoices(PagingModel paging) {
+            return _repo.GetAllPastDueInvoices(SelectedUserContext, paging);
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute("invoice/payable")]
+        public InvoiceHeaderReturnModel GetPayableInvoices(PagingModel paging) {
+            return _repo.GetAllPayableInvoices(SelectedUserContext, paging);
         }
 
 		[HttpPost]

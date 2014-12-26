@@ -70,6 +70,51 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return banks;
         }
 
+        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+
+            return new InvoiceHeaderReturnModel() {
+                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
+                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+            };
+        }
+
+        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllPaidInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+
+            return new InvoiceHeaderReturnModel() { HasPayableInvoices = false,
+                                                    PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+                                                  };
+        }
+
+        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllPastDueInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+
+            return new InvoiceHeaderReturnModel() {
+                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
+                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+            };
+        }
+
+        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+            List<EFInvoice.Invoice> kpayInvoices = null;
+
+            if (customer.KPayCustomer) {
+                kpayInvoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
+            } else {
+                kpayInvoices = new List<EFInvoice.Invoice>();
+            }
+
+            return new InvoiceHeaderReturnModel() {
+                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
+                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+            };
+        }
+
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
 
@@ -162,34 +207,35 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return invoiceModel;
         }
 
-        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
-		{
+        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging) {
 			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-			var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-			
-			var returnModel = new InvoiceHeaderReturnModel() { HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Where(i => i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).Any() };
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
 
-			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+            return new InvoiceHeaderReturnModel() {
+                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
+                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+            };
+        }
 
-			//foreach (var inv in pagedInvoices.Results.Where(i => i.Type == InvoiceType.Invoice))
+        private PagedResults<InvoiceModel> GetInvoiceResults(string branchId, string customerNumber, bool isKpayCustomer, PagingModel paging, List<EFInvoice.Invoice> invoices) {
+            var pagedInvoices = invoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
             foreach (var inv in pagedInvoices.Results) {
                 if (inv.Status == InvoiceStatus.Open || inv.Status == InvoiceStatus.PastDue) {
-				    inv.IsPayable = customer.KPayCustomer;		
+                    inv.IsPayable = isKpayCustomer;
                 }
 
                 // set link to web now
                 System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
-                dictionary.Add("branch", userContext.BranchId);
-                dictionary.Add("customer", userContext.CustomerId);
+                dictionary.Add("branch", branchId);
+                dictionary.Add("customer", customerNumber);
                 dictionary.Add("invoice", inv.InvoiceNumber);
 
                 inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
-			}
+            }
 
-			returnModel.PagedResults = pagedInvoices;
-
-			return returnModel;
-		}
+            return pagedInvoices;
+        }
 
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{
