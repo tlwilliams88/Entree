@@ -23,27 +23,30 @@ using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
-	public class InternalInvoiceLogic : IInternalInvoiceLogic
-	{
-		private readonly IUnitOfWork unitOfWork;
-		private readonly IInvoiceRepository invoiceRepository;
-		private readonly IInvoiceItemRepository invoiceItemRepository;
-		private readonly ICatalogLogic catalogLogic;
-		private readonly IListRepository listRepository;
-		private readonly ITermRepository termRepository;
+	public class InternalInvoiceLogic : IInternalInvoiceLogic {
+        #region attributes
+        private readonly ICatalogLogic catalogLogic;
+        private readonly IInvoiceItemRepository invoiceItemRepository;
+        private readonly IInvoiceRepository invoiceRepository;
+        private readonly IListRepository listRepository;
+        private readonly ITermRepository termRepository;
+        private readonly IUnitOfWork unitOfWork;
+        #endregion
 
-		public InternalInvoiceLogic(IUnitOfWork unitOfWork, IInvoiceRepository invoiceRepository, IInvoiceItemRepository invoiceItemRepository,
-			ICatalogLogic catalogLogic, IListRepository listRepository, ITermRepository termRepository)
-		{
-			this.invoiceRepository = invoiceRepository;
-			this.invoiceItemRepository = invoiceItemRepository;
-			this.unitOfWork = unitOfWork;
-			this.catalogLogic = catalogLogic;
-			this.listRepository = listRepository;
-			this.termRepository = termRepository;
-		}
+        #region ctor
+        public InternalInvoiceLogic(IUnitOfWork unitOfWork, IInvoiceRepository invoiceRepository, IInvoiceItemRepository invoiceItemRepository,
+            ICatalogLogic catalogLogic, IListRepository listRepository, ITermRepository termRepository) {
+            this.invoiceRepository = invoiceRepository;
+            this.invoiceItemRepository = invoiceItemRepository;
+            this.unitOfWork = unitOfWork;
+            this.catalogLogic = catalogLogic;
+            this.listRepository = listRepository;
+            this.termRepository = termRepository;
+        }
+        #endregion
 
-		public long CreateInvoice(InvoiceModel invoice, InvoiceType type)
+        #region methods
+        public long CreateInvoice(InvoiceModel invoice, InvoiceType type)
 		{
 			var newInvoice = invoice.ToEFInvoice();
 			invoiceRepository.CreateOrUpdate(newInvoice);
@@ -51,7 +54,48 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return newInvoice.Id;
 		}
 
-		public InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id)
+        public void DeleteInvoice(long Id) {
+            var invoice = invoiceRepository.Read(x => x.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+            invoice.Items.ToList().ForEach(delegate(InvoiceItem item) {
+                invoiceItemRepository.Delete(item);
+            });
+
+            invoiceRepository.Delete(invoice);
+            unitOfWork.SaveChanges();
+        }
+
+        private void DetermineCorrectStatus(InvoiceModel invoice) {
+            if (invoice.Status == InvoiceStatus.Open && invoice.DueDate < DateTime.UtcNow)
+                invoice.Status = InvoiceStatus.PastDue;
+
+            invoice.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(invoice.Status, "");
+
+        }
+
+        private void LookupProductDetails(UserProfile user, InvoiceModel invoice, UserSelectedContext catalogInfo) {
+            if (invoice.Items == null || invoice.Items.Count == 0)
+                return;
+
+            var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, invoice.Items.Select(i => i.ItemNumber).Distinct().ToList());
+            var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
+
+            Parallel.ForEach(invoice.Items, invoiceItem => {
+                var prod = products.Products.Where(p => p.ItemNumber.Equals(invoiceItem.ItemNumber)).FirstOrDefault();
+                if (prod != null) {
+                    invoiceItem.Name = prod.Name;
+                    invoiceItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                    invoiceItem.Brand = prod.BrandExtendedDescription;
+                    invoiceItem.TempZone = prod.TempZone;
+
+                }
+                if (notes != null && notes.Items != null)
+                    invoiceItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(invoiceItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+            });
+
+        }
+        
+        public InvoiceModel ReadInvoice(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
 			var invoice = invoiceRepository.Read(x => x.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
@@ -76,73 +120,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return returnModels;
 		}
 
-		private void DetermineCorrectStatus(InvoiceModel invoice)
-		{
-			if (invoice.Status == InvoiceStatus.Open && invoice.DueDate < DateTime.UtcNow)
-				invoice.Status = InvoiceStatus.PastDue;
+        public TermModel ReadTermInformation(string branchId, string termCode) {
+            var intTerm = termCode.ToInt();
 
-			invoice.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(invoice.Status, "");
-					
-		}
+            if (!intTerm.HasValue)
+                return null;
 
-		private void LookupProductDetails(UserProfile user, InvoiceModel invoice, UserSelectedContext catalogInfo)
-		{
-			if (invoice.Items == null || invoice.Items.Count == 0)
-				return;
+            var term = termRepository.Read(t => t.BranchId.Equals(branchId) && t.TermCode.Equals(intTerm.Value)).FirstOrDefault();
 
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, invoice.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
-			
-			Parallel.ForEach(invoice.Items, invoiceItem =>
-			{
-				var prod = products.Products.Where(p => p.ItemNumber.Equals(invoiceItem.ItemNumber)).FirstOrDefault();
-				if (prod != null)
-				{
-					invoiceItem.Name = prod.Name;
-					invoiceItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					invoiceItem.Brand = prod.BrandExtendedDescription;
-					invoiceItem.TempZone = prod.TempZone;
+            if (term == null)
+                return null;
 
-				}
-				if (notes != null && notes.Items != null)
-					invoiceItem.Notes = notes.Items.Where(n => n.ItemNumber.Equals(invoiceItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
-			});
+            return new TermModel() { BranchId = term.BranchId, TermCode = term.TermCode, Description = term.Description, Age1 = term.Age1, Age2 = term.Age2, Age3 = term.Age3, Age4 = term.Age4 };
+        }
 
-		}
-
-
-		public void DeleteInvoice(long Id)
-		{
-			var invoice = invoiceRepository.Read(x => x.Id.Equals(Id), i => i.Items).FirstOrDefault();
-
-			invoice.Items.ToList().ForEach(delegate(InvoiceItem item)
-			{
-				invoiceItemRepository.Delete(item);
-			});
-			
-			invoiceRepository.Delete(invoice);
-			unitOfWork.SaveChanges();
-		}
-
-
-		public void UpdateInvoice(InvoiceModel invoice)
+        public void UpdateInvoice(InvoiceModel invoice)
 		{
 
 		}
-
-		public TermModel ReadTermInformation(string branchId, string termCode)
-		{
-			var intTerm = termCode.ToInt();
-
-			if (!intTerm.HasValue)
-				return null;
-
-			var term = termRepository.Read(t => t.BranchId.Equals(branchId) && t.TermCode.Equals(intTerm.Value)).FirstOrDefault();
-
-			if (term == null)
-				return null;
-
-			return new TermModel() { BranchId = term.BranchId, TermCode = term.TermCode, Description = term.Description, Age1 = term.Age1, Age2 = term.Age2, Age3 = term.Age3, Age4 = term.Age4 };
-		}
-	}
+        #endregion
+    }
 }
