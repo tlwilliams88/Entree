@@ -379,7 +379,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
-				dsrNumber = user.Description;
+                int dsrInt;
+				dsrNumber = Int32.TryParse(user.Description, out dsrInt) ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
 				if (String.IsNullOrEmpty(dsrRole))
 					dsmRole = GetUserDsmRole(user);							
 			}
