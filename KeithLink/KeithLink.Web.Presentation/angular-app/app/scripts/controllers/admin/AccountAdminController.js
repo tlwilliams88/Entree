@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'CustomerService', 'AccountService',
-    function ($scope, UserProfileService, branches, LocalStorage, $state, CustomerService, AccountService) {
+  .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
+    function ($scope, UserProfileService, branches, LocalStorage, $state, CustomerService, AccountService, BroadcastService) {
 
       var accountid = '';
       //get user id from localstorage and ask for account id with it
@@ -99,4 +99,66 @@ angular.module('bekApp')
             $scope.displayMessage('error', 'An error occurred checking if the user exists: ' + errorMessage);
           });
       };
+
+      /*---Broadcast Message Functions---*/
+
+      $scope.recipients = [];
+      $scope.broadcast = {};
+
+      $scope.addCustomerToRecipients = function (customer) {
+        var newEntry = {};
+        newEntry.displayName = customer.customerName;
+        newEntry.id = customer.customerId;
+        newEntry.type = 'Customer';
+        $scope.recipients.push(newEntry);
+      };
+
+      $scope.addUserToRecipients = function (user) {
+        var newEntry = {};
+        newEntry.displayName = user.firstname + " " + user.lastname;
+        newEntry.id = user.userid;
+        newEntry.type = 'User';
+        $scope.recipients.push(newEntry);
+      };
+
+      $scope.removeFromRecipients = function(recipient) {
+        $scope.recipients.forEach(function (current, index) {
+          if (recipient.id === current.id){
+            $scope.recipients.splice(index, 1);
+          }
+        })
+      };
+
+      $scope.sendMessage = function () {
+        var payload = {};
+        payload.customers = [];
+        payload.users = [];
+
+        //construct payload
+        $scope.recipients.forEach(function (recipient) {
+          if (recipient.type === 'customer'){
+            payload.customers.push(recipient.id);
+          } else {
+            payload.users.push(recipient.id);
+          }
+        });
+        payload.message = {};
+        payload.message.label = 'Admin Message'; //ask about this
+        payload.message.subject = $scope.broadcast.subject;
+        payload.message.body = $scope.broadcast.bodyContent;
+        payload.message.mandatory = false; //ask about this option
+
+        console.log(payload);
+        BroadcastService.broadcastMessage(payload).then(function (success) {
+          $scope.displayMessage('success', 'The message was sent successfully.');
+          clearFields(); //reset message inputs
+        }, function (error) {
+          $scope.displayMessage('error', 'There was an error sending the message: ' + error);
+        });
+      };
+
+      var clearFields = function(){
+        $scope.recipients = [];
+        $scope.broadcast = {};
+      }
     }]);
