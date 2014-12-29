@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Exceptions.Queue;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
@@ -23,23 +24,27 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
         #region methods
         public string ConsumeFromQueue() {
-            ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQUserNameConsumer,
-                Password = Configuration.RabbitMQUserPasswordConsumer,
-                VirtualHost = Configuration.RabbitMQVHostOrder
-            };
+            try {
+                ConnectionFactory connectionFactory = new ConnectionFactory() {
+                    HostName = Configuration.RabbitMQOrderServer,
+                    UserName = Configuration.RabbitMQUserNameConsumer,
+                    Password = Configuration.RabbitMQUserPasswordConsumer,
+                    VirtualHost = Configuration.RabbitMQVHostOrder
+                };
 
-            using (IConnection connection = connectionFactory.CreateConnection()) {
-                using (IModel model = connection.CreateModel()) {
-                    BasicGetResult result = model.BasicGet(GetSelectedQueue(), true);
+                using (IConnection connection = connectionFactory.CreateConnection()) {
+                    using (IModel model = connection.CreateModel()) {
+                        BasicGetResult result = model.BasicGet(GetSelectedQueue(), true);
 
-                    if (result == null) {
-                        return null;
-                    } else {
-                        return Encoding.UTF8.GetString(result.Body);
+                        if (result == null) {
+                            return null;
+                        } else {
+                            return Encoding.UTF8.GetString(result.Body);
+                        }
                     }
                 }
+            } catch (Exception ex) {
+                throw new QueueConnectionException(Configuration.RabbitMQOrderServer, Configuration.RabbitMQVHostOrder, string.Empty, GetSelectedQueue(), ex.Message, ex);
             }
         }
 
@@ -70,25 +75,29 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
         }
 
         public void PublishToQueue(string item) {
-            // this connection uses different credentials than the other methods in this class
-            ConnectionFactory connectionFactory = new ConnectionFactory() {
-                HostName = Configuration.RabbitMQOrderServer,
-                UserName = Configuration.RabbitMQUserNamePublisher,
-                Password = Configuration.RabbitMQUserPasswordPublisher,
-                VirtualHost = Configuration.RabbitMQVHostOrder
-            };
+            try {
+                // this connection uses different credentials than the other methods in this class
+                ConnectionFactory connectionFactory = new ConnectionFactory() {
+                    HostName = Configuration.RabbitMQOrderServer,
+                    UserName = Configuration.RabbitMQUserNamePublisher,
+                    Password = Configuration.RabbitMQUserPasswordPublisher,
+                    VirtualHost = Configuration.RabbitMQVHostOrder
+                };
 
-            using (IConnection connection = connectionFactory.CreateConnection()) {
-                using (IModel model = connection.CreateModel()) {
-                    string exchange = GetSelectedExchange();
+                using (IConnection connection = connectionFactory.CreateConnection()) {
+                    using (IModel model = connection.CreateModel()) {
+                        string exchange = GetSelectedExchange();
 
-                    model.QueueBind(GetSelectedQueue(), exchange, string.Empty, new Dictionary<string, object>());
+                        model.QueueBind(GetSelectedQueue(), exchange, string.Empty, new Dictionary<string, object>());
 
-                    IBasicProperties props = model.CreateBasicProperties();
-                    props.DeliveryMode = 2; // persistent delivery mode
+                        IBasicProperties props = model.CreateBasicProperties();
+                        props.DeliveryMode = 2; // persistent delivery mode
 
-                    model.BasicPublish(exchange, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+                        model.BasicPublish(exchange, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+                    }
                 }
+            } catch (Exception ex) {
+                throw new QueueConnectionException(Configuration.RabbitMQOrderServer, Configuration.RabbitMQVHostOrder, GetSelectedExchange(), GetSelectedQueue(), ex.Message, ex);                
             }
         }
 

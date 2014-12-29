@@ -208,6 +208,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         
 		public Core.Models.Orders.Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems)
         {
+            
+            /*if (order.Items == null || order.ItemCount == 0)
+            {
+                throw new ApplicationException("Cannot submit an order with zero line items");
+            }
+             * */
+
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
             
