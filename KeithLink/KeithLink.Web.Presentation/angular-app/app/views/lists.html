@@ -504,7 +504,7 @@
                 <a ng-if="selectedList.permissions.canDeleteItems" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 
                 <span 
-                  ng-if="filteredItems.length === selectedList.items.length - 1 && selectedList.permissions.canReorderItems" 
+                  ng-if="!listSearchTerm && selectedList.permissions.canReorderItems" 
                   class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" 
                   style="cursor:move;">
                 </span>
