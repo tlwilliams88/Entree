@@ -1,5 +1,6 @@
 ﻿using CommerceServer.Foundation;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Extensions.StringExtensions;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
@@ -371,7 +372,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
 		public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false)
 		{
-            List<Customer> userCustomers;
+            //List<Customer> userCustomers;
 			string dsrRole = string.Empty;
 			string dsrNumber = string.Empty;
 			string dsmRole = string.Empty;
@@ -379,8 +380,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
-                int dsrInt;
-				dsrNumber = Int32.TryParse(user.Description, out dsrInt) ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
+                dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
 				if (String.IsNullOrEmpty(dsrRole))
 					dsmRole = GetUserDsmRole(user);							
 			}
