@@ -77,8 +77,8 @@ angular.module('bekApp')
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
 
-        // delete items if quantity is 0
-        updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
+        // delete items if quantity is 0 or price is 0
+		updatedCart.items = $filter('filter')( updatedCart.items, function(item){return item.quantity > 0 && (item.caseprice > 0 || item.packageprice > 0); } );
 
         return CartService.updateCart(updatedCart).then(function() {
           $scope.currentCart.isRenaming = false;
@@ -95,8 +95,8 @@ angular.module('bekApp')
         });
       }
     };
-
-    var processingSubmitOrder = false;
+	
+	var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
       if (!processingSubmitOrder) {
         processingSubmitOrder = true;

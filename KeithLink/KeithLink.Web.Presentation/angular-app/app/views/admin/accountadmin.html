@@ -65,7 +65,9 @@
           <td>{{user.firstname}}</td>
           <td>{{user.lastname}}</td>
           <td class="text-capitalize">{{user.rolename}}</td>
-          <td></td>
+          <td>
+            <span style="cursor: pointer; color: rgb(72,158,235);" class="glyphicon glyphicon-plus" ng-click="addUserToRecipients(user)"></span>
+          </td>
         </tr>
         </tbody>
         <tfoot ng-show="users.length === 0">
@@ -120,7 +122,9 @@
           <td>{{customer.customerName}}</td>
           <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})"><span
             class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
-          <td></td>
+          <td>
+            <span style="cursor: pointer; color: rgb(72,158,235);" class="glyphicon glyphicon-plus" ng-click="addCustomerToRecipients(customer)"></span>
+          </td>
         </tr>
         </tbody>
         <tfoot ng-show="customers.length === 0">
@@ -133,5 +137,22 @@
         </tfoot>
       </table>
     </div>
+  </div>
+</div>
+<h2>Broadcast a Message</h2>
+<div class="row">
+  <div class="col-md-6">
+    <label for="subjectHeader" class="control-label">Subject Header</label>
+    <input type="text" id="subjectHeader" ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
+    <br>
+    <label for="bodyContent" class="control-label">Body Content</label>
+    <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
+    <button class="btn btn-primary top-buffer" ng-click="sendMessage()">Send Message</button>
+  </div>
+  <div class="col-md-6">
+    <label class="control-label">Broadcast Recipients <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>
+    <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
+      <li ng-repeat="recipient in recipients"><span style="cursor: pointer; color: red;" class="glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient)"></span> {{recipient.displayName}} ({{recipient.type}})</li>
+    </ul>
   </div>
 </div>

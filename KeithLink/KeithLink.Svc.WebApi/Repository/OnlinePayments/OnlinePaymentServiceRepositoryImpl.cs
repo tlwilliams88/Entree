@@ -29,30 +29,44 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetAllBankAccounts(userContext).ToList<CustomerBank>();
         }
 
+        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllOpenInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPaidInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPastDueInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _client.GetAllPayableInvoices(userContext, paging);
+        }
+
         public Core.Models.OnlinePayments.Customer.CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             return _client.GetBankAccount(userContext, accountNumber);
         }
 
-        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
-            return _client.GetInvoiceTransactions(userContext, invoiceNumber).ToList<InvoiceModel>();
+        public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
+            return _client.GetInvoiceDetails(userContext, invoiceNumber);
         }
 
-		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
-		{
+        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging) {
             return _client.GetInvoiceHeaders(userContext, paging);
+        }
+
+        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+            return _client.GetInvoiceTransactions(userContext, invoiceNumber).ToList<InvoiceModel>();
         }
        
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
 			_client.MakeInvoicePayment(userContext, emailAddress, payments.ToArray());
 		} 
-		
 		#endregion
 
 
-		public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
-		{
-			return _client.GetInvoiceDetails(userContext, invoiceNumber);
-		}
 	}
 }

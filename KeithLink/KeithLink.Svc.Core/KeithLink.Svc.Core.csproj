@@ -147,6 +147,7 @@
     <Compile Include="Exceptions\Orders\SocketSendException.cs" />
     <Compile Include="Exceptions\Profile\NoApiKeyProvidedException.cs" />
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
+    <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />

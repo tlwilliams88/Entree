@@ -6,10 +6,10 @@
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
     </xsd:schema>
   </wsdl:types>
@@ -24,6 +24,30 @@
   </wsdl:message>
   <wsdl:message name="IOnlinePaymentService_GetAllBankAccounts_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetAllBankAccountsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllOpenInvoices_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOpenInvoices" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllOpenInvoices_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllOpenInvoicesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPaidInvoices_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPaidInvoices" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPaidInvoices_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPaidInvoicesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPastDueInvoices_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPastDueInvoices" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPastDueInvoices_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPastDueInvoicesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPayableInvoices_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPayableInvoices" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetAllPayableInvoices_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllPayableInvoicesResponse" />
   </wsdl:message>
   <wsdl:message name="IOnlinePaymentService_GetBankAccount_InputMessage">
     <wsdl:part name="parameters" element="tns:GetBankAccount" />
@@ -64,6 +88,22 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllBankAccounts" message="tns:IOnlinePaymentService_GetAllBankAccounts_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllBankAccountsResponse" message="tns:IOnlinePaymentService_GetAllBankAccounts_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetAllOpenInvoices">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllOpenInvoices" message="tns:IOnlinePaymentService_GetAllOpenInvoices_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllOpenInvoicesResponse" message="tns:IOnlinePaymentService_GetAllOpenInvoices_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPaidInvoices">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPaidInvoices" message="tns:IOnlinePaymentService_GetAllPaidInvoices_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPaidInvoicesResponse" message="tns:IOnlinePaymentService_GetAllPaidInvoices_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPastDueInvoices">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPastDueInvoices" message="tns:IOnlinePaymentService_GetAllPastDueInvoices_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPastDueInvoicesResponse" message="tns:IOnlinePaymentService_GetAllPastDueInvoices_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPayableInvoices">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPayableInvoices" message="tns:IOnlinePaymentService_GetAllPayableInvoices_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetAllPayableInvoicesResponse" message="tns:IOnlinePaymentService_GetAllPayableInvoices_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetBankAccount">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetBankAccount" message="tns:IOnlinePaymentService_GetBankAccount_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetBankAccountResponse" message="tns:IOnlinePaymentService_GetBankAccount_OutputMessage" />
@@ -98,6 +138,42 @@
     </wsdl:operation>
     <wsdl:operation name="GetAllBankAccounts">
       <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetAllBankAccounts" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllOpenInvoices">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetAllOpenInvoices" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPaidInvoices">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetAllPaidInvoices" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPastDueInvoices">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetAllPastDueInvoices" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllPayableInvoices">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetAllPayableInvoices" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

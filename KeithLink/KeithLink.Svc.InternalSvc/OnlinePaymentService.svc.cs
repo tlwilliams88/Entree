@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Extensions;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
@@ -44,6 +45,22 @@ namespace KeithLink.Svc.InternalSvc {
 			return _onlinePaymentsLogic.GetAllBankAccounts(userContext);
         }
 
+        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllOpenInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPaidInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPastDueInvoices(userContext, paging);
+        }
+
+        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+            return _onlinePaymentsLogic.GetAllPayableInvoices(userContext, paging);
+        }
+
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
 			return _onlinePaymentsLogic.GetBankAccount(userContext, accountNumber);
                 
@@ -78,28 +95,38 @@ namespace KeithLink.Svc.InternalSvc {
             }
         }
 
-        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
-            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            List<InvoiceModel> returnInvoices = new List<InvoiceModel>();
-
-			return kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+        public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
+            return _onlinePaymentsLogic.GetInvoiceDetails(userContext, invoiceNumber.Trim());
         }
 
 		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
 		{
 			return _onlinePaymentsLogic.GetInvoiceHeaders(userContext, paging);
         }
-       
-		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
+
+        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+
+            foreach(InvoiceModel inv in returnInvoices){
+                // set link to web now
+                System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
+                dictionary.Add("branch", userContext.BranchId);
+                dictionary.Add("customer", userContext.CustomerId);
+                dictionary.Add("invoice", inv.InvoiceNumber);
+
+                inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
+            }
+
+            return returnInvoices;
+        }
+        
+        public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
 			_onlinePaymentsLogic.MakeInvoicePayment(userContext, emailAddress, payments);
 		}
 		#endregion				
 	
 
-		public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
-		{
-			return _onlinePaymentsLogic.GetInvoiceDetails(userContext, invoiceNumber.Trim());
-		}
 	}
 }

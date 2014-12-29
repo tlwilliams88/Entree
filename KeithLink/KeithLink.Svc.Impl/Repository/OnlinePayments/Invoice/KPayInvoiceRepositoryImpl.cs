@@ -34,20 +34,52 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
                 );
         }
 
+        public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetAllOpenInvoices(string division, string customerNumber) {
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
+                                                  i.CustomerNumber.Equals(customerNumber) && 
+                                                  i.ItemSequence == 0 && 
+                                                  i.ItemLine == 0 && 
+                                                  i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
+
+        public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetAllPaidInvoices(string division, string customerNumber) {
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
+                                                  i.CustomerNumber.Equals(customerNumber) && 
+                                                  i.ItemSequence == 0 &&
+                                                  i.ItemLine == 0 && 
+                                                  i.InvoiceStatus.Equals("c", StringComparison.InvariantCultureIgnoreCase)).ToList();
+        }
+
+        public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetAllPastDueInvoices(string division, string customerNumber) {
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
+                                                  i.CustomerNumber.Equals(customerNumber) && 
+                                                  i.ItemSequence == 0 &&
+                                                  i.ItemLine == 0 && 
+                                                  i.InvoiceStatus.Equals("o", StringComparison.InvariantCultureIgnoreCase) &&
+                                                  i.DueDate < DateTime.Now).ToList();
+        }
+
+        public Core.Models.OnlinePayments.Invoice.EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber) {
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) &&
+                                                  i.CustomerNumber.Equals(customerNumber) &&
+                                                  i.ItemSequence == 0 &&
+                                                  i.InvoiceNumber.Equals(invoiceNumber)).FirstOrDefault();
+        }
+
         public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber) {
-            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && i.CustomerNumber.Equals(customerNumber) && i.InvoiceNumber.StartsWith(invoiceNumber) && i.ItemSequence > 0).ToList();
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
+                                                  i.CustomerNumber.Equals(customerNumber) && 
+                                                  i.InvoiceNumber.StartsWith(invoiceNumber) && 
+                                                  i.ItemLine > 0).ToList();
         }
 
         public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetMainInvoices(string division, string customerNumber) {
-            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && i.CustomerNumber.Equals(customerNumber) && i.ItemSequence == 0).ToList();
+            return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
+                                                  i.CustomerNumber.Equals(customerNumber) && 
+                                                  i.ItemSequence == 0 && 
+                                                  i.ItemLine == 0).ToList();
         }
 
-
-		public Core.Models.OnlinePayments.Invoice.EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber)
-		{
-			return _dbContext.Invoices.Where(i => i.Division.Equals(division) && i.CustomerNumber.Equals(customerNumber) && i.ItemSequence == 0 && i.InvoiceNumber.Equals(invoiceNumber)).FirstOrDefault();
-		}
-        
 		public long GetNextConfirmationId()
 		{
 			var returnCode = new SqlParameter();
