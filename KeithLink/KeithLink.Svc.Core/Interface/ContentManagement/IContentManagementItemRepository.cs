@@ -11,5 +11,6 @@ namespace KeithLink.Svc.Core.Interface.ContentManagement
 	{
         IEnumerable<ContentItem> ReadActiveContentItemsByBranch(string branchId, int count);
         IEnumerable<ContentItem> ReadContentItemsByBranch(string branchId, int count);
+        string SaveContentImage( long contentId, string fileName, string base64File );
 	}
 }
