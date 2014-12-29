@@ -9,7 +9,7 @@ angular.module('bekApp')
 
   $scope.orders = orders;
 
-  var currentCustomer = $scope.userSelectedContext.customer;
+  var currentCustomer = $scope.selectedUserContext.customer;
 
   var data = { response: {}, calls: 0 };
   var poller = function() {
