@@ -136,11 +136,12 @@ namespace KeithLink.Svc.Impl.Logic {
             var rows = file.Contents.Split( new string[] { Environment.NewLine }, StringSplitOptions.None );
             returnValue = rows
                         .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
+                        .Where( line => !String.IsNullOrWhiteSpace(line) )
                         .Select( i => i.Split( Delimiter ) )
                         .Select( l => new ShoppingCartItem() {
-                            ItemNumber = DetermineItemNumber( l, file.Options, user, catalogInfo ),
-                            Quantity = DetermineQuantity( l, file.Options ),
-                            Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( l, file.Options ):false
+                            ItemNumber = DetermineItemNumber( l[0], file.Options, user, catalogInfo ),
+                            Quantity = DetermineQuantity( l[1], file.Options ),
+                            Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( l[2], file.Options ):false
                             } )
                         .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
@@ -164,34 +165,35 @@ namespace KeithLink.Svc.Impl.Logic {
 
             while (rdr.Read()) {
                 returnValue.Add(new ShoppingCartItem() {
-                    ItemNumber = DetermineItemNumber(new string[] {rdr.GetString(0) }, file.Options, user, catalogInfo),
-                    Quantity = DetermineQuantity(new string[] { rdr.GetString(1) }, file.Options),
-                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( new string[] { rdr.GetString(2) }, file.Options ):false
+                    ItemNumber = DetermineItemNumber(rdr.GetString(0), file.Options, user, catalogInfo),
+                    Quantity = DetermineQuantity(rdr.GetString(1), file.Options),
+                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( rdr.GetString(2), file.Options ):false
                 });
             }
 
             return returnValue;
         }
 
-        private string DetermineItemNumber( string[] itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
+        private string DetermineItemNumber( string itemNumber, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
             string returnValue = null;
 
-            if (itemNumber[0].ToInt().Equals( null )) {
-                Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber[0] ));
+            if (itemNumber.ToInt().Equals( null ) && itemNumber.ToLong().Equals( null )) {
+                Warning( String.Format("There were problems importing the file. Item: {0} is not a valid item or UPC.", itemNumber ));
             } else {
                 switch (options.ItemNumber) {
                     case ItemNumberType.ItemNumberOrUPC:
-                        if (itemNumber[0].Length > 6) { // It is a UPC - lookup the item number
-                            returnValue = GetItemNumberFromUPC( itemNumber[0], options, user, catalogInfo ); 
+                        if (itemNumber.Length > 6) { // It is a UPC - lookup the item number
+                            returnValue = GetItemNumberFromUPC( itemNumber, options, user, catalogInfo );
+                        } else {
+                            returnValue = itemNumber;
                         }
-                        returnValue = itemNumber[0];
                         break;
                     case ItemNumberType.UPC:
-                        returnValue = GetItemNumberFromUPC(itemNumber[0], options, user, catalogInfo);
+                        returnValue = GetItemNumberFromUPC(itemNumber, options, user, catalogInfo);
                         break;
                     default: //ItemNumber
                         //Just return value
-                        returnValue = itemNumber[0];
+                        returnValue = itemNumber;
                         break;
                 }
             }
@@ -199,13 +201,13 @@ namespace KeithLink.Svc.Impl.Logic {
             return returnValue;
         }
 
-        private decimal DetermineQuantity( string[] quantities, OrderImportOptions options ) {
+        private decimal DetermineQuantity( string quantities, OrderImportOptions options ) {
             decimal? returnValue = null;
 
             if (options.Contents.Equals(FileContentType.ItemOnly) ) {
                 returnValue = 0;
             } else {
-                returnValue = quantities[0].ToDecimal();
+                returnValue = quantities.ToDecimal();
             }
 
             if (returnValue.Equals( null )) {
@@ -215,10 +217,10 @@ namespace KeithLink.Svc.Impl.Logic {
             return returnValue.HasValue ? returnValue.Value : 0;
         }
 
-        private bool DetermineBrokenCaseItem( string[] brokenCase, OrderImportOptions options ) {
+        private bool DetermineBrokenCaseItem( string brokenCase, OrderImportOptions options ) {
             bool returnValue = false;
 
-            if (brokenCase[0].Equals( "y", StringComparison.InvariantCultureIgnoreCase )) {
+            if (brokenCase.Equals( "y", StringComparison.InvariantCultureIgnoreCase )) {
                 returnValue = true;
             }
 
