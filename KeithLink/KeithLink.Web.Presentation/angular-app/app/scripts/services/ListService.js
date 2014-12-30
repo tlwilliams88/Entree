@@ -223,8 +223,9 @@ angular.module('bekApp')
           return List.save(params, newList).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
+            return $q.reject(error);
           });
         },
 
@@ -279,8 +280,9 @@ angular.module('bekApp')
               toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
               return list;
             });
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            return $q.reject(error);
           });
         },
 
@@ -298,8 +300,9 @@ angular.module('bekApp')
 
             toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
             return Service.getFavoritesList();
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting list.');
+            return $q.reject(error);
           });
         },
 
@@ -332,8 +335,9 @@ angular.module('bekApp')
               toaster.pop('success', null, 'Successfully added item to list.');
             }
             return item;
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error adding item to list.');
+            return $q.reject(error);
           });
         },
 
@@ -353,8 +357,9 @@ angular.module('bekApp')
           }).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully deleted item from list.');
             return;
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting item from list.');
+            return $q.reject(error);
           });
         },
 
@@ -374,8 +379,9 @@ angular.module('bekApp')
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
+            return $q.reject(error);
           });
         },
 
@@ -395,8 +401,9 @@ angular.module('bekApp')
           }).then(function() {
             // TODO: unfavorite all items if favorites list
             toaster.pop('success', null, 'Successfully deleted ' + items.length + ' from list.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting ' + items.length + ' from list.');
+            return $q.reject(error);
           });
         },
 
@@ -481,8 +488,9 @@ angular.module('bekApp')
           return List.shareList(copyListData).$promise.then(function() {
             list.issharing = true;
             toaster.pop('success', null, 'Successfully shared list ' + list.name + ' with ' + customers.length + ' customers.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error sharing list.');
+            return $q.reject(error);
           });
         },
 
@@ -494,8 +502,9 @@ angular.module('bekApp')
 
           return List.copyList(copyListData).$promise.then(function() {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
+            return $q.reject(error);
           });
         },
       };
