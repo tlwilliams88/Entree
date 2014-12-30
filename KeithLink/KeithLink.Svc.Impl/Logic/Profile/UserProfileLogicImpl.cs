@@ -1,6 +1,5 @@
 ﻿using CommerceServer.Foundation;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Extensions.StringExtensions;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
