@@ -69,6 +69,17 @@ namespace KeithLink.Common.Core.Extensions
 			return parsedInt;
 		}
 
+
+        public static long? ToLong( this string value ) {
+            long parsedLong;
+
+            if (!long.TryParse( value, out parsedLong )) {
+                return null;
+            }
+
+            return parsedLong;
+        }
+
         /// <summary>
         /// Extension method that replaces keys in a string with the values of matching object properties.
         /// <remarks>Uses <see cref="String.Format()"/> internally; custom formats should match those used for that method.</remarks>

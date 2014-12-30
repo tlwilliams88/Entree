@@ -3,7 +3,7 @@
 		Product Catalog
 	</div>
 	<div header-buttons>
-		<button class="btn btn-icon btn-default" title="Print"><span class="icon-printer"></span></button>
+		<button class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></button>
 		<button class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></button>
 	</div>
 </div>
@@ -23,7 +23,7 @@
 		<div class="page-subheader-bar__message">
 			{{featuredBreadcrumb.displayText}}
 		</div>
-    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="btn-no-style page-subheader-bar__button button-right">
+    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="hidden-print btn-no-style page-subheader-bar__button button-right">
       Filter <span ng-show="filterCount > 0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
     </button>
   </div>
@@ -194,7 +194,7 @@
             Item #
             <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
-          <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('brand_description_not_analyzed')">
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('brand_description_not_analyzed')">
             Brand
             <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
@@ -202,11 +202,11 @@
             Name
             <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
-          <th class="hidden-sm hidden-xs">
+          <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
-          <th class="hidden-sm hidden-xs"></th>
-          <th class="hidden-sm hidden-xs" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
+          <th class="hidden-mobile-visible-print"></th>
+          <th class="hidden-mobile-visible-print" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
             Price
             <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
@@ -221,25 +221,25 @@
           <td>
             <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
           </td>
-          <td class="hidden-sm hidden-xs">
+          <td class="hidden-mobile-visible-print">
             {{item.brand_extended_description}}
           </td>
           <td>
             {{item.name}}
           </td>
-          <td class="hidden-sm hidden-xs">
+          <td class="hidden-mobile-visible-print">
             {{item.pack | number}} / {{item.size}}
           </td>
-          <td class="nowrap hidden-sm hidden-xs text-right" item-icons>
+          <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
-          <td class="hidden-sm hidden-xs">
+          <td class="hidden-mobile-visible-print">
             <span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+            <span ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" context-menu-template class="context-menu__in-list hidden-print"><a><span class="icon-plus2"></span></a></span>
 
-            <a ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
+            <a class="hidden-print" ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>
         </tr>
         <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
@@ -271,11 +271,13 @@
         </tr>
 			</tbody>
 			<tfoot>
-				<tr ng-show="products.length === 0 && !loadingResults">
+				<tr ng-show="!searchMessage && products.length === 0 && !loadingResults">
 					<td colspan="8">No products found.</td>
 				</tr>
 			</tfoot>
 		</table>
+
+    <div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
 
 		<div class="text-center" loading-spinner="loadingResults"></div>
 	</div>

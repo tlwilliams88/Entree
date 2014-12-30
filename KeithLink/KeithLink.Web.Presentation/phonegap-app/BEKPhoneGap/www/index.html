@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" href="lib/icomoon/style.css" />
     <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
+    <link rel="stylesheet" href="lib/c3/c3.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
   </head>
   <body>
-    
+
     <!--[if lt IE 9]>
     <p>Entree does not support older browsers. Please upgrade or use KeithNet.</p>
     <![endif]-->
@@ -48,11 +49,12 @@
     <script src="lib/angular-resource/angular-resource.js"></script>
     <script src="lib/angular-sanitize/angular-sanitize.js"></script>
     <script src="lib/angular-cookies/angular-cookies.js"></script>
-    <script src="lib/angular-cookies/angular-cookies.js"></script>
     <script src="lib/angular-animate/angular-animate.js"></script>
     <script src="lib/angular-touch/angular-touch.js"></script>
     <script src="lib/angular-ui-router/angular-ui-router.js"></script>
     <script src="lib/angular-ui-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="lib/d3/d3.js"></script>
+    <script src="lib/c3/c3.js"></script>
     <script src="lib/angular-local-storage/angular-local-storage.js"></script>
     <script src="lib/ng-mobile-menu/ng-mobile-menu.js"></script>
     <script src="lib/angular-dragdrop/angular-dragdrop.js"></script>
@@ -64,6 +66,8 @@
     <script src="lib/angular-file-upload/angular-file-upload.js"></script>
     <script src="lib/angular-fcsa-number/fcsaNumber.js"></script>
     <script src="lib/angular-base64-upload/angular-base64-upload.js"></script>
+    <script src="lib/select2/select2.js"></script>
+    <script src="lib/angular-ui-select2/select2.js"></script>
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
     <script>
@@ -90,6 +94,7 @@
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>
+    <script type="text/javascript" src="scripts/state.js"></script>
     <script type="text/javascript" src="scripts/configenv.js"></script>
     <script type="text/javascript" src="scripts/controllers/CatalogController.js"></script>
     <script type="text/javascript" src="scripts/controllers/HomeController.js"></script>
@@ -106,6 +111,7 @@
     <script type="text/javascript" src="scripts/controllers/InvoiceController.js"></script>
     <script type="text/javascript" src="scripts/controllers/InvoiceItemsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/NotificationsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ReportsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ContextMenuModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/PromoItemContentModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ReplicateListModalController.js"></script>
@@ -167,7 +173,9 @@
     <script type="text/javascript" src="scripts/services/BankAccountService.js"></script>
     <script type="text/javascript" src="scripts/services/MarketingService.js"></script>
     <script type="text/javascript" src="scripts/services/MessagePreferenceService.js"></script>
+    <script type="text/javascript" src="scripts/services/ReportService.js"></script>
     <script type="text/javascript" src="scripts/services/ExportService.js"></script>
+    <script type="text/javascript" src="scripts/services/BroadcastService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/InvoiceResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
@@ -182,6 +190,7 @@
     <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
+    <script type="text/javascript" src="scripts/animations/SlideAnimation.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
     <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>

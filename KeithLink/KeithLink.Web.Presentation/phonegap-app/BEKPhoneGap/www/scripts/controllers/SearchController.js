@@ -190,7 +190,6 @@ angular.module('bekApp')
       $scope.loadingResults = true;
 
       return getData().then(function(data) {
-        $scope.loadingResults = false;
         $scope.totalItems = data.totalcount;
 
         // append results to existing data (for infinite scroll)
@@ -203,7 +202,13 @@ angular.module('bekApp')
 
         setBreadcrumbs(data);
 
+        delete $scope.searchMessage;
+        
         return data.facets;
+      }, function(error) {
+        $scope.searchMessage = 'Error loading products.';
+      }).finally(function() {
+        $scope.loadingResults = false;
       });
     }
 
