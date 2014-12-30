@@ -1,22 +1,63 @@
 'use strict';
 
+/******
+used to share and copy lists to other customers
+
+takes 2 resolve values
+
+list      : obj - list to share/copy
+customers : array - list of customer objects the current user has access to share with
+******/
+
 angular.module('bekApp')
-.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'list', 'customers',
-  function ($scope, $modalInstance, ListService, list, customers) {
+.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'UserProfileService', 'list',
+  function ($scope, $modalInstance, ListService, UserProfileService, list) {
 
   $scope.list = list;
-  $scope.customers = customers;
+  // $scope.customers = customers;
   $scope.selectedShareCustomers = [];
   $scope.selectedCopyCustomers = [];
+  $scope.loadingResults = true;
 
-  // select shared customers
-  list.sharedwith.forEach(function(customerNumber) {
-    customers.forEach(function(customer) {
-      if (customerNumber === customer.customerNumber) {
-        $scope.selectedShareCustomers.push(customer);
-      }
+  var customersStartingIndex = 0;
+  var customersPerPage = 30;
+
+  function loadCustomers(size, from) {
+    $scope.loadingResults = true;
+    return UserProfileService.searchUserCustomers('', size, from).then(function(data) {
+      $scope.loadingResults = false;
+      $scope.totalCustomers = data.totalResults;
+      var customers = data.results;
+
+      // select shared customers
+      list.sharedwith.forEach(function(customerNumber) {
+        customers.forEach(function(customer) {
+          if (customerNumber === customer.customerNumber) {
+            $scope.selectedShareCustomers.push(customer);
+          }
+        });
+      });
+
+      return customers;
     });
+  }
+
+  loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
+    $scope.customers = customers;
   });
+
+  // INFINITE SCROLL
+  $scope.infiniteScrollLoadMore = function() {
+    if (($scope.customers && $scope.customers.length >= $scope.totalCustomers) || $scope.loadingResults) {
+      return;
+    }
+
+    customersStartingIndex += customersPerPage;
+
+    loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
+      $scope.customers = $scope.customers.concat(customers);
+    });
+  };
 
   $scope.shareList = function(list, customers) {
     ListService.shareList(list, customers).then(function() {

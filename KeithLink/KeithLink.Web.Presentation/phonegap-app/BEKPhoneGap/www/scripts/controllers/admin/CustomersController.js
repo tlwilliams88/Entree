@@ -4,7 +4,6 @@ angular.module('bekApp')
   .controller('CustomersController', ['$scope', '$stateParams', 'LocalStorage', 'MessagePreferenceService', 'UserProfileService',
     function ($scope, $stateParams, LocalStorage, MessagePreferenceService, UserProfileService) {
 
-      console.log(LocalStorage.getProfile());
       /*---init---*/
       var init = function(){
         console.log(LocalStorage.getProfile());

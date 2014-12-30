@@ -12,6 +12,12 @@ angular.module('bekApp')
         method: 'PUT'
       },
 
+      getOrdersByDate: {
+        url: '/order/date',
+        method: 'GET',
+        isArray: true
+      },
+
       resubmitOrder: {
         url: '/order/:orderNumber/changeorder',
         method: 'POST'
