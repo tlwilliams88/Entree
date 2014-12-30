@@ -206,7 +206,7 @@
             Pack/Size
           </th>
           <th class="hidden-mobile-visible-print"></th>
-          <th class="hidden-mobile-visible-print" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
+          <th class="hidden-mobile-visible-print" ng-show="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
             Price
             <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
@@ -219,21 +219,21 @@
             <span favorite-icons></span>
           </td>
           <td>
-            <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+            <a ng-click="goToItemDetails(item)">{{::item.itemnumber}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.brand_extended_description}}
+            {{::item.brand_extended_description}}
           </td>
           <td>
-            {{item.name}}
+            {{::item.name}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.pack | number}} / {{item.size}}
+            {{::item.pack | number}} / {{::item.size}}
           </td>
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
-          <td class="hidden-mobile-visible-print">
-            <span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
+          <td class="hidden-mobile-visible-print" ng-show="canSeePrices">
+            <span ng-if="item.caseprice !== '$0.00'">{{::item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
@@ -252,18 +252,18 @@
               <tbody>
                 <tr>
                   <td>Pack/Size</td>
-                  <td>{{item.pack | number}} / {{item.size}}</td>
+                  <td>{{::item.pack | number}} / {{::item.size}}</td>
                 </tr>
                 <tr>
                   <td>Brand</td>
-                  <td>{{item.brand_extended_description}}</td>
+                  <td>{{::item.brand_extended_description}}</td>
                 </tr>
                 <tr>
                   <td colspan="2" item-icons></td>
                 </tr>
-                <tr ng-if="item.caseprice !== '$0.00'">
+                <tr ng-if="item.caseprice !== '$0.00'" ng-show="canSeePrices">
                   <td>Price</td>
-                  <td>{{item.caseprice}}</td>
+                  <td>{{::item.caseprice}}</td>
                 </tr>
               </tbody>
             </table>

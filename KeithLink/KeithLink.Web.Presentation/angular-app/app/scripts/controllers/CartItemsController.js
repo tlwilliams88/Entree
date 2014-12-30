@@ -78,11 +78,11 @@ angular.module('bekApp')
     };
 
     $scope.sortByPrice = function(item) {
-      if (item.price) {
-        return item.price;
-      } else {
+      // if (item.price) {
+      //   return item.price;
+      // } else {
         return item.each ? item.packageprice : item.caseprice;
-      }
+      // }
     };
 
     var processingSaveCart = false;
