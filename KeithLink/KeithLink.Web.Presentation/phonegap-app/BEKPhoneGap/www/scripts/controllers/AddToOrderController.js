@@ -96,49 +96,67 @@ angular.module('bekApp')
       return itemFound;
     }
 
+    var processingUpdateCart = false; 
     function updateCart(cart, items) {
-      var updatedCart = angular.copy(cart);
-      CartService.addItemsToCart(updatedCart, items).then(function(cart) {
-        $scope.selectedCart = cart;
+      if (!processingUpdateCart) {
+        processingUpdateCart = true;
+        var updatedCart = angular.copy(cart);
+        CartService.addItemsToCart(updatedCart, items).then(function(cart) {
+          $scope.selectedCart = cart;
 
-        // reset quantities
-        angular.forEach($scope.selectedList.items, function(item) {
-          item.quantityincart += item.quantity; 
-          item.quantity = 0;
+          // reset quantities
+          angular.forEach($scope.selectedList.items, function(item) {
+            item.quantityincart += item.quantity; 
+            item.quantity = 0;
+          });
+
+          $scope.addToOrderForm.$setPristine();
+          $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + cart.name + '.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding items to cart.');
+        }).finally(function() {
+          processingUpdateCart = false;
         });
-
-        $scope.addToOrderForm.$setPristine();
-        $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + cart.name + '.');
-      }, function() {
-        $scope.displayMessage('error', 'Error adding items to cart.');
-      });
+      }
     }
 
+    var processingSaveCart = false;
     function saveNewCart(items, shipDate) {
-      CartService.createCart(items, shipDate).then(function(cartId) {
-        // $scope.selectedCart = cart;
-        $scope.addToOrderForm.$setPristine();
+      if (!processingSaveCart) {
+        processingSaveCart = true;
+        CartService.createCart(items, shipDate).then(function(cartId) {
+          // $scope.selectedCart = cart;
+          $scope.addToOrderForm.$setPristine();
 
-        var cart = {
-          id: cartId
-        };
+          var cart = {
+            id: cartId
+          };
 
-        $scope.goToList($scope.selectedList, cart);
-        $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
-      }, function() {
-        $scope.displayMessage('error', 'Error adding items to cart.');
-      });
+          $scope.goToList($scope.selectedList, cart);
+          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding items to cart.');
+        }).finally(function(){
+          processingSaveCart = false;
+        });
+      }
     }
 
+    var processingSaveChangeOrder = false;
     function addItemsToChangeOrder(items, order) {
-      order.items = order.items.concat(items);
-      OrderService.updateOrder(order).then(function(cart) {
-        $scope.selectedCart = cart;
-        $scope.addToOrderForm.$setPristine();
-        $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.ordernumber + '.');
-      }, function() {
-        $scope.displayMessage('error', 'Error adding items to Order # ' + order.ordernumber + '.');
-      });
+      if (!processingSaveChangeOrder) {
+        processingSaveChangeOrder = true;
+        order.items = order.items.concat(items);
+        OrderService.updateOrder(order).then(function(cart) {
+          $scope.selectedCart = cart;
+          $scope.addToOrderForm.$setPristine();
+          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.ordernumber + '.');
+        }, function() {
+          $scope.displayMessage('error', 'Error adding items to Order # ' + order.ordernumber + '.');
+        }).finally(function() {
+          processingSaveChangeOrder = false;
+        });
+      }
     }
 
     $scope.addItemsToCart = function(list, cart) {
@@ -215,5 +233,11 @@ angular.module('bekApp')
         }
       }
     };
+
+
+    // create new cart if no cart was selected
+    if (!selectedCart.items) {
+      $scope.createNewCart();
+    }
 
   }]);

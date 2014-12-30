@@ -49,14 +49,17 @@
   @if $borderColor == "none" {
     $selector: "&:after";
   }
-  #{$selector} {
-    border: solid transparent;
-    content: " ";
-    height: 0;
-    width: 0;
-    position: absolute;
-    pointer-events: none;
-    visibility: visible;
+  @media screen {
+    #{$selector} {
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+      visibility: visible;
+    }
+    
   }
   
   &:after {

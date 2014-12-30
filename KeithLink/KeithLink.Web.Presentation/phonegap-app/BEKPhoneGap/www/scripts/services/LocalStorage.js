@@ -16,7 +16,7 @@ angular.module('bekApp')
       clearAll: function() {
         localStorageService.remove(Constants.localStorage.userProfile);
         localStorageService.remove(Constants.localStorage.userToken);
-        localStorageService.remove(Constants.localStorage.currentLocation);
+        localStorageService.remove(Constants.localStorage.currentCustomer);
         localStorageService.remove(Constants.localStorage.branchId);
         localStorageService.remove(Constants.localStorage.customerNumber);
       },
@@ -60,11 +60,6 @@ angular.module('bekApp')
           profile.displayname = profile.firstname + ' ' + profile.lastname;
         }
 
-        // fix for large list of customers, needs to be removed
-        if (profile.user_customers.length > 50) {
-          profile.user_customers = profile.user_customers.splice(0, 5);
-        }
-
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 
@@ -87,7 +82,7 @@ angular.module('bekApp')
       },
 
       getCurrentCustomer: function() {
-        return localStorageService.get(Constants.currentCustomer);
+        return localStorageService.get(Constants.localStorage.currentCustomer);
       },
 
       setSelectedBranchInfo: function(branchId) { // for guest users
@@ -95,8 +90,8 @@ angular.module('bekApp')
       },
 
       setSelectedCustomerInfo: function(customer) { // for order entry users
-        setBranchId(customer.customerBranch);
-        setCustomerNumber(customer.customerNumber);
+        setBranchId(customer.customer.customerBranch);
+        setCustomerNumber(customer.customer.customerNumber);
         setCurrentCustomer(customer);
       }
     };

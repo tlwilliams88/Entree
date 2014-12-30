@@ -9,16 +9,7 @@ angular.module('bekApp')
 
   $scope.orders = orders;
 
-  var profile = LocalStorage.getProfile();
-  var customerNumber = LocalStorage.getCustomerNumber();
-  var currentCustomer;
-
-  // get last order update time for current customer
-  angular.forEach(profile.user_customers, function(customer) {
-    if (customer.customerNumber === customerNumber) {
-      currentCustomer = customer;
-    }
-  });
+  var currentCustomer = $scope.selectedUserContext.customer;
 
   var data = { response: {}, calls: 0 };
   var poller = function() {
