@@ -98,10 +98,9 @@
 .bek-reordered-item td  {
   background-color: $color-yellow !important;
 }
-// // prevents weird page jumping when reordering items that are scrolled down the page
-// .bek-reorder-overflow {
-//   overflow: auto;
-// }
+.custom-lists__table td {
+  background-clip: padding-box; // firefox border fix for position: relative table elements
+}
 
 /*SHARE/COPY LIST MODAL*/
 .share-customers, .copy-customers {

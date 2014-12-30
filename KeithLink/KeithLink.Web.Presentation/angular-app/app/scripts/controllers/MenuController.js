@@ -16,6 +16,9 @@ angular.module('bekApp')
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
 
+    $scope.messageText = 'Hello world!';
+    $scope.displayGlobalMessage = true;
+
     $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
     refreshAccessPermissions();

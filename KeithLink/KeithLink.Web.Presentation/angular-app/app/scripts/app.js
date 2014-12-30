@@ -11,7 +11,7 @@
  */
 angular
   .module('bekApp', [
-    // 'ngAnimate',
+    'ngAnimate',
     // 'ngCookies',
     'ngResource',
     'ngSanitize',
