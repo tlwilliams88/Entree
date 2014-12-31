@@ -1,47 +1,53 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomersController', ['$scope', '$stateParams', 'LocalStorage', 'MessagePreferenceService', 'UserProfileService',
-    function ($scope, $stateParams, LocalStorage, MessagePreferenceService, UserProfileService) {
+  .controller('CustomersController', ['$scope', '$stateParams', 'LocalStorage', 'MessagePreferenceService', 'UserProfileService', 'AccountService', 'CustomerService',
+    function ($scope, $stateParams, LocalStorage, MessagePreferenceService, UserProfileService, AccountService, CustomerService) {
 
       /*---init---*/
       var init = function(){
-        console.log(LocalStorage.getProfile());
-        LocalStorage.getProfile().user_customers.forEach(function (customer) {
-          if($stateParams.customerNumber == customer.customerNumber){
-            $scope.customer = customer;
-          }
-        });
-
-        var prefArray = [];
-
-        $scope.userProfile.messagingpreferences.forEach(function (preference, index) {
-          if(preference.customerNumber === $scope.customer.customerNumber){
-            //for every topic of notification build a preference object
-            $scope.userProfile.messagingpreferences[index].preferences.forEach(function(preference){
-              var newPreference = {};
-              //set description and notification type
-              newPreference.description = preference.description;
-              newPreference.notificationType = preference.notificationType;
-              //set default check to false
-              newPreference.channels = [false,false,false];
-              //override defaulted false with true if it is sent by the pref object
-              preference.selectedChannels.forEach(function (selectedChannel) {
-                if(selectedChannel.channel === 1){
-                  newPreference.channels[0] = true;
-                } else if(selectedChannel.channel === 2){
-                  newPreference.channels[1] = true;
-                } else if(selectedChannel.channel === 4){
-                  newPreference.channels[2] = true;
-                }
-              });
-              //add new pref object with booleans to the temporary array
-              prefArray.push(newPreference);
+        var accountid = '';
+        AccountService.getAccountByUser(LocalStorage.getProfile().userid).then(function (success) {
+          accountid = success.id;
+          //get all customers on account
+          CustomerService.getCustomers(accountid).then(function(success){
+            success.forEach(function (customer) {
+              if($stateParams.customerNumber == customer.customerNumber){
+                $scope.customer = customer;
+              }
             });
 
-            //persist temp array to scope for use in DOM
-            $scope.defaultPreferences = prefArray;
-          }
+            var prefArray = [];
+
+            $scope.userProfile.messagingpreferences.forEach(function (preference, index) {
+              if(preference.customerNumber === $scope.customer.customerNumber){
+                //for every topic of notification build a preference object
+                $scope.userProfile.messagingpreferences[index].preferences.forEach(function(preference){
+                  var newPreference = {};
+                  //set description and notification type
+                  newPreference.description = preference.description;
+                  newPreference.notificationType = preference.notificationType;
+                  //set default check to false
+                  newPreference.channels = [false,false,false];
+                  //override defaulted false with true if it is sent by the pref object
+                  preference.selectedChannels.forEach(function (selectedChannel) {
+                    if(selectedChannel.channel === 1){
+                      newPreference.channels[0] = true;
+                    } else if(selectedChannel.channel === 2){
+                      newPreference.channels[1] = true;
+                    } else if(selectedChannel.channel === 4){
+                      newPreference.channels[2] = true;
+                    }
+                  });
+                  //add new pref object with booleans to the temporary array
+                  prefArray.push(newPreference);
+                });
+
+                //persist temp array to scope for use in DOM
+                $scope.defaultPreferences = prefArray;
+              }
+            });
+          });
         });
       };
 
