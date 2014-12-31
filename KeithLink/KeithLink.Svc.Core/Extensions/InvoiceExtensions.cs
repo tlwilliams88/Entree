@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value)
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, bool isKPayCustomer)
 		{
 			return new InvoiceModel()
 			{
@@ -27,7 +27,8 @@ namespace KeithLink.Svc.Core.Extensions
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
-				OrderDate = value.InvoiceDate
+				OrderDate = value.InvoiceDate,
+                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && isKPayCustomer)
 			};
 		}
 
