@@ -123,10 +123,13 @@ angular.module('bekApp')
         yAxisValues.push(yValue);
       }
 
+      console.log(yAxisValues);
+
       monthData.unshift('x');
       barData.unshift('bar');
       lineData.unshift('line');
 
+      // see c3js.org/reference.html website for list of options
       var chart = c3.generate({
         bindto: '#chart_div',
         data: {
@@ -146,13 +149,25 @@ angular.module('bekApp')
         },
         axis: {
           x: {
-            type: 'category'
+            type: 'category',
+            label: {
+              text: 'Month',
+              position: 'outer-center'
+            }
           },
           y: {
             tick: {
-              values: yAxisValues
+              count: 5,
+              values: yAxisValues,
+              format: function (amount) { 
+                return '$' + $filter('number')(amount); 
+              }
             },
-            max: yAxisValues[yAxisValues.length - 1]
+            // max: yAxisValues[yAxisValues.length - 1]
+            label: {
+              text: 'Amount',
+              position: 'outer-middle'
+            }
           }
         },
         legend: {
@@ -162,8 +177,8 @@ angular.module('bekApp')
           pattern: ['#f3f1eb', '#489ecf'] // background, blue
         },
         padding: {
-          bottom: -20,
-          left: 40
+          // bottom: -20,
+          // left: 40
         },
         interaction: {
           enabled: false
