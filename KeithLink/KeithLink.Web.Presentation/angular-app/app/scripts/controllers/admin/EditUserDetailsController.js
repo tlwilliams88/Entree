@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$stateParams', 'UserProfileService', 'LocalStorage', 'returnedProfile',
-    function ($scope, $stateParams, UserProfileService, LocalStorage, returnedProfile) {
+  .controller('EditUserDetailsController', ['$scope', '$stateParams', 'UserProfileService', 'LocalStorage', 'returnedProfile', 'AccountService', 'CustomerService',
+    function ($scope, $stateParams, UserProfileService, LocalStorage, returnedProfile, AccountService, CustomerService) {
       /*---convenience functions---*/
       var processProfile = function(newProfile){
         //rename email <----- NEEDS FIX ON RESPONSE TYPE
@@ -60,11 +60,16 @@ angular.module('bekApp')
       $scope.roles = ["owner", "accounting", "approver", "buyer", "guest"];
 
       //get customers from the account of the currently logged in user
-      //$scope.customers = CustomerService.getAllCustomers(LocalStorage.getProfile().accountId);
-      $scope.customers = LocalStorage.getProfile().user_customers; // <--- NEEDS TO HIT CUSTOMER SERVICE ENDPOINT INSTEAD
-
-      //get current user profile
-      processProfile(returnedProfile);
+      var accountid = '';
+      AccountService.getAccountByUser(LocalStorage.getProfile().userid).then(function (success) {
+        accountid = success.id;
+        //get all customers on account
+        CustomerService.getCustomers(accountid).then(function (success) {
+          $scope.customers = success;
+          //get current user profile
+          processProfile(returnedProfile);
+        })
+      });
 
       /*---selected customers functions---*/
       $scope.changeAllSelected = function (state) {

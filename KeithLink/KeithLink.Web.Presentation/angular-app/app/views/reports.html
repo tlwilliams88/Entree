@@ -8,11 +8,43 @@
 <div class="page-content">
   <div class="row">
       <form id="itemUsageForm" >
-          <label for="fromDate" style="margin-left:10px;">From:</label>
-          <input type="text" name="fromDate" id="fromDate" ng-model="itemusagequery.fromDate" />
-          <label for="toDate" style="margin-left:10px;">To:</label>
-          <input type="text" name="toDate" id="toDate" ng-model="itemusagequery.toDate" />
-          <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+          <table>
+            <tr>
+              <td style="font-weight:bold;padding-left:15px;padding-right:15px;">From:</td>
+              <td class="hidden-mobile-visible-print datepicker">
+              <a
+                ng-click="openDatepickerFrom = true"
+                class="icon-calendar"
+                datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+                ng-model="itemusagequery.fromDate"
+                is-open="openDatepickerFrom"
+                min-date="datepickerOptions.minDate"
+                max-date="datepickerOptions.maxDate"
+                datepicker-options="datepickerOptions.options"
+                date-disabled="disabled(date, mode)"
+                close-text="Close"></a>
+              {{itemusagequery.fromDate | date:shortDate}}
+            </td>
+            <td style="font-weight:bold;padding-left:15px;padding-right:15px;">To:</td>
+            <td class="hidden-mobile-visible-print datepicker">
+              <a
+                ng-click="openDatepickerTo = true"
+                class="icon-calendar"
+                datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+                ng-model="itemusagequery.toDate"
+                is-open="openDatepickerTo"
+                min-date="datepickerOptions.minDate"
+                max-date="datepickerOptions.maxDate"
+                datepicker-options="datepickerOptions.options"
+                date-disabled="disabled(date, mode)"
+                close-text="Close"></a>
+              {{itemusagequery.toDate | date:shortDate}}
+            </td>
+            <td style="padding-left:25px;">
+              <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+            </td>
+            </tr>
+          </table>          
       </form>
 
   	<div class="col-md-9 col-xs-12">
@@ -28,7 +60,7 @@
               Item #
               <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
-            <th class="sort-col-header hidden-sm hidden-xs" ng-click="sortTable('Name')" >
+            <th class="sort-col-header" ng-click="sortTable('Name')" >
               Name
               <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
@@ -47,13 +79,13 @@
             <td>
               <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
             </td>
-            <td class="hidden-sm hidden-xs">
+            <td>
               {{item.name}}
             </td>
             <td>
               {{item.totalquantityordered}}
             </td>
-            <td class="hidden-sm hidden-xs">
+            <td>
               {{item.totalquantityshipped}}
             </td>
           </tr>

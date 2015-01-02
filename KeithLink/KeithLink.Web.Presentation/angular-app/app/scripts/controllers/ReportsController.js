@@ -12,8 +12,10 @@ angular.module('bekApp')
     function ($scope, $state, ReportService) {
         $scope.itemusagequery = {};
         $scope.itemUsageForm = {};
-        $scope.itemusagequery.fromDate = '1/23/2014';
-        $scope.itemusagequery.toDate = '1/11/2015';
+        var initialFromDate = new Date();
+        initialFromDate.setMonth(initialFromDate.getMonth() - 6);
+        $scope.itemusagequery.fromDate = initialFromDate;
+        $scope.itemusagequery.toDate = new Date();
         $scope.getItemUsage = ReportService.getItemUsageReport;
         $scope.sortField = 'TotalQuantityOrdered';
         $scope.sortReverse = true;
@@ -53,6 +55,16 @@ angular.module('bekApp')
                 loadItemUsage();
             }
         };
+
+          $scope.datepickerOptions = {
+            minDate: initialFromDate,
+            maxDate: new Date(),
+            options: {
+              dateFormat: 'yyyy-MM-dd',
+              showWeeks: false
+            }
+          };
+
 
         // INIT
         loadItemUsage();
