@@ -118,6 +118,7 @@ angular.module('bekApp')
     filterFields: {
       field: 'ispayable',
       value: true,
+      type: 'equals'
     }
   },
    {

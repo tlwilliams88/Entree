@@ -106,7 +106,7 @@ namespace KeithLink.Svc.InternalSvc {
 
         public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
             List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel()).ToList();
+            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(false)).ToList(); // TODO: is KPayCustomer value required here?
 
             foreach(InvoiceModel inv in returnInvoices){
                 // set link to web now

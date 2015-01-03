@@ -172,7 +172,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return null;
 
             //Convert to invoice model
-            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel();
+            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer.KPayCustomer);
 
             // set link to web now
             System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
@@ -198,9 +198,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             if (details != null && details.OrderDetails != null) {
                 invoiceModel.Items = details.OrderDetails.Select(d => d.ToInvoiceItem()).ToList();
             }
-
-            invoiceModel.IsPayable = customer.KPayCustomer;
-
+            
             //look up product details
             LookupProductDetails(invoiceModel, userContext);
 
@@ -218,13 +216,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
 
         private PagedResults<InvoiceModel> GetInvoiceResults(string branchId, string customerNumber, bool isKpayCustomer, PagingModel paging, List<EFInvoice.Invoice> invoices) {
-            var pagedInvoices = invoices.Select(i => i.ToInvoiceModel()).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+            var pagedInvoices = invoices.Select(i => i.ToInvoiceModel(isKpayCustomer)).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
             foreach (var inv in pagedInvoices.Results) {
-                if (inv.Status == InvoiceStatus.Open || inv.Status == InvoiceStatus.PastDue) {
-                    inv.IsPayable = isKpayCustomer;
-                }
-
                 // set link to web now
                 System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
                 dictionary.Add("branch", branchId);
