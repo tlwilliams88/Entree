@@ -55,7 +55,7 @@
           {{key}} - {{value}}
         </div>
       </div>
-      <div ng-if="!item.orderhistory">
+      <div ng-if="item.orderHistoryKeys.length === 0">
         No order history.
       </div>
       <hr class="hidden-sm">

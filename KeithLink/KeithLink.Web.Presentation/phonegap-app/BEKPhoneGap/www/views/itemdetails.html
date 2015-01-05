@@ -7,224 +7,226 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-xs-12 col-md-8">
-    <div ng-show="item.productimages.length > 0" class="pull-left item-details__main-image">
-      <img ng-src="{{item.productimages[0].url}}" alt=""/>
-    </div>
-    <div class="item-details__main-info pull-left">
-      <h3 class="item-name">
-        <span favorite-item-click-handlers favorite-icons></span>
-        {{item.name}}
-        <span class="item-details__icons" item-icons="item"></span>
-      </h3>
-      <div>
-        <div ng-if="item.description" class="main-info__description">
-          <strong>Description:</strong> {{item.description}}
-        </div>
-        <div>
-          <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-          <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |</span>
-          <span ng-if="item.packageprice !== '$0.00' && item.packageprice">
-            <strong>Package:</strong> {{item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
-          </span>
-          <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
-        </div>
-        <div>
-          <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{item.brand_extended_description}}</span>
-        </div>
-        <div>
-          <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
-        </div>
+<div class="page-content">
+  <div class="row">
+    <div class="col-xs-12 col-md-8">
+      <div ng-show="item.productimages.length > 0" class="pull-left item-details__main-image">
+        <img ng-src="{{item.productimages[0].url}}" alt=""/>
       </div>
-      <div ng-if="canManageLists || canCreateOrders || canSubmitOrders" class="hidden-print sub-content">
-        <div class="btn-primary btn btn-lg" context-menu context-menu-template>
-          Add To...
-          <span class="icon-arrow-down6"></span>
+      <div class="item-details__main-info pull-left">
+        <h3 class="item-name">
+          <span favorite-item-click-handlers favorite-icons></span>
+          {{item.name}}
+          <span class="item-details__icons" item-icons="item"></span>
+        </h3>
+        <div>
+          <div ng-if="item.description" class="main-info__description">
+            <strong>Description:</strong> {{item.description}}
+          </div>
+          <div>
+            <span><strong>Item #</strong> {{item.itemnumber}} | </span>
+            <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |</span>
+            <span ng-if="item.packageprice !== '$0.00' && item.packageprice">
+              <strong>Package:</strong> {{item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+            </span>
+            <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
+          </div>
+          <div>
+            <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{item.brand_extended_description}}</span>
+          </div>
+          <div>
+            <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+          </div>
         </div>
+        <div ng-if="canManageLists || canCreateOrders || canSubmitOrders" class="hidden-print sub-content">
+          <div class="btn-primary btn btn-lg" context-menu context-menu-template>
+            Add To...
+            <span class="icon-arrow-down6"></span>
+          </div>
 
-        <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
-      </div>
-   </div>
-  </div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <h4 class="no-margin-top">Order History</h4>
-    <div class="row">
-      <div class="col-xs-4 nowrap" ng-repeat="(key, value) in item.orderhistory">
-        {{key}} - {{value}}
-      </div>
-    </div>
-    <div ng-if="!item.orderhistory">
-      No order history.
-    </div>
-    <hr class="hidden-sm">
-  </div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <h4>Item Notes
-      <a ng-click="openNotesModal(item)"><span class="icon-pencil large-icon"></span></a>
-    </h4>
-    <p>{{item.notes || 'None'}}</p>
-  </div>
-</div>
-
-<div class="row sub-content">
-  <div class="col-lg-12">
-    <tabset class="tabset tab-border">
-      <tab heading="Item Specifications">
-        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
-          <table class="table item-details__table table-striped-rows no-margin">
-            <colgroup>
-              <col style="width: 25%">
-              <col style="width: 75%">
-            </colgroup>
-            <tbody>
-              <tr>
-                <th>Specification</th>
-                <th>Details</th>
-              </tr>
-              <tr class="odd">
-                <td>Item #</td>
-                <td>{{item.itemnumber}}</td>
-              </tr>
-              <tr class="even">
-                <td>GTIN</td>
-                <td>{{item.upc}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Servings / Case</td>
-                <td>{{item.nutritional.servingsperpack}}</td>
-              </tr>
-              <tr class="even">
-                <td>Portion Cost</td>
-                <td>{{item.packageprice}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Portion Size</td>
-                <td>{{item.nutritional.servingsize}} {{item.nutritional.servingsizeuom}}</td>
-              </tr>
-              <!-- Always null
-              <tr>
-                <td>Portion Size</td>
-                <td>{{item.nutritional.servingsuggestion}}</td>
-              </tr> -->
-              <!-- <tr class="even">
-                <td>Previous Orders</td>
-                <td></td>
-              </tr> -->
-              <tr class="even">
-                <td>Manufacturer</td>
-                <td>{{item.manufacturer_name}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Manufacturer Brand</td>
-                <td>{{item.manufacturer_brand}}</td>
-              </tr>
-              <tr class="even">
-                <td>Vendor</td>
-                <td>{{item.vendor_num}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Vendor Item #</td>
-                <td>{{item.manufacturer_number}}</td>
-              </tr>
-              <tr class="even">
-                <td>Category</td>
-                <td>{{item.categoryname}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Class</td>
-                <td>{{item.iclass}}</td>
-              </tr>
-              <tr class="even">
-                <td>Storage Instructions</td>
-                <td>{{item.nutritional.storagetemp}}</td>
-              </tr>
-              <tr class="odd">
-                <td>Gross Wt</td>
-                <td>{{item.nutritional.grossweight}}</td>
-              </tr>
-              <tr class="even">
-                <td>Case Cube</td>
-                <td>{{item.icube}}</td>
-              </tr>
-            </tbody>
-          </table>
-      </tab>
-      <tab heading="Dietary Specifications">
-        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
-          <table class="table item-details__table table-striped-rows no-margin">
-            <colgroup>
-              <col style="width: 15%">
-              <col style="width: 85%">
-            </colgroup>
-            <tbody>
-              <tr class="even">
-                <td><strong>Diet Types</strong></td>
-                <td ng-if="item.nutritional.diet.length > 0" class="text-capitalize">
-                  <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
-                  <span ng-repeat-end ng-if="!$last">, </span>
-                </td>
-                <td ng-if="!item.nutritional.diet.length > 0">Not Tested</td>
-              </tr>
-              <tr class="odd">
-                <td><strong>Contains</strong></td>
-                <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
-                <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
-              </tr>
-              <tr class="even">
-                <td><strong>May Contain</strong></td>
-                <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
-                <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
-              </tr>
-              <tr class="odd">
-                <td><strong>Free From</strong></td>
-                <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
-                <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
-              </tr>
-              <tr class="even">
-                <td><strong>Ingredients</strong></td>
-                <td>{{item.nutritional.ingredients}}</td>
-              </tr>
-            </tbody>
-          </table>
-      </tab>
-      <tab heading="Nutrition">
-        <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
-          <table class="table item-details__table table-striped-rows no-margin">
-            <colgroup>
-              <col style="width: 20%">
-              <col style="width: 20%">
-              <col style="width: 20%">
-              <col style="width: 20%">
-              <col style="width: 20%">
-            </colgroup>
-            <tbody>
-              <tr class="even">
-                <th>Nutrient Type</th>
-                <th>Nutrient Type Code</th>
-                <th>Daily Value</th>
-                <th>MS. Type ID</th>
-                <th>MS. Value</th>
-              </tr>
-              <tr ng-repeat="nutrition in item.nutritional.nutrition" ng-class="{ even : $odd, odd: $even }">
-                <td>{{nutrition.nutrienttype}}</td>
-                <td>{{nutrition.nutrienttypecode}}</td>
-                <td>{{nutrition.dailyvalue}}</td>
-                <td>{{nutrition.measurementtypeid}}</td>
-                <td>{{nutrition.measurementvalue}}</td>
-              </tr>
-              <tr class="odd" ng-if="!item.nutritional.nutrition || item.nutritional.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
-            </tbody>
-          </table>
-      </tab>
-      <tab heading="Images" ng-show="item.productimages.length > 0">
-        <div class="hidden-print item-details__images">
-            <a ng-href="{{image.url}}" target="_blank" ng-repeat="image in item.productimages">
-                <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
-            </a>
-            <br />
+          <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
         </div>
-      </tab>
-    </tabset>
+     </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <h4 class="no-margin-top">Order History</h4>
+      <div class="row">
+        <div class="col-xs-4 nowrap" ng-repeat="(key, value) in item.orderhistory">
+          {{key}} - {{value}}
+        </div>
+      </div>
+      <div ng-if="!item.orderhistory">
+        No order history.
+      </div>
+      <hr class="hidden-sm">
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <h4>Item Notes
+        <a ng-click="openNotesModal(item)"><span class="icon-pencil large-icon"></span></a>
+      </h4>
+      <p>{{item.notes || 'None'}}</p>
+    </div>
+  </div>
+
+  <div class="row sub-content">
+    <div class="col-lg-12">
+      <tabset class="tabset tab-border">
+        <tab heading="Item Specifications">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Item Specifications</h3>
+            <table class="table item-details__table table-striped-rows no-margin">
+              <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th>Specification</th>
+                  <th>Details</th>
+                </tr>
+                <tr class="odd">
+                  <td>Item #</td>
+                  <td>{{item.itemnumber}}</td>
+                </tr>
+                <tr class="even">
+                  <td>GTIN</td>
+                  <td>{{item.upc}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Servings / Case</td>
+                  <td>{{item.nutritional.servingsperpack}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Portion Cost</td>
+                  <td>{{item.packageprice}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Portion Size</td>
+                  <td>{{item.nutritional.servingsize}} {{item.nutritional.servingsizeuom}}</td>
+                </tr>
+                <!-- Always null
+                <tr>
+                  <td>Portion Size</td>
+                  <td>{{item.nutritional.servingsuggestion}}</td>
+                </tr> -->
+                <!-- <tr class="even">
+                  <td>Previous Orders</td>
+                  <td></td>
+                </tr> -->
+                <tr class="even">
+                  <td>Manufacturer</td>
+                  <td>{{item.manufacturer_name}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Manufacturer Brand</td>
+                  <td>{{item.manufacturer_brand}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Vendor</td>
+                  <td>{{item.vendor_num}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Vendor Item #</td>
+                  <td>{{item.manufacturer_number}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Category</td>
+                  <td>{{item.categoryname}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Class</td>
+                  <td>{{item.iclass}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Storage Instructions</td>
+                  <td>{{item.nutritional.storagetemp}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Gross Wt</td>
+                  <td>{{item.nutritional.grossweight}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Case Cube</td>
+                  <td>{{item.icube}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </tab>
+        <tab heading="Dietary Specifications">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
+            <table class="table item-details__table table-striped-rows no-margin">
+              <colgroup>
+                <col style="width: 15%">
+                <col style="width: 85%">
+              </colgroup>
+              <tbody>
+                <tr class="even">
+                  <td><strong>Diet Types</strong></td>
+                  <td ng-if="item.nutritional.diet.length > 0" class="text-capitalize">
+                    <span ng-repeat-start="diet in item.nutritional.diet">{{diet.diettype}}</span>
+                    <span ng-repeat-end ng-if="!$last">, </span>
+                  </td>
+                  <td ng-if="!item.nutritional.diet.length > 0">Not Tested</td>
+                </tr>
+                <tr class="odd">
+                  <td><strong>Contains</strong></td>
+                  <td ng-if="item.nutritional.allergens.contains.length > 0">{{item.nutritional.allergens.contains.join(', ')}}</td>
+                  <td ng-if="!item.nutritional.allergens.contains.length > 0">Not Tested</td>
+                </tr>
+                <tr class="even">
+                  <td><strong>May Contain</strong></td>
+                  <td ng-if="item.nutritional.allergens.maycontain.length > 0">{{item.nutritional.allergens.maycontain.join(', ')}}</td>
+                  <td ng-if="!item.nutritional.allergens.maycontain.length > 0">Not Tested</td>
+                </tr>
+                <tr class="odd">
+                  <td><strong>Free From</strong></td>
+                  <td ng-if="item.nutritional.allergens.freefrom.length > 0">{{item.nutritional.allergens.freefrom.join(', ')}}</td>
+                  <td ng-if="!item.nutritional.allergens.freefrom.length > 0">Not Tested</td>
+                </tr>
+                <tr class="even">
+                  <td><strong>Ingredients</strong></td>
+                  <td>{{item.nutritional.ingredients}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </tab>
+        <tab heading="Nutrition">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
+            <table class="table item-details__table table-striped-rows no-margin">
+              <colgroup>
+                <col style="width: 20%">
+                <col style="width: 20%">
+                <col style="width: 20%">
+                <col style="width: 20%">
+                <col style="width: 20%">
+              </colgroup>
+              <tbody>
+                <tr class="even">
+                  <th>Nutrient Type</th>
+                  <th>Nutrient Type Code</th>
+                  <th>Daily Value</th>
+                  <th>MS. Type ID</th>
+                  <th>MS. Value</th>
+                </tr>
+                <tr ng-repeat="nutrition in item.nutritional.nutrition" ng-class="{ even : $odd, odd: $even }">
+                  <td>{{nutrition.nutrienttype}}</td>
+                  <td>{{nutrition.nutrienttypecode}}</td>
+                  <td>{{nutrition.dailyvalue}}</td>
+                  <td>{{nutrition.measurementtypeid}}</td>
+                  <td>{{nutrition.measurementvalue}}</td>
+                </tr>
+                <tr class="odd" ng-if="!item.nutritional.nutrition || item.nutritional.nutrition.length === 0"><td colspan="5">Not Tested</td></tr>
+              </tbody>
+            </table>
+        </tab>
+        <tab heading="Images" ng-show="item.productimages.length > 0">
+          <div class="hidden-print item-details__images">
+              <a ng-href="{{image.url}}" target="_blank" ng-repeat="image in item.productimages">
+                  <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
+              </a>
+              <br />
+          </div>
+        </tab>
+      </tabset>
+    </div>
   </div>
 </div>

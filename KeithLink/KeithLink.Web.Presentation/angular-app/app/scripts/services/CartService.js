@@ -126,7 +126,7 @@ angular.module('bekApp')
 
         var newCart = {};
 		
-		if (!items) { // if null
+		    if (!items) { // if null
           newCart.items = [];
         } else if (Array.isArray(items)) { // if multiple items
           newCart.items = items;
@@ -153,20 +153,20 @@ angular.module('bekApp')
         return Cart.save({}, newCart).$promise.then(function(response) {
           newCart.id = response.listitemid;
           Service.carts.push(newCart);
-          return response.listitemid;
+          return newCart;
         });
       },
 
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
       updateCart: function(cart, params) {
-	    return Cart.update(params, cart).$promise.then(function(response) {
+        return Cart.update(params, cart).$promise.then(function(response) {
           return Service.getCart(response.id);
         });
       },
 
       addItemsToCart: function(cart, items) {
-		cart.items = items;
+		    cart.items = items;
         return Service.updateCart(cart, {deleteomitted: false});
       },
 

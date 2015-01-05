@@ -108,7 +108,6 @@ ng-class="{ odd : $odd, even: $even }"
 
 // inputs 
 table {
-
   tr {
 
     > td, > th {
@@ -147,4 +146,60 @@ table {
       }
     }
   }  
+}
+
+
+@media print {
+  .table {
+    > thead,
+    > tbody,
+    > tfoot {
+      > tr {
+        > th,
+        > td {
+          padding: 8px 3px;
+        }
+      }
+    }
+  }
+
+  table {
+    tr {
+      > td, > th {
+        &.input-col {
+          padding: 5px 3px;
+          
+          input[type="text"] {
+            border: 1px solid #c3bc9c;
+            padding: 3px;
+            width: 100%;
+          }
+        }
+
+        &.icon-col {
+          padding: 4px 3px;
+        }
+
+        &.notes-col {
+          max-width: 100px;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+
+      &.filter-row {
+        input {
+          width: 100%;
+        }
+      }
+
+      &.mobile-details-row table {
+        width: 100%;
+        > tbody > tr > td {
+          padding-top: 5px;
+        }
+      }
+    }  
+  }
 }

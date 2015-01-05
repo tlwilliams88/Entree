@@ -36,6 +36,7 @@ module.exports = function(grunt) {
       "www/images/{,*/}*",
       "www/lib/{,*/}*",
       "www/scripts/app.js",
+      "www/scripts/state.js",
       "www/scripts/configenv.js",
       "www/index.html",
       "www/scripts/controllers/{,*/}*",
@@ -43,6 +44,7 @@ module.exports = function(grunt) {
       "www/scripts/services/{,*/}*",
       "www/scripts/resources/{,*/}*",
       "www/scripts/filters/{,*/}*",
+      "www/scripts/animations/{,*/}*",
       "www/scss/{,*/}*",
       "www/views/{,*/}*"
       ],
@@ -95,13 +97,19 @@ cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
   },
       {
 cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
-    src: 'configenv.js',           // copy app.js
+    src: 'state.js',           // copy state.js
+    dest: 'www/scripts/',    // destination folder
+    expand: true           // required when using cwd
+  },
+      {
+cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
+    src: 'configenv.js',           // copy configenv.js
     dest: 'www/scripts/',    // destination folder
     expand: true           // required when using cwd
   },
       {
 cwd: '../../angular-app/app/',  // set working folder / root to copy
-    src: 'index.html',           // copy app.js
+    src: 'index.html',           // copy index.html
     dest: 'www/',    // destination folder
     expand: true           // required when using cwd
   },
@@ -121,6 +129,12 @@ cwd: '../../angular-app/app/scripts/directives/',  // set working folder / root 
 cwd: '../../angular-app/app/scripts/services/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/services/',    // destination folder
+    expand: true           // required when using cwd
+  },
+    {
+cwd: '../../angular-app/app/scripts/animations/',  // set working folder / root to copy
+    src: '**/*',           // copy all files and subfolders
+    dest: 'www/scripts/animations/',    // destination folder
     expand: true           // required when using cwd
   },
     {

@@ -1,0 +1,7 @@
+.hidden-mobile-visible-print {
+  @extend .hidden-xs;
+  @extend .hidden-sm;
+  @extend .visible-print;
+  @extend .visible-md;
+  @extend .visible-lg;
+}

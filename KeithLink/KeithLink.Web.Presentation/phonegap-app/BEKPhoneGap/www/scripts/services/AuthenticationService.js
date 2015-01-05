@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'UserProfileService', 'ENV', 'LocalStorage',
-    function ($http, $q, UserProfileService, ENV, LocalStorage) {
+  .factory('AuthenticationService', ['$http', 'UserProfileService', 'ENV', 'LocalStorage',
+    function ($http, UserProfileService, ENV, LocalStorage) {
 
     var Service = {
 
       authenticateUser: function(username, password) {
 
+        // must use query string, authen request does not work if sending data as a JSON object
         var data = 'grant_type=password&username=' + username + '&password=' + password + '&apiKey=' + ENV.apiKey;
 
         var headers = { headers : {
@@ -18,10 +19,11 @@ angular.module('bekApp')
         return $http.post('/authen', data, headers).then(function(response){
           var token = response.data;
 
-          // set date time when token expires
+          // calculate date time when token expires
           var expires_at = new Date();
           expires_at.setSeconds(expires_at.getSeconds() + token.expires_in);
 
+          // save token in local storage
           token.expires_at = expires_at;
           LocalStorage.setToken(token);
           return token;
@@ -42,6 +44,7 @@ angular.module('bekApp')
         LocalStorage.clearAll();
       },
 
+      // validates the token is not expired
       isValidToken: function() {
         var token = LocalStorage.getToken();
         var now = new Date();

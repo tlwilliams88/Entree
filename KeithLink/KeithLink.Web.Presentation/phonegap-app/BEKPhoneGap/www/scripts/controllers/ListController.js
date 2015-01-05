@@ -19,6 +19,9 @@ angular.module('bekApp')
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
     }
+    if (ListService.findRecommendedList()) {
+      $scope.hideRecommendedListCreateButton = true;
+    }
 
     function resetPage(list) {
       $scope.selectedList = list;
@@ -51,8 +54,16 @@ angular.module('bekApp')
     CREATE LIST
     **********/
 
+    var processingCreateList = false;
     $scope.createList = function(items) {
-      ListService.createList(items).then(goToNewList);
+      if (!processingCreateList) {
+        processingCreateList = true;
+        ListService.createList(items)
+          .then(goToNewList)
+          .finally(function() {
+            processingCreateList = false;
+          });
+      }
     };
 
     $scope.createListFromMultiSelect = function() {
@@ -82,6 +93,22 @@ angular.module('bekApp')
     };
 
     /**********
+    CREATE RECOMMENDED LIST
+    **********/
+
+    $scope.createRecommendedList = function(items) {
+      ListService.createRecommendedList(items).then(function(list) {
+        $scope.hideRecommendedListCreateButton = true;
+        return list;
+      }).then(goToNewList);
+    };
+
+    $scope.createRecommendedListFromDrag = function(event, helper) {
+      var dragSelection = getSelectedItemsFromDrag(helper);
+      $scope.createRecommendedList(dragSelection);
+    };
+
+    /**********
     DELETE LIST
     **********/
 
@@ -98,17 +125,26 @@ angular.module('bekApp')
     SAVE LIST
     **********/
 
+    var processingSaveList = false;
     $scope.saveList = function(list) {
-      var updatedList = angular.copy(list);
 
-      angular.forEach(updatedList.items, function(item, itemIndex) {
-        if (item.listitemid) {
-          item.position = item.editPosition;
-          item.isEditing = false;
-        }
-      });
-      
-      ListService.updateList(updatedList).then(resetPage);
+      if (!processingSaveList) {
+        processingSaveList = true;
+        var updatedList = angular.copy(list);
+
+        angular.forEach(updatedList.items, function(item, itemIndex) {
+          if (item.listitemid) {
+            item.position = item.editPosition;
+            item.isEditing = false;
+          }
+        });
+        
+        ListService.updateList(updatedList)
+          .then(resetPage)
+          .finally(function() {
+            processingSaveList = false;
+          });
+      }
     };
 
     $scope.renameList = function (listId, listName) {
@@ -418,10 +454,11 @@ angular.module('bekApp')
         resolve: {
           list: function() {
             return list;
-          },
-          customers: ['LocalStorage', function(LocalStorage) {
-            return LocalStorage.getProfile().user_customers;
-          }]
+          }
+          // ,
+          // customers: ['LocalStorage', function(LocalStorage) {
+          //   return LocalStorage.getProfile().user_customers;
+          // }]
         }
       });
 

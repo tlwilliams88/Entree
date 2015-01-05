@@ -3,7 +3,6 @@
 angular.module('bekApp')
   .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
     function ($scope, UserProfileService, branches, LocalStorage, $state, CustomerService, AccountService, BroadcastService) {
-
       var accountid = '';
       //get user id from localstorage and ask for account id with it
       AccountService.getAccountByUser(LocalStorage.getProfile().userid).then(function (success) {

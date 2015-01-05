@@ -374,6 +374,7 @@
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
     <Compile Include="Models\Profile\Address.cs" />
+    <Compile Include="Models\Profile\AccountUsersReturn.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />

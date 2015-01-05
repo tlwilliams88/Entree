@@ -41,8 +41,14 @@ angular.module('bekApp')
         method: 'POST'
       },
 
-      getReminderList: {
+      getCriticalItems: {
         url: '/list/reminders',
+        method: 'GET',
+        isArray: true
+      },
+
+      getRecommendedItems: {
+        url: '/list/recommended',
         method: 'GET',
         isArray: true
       },

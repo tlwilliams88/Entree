@@ -8,21 +8,14 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', 'LocalStorage', function ($http, $q, $log, LocalStorage) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService) {
 
     var Service = {
-      getProfile: function(email) {
-        var data = {
-          params: {
-            email: email
-          }
-        };
 
-        return $http.get('/profile', data).then(function (response) {
-          var profile = response.data.userProfiles[0];
-
-          $log.debug(profile);
-
+      // gets and sets current user profile
+      getProfile: function(email) { 
+        return Service.getUserProfile(email).then(function (profile) {
           profile.salesRep = {
             'id': 34234,
             'name': 'Heather Hill',
@@ -31,15 +24,21 @@ angular.module('bekApp')
             'imageUrl': './images/placeholder-dsr.jpg'
           };
 
-          profile.imageUrl = './images/placeholder-user.png';
+          //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
 
           LocalStorage.setProfile(profile);
           // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
           if (profile.rolename === 'guest') {
             LocalStorage.setSelectedBranchInfo(profile.branchid);
           } else {
-            LocalStorage.setSelectedCustomerInfo(profile.user_customers[0]);
+            var userSelectedContext = {
+              id: profile.defaultcustomer.customerNumber,
+              text: profile.defaultcustomer.displayname,
+              customer: profile.defaultcustomer
+            };
+            LocalStorage.setSelectedCustomerInfo(userSelectedContext);
           }
+
           return profile;
         });
       },
@@ -52,74 +51,53 @@ angular.module('bekApp')
         };
 
         return $http.get('/profile', data).then(function(response){
+          $log.debug(response.data);
           return response.data.userProfiles[0];
+        });
+      },
+
+      searchUserCustomers: function(searchTerm, size, from) {
+        var data = {
+          params: {
+            size: size,
+            from: from,
+            terms: searchTerm
+          }
+        };
+        return $http.get('/profile/customer', data).then(function(response) {
+          return response.data;
         });
       },
 
       // accountid, customerid , email
       getAllUsers: function(params) {
-        var deferred = $q.defer();
-        $http.get('/profile/users', params).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse.userProfiles);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
+        var promise = $http.get('/profile/users', params);
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.userProfiles;
         });
-        return deferred.promise;
       },
 
       createUser: function(userProfile) {
-        var deferred = $q.defer();
-
-        $http.post('/profile/register', userProfile).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-
-        return deferred.promise;
+        var promise = $http.post('/profile/register', userProfile);
+        return UtilityService.resolvePromise(promise);
       },
 
+      // TODO: updateUser and updateProfile are duplicates
+
       updateUser: function(userProfile) {
-        var deferred = $q.defer();
+        var promise = $http.put('/profile', userProfile);
 
-        $http.put('/profile', userProfile).then(function(response) {
-
-          var data = response.data;
-
-          if (data.successResponse) {
-            var profile = data.successResponse.userProfiles[0];
-            $log.debug(profile);
-            LocalStorage.setProfile(profile);
-            deferred.resolve(profile);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var profile = successResponse.userProfiles[0];
+          $log.debug(profile);
+          LocalStorage.setProfile(profile);
+          return profile;
         });
-        return deferred.promise;
       },
 
       updateProfile: function(userProfile) {
-        var deferred = $q.defer();
-
-        $http.put('/profile', userProfile).then(function(response) {
-
-          var data = response.data;
-
-          if (data.successResponse) {
-            var profile = data.successResponse.userProfiles[0];
-            $log.debug(profile);
-            deferred.resolve(profile);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
+        return Service.updateUser(userProfile);
       },
 
       changePassword: function(passwordData) {
@@ -137,9 +115,27 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
-      uploadAvatar: function() {
+      uploadAvatar: function(file) {
         // TODO: add upload avatar api call
         // needs to return url so you can refresh the profile object
+        // /profile/avatar
+        // file, name as params
+        // binary not base64
+
+        var promise = $upload.upload({
+          url: '/profile/avatar',
+          method: 'POST',
+          file: file.file,
+          data: { name: file.name },
+        });
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          // TODO: update url locally 
+          toaster.pop('success', null, 'Successfully uploaded avatar');
+        }, function(error) {
+          toaster.pop('error', null, 'Error uploading avatar.');
+          return $q.reject(error);
+        });
       },
 
       removeAvatar: function() {

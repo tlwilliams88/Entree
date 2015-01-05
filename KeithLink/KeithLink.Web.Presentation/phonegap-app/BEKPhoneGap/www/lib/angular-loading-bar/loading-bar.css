@@ -62,7 +62,7 @@
   display: block;
   position: fixed;
   z-index: 10002;
-  top: 10px;
+  bottom: 10px;
   left: 10px;
   background-color: white;
   padding: 5px;
