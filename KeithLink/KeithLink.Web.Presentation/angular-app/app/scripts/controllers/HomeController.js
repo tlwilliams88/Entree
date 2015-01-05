@@ -123,8 +123,6 @@ angular.module('bekApp')
         yAxisValues.push(yValue);
       }
 
-      console.log(yAxisValues);
-
       monthData.unshift('x');
       barData.unshift('bar');
       lineData.unshift('line');
