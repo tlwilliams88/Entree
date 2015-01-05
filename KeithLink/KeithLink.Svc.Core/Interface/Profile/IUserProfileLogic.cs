@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
         Customer GetCustomerByCustomerNumber(string customerNumber);
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
-        AccountReturn GetAccount(Guid id);
+        Account GetAccount(Guid id);
         AccountUsersReturn GetAccountUsers(Guid id);
         UserProfileReturn GetUsers(UserFilterModel userFilters);
         AccountReturn CreateAccount(string name);
@@ -39,5 +39,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
 		List<Customer> GetCustomersForUser(UserProfile user);
+        List<Customer> GetCustomersForExternalUser(Guid userId);
     }
 }
