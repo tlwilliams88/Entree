@@ -31,7 +31,7 @@
   </div>
 
   <h2>Customer Notification Preferences &nbsp;&nbsp;&nbsp;<a class="smallerHeaderLinkText" ng-init="canEditNotifications = false" ng-click="canEditNotifications = !canEditNotifications"><span class="glyphicon glyphicon-pencil"></span> Edit Notifications</a></h2>
-  <form ng-submit="savePreferences()" class="form-horizontal">
+  <form name="preferencesForm" ng-submit="savePreferences()" class="form-horizontal">
     <table class="preferencesTable">
       <thead>
         <tr>
@@ -53,7 +53,7 @@
     <hr>
     <div class="form-group button-row">
       <div class="col-sm-6">
-        <button type="submit" class="btn btn-lg btn-primary">Save Changes</button>
+        <button type="submit" ng-disabled="preferencesForm.$invalid || preferencesForm.$pristine" class="btn btn-lg btn-primary">Save Changes</button>
         <a ng-click="restoreDefaults()">Restore Default Settings</a>
       </div>
     </div>

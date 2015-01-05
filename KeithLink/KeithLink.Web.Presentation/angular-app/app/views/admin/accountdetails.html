@@ -1,25 +1,148 @@
-<h3 ng-show="isNew">Add New Account</h3>
-<h3 ng-hide="isNew">Account Details</h3>
+<div page-header-bar>
+  <div header-message>
+    {{ isNew ? 'Add New Account' : 'Account Details' }}
+  </div>
+  <div header-buttons></div>
+</div>
 
+<div class="page-content">
 <form name="accountDetailsForm">
-  
-  <div class="form-group">
-    <label for="accountName" class="control-label">Name</label>
-    <span class="text-red" ng-show="accountDetailsForm.accountName.$dirty && accountDetailsForm.accountName.$error.required">Account name is required.</span>
-    <input type="text" class="form-control" name="accountName" id="accountName" ng-model="account.name" required>
+ 
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="accountName" class="control-label">Name</label>
+        <span class="text-red" ng-show="accountDetailsForm.accountName.$dirty && accountDetailsForm.accountName.$error.required">Account name is required.</span>
+        <input type="text" class="form-control" name="accountName" id="accountName" ng-model="account.name" required>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <h3>Admin Users</h3>
+
+      <div class="form-inline" style="margin-bottom: 15px;">
+        <div class="form-group">
+          <input type="text" class="form-control" placeholder="Email address" ng-model="adminUserEmail"/>
+          <button class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
+        </div>
+      </div>
+
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="user in account.users" ng-class="{ odd : $odd, even: $even }">
+            <td>{{user.emailaddress}}</td>
+            <td>
+              <a ng-click="removeUser(user)">Remove</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr ng-show="account.users.length === 0">
+            <td colspan="2">There are no users to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </div>
 
-  <h4>Customers</h4>
-  <p>List of customers in this account...</p>
+  <div class="row sub-content">
+    <div class="col-md-6">
+      <h3>Customer Accounts</h3>
+      Showing {{filteredCustomers.length}} of {{totalCustomers}} Customers
 
-  <h4>Users</h4>
-  <p>List of users in this account...</p>
-  
+      <ng-form name="customerSearchForm" class="customers-search">
+        <div class="input-group">
+          <input 
+            ng-model="customerSearchTerm" 
+            type="text" 
+            class="form-control" 
+            placeholder="Filter customers by name or number" />
+          <span class="input-group-btn">
+            <button type="button" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+          </span>
+        </div>
+      </ng-form>
+
+      <div class="infiniteScroll">
+        <table class="table no-margin table-border table-striped-rows" 
+          infinite-scroll="infiniteScrollLoadMore()" 
+          infinite-scroll-container="'.infiniteScroll'">
+          <thead>
+            <tr>
+              <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortAsc);">
+                Number
+                <span sort-icons field="'customerNumber'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+              </th>
+              <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortAsc)">
+                Name
+                <span sort-icons field="'customerName'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+              </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="customer in (filteredCustomers = (customers | filter:{selected:false} ))" ng-class="{ odd : $odd, even: $even }">
+              <td>{{customer.customerNumber}}</td>
+              <td>{{customer.customerName}}</td>
+              <td>
+                <a ng-click="selectCustomer(customer)">Add</a>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr ng-show="customers.length === 0 || filteredCustomers.length === 0">
+              <td colspan="3">There are no customers to display.</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+      <div class="text-center" loading-spinner="loadingCustomers"></div>
+    </div>
+    <div class="col-md-6">
+      <h3>Selected Customers</h3>
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Name</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="customer in account.customers" ng-class="{ odd : $odd, even: $even }">
+            <td>{{customer.customerNumber}}</td>
+            <td>{{customer.customerName}}</td>
+            <td>
+              <a ng-click="unselectCustomer(customer)">Remove</a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr ng-show="account.customers.length === 0">
+            <td colspan="3">There are no selected customers to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+
   <hr>
-
-  <div class="form-group button-row">
-    <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-show="isNew" ng-click="createNewAccount(account)">Create New</button>
-    <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-hide="isNew">Save</button>
-    <a ng-click="cancelChanges()">Cancel</a>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group button-row">
+        <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-show="isNew" ng-click="createNewAccount(account)">Create New Account</button>
+        <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-hide="isNew">Save Account</button>
+        <a ng-click="cancelChanges()">Cancel</a>
+      </div>
+    </div>
   </div>
+
 </form>
+</div>
+  
+  

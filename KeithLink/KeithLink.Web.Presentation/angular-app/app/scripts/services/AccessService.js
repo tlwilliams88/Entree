@@ -80,6 +80,10 @@ angular.module('bekApp')
 
       canManageAccount: function() {
         return ( Service.isDsr() || Service.isOwner() );
+      },
+
+      canManageAccounts: function() {
+        return ( true );
       }
 
     };

@@ -13,6 +13,8 @@ angular.module('bekApp')
 
     var Service = {
 
+      // TODO: getProfile and getUserProfile are duplicates
+
       // gets and sets current user profile
       getProfile: function(email) { 
         return Service.getUserProfile(email).then(function (profile) {
@@ -71,11 +73,20 @@ angular.module('bekApp')
 
       // accountid, customerid , email
       getAllUsers: function(params) {
-        var promise = $http.get('/profile/users', params);
+        var config = {
+          params: params
+        };
+        
+        var promise = $http.get('/profile/users', config);
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           return successResponse.userProfiles;
         });
+      },
+
+      getUsersForAccount: function(accountId) {
+        var promise = $http.get('/profile/account/' + accountId + '/users');
+        return UtilityService.resolvePromise(promise);
       },
 
       createUser: function(userProfile) {
@@ -115,13 +126,10 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
+      /**********
+      AVATAR
+      **********/
       uploadAvatar: function(file) {
-        // TODO: add upload avatar api call
-        // needs to return url so you can refresh the profile object
-        // /profile/avatar
-        // file, name as params
-        // binary not base64
-
         var promise = $upload.upload({
           url: '/profile/avatar',
           method: 'POST',

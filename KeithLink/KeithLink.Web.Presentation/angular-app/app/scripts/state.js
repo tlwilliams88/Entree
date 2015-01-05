@@ -33,10 +33,10 @@ angular.module('bekApp')
         authorize: 'isOrderEntryCustomer'
       }
     })
-    .state('menu.accountdetails', {
-      url: '/account/',
-      templateUrl: 'views/accountdetails.html',
-      controller: 'AccountDetailsController',
+    .state('menu.userprofile', {
+      url: '/profile/',
+      templateUrl: 'views/userprofile.html',
+      controller: 'UserProfileController',
       data: {
         authorize: 'isLoggedIn'
       },
@@ -324,31 +324,7 @@ angular.module('bekApp')
     **********/
     .state('menu.admin', {
       url: '/admin/',
-      templateUrl: 'views/admin/menu.html',
-      data: {
-        authorize: 'canManageAccount'
-      }
-    })
-    .state('menu.admin.user', {
-      url: 'users/',
-      templateUrl: 'views/admin/users.html', //'views/adminusers.html',
-      controller: 'UsersController',
-      data: {
-        authorize: 'canManageAccount'
-      },
-      resolve: {
-        users: [ 'UserProfileService', function(UserProfileService) {
-          return [{name: 'Maria'}, {name: 'Andrew'}, {name: 'Josh'}]; //UserProfileService.getAllUsers();
-        }]
-      }
-    })
-    .state('menu.admin.adduser', {
-      url: 'users/add/',
-      templateUrl: 'views/admin/adduserdetails.html',
-      controller: 'AddUserDetailsController',
-      data: {
-        authorize: 'canManageAccount'
-      }
+      template: '<ui-view>'
     })
     .state('menu.admin.accountadmin',{
       url: 'account/',
@@ -366,38 +342,42 @@ angular.module('bekApp')
         authorize: 'canManageAccount'
       },
       resolve: {
-        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+        userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
         }]
       }
     })
     .state('menu.admin.customer', {
       url: 'customers/:customerNumber/',
-      templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
+      templateUrl: 'views/admin/customerdetails.html',
+      controller: 'CustomerDetailsController',
       data: {
         authorize: 'canManageAccount'
       }
     })
+
+    /*************
+    ADMIN ACCOUNTS
+    *************/
     .state('menu.admin.account', {
       url: 'accounts/',
       templateUrl: 'views/admin/accounts.html',
       controller: 'AccountsController',
       data: {
         authorize: 'canManageAccount'
-      },
-      resolve: {
-        accounts: [ 'AccountService', function(AccountService) {
-          return AccountService.getAccounts();
-        }]
       }
     })
-    .state('menu.admin.account.details', {
-      url: ':accountId/',
+    .state('menu.admin.accountdetails', {
+      url: 'accounts/:accountId/',
       templateUrl: 'views/admin/accountdetails.html',
       controller: 'AdminAccountDetailsController',
       data: {
         authorize: 'canManageAccount'
+      },
+      resolve: {
+        originalAccount: ['$stateParams', 'AccountService', function($stateParams, AccountService) {
+          return AccountService.getAccountDetails($stateParams.accountId);
+        }]
       }
     });
 

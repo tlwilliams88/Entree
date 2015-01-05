@@ -40,7 +40,7 @@ angular.module('bekApp')
       brands: {
         available: [],
         selected: [],
-        showMore: true
+        showMore: true // display Show More button for this facet
       },
       itemspecs: {
         available: [],
