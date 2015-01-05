@@ -19,8 +19,11 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "customers")]
         public List<Customer> Customers { get; set; }
 
-        [DataMember(Name = "user")]
-        public List<UserProfile> Users { get; set; }
+        [DataMember(Name = "adminusers")]
+        public List<UserProfile> AdminUsers { get; set; }
+
+        [DataMember(Name = "customerusers")]
+        public List<UserProfile> CustomerUsers { get; set; }
     }
 
     public class AccountComparer : EqualityComparer<Account>

@@ -19,6 +19,34 @@ angular.module('bekApp')
     $scope.invoices = invoices;
   }
 
+    //set text defaults
+    $scope.headerText = 'Your Invoices';
+    $scope.viewAllButtonText = 'View Open Invoices for All Customers';
+
+    //toggles state between all invoices and single customer invoices
+  $scope.viewAllOpenInvoices = function() {
+    console.log($scope.selectedUserContext);
+    $scope.viewingAllCustomers = !$scope.viewingAllCustomers;
+    if($scope.viewingAllCustomers){
+      $scope.viewAllButtonText = 'Return to Invoices for: ' + $scope.selectedUserContext.customer.customerNumber +  ' - '  + $scope.selectedUserContext.customer.customerName;
+      $scope.headerText = 'Open Invoices of All Customers';
+      // $scope.$parent.selectedUserContext.text = 'All Customers';
+      $scope.$parent.selectedUserContext = {
+        text: 'All',
+        id: 0
+      }
+    } else{
+      $scope.viewAllButtonText = 'View Open Invoices for All Customers';
+      $scope.headerText = 'Your Invoices';
+      $scope.$parent.selectedUserContext.text = $scope.selectedUserContext.customer.customerNumber +  ' - '  + $scope.selectedUserContext.customer.customerName;
+    }
+  };
+
+    //ideally this will change the invoice page to the specific customer that the user clicked
+    $scope.changePageContext = function (customerNumber) {
+      console.log('changePageContext: ' + customerNumber);
+    };
+
   /******************************
   PAGING, SORTING, FILTERING
   ******************************/
@@ -42,9 +70,9 @@ angular.module('bekApp')
       if (filterFields[propertyName] && filterFields[propertyName] !== '') {
         var filterObject = {
           field: propertyName,
-          value: filterFields[propertyName] 
+          value: filterFields[propertyName]
         };
-        filterList.push(filterObject);  
+        filterList.push(filterObject);
       }
     }
 
@@ -74,7 +102,7 @@ angular.module('bekApp')
 
   $scope.sortInvoices = function(field, order) {
     $scope.sortOrder = order;
-    
+
     $scope.invoiceParams.sort = [{
       field: field
     }];
@@ -104,7 +132,7 @@ angular.module('bekApp')
     });
   };
 
-  
+
   /************
   Filter Views
   ************/

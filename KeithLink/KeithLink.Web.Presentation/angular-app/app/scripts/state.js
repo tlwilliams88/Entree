@@ -376,7 +376,11 @@ angular.module('bekApp')
       },
       resolve: {
         originalAccount: ['$stateParams', 'AccountService', function($stateParams, AccountService) {
-          return AccountService.getAccountDetails($stateParams.accountId);
+          if ($stateParams.accountId === 'new') {
+            return {};
+          } else {
+            return AccountService.getAccountDetails($stateParams.accountId);
+          }
         }]
       }
     });

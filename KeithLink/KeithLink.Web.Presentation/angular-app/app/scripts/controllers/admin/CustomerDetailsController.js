@@ -4,8 +4,11 @@ angular.module('bekApp')
   .controller('CustomerDetailsController', ['$scope', '$stateParams', 'MessagePreferenceService', 'CustomerService',
     function ($scope, $stateParams, MessagePreferenceService, CustomerService) {
 
+
   /*---init---*/
   var init = function(){
+    $scope.preferncesFound = false;
+    
     CustomerService.getCustomerDetails($stateParams.customerNumber).then(function(customer) {
       $scope.customer = customer;
 
@@ -13,6 +16,11 @@ angular.module('bekApp')
 
       $scope.userProfile.messagingpreferences.forEach(function (preference, index) {
         if(preference.customerNumber === $scope.customer.customerNumber){
+          
+          if (!$scope.preferncesFound) {
+            $scope.preferncesFound = true;
+          }
+
           //for every topic of notification build a preference object
           $scope.userProfile.messagingpreferences[index].preferences.forEach(function(preference){
             var newPreference = {};

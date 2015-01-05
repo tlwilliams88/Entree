@@ -57,8 +57,12 @@
         <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
 
         <div class="col-md-4">
-          <input type="text" class="form-control form-control-lg" id="phoneNumber" name="phoneNumber"
-                 ng-model="userProfile.phonenumber">
+          <input 
+            type="text" 
+            class="form-control form-control-lg" 
+            id="phoneNumber" 
+            name="phoneNumber"
+            ng-model="userProfile.phonenumber">
         </div>
       </div>
       <div class="form-group ">
@@ -66,8 +70,13 @@
 
         <div class="col-md-6">
           <!-- <div class="select-div"> -->
-          <select required name="branch" id="branch" class="form-control form-control-lg"
-                  ng-options="branch.id as branch.name for branch in branches" ng-model="userProfile.branchid">
+          <select 
+            ng-required="!isOrderEntryCustomer"
+            name="branch" 
+            id="branch" 
+            class="form-control form-control-lg"
+            ng-options="branch.id as branch.name for branch in branches" 
+            ng-model="userProfile.branchid">
           </select>
           <!-- </div> -->
         </div>
@@ -172,8 +181,8 @@
       </div>
     </form>
   </div>
-  <div class="col-md-6">
-    <h2>Assigned Customer Accounts</h2>
+  <div class="col-md-6" ng-show="isOrderEntryCustomer">
+    <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <form name="customerSearchForm" class="customers-search">
@@ -190,8 +199,8 @@
     </form>
 
     <div class="infiniteScroll">
-      <table class="table no-margin table-border table-striped-rows" 
-        infinite-scroll="infiniteScrollLoadMore()" 
+      <table class="table no-margin table-border table-striped-rows"
+        infinite-scroll="infiniteScrollLoadMore()"
         infinite-scroll-container="'.infiniteScroll'">
         <thead>
           <tr>

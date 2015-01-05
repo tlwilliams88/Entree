@@ -8,7 +8,7 @@
 <div class="page-content row">
   <div class="col-md-3">
 
-    <ng-form name="customerSearchForm" class="customers-search">
+    <form name="customerSearchForm" class="customers-search">
       <div class="input-group">
         <input 
           ng-model="searchTerm" 
@@ -19,7 +19,7 @@
           <button type="submit" ng-click="searchAccounts(searchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
         </span>
       </div>
-    </ng-form>
+    </form>
 
     <a ui-sref="menu.admin.accountdetails({ accountId: 'new'})">Add New Account...</a>
 

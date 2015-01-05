@@ -1,18 +1,23 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountAdminController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
-    function ($scope, UserProfileService, branches, LocalStorage, $state, CustomerService, AccountService, BroadcastService) {
+  .controller('AccountAdminController', ['$scope', 'UserProfileService', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
+    function ($scope, UserProfileService, $state, CustomerService, AccountService, BroadcastService) {
       
   function init() {
     loadCustomers(customersConfig).then(setCustomers);
 
     $scope.loadingUsers = true;
     AccountService.getAccountByUser($scope.userProfile.userid).then(function (account) {
-      UserProfileService.getUsersForAccount(account.id).then(function(data) {
+      if (account) {
+        UserProfileService.getUsersForAccount(account.id).then(function(data) {
+          $scope.loadingUsers = false;
+          $scope.users = data.accountUsers.concat(data.customerUsers);
+        });
+      } else {
         $scope.loadingUsers = false;
-        $scope.users = data.accountUsers.concat(data.customerUsers);
-      });
+        $scope.users = [];
+      }
     });
   }
 

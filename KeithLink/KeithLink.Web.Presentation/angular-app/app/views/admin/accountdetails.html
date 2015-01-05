@@ -6,7 +6,7 @@
 </div>
 
 <div class="page-content">
-<form name="accountDetailsForm">
+<ng-form name="accountDetailsForm" novalidate>
  
   <div class="row">
     <div class="col-md-6">
@@ -19,22 +19,26 @@
     <div class="col-md-6">
       <h3>Admin Users</h3>
 
-      <div class="form-inline" style="margin-bottom: 15px;">
+      <ng-form name="addUserForm" class="form-inline customers-search">
         <div class="form-group">
           <input type="text" class="form-control" placeholder="Email address" ng-model="adminUserEmail"/>
-          <button class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
+          <button type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
         </div>
-      </div>
+      </ng-form>
 
       <table class="table no-margin table-border table-striped-rows">
         <thead>
           <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
             <th>Email</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in account.users" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="user in account.adminusers" ng-class="{ odd : $odd, even: $even }">
+            <td>{{user.firstname}}</td>
+            <td>{{user.lastname}}</td>
             <td>{{user.emailaddress}}</td>
             <td>
               <a ng-click="removeUser(user)">Remove</a>
@@ -42,8 +46,8 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr ng-show="account.users.length === 0">
-            <td colspan="2">There are no users to display.</td>
+          <tr ng-show="account.adminusers.length === 0">
+            <td colspan="4">There are no users to display.</td>
           </tr>
         </tfoot>
       </table>
@@ -63,7 +67,7 @@
             class="form-control" 
             placeholder="Filter customers by name or number" />
           <span class="input-group-btn">
-            <button type="button" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
           </span>
         </div>
       </ng-form>
@@ -135,14 +139,19 @@
   <div class="row">
     <div class="col-xs-12">
       <div class="form-group button-row">
-        <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-show="isNew" ng-click="createNewAccount(account)">Create New Account</button>
-        <button ng-disabled="accountDetailsForm.$invalid" class="btn btn-lg btn-primary" ng-hide="isNew">Save Account</button>
+        <button 
+          type="submit" 
+          ng-disabled="accountDetailsForm.$invalid" 
+          class="btn btn-lg btn-primary" 
+          ng-click="submitForm(account)">
+          {{isNew ? 'Create New Account' : 'Save Account'}}
+        </button>
         <a ng-click="cancelChanges()">Cancel</a>
       </div>
     </div>
   </div>
 
-</form>
+</ng-form>
 </div>
   
   

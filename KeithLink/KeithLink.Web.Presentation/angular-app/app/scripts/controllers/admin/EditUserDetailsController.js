@@ -47,7 +47,7 @@ angular.module('bekApp')
     $scope.profile.customers = selectedCustomers;
 
     //pushes profile object to database
-    UserProfileService.updateProfile($scope.profile).then(function(newProfile){
+    UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully updated.');
       //processProfile(newProfile); // <-- UNCOMMENT WHENEVER DATA SENT BACK IS FRESH
     }, function(error){
@@ -62,7 +62,7 @@ angular.module('bekApp')
     profile.customers = [];
 
     //push freshly wiped profile to database
-    UserProfileService.updateProfile(profile).then(function(newProfile){
+    UserProfileService.updateUserProfile(profile).then(function(newProfile){
       //refreshes page with newest data
       processProfile(newProfile);
       $scope.displayMessage('success', 'The user was successfully deleted.');
@@ -159,7 +159,11 @@ angular.module('bekApp')
   $scope.unselectCustomer = function(customer) {
     var idx = $scope.profile.customers.indexOf(customer);
     $scope.profile.customers.splice(idx, 1);
-    // TODO: loop through customers and change selected value
+    $scope.customers.forEach(function(availableCustomer) {
+      if (customer.customerNumber === availableCustomer.customerNumber) {
+        availableCustomer.selected = false;
+      }
+    });
     customer.selected = false;
   };
 

@@ -26,7 +26,7 @@ angular.module('bekApp')
 
       var promise = $http.get('/profile/accounts', config);
       return UtilityService.resolvePromise(promise).then(function(successResponse) {
-        return successResponse.accounts[0];
+        return successResponse.accounts[0]; // a user can only be admin on one account
       });
     },
 
@@ -40,8 +40,7 @@ angular.module('bekApp')
     searchAccounts: function(searchTerm) {
       var config = {
         params: {
-          // wildcard: searchTerm
-          userid: '4065067c-bae0-41cd-a2f9-e89f377d4386'
+          wildcard: searchTerm
         }
       };
       

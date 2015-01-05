@@ -132,12 +132,12 @@ angular.module('bekApp')
         }
       }
 
-      $element.bind('mouseenter', openContextMenuEvent)
-      $element.bind('mouseleave', closeContextMenuEvent)
+      $element.bind('mouseenter', openContextMenuEvent);
+      $element.bind('mouseleave', closeContextMenuEvent);
       
       $scope.$on('$destroy', function() {
-        $element.unbind('mouseenter', openContextMenuEvent)
-        $element.unbind('mouseleave', closeContextMenuEvent)
+        $element.unbind('mouseenter', openContextMenuEvent);
+        $element.unbind('mouseleave', closeContextMenuEvent);
       });
     },
     templateUrl: 'views/directives/contextmenu.html'

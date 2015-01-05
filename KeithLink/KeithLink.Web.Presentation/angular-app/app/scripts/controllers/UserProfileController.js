@@ -62,7 +62,7 @@ angular.module('bekApp')
     ).then(function(data) {
       $scope.loadingCustomers = false;
       $scope.totalCustomers = data.totalResults;
-      return data.results;;
+      return data.results;
     });
   }
 
@@ -114,6 +114,13 @@ angular.module('bekApp')
     }
   };
 
+  function refreshAvatarUrl() {
+    var now = new Date();
+    var newUrl = $scope.userProfile.imageurl + '?d=' + now.toString();
+    $scope.userProfile.imageurl = newUrl;
+    $scope.$parent.userProfile.imageurl = newUrl;
+  }
+
   $scope.uploadAvatar = function() {
     // console.log(avatarFile);
     // var file = {
@@ -124,19 +131,11 @@ angular.module('bekApp')
       name: $scope.files[0].name, 
       file: $scope.files[0]
     };
-    UserProfileService.uploadAvatar(file).then(function() {
-      var now = new Date();
-      var newUrl = $scope.userProfile.imageurl + '?d=' + now.toString();
-      $scope.userProfile.imageurl = newUrl;
-      $scope.$parent.userProfile.imageurl = newUrl;
-    });
-    // TODO: update user profile in local storage
+    UserProfileService.uploadAvatar(file).then(refreshAvatarUrl);
   };
 
   $scope.removeAvatar = function() {
-    console.log('remove avatar');
-    UserProfileService.removeAvatar();
-    // TODO: update user profile in local storage
+    UserProfileService.removeAvatar().then(refreshAvatarUrl);
   };
 
   $scope.cancelChanges = function () {
@@ -148,7 +147,7 @@ angular.module('bekApp')
     userProfile.email = userProfile.emailaddress;
     $scope.updateProfileErrorMessage = null;
     
-    UserProfileService.updateUser(userProfile).then(function(profile) {
+    UserProfileService.updateUserProfile(userProfile).then(function(profile) {
       $scope.$parent.userProfile = profile;
       $scope.displayMessage('success', 'Successfully updated profile.');
     }, function(errorMessage) {

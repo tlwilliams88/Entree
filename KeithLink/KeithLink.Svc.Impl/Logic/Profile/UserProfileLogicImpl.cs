@@ -723,13 +723,21 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
-        public AccountReturn GetAccount(Guid accountId)
+        public Account GetAccount(Guid accountId)
         {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
-            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
-            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
-            acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
-            return new AccountReturn() { Accounts = new List<Account>() { acct } };
+            Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+            acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            acct.CustomerUsers = new List<UserProfile>();
+            foreach (Customer c in acct.Customers)
+            {
+                acct.CustomerUsers.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+            }
+            acct.CustomerUsers = acct.CustomerUsers
+                                    .GroupBy(x => x.UserId)
+                                    .Select(grp => grp.First())
+                                    .ToList();
+            return acct;
         }
 
         public AccountUsersReturn GetAccountUsers(Guid accountId)
@@ -905,6 +913,20 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			return returnValue;
 		}
+
+        public List<Customer> GetCustomersForExternalUser(Guid userId)
+        {
+            Core.Models.Generated.UserProfile profile = _csProfile.GetCSProfile(userId);
+
+            if (IsInternalAddress(profile.Email))
+            {
+                throw new ApplicationException("This call is not supported for internal users.");
+            }
+            else
+            {
+                return _customerRepo.GetCustomersForUser(userId);
+            }
+        }
 
 		public List<Customer> GetCustomersForUser(UserProfile user)
 		{

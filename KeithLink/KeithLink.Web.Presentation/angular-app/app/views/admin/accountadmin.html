@@ -81,11 +81,11 @@
         </tfoot>
       </table>
     </div>
-    <div class="text-center" loading-spinner="loadingCustomers"></div>
+    <div class="text-center" loading-spinner="loadingUsers"></div>
 
   </div>
   <div class="col-md-6">
-    <h2>Assigned Customer Accounts</h2>
+    <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <form name="customerSearchForm" class="customers-search">
@@ -103,7 +103,7 @@
 
     <div class="infiniteScroll infiniteScroll-customers">
       <table class="table no-margin table-border table-striped-rows"
-        infinite-scroll="infiniteScrollLoadMoreCustomers()" 
+        infinite-scroll="infiniteScrollLoadMore()" 
         infinite-scroll-container="'.infiniteScroll-customers'">
         <thead>
         <tr>

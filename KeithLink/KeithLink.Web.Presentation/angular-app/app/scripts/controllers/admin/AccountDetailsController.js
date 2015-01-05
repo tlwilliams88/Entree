@@ -8,12 +8,11 @@ angular.module('bekApp')
     if ($stateParams.accountId === 'new') {
       $scope.originalAccount = {
         customers: [],
-        users: []
+        adminusers: []
       };
       $scope.account = angular.copy($scope.originalAccount);
       $scope.isNew = true;
     } else {
-      // $scope.originalAccount = AccountService.findAccountById($stateParams.accountId);
       $scope.originalAccount = originalAccount;
       $scope.account = angular.copy($scope.originalAccount);
       $scope.isNew = false;
@@ -110,7 +109,11 @@ angular.module('bekApp')
   $scope.unselectCustomer = function(customer) {
     var idx = $scope.account.customers.indexOf(customer);
     $scope.account.customers.splice(idx, 1);
-    // TODO: loop through customers and change selected value
+    $scope.customers.forEach(function(availableCustomer) {
+      if (customer.customerNumber === availableCustomer.customerNumber) {
+        availableCustomer.selected = false;
+      }
+    });
     customer.selected = false;
   };
 
@@ -121,7 +124,7 @@ angular.module('bekApp')
     var isDuplicateUser = false;
 
     // check if user is already in list of selected users
-    $scope.account.users.forEach(function(user) {
+    $scope.account.adminusers.forEach(function(user) {
       if (user.emailaddress == emailAddress) {
         isDuplicateUser = true;
       }
@@ -137,7 +140,7 @@ angular.module('bekApp')
     };
     UserProfileService.getAllUsers(data).then(function (profiles) {
       if (profiles.length === 1) {
-        $scope.account.users.push(profiles[0]);
+        $scope.account.adminusers.push(profiles[0]);
       } else {
         // display error message to user
       }
@@ -145,16 +148,15 @@ angular.module('bekApp')
   };
 
   $scope.removeUser = function(user) {
-    var idx = $scope.account.users.indexOf(user);
-    $scope.account.users.splice(idx, 1);
+    var idx = $scope.account.adminusers.indexOf(user);
+    $scope.account.adminusers.splice(idx, 1);
   };
 
   /***********
   FORM EVENTS
   ***********/
-  $scope.createNewAccount = function(account) {
+  function createNewAccount(account) {
     AccountService.createAccount(account).then(function(newAccount) {
-      // TODO: redirect to new account details page
       $scope.displayMessage('success', 'Successfully created a new account.');
       $state.go('menu.admin.accountdetails', { accountId: newAccount.id });
     }, function(error) {
@@ -163,11 +165,20 @@ angular.module('bekApp')
     });
   };
 
-  $scope.updateAccount = function(account) {
+  function saveAccount(account) {
+    account.users = account.adminusers;
     AccountService.updateAccount(account).then(function(accounts) {
-      debugger;
+      console.log(accounts);
     });
   };
+
+  $scope.submitForm = function(account) {
+    if ($scope.isNew) {
+      createNewAccount(account);
+    } else {
+      saveAccount(account);
+    }
+  }
 
   $scope.cancelChanges = function() {
     $scope.account = angular.copy($scope.originalAccount);
