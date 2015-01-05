@@ -667,7 +667,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
-        
+
+        public Customer GetCustomerByCustomerNumber(string customerNumber)
+        {
+            return _customerRepo.GetCustomerByCustomerNumber(customerNumber);
+        }
+
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
         {
 			//List<Customer> allCustomers = _customerRepo.GetCustomers();
@@ -725,6 +730,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
             acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
             return new AccountReturn() { Accounts = new List<Account>() { acct } };
+        }
+
+        public AccountUsersReturn GetAccountUsers(Guid accountId)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+
+            AccountUsersReturn usersReturn = new AccountUsersReturn();
+            usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            usersReturn.CustomerUserProfiles = new List<UserProfile>();
+            foreach (Customer c in acct.Customers)
+            {
+                usersReturn.CustomerUserProfiles.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+            }
+
+            usersReturn.CustomerUserProfiles = usersReturn.CustomerUserProfiles
+                .GroupBy(u => u.CustomerNumber)
+                .Select(grp => grp.First())
+                .ToList();
+
+            return usersReturn;
         }
 
         public void AddCustomerToAccount(Guid accountId, Guid customerId)

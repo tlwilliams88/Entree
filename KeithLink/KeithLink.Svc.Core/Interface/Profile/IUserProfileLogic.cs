@@ -28,8 +28,10 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
+        Customer GetCustomerByCustomerNumber(string customerNumber);
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
         AccountReturn GetAccount(Guid id);
+        AccountUsersReturn GetAccountUsers(Guid id);
         UserProfileReturn GetUsers(UserFilterModel userFilters);
         AccountReturn CreateAccount(string name);
         bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);

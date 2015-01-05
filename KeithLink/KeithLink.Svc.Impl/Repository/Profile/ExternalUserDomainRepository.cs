@@ -7,6 +7,8 @@ using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Models.Authentication;
+using KeithLink.Svc.Core.Enumerations.Authentication;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -19,6 +21,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             Locked = 0x10,
             NormalAccount = 0x200,
             PasswordNotRequired = 0x20
+        }
+
+        private enum PassworedExpiredFlag {
+            Disabled = -1,
+            Enabled = 0
         }
 
         IEventLogRepository _logger;
@@ -41,21 +48,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 8/18/2014 - change to call new authenticateuser method with a string output
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password)
-        {
-            string msg = null;
-            bool success = AuthenticateUser(userName, password, out msg);
+        //public bool AuthenticateUser(string userName, string password)
+        //{
+        //    AuthenticationModel success = AuthenticateUser(userName, password);
 
-            if (success)
-            {
-                return true;
-            }
-            else
-            {
-                throw new ApplicationException(msg);
-                //return false;
-            }
-        }
+        //    if (AuthenticationStatus.)
+        //    {
+        //        return true;
+        //    }
+        //    else
+        //    {
+        //        throw new ApplicationException(msg);
+        //        //return false;
+        //    }
+        //}
 
         /// <summary>
         /// test user credentials
@@ -68,14 +74,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 8/5/2014 - add tests for argument length
         /// jwames - 8/15/2014 - add locking tests
         /// </remarks>
-        public bool AuthenticateUser(string userName, string password, out string errorMessage)
+        public AuthenticationModel AuthenticateUser(string userName, string password)
         {
+            AuthenticationModel returnValue = new AuthenticationModel(); 
+
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
 
-            errorMessage = null;
+            returnValue.Message = null;
 
             // connect to server
             try
@@ -83,7 +91,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
                                                             Configuration.ActiveDirectoryExternalServerName,
                                                             Configuration.ActiveDirectoryExternalRootNode,
-                                                            ContextOptions.SimpleBind,
+                                                            ContextOptions.Negotiate,
                                                             Configuration.ActiveDirectoryExternalDomainUserName,
                                                             Configuration.ActiveDirectoryExternalPassword))
                 {
@@ -92,15 +100,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     if (authenticatingUser == null)
                     {
-                        errorMessage = "User name or password is invalid";
-                        return false;
+                        returnValue.Message = "User name or password is invalid";
+                        returnValue.Status = AuthenticationStatus.FailedAuthentication;
+                        return returnValue;
                     }
 
                     // if account is enabled 
                     if (authenticatingUser.Enabled == false)
                     {
-                        errorMessage = "User account is disabled";
-                        return false;
+                        returnValue.Message = "User account is disabled";
+                        returnValue.Status = AuthenticationStatus.Disabled;
+                        return returnValue;
                     }
 
                     // if locked 
@@ -112,40 +122,69 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                             if (DateTime.Now < endOfLockout)
                             {
-                                errorMessage = "User account is locked and cannot sign in now";
-                                return false;
+                                returnValue.Message = "User account is locked and cannot sign in now";
+                                returnValue.Status = AuthenticationStatus.Locked;
+                                return returnValue;
                             }
                         }
 
                     }
 
+                    // if password is expired
+                    if (authenticatingUser.LastPasswordSet == null ) {
+                        returnValue.Status = AuthenticationStatus.PasswordExpired;
+                        // Have to turn off the expired password flag to validate the credentials. It is turned back on after authentication
+                        SetExpiredPassword( (DirectoryEntry)authenticatingUser.GetUnderlyingObject(), PassworedExpiredFlag.Disabled );
+                    }
+                    
                     // validate password
-                    if (boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
+                   if (boundServer.ValidateCredentials(userName, password, ContextOptions.SimpleBind))
                     {
-                        return true;
+                        if (returnValue.Status.Equals( AuthenticationStatus.PasswordExpired )) {
+                            // Turn the password expired flag back on
+                            SetExpiredPassword( (DirectoryEntry)authenticatingUser.GetUnderlyingObject(), PassworedExpiredFlag.Enabled );
+                            returnValue.Message = "Password is expired";
+                            return returnValue;
+                        } else {
+                            returnValue.Status = AuthenticationStatus.Successful;
+                            return returnValue;
+                        }
                     }
                     else
                     {
+                        // If we disabled the expired password we need to re-enable it - we did not fail authentication due to an expired password here so we let the status get changed back.
+                        if (returnValue.Status.Equals( AuthenticationStatus.PasswordExpired )) {
+                            SetExpiredPassword( (DirectoryEntry)authenticatingUser.GetUnderlyingObject(), PassworedExpiredFlag.Enabled );
+                        }
+
                         if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
                         {
-                            errorMessage = "User account is locked and cannot sign in now";
+                            returnValue.Message = "User account is locked and cannot sign in now";
+                            returnValue.Status = AuthenticationStatus.Locked;
                         }
                         else
                         {
-                            errorMessage = "User name or password is invalid";
+                            returnValue.Message = "User name or password is invalid";
+                            returnValue.Status = AuthenticationStatus.FailedAuthentication;
                         }
 
-                        return false;
+
+
+                        return returnValue;
                     }
-
-
                 }
             }
             catch
             {
-                errorMessage = "Could not connect to authentication server for benekeith.com";
-                return false;
+                returnValue.Message = "Coult not connect to authentication server for benekeith.com";
+                returnValue.Status = AuthenticationStatus.FailedConnectingToAuthenticationServer;
+                return returnValue;
             }
+        }
+
+        private void SetExpiredPassword(DirectoryEntry entry, PassworedExpiredFlag status) {
+            entry.Properties["pwdLastSet"].Value = status;
+            entry.CommitChanges();
         }
 
         /// <summary>
@@ -518,12 +557,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public bool UpdatePassword_Org(string emailAddress, string oldPassword, string newPassword) {
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
-            string loginErrMsg = null;
-            if (AuthenticateUser(emailAddress, oldPassword, out loginErrMsg) == false) {
-                if (string.Compare(loginErrMsg, "user name or password is invalid", true) == 0) {
+            AuthenticationModel authentication = AuthenticateUser( emailAddress, oldPassword );
+            if (authentication.Status.Equals(AuthenticationStatus.Successful) == false) {
+                if (authentication.Status.Equals(AuthenticationStatus.FailedAuthentication)) {
                     return false;
                 } else {
-                    throw new ApplicationException(loginErrMsg);
+                    throw new ApplicationException(authentication.Message);
                 }
             }
 

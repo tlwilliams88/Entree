@@ -1,5 +1,7 @@
 ﻿using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Models.Authentication;
+using KeithLink.Svc.Core.Enumerations.Authentication;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -24,43 +26,27 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region test
         [TestMethod]
         public void AuthenticateBadUserName() {
-            string errMessage = null;
-
-            if (_custUserRepo.AuthenticateUser("nonexistantuser@somecompany.com", "irrelevant", out errMessage)) {
-                Assert.IsTrue(false);
-            } else {
-                Assert.IsTrue(errMessage.Contains("invalid"));
-            }
+            AuthenticationModel authentication =  _custUserRepo.AuthenticateUser( "nonexistantuser@somecompany.com", "irrelevant" );
+            Assert.IsTrue( authentication.Status.Equals( AuthenticationStatus.FailedAuthentication ) );
         }
 
         [TestMethod]
         public void AuthenticateBadPassword() {
-            string errMsg = null;
-
-            if (_custUserRepo.AuthenticateUser("sabroussard@somecompany.com", "badpassword", out errMsg)) {
-                Assert.IsTrue(false);
-            } else {
-                Assert.IsTrue(errMsg.Contains("invalid"));
-            }
+            AuthenticationModel authentication = _custUserRepo.AuthenticateUser( "sabroussard@somecompany.com", "badpassword" );
+            Assert.IsTrue( authentication.Status.Equals(AuthenticationStatus.FailedAuthentication) );
         }
 
         [TestMethod]
         public void AuthenticateDisabledUser()
         {
-            string errMessage = null;
-
-            if (_custUserRepo.AuthenticateUser("disableduser@somecompany.com", "D1sabled", out errMessage)) {
-                Assert.IsTrue(false);
-            } else {
-                Assert.IsTrue(errMessage.Contains("disabled"));
-            }
+            AuthenticationModel authentication = _custUserRepo.AuthenticateUser( "disableduser@somecompany.com", "D1sabled" );
+            Assert.IsTrue( authentication.Status.Equals( AuthenticationStatus.Disabled ) );
         }
 
         [TestMethod]
         public void AuthenticateGoodCredentials() {
-            bool success = _custUserRepo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e");
-
-            Assert.IsTrue(success);
+            AuthenticationModel authentication = _custUserRepo.AuthenticateUser("sabroussard@somecompany.com", "L1ttleStev1e");
+            Assert.IsTrue( authentication.Status.Equals( AuthenticationStatus.Successful ) );
         }
         
         [TestMethod]
@@ -71,13 +57,8 @@ namespace KeithLink.Svc.Test.Repositories.Profile
                 } catch { }
             }
 
-            string errMsg = null;
-
-            if (_custUserRepo.AuthenticateUser("lockeduser@somecompany.com", "badpassword", out errMsg)) {
-                Assert.IsTrue(false);
-            } else {
-                Assert.IsTrue(errMsg.Contains("locked"));
-            }
+            AuthenticationModel authentication = _custUserRepo.AuthenticateUser( "lockeduser@somecompany.com", "badpassword" );
+            Assert.IsTrue(authentication.Status.Equals(AuthenticationStatus.Locked));
         }
         
         [TestMethod]

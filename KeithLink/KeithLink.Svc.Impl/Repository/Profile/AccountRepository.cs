@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public List<Account> GetAccounts()
         {
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0'"; // org type of account
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '1'"; // org type of account
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 

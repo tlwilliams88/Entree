@@ -127,6 +127,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Enumerations\Authentication.cs" />
     <Compile Include="Enumerations\Invoice.cs" />
     <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
@@ -191,6 +192,7 @@
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
+    <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
@@ -372,6 +374,7 @@
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
     <Compile Include="Models\Profile\Address.cs" />
+    <Compile Include="Models\Profile\AccountUsersReturn.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />

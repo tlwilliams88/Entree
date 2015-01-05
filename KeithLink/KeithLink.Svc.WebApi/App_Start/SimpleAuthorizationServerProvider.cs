@@ -48,10 +48,16 @@ namespace KeithLink.Svc.WebApi
                     System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.ICustomerDomainRepository))
                     as Core.Interface.Profile.ICustomerDomainRepository;
 
-                if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
-                    context.SetError("invalid_grant", errMsg);
+                KeithLink.Svc.Core.Models.Authentication.AuthenticationModel authentication = ADRepo.AuthenticateUser( context.UserName, context.Password );
+                if (!authentication.Status.Equals( KeithLink.Svc.Core.Enumerations.Authentication.AuthenticationStatus.Successful )) {
+                    context.SetError( "invalid_grant", authentication.Message );
                     return;
                 }
+
+                //if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
+                //    context.SetError("invalid_grant", errMsg);
+                //    return;
+                //}
             }
 
 

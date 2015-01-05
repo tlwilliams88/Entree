@@ -269,6 +269,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/account/{accountId}/users")]
+        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+        public OperationReturnModel<AccountUsersReturn> GetAcountUsers(Guid accountId)
+        {
+            return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
+        }
+
+        [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/customer/user")]
         public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
@@ -299,11 +308,41 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
-		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging)
+		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging, [FromUri] SortInfo sort)
 		{
+            if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field) )
+            {
+                paging.Sort = new List<SortInfo>() { sort };
+            }
 			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging);
 		}
 
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/customer/{customerNumber}")]
+        public OperationReturnModel<Customer> GetCustomer(string customerNumber)
+        {
+            OperationReturnModel<Customer> retVal = new OperationReturnModel<Customer>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetCustomerByCustomerNumber(customerNumber);
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
+        }
 
         [Authorize]
         [HttpGet]
