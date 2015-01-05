@@ -32,8 +32,10 @@ angular.module('bekApp')
 
           // handle nonstock special case
           var nonstockIndex = filterNonstock(itemspecs);
-          var cleanItemspecs = angular.copy(itemspecs); 
-          cleanItemspecs.splice(nonstockIndex, 1);
+          var cleanItemspecs = angular.copy(itemspecs);
+          if (nonstockIndex > -1) {
+            cleanItemspecs.splice(nonstockIndex, 1);
+          }
 
           if (categories && categories.length > 0) {
             facets.push('categories:' + categories.join('|'));
@@ -98,7 +100,7 @@ angular.module('bekApp')
           return $http.get(url, config).then(function(response) {
             var data = response.data;
 
-            // convert nonstock to behave like itemspec
+            // convert nonstock data structure to match other itemspecs
             if (data.facets.nonstock && data.facets.nonstock.length > 0) {
               data.facets.nonstock.forEach(function(nonstockItem) {
                 if (nonstockItem.name === 'y') {

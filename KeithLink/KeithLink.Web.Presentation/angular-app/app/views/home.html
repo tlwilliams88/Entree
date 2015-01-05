@@ -3,215 +3,188 @@
     Welcome Back {{::userProfile.displayname}}!
   </div>
   <div header-buttons>
-    <button class="btn btn-primary btn-lg" ng-click="createNewCart()">Create An Order</button>
+    <button class="btn btn-primary btn-lg" 
+		ng-disabled="!canCreateOrders"
+        ui-sref="menu.addtoorder.items({ })"
+        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button>
   </div>
 </div>
 
-<div class="row">
-  <!-- Account Summary -->
-  <div class="col-md-4 col-md-push-8">
-    <div class="info-box">
+<!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
 
-      <a ui-sref="menu.invoice" class="pull-right btn btn-primary btn-lg">Pay Now</a>
-      
-      <h4><strong>Account Balance</strong></h4>
-      
-      <p class="text-red currency-value">
-        {{selectedUserContext.customer.currentbalance || 0 | currency}}
-      </p>
-      
-      <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
-      
-      <div class="row text-center">
-        <div class="balance__term--amount term-amount-1">
-          <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
-          {{selectedUserContext.customer.balanceage1 | currency}}
-        </div>
-        <div class="balance__term--amount term-amount-2">
-          <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
-          {{selectedUserContext.customer.balanceage2 | currency}}
-        </div>
-        <div class="balance__term--amount term-amount-3">
-          <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
-          {{selectedUserContext.customer.balanceage3 | currency}}
-        </div>
-        <div class="balance__term--amount term-amount-4">
-          <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
-          {{selectedUserContext.customer.balanceage4 | currency}}
-        </div>
-      </div>
-    </div>
-    <div class="info-box account-summary__graph">
-      <h4><strong>Order Summary Last 6 Months</strong></h4>
-      <span class="text-red" ng-show="ordersMessage">{{ordersMessage}}</span>
-      <div id="chart_div" style="height:140px;width:100%;"></div>
-    </div>
-  </div> <!-- end Account Summary -->
+<div class="page-content">
+  <div class="row">
+    <!-- Account Summary -->
+    <div class="col-md-4 col-md-push-8">
+      <div class="info-box">
 
-  <!-- Order Summary -->
-  <div class="col-md-8 col-md-pull-4">
-    <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
-      <div class="col-md-3">
-        Orders
+        <a ui-sref="menu.invoice" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        
+        <h4><strong>Account Balance</strong></h4>
+        
+        <p class="text-red currency-value">
+          {{selectedUserContext.customer.currentbalance || 0 | currency}}
+        </p>
+        
+        <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
+        
+        <div class="row text-center">
+          <div class="balance__term--amount term-amount-1">
+            <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
+            {{selectedUserContext.customer.balanceage1 | currency}}
+          </div>
+          <div class="balance__term--amount term-amount-2">
+            <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
+            {{selectedUserContext.customer.balanceage2 | currency}}
+          </div>
+          <div class="balance__term--amount term-amount-3">
+            <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
+            {{selectedUserContext.customer.balanceage3 | currency}}
+          </div>
+          <div class="balance__term--amount term-amount-4">
+            <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
+            {{selectedUserContext.customer.balanceage4 | currency}}
+          </div>
+        </div>
       </div>
-      <div class="col-md-2 nowrap">
-        Delivery Date
+      <div class="info-box account-summary__graph">
+        <h4><strong>Order Summary Last 6 Months</strong></h4>
+        <span class="text-red" ng-show="ordersMessage">{{ordersMessage}}</span>
+        <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
-      <div class="col-md-2 nowrap">
-        Total Cost
-      </div>
-      <div class="col-md-3">
-        Status
-      </div>
-      <div class="col-md-2">
-        Payment Status
-      </div>
-    </div>
+    </div> <!-- end Account Summary -->
 
-    <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="order.highlightClass">
-      <div class="row no-margin">
-        <div class="col-md-3 order-col">
-          <span>ORDER #</span>
-          <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
-          <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
+    <!-- Order Summary -->
+    <div class="col-md-8 col-md-pull-4">
+      <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
+        <div class="col-md-3">
+          Orders
         </div>
-        <div class="col-md-2 table-col">
-          {{order.deliveryDate || 'TBD'}}
+        <div class="col-md-2 nowrap">
+          Delivery Date
         </div>
-        <div class="col-md-2 table-col">
-          {{order.ordertotal | currency}}
+        <div class="col-md-2 nowrap">
+          Total Cost
         </div>
-        <div class="nowrap col-md-3 table-col highlight-col">
-          {{order.status}}
+        <div class="col-md-3">
+          Status
         </div>
-        <div class="col-md-2 table-col highlight-col">
-          {{order.invoicestatus || 'N/A'}}
+        <div class="col-md-2">
+          Payment Status
         </div>
       </div>
-    </div>
 
-    <!-- Mobile Order Summary -->
-    <div class="row sub-content visible-xs visible-sm">
-      <div class="col-xs-8">
-        <h3>Current Order Status</h3>
-      </div>
-      <div class="col-xs-4">
-        <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
-      </div>
-    </div>
-    <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1 | styleOrders" ng-class="order.highlightClass">
-      <div class="order-col">
-        <div class="row">
-          <div class="col-xs-6">
+      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="order.highlightClass">
+        <div class="row no-margin">
+          <div class="col-md-3 order-col">
             <span>ORDER #</span>
             <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+            <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
-          <div class="col-xs-6 order-col__date">
-            <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}
-          </div>
-        </div>
-      </div>
-      <div class="order-details">
-        <div class="details-item">
-          <div class="item-title">
-            Delivery Date
-          </div>
-          <div class="item-value">
+          <div class="col-md-2 table-col">
             {{order.deliveryDate || 'TBD'}}
           </div>
-        </div>
-        <div class="details-item">
-          <div class="item-title">
-           Total Cost
-          </div>
-          <div class="item-value">
+          <div class="col-md-2 table-col">
             {{order.ordertotal | currency}}
           </div>
-        </div>
-        <div class="details-item">
-          <div class="item-title">
-            Status
-          </div>
-          <div class="item-value highlight-col">
+          <div class="nowrap col-md-3 table-col highlight-col">
             {{order.status}}
           </div>
-        </div>
-        <div class="details-item">
-          <div class="item-title">
-            Payment Status
-          </div>
-          <div class="item-value highlight-col">
+          <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
         </div>
       </div>
-    </div> <!-- end Mobile Order Summary -->
 
-    <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
-    <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
-      No Recent Orders
-    </div>
-
-    <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
-
-  </div> <!-- end Order Summary -->
-
-</div>
-
-<div class="row">
-  <!-- Featured Items -->
-  <div class="col-md-8 col-xs-12">
-    <h3>Latest From Ben E. Keith</h3>
-    <div class="row">
-
-      <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
-      <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
-      <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
-
-      <div class="col-sm-12 hidden-xs hidden-sm">
-        <div ng-repeat="item in promoItems">
-          <div class="featured-item text-center">
-            <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
-            <div class="featured-item__detail">
-              {{item.tagline}}
-              <a 
-                ng-if="item.targeturl" 
-                ng-href="{{item.targeturl}}" 
-                target="_blank" 
-                class="text-uppercase">
-                {{item.targeturltext}}
-              </a>
-              <a 
-                ng-if="item.productid" 
-                ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                class="text-uppercase">
-                {{item.targeturltext}}
-              </a>
-              <a 
-                ng-if="!item.targeturl && !item.productid && item.content" 
-                ng-click="showPromoItemContent(item)"
-                class="text-uppercase">
-                {{item.targeturltext}}
-              </a>
+      <!-- Mobile Order Summary -->
+      <div class="row sub-content visible-xs visible-sm">
+        <div class="col-xs-8">
+          <h3>Current Order Status</h3>
+        </div>
+        <div class="col-xs-4">
+          <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
+        </div>
+      </div>
+      <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1 | styleOrders" ng-class="order.highlightClass">
+        <div class="order-col">
+          <div class="row">
+            <div class="col-xs-6">
+              <span>ORDER #</span>
+              <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+            </div>
+            <div class="col-xs-6 order-col__date">
+              <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}
             </div>
           </div>
         </div>
+        <div class="order-details">
+          <div class="details-item">
+            <div class="item-title">
+              Delivery Date
+            </div>
+            <div class="item-value">
+              {{order.deliveryDate || 'TBD'}}
+            </div>
+          </div>
+          <div class="details-item">
+            <div class="item-title">
+             Total Cost
+            </div>
+            <div class="item-value">
+              {{order.ordertotal | currency}}
+            </div>
+          </div>
+          <div class="details-item">
+            <div class="item-title">
+              Status
+            </div>
+            <div class="item-value highlight-col">
+              {{order.status}}
+            </div>
+          </div>
+          <div class="details-item">
+            <div class="item-title">
+              Payment Status
+            </div>
+            <div class="item-value highlight-col">
+              {{order.invoicestatus || 'N/A'}}
+            </div>
+          </div>
+        </div>
+      </div> <!-- end Mobile Order Summary -->
+
+      <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+      <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
+        No Recent Orders
       </div>
 
-      <div class="col-xs-12">
-        <div class="featured-item-mobile visible-xs visible-sm">
-          <carousel interval="myInterval" disable-ng-animate>
-            <slide ng-repeat="item in promoItems track by $index" active="item.active">
-              <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
-                <img ng-src="{{item.imageurl}}" alt="image">
-              </div>
-              <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                {{item.tagline}}<br />
+      <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
+
+    </div> <!-- end Order Summary -->
+
+  </div>
+
+  <div class="row">
+    <!-- Featured Items -->
+    <div class="col-md-8 col-xs-12">
+      <h3>Latest From Ben E. Keith</h3>
+      <div class="row">
+
+        <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+        <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
+        <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
+
+        <div class="col-sm-12 hidden-xs hidden-sm">
+          <div ng-repeat="item in promoItems">
+            <div class="featured-item text-center">
+              <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
+              <div class="featured-item__detail">
+                {{item.tagline}}
                 <a 
                   ng-if="item.targeturl" 
                   ng-href="{{item.targeturl}}" 
-                  class="text-uppercase"
-                  target="_blank">
+                  target="_blank" 
+                  class="text-uppercase">
                   {{item.targeturltext}}
                 </a>
                 <a 
@@ -227,78 +200,112 @@
                   {{item.targeturltext}}
                 </a>
               </div>
-            </slide>
-          </carousel>
+            </div>
+          </div>
         </div>
-      </div> 
 
-    </div>
-  </div> <!-- end Featured Items -->
-  <!-- Recent Activity -->
-  <div class="col-md-4 hidden-xs hidden-sm">
-    <h3>Recent Activity</h3>
-    
-    <div class="notification notification--date">
-      <div class="notification__icon">
-        <span class="icon-record"></span>
-      </div>
-      <div class="notification__date">Thursday, April 21, 2014</div>
-    </div>
-    <div class="notification notification--activity">
-      <div class="notification__icon">
-        <div class="icon"><span class="icon-dollar"></span></div>
-      </div>
-      <div class="notification__message">
-        You | <span class="timestamp">8:45am</span>
-      </div>
-    </div>
-    <div class="notification notification--message">
-      <div class="notification__icon">
-        <img ng-src="{{userProfile.imageurl}}" alt="">
-      </div>
-      <div class="notification__message">
-        Created an Invoice | <span class="timestamp">8:45am</span>
-      </div>
-    </div>
-    <div class="notification notification--activity">
-      <div class="notification__icon">
-        <div class="icon"><span class="icon-box"></span></div>
-      </div>
-      <div class="notification__message">
-        item
-      </div>
-    </div>
-    <div class="notification notification--date">
-      <div class="notification__icon">
-        <span class="icon-record"></span>
-      </div>
-      <div class="notification__date">Wednesday, April 20, 2014</div>
-    </div>
-    <div class="notification notification--activity">
-      <div class="notification__icon">
-        <div class="icon"><span class="icon-clipboard"></span></div>
-      </div>
-      <div class="notification__message">
-        Created an Order | <span class="timestamp">9:29am</span>
-      </div>
-    </div>
-    <div class="notification notification--message">
-      <div class="notification__icon">
-        <img ng-src="{{userProfile.salesRep.imageurl}}" alt="">
-      </div>
-      <div class="notification__message">
-        Heather Hill | <span class="timestamp">8:44am</span>
-        <p><a href="">Set New Appointment</a></p>
-      </div>
-    </div>
-    <div class="notification notification--activity">
-      <div class="notification__icon">
-        <div class="icon"><span class="icon-checkmark"></span></div>
-      </div>
-      <div class="notification__message">
-        Paid Invoice <a href="">00005649</a> | <span class="timespan">8:30am</span>
-      </div>
-    </div>
+        <div class="col-xs-12">
+          <div class="featured-item-mobile visible-xs visible-sm">
+            <carousel interval="myInterval" disable-ng-animate>
+              <slide ng-repeat="item in promoItems track by $index" active="item.active">
+                <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
+                  <img ng-src="{{item.imageurl}}" alt="image">
+                </div>
+                <div class="col-xs-8 no-padding featured-item-mobile__detail">
+                  {{item.tagline}}<br />
+                  <a 
+                    ng-if="item.targeturl" 
+                    ng-href="{{item.targeturl}}" 
+                    class="text-uppercase"
+                    target="_blank">
+                    {{item.targeturltext}}
+                  </a>
+                  <a 
+                    ng-if="item.productid" 
+                    ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
+                    class="text-uppercase">
+                    {{item.targeturltext}}
+                  </a>
+                  <a 
+                    ng-if="!item.targeturl && !item.productid && item.content" 
+                    ng-click="showPromoItemContent(item)"
+                    class="text-uppercase">
+                    {{item.targeturltext}}
+                  </a>
+                </div>
+              </slide>
+            </carousel>
+          </div>
+        </div> 
 
-  </div> <!-- end Recent Activity -->
+      </div>
+    </div> <!-- end Featured Items -->
+    <!-- Recent Activity -->
+    <div class="col-md-4 hidden-xs hidden-sm">
+      <h3>Recent Activity</h3>
+      
+      <div class="notification notification--date">
+        <div class="notification__icon">
+          <span class="icon-record"></span>
+        </div>
+        <div class="notification__date">Thursday, April 21, 2014</div>
+      </div>
+      <div class="notification notification--activity">
+        <div class="notification__icon">
+          <div class="icon"><span class="icon-dollar"></span></div>
+        </div>
+        <div class="notification__message">
+          You | <span class="timestamp">8:45am</span>
+        </div>
+      </div>
+      <div class="notification notification--message">
+        <div class="notification__icon">
+          <img ng-src="{{userProfile.imageurl}}" alt="">
+        </div>
+        <div class="notification__message">
+          Created an Invoice | <span class="timestamp">8:45am</span>
+        </div>
+      </div>
+      <div class="notification notification--activity">
+        <div class="notification__icon">
+          <div class="icon"><span class="icon-box"></span></div>
+        </div>
+        <div class="notification__message">
+          item
+        </div>
+      </div>
+      <div class="notification notification--date">
+        <div class="notification__icon">
+          <span class="icon-record"></span>
+        </div>
+        <div class="notification__date">Wednesday, April 20, 2014</div>
+      </div>
+      <div class="notification notification--activity">
+        <div class="notification__icon">
+          <div class="icon"><span class="icon-clipboard"></span></div>
+        </div>
+        <div class="notification__message">
+          Created an Order | <span class="timestamp">9:29am</span>
+        </div>
+      </div>
+      <div class="notification notification--message">
+        <div class="notification__icon">
+          <img ng-src="{{userProfile.salesRep.imageurl}}" alt="">
+        </div>
+        <div class="notification__message">
+          Heather Hill | <span class="timestamp">8:44am</span>
+          <p><a href="">Set New Appointment</a></p>
+        </div>
+      </div>
+      <div class="notification notification--activity">
+        <div class="notification__icon">
+          <div class="icon"><span class="icon-checkmark"></span></div>
+        </div>
+        <div class="notification__message">
+          Paid Invoice <a href="">00005649</a> | <span class="timespan">8:30am</span>
+        </div>
+      </div>
+
+    </div> <!-- end Recent Activity -->
+  </div>
 </div>

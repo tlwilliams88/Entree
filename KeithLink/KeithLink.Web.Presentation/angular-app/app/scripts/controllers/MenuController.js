@@ -16,6 +16,9 @@ angular.module('bekApp')
     $scope.userBar = {};
     $scope.userBar.universalSearchTerm = '';
 
+    $scope.messageText = 'Hello world!';
+    $scope.displayGlobalMessage = true;
+
     $scope.userProfile = LocalStorage.getProfile();
     $scope.branches = branches;
     refreshAccessPermissions();
@@ -126,6 +129,7 @@ angular.module('bekApp')
       $scope.isDsr = AccessService.isDsr();
 
       $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
+      $scope.canSeePrices = AccessService.canSeePrices();
       $scope.canManageLists = AccessService.canManageLists();
       $scope.canCreateOrders = AccessService.canCreateOrders();
       $scope.canSubmitOrders = AccessService.canSubmitOrders();

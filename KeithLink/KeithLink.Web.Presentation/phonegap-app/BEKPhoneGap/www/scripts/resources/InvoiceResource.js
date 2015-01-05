@@ -5,7 +5,7 @@ angular.module('bekApp')
   function ($resource) {
     return $resource('/invoice', { }, {
 
-      // defaults: GET, QUERY
+      // defaults: GET, SAVE
 
       pay: {
         url: '/invoice/payment',
@@ -17,8 +17,13 @@ angular.module('bekApp')
         method: 'GET'
       },
 
-      exportConfig: {
+      getInvoiceExportConfig: {
         url: '/invoice/export',
+        method: 'GET'
+      },
+
+      getDetailExportConfig: {
+        url: '/invoice/export/:invoiceNumber',
         method: 'GET'
       }
 

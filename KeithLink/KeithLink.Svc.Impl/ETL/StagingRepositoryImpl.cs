@@ -107,7 +107,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         public DataTable ReadCSUsers()
         {
-            return PopulateDataTable("[ETL].[usp_ECOM_SelectCSUsers]");
+            return PopulateDataTable("[ETL].[ReadCSUsers]");
         }
 		
 		public void ProcessInvoices()
@@ -130,7 +130,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var cmd = new SqlCommand("[ETL].[usp_ECOM_SelectContractItems]", conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadContractItems]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -161,7 +161,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var cmd = new SqlCommand("[ETL].[usp_ECOM_SelectWorksheetItems]", conn))
+                using (var cmd = new SqlCommand("[ETL].[ReadWorksheetItems]", conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
 

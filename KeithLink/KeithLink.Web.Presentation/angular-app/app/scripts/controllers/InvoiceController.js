@@ -116,12 +116,9 @@ angular.module('bekApp')
   }, {
     name: 'Invoices to Pay',
     filterFields: {
-      field: 'statusdescription',
-      value: 'Open',
-      filter: [{
-        field: 'statusdescription',
-        value: 'Past Due'
-      }]
+      field: 'ispayable',
+      value: true,
+      type: 'equals'
     }
   },
    {

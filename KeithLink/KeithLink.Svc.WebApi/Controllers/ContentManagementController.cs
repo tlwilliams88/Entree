@@ -58,10 +58,17 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("cms/contentitem")]
         public Models.OperationReturnModel<bool> CreateContentItem(ContentItemPostModel contentItem)
         {
-            this.contentManagementServiceRepository.CreateContentItem(contentItem);
-            Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
-            return ret;
+            Models.OperationReturnModel<bool> returnValue = new Models.OperationReturnModel<bool>();
+
+            try {
+                this.contentManagementServiceRepository.CreateContentItem( contentItem );
+                returnValue.SuccessResponse = true;
+            } catch (Exception e) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = e.Message;
+            }
+
+            return returnValue;
         }
 
         [HttpDelete]

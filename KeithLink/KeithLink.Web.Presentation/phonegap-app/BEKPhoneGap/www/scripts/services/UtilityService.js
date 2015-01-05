@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UtilityService', [ function () {
+  .factory('UtilityService', [ '$q', function ($q) {
 
     function isUsedName(namesList, name, number) {
       return namesList.indexOf(name + ' ' + number) > -1;
@@ -53,6 +53,20 @@ angular.module('bekApp')
             delete item[name];
           });
         });
+      },
+
+      resolvePromise: function(promise) {
+        var deferred = $q.defer();
+
+        promise.then(function(response) {
+          var data = response.data;
+          if (data.successResponse) {
+            deferred.resolve(data.successResponse);
+          } else {
+            deferred.reject(data.errorMessage);
+          }
+        });
+        return deferred.promise;
       }
     };
 

@@ -164,12 +164,12 @@ angular.module('bekApp')
         authorize: 'canCreateOrders'
       },
       resolve: {
-        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($state, $stateParams, carts, changeOrders, ResolveService, CartService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
           if (selectedBasket) {
             return selectedBasket;
           } else {
-            $state.go('menu.home');
+            return CartService.createCart();
           }
         }]
       }
@@ -300,6 +300,23 @@ angular.module('bekApp')
         //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
         // }]
       }
+    })
+
+    /**********
+    REPORT
+    **********/
+    .state('menu.reports', {
+        url: '/reports/',
+        templateUrl: 'views/reports.html',
+        controller: 'ReportsController',
+        data: {
+            authorize: 'canPayInvoices'
+        },
+        resolve: {
+            /*items: [ '$stateParams', 'ReportService', function($stateParams, ReportService) {
+              return loadItemUsage();
+            }]*/
+        }
     })
 
     /**********

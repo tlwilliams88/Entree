@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 
                 queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.Value.ToString("B");
                 queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-                queryBaskets.SearchCriteria.Model.Properties["TrackingNumber"] = confirmationNumber;
+                queryBaskets.SearchCriteria.Model.Properties["OrderNumber"] = confirmationNumber;
                 
                 queryBaskets.QueryOptions.RefreshBasket = false;
 
@@ -121,8 +121,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
 			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerId;
-			queryBaskets.SearchCriteria.Model.Properties["CreatedDateStart"] = customerId;
-			queryBaskets.SearchCriteria.Model.Properties["CreatedDateEnd"] = customerId;
+			queryBaskets.SearchCriteria.Model.Properties["CreatedDateStart"] = startDate;
+			queryBaskets.SearchCriteria.Model.Properties["CreatedDateEnd"] = endDate;
 
 
 			queryBaskets.QueryOptions.RefreshBasket = false;

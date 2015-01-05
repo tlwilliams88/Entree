@@ -125,8 +125,8 @@ angular.module('bekApp')
       createCart: function(items, shipDate) {
 
         var newCart = {};
-
-        if (!items) { // if null
+		
+		    if (!items) { // if null
           newCart.items = [];
         } else if (Array.isArray(items)) { // if multiple items
           newCart.items = items;
@@ -136,6 +136,7 @@ angular.module('bekApp')
 
         // set default quantity to 1
         angular.forEach(newCart.items, function (item, index) {
+			
           if (!item.quantity || item.quantity === 0) {
             item.quantity = 1;
           }
@@ -152,7 +153,7 @@ angular.module('bekApp')
         return Cart.save({}, newCart).$promise.then(function(response) {
           newCart.id = response.listitemid;
           Service.carts.push(newCart);
-          return response.listitemid;
+          return newCart;
         });
       },
 
@@ -165,7 +166,7 @@ angular.module('bekApp')
       },
 
       addItemsToCart: function(cart, items) {
-        cart.items = items;
+		    cart.items = items;
         return Service.updateCart(cart, {deleteomitted: false});
       },
 
@@ -205,7 +206,7 @@ angular.module('bekApp')
       },
 
       updateItem: function(cartId, item) {
-        return Cart.updateItem({ cartId: cartId }).$promise.then(function(response) {
+	    return Cart.updateItem({ cartId: cartId }).$promise.then(function(response) {
           return response;
         });
       },

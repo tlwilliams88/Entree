@@ -3,8 +3,8 @@ using System.DirectoryServices.AccountManagement;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ICustomerDomainRepository {
-        bool AuthenticateUser(string userName, string password);
-        bool AuthenticateUser(string userName, string password, out string errorMessage);
+        KeithLink.Svc.Core.Models.Authentication.AuthenticationModel AuthenticateUser(string userName, string password);
+        //bool AuthenticateUser(string userName, string password, out string errorMessage);
 
         string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName);
 

@@ -16,93 +16,95 @@
   </div>
 </div> -->
 
-<div class="row">
-  <div class="col-xs-12 text-right">
-    Showing {{notifications.length}} of {{totalNotifications}} Notifications
+<div class="page-content">
+  <div class="row">
+    <div class="col-xs-12 text-right">
+      Showing {{notifications.length}} of {{totalNotifications}} Notifications
+    </div>
   </div>
-</div>
 
-<div class="row">
-  <div class="col-xs-12">
-    
-    <table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()">
-      <thead>
-        <tr>
-          <th class="sort-col-header" ng-click="sortNotifications('label', !sortOrder)">
-            Label
-            <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
-          </th>
-          <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('customernumber', !sortOrder)">
-            Customer
-            <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortNotifications('subject', !sortOrder)">
-            Subject
-            <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
-          </th>
-          <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
-            Type
-            <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortNotifications('messagecreatedutc', !sortOrder)">
-            Time
-            <span sort-icons field="'messagecreatedutc'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
-          </th>
-          <th class="hidden-print large-icon icon-col">
-            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
-          </th>
-        </tr>
-      </thead>  
+  <div class="row">
+    <div class="col-xs-12">
+      
+      <table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()">
+        <thead>
+          <tr>
+            <th class="sort-col-header" ng-click="sortNotifications('label', !sortOrder)">
+              Label
+              <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+            </th>
+            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('customernumber', !sortOrder)">
+              Customer
+              <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortNotifications('subject', !sortOrder)">
+              Subject
+              <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+            </th>
+            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
+              Type
+              <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortNotifications('messagecreatedutc', !sortOrder)">
+              Time
+              <span sort-icons field="'messagecreatedutc'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+            </th>
+            <th class="hidden-print large-icon icon-col">
+              <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+            </th>
+          </tr>
+        </thead>  
 
-      <tbody>
-        
-        <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
-          <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.label">
-          </td>
-          <td class="hidden-xs hidden-sm input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.customernumber">
-          </td>
-          <td class="input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.subject">
-          </td>
-          <td class="hidden-xs hidden-sm input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.notificationtypedescription">
-          </td>
-          <td></td>
-          <td class="input-col">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="filterNotifications(filterFields)">Filter</button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
-          </td>
-        </tr> 
-        <!-- end Filter Row -->
-
-        <tr 
-          ng-repeat="notification in notifications" 
-          ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
+        <tbody>
           
-          <td>{{notification.label}}</td>
-          <td class="hidden-xs hidden-sm">{{notification.customernumber}}</td>
-          <td>{{notification.subject}}</td>
-          <td class="hidden-xs hidden-sm">{{notification.notificationtypedescription}}</td>
-          <td>{{notification.messagecreatedutc | date:medium }}</td>
-          <td class="large-icon icon-col">
-            <a ng-if="notification.body" ng-click="showAdditionalInfo(notification)"><span class="text-light icon-ellipsis"></span></a>
-          </td>
-        </tr>
+          <!-- Filter Row -->
+          <tr class="filter-row" ng-show="showFilter">
+            <td class="input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.label">
+            </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.customernumber">
+            </td>
+            <td class="input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.subject">
+            </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.notificationtypedescription">
+            </td>
+            <td></td>
+            <td class="input-col">
+              <button type="button" class="btn btn-primary btn-sm" ng-click="filterNotifications(filterFields)">Filter</button>
+              <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
+            </td>
+          </tr> 
+          <!-- end Filter Row -->
 
-      </tbody>
-      <tfoot ng-show="notifications.length === 0 && !loadingResults">
-        <tr>
-          <td colspan="15">
-            There are no notifications to display.
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+          <tr 
+            ng-repeat="notification in notifications" 
+            ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
+            
+            <td>{{notification.label}}</td>
+            <td class="hidden-xs hidden-sm">{{notification.customernumber}}</td>
+            <td>{{notification.subject}}</td>
+            <td class="hidden-xs hidden-sm">{{notification.notificationtypedescription}}</td>
+            <td>{{notification.messagecreatedutc | date:medium }}</td>
+            <td class="large-icon icon-col">
+              <a ng-if="notification.body" ng-click="showAdditionalInfo(notification)"><span class="text-light icon-ellipsis"></span></a>
+            </td>
+          </tr>
 
-    <div class="text-center" loading-spinner="loadingResults"></div>
+        </tbody>
+        <tfoot ng-show="notifications.length === 0 && !loadingResults">
+          <tr>
+            <td colspan="15">
+              There are no notifications to display.
+            </td>
+          </tr>
+        </tfoot>
+      </table>
 
+      <div class="text-center" loading-spinner="loadingResults"></div>
+
+    </div>
   </div>
 </div>

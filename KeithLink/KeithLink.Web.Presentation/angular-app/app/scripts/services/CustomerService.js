@@ -8,30 +8,23 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CustomerService', [ '$q', '$http', 'Customer', 'UtilityService', 
-    function ($q, $http, Customer, UtilityService) {
+  .factory('CustomerService', [ '$http', 'Customer', 'UtilityService', 
+    function ($http, Customer, UtilityService) {
 
     var categories;
 
     var Service = {
       getCustomers: function(accountId) {
-        var deferred = $q.defer();
-
         var data = {
           params: {
             accountid: accountId
           }
         };
 
-        $http.get('/profile/customers', data).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse.customers);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
+        var promise = $http.get('/profile/customers', data);
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.customers;
         });
-        return deferred.promise;
 
         // return Customer.query().$promise.then(function(response) {
         //   console.log(response.data);

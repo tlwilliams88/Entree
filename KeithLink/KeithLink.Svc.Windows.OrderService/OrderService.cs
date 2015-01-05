@@ -272,7 +272,10 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        confirmationLogic,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                        new PurchaseOrderRepositoryImpl(),
-                                                                       catLogic);
+                                                                       catLogic,
+                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                       new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl())
+                                                                       );
 
                 logic.ListenForMainFrameCalls();
             } catch (Exception e) {
@@ -363,8 +366,11 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    uow,
                                                                                    confirmationLogic,
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                   new PurchaseOrderRepositoryImpl(), 
-                                                                                   catLogic);
+                                                                                   new PurchaseOrderRepositoryImpl(),
+                                                                                   catLogic,
+                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                                   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl())
+                                                                                   );
 
                             if (CanOpenFile(filePath)) {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);

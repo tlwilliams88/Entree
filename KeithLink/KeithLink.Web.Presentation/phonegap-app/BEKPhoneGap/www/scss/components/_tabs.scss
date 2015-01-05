@@ -89,6 +89,7 @@
 
   .tab-pane {
     display: block !important;
+    visibility: visible !important;
     margin-top: $gutter-size;
     border-top: 1px solid $color-border;
 

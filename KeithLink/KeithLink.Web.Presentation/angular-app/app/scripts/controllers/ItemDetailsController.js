@@ -19,6 +19,9 @@ angular.module('bekApp')
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
       $scope.item = item;
       $scope.item.quantity = 1;
+
+       // used to determine if the item has order history in the view
+      $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
     });
 
     ProductService.saveRecentlyViewedItem(item.itemnumber);

@@ -21,7 +21,7 @@ append
 
   fcsaNumberModule.directive('fcsaNumber', [
     'fcsaNumberConfig', function(fcsaNumberConfig) {
-      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber;
+      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber, unformatNumber;
       defaultOptions = fcsaNumberConfig.defaultOptions;
       getOptions = function(attrs) {
         var option, options, value, _ref;
@@ -154,6 +154,15 @@ append
         }
         return val;
       };
+      unformatNumber = function(val, options) {
+        if (options.prepend != null) {
+          val = val.replace(options.prepend, '');
+        }
+        if (options.append != null) {
+          val = val.replace(options.append, '');
+        }
+        return val.replace(/,/g, '');
+      };
       return {
         restrict: 'A',
         require: 'ngModel',
@@ -167,6 +176,7 @@ append
           ngModelCtrl.$parsers.unshift(function(viewVal) {
             var noCommasVal;
             noCommasVal = viewVal.replace(/,/g, '');
+            noCommasVal = unformatNumber(noCommasVal, options);
             if (isValid(noCommasVal) || !noCommasVal) {
               ngModelCtrl.$setValidity('fcsaNumber', true);
               return noCommasVal;
@@ -215,13 +225,7 @@ append
           elem.on('focus', function() {
             var val;
             val = elem.val();
-            if (options.prepend != null) {
-              val = val.replace(options.prepend, '');
-            }
-            if (options.append != null) {
-              val = val.replace(options.append, '');
-            }
-            elem.val(val.replace(/,/g, ''));
+            elem.val(unformatNumber(val, options));
             return elem[0].select();
           });
           if (options.preventInvalidInput === true) {

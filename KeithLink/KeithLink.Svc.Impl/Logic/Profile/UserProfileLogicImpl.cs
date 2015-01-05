@@ -371,7 +371,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
 		public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false)
 		{
-            List<Customer> userCustomers;
+            //List<Customer> userCustomers;
 			string dsrRole = string.Empty;
 			string dsrNumber = string.Empty;
 			string dsmRole = string.Empty;
@@ -379,7 +379,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
-				dsrNumber = user.Description;
+                dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
 				if (String.IsNullOrEmpty(dsrRole))
 					dsmRole = GetUserDsmRole(user);							
 			}
@@ -667,7 +667,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
         }
         #endregion
-        
+
+        public Customer GetCustomerByCustomerNumber(string customerNumber)
+        {
+            return _customerRepo.GetCustomerByCustomerNumber(customerNumber);
+        }
+
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
         {
 			//List<Customer> allCustomers = _customerRepo.GetCustomers();
@@ -725,6 +730,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
             acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
             return new AccountReturn() { Accounts = new List<Account>() { acct } };
+        }
+
+        public AccountUsersReturn GetAccountUsers(Guid accountId)
+        {
+            List<Account> allAccounts = _accountRepo.GetAccounts();
+            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+
+            AccountUsersReturn usersReturn = new AccountUsersReturn();
+            usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            usersReturn.CustomerUserProfiles = new List<UserProfile>();
+            foreach (Customer c in acct.Customers)
+            {
+                usersReturn.CustomerUserProfiles.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+            }
+
+            usersReturn.CustomerUserProfiles = usersReturn.CustomerUserProfiles
+                .GroupBy(u => u.CustomerNumber)
+                .Select(grp => grp.First())
+                .ToList();
+
+            return usersReturn;
         }
 
         public void AddCustomerToAccount(Guid accountId, Guid customerId)

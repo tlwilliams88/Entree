@@ -43,9 +43,23 @@ angular.module('bekApp')
       $scope.reminderList = {};
     }
 
+
+    function selectNextCartId() {
+      var redirectId;
+      if ($scope.carts.length > 0) {
+        redirectId = $scope.carts[0].id;
+      } else if ($scope.changeOrders.length > 0) {
+        redirectId = $scope.changeOrders[0].ordernumber;
+      }
+      return redirectId;
+    }
+
     $scope.goToCart = function(cartId, isChangeOrder) {
+      if (!cartId) {
+        cartId = selectNextCartId();
+      }
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null}).then(function() {
-        if (!isChangeOrder) {
+        if (!isChangeOrder && cartId) {
           CartService.setActiveCart(cartId);
         }
       });
@@ -64,11 +78,11 @@ angular.module('bekApp')
     };
 
     $scope.sortByPrice = function(item) {
-      if (item.price) {
-        return item.price;
-      } else {
+      // if (item.price) {
+      //   return item.price;
+      // } else {
         return item.each ? item.packageprice : item.caseprice;
-      }
+      // }
     };
 
     var processingSaveCart = false;
@@ -77,8 +91,8 @@ angular.module('bekApp')
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
 
-        // delete items if quantity is 0
-        updatedCart.items = $filter('filter')(updatedCart.items, {quantity: '!0'});
+        // delete items if quantity is 0 or price is 0
+		updatedCart.items = $filter('filter')( updatedCart.items, function(item){return item.quantity > 0 && (item.caseprice > 0 || item.packageprice > 0); } );
 
         return CartService.updateCart(updatedCart).then(function() {
           $scope.currentCart.isRenaming = false;
@@ -95,8 +109,8 @@ angular.module('bekApp')
         });
       }
     };
-
-    var processingSubmitOrder = false;
+	
+	var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
       if (!processingSubmitOrder) {
         processingSubmitOrder = true;
@@ -128,9 +142,9 @@ angular.module('bekApp')
     };
 
     $scope.createNewCart = function() {
-      CartService.createCart().then(function(cartId) {
-        CartService.setActiveCart(cartId);
-        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
+      CartService.createCart().then(function(newCart) {
+        CartService.setActiveCart(newCart.id);
+        $state.go('menu.cart.items', {cartId: newCart.id, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
         $scope.displayMessage('error', 'Error creating new cart.');

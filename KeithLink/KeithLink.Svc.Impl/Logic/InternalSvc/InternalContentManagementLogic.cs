@@ -33,21 +33,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             ContentItem contentItem = ToContentItem(contentItemModel); // TODO: move to extension method
             
-            if (!String.IsNullOrEmpty(contentItemModel.Base64ImageData))
-            {
-                // TODO: persist image somewhere....
-                contentItem.ImageUrl = "";
-            }
-
             contentManagementRepository.Create(contentItem);
             unitOfWork.SaveChanges();
+
+            if (!String.IsNullOrEmpty( contentItemModel.Base64ImageData )) {
+                try {
+                    contentItem.ImageUrl = contentManagementRepository.SaveContentImage( contentItem.Id, contentItemModel.ImageFileName, contentItemModel.Base64ImageData );
+                    unitOfWork.SaveChanges();
+                } catch (Exception e) {
+                    throw new ApplicationException( String.Format( "There was an error uploading the image: {0}", e.Message ) );
+                }
+            }
         }
 
         private static ContentItem ToContentItem(Core.Models.ContentManagement.ContentItemPostModel contentItemModel)
         {
             ContentItem contentItem = new ContentItem();
-            contentItem.ActiveDateEnd = contentItemModel.ActiveDateEnd.Value;
-            contentItem.ActiveDateStart = contentItemModel.ActiveDateStart.Value;
+            contentItem.ActiveDateEnd = contentItemModel.ActiveDateEnd;
+            contentItem.ActiveDateStart = contentItemModel.ActiveDateStart;
             contentItem.BranchId = contentItemModel.BranchId;
             contentItem.CampaignId = contentItemModel.CampaignId;
             contentItem.Content = contentItemModel.Content;
@@ -55,6 +58,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             contentItem.TagLine = contentItemModel.TagLine;
             contentItem.TargetUrl = contentItemModel.TargetUrl;
             contentItem.TargetUrlText = contentItemModel.TargetUrlText;
+            contentItem.ProductId = contentItemModel.ProductId;
 
             return contentItem;
         }

@@ -57,6 +57,14 @@ angular.module('bekApp')
         // WORKSHEET
         } else if (list.isworksheet) {
 
+        // RECOMMENDED -- only shown to DSRs
+        } else if (list.isrecommended) {
+          permissions.canDeleteList = true;
+          permissions.canAddItems = true;
+          permissions.canDeleteItems = true;
+          permissions.canDeleteList = true;
+          permissions.canReorderItems = true;
+
         // MANDATORY -- only shown to DSRs
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
@@ -97,11 +105,20 @@ angular.module('bekApp')
             permissions.canCopyList = true;
             permissions.canReorderItems = true;
           }
-          // SHARING WITH OTHERS -- used to show icon on lists page
-          // else if (list.issharing) {
+        }
 
-          // }
-
+        // overwrite read only lists
+        if (list.read_only) {
+          permissions.canEditList = false;
+          permissions.canReorderItems = false;
+          permissions.canDeleteList = false;
+          permissions.canDeleteItems = false;
+          permissions.canAddItems = false;
+          permissions.canRenameList = false;
+          permissions.canEditLabels = false;
+          permissions.canEditParlevel = false;
+          permissions.canShareList = false;
+          permissions.canCopyList = false;
         }
 
         list.permissions = permissions;        
@@ -197,6 +214,8 @@ angular.module('bekApp')
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
+          } else if (params.isRecommended === true) {
+            newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
           }
@@ -204,8 +223,9 @@ angular.module('bekApp')
           return List.save(params, newList).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
+            return $q.reject(error);
           });
         },
 
@@ -260,8 +280,9 @@ angular.module('bekApp')
               toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
               return list;
             });
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error saving list ' + list.name + '.');
+            return $q.reject(error);
           });
         },
 
@@ -279,8 +300,9 @@ angular.module('bekApp')
 
             toaster.pop('success', null, 'Successfully deleted list ' + deletedList.name + '.');
             return Service.getFavoritesList();
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting list.');
+            return $q.reject(error);
           });
         },
 
@@ -313,8 +335,9 @@ angular.module('bekApp')
               toaster.pop('success', null, 'Successfully added item to list.');
             }
             return item;
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error adding item to list.');
+            return $q.reject(error);
           });
         },
 
@@ -334,8 +357,9 @@ angular.module('bekApp')
           }).$promise.then(function(response) {
             toaster.pop('success', null, 'Successfully deleted item from list.');
             return;
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting item from list.');
+            return $q.reject(error);
           });
         },
 
@@ -355,8 +379,9 @@ angular.module('bekApp')
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error adding ' + items.length + ' items to list.');
+            return $q.reject(error);
           });
         },
 
@@ -376,8 +401,9 @@ angular.module('bekApp')
           }).then(function() {
             // TODO: unfavorite all items if favorites list
             toaster.pop('success', null, 'Successfully deleted ' + items.length + ' from list.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error deleting ' + items.length + ' from list.');
+            return $q.reject(error);
           });
         },
 
@@ -425,11 +451,28 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getReminderList().$promise;
+          return List.getCriticalItems().$promise;
         },
 
         findMandatoryList: function() {
           return UtilityService.findObjectByField(Service.lists, 'ismandatory', true);
+        },
+
+        /**********************
+        RECOMMENDED ITEMS LISTS
+        ***********************/
+
+        createRecommendedList: function(items) {
+          var params = { isRecommended: true };
+          return Service.createList(items, params);
+        },
+
+        getRecommendedItems: function() {
+          return List.getRecommendedItems().$promise;
+        },
+
+        findRecommendedList: function() {
+          return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
         },
 
         /***************
@@ -445,8 +488,9 @@ angular.module('bekApp')
           return List.shareList(copyListData).$promise.then(function() {
             list.issharing = true;
             toaster.pop('success', null, 'Successfully shared list ' + list.name + ' with ' + customers.length + ' customers.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error sharing list.');
+            return $q.reject(error);
           });
         },
 
@@ -458,8 +502,9 @@ angular.module('bekApp')
 
           return List.copyList(copyListData).$promise.then(function() {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-          }, function() {
+          }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
+            return $q.reject(error);
           });
         },
       };

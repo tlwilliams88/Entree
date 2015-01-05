@@ -71,16 +71,11 @@ angular.module('bekApp')
 
       // accountid, customerid , email
       getAllUsers: function(params) {
-        var deferred = $q.defer();
-        $http.get('/profile/users', params).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse.userProfiles);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
+        var promise = $http.get('/profile/users', params);
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.userProfiles;
         });
-        return deferred.promise;
       },
 
       createUser: function(userProfile) {
@@ -97,6 +92,7 @@ angular.module('bekApp')
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
           LocalStorage.setProfile(profile);
+          return profile;
         });
       },
 
@@ -137,7 +133,8 @@ angular.module('bekApp')
           // TODO: update url locally 
           toaster.pop('success', null, 'Successfully uploaded avatar');
         }, function(error) {
-          toaster.pop('error', null, error);
+          toaster.pop('error', null, 'Error uploading avatar.');
+          return $q.reject(error);
         });
       },
 

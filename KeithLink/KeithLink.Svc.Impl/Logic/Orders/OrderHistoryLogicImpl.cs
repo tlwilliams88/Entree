@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -44,6 +45,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IUserProfileRepository _userProfileRepository;
+        private readonly ICustomerRepository _customerRepository;
         //private readonly IUnitOfWork _unitOfWorkOriginal;
 
         private bool _keepListening;
@@ -52,7 +55,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #region ctor
         public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IOrderHistoryQueueRepository queueRepo,
-                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic) {
+                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic,
+                                     IUserProfileRepository userProfileRepository, ICustomerRepository customerRepository) {
             _catalogLogic = catalogLogic;
             _confirmationLogic = confLogic;
             _log = logRepo;
@@ -62,6 +66,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _queue = queueRepo;
             _socket = socket;
             _unitOfWork = unitOfWork;
+            _userProfileRepository = userProfileRepository;
+            _customerRepository = customerRepository;
             
             _keepListening = true;
 
@@ -174,9 +180,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
-            List<PurchaseOrder> orders = _poRepo.ReadPurchaseOrders(userId, customerInfo.CustomerId);
 
-            return orders.Select(o => o.ToOrder()).ToList();
+            // get all users to then read all orders from CS
+            List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
+            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId).CustomerId).ToList();
+
+            foreach (var user in sharedUsers)
+            {
+                allOrders.AddRange(_poRepo.ReadPurchaseOrders(user.UserId, customerInfo.CustomerId));
+            }
+            return allOrders.Select(o => o.ToOrder()).ToList();
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {

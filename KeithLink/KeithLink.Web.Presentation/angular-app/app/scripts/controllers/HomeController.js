@@ -59,7 +59,7 @@ angular.module('bekApp')
     // get date range
     var from = new Date(),
       to = new Date();
-    from.setMonth(from.getMonth()-6);
+    from.setMonth(from.getMonth()-5);
     from.setDate(1);
     to.setMonth(to.getMonth()+1);
     to.setDate(1);
@@ -115,11 +115,11 @@ angular.module('bekApp')
       }
 
       // determine y axis values
-      var max = Math.max.apply(null, barData);
+      var maxAmount = Math.max.apply(null, barData);
       var yAxisValues = [];
 
       for (var i = 0; i < 5; i++) {
-        var yValue = Math.ceil(max * i / 4 / 1000) * 1000; // round up to nearest thousand
+        var yValue = Math.ceil(maxAmount * i / 4 / 100) * 100; // round up to nearest hundred
         yAxisValues.push(yValue);
       }
 
@@ -151,7 +151,8 @@ angular.module('bekApp')
           y: {
             tick: {
               values: yAxisValues
-            }
+            },
+            max: yAxisValues[yAxisValues.length - 1]
           }
         },
         legend: {
@@ -161,7 +162,8 @@ angular.module('bekApp')
           pattern: ['#f3f1eb', '#489ecf'] // background, blue
         },
         padding: {
-          bottom: -15
+          bottom: -20,
+          left: 40
         },
         interaction: {
           enabled: false

@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'Order', 
-    function ($http, $q, $filter, UtilityService, ExportService, Order) {
+  .factory('OrderService', ['$http', '$filter', 'UtilityService', 'ExportService', 'Order', 
+    function ($http, $filter, UtilityService, ExportService, Order) {
     
     var Service = {
       
@@ -23,21 +23,20 @@ angular.module('bekApp')
         }).$promise;
       },
 
+      getOrdersByDate: function(startDate, endDate) {
+        return Order.getOrdersByDate({
+          from: startDate,
+          to: endDate
+        }).$promise;
+      },
+
       /*************
       CHANGE ORDERS
       *************/
 
       getChangeOrders: function() {
-        var deferred = $q.defer();
-        $http.get('/order/changeorder').then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse);
-          } else {
-            $q.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
+        var promise = $http.get('/order/changeorder');
+        return UtilityService.resolvePromise(promise);
       },
 
       resubmitOrder: function(orderNumber) {
@@ -92,8 +91,10 @@ angular.module('bekApp')
         ExportService.export('/order/export', config);
       },
 
-      getDetailExportConfig: function() {
-        return Order.getDetailExportConfig({}).$promise;
+      getDetailExportConfig: function(orderNumber) {
+        return Order.getDetailExportConfig({
+          orderNumber: orderNumber
+        }).$promise;
       },
 
       exportOrderDetails: function(config, orderNumber) {
