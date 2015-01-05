@@ -708,7 +708,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
-					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.Contains(accountFilters.Wildcard)));
+					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.ToLower().Contains(accountFilters.Wildcard.ToLower())));
                 }
             }
             else
