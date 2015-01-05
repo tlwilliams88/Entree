@@ -101,6 +101,7 @@
             <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
             <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
             <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
+            <p class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</p>
             <p class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</p>
 
           </div>
@@ -169,7 +170,7 @@
         <div class="form-group no-margin">
           <label for="shipDate" class="col-sm-3 control-label">PO Number:</label>
           <div class="col-sm-6">
-            <input class="form-control" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
+            <input class="form-control" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
           </div>
         </div>
 

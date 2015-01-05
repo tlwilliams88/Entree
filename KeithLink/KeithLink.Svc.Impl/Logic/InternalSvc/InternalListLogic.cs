@@ -225,7 +225,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
 
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);

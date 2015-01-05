@@ -16,6 +16,10 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    // used for the 'Show More' button
+    $scope.showMoreListNames = true;
+    $scope.numberListNamesToShow = 5;
+
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
     }
@@ -372,21 +376,6 @@ angular.module('bekApp')
 
       $scope.sortBy = sortBy;
       updateItemPositions();
-    };
-
-    // SHOW MORE
-    // limit number of list names displayed in the sidebar
-    var showMoreLimit = 5;
-    $scope.itemsLimit = function() {
-      return showMoreLimit;
-    };
-    $scope.showMore = function() {
-      showMoreLimit = $scope.lists.length;
-    };
-    $scope.hasMoreItemsToShow = function() {
-      if ($scope.lists) {
-        return showMoreLimit < $scope.lists.length;
-      }
     };
 
     // FILTER LIST
