@@ -70,51 +70,34 @@ angular.module('bekApp')
     // get order summary data
     OrderService.getOrdersByDate(fromString, toString).then(function(orders) {
 
-      // get order totals for each month in form...
-      /*
-      {
-        10: 2354,
-        11: 5432,
-        ...
+      // get array of month values in form [8, 9, 10, 11, 12, 1]
+      var months = [],
+        tempDate = new Date();
+      for (var i = 0; i < 6; i++) {
+        tempDate.setMonth(from.getMonth() + i);
+        var month = tempDate.getMonth()+1;
+        months.push(month);
       }
-      */
-      var months = {};
+
+      // calculate order totals for each month
+      var monthTotals = [0, 0, 0, 0, 0, 0];
       orders.forEach(function(order) {
-        var date = new Date(order.createddate);
-        var month = date.getMonth() + 1;
-        var total = months[month];
-        if (total) { // check if month already exists in object
-          months[month] += order.ordertotal;
-        } else {
-          months[month] = order.ordertotal;
-        }
+        var orderDate = new Date(order.createddate);
+        var month = orderDate.getMonth() + 1;
+        var idx = months.indexOf(month);
+        monthTotals[idx] += order.ordertotal ? order.ordertotal : 0;
       });
 
-      // add 0 amount for months with no data
-      var startDate = from;
-      for (var i = 0; i < 6; i ++) {
-        var monthNum = startDate.getMonth()+1;
-        if (!months.hasOwnProperty(monthNum)) {
-          months[monthNum] = 0;
-        }
-        startDate.setMonth(startDate.getMonth()+1)  
-      }
-      
-      
-      // format data to match graph 
-      // [0, 2354, 5432, 0, ...]
-      var monthData = [],
-        barData = [],
-        lineData = [];
+      var barData = [],
+        lineData = [],
+        monthData = months;
 
-      for (var month in months) {
-        var total = months[month];
-        monthData.push(month); 
+      monthTotals.forEach(function(total) {
         barData.push(total);
         lineData.push(total);
-      }
+      })
 
-      // determine y axis values
+      // determine y axis values based on largest order total for one month
       var maxAmount = Math.max.apply(null, barData);
       var yAxisValues = [];
 
@@ -134,11 +117,11 @@ angular.module('bekApp')
           x: 'x',
           columns: [
             // ['x', 'J', 'F', 'M', 'A', 'M', 'J'],
-            // ['data1', 130, 340, 200, 500, 250, 350], // bar
-            // ['data2', 130, 340, 200, 500, 250, 350] // line
             monthData,
             barData,
             lineData
+            // ['bar', 0, 0, 0, 0, 0, 48000], // bar
+            // ['line', 0, 0, 0, 0, 0, 48000] // line
           ],
           types: {
               bar: 'bar',
