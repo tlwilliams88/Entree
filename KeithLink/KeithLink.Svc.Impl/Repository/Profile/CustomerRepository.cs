@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId)
         {
 			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(string.Format("user_{0}",userId.ToString())));
-			if (customerFromCache != null)
+			if (customerFromCache != null && customerFromCache.Count > 0)
 				return customerFromCache;
 
             // get user organization info

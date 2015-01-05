@@ -111,7 +111,7 @@ angular.module('bekApp')
 			}
           }
           else {
-			setValue( parseInt(scope.value.toString().substring(0,curLength - 1)) );
+			setValue( parseInt( scope.value.toString().substring(0,curLength - 1) ) );
           }
           
           // If a minimum is set, let's make sure we're within the limit.
