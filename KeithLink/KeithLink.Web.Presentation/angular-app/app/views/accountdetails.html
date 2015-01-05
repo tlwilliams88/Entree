@@ -171,16 +171,16 @@
     </div>
   </div>
   <div class="col-md-6">
-    <h2>Assigned Customer Accounts</h2>
+    <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <div class="hidden-print" style="padding-bottom: 20px;">
       <form name="customerSearchForm">
         <div class="input-group input-group-lg">
-          <input 
-            ng-model="customerSearchTerm" 
-            type="text" 
-            class="form-control" 
+          <input
+            ng-model="customerSearchTerm"
+            type="text"
+            class="form-control"
             placeholder="Filter customers by name or number" />
           <span class="input-group-btn">
             <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="large-icon icon-search"></span></button>
@@ -190,8 +190,8 @@
     </div>
 
     <div class="infiniteScroll">
-      <table class="table no-margin table-border table-striped-rows" 
-        infinite-scroll="infiniteScrollLoadMore()" 
+      <table class="table no-margin table-border table-striped-rows"
+        infinite-scroll="infiniteScrollLoadMore()"
         infinite-scroll-container="'.infiniteScroll'">
         <thead>
           <tr>
