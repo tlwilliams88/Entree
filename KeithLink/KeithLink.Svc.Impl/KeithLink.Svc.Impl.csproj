@@ -428,6 +428,10 @@
     <Compile Include="Repository\EF\Migrations\201412170316258_gs add order history header parent.Designer.cs">
       <DependentUpon>201412170316258_gs add order history header parent.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.cs" />
+    <Compile Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.Designer.cs">
+      <DependentUpon>201501061845324_Add_Cust_Branch_To_UserActiveCart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -903,6 +907,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201412170316258_gs add order history header parent.resx">
       <DependentUpon>201412170316258_gs add order history header parent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.resx">
+      <DependentUpon>201501061845324_Add_Cust_Branch_To_UserActiveCart.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

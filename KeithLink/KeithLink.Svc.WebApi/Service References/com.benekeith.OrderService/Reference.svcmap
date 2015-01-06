@@ -31,10 +31,11 @@
     <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="f16d6f9b-c9d4-4b65-8b83-03d417cd7f12" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd3" />
     <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="e9d5230a-4f0e-4f42-b5d4-c2886b1a5add" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd1" />
     <MetadataFile FileName="OrderService3.xsd" MetadataType="Schema" ID="c0143bbd-6711-4903-98bd-9744a2e1c3c6" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd0" />
-    <MetadataFile FileName="OrderService5.xsd" MetadataType="Schema" ID="4598621f-4538-4d70-868a-447b79bd87d4" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd6" />
-    <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="15e99ebc-499f-4b6c-a8b6-c7bdaf468d0b" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?wsdl" />
-    <MetadataFile FileName="OrderService4.xsd" MetadataType="Schema" ID="26470c08-3a03-449c-9812-1ae067e31262" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd4" />
     <MetadataFile FileName="OrderService51.xsd" MetadataType="Schema" ID="db37dd15-ae24-494a-b178-d10ec1739f8a" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd5" />
+    <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="15e99ebc-499f-4b6c-a8b6-c7bdaf468d0b" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?wsdl" />
+    <MetadataFile FileName="OrderService5.xsd" MetadataType="Schema" ID="4598621f-4538-4d70-868a-447b79bd87d4" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd6" />
+    <MetadataFile FileName="OrderService4.xsd" MetadataType="Schema" ID="26470c08-3a03-449c-9812-1ae067e31262" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd4" />
+    <MetadataFile FileName="OrderService6.xsd" MetadataType="Schema" ID="713e393b-69a7-4653-906b-369d08111726" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd7" />
     <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="2fab18c2-ef69-4407-8e65-3ed51e070200" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?disco" />
   </Metadata>
   <Extensions>

@@ -4,7 +4,8 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Common {
-    public abstract class BaseQueueMessage {
+    [DataContract]
+	public abstract class BaseQueueMessage {
         #region ctor
         public BaseQueueMessage() {
             CreateDateTime = DateTime.Now;

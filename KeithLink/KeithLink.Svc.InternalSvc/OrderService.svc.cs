@@ -51,12 +51,13 @@ namespace KeithLink.Svc.InternalSvc {
             return _historyLogic.GetOrder(branchId, invoiceNumber);
         }
 
-        public UserActiveCartModel GetUserActiveCart(Guid userId) {
-            return _orderLogic.GetUserActiveCart(userId);
+		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
+		{
+            return _orderLogic.GetUserActiveCart(catalogInfo, userId);
         }
 
-        public void SaveUserActiveCart(Guid userId, Guid cartId) {
-            _orderLogic.SaveUserActiveCart(userId, cartId);
+        public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId) {
+            _orderLogic.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
         
 		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
