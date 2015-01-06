@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
     public interface IKPayInvoiceRepository {
@@ -17,8 +18,10 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
         List<EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber);
 
         List<EF.Invoice> GetMainInvoices(string division, string customerNumber);
-
+				
 		EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber);
+
+		IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
 
 		long GetNextConfirmationId();
 

@@ -14,20 +14,12 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
         void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber);
 
         List<CustomerBank> GetAllCustomerBanks(UserSelectedContext userContext);
-
-        InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging);
+		      
 
         CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
 
-        List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber);
 
-		InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging);
+		InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers);
 
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
 
