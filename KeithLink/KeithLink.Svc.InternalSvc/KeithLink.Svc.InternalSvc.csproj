@@ -162,6 +162,7 @@
     <Compile Include="ContentManagementService.svc.cs">
       <DependentUpon>ContentManagementService.svc</DependentUpon>
     </Compile>
+    <Compile Include="GlobalErrorBehaviorAttribute.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
     <Compile Include="ReportService.svc.cs">
       <DependentUpon>ReportService.svc</DependentUpon>
