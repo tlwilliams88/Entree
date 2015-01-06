@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
         List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
         List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo);
-		UserActiveCartModel GetUserActiveCart(Guid userId);
-		void SaveUserActiveCart(Guid userId, Guid cartId);
+		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
+		void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
 	}
 }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Ext.Pipeline.ItemPrice.PipelineService;
 using System.Configuration;
+using System.Diagnostics;
 
 
 namespace KeithLink.Ext.Pipeline.ItemPrice
@@ -76,6 +77,7 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 			catch (Exception ex)
 			{
 				Object errorMsg = ex.Message;
+				LogErrorMessage(ex);
 				((ISimpleList)order["_Basket_Errors"]).Add(ref errorMsg);
 				return StatusError;
 			}
@@ -100,6 +102,17 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 			valuesRead[0] = "_cy_oadjust_subtotal";
 			valuesRead[0] = "_cy_total_total";
 			return valuesRead;
+		}
+
+		private void LogErrorMessage(Exception ex)
+		{
+			var source = "ItemPrice Pipeline";
+			var log = "Application";
+			
+			if (!EventLog.SourceExists(source))
+				EventLog.CreateEventSource(source, log);
+
+			EventLog.WriteEntry(source, ex.ToString());
 		}
 
 		

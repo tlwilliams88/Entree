@@ -73,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}/active")]
 		public void SetActive(Guid cartId)
 		{
-			orderServiceRepository.SaveUserActiveCart(this.AuthenticatedUser.UserId, cartId);
+			orderServiceRepository.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
 		}
 
 		[HttpDelete]

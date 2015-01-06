@@ -25,10 +25,10 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         Order GetOrder(string branchId, string invoiceNumber);
 
 		[OperationContract]
-		UserActiveCartModel GetUserActiveCart(Guid userId);
+		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
 
 		[OperationContract]
-		void SaveUserActiveCart(Guid userId, Guid cartId);
+		void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
 
 		[OperationContract]
 		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);

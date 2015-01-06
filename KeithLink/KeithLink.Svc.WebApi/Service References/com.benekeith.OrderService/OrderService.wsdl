@@ -6,9 +6,10 @@
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" />
-      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
-      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" />
-      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Common" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage">

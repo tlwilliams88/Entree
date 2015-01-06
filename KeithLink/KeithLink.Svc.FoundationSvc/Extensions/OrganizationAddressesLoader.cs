@@ -65,8 +65,8 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             int numToTake = 2000;
             lock(addressLoaderLock)
             {
-                for (int i = 0; i < response.CommerceEntities.Count; i += numToTake )
-                {
+                for (int i = 0; i < response.CommerceEntities.Count && response.CommerceEntities.Count < numToTake; i += numToTake )
+                { // only load addresses if we have less than 2000; any more than that will require a incoming filter 
                     List<string> preferredAddressIds = new List<string>();
                     Dictionary<string, string> addressToParentIdMap = new Dictionary<string,string>();
                     List<CommerceServer.Foundation.CommerceEntity> currentBatch = response.CommerceEntities.Skip(i).Take(numToTake).ToList();
