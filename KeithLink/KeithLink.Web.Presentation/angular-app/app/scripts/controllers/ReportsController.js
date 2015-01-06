@@ -34,12 +34,12 @@ angular.module('bekApp')
             loadItemUsage();
         };
 
-        $scope.goToItemDetails = function (item) {
-            ProductService.selectedProduct = item;
-            $state.go('menu.catalog.products.details', {
-                itemNumber: item.itemnumber
-            });
-        };
+        // $scope.goToItemDetails = function (item) {
+        //     ProductService.selectedProduct = item;
+        //     $state.go('menu.catalog.products.details', {
+        //         itemNumber: item.itemnumber
+        //     });
+        // };
 
         $scope.sortTable = function (field) {
             $scope.itemsPerPage = 50;

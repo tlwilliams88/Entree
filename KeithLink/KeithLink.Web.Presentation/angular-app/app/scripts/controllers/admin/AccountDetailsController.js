@@ -166,7 +166,7 @@ angular.module('bekApp')
   };
 
   function saveAccount(account) {
-    account.users = account.adminusers;
+    delete account.customerusers;
     AccountService.updateAccount(account).then(function(accounts) {
       console.log(accounts);
     });

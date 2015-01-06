@@ -60,6 +60,7 @@
           <input 
             type="text" 
             class="form-control form-control-lg" 
+            ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/"
             id="phoneNumber" 
             name="phoneNumber"
             ng-model="userProfile.phonenumber">
@@ -185,7 +186,7 @@
     <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
-    <form name="customerSearchForm" class="customers-search">
+    <form name="customerSearchForm" class="search-form">
       <div class="input-group">
         <input 
           ng-model="customerSearchTerm" 

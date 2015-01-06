@@ -1,5 +1,5 @@
 .top-buffer {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .preferencesTable {
@@ -25,11 +25,7 @@
 }
 
 
-.customers-search {
+.search-form {
   margin-bottom: $gutter-size;
   display: block;
-
-  .input-group-btn > button {
-    padding-top: 7px;
-  }
 }

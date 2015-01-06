@@ -30,11 +30,7 @@ angular.module('bekApp')
     if($scope.viewingAllCustomers){
       $scope.viewAllButtonText = 'Return to Invoices for: ' + $scope.selectedUserContext.customer.customerNumber +  ' - '  + $scope.selectedUserContext.customer.customerName;
       $scope.headerText = 'Open Invoices of All Customers';
-      // $scope.$parent.selectedUserContext.text = 'All Customers';
-      $scope.$parent.selectedUserContext = {
-        text: 'All',
-        id: 0
-      }
+      $scope.$parent.selectedUserContext.text = 'All Customers';
     } else{
       $scope.viewAllButtonText = 'View Open Invoices for All Customers';
       $scope.headerText = 'Your Invoices';
