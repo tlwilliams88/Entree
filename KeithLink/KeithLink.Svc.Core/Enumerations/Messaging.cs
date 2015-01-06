@@ -28,7 +28,10 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 		HasNews = 8,
 		[Description("Mail")]
 		[EnumMember]
-		Mail = 16
+		Mail = 16,
+        [Description("ETA")]
+        [EnumMember]
+        Eta = 32
 	}
 
 	[DataContract(Name = "Channel")]
