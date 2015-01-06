@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -29,21 +30,21 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetAllBankAccounts(userContext).ToList<CustomerBank>();
         }
 
-        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _client.GetAllOpenInvoices(userContext, paging);
-        }
+		//public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
+		//	return _client.GetAllOpenInvoices(userContext, paging);
+		//}
 
-        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _client.GetAllPaidInvoices(userContext, paging);
-        }
+		//public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
+		//	return _client.GetAllPaidInvoices(userContext, paging);
+		//}
 
-        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _client.GetAllPastDueInvoices(userContext, paging);
-        }
+		//public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
+		//	return _client.GetAllPastDueInvoices(userContext, paging);
+		//}
 
-        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _client.GetAllPayableInvoices(userContext, paging);
-        }
+		//public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
+		//	return _client.GetAllPayableInvoices(userContext, paging);
+		//}
 
         public Core.Models.OnlinePayments.Customer.CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             return _client.GetBankAccount(userContext, accountNumber);
@@ -53,13 +54,11 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
             return _client.GetInvoiceDetails(userContext, invoiceNumber);
         }
 
-        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging) {
-            return _client.GetInvoiceHeaders(userContext, paging);
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
+		{
+            return _client.GetInvoiceHeaders(user, userContext, paging, forAllCustomers);
         }
-
-        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
-            return _client.GetInvoiceTransactions(userContext, invoiceNumber).ToList<InvoiceModel>();
-        }
+		        
        
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{

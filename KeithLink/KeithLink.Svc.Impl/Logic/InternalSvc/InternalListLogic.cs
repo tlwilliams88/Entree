@@ -225,7 +225,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
 
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
@@ -351,7 +351,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
 
-			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(user);
+			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
 						
 			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
 			if (cachedList != null)
@@ -380,9 +380,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return returnList;
 		}
 
-		private Core.Models.Generated.Basket GetUserActiveCart(UserProfile user)
+		private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
 		{
-			var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId).FirstOrDefault();
+			var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
 
@@ -478,7 +478,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
-				KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(user);
+				KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
 
                 var processedList = new List<ListModel>();
                 //Lookup product details for each item

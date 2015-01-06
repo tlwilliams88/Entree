@@ -43,7 +43,7 @@ angular.module('bekApp')
         // log user in
         AuthenticationService.login(userProfile.email, userProfile.password).then(function(profile) {
           // redirect to account details page
-          $state.go('menu.accountdetails');
+          $state.go('menu.userprofile');
         }, function(error) {
           $scope.loginErrorMessage = error.data.error_description;
           $scope.clearForm();

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -89,9 +90,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 
 
-		public Core.Models.Orders.UserActiveCartModel GetUserActiveCart(Guid userId)
+		public Core.Models.Orders.UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
 		{
-			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId).FirstOrDefault();
+			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 
 			if (activeCart == null)
 				return null;
@@ -100,12 +101,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
-		public void SaveUserActiveCart(Guid userId, Guid cartId)
+		public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId)
 		{
-			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId).FirstOrDefault();
+			var activeCart = userActiveCartRepository.Read(u => u.UserId == userId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
 
 			if (activeCart == null)
-				userActiveCartRepository.Create(new Core.Models.Orders.EF.UserActiveCart() { CartId = cartId, UserId = userId });
+				userActiveCartRepository.Create(new Core.Models.Orders.EF.UserActiveCart() { CartId = cartId, UserId = userId, CustomerId = catalogInfo.CustomerId, BranchId = catalogInfo.BranchId });
 			else
 			{
 				activeCart.CartId = cartId;

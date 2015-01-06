@@ -40,16 +40,16 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
-        KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(System.Guid userId);
+        KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(System.Guid userId);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SaveUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/SaveUserActiveCartResponse")]
-        void SaveUserActiveCart(System.Guid userId, System.Guid cartId);
+        void SaveUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId, System.Guid cartId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SaveUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/SaveUserActiveCartResponse")]
-        System.Threading.Tasks.Task SaveUserActiveCartAsync(System.Guid userId, System.Guid cartId);
+        System.Threading.Tasks.Task SaveUserActiveCartAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId, System.Guid cartId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange", ReplyAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse")]
         KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
@@ -117,20 +117,20 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
             return base.Channel.GetOrderAsync(branchId, invoiceNumber);
         }
         
-        public KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(System.Guid userId) {
-            return base.Channel.GetUserActiveCart(userId);
+        public KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId) {
+            return base.Channel.GetUserActiveCart(catalogInfo, userId);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(System.Guid userId) {
-            return base.Channel.GetUserActiveCartAsync(userId);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.UserActiveCartModel> GetUserActiveCartAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId) {
+            return base.Channel.GetUserActiveCartAsync(catalogInfo, userId);
         }
         
-        public void SaveUserActiveCart(System.Guid userId, System.Guid cartId) {
-            base.Channel.SaveUserActiveCart(userId, cartId);
+        public void SaveUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId, System.Guid cartId) {
+            base.Channel.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
         
-        public System.Threading.Tasks.Task SaveUserActiveCartAsync(System.Guid userId, System.Guid cartId) {
-            return base.Channel.SaveUserActiveCartAsync(userId, cartId);
+        public System.Threading.Tasks.Task SaveUserActiveCartAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId, System.Guid cartId) {
+            return base.Channel.SaveUserActiveCartAsync(catalogInfo, userId, cartId);
         }
         
         public KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {

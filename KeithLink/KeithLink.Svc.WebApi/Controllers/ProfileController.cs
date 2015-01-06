@@ -159,7 +159,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("profile/account")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> CreateAccount(AccountModel account)
+        public OperationReturnModel<AccountReturn> CreateAccount(Account account)
         {
             OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
 
@@ -187,13 +187,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/account")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> UpdateAccount(AccountModel account)
+        public OperationReturnModel<bool> UpdateAccount(Account account)
         {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try
             {
-                _profileLogic.UpdateAccount(account.AccountId.Value, account.Name, account.Customers, account.Users);
+                retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
             }
             catch (ApplicationException axe)
             {
@@ -213,15 +213,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        [ApiKeyedRoute("profile/account")]
+        [ApiKeyedRoute("profile/account/{accountid}")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> GetAccount(AccountModel account)
+        public OperationReturnModel<Account> GetAccount(Guid accountid)
         {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+            OperationReturnModel<Account> retVal = new OperationReturnModel<Account>();
 
             try
             {
-                retVal.SuccessResponse = _profileLogic.GetAccount(account.AccountId.Value);
+                retVal.SuccessResponse = _profileLogic.GetAccount(accountid);
             }
             catch (ApplicationException axe)
             {
@@ -428,10 +428,28 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/user/{userid}/customers")]
+        public OperationReturnModel<CustomerReturn> GetCustomersForExternalUser(Guid userid) {
+            OperationReturnModel<CustomerReturn> customerReturn = new OperationReturnModel<CustomerReturn>();
+            try
+            {
+                customerReturn.SuccessResponse = new CustomerReturn() { Customers = _profileLogic.GetCustomersForExternalUser(userid) };
+            }
+            catch (Exception ex)
+            {
+                customerReturn.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("Error retrieving customers for external user", ex);
+            }
+
+            return customerReturn;
+        }
+
 
         [Authorize]
         [HttpPost]
-        [ApiKeyedRoute( "profile/avatar" )]
+        [ApiKeyedRoute("profile/avatar" )]
         public async Task<OperationReturnModel<bool>> UploadAvatar() {
             if (!Request.Content.IsMimeMultipartContent())
 				throw new InvalidOperationException();

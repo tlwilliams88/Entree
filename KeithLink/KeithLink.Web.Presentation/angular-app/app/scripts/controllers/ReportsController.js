@@ -23,7 +23,7 @@ angular.module('bekApp')
         function loadItemUsage() {
             $scope.loadingResults = true;
             $scope.getItemUsage($scope.itemusagequery.fromDate, $scope.itemusagequery.toDate,
-                                                         $scope.sortField, $scope.sortReverse == true ? 'desc' : 'asc')
+                                                         $scope.sortField, $scope.sortReverse === true ? 'desc' : 'asc')
                 .then(function (items) {
                     $scope.itemusages = items;
                     $scope.loadingResults = false;
@@ -32,14 +32,14 @@ angular.module('bekApp')
 
         $scope.itemUsageForm.updateItems = function () {
             loadItemUsage();
-        }
-
-        $scope.goToItemDetails = function (item) {
-            ProductService.selectedProduct = item;
-            $state.go('menu.catalog.products.details', {
-                itemNumber: item.itemnumber
-            });
         };
+
+        // $scope.goToItemDetails = function (item) {
+        //     ProductService.selectedProduct = item;
+        //     $state.go('menu.catalog.products.details', {
+        //         itemNumber: item.itemnumber
+        //     });
+        // };
 
         $scope.sortTable = function (field) {
             $scope.itemsPerPage = 50;

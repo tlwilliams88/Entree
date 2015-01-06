@@ -19,9 +19,12 @@ using System.Text;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.InternalSvc {
-    public class OnlinePaymentService : IOnlinePaymentService {
+	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
+	public class OnlinePaymentService : IOnlinePaymentService
+	{
         #region attributes
         private readonly ICustomerBankRepository _bankRepo;
         private readonly IKPayInvoiceRepository _invoiceRepo;
@@ -43,22 +46,6 @@ namespace KeithLink.Svc.InternalSvc {
 
         public List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext) {
 			return _onlinePaymentsLogic.GetAllBankAccounts(userContext);
-        }
-
-        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _onlinePaymentsLogic.GetAllOpenInvoices(userContext, paging);
-        }
-
-        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _onlinePaymentsLogic.GetAllPaidInvoices(userContext, paging);
-        }
-
-        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _onlinePaymentsLogic.GetAllPastDueInvoices(userContext, paging);
-        }
-
-        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
-            return _onlinePaymentsLogic.GetAllPayableInvoices(userContext, paging);
         }
 
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
@@ -99,27 +86,27 @@ namespace KeithLink.Svc.InternalSvc {
             return _onlinePaymentsLogic.GetInvoiceDetails(userContext, invoiceNumber.Trim());
         }
 
-		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging)
+		public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers)
 		{
-			return _onlinePaymentsLogic.GetInvoiceHeaders(userContext, paging);
+			return _onlinePaymentsLogic.GetInvoiceHeaders(user, userContext, paging, forAllCustomers);
         }
 
-        public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
-            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(false)).ToList(); // TODO: is KPayCustomer value required here?
+		//public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
+		//	List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+		//	List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(false)).ToList(); // TODO: is KPayCustomer value required here?
 
-            foreach(InvoiceModel inv in returnInvoices){
-                // set link to web now
-                System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
-                dictionary.Add("branch", userContext.BranchId);
-                dictionary.Add("customer", userContext.CustomerId);
-                dictionary.Add("invoice", inv.InvoiceNumber);
+		//	foreach(InvoiceModel inv in returnInvoices){
+		//		// set link to web now
+		//		System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
+		//		dictionary.Add("branch", userContext.BranchId);
+		//		dictionary.Add("customer", userContext.CustomerId);
+		//		dictionary.Add("invoice", inv.InvoiceNumber);
 
-                inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
-            }
+		//		inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
+		//	}
 
-            return returnInvoices;
-        }
+		//	return returnInvoices;
+		//}
         
         public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{

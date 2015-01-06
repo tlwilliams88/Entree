@@ -712,7 +712,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
-					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.Contains(accountFilters.Wildcard)));
+					retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.ToLower().Contains(accountFilters.Wildcard.ToLower())));
                 }
             }
             else
@@ -720,27 +720,35 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             foreach (var acct in retAccounts)
             {
-                acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId == acct.Id).ToList();
+                acct.Customers = _customerRepo.GetCustomersForAccount(acct.Id.ToCommerceServerFormat());
             }
             // TODO: add logic to filter down for internal administration versus external owner
 
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
-        public AccountReturn GetAccount(Guid accountId)
+        public Account GetAccount(Guid accountId)
         {
-            List<Account> allAccounts = _accountRepo.GetAccounts();
-            Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
-            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.Value == accountId).ToList();
-            acct.Users = _csProfile.GetUsersForCustomerOrAccount(accountId);
-            return new AccountReturn() { Accounts = new List<Account>() { acct } };
+            Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
+            acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+            acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+            acct.CustomerUsers = new List<UserProfile>();
+            foreach (Customer c in acct.Customers)
+            {
+                acct.CustomerUsers.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+            }
+            acct.CustomerUsers = acct.CustomerUsers
+                                    .GroupBy(x => x.UserId)
+                                    .Select(grp => grp.First())
+                                    .ToList();
+            return acct;
         }
 
         public AccountUsersReturn GetAccountUsers(Guid accountId)
         {
             List<Account> allAccounts = _accountRepo.GetAccounts();
             Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
-            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+            acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
 
             AccountUsersReturn usersReturn = new AccountUsersReturn();
             usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
@@ -839,7 +847,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users)
         {
-            List<Customer> existingCustomers = _customerRepo.GetCustomers().Where(c => c.AccountId == accountId).ToList();
+            List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
             List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
 
             IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId).Except(existingCustomers.Select(c => c.CustomerId));
@@ -909,6 +917,20 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			return returnValue;
 		}
+
+        public List<Customer> GetCustomersForExternalUser(Guid userId)
+        {
+            Core.Models.Generated.UserProfile profile = _csProfile.GetCSProfile(userId);
+
+            if (IsInternalAddress(profile.Email))
+            {
+                throw new ApplicationException("This call is not supported for internal users.");
+            }
+            else
+            {
+                return _customerRepo.GetCustomersForUser(userId);
+            }
+        }
 
 		public List<Customer> GetCustomersForUser(UserProfile user)
 		{

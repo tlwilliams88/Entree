@@ -59,61 +59,79 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
         {
         }
 
+        static object addressLoaderLock = new object();
         public override void ExecuteQuery(CommerceServer.Foundation.CommerceQueryOperation queryOperation, CommerceServer.Foundation.OperationCacheDictionary operationCache, CommerceServer.Foundation.CommerceQueryOperationResponse response)
         {
-            return;
-            List<string> preferredAddressIds = new List<string>();
-            foreach (var entity in response.CommerceEntities)
+            int numToTake = 2000;
+            lock(addressLoaderLock)
             {
-                string preferredAddressId = entity.GetPropertyValue("GeneralInfo.preferred_address") as string;
-                if (!String.IsNullOrEmpty(preferredAddressId))
-                    preferredAddressIds.Add(preferredAddressId);
-            }
-            // query them out
-            CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
+                for (int i = 0; i < response.CommerceEntities.Count && response.CommerceEntities.Count < numToTake; i += numToTake )
+                { // only load addresses if we have less than 2000; any more than that will require a incoming filter 
+                    List<string> preferredAddressIds = new List<string>();
+                    Dictionary<string, string> addressToParentIdMap = new Dictionary<string,string>();
+                    List<CommerceServer.Foundation.CommerceEntity> currentBatch = response.CommerceEntities.Skip(i).Take(numToTake).ToList();
 
-            String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
-            //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
-            string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), i => i.Value));
-            CommerceServer.Core.Runtime.Profiles.ProfileContext ctxt = CommerceServer.Foundation.SequenceComponents.ContextProviders.CommerceSiteContexts.Profile[SiteHelper.GetSiteName()];
-            string cmdText = "SELECT " + fields + " FROM Address WHERE address_id in " + "(" + String.Join(",", preferredAddressIds.ToArray()) + ")"; // todo: map out specific fields or check if field names are in ProfileEntityMappings
-
-            // Create a new RecordsetClass object.
-            ADODB.Recordset rs = new ADODB.Recordset();
-
-            try
-            {
-                // Open a RecordsetClass instance by executing the SQL statement to the CSOLEDB provider.
-                rs.Open(
-                cmdText,
-                ctxt.CommerceOleDbProvider,
-                ADODB.CursorTypeEnum.adOpenForwardOnly,
-                ADODB.LockTypeEnum.adLockReadOnly,
-                (int)ADODB.CommandTypeEnum.adCmdText);
-
-                // Iterate through the records.
-                while (!rs.EOF)
-                {
-                    // Write out the user_id value.
-                    CommerceServer.Foundation.CommerceEntity entity = new CommerceServer.Foundation.CommerceEntity("Address");
-
-                    entity.Id = rs.Fields["GeneralInfo.address_id"].Value.ToString();
-                    foreach (var prop in this.ProfileEntityMappings.PropertyMappings)
+                    foreach (var entity in currentBatch)
                     {
-                        entity.Properties[prop.Key] = rs.Fields[prop.Value].Value;
+                        string preferredAddressId = entity.GetPropertyValue("GeneralInfo.preferred_address") as string;
+                        if (!String.IsNullOrEmpty(preferredAddressId))
+                        {
+                            preferredAddressIds.Add("'" + preferredAddressId + "'");
+                            addressToParentIdMap.Add(preferredAddressId, entity.Id);
+                        }
                     }
-                    response.CommerceEntities.Add(entity);
-                    // Move to the next record.
-                    rs.MoveNext();
+                    // query them out
+                    if (preferredAddressIds.Count == 0)
+                        continue;
+
+                    CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
+
+                    String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
+                    //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
+                    string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), p => p.Value));
+                    CommerceServer.Core.Runtime.Profiles.ProfileContext ctxt = CommerceServer.Foundation.SequenceComponents.ContextProviders.CommerceSiteContexts.Profile[SiteHelper.GetSiteName()];
+
+                    string cmdText = "SELECT " + fields + " FROM Address WHERE GeneralInfo.address_id in " + "(" + String.Join(",", preferredAddressIds.ToArray()) + ")"; // todo: map out specific fields or check if field names are in ProfileEntityMappings
+
+                    // Create a new RecordsetClass object.
+                    ADODB.Recordset rs = new ADODB.Recordset();
+
+                    try
+                    {
+                        // Open a RecordsetClass instance by executing the SQL statement to the CSOLEDB provider.
+                        rs.Open(
+                        cmdText,
+                        ctxt.CommerceOleDbProvider,
+                        ADODB.CursorTypeEnum.adOpenForwardOnly,
+                        ADODB.LockTypeEnum.adLockReadOnly,
+                        (int)ADODB.CommandTypeEnum.adCmdText);
+
+                        // Iterate through the records.
+                        while (!rs.EOF)
+                        {
+                            CommerceServer.Foundation.CommerceEntity entity = new CommerceServer.Foundation.CommerceEntity("Address");
+
+                            entity.Id = rs.Fields["GeneralInfo.address_id"].Value.ToString();
+                            foreach (var prop in this.ProfileEntityMappings.PropertyMappings)
+                            {
+                                entity.Properties[prop.Key] = rs.Fields[prop.Value].Value;
+                            }
+
+                            currentBatch.Where(x => x.Id == (addressToParentIdMap[entity.Id])).FirstOrDefault()
+                                .Properties.Add("PreferredAddress", new CommerceServer.Foundation.CommerceRelationship(entity));
+                            // Move to the next record.
+                            rs.MoveNext();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ApplicationException("Error loading organization addresses", ex);
+                    }
+                    finally
+                    {
+                        System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new ApplicationException("Error loading organization addresses", ex);
-            }
-            finally
-            {
-                System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
             }
         }
 

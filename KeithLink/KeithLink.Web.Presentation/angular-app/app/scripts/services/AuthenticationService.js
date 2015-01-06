@@ -26,29 +26,17 @@ angular.module('bekApp')
           // save token in local storage
           token.expires_at = expires_at;
           LocalStorage.setToken(token);
-          return token;
+          return username;
         });
       },
 
       login: function(username, password) {
-        return Service.authenticateUser(username, password).then(function(token) {
-          return UserProfileService.getProfile(username).then(function(profile) {
-            return profile;
-          }, function(error) {
-            Service.logout();
-          });
-        });
+        return Service.authenticateUser(username, password)
+          .then(UserProfileService.getCurrentUserProfile);
       },
 
       logout: function() {
         LocalStorage.clearAll();
-      },
-
-      // validates the token is not expired
-      isValidToken: function() {
-        var token = LocalStorage.getToken();
-        var now = new Date();
-        return (now < new Date(token.expires_at));
       }
 
     };

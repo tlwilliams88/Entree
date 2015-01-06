@@ -18,6 +18,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 			binding.OpenTimeout = TimeSpan.FromMinutes(1);
 			binding.CloseTimeout = TimeSpan.FromMinutes(1);
 			binding.ReceiveTimeout = TimeSpan.FromMinutes(10);
+			binding.MaxReceivedMessageSize = int.MaxValue;
+			binding.MaxBufferPoolSize = int.MaxValue;
+			binding.MaxBufferPoolSize = int.MaxValue;
 			binding.AllowCookies = false;
 			binding.BypassProxyOnLocal = false;
 			binding.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard;

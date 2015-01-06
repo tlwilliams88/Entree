@@ -47,8 +47,8 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph">
-        <h4><strong>Order Summary Last 6 Months</strong></h4>
+      <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
+        <h4 style="margin-left: 15px; margin-top: 0;"><strong>Order Summary Last 6 Months</strong></h4>
         <span class="text-red" ng-show="ordersMessage">{{ordersMessage}}</span>
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
@@ -77,8 +77,9 @@
       <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="order.highlightClass">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
-            <span>ORDER #</span>
-            <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+            <span>INVOICE #</span>
+            <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
@@ -109,8 +110,9 @@
         <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
-              <span>ORDER #</span>
-              <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+              <span>INVOICE #</span>
+              <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
+              <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             </div>
             <div class="col-xs-6 order-col__date">
               <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}

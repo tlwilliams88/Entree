@@ -121,8 +121,6 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
 		private const string KEY_CONTACT_EMAIL_FORMAT = "{0}_ContactEmail";
-
-
         #endregion
 
         #region methods

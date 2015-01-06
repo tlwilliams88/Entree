@@ -11,5 +11,7 @@ namespace KeithLink.Svc.Core.Models.Orders.EF
 	{
 		public Guid UserId { get; set; }
 		public Guid CartId { get; set; }
+		public string CustomerId { get; set; }
+		public string BranchId { get; set; }
 	}
 }

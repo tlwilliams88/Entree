@@ -63,7 +63,10 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
 		}
 
 
-		Core.Models.Invoices.InvoiceHeaderReturnModel IOnlinePaymentServiceRepository.GetInvoiceHeaders(UserSelectedContext userContext, Core.Models.Paging.PagingModel paging)
+		
+
+
+		public Core.Models.Invoices.InvoiceHeaderReturnModel GetInvoiceHeaders(Core.Models.Profile.UserProfile user, UserSelectedContext userContext, Core.Models.Paging.PagingModel paging, bool forAllCustomers)
 		{
 			throw new NotImplementedException();
 		}

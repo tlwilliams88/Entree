@@ -185,11 +185,11 @@ namespace KeithLink.Svc.Impl.Logic
 			//	basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
 			//}
 		}
-		
-        public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
+
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
-            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
-                return new List<ShoppingCart>();
+			if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+				return new List<ShoppingCart>();
 
 			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart);
 
@@ -197,11 +197,12 @@ namespace KeithLink.Svc.Impl.Logic
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
 
+			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName, Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid() }).ToList();
 			else
 			{
-				var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
 				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
@@ -218,7 +219,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
 				return null;
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
+			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 

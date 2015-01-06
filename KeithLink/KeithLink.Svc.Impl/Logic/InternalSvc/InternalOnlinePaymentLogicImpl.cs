@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Component;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -69,52 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             return banks;
         }
-
-        public InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging) {
-            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-
-            return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
-                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
-            };
-        }
-
-        public InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging) {
-            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllPaidInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-
-            return new InvoiceHeaderReturnModel() { HasPayableInvoices = false,
-                                                    PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
-                                                  };
-        }
-
-        public InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging) {
-            List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetAllPastDueInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-
-            return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
-                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
-            };
-        }
-
-        public InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging) {
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
-            List<EFInvoice.Invoice> kpayInvoices = null;
-
-            if (customer.KPayCustomer) {
-                kpayInvoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            } else {
-                kpayInvoices = new List<EFInvoice.Invoice>();
-            }
-
-            return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
-                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
-            };
-        }
-
+		
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
             EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
 
@@ -174,13 +130,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             //Convert to invoice model
             var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer.KPayCustomer);
 
-            // set link to web now
-            System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
-            dictionary.Add("branch", userContext.BranchId);
-            dictionary.Add("customer", userContext.CustomerId);
-            dictionary.Add("invoice", invoiceNumber);
+			var tokenReplacer = new TokenReplacer();
 
-            invoiceModel.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
+            invoiceModel.InvoiceLink =new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
             if (invoiceModel.DueDate < DateTime.Now) {
                 invoiceModel.Status = InvoiceStatus.PastDue;
@@ -205,32 +157,45 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return invoiceModel;
         }
 
-        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging) {
-			List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetMainInvoices(GetDivision(userContext.BranchId), userContext.CustomerId);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+        public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
+			var kpayInvoices = new List<EFInvoice.Invoice>();
+			var tokenReplacer = new TokenReplacer();
+					
+			var customers = new List<Core.Models.Profile.Customer>();
 
+			if (forAllCustomers)
+				customers = _customerRepository.GetCustomersForUser(user.UserId);
+			else
+				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId) };
+
+			FilterInfo filter = new FilterInfo();
+			filter.Filters = new List<FilterInfo>();
+			filter.Condition = "||";
+			//Build customer filter
+			foreach (var cust in customers)
+			{
+				var inFilter = new FilterInfo();
+				inFilter.Condition = "&&";
+				inFilter.Filters = new List<FilterInfo>() { new FilterInfo() { Field = "Division", Value = GetDivision(cust.CustomerBranch), FilterType = "eq" }, new FilterInfo() { Field = "CustomerNumber", Value = cust.CustomerNumber, FilterType = "eq" } };
+
+				filter.Filters.Add(inFilter);
+			}
+
+			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(filter, null).ToList();
+
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First().KPayCustomer)).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+			Parallel.ForEach(pagedInvoices.Results, invoice =>
+			{
+				invoice.InvoiceLink = new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+			});
+			
             return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customer.KPayCustomer && kpayInvoices.Count > 0,
-                PagedResults = GetInvoiceResults(customer.CustomerBranch, customer.CustomerNumber, customer.KPayCustomer, paging, kpayInvoices)
+                HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
+                PagedResults = pagedInvoices
             };
         }
-
-        private PagedResults<InvoiceModel> GetInvoiceResults(string branchId, string customerNumber, bool isKpayCustomer, PagingModel paging, List<EFInvoice.Invoice> invoices) {
-            var pagedInvoices = invoices.Select(i => i.ToInvoiceModel(isKpayCustomer)).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
-
-            foreach (var inv in pagedInvoices.Results) {
-                // set link to web now
-                System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
-                dictionary.Add("branch", branchId);
-                dictionary.Add("customer", customerNumber);
-                dictionary.Add("invoice", inv.InvoiceNumber);
-
-                inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
-            }
-
-            return pagedInvoices;
-        }
-
+		
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{
 			if (invoiceItem.Items == null || invoiceItem.Items.Count == 0)
@@ -297,5 +262,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				});
 		}
         #endregion
-    }
+			
+	}
 }

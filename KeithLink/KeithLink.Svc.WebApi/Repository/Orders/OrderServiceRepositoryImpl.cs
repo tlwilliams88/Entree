@@ -34,16 +34,18 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrder(branchId, invoiceNumber);
         }
 
-        public UserActiveCartModel GetUserActiveCart(Guid userId) {
-            return serviceClient.GetUserActiveCart(userId);
+		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
+		{
+            return serviceClient.GetUserActiveCart(catalogInfo, userId);
         }
 
         public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
 
-        public void SaveUserActiveCart(Guid userId, Guid cartId) {
-            serviceClient.SaveUserActiveCart(userId, cartId);
+		public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId)
+		{
+            serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
         #endregion
 

@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
 using System.Data;
+using System.Linq.Expressions;
 
 namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
     public class KPayInvoiceRepositoryImpl : IKPayInvoiceRepository {
@@ -108,6 +109,16 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
 				);
 
 		}
+			
+
+		public IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll()
+		{
+			return this._dbContext.Invoices;
+		}
+
 		#endregion
+
+
+		
 	}
 }
