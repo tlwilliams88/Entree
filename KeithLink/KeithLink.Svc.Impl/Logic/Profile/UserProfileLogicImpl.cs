@@ -726,7 +726,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public Account GetAccount(Guid accountId)
         {
             Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
-            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+            acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers)
@@ -843,7 +843,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users)
         {
-            List<Customer> existingCustomers = _customerRepo.GetCustomers().Where(c => c.AccountId == accountId).ToList();
+            List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
             List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
 
             IEnumerable<Guid> customersToAdd = customers.Select(c => c.CustomerId).Except(existingCustomers.Select(c => c.CustomerId));
