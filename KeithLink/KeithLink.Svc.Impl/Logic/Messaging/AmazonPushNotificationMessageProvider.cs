@@ -13,6 +13,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 {
     public class AmazonPushNotificationMessageProvider : IPushNotificationMessageProvider
     {
+        KeithLink.Common.Core.Logging.IEventLogRepository eventLog;
+
+        public AmazonPushNotificationMessageProvider(KeithLink.Common.Core.Logging.IEventLogRepository eventLog)
+        {
+            this.eventLog = eventLog;
+        }
+
         public void SendMessage(IEnumerable<Recipient> recipients, Message message)
         {
             AmazonSNS.IAmazonSimpleNotificationService client =
@@ -22,19 +29,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             foreach (var recipient in recipients)
             {
-                if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS)
+                try
                 {
-                    // format our message for apple
-                    client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
-                    );
-                }
-                else if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android)
-                {
-                    client.Publish(
-                        new AmazonSNS.Model.PublishRequest(recipient.ProviderEndpoint,
-                            message.MessageBody
-                            )
+                    if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.iOS)
+                    {
+                        // format our message for apple
+                        client.Publish(new AmazonSNS.Model.PublishRequest() { TargetArn = recipient.ProviderEndpoint, Message = message.MessageSubject }
                         );
+                    }
+                    else if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android)
+                    {
+                        client.Publish(
+                            new AmazonSNS.Model.PublishRequest(recipient.ProviderEndpoint,
+                                message.MessageBody
+                                )
+                            );
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLog.WriteErrorLog("Error sending message to push recipient: " + recipient.ProviderEndpoint, ex);
                 }
             }
         }
