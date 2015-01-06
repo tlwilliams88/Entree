@@ -10,6 +10,7 @@ angular.module('bekApp')
     $scope.loadingUsers = true;
     AccountService.getAccountByUser($scope.userProfile.userid).then(function (account) {
       if (account) {
+        $scope.accountName = account.name;
         UserProfileService.getUsersForAccount(account.id).then(function(data) {
           $scope.loadingUsers = false;
           $scope.users = data.accountUsers.concat(data.customerUsers);

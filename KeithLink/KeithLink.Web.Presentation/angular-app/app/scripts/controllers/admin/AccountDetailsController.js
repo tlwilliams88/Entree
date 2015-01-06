@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AdminAccountDetailsController', ['$scope', '$stateParams', 'originalAccount', 'AccountService', 'CustomerService', 'UserProfileService',
-    function ($scope, $stateParams, originalAccount, AccountService, CustomerService, UserProfileService) {
+  .controller('AdminAccountDetailsController', ['$scope', '$state', '$stateParams', 'originalAccount', 'AccountService', 'CustomerService', 'UserProfileService',
+    function ($scope, $state, $stateParams, originalAccount, AccountService, CustomerService, UserProfileService) {
     
   function init() {
     if ($stateParams.accountId === 'new') {
