@@ -239,7 +239,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 				return customerFromCache;
 
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.national_account_id = '" + accountId + "'"; // org type of customer
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.parent_organization = '" + accountId + "' AND GeneralInfo.organization_type = '0'"; // org type of customer
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
