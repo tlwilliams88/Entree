@@ -197,8 +197,6 @@
       <DependentUpon>OrderService.svc</DependentUpon>
     </Compile>
     <Compile Include="ErrorHandler.cs" />
-    <Compile Include="ErrorHandlerBehavior.cs" />
-    <Compile Include="ErrorServiceBehavior.cs" />
     <Compile Include="ETLService.svc.cs">
       <DependentUpon>ETLService.svc</DependentUpon>
     </Compile>
