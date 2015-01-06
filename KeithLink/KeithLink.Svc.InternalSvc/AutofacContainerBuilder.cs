@@ -161,6 +161,8 @@ namespace KeithLink.Svc.InternalSvc
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.OrderConfirmation);
             builder.RegisterType<InvoiceNotificationHandlerImpl>()
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.InvoiceAttention);
+            builder.RegisterType<EtaNotificationHandlerImpl>()
+                .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.Eta);
             builder.Register<Func<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>(
                 c => {
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>();
