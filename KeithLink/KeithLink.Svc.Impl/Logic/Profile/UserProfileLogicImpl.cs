@@ -716,7 +716,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             foreach (var acct in retAccounts)
             {
-                acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId == acct.Id).ToList();
+                acct.Customers = _customerRepo.GetCustomersForAccount(acct.Id.ToCommerceServerFormat());
             }
             // TODO: add logic to filter down for internal administration versus external owner
 
@@ -744,7 +744,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         {
             List<Account> allAccounts = _accountRepo.GetAccounts();
             Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
-            acct.Customers = _customerRepo.GetCustomers().Where(x => x.AccountId.HasValue && x.AccountId.Value == accountId).ToList();
+            acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
 
             AccountUsersReturn usersReturn = new AccountUsersReturn();
             usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
