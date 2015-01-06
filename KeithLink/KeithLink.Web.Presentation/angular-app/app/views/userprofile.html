@@ -57,8 +57,13 @@
         <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
 
         <div class="col-md-4">
-          <input type="text" class="form-control form-control-lg" id="phoneNumber" name="phoneNumber"
-                 ng-model="userProfile.phonenumber">
+          <input 
+            type="text" 
+            class="form-control form-control-lg" 
+            ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/"
+            id="phoneNumber" 
+            name="phoneNumber"
+            ng-model="userProfile.phonenumber">
         </div>
       </div>
       <div class="form-group ">
@@ -66,8 +71,13 @@
 
         <div class="col-md-6">
           <!-- <div class="select-div"> -->
-          <select required name="branch" id="branch" class="form-control form-control-lg"
-                  ng-options="branch.id as branch.name for branch in branches" ng-model="userProfile.branchid">
+          <select 
+            ng-required="!isOrderEntryCustomer"
+            name="branch" 
+            id="branch" 
+            class="form-control form-control-lg"
+            ng-options="branch.id as branch.name for branch in branches" 
+            ng-model="userProfile.branchid">
           </select>
           <!-- </div> -->
         </div>
@@ -146,48 +156,48 @@
         <span class="glyphicon glyphicon-pencil"></span> Edit Notifications
       </a>
     </h2>
-    <table class="preferencesTable">
-      <thead>
-      <tr>
-        <th>Email</th>
-        <th>Push</th>
-        <th>Web</th>
-        <th>Notify Me When:</th>
-      </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="preference in defaultPreferences">
-          <td ng-repeat="channel in preference.channels track by $index" class="checkboxCenter">
-            <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
-          </td>
-          <td>{{preference.description}}</td>
+    <form name="notificationPreferencesForm">
+      <table class="preferencesTable">
+        <thead>
+        <tr>
+          <th>Email</th>
+          <th>Push</th>
+          <th>Web</th>
+          <th>Notify Me When:</th>
         </tr>
-      </tbody>
-    </table>
-    <div class="form-group button-row">
-      <div class="col-sm-6 top-buffer">
-        <button class="btn btn-lg btn-primary" ng-click="savePreferences()">Save Preferences</button>
+        </thead>
+        <tbody>
+          <tr ng-repeat="preference in defaultPreferences">
+            <td ng-repeat="channel in preference.channels track by $index" class="checkboxCenter">
+              <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
+            </td>
+            <td>{{preference.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group button-row">
+        <div class="col-sm-6 sub-content">
+          <button ng-disabled="notificationPreferencesForm.$invalid || notificationPreferencesForm.$pristine" class="btn btn-lg btn-primary" ng-click="savePreferences()">Save Preferences</button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
-  <div class="col-md-6">
+  <div class="col-md-6" ng-show="isOrderEntryCustomer">
     <h2>Assigned Customers</h2>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
-    <div class="hidden-print" style="padding-bottom: 20px;">
-      <form name="customerSearchForm">
-        <div class="input-group input-group-lg">
-          <input
-            ng-model="customerSearchTerm"
-            type="text"
-            class="form-control"
-            placeholder="Filter customers by name or number" />
-          <span class="input-group-btn">
-            <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="large-icon icon-search"></span></button>
-          </span>
-        </div>
-      </form>
-    </div>
+    <form name="customerSearchForm" class="search-form">
+      <div class="input-group">
+        <input 
+          ng-model="customerSearchTerm" 
+          type="text" 
+          class="form-control" 
+          placeholder="Filter customers by name or number" />
+        <span class="input-group-btn">
+          <button type="button" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default icon-search"></button>
+        </span>
+      </div>
+    </form>
 
     <div class="infiniteScroll">
       <table class="table no-margin table-border table-striped-rows"
@@ -195,17 +205,19 @@
         infinite-scroll-container="'.infiniteScroll'">
         <thead>
           <tr>
-            <th class="sort-col-header" ng-click="sortBy='customerNumber';sortOrder=!sortOrder;">Customer Number
-              <span sort-icons field="'customerNumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortAsc);">
+              Number
+              <span sort-icons field="'customerNumber'" sortorder="customersSortAsc" sortby="customersSortField"></span>
             </th>
-            <th class="sort-col-header" ng-click="sortBy='customerName';sortOrder=!sortOrder;">Customer Name
-              <span sort-icons field="'customerName'" sortorder="sortOrder" sortby="sortBy"></span>
+            <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortAsc)">
+              Name
+              <span sort-icons field="'customerName'" sortorder="customersSortAsc" sortby="customersSortField"></span>
             </th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="customer in customers | filter:filterFields | orderBy:sortBy:sortOrder" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="customer in customers" ng-class="{ odd : $odd, even: $even }">
             <td>
               <a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">
                 {{customer.customerNumber}}

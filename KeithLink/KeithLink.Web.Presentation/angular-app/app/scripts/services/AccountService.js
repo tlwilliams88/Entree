@@ -8,79 +8,63 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AccountService', [ '$q', '$filter', '$http', function ($q, $filter, $http) {
+  .factory('AccountService', [ '$http', 'UtilityService', function ($http, UtilityService) {
 
-    var filter = $filter('filter');
+  var Service = {
 
-    var Service = {
-      accounts: [],
+    getAccountDetails: function(accountId) {
+      var promise = $http.get('/profile/account/' + accountId);
+      return UtilityService.resolvePromise(promise);
+    },
 
-      getAccount: function() {
-        $http.get('/profile/account');
-      },
+    getAccountByUser: function(userid) {
+      var config = {
+        params: {
+          userid: userid
+        }
+      };
 
-      getAccountByUser: function(userid) {
-        var deferred = $q.defer();
+      var promise = $http.get('/profile/accounts', config);
+      return UtilityService.resolvePromise(promise).then(function(successResponse) {
+        return successResponse.accounts[0]; // a user can only be admin on one account
+      });
+    },
 
-        var data = {
-          params: {
-            userid: userid
-          }
-        };
+    // getAllAccounts: function() {
+    //   var promise = $http.get('/profile/accounts');
+    //   return UtilityService.resolvePromise(promise).then(function(successResponse) {
+    //     return successResponse.accounts;
+    //   });
+    // },
 
-        $http.get('/profile/accounts', data).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            deferred.resolve(data.successResponse.accounts[0]);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
-      },
+    searchAccounts: function(searchTerm) {
+      var config = {
+        params: {
+          wildcard: searchTerm
+        }
+      };
+      
+      var promise = $http.get('/profile/accounts', config);
+      return UtilityService.resolvePromise(promise).then(function(successResponse) {
+        return successResponse.accounts;
+      });
+    },
 
-      getAllAccounts: function() {
-        var deferred = $q.defer();
-        $http.get('/profile/accounts').then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            angular.copy(data.successResponse.accounts, Service.accounts);
-            deferred.resolve(data.successResponse.accounts);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
-      },
+    createAccount: function(account) {
+      var promise = $http.post('/profile/account', account);
+      return UtilityService.resolvePromise(promise).then(function(successResponse) {
+        return successResponse.accounts[0];
+      });
+    },
 
-      // findAccountById: function(accountId) {
-      //   var accountsFound = filter(Service.accounts, {id: accountId});
-      //   if (accountsFound.length === 1) {
-      //     return accountsFound[0];
-      //   }
-      // },
-
-      createAccount: function(account) {
-        var deferred = $q.defer();
-        $http.post('/profile/account', account).then(function(response) {
-          var data = response.data;
-          if (data.successResponse) {
-            // TODO: return just new account id
-            // TODO: add new account to cache lists
-            // angular.copy(data.successResponse.accounts, Service.accounts);
-            deferred.resolve(data.successResponse.accounts);
-          } else {
-            deferred.reject(data.errorMessage);
-          }
-        });
-        return deferred.promise;
-      },
-
-      updateAccount: function(account) {
-        $http.put('/profile/account', account);
-      }
+    updateAccount: function(account) {
+      var promise = $http.put('/profile/account', account);
+      return UtilityService.resolvePromise(promise).then(function(successResponse) {
+        debugger;
+      });
+    }
   };
 
-    return Service;
+  return Service;
 
-  }]);
+}]);

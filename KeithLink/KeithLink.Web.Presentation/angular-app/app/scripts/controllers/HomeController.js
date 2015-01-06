@@ -95,14 +95,14 @@ angular.module('bekApp')
       monthTotals.forEach(function(total) {
         barData.push(total);
         lineData.push(total);
-      })
+      });
 
       // determine y axis values based on largest order total for one month
       var maxAmount = Math.max.apply(null, barData);
       var yAxisValues = [];
 
-      for (var i = 0; i < 5; i++) {
-        var yValue = Math.ceil(maxAmount * i / 4 / 100) * 100; // round up to nearest hundred
+      for (var j = 0; j < 5; j++) {
+        var yValue = Math.ceil(maxAmount * j / 4 / 100) * 100; // round up to nearest hundred
         yAxisValues.push(yValue);
       }
 

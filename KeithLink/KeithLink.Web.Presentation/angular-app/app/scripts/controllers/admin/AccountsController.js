@@ -4,6 +4,10 @@ angular.module('bekApp')
   .controller('AccountsController', ['$scope', 'AccountService',
     function ($scope, AccountService) {
     
-    $scope.accounts = AccountService.accounts;
+    $scope.searchAccounts = function(searchTerm) {
+      AccountService.searchAccounts(searchTerm).then(function(accounts) {
+        $scope.accounts = accounts;
+      });
+    }
 
   }]);

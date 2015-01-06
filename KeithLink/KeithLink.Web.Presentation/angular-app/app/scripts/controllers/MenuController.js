@@ -35,6 +35,8 @@ angular.module('bekApp')
       from: 0,
       size: 15
     };
+
+    // populates upper-left customer dropdown infinite scroll
     $scope.customerSelectOptions = {
       query: function (query){
         $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
@@ -135,6 +137,7 @@ angular.module('bekApp')
       $scope.canSubmitOrders = AccessService.canSubmitOrders();
       $scope.canPayInvoices = AccessService.canPayInvoices();
       $scope.canManageAccount = AccessService.canManageAccount();
+      $scope.canManageAccounts = AccessService.canManageAccounts();
 
 
     }
