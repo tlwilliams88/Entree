@@ -19,27 +19,12 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
 
         [OperationContract]
         List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext);
-
-        [OperationContract]
-        InvoiceHeaderReturnModel GetAllOpenInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        [OperationContract]
-        InvoiceHeaderReturnModel GetAllPaidInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        [OperationContract]
-        InvoiceHeaderReturnModel GetAllPastDueInvoices(UserSelectedContext userContext, PagingModel paging);
-
-        [OperationContract]
-        InvoiceHeaderReturnModel GetAllPayableInvoices(UserSelectedContext userContext, PagingModel paging);
-
+		
         [OperationContract]
         CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
 
-        [OperationContract]
-        List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber);
-
 		[OperationContract]
-		InvoiceHeaderReturnModel GetInvoiceHeaders(UserSelectedContext userContext, PagingModel paging);
+		InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers);
 
 		[OperationContract]
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);

@@ -1,56 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-  <xs:complexType name="PagingModel">
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="userprofile">
     <xs:sequence>
-      <xs:element minOccurs="0" name="filter" nillable="true" type="tns:FilterInfo" />
-      <xs:element minOccurs="0" name="from" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="size" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="sort" nillable="true" type="tns:ArrayOfSortInfo" />
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="defaultcustomer" nillable="true" type="tns:customer" />
+      <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingpreferences" nillable="true" type="q1:ArrayOfProfileMessagingPreferenceModel" />
+      <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="rolename" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="PagingModel" nillable="true" type="tns:PagingModel" />
-  <xs:complexType name="FilterInfo">
+  <xs:element name="userprofile" nillable="true" type="tns:userprofile" />
+  <xs:complexType name="customer">
     <xs:sequence>
-      <xs:element minOccurs="0" name="condition" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="filter" nillable="true" type="tns:ArrayOfFilterInfo" />
-      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="accountId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="address" nillable="true" type="tns:address" />
+      <xs:element minOccurs="0" name="balanceage1" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage1label" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="balanceage2" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage2label" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="balanceage3" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage3label" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="balanceage4" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="balanceage4label" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="contractId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="currentbalance" nillable="true" type="xs:decimal" />
+      <xs:element minOccurs="0" name="customerBranch" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customerId" type="ser:guid" />
+      <xs:element minOccurs="0" name="customerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customerNationalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customerNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="displayname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dsrNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isPoRequired" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isPowerMenu" type="xs:boolean" />
+      <xs:element minOccurs="0" name="kpay" type="xs:boolean" />
+      <xs:element minOccurs="0" name="lastorderupdate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="nationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pointofcontact" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="termcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="termdescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="FilterInfo" nillable="true" type="tns:FilterInfo" />
-  <xs:complexType name="ArrayOfFilterInfo">
+  <xs:element name="customer" nillable="true" type="tns:customer" />
+  <xs:complexType name="address">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="FilterInfo" nillable="true" type="tns:FilterInfo" />
+      <xs:element minOccurs="0" name="city" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="postalcode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="regioncode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="street" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="ArrayOfFilterInfo" nillable="true" type="tns:ArrayOfFilterInfo" />
-  <xs:complexType name="ArrayOfSortInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortInfo" nillable="true" type="tns:SortInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfSortInfo" nillable="true" type="tns:ArrayOfSortInfo" />
-  <xs:complexType name="SortInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="order" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="SortInfo" nillable="true" type="tns:SortInfo" />
-  <xs:complexType name="PagedResultsOfInvoicebHFuqxhQ">
-    <xs:annotation>
-      <xs:appinfo>
-        <GenericType Name="PagedResultsOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
-          <GenericParameter Name="Invoice" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-        </GenericType>
-      </xs:appinfo>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="results" nillable="true" type="q1:ArrayOfInvoice" />
-      <xs:element minOccurs="0" name="totalResults" type="xs:long" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="PagedResultsOfInvoicebHFuqxhQ" nillable="true" type="tns:PagedResultsOfInvoicebHFuqxhQ" />
+  <xs:element name="address" nillable="true" type="tns:address" />
 </xs:schema>

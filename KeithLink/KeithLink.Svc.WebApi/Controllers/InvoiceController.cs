@@ -34,40 +34,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region methods
         [HttpPost]
         [ApiKeyedRoute("invoice/")]
-		public InvoiceHeaderReturnModel Invoice(PagingModel paging)
+		public InvoiceHeaderReturnModel Invoice(PagingModel paging, bool forAllCustomers = false)
 		{
-            return _repo.GetInvoiceHeaders(SelectedUserContext, paging);
+            return _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
         }
-
-        [HttpPost]
-        [ApiKeyedRoute("invoice/open")]
-        public InvoiceHeaderReturnModel GetOpenInvoices(PagingModel paging){
-            return _repo.GetAllOpenInvoices(SelectedUserContext, paging);
-        }
-
-        [HttpPost]
-        [ApiKeyedRoute("invoice/paid")]
-        public InvoiceHeaderReturnModel GetPaidInvoices(PagingModel paging) {
-            return _repo.GetAllPaidInvoices(SelectedUserContext, paging);
-        }
-
-        [HttpPost]
-        [ApiKeyedRoute("invoice/pastdue")]
-        public InvoiceHeaderReturnModel GetPastDueInvoices(PagingModel paging) {
-            return _repo.GetAllPastDueInvoices(SelectedUserContext, paging);
-        }
-
-        [HttpPost]
-        [ApiKeyedRoute("invoice/payable")]
-        public InvoiceHeaderReturnModel GetPayableInvoices(PagingModel paging) {
-            return _repo.GetAllPayableInvoices(SelectedUserContext, paging);
-        }
-
+		
 		[HttpPost]
 		[ApiKeyedRoute("invoice/export/")]
 		public HttpResponseMessage ExportInvoices(ExportRequestModel exportRequest)
 		{
-			var list = _repo.GetInvoiceHeaders(SelectedUserContext, new PagingModel() { Size = 500, From = 0});
+			var list = _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, new PagingModel() { Size = 500, From = 0}, false);
 
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);

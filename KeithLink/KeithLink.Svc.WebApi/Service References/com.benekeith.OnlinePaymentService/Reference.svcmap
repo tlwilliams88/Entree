@@ -27,17 +27,20 @@
     <MetadataSource Address="http://localhost:1317/OnlinePaymentService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="OnlinePaymentService.xsd" MetadataType="Schema" ID="51e48ee4-eab0-4722-8fe7-4fb9f907ad61" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd0" />
-    <MetadataFile FileName="OnlinePaymentService1.xsd" MetadataType="Schema" ID="9283bcb4-ca21-426c-a38c-dbbe6f6d4002" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" />
-    <MetadataFile FileName="OnlinePaymentService.disco" MetadataType="Disco" ID="1ace617f-cab8-4f1e-be79-437f3d050b59" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?disco" />
-    <MetadataFile FileName="OnlinePaymentService3.xsd" MetadataType="Schema" ID="fb0c9359-2ee8-4d56-913b-0d9cc00505a5" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" />
-    <MetadataFile FileName="OnlinePaymentService5.xsd" MetadataType="Schema" ID="01c93e4b-2ec8-40fe-8f02-4b24f379986a" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" />
-    <MetadataFile FileName="OnlinePaymentService.wsdl" MetadataType="Wsdl" ID="48aa72af-5880-4482-94ed-3a11806df8b7" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?wsdl" />
-    <MetadataFile FileName="OnlinePaymentService2.xsd" MetadataType="Schema" ID="4b6f80ee-010c-4bbd-b668-7287a32e5ac2" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" />
-    <MetadataFile FileName="OnlinePaymentService4.xsd" MetadataType="Schema" ID="0999cf43-471e-46cc-a83b-f2f7210d8b1c" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" />
     <MetadataFile FileName="OnlinePaymentService51.xsd" MetadataType="Schema" ID="4ba90e84-d44b-417d-9a3d-c017c349a151" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" />
+    <MetadataFile FileName="OnlinePaymentService.disco" MetadataType="Disco" ID="1ace617f-cab8-4f1e-be79-437f3d050b59" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?disco" />
+    <MetadataFile FileName="OnlinePaymentService4.xsd" MetadataType="Schema" ID="0999cf43-471e-46cc-a83b-f2f7210d8b1c" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" />
+    <MetadataFile FileName="OnlinePaymentService.xsd" MetadataType="Schema" ID="51e48ee4-eab0-4722-8fe7-4fb9f907ad61" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="OnlinePaymentService3.xsd" MetadataType="Schema" ID="fb0c9359-2ee8-4d56-913b-0d9cc00505a5" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" />
     <MetadataFile FileName="OnlinePaymentService41.xsd" MetadataType="Schema" ID="7e0ccbee-72f7-485e-8885-ef61838d4127" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" />
+    <MetadataFile FileName="OnlinePaymentService.wsdl" MetadataType="Wsdl" ID="48aa72af-5880-4482-94ed-3a11806df8b7" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?wsdl" />
+    <MetadataFile FileName="OnlinePaymentService6.xsd" MetadataType="Schema" ID="1a516657-6ffc-460d-aa61-1d08410c5f8c" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd11" />
+    <MetadataFile FileName="OnlinePaymentService61.xsd" MetadataType="Schema" ID="8733e1f9-f832-4e1d-bb78-66d928756de3" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" />
     <MetadataFile FileName="OnlinePaymentService53.xsd" MetadataType="Schema" ID="987af11a-52d4-4992-96c1-ad8c5a651240" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" />
+    <MetadataFile FileName="OnlinePaymentService1.xsd" MetadataType="Schema" ID="9283bcb4-ca21-426c-a38c-dbbe6f6d4002" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="OnlinePaymentService5.xsd" MetadataType="Schema" ID="01c93e4b-2ec8-40fe-8f02-4b24f379986a" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" />
+    <MetadataFile FileName="OnlinePaymentService2.xsd" MetadataType="Schema" ID="4b6f80ee-010c-4bbd-b668-7287a32e5ac2" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" />
+    <MetadataFile FileName="OnlinePaymentService62.xsd" MetadataType="Schema" ID="48228ee7-8bf8-46ad-89a1-f26bfb5a82f2" SourceId="1" SourceUrl="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
