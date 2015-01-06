@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Net;
 using System.Net.Mail;
 using System.Reflection;
@@ -14,6 +13,7 @@ using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.Impl
 {
@@ -56,12 +56,14 @@ namespace KeithLink.Svc.Impl
 
 		public void SendTemplateEmail(MessageTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens)
 		{
-			this.SendEmail(emails.ToList()
-				, ccAddresses != null ? ccAddresses.ToList() :  null
-				, bccAddresses != null ? bccAddresses.ToList() : null
-				, this.tokenReplacer.ReplaceTokens(template.Subject, tokens)
-				, this.tokenReplacer.ReplaceTokens(template.Body, tokens)
-				, template.IsBodyHtml);
+            this.SendEmail(
+                emails.ToList(),
+                ccAddresses != null ? ccAddresses.ToList() : null,
+                bccAddresses != null ? bccAddresses.ToList() : null,
+                template.Subject.Inject(tokens),
+                template.Body.Inject(tokens),
+                template.IsBodyHtml
+                );
 		}
 
 		public void SendTemplateEmail(MessageTemplateModel template, List<string> emails, object tokens)

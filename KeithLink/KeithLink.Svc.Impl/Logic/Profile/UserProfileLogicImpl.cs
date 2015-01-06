@@ -22,6 +22,9 @@ using KeithLink.Svc.Core.Models.Paging;
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
         #region attributes
+        private const string GUEST_USER_WELCOME = "GuestUserWelcome";
+        private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+
         private IUserProfileCacheRepository _cache;
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
@@ -305,23 +308,24 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-			if (generatedPassword) //TODO: Switch to new email client with message templates
-				KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
-			else
-			{
-				try
-				{
-					var template = _messagingServiceRepository.ReadMessageTemplateForKey("GuestUserWelcome");
+            if (generatedPassword) {
+                try {
+                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
+                    if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new Dictionary<string, string> { { "password", password } } );
+                } catch (Exception ex) {
+                    _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
+                }
+            } else {
+                try {
+                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( "GuestUserWelcome" );
 
-					if (template != null)
-						_emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail(branchId) });
-				}
-				catch (Exception ex)
-				{
-					//The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
-					_eventLog.WriteErrorLog("Error sending welcome email", ex);
-				}
-			}
+                    if (template != null)
+                        _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail( branchId ) } );
+                } catch (Exception ex) {
+                    //The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
+                    _eventLog.WriteErrorLog( "Error sending welcome email", ex );
+                }
+            }
 
             return GetUserProfile(emailAddress);
         }

@@ -1,16 +1,18 @@
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.EF;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Migrations.Model;
+using System.Data.Entity.SqlServer;
+using System.Linq;
+using KeithLink.Common.Core.Extensions;
+
+
 namespace KeithLink.Svc.Impl.Migrations
 {
-	using KeithLink.Svc.Core.Models.Configuration.EF;
-	using KeithLink.Svc.Core.Models.EF;
-	using System;
-	using System.Collections.Generic;
-	using System.Data.Entity;
-	using System.Data.Entity.Migrations;
-	using System.Data.Entity.Migrations.Model;
-	using System.Data.Entity.SqlServer;
-	using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext>
+	    internal sealed class Configuration : DbMigrationsConfiguration<KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext>
     {
         public Configuration()
         {
@@ -113,9 +115,28 @@ namespace KeithLink.Svc.Impl.Migrations
 					IsBodyHtml = false,
 					Type = MessageTemplateType.Email,
 					Body = "Thank you for your interest in the Entrée System, Powered by Ben E. Keith.\r\n\r\n" + 
-						   "If you have comments or questions, or would like someone to contact you, please e-mail us at ${contactEmail}"
+						   "If you have comments or questions, or would like someone to contact you, please e-mail us at {contactEmail}"
 				}
 				);
+
+            System.Text.StringBuilder newUserPasswordBody = new System.Text.StringBuilder();
+            newUserPasswordBody.AppendLine( "Welcome to Entree!" );
+            newUserPasswordBody.AppendLine();
+            newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
+            newUserPasswordBody.AppendLine();
+            newUserPasswordBody.AppendLine( "Password: {password}" );
+            newUserPasswordBody.AppendLine( String.Concat("URL: ", KeithLink.Svc.Impl.Configuration.PresentationUrl ));
+            newUserPasswordBody.AppendLine();
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate {
+                    TemplateKey = "CreatedUserWeclome",
+                    Subject = "Welcome to Entrée",
+                    IsBodyHtml = false,
+                    Type = MessageTemplateType.Email,
+                    Body = newUserPasswordBody.ToString()
+                } );
         }
     }
 	internal class CustomSqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator
