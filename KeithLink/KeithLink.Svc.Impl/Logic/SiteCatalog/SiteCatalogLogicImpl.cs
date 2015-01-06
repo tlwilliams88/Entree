@@ -65,6 +65,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile)
         {
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
+			
+			if (ret == null)
+				return null;
+
 			AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct( ret, catalogInfo );
@@ -225,7 +229,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
 		private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
         {
-			if (profile != null)
+			if (profile != null && ret != null)
 			{
 				var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
 				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
