@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Common" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
   <xs:complexType name="ArrayOfOrderHistoryFile">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHistoryFile" nillable="true" type="tns:OrderHistoryFile" />
@@ -8,10 +9,14 @@
   </xs:complexType>
   <xs:element name="ArrayOfOrderHistoryFile" nillable="true" type="tns:ArrayOfOrderHistoryFile" />
   <xs:complexType name="OrderHistoryFile">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Details" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
-      <xs:element minOccurs="0" name="Header" nillable="true" type="tns:OrderHistoryHeader" />
-    </xs:sequence>
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Common" base="q1:BaseQueueMessage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Details" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
+          <xs:element minOccurs="0" name="Header" nillable="true" type="tns:OrderHistoryHeader" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:element name="OrderHistoryFile" nillable="true" type="tns:OrderHistoryFile" />
   <xs:complexType name="ArrayOfOrderHistoryDetail">
@@ -34,7 +39,7 @@
       <xs:element minOccurs="0" name="ShippedQuantity" type="xs:int" />
       <xs:element minOccurs="0" name="SubbedOriginalItemNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="TotalShippedWeight" type="xs:double" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="UnitOfMeasure" type="q1:UnitOfMeasure" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="UnitOfMeasure" type="q2:UnitOfMeasure" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="OrderHistoryDetail" nillable="true" type="tns:OrderHistoryDetail" />
@@ -49,7 +54,7 @@
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
       <xs:element minOccurs="0" name="orderstatus" nillable="true" type="xs:string" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q2:OrderSource" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q3:OrderSource" />
       <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="routenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="stopnumber" nillable="true" type="xs:string" />

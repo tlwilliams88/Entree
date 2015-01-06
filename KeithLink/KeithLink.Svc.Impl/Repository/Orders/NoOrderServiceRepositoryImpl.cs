@@ -51,5 +51,16 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
