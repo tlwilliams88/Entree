@@ -22,8 +22,8 @@
         <button
           class="btn-no-style"
           ng-click="$spMenu.hide()"
-          ui-sref="menu.accountdetails">
-          <li>Account Settings</li>
+          ui-sref="menu.userprofile">
+          <li>Profile Settings</li>
         </button>
         <button
           class="btn-no-style"
@@ -123,12 +123,22 @@
           class="btn-no-style"
           ng-if="canManageAccount"
           ui-sref="menu.admin.accountadmin"
-          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
+          ng-class="{'is-selected': $state.includes('menu.admin')}">
           <li>
             <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
             Admin
           </li>
         </button>
+        <!-- <button
+          class="btn-no-style"
+          ng-if="canManageAccounts"
+          ui-sref="menu.admin.account"
+          ng-class="{'is-selected': $state.includes('menu.admin.account')}">
+          <li>
+            <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
+            Accounts
+          </li>
+        </button> -->
         <button
           class="btn-no-style"
           ng-disabled="!isOrderEntryCustomer"
@@ -242,12 +252,22 @@
           class="btn-no-style"
           ng-if="canManageAccount"
           ui-sref="menu.admin.accountadmin"
-          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
+          ng-class="{'is-selected': $state.includes('menu.admin') && !$state.includes('menu.admin.account')}" >
           <li>
             <span class="icon-cog sidebar-nav__icon"></span>
             Admin
           </li>
         </button>
+        <!-- <button
+          class="btn-no-style"
+          ng-if="canManageAccounts"
+          ui-sref="menu.admin.account"
+          ng-class="{'is-selected': $state.includes('menu.admin.account')}" >
+          <li>
+            <span class="icon-cog sidebar-nav__icon"></span>
+            Accounts
+          </li>
+        </button> -->
       </ul>
     </nav> <!-- END DESKTOP MENU -->
 
@@ -311,7 +331,7 @@
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn btn-lg btn-default" ui-sref="menu.accountdetails">Profile Settings</button>
+                  <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>

@@ -40,7 +40,7 @@ angular.module('bekApp')
       brands: {
         available: [],
         selected: [],
-        showMore: true
+        showMore: true // display Show More button for this facet
       },
       itemspecs: {
         available: [],
@@ -262,11 +262,10 @@ angular.module('bekApp')
         //   itemSpec.iconclass = 'text-regular icon-dollar';
         //   break;
 
-        // TODO: fitler by and display MSDS info
-        case 'materialsafety':
-          itemSpec.displayname = 'Material Safety Data Sheet';
-          itemSpec.iconclass = 'text-regular icon-safety';
-          break;
+        // case 'materialsafety':
+        //   itemSpec.displayname = 'Material Safety Data Sheet';
+        //   itemSpec.iconclass = 'text-regular icon-safety';
+        //   break;
       }
       return itemSpec;
     }

@@ -150,7 +150,7 @@
           <div class="btn-group-vertical list-names text-blue">
             <button 
               type="button" 
-              ng-repeat="list in lists | sortLists | limitTo: itemsLimit()" 
+              ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length" 
               ng-click="goToList(list)" 
               ng-class="{'current-list' : list.listid == selectedList.listid}" 
               class="btn-lg custom-lists__name btn btn-default btn-list" 
@@ -161,7 +161,13 @@
             </button>
           </div>
           <h5>
-            <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a>
+
+            <!-- <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a> -->
+            <a 
+              ng-show="lists.length > numberListNamesToShow" 
+              ng-click="showMoreListNames = !showMoreListNames">
+              {{showMoreListNames ? '+ Show More' : '- Show Less'}}
+            </a>
           </h5>
           
           <div class="btn-group-vertical">
@@ -499,7 +505,13 @@
               <td class="list-print-column">|</td>
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
-                <span context-menu-template class="context-menu__in-list"><a><span class="icon-plus2"></span></a></span>
+                <div 
+                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders)" 
+                  context-menu-template
+                  class="context-menu-template context-menu__in-list hidden-print"
+                >
+                  <a class="icon-plus2"></a>
+                </div>
 
                 <a ng-if="selectedList.permissions.canDeleteItems" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 

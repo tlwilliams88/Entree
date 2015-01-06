@@ -1,52 +1,53 @@
-<span ng-mouseenter="openContextMenu($event, item)" ng-mouseleave="closeContextMenu()">
-  
+<div>
   <span ng-transclude>
     
   </span>
 
-  <div class="context-menu" ng-show="isContextMenuDisplayed">
-    <div class="btn-group-vertical">
+<div class="context-menu">
+  <div class="btn-group-vertical">
 
-      <button type="button" favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
+    <button type="button" favorite-item-click-handlers ng-if="!item.favorite" ng-click="addItemToFavorites(item)" class="btn btn-default text-uppercase">To Favorites</button>
 
-      <!-- <button type="button" ng-repeat="list in lists | sortLists" ng-click="addItemToReminderList(item)" ng-if="list.isSpecialList && !list.isFavoritesList" class="btn btn-default text-uppercase">To {{list.name}}</button> -->
-      
-      <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-          <span class="pull-right icon-arrow-right6"></span>Add to Cart
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <div class="btn-group-vertical">
-            <button type="button" class="btn btn-default" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)">{{cart.name}}</button>
-            <button type="button" class="btn btn-default" ng-click="createCartWithItem(item)">New Cart...</button>
-          </div>
-        </ul>
-      </div>
-
-      <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-          <span class="pull-right icon-arrow-right6"></span>Add to List
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <div class="btn-group-vertical">
-            <button ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
-            <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
-          </div>
-        </ul>
-      </div>
-
-      <div ng-mouseenter="status.isopen3 = true;" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0">
-        <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
-          <span class="pull-right icon-arrow-right6"></span>Add to Change Order
-        </button>
-        <ul class="dropdown-menu" role="menu">
-          <div class="btn-group-vertical">
-            <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.ordernumber}}</button>
-          </div>
-        </ul>
-      </div>
-
-
+    <!-- <button type="button" ng-repeat="list in lists | sortLists" ng-click="addItemToReminderList(item)" ng-if="list.isSpecialList && !list.isFavoritesList" class="btn btn-default text-uppercase">To {{list.name}}</button> -->
+    
+    <!-- CARTS -->
+    <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true;" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+        <span class="pull-right icon-arrow-right6"></span>Add to Cart
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <div class="btn-group-vertical">
+          <button type="button" class="btn btn-default" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)">{{cart.name}}</button>
+          <button type="button" class="btn btn-default" ng-click="createCartWithItem(item)">New Cart...</button>
+        </div>
+      </ul>
     </div>
+
+    <!-- LISTS -->
+    <div ng-mouseenter="status.isopen2 = true;" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
+      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+        <span class="pull-right icon-arrow-right6"></span>Add to List
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <div class="btn-group-vertical">
+          <button ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+          <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
+        </div>
+      </ul>
+    </div>
+
+    <!-- CHANGE ORDERS -->
+    <div ng-mouseenter="status.isopen3 = true;" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0">
+      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+        <span class="pull-right icon-arrow-right6"></span>Add to Change Order
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <div class="btn-group-vertical">
+          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.ordernumber}}</button>
+        </div>
+      </ul>
+    </div>
+
   </div>
-</span>
+</div>
+</div>

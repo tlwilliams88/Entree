@@ -237,7 +237,13 @@
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" context-menu-template class="context-menu__in-list hidden-print"><a><span class="icon-plus2"></span></a></span>
+            <div 
+              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" 
+              context-menu-template
+              class="context-menu-template context-menu__in-list hidden-print"
+            >
+              <a class="icon-plus2"></a>
+            </div>
 
             <a class="hidden-print" ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>
