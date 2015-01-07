@@ -112,7 +112,7 @@
         <button
           class="btn-no-style"
           ng-disabled="!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ })"
+          ui-sref="menu.addtoorder.items({ listId: 0 })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>
@@ -241,7 +241,7 @@
         <button
           class="btn-no-style"
           ng-disabled="!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ })"
+          ui-sref="menu.addtoorder.items({ listId: 0 })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <span class="icon-add-to-list sidebar-nav__icon"></span>

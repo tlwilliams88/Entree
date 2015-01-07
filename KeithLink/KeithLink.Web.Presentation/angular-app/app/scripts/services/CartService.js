@@ -8,10 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$filter', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
-    function ($http, $filter, $q, $upload, toaster, UtilityService, Cart) {
-
-    var filter = $filter('filter');
+  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
+    function ($http, $q, $upload, toaster, UtilityService, Cart) {
 
     var Service = {
       carts: [],
@@ -60,6 +58,69 @@ angular.module('bekApp')
         return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
+      // gets the default selected cart
+      getSelectedCart: function(cartId) {
+        var selectedCart;
+        if (cartId) {
+          selectedCart = Service.findCartById(cartId);
+        }
+        // go to active cart
+        if (!selectedCart) {
+          angular.forEach(Service.carts, function(cart, index) {
+            if (cart.active) {
+              selectedCart = cart;
+            }
+          });
+        }
+        // go to first cart in list
+        if (!selectedCart && Service.carts && Service.carts.length > 0) {
+          selectedCart = Service.carts[0];
+        }
+
+        return selectedCart;
+      },
+
+      /********************
+      CREATE CART
+      ********************/
+
+      // accepts null, item object, or array of item objects and shipDate
+      // returns promise and new cart object
+      createCart: function(items, shipDate) {
+
+        var newCart = {};
+    
+        if (!items) { // if null
+          newCart.items = [];
+        } else if (Array.isArray(items)) { // if multiple items
+          newCart.items = items;
+        } else if (typeof items === 'object') { // if one item
+          newCart.items = [items];
+        }
+
+        // set default quantity to 1
+        angular.forEach(newCart.items, function (item, index) {
+      
+          if (!item.quantity || item.quantity === 0) {
+            item.quantity = 1;
+          }
+        });
+
+        newCart.name = UtilityService.generateName('Cart', Service.carts);
+
+        newCart.requestedshipdate = shipDate;
+        // default to next ship date
+        if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
+          newCart.requestedshipdate = Service.shipDates[0].shipdate;
+        }
+
+        return Cart.save({}, newCart).$promise.then(function(response) {
+          newCart.id = response.listitemid;
+          Service.carts.push(newCart);
+          return newCart;
+        });
+      },
+
       importCart: function(file, options) {
         var deferred = $q.defer();
 
@@ -94,68 +155,20 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
-      // gets the default selected cart
-      getSelectedCart: function(cartId) {
-        var selectedCart;
-        if (cartId) {
-          selectedCart = Service.findCartById(cartId);
-        }
-        // go to active cart
-        if (!selectedCart) {
-          angular.forEach(Service.carts, function(cart, index) {
-            if (cart.active) {
-              selectedCart = cart;
-            }
-          });
-        }
-        // go to first cart in list
-        if (!selectedCart && Service.carts && Service.carts.length > 0) {
-          selectedCart = Service.carts[0];
-        }
+      quickAdd: function(items) {
+        return Cart.quickAdd({}, items).$promise.then(function(response) {
 
-        return selectedCart;
+          if (response.success) {
+            return response.id;
+          } else {
+            return $q.reject(response.errormessage);
+          }
+        });
       },
 
       /********************
       EDIT CART
       ********************/
-
-      // accepts null, item object, or array of item objects and shipDate
-      // returns promise and new cart object
-      createCart: function(items, shipDate) {
-
-        var newCart = {};
-		
-		    if (!items) { // if null
-          newCart.items = [];
-        } else if (Array.isArray(items)) { // if multiple items
-          newCart.items = items;
-        } else if (typeof items === 'object') { // if one item
-          newCart.items = [items];
-        }
-
-        // set default quantity to 1
-        angular.forEach(newCart.items, function (item, index) {
-			
-          if (!item.quantity || item.quantity === 0) {
-            item.quantity = 1;
-          }
-        });
-
-        newCart.name = UtilityService.generateName('Cart', Service.carts);
-
-        newCart.requestedshipdate = shipDate;
-        // default to next ship date
-        if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
-          newCart.requestedshipdate = Service.shipDates[0].shipdate;
-        }
-
-        return Cart.save({}, newCart).$promise.then(function(response) {
-          newCart.id = response.listitemid;
-          Service.carts.push(newCart);
-          return newCart;
-        });
-      },
 
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
