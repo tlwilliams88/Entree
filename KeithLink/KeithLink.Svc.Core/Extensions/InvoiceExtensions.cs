@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, bool isKPayCustomer)
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer)
 		{
 			return new InvoiceModel()
 			{
@@ -21,15 +21,26 @@ namespace KeithLink.Svc.Core.Extensions
 				InvoiceNumber = value.InvoiceNumber.Trim(),
 				Type = DetermineType(value.InvoiceType.Trim()),
 				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
-				Status = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ? value.DueDate >= DateTime.Now ? InvoiceStatus.Open : InvoiceStatus.PastDue : InvoiceStatus.Paid,
-				StatusDescription = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ? value.DueDate >= DateTime.Now ? EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open) : EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue) : EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Paid),
+				Status = DetermineStatus(value),
+				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(DetermineStatus(value)),
 				CustomerNumber = value.CustomerNumber,
+				CustomerName = customer.CustomerName,
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
 				OrderDate = value.InvoiceDate,
-                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && isKPayCustomer)
+                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer.KPayCustomer)
 			};
+		}
+
+		private static InvoiceStatus DetermineStatus(EFInvoice.Invoice value)
+		{
+			if (value.InvoiceType.Trim().Equals("cm", StringComparison.InvariantCultureIgnoreCase))
+				return InvoiceStatus.Open;
+
+			return value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ?
+										value.DueDate >= DateTime.Now ?
+										InvoiceStatus.Open : InvoiceStatus.PastDue : InvoiceStatus.Paid;
 		}
 
 		public static InvoiceTransactionModel ToTransationModel(this EFInvoice.Invoice value)

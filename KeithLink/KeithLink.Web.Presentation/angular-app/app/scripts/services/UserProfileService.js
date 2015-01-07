@@ -73,6 +73,13 @@ angular.module('bekApp')
         });
       },
 
+      getAllUserCustomers: function(userId) {
+        var promise = $http.get('/profile/user/' + userId + '/customers');
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.customers;
+        });
+      },
+
       // accountid, customerid , email
       getAllUsers: function(params) {
         var config = {

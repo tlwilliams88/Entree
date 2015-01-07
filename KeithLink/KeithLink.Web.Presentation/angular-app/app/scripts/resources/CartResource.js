@@ -45,6 +45,11 @@ angular.module('bekApp')
       setActive: {
         url: '/cart/:cartId/active',
         method: 'PUT'
+      },
+
+      quickAdd: {
+        url: '/cart/quickadd',
+        method: 'POST'
       }
 
     });

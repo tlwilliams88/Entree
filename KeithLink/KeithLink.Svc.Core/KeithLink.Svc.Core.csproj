@@ -386,6 +386,8 @@
     <Compile Include="Models\Profile\Customer.cs" />
     <Compile Include="Models\Reports\ItemUsageReportItemModel.cs" />
     <Compile Include="Models\Reports\ItemUsageReportQueryModel.cs" />
+    <Compile Include="Models\ShoppingCart\QuickAddItemModel.cs" />
+    <Compile Include="Models\ShoppingCart\QuickAddReturnModel.cs" />
     <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />

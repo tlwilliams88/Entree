@@ -4,9 +4,13 @@
   </div>
   <div header-buttons></div>
 </div>
+
+<div class="page-content">
+<h2 ng-if="accountName">{{accountName}}</h2>
+
 <div class="row">
   <div class="col-md-6">
-    <div class="form-inline top-buffer">
+    <div class="form-inline">
       <div class="form-group">
         <span class="text-red" ng-show="userExists">This user already exists, please contact Ben E. Keith Customer Service to add this user to your account</span>
         <br ng-show="userExists">
@@ -18,7 +22,7 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <h2>Assigned User Profiles</h2>
+    <h3>Assigned User Profiles</h3>
 
     <div class="infiniteScroll">
       <table class="table no-margin table-border table-striped-rows">
@@ -85,7 +89,7 @@
 
   </div>
   <div class="col-md-6">
-    <h2>Assigned Customers</h2>
+    <h3>Assigned Customers</h3>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <form name="customerSearchForm" class="search-form">
@@ -145,7 +149,7 @@
     
   </div>
 </div>
-<h2>Broadcast a Message</h2>
+<h3>Broadcast a Message</h3>
 <div class="row">
   <div class="col-md-6">
     <label for="subjectHeader" class="control-label">Subject Header</label>
@@ -161,4 +165,5 @@
       <li ng-repeat="recipient in recipients"><span style="cursor: pointer; color: red;" class="glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient)"></span> {{recipient.displayName}} ({{recipient.type}})</li>
     </ul>
   </div>
+</div>
 </div>

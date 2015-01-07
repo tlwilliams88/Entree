@@ -23,7 +23,7 @@
 
     <a ui-sref="menu.admin.accountdetails({ accountId: 'new'})">Add New Account...</a>
 
-    <ul class="list-no-style">
+    <ul class="list-no-style sub-content">
       <li ng-repeat="account in accounts | orderBy:'name'">
         <a ui-sref="menu.admin.accountdetails({accountId: account.id})">{{account.name}}</a>
       </li>

@@ -164,11 +164,12 @@ angular.module('bekApp')
         authorize: 'canCreateOrders'
       },
       resolve: {
-        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($state, $stateParams, carts, changeOrders, ResolveService, CartService) {
+        originalBasket: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($stateParams, carts, changeOrders, ResolveService, CartService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
           if (selectedBasket) {
             return selectedBasket;
           } else {
+            // no existing carts found, create a new cart and redirect to it
             return CartService.createCart();
           }
         }]
@@ -199,6 +200,10 @@ angular.module('bekApp')
           return CartService.getShipDates();
         }]
       }
+      // ,
+      // controller: ['$state', 'carts', function($state, carts) {
+      //   $state.go('menu.addtoorder.items', { listId: 123, cartId: 'new' });
+      // }]
     })
     .state('menu.addtoorder.items', {
       url: ':listId/?cartId&useParlevel',
@@ -211,13 +216,9 @@ angular.module('bekApp')
         selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.selectDefaultList($stateParams.listId);
         }],
-        selectedCart: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+        selectedCart: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-          if (selectedBasket) {
-            return selectedBasket;
-          } else {
-            $state.go('menu.home');
-          }
+          return selectedBasket;
         }]
       }
     })
