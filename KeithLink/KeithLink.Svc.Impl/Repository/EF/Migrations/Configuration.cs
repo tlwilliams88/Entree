@@ -120,7 +120,7 @@ namespace KeithLink.Svc.Impl.Migrations
 				);
 
             System.Text.StringBuilder newUserPasswordBody = new System.Text.StringBuilder();
-            newUserPasswordBody.AppendLine( "Welcome to Entree!" );
+            newUserPasswordBody.AppendLine( "Welcome to Entrée!" );
             newUserPasswordBody.AppendLine();
             newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
             newUserPasswordBody.AppendLine();

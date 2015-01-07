@@ -283,14 +283,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId, bool allowPasswordGeneration = false) {
-            // if password is null or empty, create a temproary password and email it to the user
-            bool generatedPassword = false;
-            if (String.IsNullOrEmpty(password) && allowPasswordGeneration)
-            {
-                generatedPassword = true;
-				password = System.Web.Security.Membership.GeneratePassword(8, 0);
-            }
+        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+            if (emailAddress == null) throw new Exception( "email address cannot be null" );
+            if (password == null) throw new Exception( "password cannot be null" );
+
             AssertGuestProfile(emailAddress, password);
 
             _extAd.CreateUser(Configuration.ActiveDirectoryGuestContainer,
@@ -308,16 +304,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-            if (generatedPassword) {
                 try {
-                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                    if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new Dictionary<string, string> { { "password", password } } );
-                } catch (Exception ex) {
-                    _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
-                }
-            } else {
-                try {
-                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( "GuestUserWelcome" );
+                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( GUEST_USER_WELCOME );
 
                     if (template != null)
                         _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail( branchId ) } );
@@ -325,9 +313,48 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     //The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
                     _eventLog.WriteErrorLog( "Error sending welcome email", ex );
                 }
-            }
 
             return GetUserProfile(emailAddress);
+        }
+
+        /// <summary>
+        /// Admin created user - sets a temporary password and expires it so they have to change it on next login
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="branchId"></param>
+        /// <returns>Returns a new user profile</returns>
+        public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword( 8, 0 );
+            AssertGuestProfile( emailAddress, generatedPassword );
+
+            _extAd.CreateUser(
+                Configuration.ActiveDirectoryGuestContainer,
+                emailAddress,
+                generatedPassword,
+                Core.Constants.AD_GUEST_FIRSTNAME,
+                Core.Constants.AD_GUEST_LASTNAME,
+                Core.Constants.ROLE_EXTERNAL_GUEST
+                );
+
+            _csProfile.CreateUserProfile(
+                emailAddress,
+                Core.Constants.AD_GUEST_FIRSTNAME,
+                Core.Constants.AD_GUEST_LASTNAME,
+                string.Empty,
+                branchId
+                );
+
+            // Expire the users password so they can change it at neck login
+            _extAd.ExpirePassword( emailAddress );
+
+            try {
+                var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
+                if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
+            }
+
+            return GetUserProfile( emailAddress );
         }
 
         /// <summary>
