@@ -56,9 +56,10 @@ namespace KeithLink.Svc.WebApi.Attribute
 				context = ((BaseController)actionExecutedContext.ActionContext.ControllerContext.Controller).SelectedUserContext;
 				var controllerAction = string.Format("{0}Controller.{1}", actionExecutedContext.ActionContext.ActionDescriptor.ControllerDescriptor.ControllerName, actionExecutedContext.ActionContext.ActionDescriptor.ActionName);
 
-				errorMessage = string.Format("Unhandled API Exception: \r\nUser: {0} \r\nCustomer: {1} \r\nController.Action: {2} \r\nMethod: {3} \r\nArguments: \r\n{4}\r\n\r\n",
+				errorMessage = string.Format("Unhandled API Exception: \r\nUser: {0} \r\nCustomer-Branch: {1}-{2} \r\nController.Action: {3} \r\nMethod: {4} \r\nArguments: \r\n{5}\r\n\r\n",
 					user == null ? string.Empty : user.EmailAddress,
 					context == null ? string.Empty : context.CustomerId,
+					context == null ? string.Empty : context.BranchId,
 					controllerAction,
 					actionExecutedContext.ActionContext.Request.Method,
 					actionExecutedContext.ActionContext.ActionArguments == null ? string.Empty : string.Join("\r\n", actionExecutedContext.ActionContext.ActionArguments.Select(a => string.Format("\tKey: {0} Value: {1}", a.Key, JsonConvert.SerializeObject(a.Value))).ToArray()));
