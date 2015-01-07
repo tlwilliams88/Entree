@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage',
-    function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state',
+    function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state) {
 
       //handles customer specific invoice loading
       function loadInvoices(params) {
@@ -11,6 +11,7 @@ angular.module('bekApp')
           $scope.loadingResults = false;
           $scope.totalInvoices = data.pagedresults.totalResults;
           $scope.hasPayableInvoices = data.haspayableinvoices;
+          $scope.totaldue = '';
 
           return data.pagedresults.results; // return array of invoices
         });
@@ -23,6 +24,7 @@ angular.module('bekApp')
           $scope.loadingResults = false;
           $scope.totalInvoices = data.pagedresults.totalResults;
           $scope.hasPayableInvoices = data.haspayableinvoices;
+          $scope.totaldue = data.totaldue;
 
           return data.pagedresults.results; // return array of invoices
         });
@@ -39,7 +41,6 @@ angular.module('bekApp')
 
       //toggles state between all invoices and single customer invoices
       $scope.viewAllOpenInvoices = function () {
-        console.log($scope.selectedUserContext);
         //properly set string values for each state and change the selected user context to a placeholder to prevent confusion
         if (!$scope.viewingAllCustomers) {
           //set button and header text
@@ -75,17 +76,56 @@ angular.module('bekApp')
       $rootScope.$on('$stateChangeStart', function () {
         //change selected user context back to the one stored in LocalStorage here
         $scope.$parent.selectedUserContext = LocalStorage.getCurrentCustomer();
-
-        console.log('stateChanged');
-        console.log($scope.selectedUserContext);
       });
 
       //change the selected user context to the one the user clicked and refresh the page
       $scope.changePageContext = function (customerNumber) {
-        console.log('changePageContext: ' + customerNumber);
-        //var generatedUserContext = {};
-        //
-        //$scope.$parent.selectedUserContext = generatedUserContext;
+        //generate and set customer context to customerNumber that user selected
+        CustomerService.getCustomerDetails(customerNumber).then(function (success) {
+            //generate new customer context TODO: FIX CODE DUPLICATION HERE
+            var generatedUserContext = {};
+            generatedUserContext.id = success.customerNumber;
+            generatedUserContext.text = success.customerNumber + ' - ' + success.customerName;
+            generatedUserContext.customer = success;
+
+            //set the selected context to the generated one
+            $scope.$parent.selectedUserContext = generatedUserContext;
+
+            //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
+            LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+
+            //refresh the page
+            $state.transitionTo($state.current, $state.params, {
+              reload: true,
+              inherit: false,
+              notify: true
+            });
+          }
+        );
+      };
+
+      $scope.linkToReferenceNumber = function(customerNumber, invoiceNumber){
+        //generate and set customer context to customerNumber that user selected
+        CustomerService.getCustomerDetails(customerNumber).then(function (success) {
+            //generate new customer context TODO: FIX CODE DUPLICATION HERE
+            var generatedUserContext = {};
+            generatedUserContext.id = success.customerNumber;
+            generatedUserContext.text = success.customerNumber + ' - ' + success.customerName;
+            generatedUserContext.customer = success;
+
+            //set the selected context to the generated one
+            $scope.$parent.selectedUserContext = generatedUserContext;
+
+            //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
+            LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+            //redirect to specific invoice page
+            $state.transitionTo('menu.invoiceitems', {invoiceNumber: invoiceNumber}, {
+              reload: true,
+              inherit: false,
+              notify: true
+            })
+          }
+        );
       };
 
       /******************************
@@ -132,13 +172,22 @@ angular.module('bekApp')
         $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
         $scope.invoiceParams.from = 0;
 
-        loadInvoices($scope.invoiceParams).then(setInvoices);
+        if(!$scope.viewingAllCustomers) {
+          loadInvoices($scope.invoiceParams).then(setInvoices);
+        } else{
+          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
+        }
       };
 
       $scope.clearFilters = function () {
         $scope.filterFields = {};
         $scope.invoiceParams.filter = [];
-        loadInvoices($scope.invoiceParams).then(setInvoices);
+
+        if(!$scope.viewingAllCustomers) {
+          loadInvoices($scope.invoiceParams).then(setInvoices);
+        } else {
+          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
+        }
       };
 
       $scope.sortInvoices = function (field, order) {
@@ -158,7 +207,11 @@ angular.module('bekApp')
         $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
         $scope.invoiceParams.from = 0;
 
-        loadInvoices($scope.invoiceParams).then(setInvoices);
+        if(!$scope.viewingAllCustomers) {
+          loadInvoices($scope.invoiceParams).then(setInvoices);
+        }else {
+          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
+        }
       };
 
       $scope.infiniteScrollLoadMore = function () {
@@ -168,9 +221,15 @@ angular.module('bekApp')
 
         $scope.invoiceParams.from += $scope.invoiceParams.size;
 
-        loadInvoices($scope.invoiceParams).then(function (invoices) {
-          $scope.invoices = $scope.invoices.concat(invoices);
-        });
+        if(!$scope.viewingAllCustomers){
+          loadInvoices($scope.invoiceParams).then(function (invoices) {
+            $scope.invoices = $scope.invoices.concat(invoices);
+          });
+        } else {
+          loadAllOpenInvoices($scope.invoiceParams).then(function (invoices) {
+            $scope.invoices = $scope.invoices.concat(invoices);
+          });
+        }
       };
 
 
@@ -217,7 +276,11 @@ angular.module('bekApp')
         $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
         $scope.invoiceParams.from = 0;
 
-        loadInvoices($scope.invoiceParams).then(setInvoices);
+        if(!$scope.viewingAllCustomers) {
+          loadInvoices($scope.invoiceParams).then(setInvoices);
+        } else {
+          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
+        }
       };
 
       $scope.selectAccount = function (account) {

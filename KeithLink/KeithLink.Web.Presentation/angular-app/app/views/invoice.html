@@ -22,6 +22,9 @@
 
 <div class="row page-content">
   <form name="invoiceForm" class="style-validation-errors" novalidate>
+    <div class="col-md-12" ng-if="viewingAllCustomers">
+      <h3>Total Amount Due: {{totaldue | currency}}</h3>
+    </div>
     <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers">
       <div class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
@@ -81,6 +84,10 @@
             <th ng-if="!viewingAllCustomers" class="input-col">
               <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll()">
             </th>
+            <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sortOrder)">
+              Customer Name
+              <span sort-icons field="'customername'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+            </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customernumber', !sortOrder)">
               Customer #
               <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
@@ -121,6 +128,9 @@
               <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterFields.isSelected)"/> -->
             </td>
             <td ng-show="viewingAllCustomers" class="input-col">
+              <input type="text" placeholder="Filter..." ng-model="filterFields.customername">
+            </td>
+            <td ng-show="viewingAllCustomers" class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.customernumber">
             </td>
             <td class="input-col">
@@ -148,10 +158,13 @@
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
+              <a ng-click="changePageContext(invoice.customernumber)">{{invoice.customername}}</a>
+            </td>
+            <td ng-show="viewingAllCustomers">
               <a ng-click="changePageContext(invoice.customernumber)">{{invoice.customernumber}}</a>
             </td>
             <td>
-              <a ng-show="invoice.typedescription === 'Invoice'" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
+              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.invoicenumber)" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
               <span ng-show="invoice.typedescription !== 'Invoice'">{{invoice.invoicenumber}}</span>
             </td>
             <td>
