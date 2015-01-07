@@ -187,13 +187,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/account")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> UpdateAccount(Account account)
+        public OperationReturnModel<bool> UpdateAccount(Account account)
         {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try
             {
-                _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
+                retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
             }
             catch (ApplicationException axe)
             {

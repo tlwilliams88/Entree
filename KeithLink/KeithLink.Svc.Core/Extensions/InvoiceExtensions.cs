@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, bool isKPayCustomer)
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer)
 		{
 			return new InvoiceModel()
 			{
@@ -24,11 +24,12 @@ namespace KeithLink.Svc.Core.Extensions
 				Status = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ? value.DueDate >= DateTime.Now ? InvoiceStatus.Open : InvoiceStatus.PastDue : InvoiceStatus.Paid,
 				StatusDescription = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ? value.DueDate >= DateTime.Now ? EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Open) : EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue) : EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.Paid),
 				CustomerNumber = value.CustomerNumber,
+				CustomerName = customer.CustomerName,
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
 				OrderDate = value.InvoiceDate,
-                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && isKPayCustomer)
+                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer.KPayCustomer)
 			};
 		}
 

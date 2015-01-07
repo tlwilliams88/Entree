@@ -7,6 +7,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="haspayableinvoices" type="xs:boolean" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="pagedresults" nillable="true" type="q1:PagedResultsOfInvoicebHFuqxhQ" />
+      <xs:element minOccurs="0" name="totaldue" nillable="true" type="xs:decimal" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="InvoiceHeaderReturnModel" nillable="true" type="tns:InvoiceHeaderReturnModel" />
@@ -20,6 +21,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="amount" type="xs:decimal" />
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customername" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="duedate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="id" type="xs:long" />
