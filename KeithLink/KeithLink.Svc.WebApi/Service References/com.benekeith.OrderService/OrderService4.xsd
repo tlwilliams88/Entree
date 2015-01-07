@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:simpleType name="UnitOfMeasure">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Case" />
-      <xs:enumeration value="Package" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="UnitOfMeasure" nillable="true" type="tns:UnitOfMeasure" />
-  <xs:simpleType name="OrderSource">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Entree" />
-      <xs:enumeration value="DSR" />
-      <xs:enumeration value="CustomerService" />
-      <xs:enumeration value="KeithNet" />
-      <xs:enumeration value="Other" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="OrderSource" nillable="true" type="tns:OrderSource" />
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Common" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Common" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="BaseQueueMessage">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreateDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorStack" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MessageId" type="ser:guid" />
+      <xs:element minOccurs="0" name="SenderApplicationName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SenderIPAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SenderMachineName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SenderProcessName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseQueueMessage" nillable="true" type="tns:BaseQueueMessage" />
 </xs:schema>

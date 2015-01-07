@@ -124,6 +124,38 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
+        private void Create(OrderHistoryFile currentFile) {
+            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            if (header == null) {
+                header = new EF.OrderHistoryHeader();
+                header.OrderDetails = new List<EF.OrderHistoryDetail>();
+            }
+
+            currentFile.Header.MergeWithEntity(ref header);
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+
+                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+                if (detail == null) {
+                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+                    tempDetail.BranchId = header.BranchId;
+                    tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+                } else {
+                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+                    detail.BranchId = header.BranchId;
+                    detail.InvoiceNumber = header.InvoiceNumber;
+                }
+            }
+
+            _headerRepo.CreateOrUpdate(header);
+
+            //_unitOfWork.SaveChanges();
+        }
+
         public void ListenForMainFrameCalls() {
             _socket.Listen(Configuration.MainframOrderHistoryListeningPort);
         }
@@ -152,7 +184,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
-                        Save(historyFile);
+                        Create(historyFile);
                         ProcessAsConfirmation(historyFile);
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
@@ -197,6 +229,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                                                          GetOrderHistoryOrders(customerInfo));
 
             return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
+        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+            var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
+
+            return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
+        }
+
+        private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
+            return LookupControlNumberAndStatus(headers);
         }
 
         private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
@@ -481,53 +526,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void Save(OrderHistoryFile currentFile) {
-            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
-            if (header == null) { 
-                header = new EF.OrderHistoryHeader();
-                header.OrderDetails = new List<EF.OrderHistoryDetail>();
+            Create(currentFile);
+
+            try {
+                _unitOfWork.SaveChanges();
+            } catch (Exception ex) {
+                throw;
             }
-
-            currentFile.Header.MergeWithEntity(ref header);
-
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
-                
-                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
-
-                if (detail == null) {
-                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
-                    tempDetail.BranchId = header.BranchId;
-                    tempDetail.InvoiceNumber = header.InvoiceNumber;
-
-                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
-                } else {
-                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
-
-                    detail.BranchId = header.BranchId;
-                    detail.InvoiceNumber = header.InvoiceNumber;
-                }
-            }
-
-            _headerRepo.CreateOrUpdate(header);
-
-            //_unitOfWork.SaveChanges();
         }
-
-		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
-			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
-
-			return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
-		}
-
-		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
-		}
-
-
 
         public void StopListening() {
             _keepListening = false;

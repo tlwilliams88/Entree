@@ -36,7 +36,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             throw new NotImplementedException();
         }
 
-		public UserActiveCartModel GetUserActiveCart(Guid userId)
+        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            throw new NotImplementedException();
+        }
+        
+        public UserActiveCartModel GetUserActiveCart(Guid userId)
 		{
 			throw new NotImplementedException();
 		}
@@ -46,10 +50,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			throw new NotImplementedException();
 		}
 
-
-		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			throw new NotImplementedException();
-		}
+        public void SaveOrderHistory(OrderHistoryFile historyFile) {
+            throw new NotImplementedException();
+        }
 	}
 }

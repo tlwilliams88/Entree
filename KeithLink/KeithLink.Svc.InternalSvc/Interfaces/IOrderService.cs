@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -24,13 +25,16 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         Order GetOrder(string branchId, string invoiceNumber);
 
-		[OperationContract]
+        [OperationContract]
+        List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+        
+        [OperationContract]
 		UserActiveCartModel GetUserActiveCart(Guid userId);
 
 		[OperationContract]
 		void SaveUserActiveCart(Guid userId, Guid cartId);
 
-		[OperationContract]
-		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+        [OperationContract]
+        void SaveOrderHistory(OrderHistoryFile historyFile);
 	}
 }

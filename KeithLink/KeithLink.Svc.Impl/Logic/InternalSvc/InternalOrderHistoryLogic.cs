@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			return _histLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
 		}
 
+        public void SaveOrder(OrderHistoryFile historyFile) {
+            _histLogic.Save(historyFile);
+        }
         #endregion
 
 

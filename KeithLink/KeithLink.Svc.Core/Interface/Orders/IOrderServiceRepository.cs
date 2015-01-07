@@ -12,11 +12,19 @@ namespace KeithLink.Svc.Core.Interface.Orders
 	public interface IOrderServiceRepository
 	{
 		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
+
         List<Order> GetCustomerOrders(Guid userId, UserSelectedContext catalogInfo);
+
         Order GetOrder(string branchId, string invoiceNumber);
-		UserActiveCartModel GetUserActiveCart(Guid userId);
+
+        List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+        
+        UserActiveCartModel GetUserActiveCart(Guid userId);
+
 		void SaveUserActiveCart(Guid userId, Guid cartId);
-		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+
+        void SaveOrderHistory(OrderHistoryFile historyFile);
 	}
 }
