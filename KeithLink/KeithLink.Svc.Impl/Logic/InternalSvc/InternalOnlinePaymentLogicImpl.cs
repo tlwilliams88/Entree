@@ -131,7 +131,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return null;
 
             //Convert to invoice model
-            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer.KPayCustomer);
+            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer);
 
 			
 
@@ -185,7 +185,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(filter, null).ToList();
 
-			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First().KPayCustomer)).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
 			Parallel.ForEach(pagedInvoices.Results, invoice =>
 			{
@@ -194,7 +194,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices
+                PagedResults = pagedInvoices,
+				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
             };
         }
 		
