@@ -23,6 +23,10 @@ angular.module('bekApp')
         }).$promise;
       },
 
+      getAllOpenInvoices: function(params){
+        return Invoice.getAllOpen(params).$promise;
+      },
+
       payInvoices: function(payments, account) {
         payments.forEach(function(payment) {
           payment.account = account.accountNumber;
