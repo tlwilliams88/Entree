@@ -3,10 +3,21 @@
     Welcome Back {{::userProfile.displayname}}!
   </div>
   <div header-buttons>
+    <!-- <a ng-click="openQuickAdd()">Quick Add</a>
     <button class="btn btn-primary btn-lg" 
 		ng-disabled="!canCreateOrders"
         ui-sref="menu.addtoorder.items({ })"
-        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button>
+        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button> -->
+    <div class="btn-group" dropdown is-open="status.isopen">
+      <button type="button" class="btn btn-lg btn-default dropdown-toggle">
+        Create An Order <span class="icon-arrow-down6"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ui-sref="menu.addtoorder.items({ listId: 0 })">From List</a></li>
+        <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
+        <li><a ng-click="openOrderImportModal()">From Import</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 

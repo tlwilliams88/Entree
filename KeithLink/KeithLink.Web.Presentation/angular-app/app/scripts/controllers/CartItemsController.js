@@ -56,6 +56,7 @@ angular.module('bekApp')
 
     $scope.goToCart = function(cartId, isChangeOrder) {
       if (!cartId) {
+        // TODO: clean this up, probably just redirect to cart.items page without params
         cartId = selectNextCartId();
       }
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null}).then(function() {
@@ -92,7 +93,9 @@ angular.module('bekApp')
         var updatedCart = angular.copy(cart);
 
         // delete items if quantity is 0 or price is 0
-		updatedCart.items = $filter('filter')( updatedCart.items, function(item){return item.quantity > 0 && (item.caseprice > 0 || item.packageprice > 0); } );
+  		  updatedCart.items = $filter('filter')( updatedCart.items, function(item){ 
+          return item.quantity > 0 && (item.caseprice > 0 || item.packageprice > 0); 
+        });
 
         return CartService.updateCart(updatedCart).then(function() {
           $scope.currentCart.isRenaming = false;

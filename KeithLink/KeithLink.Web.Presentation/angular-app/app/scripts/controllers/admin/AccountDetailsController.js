@@ -155,21 +155,35 @@ angular.module('bekApp')
   /***********
   FORM EVENTS
   ***********/
+  var processingCreateAccount = false;
   function createNewAccount(account) {
-    AccountService.createAccount(account).then(function(newAccount) {
-      $scope.displayMessage('success', 'Successfully created a new account.');
-      $state.go('menu.admin.accountdetails', { accountId: newAccount.id });
-    }, function(error) {
-      $log.debug(error);
-      $scope.displayMessage('error', 'Error creating new account.');
-    });
+    if (!processingCreateAccount) {
+      processingCreateAccount = true;
+      AccountService.createAccount(account).then(function(newAccount) {
+        $scope.displayMessage('success', 'Successfully created a new account.');
+        $state.go('menu.admin.accountdetails', { accountId: newAccount.id });
+      }, function(error) {
+        $log.debug(error);
+        $scope.displayMessage('error', 'Error creating new account.');
+      }).finally(function() {
+        processingCreateAccount = false;
+      });
+    }
   };
 
+  var processingSaveAccount = false;
   function saveAccount(account) {
-    delete account.customerusers;
-    AccountService.updateAccount(account).then(function(accounts) {
-      console.log(accounts);
-    });
+    if (!processingSaveAccount) {
+      processingSaveAccount = true;
+      delete account.customerusers;
+      AccountService.updateAccount(account).then(function(accounts) {
+        $scope.displayMessage('success', 'Successfully saved account.');
+      }, function(error) {
+        $scope.displayMessage('error', 'Error saving account.');
+      }).finally(function() {
+        processingSaveAccount = false;
+      });
+    }
   };
 
   $scope.submitForm = function(account) {
@@ -179,10 +193,6 @@ angular.module('bekApp')
       saveAccount(account);
     }
   }
-
-  $scope.cancelChanges = function() {
-    $scope.account = angular.copy($scope.originalAccount);
-  };
 
   init();
 

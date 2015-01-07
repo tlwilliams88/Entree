@@ -1,0 +1,37 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Cart Quick Add</h3>
+</div>
+<div class="modal-body">
+
+  <table class="table table-border" navigate-table>
+    <thead>
+      <tr>
+        <th>Item #</th>
+        <th>Qty</th>
+        <th>Each</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in items">
+        <td class="input-col">
+          <input focus-me="true" type="text" ng-model="item.itemnumber">
+        </td>
+        <td class="input-col">
+          <input type="text" ng-model="item.quantity" class="input-number">
+        </td>
+        <td class="input-col">
+          <input type="checkbox" ng-model="item.each">
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <div class="text-right">
+    <button type="button" class="btn btn-primary btn-lg" ng-click="addRow()">Add Row</button>
+  </div>
+
+</div>
+<div class="modal-footer">
+    <button type="submit" class="btn-lg btn btn-primary" ng-click="saveCart(items)">Create Cart</button>
+    <button type="button" class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+</div>

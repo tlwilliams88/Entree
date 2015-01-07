@@ -1,8 +1,11 @@
 'use strict';
 
 /*
-* Must use bootstrap table
-* input elements must have a name attr
+* takes one optional attr
+* default -- behaves like a regular table with no extra rows
+* "lists" attr (navigate-table="lists") -- tbody tags can be used as rows, see lists.html page
+* "mobile" attr -- allows for .mobile-details-row, see searchresults.html page
+* 
 */
 
 angular.module('bekApp')
@@ -55,9 +58,12 @@ angular.module('bekApp')
 
                   var moveToRow = null;
                   if (e.which === key.down || e.which === key.enter) {
-                      moveToRow = tr.next('tr').next('tr');
-                      if (attr.navigateTable === 'lists') {
+                      if (attr.navigateTable === 'mobile') {
+                        moveToRow = tr.next('tr').next('tr');
+                      } else if (attr.navigateTable === 'lists') {
                         moveToRow = tr.next('tbody').children('tr:not(.mobile-details-row)');
+                      } else {
+                        moveToRow = tr.next('tr');
                       }
 
                       if (!moveToRow.length) { // go to first row
@@ -65,9 +71,12 @@ angular.module('bekApp')
                       }
                   }
                   else if (e.which === key.up) {
-                      moveToRow = tr.prev('tr').prev('tr');
-                      if (attr.navigateTable === 'lists') {
+                      if (attr.navigateTable === 'mobile') {
+                        moveToRow = tr.prev('tr').prev('tr');
+                      } else if (attr.navigateTable === 'lists') {
                         moveToRow = tr.prev('tbody').children('tr:not(.mobile-details-row)');
+                      } else {
+                        moveToRow = tr.prev('tr');
                       }
 
                       if (!moveToRow.length) { // go to last row
@@ -99,16 +108,17 @@ angular.module('bekApp')
       
       
       var key = e.keyCode ? e.keyCode : e.which;
-      if(key === 13) {
-        var focusedElement = angular.element(e.target);
-        var nextElement = focusedElement.parent().next();
-        if (nextElement.find('input').length>0){
-          nextElement.find('input').focus();
-        } else {
-          nextElement = nextElement.parent().next().find('input').first();
-          nextElement.focus();
-        }
-      }
+      // // enter key
+      // if(key === 13) {
+      //   var focusedElement = angular.element(e.target);
+      //   var nextElement = focusedElement.parent().next();
+      //   if (nextElement.find('input').length>0){
+      //     nextElement.find('input').focus();
+      //   } else {
+      //     nextElement = nextElement.parent().next().find('input').first();
+      //     nextElement.focus();
+      //   }
+      // }
     }
 
     scope.$on('$destroy',function() {
