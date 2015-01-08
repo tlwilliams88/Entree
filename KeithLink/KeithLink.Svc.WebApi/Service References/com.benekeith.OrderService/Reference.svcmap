@@ -35,7 +35,7 @@
     <MetadataFile FileName="OrderService.wsdl" MetadataType="Wsdl" ID="15e99ebc-499f-4b6c-a8b6-c7bdaf468d0b" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?wsdl" />
     <MetadataFile FileName="OrderService5.xsd" MetadataType="Schema" ID="4598621f-4538-4d70-868a-447b79bd87d4" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd6" />
     <MetadataFile FileName="OrderService4.xsd" MetadataType="Schema" ID="26470c08-3a03-449c-9812-1ae067e31262" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd4" />
-    <MetadataFile FileName="OrderService6.xsd" MetadataType="Schema" ID="713e393b-69a7-4653-906b-369d08111726" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd7" />
+    <MetadataFile FileName="OrderService6.xsd" MetadataType="Schema" ID="3365fefe-9986-4758-b893-a240242c9c10" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd7" />
     <MetadataFile FileName="OrderService.disco" MetadataType="Disco" ID="2fab18c2-ef69-4407-8e65-3ed51e070200" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?disco" />
   </Metadata>
   <Extensions>

@@ -37,7 +37,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private const int THREAD_SLEEP_DURATION = 2000;
 
         private readonly ICatalogLogic _catalogLogic;
-        private readonly IConfirmationLogic _confirmationLogic;
+        //private readonly IConfirmationLogic _confirmationLogic;
+        private readonly IOrderConversionLogic _conversionLogic;
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryDetailRepository _detailRepo;
         private readonly IOrderHistoryHeaderRepsitory _headerRepo;
@@ -54,11 +55,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region ctor
-        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, IOrderHistoryQueueRepository queueRepo,
-                                     IUnitOfWork unitOfWork, IConfirmationLogic confLogic, ISocketListenerRepository socket, IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic,
-                                     IUserProfileRepository userProfileRepository, ICustomerRepository customerRepository) {
+        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, 
+                                     IOrderHistoryQueueRepository queueRepo, IUnitOfWork unitOfWork, ISocketListenerRepository socket, 
+                                     IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic, IUserProfileRepository userProfileRepository, 
+                                     ICustomerRepository customerRepository, IOrderConversionLogic conversionLogic) {
             _catalogLogic = catalogLogic;
-            _confirmationLogic = confLogic;
+            //_confirmationLogic = confLogic;
+            _conversionLogic = conversionLogic;
             _log = logRepo;
             _headerRepo = headerRepo;
             _detailRepo = detailRepo;
@@ -124,6 +127,88 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
+        private void Create(OrderHistoryFile currentFile) {
+            // first attempt to find the order, look by confirmation number
+            EF.OrderHistoryHeader header = null;
+
+            if (currentFile.Header.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
+                header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
+            } else {
+                header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            }
+
+            // second attempt to find the order, look by branch/invoice number
+            //if (header == null) {  }
+
+            // last ditch effort is to create a new header
+            if (header == null) {
+                header = new EF.OrderHistoryHeader();
+                header.OrderDetails = new List<EF.OrderHistoryDetail>();
+            }
+
+            currentFile.Header.MergeWithEntity(ref header);
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+
+                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+                if (detail == null) {
+                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+                    tempDetail.BranchId = header.BranchId;
+                    tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+                } else {
+                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+                    detail.BranchId = header.BranchId;
+                    detail.InvoiceNumber = header.InvoiceNumber;
+                }
+            }
+
+            _headerRepo.CreateOrUpdate(header);
+        }
+
+        private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
+
+            // get all users to then read all orders from CS
+            List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
+            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId).CustomerId).ToList();
+
+            foreach (var user in sharedUsers)
+            {
+                allOrders.AddRange(_poRepo.ReadPurchaseOrders(user.UserId, customerInfo.CustomerId));
+            }
+            return allOrders.Select(o => o.ToOrder()).ToList();
+        }
+
+        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+            var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
+
+            return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
+        }
+
+        private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
+            return LookupControlNumberAndStatus(headers);
+        }
+
+        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
+            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
+                                                                          d => d.OrderDetails);
+            return LookupControlNumberAndStatus(headers);
+        }
+
+        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
+            List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo),
+                                                         GetOrderHistoryOrders(customerInfo));
+
+            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
         public void ListenForMainFrameCalls() {
             _socket.Listen(Configuration.MainframOrderHistoryListeningPort);
         }
@@ -152,8 +237,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
-                        Save(historyFile);
-                        ProcessAsConfirmation(historyFile);
+                        Create(historyFile);
+                        //ProcessAsConfirmation(historyFile);
+                        if (historyFile.Header.OrderSystem == OrderSource.Entree) { _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); }
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
@@ -177,33 +263,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 }
             }
 
-        }
-
-        private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
-
-            // get all users to then read all orders from CS
-            List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
-            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId).CustomerId).ToList();
-
-            foreach (var user in sharedUsers)
-            {
-                allOrders.AddRange(_poRepo.ReadPurchaseOrders(user.UserId, customerInfo.CustomerId));
-            }
-            return allOrders.Select(o => o.ToOrder()).ToList();
-        }
-
-        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo) ,
-                                                         GetOrderHistoryOrders(customerInfo));
-
-            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
-        }
-
-        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                          d => d.OrderDetails);
-            return LookupControlNumberAndStatus(headers);
         }
 
 		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
@@ -410,56 +469,56 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             return retVal;
         }
 
-        private void ProcessAsConfirmation(OrderHistoryFile historyFile) {
-            // if entree order, convert to confirmation and process the confirmation
-            if (historyFile.Header.OrderSystem != OrderSource.Entree) { return; }
+        //private void ProcessAsConfirmation(OrderHistoryFile historyFile) {
+        //    // if entree order, convert to confirmation and process the confirmation
+        //    if (historyFile.Header.OrderSystem != OrderSource.Entree) { return; }
 
-            ConfirmationFile confirmation = new ConfirmationFile();
+        //    ConfirmationFile confirmation = new ConfirmationFile();
 
-            foreach (OrderHistoryDetail historyDetail in historyFile.Details) {
-                ConfirmationDetail detail = new ConfirmationDetail() {
-                    RecordNumber = historyDetail.LineNumber.ToString(),
-                    ItemNumber = historyDetail.ItemNumber,
-                    QuantityOrdered = historyDetail.OrderQuantity,
-                    BrokenCase = (historyDetail.UnitOfMeasure == UnitOfMeasure.Package ? "Y" : "N"),
-                    QuantityShipped = historyDetail.ShippedQuantity,
-                    ShipWeight = historyDetail.TotalShippedWeight,
-                    SalesGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
-                    SalesNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
-                    PriceNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
-                    PriceGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
-                    SplitPriceNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? 0.0 : historyDetail.SellPrice),
-                    SplitPriceGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? 0.0 : historyDetail.SellPrice),
-                    ReasonNotShipped = historyDetail.ItemStatus
-                    //CaseCube
-                    //CaseWeight
-                };
+        //    foreach (OrderHistoryDetail historyDetail in historyFile.Details) {
+        //        ConfirmationDetail detail = new ConfirmationDetail() {
+        //            RecordNumber = historyDetail.LineNumber.ToString(),
+        //            ItemNumber = historyDetail.ItemNumber,
+        //            QuantityOrdered = historyDetail.OrderQuantity,
+        //            BrokenCase = (historyDetail.UnitOfMeasure == UnitOfMeasure.Package ? "Y" : "N"),
+        //            QuantityShipped = historyDetail.ShippedQuantity,
+        //            ShipWeight = historyDetail.TotalShippedWeight,
+        //            SalesGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
+        //            SalesNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
+        //            PriceNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
+        //            PriceGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? historyDetail.SellPrice : 0.0),
+        //            SplitPriceNet = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? 0.0 : historyDetail.SellPrice),
+        //            SplitPriceGross = (historyDetail.UnitOfMeasure == UnitOfMeasure.Case ? 0.0 : historyDetail.SellPrice),
+        //            ReasonNotShipped = historyDetail.ItemStatus
+        //            //CaseCube
+        //            //CaseWeight
+        //        };
 
-                detail.ConfirmationMessage = detail.DisplayStatus();
-                confirmation.Detail.Add(detail);
-            }
+        //        detail.ConfirmationMessage = detail.DisplayStatus();
+        //        confirmation.Detail.Add(detail);
+        //    }
 
-            confirmation.Header.Branch = historyFile.Header.BranchId;
-            confirmation.Header.ConfirmationNumber = historyFile.Header.ControlNumber;
-            confirmation.Header.CustomerNumber = historyFile.Header.CustomerNumber;
-            confirmation.Header.InvoiceNumber = historyFile.Header.InvoiceNumber;
-            confirmation.Header.ConfirmationDate = DateTime.Now;
-            confirmation.Header.ShipDate = historyFile.Header.DeliveryDate;
-            confirmation.Header.RemoteOrderNumber = historyFile.Header.ControlNumber;
-            confirmation.Header.RouteNumber = historyFile.Header.RouteNumber;
-            confirmation.Header.StopNumber = historyFile.Header.StopNumber;
-            confirmation.Header.TotalQuantityOrdered = confirmation.Detail.Sum(d => d.QuantityOrdered);
-            confirmation.Header.TotalQuantityShipped = confirmation.Detail.Sum(d => d.QuantityShipped);
-            //confirmation.Header.TotalInvoice
-            confirmation.Header.ConfirmationStatus = historyFile.Header.OrderStatus;
-            confirmation.Header.ConfirmationMessage = confirmation.Header.GetDisplayStatus();
-            //confirmation.Header.SpecialInstructions
-            //confirmation.Header.SpecialInstructionsExtended
-            //confirmation.Header.TotalCube
-            //confirmation.Header.TotalWeight
+        //    confirmation.Header.Branch = historyFile.Header.BranchId;
+        //    confirmation.Header.ConfirmationNumber = historyFile.Header.ControlNumber;
+        //    confirmation.Header.CustomerNumber = historyFile.Header.CustomerNumber;
+        //    confirmation.Header.InvoiceNumber = historyFile.Header.InvoiceNumber;
+        //    confirmation.Header.ConfirmationDate = DateTime.Now;
+        //    confirmation.Header.ShipDate = historyFile.Header.DeliveryDate;
+        //    confirmation.Header.RemoteOrderNumber = historyFile.Header.ControlNumber;
+        //    confirmation.Header.RouteNumber = historyFile.Header.RouteNumber;
+        //    confirmation.Header.StopNumber = historyFile.Header.StopNumber;
+        //    confirmation.Header.TotalQuantityOrdered = confirmation.Detail.Sum(d => d.QuantityOrdered);
+        //    confirmation.Header.TotalQuantityShipped = confirmation.Detail.Sum(d => d.QuantityShipped);
+        //    //confirmation.Header.TotalInvoice
+        //    confirmation.Header.ConfirmationStatus = historyFile.Header.OrderStatus;
+        //    confirmation.Header.ConfirmationMessage = confirmation.Header.GetDisplayStatus();
+        //    //confirmation.Header.SpecialInstructions
+        //    //confirmation.Header.SpecialInstructionsExtended
+        //    //confirmation.Header.TotalCube
+        //    //confirmation.Header.TotalWeight
 
-            _confirmationLogic.ProcessIncomingConfirmation(confirmation);
-        }
+        //    _confirmationLogic.ProcessIncomingConfirmation(confirmation);
+        //}
 
         public Order ReadOrder(string branchId, string orderNumber) {
             EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
@@ -481,53 +540,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void Save(OrderHistoryFile currentFile) {
-            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
-            if (header == null) { 
-                header = new EF.OrderHistoryHeader();
-                header.OrderDetails = new List<EF.OrderHistoryDetail>();
-            }
+            Create(currentFile);
 
-            currentFile.Header.MergeWithEntity(ref header);
-
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
-                
-                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
-
-                if (detail == null) {
-                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
-                    tempDetail.BranchId = header.BranchId;
-                    tempDetail.InvoiceNumber = header.InvoiceNumber;
-
-                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
-                } else {
-                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
-
-                    detail.BranchId = header.BranchId;
-                    detail.InvoiceNumber = header.InvoiceNumber;
-                }
-            }
-
-            _headerRepo.CreateOrUpdate(header);
-
-            //_unitOfWork.SaveChanges();
+            _unitOfWork.SaveChanges();
         }
-
-		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
-			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
-
-			return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
-		}
-
-		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
-		}
-
-
 
         public void StopListening() {
             _keepListening = false;

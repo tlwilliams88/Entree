@@ -1,23 +1,26 @@
-﻿using KeithLink.Svc.Core.Interface.Cart;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Orders;
+using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Cart;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Models.Orders;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Core.Enumerations.Order;
-using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -35,9 +38,9 @@ namespace KeithLink.Svc.Impl.Logic
 		#endregion
 
         #region ctor
-        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic, IOrderQueueLogic orderQueueLogic,
-			IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository)
-		{
+        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic, 
+                                     IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, 
+                                     IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository) {
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
 			this.priceLogic = priceLogic;
@@ -249,6 +252,8 @@ namespace KeithLink.Svc.Impl.Logic
 			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(basket.UserId.ToGuid(), orderNumber);
 
             orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder);
+
+            orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo));
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}

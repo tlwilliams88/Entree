@@ -208,6 +208,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
 
+            // order conversion - JA - 1/8/15
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
+
             return builder.Build();
         }
 	}

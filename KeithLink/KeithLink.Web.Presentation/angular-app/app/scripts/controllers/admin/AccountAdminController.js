@@ -111,7 +111,7 @@ angular.module('bekApp')
           newProfile.branchId = "";
 
           //sends new User Profile to db and receives newly generated profile object
-          UserProfileService.createUser(newProfile).then(
+          UserProfileService.createUserFromAdmin(newProfile).then(
             function (profile) {
               //redirects to user profile page
               $state.go('menu.admin.edituser', {email: checkEmail});
