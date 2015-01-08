@@ -63,7 +63,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             EF.OrderHistoryHeader header = _historyRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
 
             // second attempt to find the order, look by confirmation number
-            if (header == null) { header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+            if (header == null) { 
+                header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
+                if (header != null) {
+                    header.InvoiceNumber = confFile.Header.InvoiceNumber;
+                }
+            }
 
             // last ditch effort is to create a new header
             if (header == null) {
