@@ -22,7 +22,9 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.InternalSvc {
-    public class OnlinePaymentService : IOnlinePaymentService {
+	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
+	public class OnlinePaymentService : IOnlinePaymentService
+	{
         #region attributes
         private readonly ICustomerBankRepository _bankRepo;
         private readonly IKPayInvoiceRepository _invoiceRepo;

@@ -23,6 +23,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "customernumber")]
 		public string CustomerNumber { get; set; }
 
+		[DataMember(Name = "customername")]
+		public string CustomerName { get; set; }
+
 		[DataMember(Name = "invoicenumber")]
 		[Description("Invoice #")]
 		public string InvoiceNumber { get; set; }

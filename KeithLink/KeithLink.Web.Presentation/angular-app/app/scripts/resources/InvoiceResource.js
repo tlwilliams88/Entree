@@ -25,6 +25,11 @@ angular.module('bekApp')
       getDetailExportConfig: {
         url: '/invoice/export/:invoiceNumber',
         method: 'GET'
+      },
+
+      getAllOpen: {
+        url: '/invoice?forAllCustomers=true',
+        method: 'POST'
       }
 
     });

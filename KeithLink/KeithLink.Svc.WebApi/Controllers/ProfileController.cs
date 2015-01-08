@@ -63,12 +63,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ApiKeyedRoute("profile/register")]
+        [ApiKeyedRoute("profile/register")] // Discussion on route naming
         public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId, base.AuthenticatedUser != null);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -80,6 +80,25 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 
             return retVal;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute( "profile/admin/user" )]
+        public OperationReturnModel<UserProfileReturn> CreateGuestWithTemporaryPassword( GuestProfileModel guestInfo ) {
+            OperationReturnModel<UserProfileReturn> returnValue = new OperationReturnModel<UserProfileReturn>();
+
+            try {
+                returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword( guestInfo.Email, guestInfo.BranchId );
+            } catch (ApplicationException ex) {
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog( "Application exception", ex );
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = String.Concat( "Could not complete the request. ", ex.Message );
+                _log.WriteErrorLog( "Unhandled exception", ex );
+            }
+
+            return returnValue;
         }
 
         [Authorize]
@@ -187,13 +206,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPut]
         [ApiKeyedRoute("profile/account")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> UpdateAccount(Account account)
+        public OperationReturnModel<bool> UpdateAccount(Account account)
         {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try
             {
-                _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
+                retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
             }
             catch (ApplicationException axe)
             {

@@ -59,9 +59,7 @@ angular.module('bekApp')
 
     updateAccount: function(account) {
       var promise = $http.put('/profile/account', account);
-      return UtilityService.resolvePromise(promise).then(function(successResponse) {
-        debugger;
-      });
+      return UtilityService.resolvePromise(promise);
     }
   };
 

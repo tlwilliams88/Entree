@@ -342,5 +342,43 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
         #endregion
+
+
+		public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
+		{
+			//Create a shoppingcart model and pass to the existing createcart method
+			var shoppingCart = new ShoppingCart();
+			shoppingCart.Items = new List<ShoppingCartItem>();
+			shoppingCart.BranchId = catalogInfo.BranchId;
+			shoppingCart.Name = string.Format("Quick Add - {0}", DateTime.Now.ToShortDateString());
+
+			var itemErrorMessage = new StringBuilder();
+
+			foreach (var item in items)
+			{
+				//Verify they have access to item, if the item is invalid, log then return error
+				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
+
+				if (prod == null)
+					itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
+				else
+				{
+					shoppingCart.Items.Add(new ShoppingCartItem()
+					{
+						ItemNumber = item.ItemNumber,
+						Each = item.Each,
+						Quantity = item.Quantity
+					}
+					);
+				}
+
+			}
+						
+			if (itemErrorMessage.Length > 0)
+				return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
+
+			return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
+
+		}
 	}
 }

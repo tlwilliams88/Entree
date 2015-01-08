@@ -215,6 +215,8 @@
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
     <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
+    <Compile Include="Models\Messaging\Queue\OrderEta.cs" />
+    <Compile Include="Models\Messaging\Queue\EtaNotification.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
     <Compile Include="Models\ModelExport\ExportModelConfiguration.cs" />
@@ -384,6 +386,8 @@
     <Compile Include="Models\Profile\Customer.cs" />
     <Compile Include="Models\Reports\ItemUsageReportItemModel.cs" />
     <Compile Include="Models\Reports\ItemUsageReportQueryModel.cs" />
+    <Compile Include="Models\ShoppingCart\QuickAddItemModel.cs" />
+    <Compile Include="Models\ShoppingCart\QuickAddReturnModel.cs" />
     <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />

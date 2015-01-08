@@ -24,6 +24,7 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Core.Interface.Component;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -35,17 +36,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
+		private readonly ITokenReplacer tokenReplacer;
         #endregion
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository)
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, ITokenReplacer tokenReplacer)
 		{
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
 			this._catalogLogic = catalogLogic;
 			this._customerRepository = customerRepository;
+			this.tokenReplacer = tokenReplacer;
 		}
         #endregion
 
@@ -128,9 +131,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return null;
 
             //Convert to invoice model
-            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer.KPayCustomer);
+            var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer);
 
-			var tokenReplacer = new TokenReplacer();
+			
 
             invoiceModel.InvoiceLink =new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
@@ -159,7 +162,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
 			var kpayInvoices = new List<EFInvoice.Invoice>();
-			var tokenReplacer = new TokenReplacer();
 					
 			var customers = new List<Core.Models.Profile.Customer>();
 
@@ -183,7 +185,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(filter, null).ToList();
 
-			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First().KPayCustomer)).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
 			Parallel.ForEach(pagedInvoices.Results, invoice =>
 			{
@@ -192,7 +194,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices
+                PagedResults = pagedInvoices,
+				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
             };
         }
 		

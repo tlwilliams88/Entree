@@ -19,6 +19,7 @@ using System.ServiceModel;
 using System.Text;
 
 namespace KeithLink.Svc.InternalSvc {
+	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
 	public class OrderService : IOrderService {
         #region attributes
         private readonly IEventLogRepository _eventLog;
@@ -53,7 +54,7 @@ namespace KeithLink.Svc.InternalSvc {
 
 		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
 		{
-            return _orderLogic.GetUserActiveCart(catalogInfo, userId);
+			return _orderLogic.GetUserActiveCart(catalogInfo, userId);
         }
 
         public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId) {

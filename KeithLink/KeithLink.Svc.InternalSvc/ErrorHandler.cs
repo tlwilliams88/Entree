@@ -17,7 +17,7 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			eventLogRepository = ((IContainer)AutofacHostFactory.Container).Resolve<IEventLogRepository>();
 
-			eventLogRepository.WriteErrorLog("Unhandled Exception", error);
+			eventLogRepository.WriteErrorLog("Unhandled Servie Exception", error);
 
 			return false;
 		}
