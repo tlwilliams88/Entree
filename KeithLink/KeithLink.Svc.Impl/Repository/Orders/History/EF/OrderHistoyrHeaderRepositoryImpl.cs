@@ -14,11 +14,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         #endregion
 
         #region methods
-        public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
-            return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+        public IEnumerable<OrderHistoryHeader> GetCustomerOrderHistoryHeaders(string branchId, string customerNumber) {
+            return this.Entities.Where(o => o.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && o.CustomerNumber.Equals(customerNumber)).OrderByDescending(o => o.CreatedUtc);
         }
 
-        public IEnumerable<OrderHistoryHeader> GetLastFiveOrdersByItem( string branchId, string customerNumber, string itemNumber ) {
+        public IEnumerable<OrderHistoryHeader> GetLastFiveOrdersByItem(string branchId, string customerNumber, string itemNumber) {
             var query = (from x in Entities
                          where x.BranchId.Equals(branchId) && x.CustomerNumber.Equals(customerNumber) && x.OrderDetails.Where(y => y.ItemNumber.Equals(itemNumber)).Count() > 0
                          orderby x.DeliveryDate descending
@@ -26,19 +26,23 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
 
             return query.ToList();
         }
+
+        public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber) {
+            return Entities.Where(l => l.ControlNumber == confirmationNumber);
+        }
+
+        public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
+            return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+        }
+
+        public DateTime? ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+            return this.Entities.Where(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
+                o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max();
+        }
         #endregion
 
 
-        public IEnumerable<OrderHistoryHeader> GetCustomerOrderHistoryHeaders(string branchId, string customerNumber)
-        {
-            return this.Entities.Where(o => o.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) && o.CustomerNumber.Equals(customerNumber)).OrderByDescending(o => o.CreatedUtc);
-        }
 
 
-		public DateTime? ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
-		{
-			return this.Entities.Where(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
-				o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max();
-		}
 	}
 }

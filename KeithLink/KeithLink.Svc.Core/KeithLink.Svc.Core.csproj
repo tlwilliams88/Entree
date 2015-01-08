@@ -155,6 +155,7 @@
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
     <Compile Include="Extensions\OnlinePayments\Customer\CustomerBankExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
+    <Compile Include="Extensions\Orders\Confirmations\ConfirmationFileExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
     <Compile Include="Extensions\CSModels.cs" />
     <Compile Include="Extensions\InvoiceExtensions.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />

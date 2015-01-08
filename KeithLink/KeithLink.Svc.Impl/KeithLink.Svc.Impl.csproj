@@ -219,6 +219,7 @@
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
