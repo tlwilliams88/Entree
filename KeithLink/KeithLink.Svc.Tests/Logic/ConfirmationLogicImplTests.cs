@@ -4,7 +4,9 @@ using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -20,9 +22,14 @@ namespace KeithLink.Svc.Test.Logic
         [TestMethod]
         public void ConfirmationFileShouldParseAndSendToRabbitMQ()
         {
+            UnitOfWork uow = new UnitOfWork();
+            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow); 
+
             ConfirmationLogicImpl logic = new ConfirmationLogicImpl(new EventLogRepositoryImpl("Entree Tests"),
                                                                     new SocketListenerRepositoryImpl(),
-                                                                    new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
+                                                                    new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
+                                                                    conversionLogic, 
+                                                                    uow);
 
             StreamReader testFile = new StreamReader(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
 
