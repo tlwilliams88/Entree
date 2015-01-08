@@ -36,13 +36,6 @@ namespace KeithLink.Svc.Impl.Repository.Brands
                 .Index(Constants.ES_INDEX_BRANDS)
                 );
 
-            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
-
-            foreach (string s in prefixesToExclude)
-            {
-                response.Documents.Where(b => !b.BrandControlLabel.Substring(0, 2).Equals(s));
-            }
-            
             foreach (Brand r in response.Documents)
             {
                 r.ImageURL = String.Format("{0}/{1}.jpg", Configuration.BrandAssetsUrl, r.BrandControlLabel.ToLower());

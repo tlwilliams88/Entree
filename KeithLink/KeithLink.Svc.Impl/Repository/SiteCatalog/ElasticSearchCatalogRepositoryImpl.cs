@@ -246,12 +246,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 .Index(Constants.ES_INDEX_CATEGORIES)
                 );
 
+            var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
+
+            foreach (string s in prefixesToExclude)
+            {
+                response.Documents.Where(b => !b.Id.Substring(0, 2).Equals(s));
+            }
+            
             // Have to do this because it won't infer from the ID up one level in the structure. Need to revisit.
             foreach (var r in response.Hits) {
                 r.Source.Id = r.Id;
             }
 
-            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s=>s.SubCategories != null).ToList<Category>() };
+            CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s => s.SubCategories != null && (!s.Id.Substring(0, 2).Equals("AA") || !s.Id.Substring(0, 2).Equals("ZZ") || !s.Id.Substring(0,2).Equals("TW"))).ToList<Category>() };
 
             return results;
         }
