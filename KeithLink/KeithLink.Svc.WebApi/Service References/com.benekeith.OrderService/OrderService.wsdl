@@ -36,6 +36,12 @@
   <wsdl:message name="IOrderService_GetOrder_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetOrderResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRange" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRangeResponse" />
+  </wsdl:message>
   <wsdl:message name="IOrderService_GetUserActiveCart_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserActiveCart" />
   </wsdl:message>
@@ -48,11 +54,11 @@
   <wsdl:message name="IOrderService_SaveUserActiveCart_OutputMessage">
     <wsdl:part name="parameters" element="tns:SaveUserActiveCartResponse" />
   </wsdl:message>
-  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRange" />
+  <wsdl:message name="IOrderService_SaveOrderHistory_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveOrderHistory" />
   </wsdl:message>
-  <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRangeResponse" />
+  <wsdl:message name="IOrderService_SaveOrderHistory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveOrderHistoryResponse" />
   </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
@@ -71,6 +77,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrder" message="tns:IOrderService_GetOrder_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderResponse" message="tns:IOrderService_GetOrder_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetOrderHeaderInDateRange">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" message="tns:IOrderService_GetOrderHeaderInDateRange_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse" message="tns:IOrderService_GetOrderHeaderInDateRange_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GetUserActiveCart">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetUserActiveCart" message="tns:IOrderService_GetUserActiveCart_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetUserActiveCartResponse" message="tns:IOrderService_GetUserActiveCart_OutputMessage" />
@@ -79,9 +89,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/SaveUserActiveCart" message="tns:IOrderService_SaveUserActiveCart_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/SaveUserActiveCartResponse" message="tns:IOrderService_SaveUserActiveCart_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetOrderHeaderInDateRange">
-      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" message="tns:IOrderService_GetOrderHeaderInDateRange_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse" message="tns:IOrderService_GetOrderHeaderInDateRange_OutputMessage" />
+    <wsdl:operation name="SaveOrderHistory">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/SaveOrderHistory" message="tns:IOrderService_SaveOrderHistory_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/SaveOrderHistoryResponse" message="tns:IOrderService_SaveOrderHistory_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
@@ -122,6 +132,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetOrderHeaderInDateRange">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GetUserActiveCart">
       <soap:operation soapAction="http://tempuri.org/IOrderService/GetUserActiveCart" style="document" />
       <wsdl:input>
@@ -140,8 +159,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetOrderHeaderInDateRange">
-      <soap:operation soapAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" style="document" />
+    <wsdl:operation name="SaveOrderHistory">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/SaveOrderHistory" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
