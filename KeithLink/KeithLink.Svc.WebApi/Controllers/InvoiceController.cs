@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -84,9 +85,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		[HttpPost]
 		[ApiKeyedRoute("invoice/payment")]
-		public void Payment(List<PaymentTransactionModel> payments)
+		public OperationReturnModel<bool> Payment(List<PaymentTransactionModel> payments)
 		{
 			_repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
+
+			return new OperationReturnModel<bool>() { SuccessResponse = true };
 		}
 
 		[HttpGet]

@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations {
             history.Header.CustomerNumber = confirmation.Header.CustomerNumber;
             history.Header.InvoiceNumber = confirmation.Header.InvoiceNumber;
             history.Header.DeliveryDate = confirmation.Header.ShipDate;
-            history.Header.ControlNumber = confirmation.Header.RemoteOrderNumber;
+            //history.Header.ControlNumber = confirmation.Header.RemoteOrderNumber;
             history.Header.RouteNumber = confirmation.Header.RouteNumber;
             history.Header.StopNumber = confirmation.Header.StopNumber;
             history.Header.OrderStatus = confirmation.Header.ConfirmationStatus;
