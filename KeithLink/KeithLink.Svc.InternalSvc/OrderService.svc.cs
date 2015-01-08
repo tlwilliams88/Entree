@@ -19,6 +19,7 @@ using System.ServiceModel;
 using System.Text;
 
 namespace KeithLink.Svc.InternalSvc {
+	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
 	public class OrderService : IOrderService {
         #region attributes
         private readonly IEventLogRepository _eventLog;
@@ -55,12 +56,13 @@ namespace KeithLink.Svc.InternalSvc {
             return _historyLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
         }
 
-        public UserActiveCartModel GetUserActiveCart(Guid userId) {
-            return _orderLogic.GetUserActiveCart(userId);
+		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
+		{
+			return _orderLogic.GetUserActiveCart(catalogInfo, userId);
         }
 
-        public void SaveUserActiveCart(Guid userId, Guid cartId) {
-            _orderLogic.SaveUserActiveCart(userId, cartId);
+        public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId) {
+            _orderLogic.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
         public void SaveOrderHistory(OrderHistoryFile historyFile) {

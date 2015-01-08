@@ -171,7 +171,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			}
 
 			retVal.DeliveryDate = value.DeliveryDate;
-			retVal.InvoiceNumber = value.InvoiceNumber;
+			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
 			retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);

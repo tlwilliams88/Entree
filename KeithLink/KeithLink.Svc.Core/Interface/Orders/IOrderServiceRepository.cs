@@ -21,10 +21,10 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
         
-        UserActiveCartModel GetUserActiveCart(Guid userId);
-
-		void SaveUserActiveCart(Guid userId, Guid cartId);
-
+		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
+		
         void SaveOrderHistory(OrderHistoryFile historyFile);
+		
+        void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);		
 	}
 }

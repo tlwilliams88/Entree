@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets77fb4b56051a4fa780167dd038b6d7c3005bd62d21d7a914246c53cde872ae33))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsd449662d38e3ceba676ca0f7634503e4982691e4dc24cb0266a556e60ee734c8))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets77fb4b56051a4fa780167dd038b6d7c3005bd62d21d7a914246c53cde872ae33 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetsd449662d38e3ceba676ca0f7634503e4982691e4dc24cb0266a556e60ee734c8 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "77fb4b56051a4fa780167dd038b6d7c3005bd62d21d7a914246c53cde872ae33"; }
+            get { return "d449662d38e3ceba676ca0f7634503e4982691e4dc24cb0266a556e60ee734c8"; }
         }
 
         /// <summary>
@@ -1154,12 +1154,14 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserActiveCart
-        [CodeFirstDatabaseSchema.UserActiveCart](T1.UserActiveCart_Id, T1.UserActiveCart_UserId, T1.UserActiveCart_CartId, T1.UserActiveCart_CreatedUtc, T1.UserActiveCart_ModifiedUtc)
+        [CodeFirstDatabaseSchema.UserActiveCart](T1.UserActiveCart_Id, T1.UserActiveCart_UserId, T1.UserActiveCart_CartId, T1.UserActiveCart_CustomerId, T1.UserActiveCart_BranchId, T1.UserActiveCart_CreatedUtc, T1.UserActiveCart_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserActiveCart_Id, 
             T.UserId AS UserActiveCart_UserId, 
             T.CartId AS UserActiveCart_CartId, 
+            T.CustomerId AS UserActiveCart_CustomerId, 
+            T.BranchId AS UserActiveCart_BranchId, 
             T.CreatedUtc AS UserActiveCart_CreatedUtc, 
             T.ModifiedUtc AS UserActiveCart_ModifiedUtc, 
             True AS _from0
@@ -1175,12 +1177,14 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserActiveCarts
-        [KeithLink.Svc.Impl.Repository.EF.Operational.UserActiveCart](T1.UserActiveCart_Id, T1.UserActiveCart_UserId, T1.UserActiveCart_CartId, T1.UserActiveCart_CreatedUtc, T1.UserActiveCart_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.UserActiveCart](T1.UserActiveCart_Id, T1.UserActiveCart_UserId, T1.UserActiveCart_CartId, T1.UserActiveCart_CustomerId, T1.UserActiveCart_BranchId, T1.UserActiveCart_CreatedUtc, T1.UserActiveCart_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserActiveCart_Id, 
             T.UserId AS UserActiveCart_UserId, 
             T.CartId AS UserActiveCart_CartId, 
+            T.CustomerId AS UserActiveCart_CustomerId, 
+            T.BranchId AS UserActiveCart_BranchId, 
             T.CreatedUtc AS UserActiveCart_CreatedUtc, 
             T.ModifiedUtc AS UserActiveCart_ModifiedUtc, 
             True AS _from0

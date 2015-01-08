@@ -188,11 +188,11 @@ namespace KeithLink.Svc.Impl.Logic
 			//	basketRepository.CreateOrUpdateBasket(currentlyActiveCart.UserId.ToGuid(), currentlyActiveCart.BranchId, currentlyActiveCart, currentlyActiveCart.LineItems);
 			//}
 		}
-		
-        public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
+
+		public List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly)
 		{
-            if (String.IsNullOrEmpty(catalogInfo.CustomerId))
-                return new List<ShoppingCart>();
+			if (String.IsNullOrEmpty(catalogInfo.CustomerId))
+				return new List<ShoppingCart>();
 
 			var lists = basketLogic.RetrieveAllSharedCustomerBaskets(user, catalogInfo, BasketType.Cart);
 
@@ -200,11 +200,12 @@ namespace KeithLink.Svc.Impl.Logic
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
 
+			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName, Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid() }).ToList();
 			else
 			{
-				var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
 				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
@@ -221,7 +222,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
 				return null;
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(user.UserId);
+			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
@@ -346,5 +347,43 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
         #endregion
+
+
+		public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
+		{
+			//Create a shoppingcart model and pass to the existing createcart method
+			var shoppingCart = new ShoppingCart();
+			shoppingCart.Items = new List<ShoppingCartItem>();
+			shoppingCart.BranchId = catalogInfo.BranchId;
+			shoppingCart.Name = string.Format("Quick Add - {0}", DateTime.Now.ToShortDateString());
+
+			var itemErrorMessage = new StringBuilder();
+
+			foreach (var item in items)
+			{
+				//Verify they have access to item, if the item is invalid, log then return error
+				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
+
+				if (prod == null)
+					itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
+				else
+				{
+					shoppingCart.Items.Add(new ShoppingCartItem()
+					{
+						ItemNumber = item.ItemNumber,
+						Each = item.Each,
+						Quantity = item.Quantity
+					}
+					);
+				}
+
+			}
+						
+			if (itemErrorMessage.Length > 0)
+				return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
+
+			return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
+
+		}
 	}
 }

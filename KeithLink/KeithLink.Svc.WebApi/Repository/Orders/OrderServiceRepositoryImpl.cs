@@ -34,8 +34,9 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrder(branchId, invoiceNumber);
         }
 
-        public UserActiveCartModel GetUserActiveCart(Guid userId) {
-            return serviceClient.GetUserActiveCart(userId);
+		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
+		{
+            return serviceClient.GetUserActiveCart(catalogInfo, userId);
         }
 
         public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
@@ -46,8 +47,9 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
 
-        public void SaveUserActiveCart(Guid userId, Guid cartId) {
-            serviceClient.SaveUserActiveCart(userId, cartId);
+		public void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId)
+		{
+            serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
         public void SaveOrderHistory(OrderHistoryFile historyFile) {

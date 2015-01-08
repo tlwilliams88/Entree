@@ -49,6 +49,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 		[HttpPost]
+		[ApiKeyedRoute("cart/quickadd")]
+		public QuickAddReturnModel List(List<QuickAddItemModel> items)
+		{
+			return shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
+		}
+
+
+		[HttpGet]
+		[ApiKeyedRoute("cart/quickadd")]
+		public List<QuickAddItemModel> List()
+		{
+			return new List<QuickAddItemModel>() { new QuickAddItemModel() { Quantity = 5, ItemNumber = "31" } };
+		}
+
+
+		[HttpPost]
 		[ApiKeyedRoute("cart/{cartId}/item")]
 		public NewCSItem AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
@@ -73,7 +89,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("cart/{cartId}/active")]
 		public void SetActive(Guid cartId)
 		{
-			orderServiceRepository.SaveUserActiveCart(this.AuthenticatedUser.UserId, cartId);
+			orderServiceRepository.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
 		}
 
 		[HttpDelete]

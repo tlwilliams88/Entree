@@ -10,6 +10,7 @@ angular.module('bekApp')
     $scope.loadingUsers = true;
     AccountService.getAccountByUser($scope.userProfile.userid).then(function (account) {
       if (account) {
+        $scope.accountName = account.name;
         UserProfileService.getUsersForAccount(account.id).then(function(data) {
           $scope.loadingUsers = false;
           $scope.users = data.accountUsers.concat(data.customerUsers);
@@ -110,7 +111,7 @@ angular.module('bekApp')
           newProfile.branchId = "";
 
           //sends new User Profile to db and receives newly generated profile object
-          UserProfileService.createUser(newProfile).then(
+          UserProfileService.createUserFromAdmin(newProfile).then(
             function (profile) {
               //redirects to user profile page
               $state.go('menu.admin.edituser', {email: checkEmail});

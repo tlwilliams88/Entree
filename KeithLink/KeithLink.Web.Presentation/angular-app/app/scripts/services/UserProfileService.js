@@ -73,6 +73,13 @@ angular.module('bekApp')
         });
       },
 
+      getAllUserCustomers: function(userId) {
+        var promise = $http.get('/profile/user/' + userId + '/customers');
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.customers;
+        });
+      },
+
       // accountid, customerid , email
       getAllUsers: function(params) {
         var config = {
@@ -96,6 +103,11 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
+      createUserFromAdmin: function(userProfile) {
+        var promise = $http.post('/profile/admin/user', userProfile);
+        return UtilityService.resolvePromise(promise);
+      },
+
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
 
@@ -103,6 +115,16 @@ angular.module('bekApp')
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
           LocalStorage.setProfile(profile);
+          return profile;
+        });
+      },
+
+      updateUserProfileFromAdmin: function(userProfile) {
+        var promise = $http.put('/profile', userProfile);
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var profile = successResponse.userProfiles[0];
+          $log.debug(profile);
           return profile;
         });
       },

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', 'UserProfileService', 'userProfile', 'AccountService', 'CustomerService',
-    function ($scope, UserProfileService, userProfile, AccountService, CustomerService) {
+  .controller('EditUserDetailsController', ['$scope', '$q', 'UserProfileService', 'userProfile', 'AccountService', 'CustomerService',
+    function ($scope, $q, UserProfileService, userProfile, AccountService, CustomerService) {
 
   /*---convenience functions---*/
   var processProfile = function(newProfile){
@@ -31,7 +31,13 @@ angular.module('bekApp')
 
     processProfile(userProfile);
 
-    loadAvailableCustomers(customersConfig).then(setCustomers);
+    $q.all([
+      loadAvailableCustomers(customersConfig).then(setCustomers),
+      
+      UserProfileService.getAllUserCustomers(userProfile.userid).then(function(customers) {
+        $scope.profile.customers = customers;
+      })
+    ]).then(findSelectedCustomers);
   }
 
   /*---edit profile---*/
@@ -47,7 +53,7 @@ angular.module('bekApp')
     $scope.profile.customers = selectedCustomers;
 
     //pushes profile object to database
-    UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
+    UserProfileService.updateUserProfileFromAdmin($scope.profile).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully updated.');
       //processProfile(newProfile); // <-- UNCOMMENT WHENEVER DATA SENT BACK IS FRESH
     }, function(error){
@@ -62,7 +68,7 @@ angular.module('bekApp')
     profile.customers = [];
 
     //push freshly wiped profile to database
-    UserProfileService.updateUserProfile(profile).then(function(newProfile){
+    UserProfileService.updateUserProfileFromAdmin(profile).then(function(newProfile){
       //refreshes page with newest data
       processProfile(newProfile);
       $scope.displayMessage('success', 'The user was successfully deleted.');
@@ -94,23 +100,8 @@ angular.module('bekApp')
        customersConfig.sortOrder
     ).then(function(data) {
       $scope.loadingCustomers = false;
-      var customers = data.results;
       $scope.totalCustomers = data.totalResults;
-
-      // check if customer is selected
-      customers.forEach(function(customer) {
-        $scope.profile.customers.forEach(function(selectedCustomer) {
-          if (customer.customerId === selectedCustomer.customerId) {
-            customer.selected = true;
-          }
-        });
-
-        if (!customer.selected) {
-          customer.selected = false;
-        }
-      });
-
-      return customers;
+      return data.results;
     });
   }
 
@@ -119,6 +110,21 @@ angular.module('bekApp')
   }
   function appendCustomers(customers) {
     $scope.customers = $scope.customers.concat(customers);
+  }
+
+  function findSelectedCustomers() {
+    // check if customer is selected
+    $scope.customers.forEach(function(customer) {
+      $scope.profile.customers.forEach(function(profileCustomer) {
+        if (customer.customerId === profileCustomer.customerId) {
+          customer.selected = true;
+        }
+      });
+
+      if (!customer.selected) {
+        customer.selected = false;
+      }
+    });
   }
 
   $scope.searchCustomers = function (searchTerm) {

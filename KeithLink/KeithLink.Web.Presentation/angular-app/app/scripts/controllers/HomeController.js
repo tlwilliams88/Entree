@@ -52,6 +52,24 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openQuickAddModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/cartquickaddmodal.html',
+        controller: 'CartQuickAddModalController'
+      });
+
+      modalInstance.result.then(function(cartId) {
+        $state.go('menu.cart.items', {cartId: cartId});
+      });
+    };
+
+    $scope.openOrderImportModal = function () {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/orderimportmodal.html',
+        controller: 'ImportModalController'
+      });
+    };
+
     /**********
     order summary graph data
     **********/
