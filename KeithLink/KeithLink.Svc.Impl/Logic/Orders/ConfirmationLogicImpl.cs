@@ -207,8 +207,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             ProcessIncomingConfirmation(confirmation);
                             _conversionLogic.SaveConfirmationAsOrderHistory(confirmation);
                         } catch (Exception e) {
-                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e);
                             _log.WriteErrorLog("Error processing confirmation in internal service", e);
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e);
 
                             confirmation.ErrorMessage = e.Message;
                             confirmation.ErrorStack = e.StackTrace;
@@ -217,7 +217,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         }
                     }
                 } catch (Exception ex) {
-                    _log.WriteErrorLog("Error in MoveConfirmationsToCommerceServer", ex);
+                    _log.WriteErrorLog("Error Moving Confirmations To Commerce Server", ex);
                 }
             }
         }
