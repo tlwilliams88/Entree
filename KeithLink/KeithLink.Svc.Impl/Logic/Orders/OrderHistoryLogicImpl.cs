@@ -203,10 +203,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo),
-                                                         GetOrderHistoryOrders(customerInfo));
+            //List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo),
+            //                                             GetOrderHistoryOrders(customerInfo));
 
-            return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            //return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
         }
 
         public void ListenForMainFrameCalls() {

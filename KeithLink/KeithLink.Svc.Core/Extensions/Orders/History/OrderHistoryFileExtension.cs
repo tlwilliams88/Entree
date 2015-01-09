@@ -45,8 +45,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             confirmation.Header.ConfirmationDate = DateTime.Now;
             confirmation.Header.ShipDate = historyFile.Header.DeliveryDate;
             confirmation.Header.RemoteOrderNumber = historyFile.Header.ControlNumber;
-            confirmation.Header.RouteNumber = historyFile.Header.RouteNumber;
-            confirmation.Header.StopNumber = historyFile.Header.StopNumber;
+            // a confirmation will never have this data, and it is coming back wrong now
+            //confirmation.Header.RouteNumber = historyFile.Header.RouteNumber;
+            //confirmation.Header.StopNumber = historyFile.Header.StopNumber;
             confirmation.Header.TotalQuantityOrdered = confirmation.Detail.Sum(d => d.QuantityOrdered);
             confirmation.Header.TotalQuantityShipped = confirmation.Detail.Sum(d => d.QuantityShipped);
             //confirmation.Header.TotalInvoice
