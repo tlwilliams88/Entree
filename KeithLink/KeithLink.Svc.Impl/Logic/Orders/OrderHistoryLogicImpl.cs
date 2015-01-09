@@ -191,7 +191,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.CreatedUtc >= startDate && h.CreatedUtc <= endDate, i => i.OrderDetails);
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
             return LookupControlNumberAndStatus(headers);
         }
 
