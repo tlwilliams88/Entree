@@ -64,6 +64,13 @@
               Name
               <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
+            <th>
+              Pack/Size
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('Each')">
+              Each
+              <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span>
+            </th>
             <th class="sort-col-header" ng-click="sortTable('TotalQuantityOrdered')">
               # Ordered
               <span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span>
@@ -82,6 +89,12 @@
             </td>
             <td>
               {{item.name}}
+            </td>
+            <td>
+              {{item.packsize}}
+            </td>
+            <td>
+              {{item.each}}
             </td>
             <td>
               {{item.totalquantityordered}}
