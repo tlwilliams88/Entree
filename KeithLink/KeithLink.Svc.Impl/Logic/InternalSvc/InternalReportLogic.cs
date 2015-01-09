@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     }
                     catch (Exception ex)
                     {
-                        item.Name = "unknown";
+                        item.Name = "Special Item";
                         eventLogRepository.WriteErrorLog("Error in GetItemUsage loading product name for customer " + usageQuery.UserSelectedContext.CustomerId + " and item " + item.ItemNumber, ex);
                     }
                 });

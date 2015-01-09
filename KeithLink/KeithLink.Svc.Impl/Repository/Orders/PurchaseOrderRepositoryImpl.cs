@@ -3,6 +3,7 @@ using CommerceServer.Foundation;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Common.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,7 +137,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null &&
 																					 c.Properties["CustomerId"].ToString().Equals(customerId)
-																					 && c.DateCreated >= startDate && c.DateCreated <= endDate
+																					 && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value >= startDate && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value <= endDate
 																				).Select(p => (PurchaseOrder)p).ToList();
 			//return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
