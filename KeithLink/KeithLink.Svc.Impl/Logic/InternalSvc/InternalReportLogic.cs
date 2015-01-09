@@ -37,17 +37,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     usageQuery.sortField) // add 1 day so it is inclusing of the end date selected
                     .ToList();
 
+            ProductsReturn ret = catalogRepository.GetProductsByIds(
+                usageQuery.UserSelectedContext.BranchId,
+                itemUsageReports.Select(i => i.ItemNumber).ToList());
+
             Parallel.ForEach(itemUsageReports, item => 
                 {
-                    try
-                    {
-                        item.Name = GetProductName(usageQuery.UserSelectedContext.BranchId, item.ItemNumber);
-                    }
-                    catch (Exception ex)
-                    {
-                        item.Name = "Special Item";
-                        eventLogRepository.WriteErrorLog("Error in GetItemUsage loading product name for customer " + usageQuery.UserSelectedContext.CustomerId + " and item " + item.ItemNumber, ex);
-                    }
+                    FillProductInfo(item, ret.Products, usageQuery.UserSelectedContext.CustomerId);
                 });
             
             // handle name sort in code...
@@ -61,9 +57,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return itemUsageReports;
         }
 
-        protected string GetProductName(string branchId, string itemNumber)
+        protected void FillProductInfo(ItemUsageReportItemModel reportItem, List<Product> products, string customerNumber)
         {
-            return catalogRepository.GetProductById(branchId, itemNumber).Name;
+            Product prod = products.Where(x => x.ItemNumber == reportItem.ItemNumber).FirstOrDefault();
+            if (prod != null)
+            {
+                reportItem.Name = prod.Name;
+                reportItem.PackSize = prod.PackSize;
+            }
+            else
+            {
+                reportItem.Name = "Special Item";
+                eventLogRepository.WriteInformationLog("Unable to load product details for customer " + customerNumber + " and item " + reportItem.ItemNumber);
+            }
         }
     }
 }

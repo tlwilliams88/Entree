@@ -11,6 +11,11 @@ namespace KeithLink.Svc.Core.Models.Reports
     [DataContract(Name = "reportitemusage")]
     public class ItemUsageReportItemModel
     {
+        public ItemUsageReportItemModel() 
+        { 
+            PackSize = string.Empty; 
+        }
+
         [DataMember(Name = "itemnumber")]
         public string ItemNumber { get; set; }
 
@@ -25,5 +30,11 @@ namespace KeithLink.Svc.Core.Models.Reports
 
         [DataMember(Name = "totalquantityshipped")]
         public int TotalQuantityShipped { get; set; }
+
+        [DataMember(Name = "packsize")]
+        public string PackSize { get; set; }
+
+        [DataMember(Name = "each")]
+        public string Each { get; set; }
     }
 }
