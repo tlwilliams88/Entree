@@ -800,7 +800,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             usersReturn.CustomerUserProfiles = usersReturn.CustomerUserProfiles
-                .GroupBy(u => u.CustomerNumber)
+                .GroupBy(u => u.UserId)
                 .Select(grp => grp.First())
                 .ToList();
 
