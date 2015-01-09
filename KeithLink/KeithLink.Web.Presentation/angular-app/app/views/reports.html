@@ -77,7 +77,8 @@
   			<tbody>
   				<tr ng-repeat="item in itemusages" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
+              <a ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
+              <span ng-if="item.name == 'Special Item'">{{item.itemnumber}}</span>
             </td>
             <td>
               {{item.name}}
