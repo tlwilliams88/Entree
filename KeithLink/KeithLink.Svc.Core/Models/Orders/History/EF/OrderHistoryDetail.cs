@@ -22,12 +22,14 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
         [Index("IdxOrderDetail", 2)]
         public int LineNumber { get; set; }
         [MaxLength(6)]
-		[Column(TypeName = "char")]		
+		[Column(TypeName = "char")]
+        [Index("IdxItemUsageGrouping", 0)]
 		public string ItemNumber { get; set; }
 		public int OrderQuantity { get; set; }
 		public int ShippedQuantity { get; set; }
 		[MaxLength(1)]
 		[Column(TypeName = "char")]
+        [Index("IdxItemUsageGrouping", 1)]
 		public string UnitOfMeasure { get; set; }
 		public bool CatchWeight { get; set; }
 		public bool ItemDeleted { get; set; }
