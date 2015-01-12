@@ -54,12 +54,7 @@ namespace KeithLink.Svc.WebApi
                     context.SetError( "invalid_grant", authentication.Message );
                     return;
                 }
-
-                if (authentication.Status.Equals( AuthenticationStatus.PasswordExpired )) {
-                    context.SetError( "password_expired", authentication.Message );
-                    return;
-                }
-            }
+           }
 
 
             KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);

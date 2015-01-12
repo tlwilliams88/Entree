@@ -202,6 +202,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
+        public bool IsPasswordExpired( string emailAddress ) {
+            using (PrincipalContext boundServer = new PrincipalContext( ContextType.Domain,
+                                                            Configuration.ActiveDirectoryExternalServerName,
+                                                            Configuration.ActiveDirectoryExternalRootNode,
+                                                            ContextOptions.Negotiate,
+                                                            Configuration.ActiveDirectoryExternalDomainUserName,
+                                                            Configuration.ActiveDirectoryExternalPassword )) {
+                // if user exists
+                UserPrincipal user = UserPrincipal.FindByIdentity( boundServer, emailAddress );
+
+                return (user.LastPasswordSet.Equals( null )) ? true : false;
+            }
+        }
+
         /// <summary>
         /// create a user in the benekeith.com domain
         /// </summary>

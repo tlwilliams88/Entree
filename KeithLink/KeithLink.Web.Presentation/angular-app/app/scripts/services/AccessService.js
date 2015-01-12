@@ -17,6 +17,10 @@ angular.module('bekApp')
       return !!(LocalStorage.getToken() && LocalStorage.getProfile() && isValidToken());
     },
 
+    isPasswordExpired: function() {
+        return (LocalStorage.getProfile().passwordexpired);
+    },
+
     isOrderEntryCustomer: function() {
       return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isDsr() ) );
     },

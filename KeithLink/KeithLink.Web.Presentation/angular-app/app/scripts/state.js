@@ -12,6 +12,11 @@ angular.module('bekApp')
       templateUrl: 'views/register.html',
       controller: 'RegisterController'
     })
+    .state('changepassword', {
+        url: '/changepassword/',
+        templateUrl: 'views/changepassword.html',
+        controller: 'ChangePasswordController'
+    })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
