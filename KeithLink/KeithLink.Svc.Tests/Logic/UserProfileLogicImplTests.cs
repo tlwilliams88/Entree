@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Test.Logic {
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
 
-            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _cache);
+            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
 
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
