@@ -43,7 +43,7 @@ angular.module('bekApp')
         }, function(error) {
           // log out
           LocalStorage.clearAll();
-          return $q.reject(error);
+          return $q.reject(error.data.error_description);
         });
       },
 

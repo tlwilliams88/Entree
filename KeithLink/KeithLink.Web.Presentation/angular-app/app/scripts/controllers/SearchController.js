@@ -42,6 +42,11 @@ angular.module('bekApp')
         selected: [],
         showMore: true // display Show More button for this facet
       },
+      manufacturers:{
+          available: [],
+          selected: [],
+          showMore: true // display Show More button for this facet
+      },
       itemspecs: {
         available: [],
         selected: [],
@@ -126,6 +131,21 @@ angular.module('bekApp')
         filterCount += $scope.facets.brands.selected.length;
       }
 
+      // manufacturers
+      if ($scope.facets.manufacturers.selected.length > 0) {
+          breadcrumbs.push({
+              click: function (data) {
+                  $scope.facets.manufacturers.selected = data;
+                  $scope.facets.dietary.selected = [];
+                  $scope.facets.itemspecs.selected = [];
+                  loadProducts().then(refreshFacets);
+              },
+              clickData: $scope.facets.brands.selected,
+              displayText: 'Manufacturers: ' + $scope.facets.manufacturers.selected.join(breadcrumbSeparator)
+          });
+          filterCount += $scope.facets.brands.selected.length;
+      }
+
       // dietary
       if ($scope.facets.dietary.selected.length > 0) {
         breadcrumbs.push({
@@ -177,7 +197,8 @@ angular.module('bekApp')
     function getData() {
       var facets = ProductService.getFacets(
         $scope.facets.categories.selected, 
-        $scope.facets.brands.selected, 
+        $scope.facets.brands.selected,
+        $scope.facets.manufacturers.selected,
         $scope.facets.dietary.selected, 
         $scope.facets.itemspecs.selected 
       );
@@ -218,6 +239,7 @@ angular.module('bekApp')
     function clearFacets() {
       $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
+      $scope.facets.manufacturers.selected = [];
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
       loadProducts().then(refreshFacets);
@@ -226,6 +248,7 @@ angular.module('bekApp')
     function refreshFacets(facets) {
       $scope.facets.categories.available = facets.categories;
       $scope.facets.brands.available = facets.brands;
+      $scope.facets.manufacturers.available = facets.manufacturers;
       $scope.facets.dietary.available = facets.dietary;
       $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
     }
@@ -348,7 +371,8 @@ angular.module('bekApp')
             var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
             var facets = ProductService.getFacets(
               $scope.facets.categories.selected, 
-              $scope.facets.brands.selected, 
+              $scope.facets.brands.selected,
+              $scope.facets.manufacturers.selected,
               $scope.facets.dietary.selected, 
               $scope.facets.itemspecs.selected 
             );

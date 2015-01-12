@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         public UserProfileRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit tests");
             _cache = new NoCacheUserProfileCacheRepository();
-            _profile = new UserProfileRepository(_log, _cache);
+            _profile = new UserProfileRepository(_log);
         }
         #endregion
 

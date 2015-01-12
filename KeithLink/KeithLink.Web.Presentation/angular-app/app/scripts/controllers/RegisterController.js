@@ -29,8 +29,8 @@ angular.module('bekApp')
         } else {
           $state.transitionTo('menu.catalog.home');
         }
-      }, function(error) {
-        $scope.loginErrorMessage = error.data.error_description;
+      }, function(errorMessage) {
+        $scope.loginErrorMessage = errorMessage;
       });
 
     };

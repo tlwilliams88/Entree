@@ -274,7 +274,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                        new PurchaseOrderRepositoryImpl(),
                                                                        catLogic,
-                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
                                                                        new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
                                                                        conversionLogic);
 
@@ -371,7 +371,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                                    new PurchaseOrderRepositoryImpl(),
                                                                                    catLogic,
-                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
                                                                                    new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
                                                                                    conversionLogic);
 
