@@ -66,7 +66,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public void AddUserToCustomer(Guid customerId, Guid userId)
         {
             base.AddUserToOrg(customerId, userId);
-        }
+			_customerCacheRepository.RemoveItem(GetCacheKey(string.Format("user_{0}",userId.ToString()));
+		}
 
         private static string GetUserOrgKey(Guid customerId, Guid userId)
         {
@@ -76,6 +77,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public void RemoveUserFromCustomer(Guid customerId, Guid userId)
         {
             base.RemoveUserFromOrg(customerId, userId);
+			_customerCacheRepository.RemoveItem(GetCacheKey(string.Format("user_{0}",userId.ToString()));
         }
 
         public List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId)
