@@ -9,6 +9,8 @@ namespace KeithLink.Svc.Impl
     public class Configuration : ConfigurationFacade
     {
         #region attributes
+        // General site settings
+        private const string PRESENTATION_URL = "PresentationUrl";
         private const string DEFAULT_APPNAME = "KeithCom";
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
@@ -51,7 +53,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
 
-        // Mainframe KEys
+        // Mainframe Keys
         private const string KEY_MF_ADDRESS = "MfAddress";
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
@@ -131,11 +133,6 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
-		public static string BranchContactEmail(string branchId)
-		{
-			return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
-
-		}
 
         public static string ActiveDirectoryExternalDomain { 
             get { 
@@ -284,6 +281,12 @@ namespace KeithLink.Svc.Impl
         {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
         }
+
+		public static string BranchContactEmail(string branchId)
+		{
+			return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
+
+		}
 
         public static string BrandAssetsUrl
         {
@@ -451,6 +454,10 @@ namespace KeithLink.Svc.Impl
 
         public static string OrderUpdateWatchPath {
             get{ return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
+        }
+
+        public static string PresentationUrl {
+            get { return GetValue( PRESENTATION_URL, string.Empty ); }
         }
 
         public static string RabbitMQExchangeConfirmation {

@@ -39,6 +39,10 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetUserActiveCart(catalogInfo, userId);
         }
 
+        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            return serviceClient.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate).ToList();
+        }
+
         public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
@@ -47,12 +51,12 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
 		{
             serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
+
+        public void SaveOrderHistory(OrderHistoryFile historyFile) {
+            serviceClient.SaveOrderHistory(historyFile);
+        }
         #endregion
 
 
-		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
-		{
-			return serviceClient.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate).ToList();
-		}
 	}
 }

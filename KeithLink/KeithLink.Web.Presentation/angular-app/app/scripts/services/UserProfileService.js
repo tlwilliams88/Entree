@@ -103,6 +103,11 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
+      createUserFromAdmin: function(userProfile) {
+        var promise = $http.post('/profile/admin/user', userProfile);
+        return UtilityService.resolvePromise(promise);
+      },
+
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
 
@@ -114,12 +119,22 @@ angular.module('bekApp')
         });
       },
 
+      updateUserProfileFromAdmin: function(userProfile) {
+        var promise = $http.put('/profile', userProfile);
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var profile = successResponse.userProfiles[0];
+          $log.debug(profile);
+          return profile;
+        });
+      },
+
       changePassword: function(passwordData) {
         var deferred = $q.defer();
 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
-          if (response.data === '"Password update successful"') {
+          if (response.data.successResponse === true) {
             deferred.resolve(response.data);
           } else {
             deferred.reject(response.data);

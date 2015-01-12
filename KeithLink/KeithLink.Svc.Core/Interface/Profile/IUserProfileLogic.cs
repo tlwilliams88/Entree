@@ -7,7 +7,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
         void CreateBekUserProfile(string emailAddress);
 
-        UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId, bool allowPasswordGeneration = false);
+        UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId);
+        UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
 
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
@@ -19,7 +20,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool IsInternalAddress(string emailAddress);
 
-        string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+        bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 

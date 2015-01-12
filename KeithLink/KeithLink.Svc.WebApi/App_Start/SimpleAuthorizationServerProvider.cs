@@ -4,6 +4,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web;
 using KeithLink.Svc.Core.Exceptions.Profile;
+using KeithLink.Svc.Core.Enumerations.Authentication;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -49,19 +50,13 @@ namespace KeithLink.Svc.WebApi
                     as Core.Interface.Profile.ICustomerDomainRepository;
 
                 KeithLink.Svc.Core.Models.Authentication.AuthenticationModel authentication = ADRepo.AuthenticateUser( context.UserName, context.Password );
-                if (!authentication.Status.Equals( KeithLink.Svc.Core.Enumerations.Authentication.AuthenticationStatus.Successful )) {
+                if (!authentication.Status.Equals( AuthenticationStatus.Successful ) && !authentication.Status.Equals( AuthenticationStatus.PasswordExpired ) ) {
                     context.SetError( "invalid_grant", authentication.Message );
                     return;
                 }
-
-                //if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
-                //    context.SetError("invalid_grant", errMsg);
-                //    return;
-                //}
-            }
+           }
 
 
-            //KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _userRepo.GetUserProfile(context.UserName);
             KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
 
             var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);

@@ -12,6 +12,10 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserPrincipal GetUser(string userName);
 
+        void ExpirePassword( string emailAddress );
+
+        bool IsPasswordExpired( string emailAddress );
+
         bool IsInGroup(string userName, string groupName);
 
         void JoinGroup(string customerName, string roleName, UserPrincipal user);

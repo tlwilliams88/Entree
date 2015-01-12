@@ -63,12 +63,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ApiKeyedRoute("profile/register")]
+        [ApiKeyedRoute("profile/register")] // Discussion on route naming
         public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
             OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
             try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId, base.AuthenticatedUser != null);
+                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -80,6 +80,25 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 
             return retVal;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute( "profile/admin/user" )]
+        public OperationReturnModel<UserProfileReturn> CreateGuestWithTemporaryPassword( GuestProfileModel guestInfo ) {
+            OperationReturnModel<UserProfileReturn> returnValue = new OperationReturnModel<UserProfileReturn>();
+
+            try {
+                returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword( guestInfo.Email, guestInfo.BranchId );
+            } catch (ApplicationException ex) {
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog( "Application exception", ex );
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = String.Concat( "Could not complete the request. ", ex.Message );
+                _log.WriteErrorLog( "Unhandled exception", ex );
+            }
+
+            return returnValue;
         }
 
         [Authorize]
@@ -106,8 +125,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
-        public string UpdatePassword(UpdatePasswordModel pwInfo) {
-            return _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+        public OperationReturnModel<bool> UpdatePassword(UpdatePasswordModel pwInfo) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+            try {
+               returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+            } catch (Exception ex) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = ex.Message;
+            }
+
+            return returnValue;
         }
 
         [Authorize]
@@ -130,7 +157,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 // handle customer updates - will need to add security here
                 if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
                 {
-					var customers = _profileLogic.GetCustomersForUser(this.AuthenticatedUser);
+					var customers = _profileLogic.GetCustomersForUser(profile.UserProfiles[0]);
 
 					IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
 					IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));

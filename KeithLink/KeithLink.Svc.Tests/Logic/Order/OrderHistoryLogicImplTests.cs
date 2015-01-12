@@ -8,6 +8,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -53,7 +54,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
             _socket = new SocketListenerRepositoryImpl();
             _queue = new OrderUpdateQueueRepositoryImpl();
 
-            _confLogic = new ConfirmationLogicImpl(_log, _socket, new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
+            //_confLogic = new ConfirmationLogicImpl(_log, _socket, new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
 
             //_logic = new OrderHistoryLogicImpl(_log, _headerRepo, _detailRepo, _queue,  _unitOfWork, _confLogic, _socket, _poRepo);
         }

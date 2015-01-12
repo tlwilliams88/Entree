@@ -36,7 +36,6 @@ namespace KeithLink.Svc.Impl.Repository.Brands
                 .Index(Constants.ES_INDEX_BRANDS)
                 );
 
-
             foreach (Brand r in response.Documents)
             {
                 r.ImageURL = String.Format("{0}/{1}.jpg", Configuration.BrandAssetsUrl, r.BrandControlLabel.ToLower());

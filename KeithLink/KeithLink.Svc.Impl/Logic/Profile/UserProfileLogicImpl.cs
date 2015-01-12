@@ -22,6 +22,9 @@ using KeithLink.Svc.Core.Models.Paging;
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
         #region attributes
+        private const string GUEST_USER_WELCOME = "GuestUserWelcome";
+        private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+
         private IUserProfileCacheRepository _cache;
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
@@ -165,9 +168,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/18/2014 - documented
         /// </remarks>
         private void AssertPasswordComplexity(string password) {
-            if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) {
+            if (PasswordMeetsComplexityRequirements(password) == false) {
                 throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number");
             }
+        }
+
+        private bool PasswordMeetsComplexityRequirements(string password)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN);
         }
 
         /// <summary>
@@ -280,14 +288,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId, bool allowPasswordGeneration = false) {
-            // if password is null or empty, create a temproary password and email it to the user
-            bool generatedPassword = false;
-            if (String.IsNullOrEmpty(password) && allowPasswordGeneration)
-            {
-                generatedPassword = true;
-				password = System.Web.Security.Membership.GeneratePassword(8, 0);
-            }
+        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+            if (emailAddress == null) throw new Exception( "email address cannot be null" );
+            if (password == null) throw new Exception( "password cannot be null" );
+
             AssertGuestProfile(emailAddress, password);
 
             _extAd.CreateUser(Configuration.ActiveDirectoryGuestContainer,
@@ -305,25 +309,66 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          branchId
                                          );
 
-			if (generatedPassword) //TODO: Switch to new email client with message templates
-				KeithLink.Common.Core.Email.NewUserEmail.Send(emailAddress, "Welcome to Entree.  Please use this temporary password to access Entree.\r\nPassword: " + password + "\r\nURL: https://shopqa.benekeith.com");
-			else
-			{
-				try
-				{
-					var template = _messagingServiceRepository.ReadMessageTemplateForKey("GuestUserWelcome");
+                try {
+                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( GUEST_USER_WELCOME );
 
-					if (template != null)
-						_emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail(branchId) });
-				}
-				catch (Exception ex)
-				{
-					//The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
-					_eventLog.WriteErrorLog("Error sending welcome email", ex);
-				}
-			}
+                    if (template != null)
+                        _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail( branchId ) } );
+                } catch (Exception ex) {
+                    //The registration probably shouldn't fail just because of an SMTP issue. So ignore this error and log
+                    _eventLog.WriteErrorLog( "Error sending welcome email", ex );
+                }
 
             return GetUserProfile(emailAddress);
+        }
+
+        /// <summary>
+        /// Admin created user - sets a temporary password and expires it so they have to change it on next login
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="branchId"></param>
+        /// <returns>Returns a new user profile</returns>
+        public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+            string generatedPassword = GenerateTemporaryPassword();
+
+            AssertGuestProfile( emailAddress, generatedPassword );
+
+            _extAd.CreateUser(
+                Configuration.ActiveDirectoryGuestContainer,
+                emailAddress,
+                generatedPassword,
+                Core.Constants.AD_GUEST_FIRSTNAME,
+                Core.Constants.AD_GUEST_LASTNAME,
+                Core.Constants.ROLE_EXTERNAL_GUEST
+                );
+
+            _csProfile.CreateUserProfile(
+                emailAddress,
+                Core.Constants.AD_GUEST_FIRSTNAME,
+                Core.Constants.AD_GUEST_LASTNAME,
+                string.Empty,
+                branchId
+                );
+
+            // Expire the users password so they can change it at neck login
+            _extAd.ExpirePassword( emailAddress );
+
+            try {
+                var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
+                if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
+            }
+
+            return GetUserProfile( emailAddress );
+        }
+
+        private string GenerateTemporaryPassword()
+        {
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            for (int i = 0; !PasswordMeetsComplexityRequirements(generatedPassword) && i < 8; i++)
+                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            return generatedPassword;
         }
 
         /// <summary>
@@ -526,6 +571,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             UserProfileReturn retVal = new UserProfileReturn();
 
             if (profile != null) {
+                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
                 retVal.UserProfiles.Add(profile);
                 return retVal;
             }
@@ -612,28 +658,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
-            string retVal = null;
+        public bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            bool retVal = false;
 
-            try {
-                if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
 
-                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+            UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
 
-                AssertPasswordLength(newPassword);
-                AssertPasswordComplexity(newPassword);
-                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
+            AssertPasswordLength(newPassword);
+            AssertPasswordComplexity(newPassword);
+            AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
 
-                if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
-                    retVal = "Password update successful";
-                } else {
-                    retVal = "Invalid password";
-                }
-            } catch (ApplicationException appEx) {
-                retVal = appEx.Message;
-            } catch (Exception ex) {
-                retVal = string.Concat("Could not process request: ", ex.Message);
-            }
+            if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                retVal = true;
+            } else {
+                throw new ApplicationException("Password was invalid"); 
+            } 
 
             return retVal;
         }
@@ -755,7 +795,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             usersReturn.CustomerUserProfiles = usersReturn.CustomerUserProfiles
-                .GroupBy(u => u.CustomerNumber)
+                .GroupBy(u => u.UserId)
                 .Select(grp => grp.First())
                 .ToList();
 
