@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
-  DTS:VersionBuild="309"
-  DTS:VersionGUID="{028E2652-F7D0-4D30-A809-B8E5805893F5}">
+  DTS:VersionBuild="313"
+  DTS:VersionGUID="{FFA74AAD-A8A9-4103-B04F-6FE05AF1C4D3}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerFile.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -667,7 +667,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerBid.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -751,7 +751,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -858,7 +858,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1182,7 +1182,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1330,7 +1330,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1477,7 +1477,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1552,7 +1552,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\propItem.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1628,7 +1628,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\QA\KeithCom\customerTerms.SSIS">
+          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1720,17 +1720,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://corpkecqas1:9876/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://corpkecqas1:9876/ETLService.svc?wsdl">
+            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAEdDGRVD8ZYcKdX6hyGkZ4AAAAAASAAACgAAAAEAAAAMbUPQiww9I9jjXefu4nY6cIAAAAtxK8oWDY4cEUAAAA/7izgr7fqEFlHuuI2P/4C18mUjA</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACrtCuOcyyPH/xfISQ5XftyAAAAAASAAACgAAAAEAAAAHpUheMcLVw5VwUxBzZcUCgIAAAAghUg7GgIm+gUAAAATUSC8LddS2MjWRioZQKC6TnKVNo</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB7KzElPVigvT1dMlUAxitoAAAAAASAAACgAAAAEAAAAG9hosYCei1pqPFYNVaRirEIAAAA7PjApWYPROIUAAAA2o7tL/3959ymmfCmt7MBpgc//W4</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD4f27odLI3ATHusUdpIr95AAAAAASAAACgAAAAEAAAALMFoRTenBs/V9O+3gGwqDoIAAAA0rm23ZGKriEUAAAArAQSTQpY2BSrp9lQJ6hcEfOY/to</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1742,12 +1742,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABG6f3GyR5yKSq5AZ5ujD1iAAAAAASAAACgAAAAEAAAAJg8W9FcGgNLJFl+dqKYJjUYAAAAzMVSrrIRWr9+0uZm1YsbwBDOJaYA4+iNFAAAABZZp9KAFMQK7nEPNhV29FJOdc+M</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1757,12 +1752,7 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADpPC9FZSDo0PbLYEpXkhzDAAAAAASAAACgAAAAEAAAAJ4GzyMHhHwgQTECpt/O/KkQAAAAor/N/PJxWx8KC336hSuRaxQAAACkpDEO0KdrrJPo5brfC2FN4iHNuw</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1776,7 +1766,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAChHYEfxIwxDtvh7otBezMiAAAAAASAAACgAAAAEAAAAD3ZFCjphy5A4fkw7/Yd2o8QAAAAxCqpJlVFep7aPbT/jn2d/xQAAACwM4NrhIEco7BIwsv1tuC2tarTzQ</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACWVrYvi3lJMzjyPaqTGftBAAAAAASAAACgAAAAEAAAANl1E+1FGHccgRpKaEJ73KkQAAAA9wnvcEWOkJixm30azg1TPxQAAABr/fOmzMemOI6jEHNdiotcdwwFyw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1787,7 +1777,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=localhost;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1797,12 +1787,7 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAV1C1wEJoO8rL/Ck7K48yHAAAAAASAAACgAAAAEAAAAH5tV6fLkmXIVe0mlvYjhZIQAAAAIT9xH+cWrHOBbio58qvKNRQAAACluvSwiTB3CuWLBDld2SptyXIAxA</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1844,7 +1829,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekbackup\ftproot\eBusiness\QA\KeithCom\</DTS:VariableValue>
+        DTS:DataType="8">\\bekbackup\ftproot\eBusiness\Test\KeithCom\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2040,7 +2025,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="8">
+          DTS:ThreadHint="6">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2083,7 +2068,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="6">
+          DTS:ThreadHint="7">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2126,7 +2111,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="7">
+          DTS:ThreadHint="8">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2265,15 +2250,6 @@
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2494,6 +2470,35 @@
   </ProjectExtensions>
 </Project>]]></ProjectItem>
           <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
+
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
 using System.Collections.Generic;
@@ -2679,7 +2684,7 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
         {
             bool success = false;
 
-            string removeDate = DateTime.Today.AddDays(-7).ToString("yyyyMMdd");
+            string removeDate = DateTime.Today.AddDays(-3).ToString("yyyyMMdd");
             string removeDir = this._archiveDir + @"\" + removeDate;
 
             if (Directory.Exists(removeDir))
@@ -2729,50 +2734,21 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
             Encoding="UTF16LE"><![CDATA[<?xml version="1.0" encoding="UTF-16" standalone="yes"?>
 <c:Project xmlns:c="http://schemas.microsoft.com/codeprojectml/2010/08/main" xmlns:msb="http://schemas.microsoft.com/developer/msbuild/2003" runtimeVersion="3.0" schemaVersion="1.0">
 	<msb:PropertyGroup>
-		<msb:Language>msBuild</msb:Language>
 		<msb:CodeName>ST_08a8af43a9a44857ba3cbc2562595c9a</msb:CodeName>
+		<msb:Language>msBuild</msb:Language>
 		<msb:DisplayName>ST_08a8af43a9a44857ba3cbc2562595c9a</msb:DisplayName>
 		<msb:ProjectId>{768EF99D-D3F0-4464-BF87-795907DA65EA}</msb:ProjectId>
 	</msb:PropertyGroup>
 	<msb:ItemGroup>
 		<msb:Project Include="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"/>
-		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\AssemblyInfo.cs"/>
+		<msb:File Include="Properties\Settings.settings"/>
 		<msb:File Include="Properties\Resources.resx"/>
 		<msb:File Include="Properties\Resources.Designer.cs"/>
 		<msb:File Include="Properties\Settings.Designer.cs"/>
 		<msb:File Include="ScriptMain.cs"/>
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
-
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
@@ -2803,6 +2779,15 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -2874,7 +2859,7 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
           <BinaryItem
             Name="ST_08a8af43a9a44857ba3cbc2562595c9a.dll">TVqQAAMAAAAEAAAA//8AALgAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAgAAAAA4fug4AtAnNIbgBTM0hVGhpcyBwcm9ncmFtIGNhbm5vdCBiZSBydW4gaW4gRE9TIG1v
-ZGUuDQ0KJAAAAAAAAABQRQAATAEDABVxgFQAAAAAAAAAAOAAAiELAQsAABQAAAAIAAAAAAAAnjMA
+ZGUuDQ0KJAAAAAAAAABQRQAATAEDAE+WrlQAAAAAAAAAAOAAAiELAQsAABQAAAAIAAAAAAAAnjMA
 AAAgAAAAQAAAAAAAEAAgAAAAAgAABAAAAAAAAAAEAAAAAAAAAACAAAAAAgAAAAAAAAMAQIUAABAA
 ABAAAAAAEAAAEAAAAAAAABAAAAAAAAAAAAAAAFAzAABLAAAAAEAAAAgEAAAAAAAAAAAAAAAAAAAA
 AAAAAGAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -2892,7 +2877,7 @@ AwAAERYKAnsGAAAEKCAAAAotDAJ7BgAABCghAAAKJgJ7BgAABCggAAAKLAIXCgYqGzADAIkAAAAE
 AAARFgoCewQAAAQoIgAACnMjAAAKCwdvJAAAChMFKzQSBSglAAAKDAJ7BgAABHK/AABwCCgmAAAK
 KB4AAAoNCSgnAAAKLAYJKCgAAAoICSgpAAAKEgUoKgAACi3D3g4SBf4WAgAAG28rAAAK3AJ7BAAA
 BCgiAAAKcyMAAAoTBBEEbywAAAotAhcKBioAAAABEAAAAgAbAEFcAA4AAAAAEzADAFoAAAAFAAAR
-FgooHAAACg0SAyMAAAAAAAAcwCgtAAAKEwQSBHLDAABwKB0AAAoLAnsFAAAEcr8AAHAHKB4AAAoM
+FgooHAAACg0SAyMAAAAAAAAIwCgtAAAKEwQSBHLDAABwKB0AAAoLAnsFAAAEcr8AAHAHKB4AAAoM
 CCggAAAKLBUIFyguAAAKFwoIKCAAAAosBhYKKwIXCgYqAAATMAIADgAAAAYAABFy1QAAcAoGAygv
 AAAKKh4CKDAAAAoqAAAAAAAAtAAAAM7K774BAAAAkQAAAGxTeXN0ZW0uUmVzb3VyY2VzLlJlc291
 cmNlUmVhZGVyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1
@@ -2919,7 +2904,7 @@ AakGDQE5ARsGywA5AboGEgE5AcEGFwEUAMYGSgBBAdsGGwAMAOMGHQH5AO0GOQEJAboGPwE5AfUG
 FwEZALwBGwAIACAAWgAIACQAXwApAJMAhwAuABsAxAEuACMAxAEuAGMA6gEuAAsAUwEuABMAmwEu
 ADMAmwEuACsAxAEuADsAygEuAEMAxAEuAFsA4QFDAGsAXwBJAJMAhwBhAJsAXwCDAKsAXwB8AMMA
 1wAhAUUBTwECAAEAAwADAAAAbwEvAAAA7gE0AAAAEgJCAAIAAgADAAIAAwAFAAEABAAFAAIABQAH
-AOUAAQEEgAAAAQAAAEsVWjwAAAAAAAB/AAAABAAAAAAAAAAAAAAAAQCxAAAAAAAEAAAAAAAAAAAA
+AOUAAQEEgAAAAQAAAG4VuDwAAAAAAAB/AAAABAAAAAAAAAAAAAAAAQCxAAAAAAAEAAAAAAAAAAAA
 AAABALoAAAAAAAsAAAAAAAAAAAAAAAoA9QAAAAAACwAAAAAAAAAAAAAACgBRBQAAAAAAAAAAAQAA
 AAIHAAAFAAQAAAAAPE1vZHVsZT4AU1RfMDhhOGFmNDNhOWE0NDg1N2JhM2NiYzI1NjI1OTVjOWEu
 ZGxsAFJlc291cmNlcwBTVF8wOGE4YWY0M2E5YTQ0ODU3YmEzY2JjMjU2MjU5NWM5YS5Qcm9wZXJ0
@@ -2958,7 +2943,7 @@ XwAwADgAYQA4AGEAZgA0ADMAYQA5AGEANAA0ADgANQA3AGIAYQAzAGMAYgBjADIANQA2ADIANQA5
 ADUAYwA5AGEALgBQAHIAbwBwAGUAcgB0AGkAZQBzAC4AUgBlAHMAbwB1AHIAYwBlAHMAADlVAHMA
 ZQByADoAOgBFAFQATABQAHIAbwBjAGUAcwBzAF8ASwBlAGkAdABoAEMAbwBtAEQAaQByAAARXABh
 AHIAYwBoAGkAdgBlAAADXAAAEXkAeQB5AHkATQBNAGQAZAAAIWMAOgBcAHMAcwBpAHMARQByAHIA
-bwByAC4AdAB4AHQAAAC9Y7Za3F4DQLcwValXbZ1GAAi3elxWGTTgiQiJhF3NgIDMkQMGEhUDBhIZ
+bwByAC4AdAB4AHQAAAD0hnScWzO8QKf/JF5UwygNAAi3elxWGTTgiQiJhF3NgIDMkQMGEhUDBhIZ
 AyAAAQQAABIVBAAAEhkFAAEBEhkECAASFQQIABIZAwYSDAQAABIMBAgAEgwCBg4DIAACBCABAQ4C
 BggDBhEUBAAAAAAEAQAAAAQgAQEIBgABElERVQQgABJZBiACAQ4SWQQHARIVBSABARFhCAEAAgAA
 AAAAAwAAAQQgABJtBCAAEnEFIAESdRwDIAAcAyAADgUAAg4ODgQAABF9BCABDg4GAAMODg4OBwcE
@@ -2973,13 +2958,13 @@ AAAAAAD/JQAgABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAQAQAAAAGAAAgAAAAAAAAAAAAAAAAAAAAQABAAAAMAAAgAAAAAAAAAAAAAAAAAAAAQAAAAAA
 SAAAAFhAAACwAwAAAAAAAAAAAACwAzQAAABWAFMAXwBWAEUAUgBTAEkATwBOAF8ASQBOAEYATwAA
-AAAAvQTv/gAAAQAAAAEAWjxLFQAAAQBaPEsVPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
+AAAAvQTv/gAAAQAAAAEAuDxuFQAAAQC4PG4VPwAAAAAAAAAEAAAAAgAAAAAAAAAAAAAAAAAAAEQA
 AAABAFYAYQByAEYAaQBsAGUASQBuAGYAbwAAAAAAJAAEAAAAVAByAGEAbgBzAGwAYQB0AGkAbwBu
 AAAAAAAAALAEEAMAAAEAUwB0AHIAaQBuAGcARgBpAGwAZQBJAG4AZgBvAAAA7AIAAAEAMAAwADAA
 MAAwADQAYgAwAAAAcAAkAAEARgBpAGwAZQBEAGUAcwBjAHIAaQBwAHQAaQBvAG4AAAAAAFMAVABf
 ADAAOABhADgAYQBmADQAMwBhADkAYQA0ADQAOAA1ADcAYgBhADMAYwBiAGMAMgA1ADYAMgA1ADkA
-NQBjADkAYQAAAEAADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA1ADQANQAx
-AC4AMQA1ADQANQAwAAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAVABfADAA
+NQBjADkAYQAAAEAADwABAEYAaQBsAGUAVgBlAHIAcwBpAG8AbgAAAAAAMQAuADAALgA1ADQAOAA2
+AC4AMQA1ADUANAA0AAAAAABwACgAAQBJAG4AdABlAHIAbgBhAGwATgBhAG0AZQAAAFMAVABfADAA
 OABhADgAYQBmADQAMwBhADkAYQA0ADQAOAA1ADcAYgBhADMAYwBiAGMAMgA1ADYAMgA1ADkANQBj
 ADkAYQAuAGQAbABsAAAASAASAAEATABlAGcAYQBsAEMAbwBwAHkAcgBpAGcAaAB0AAAAQwBvAHAA
 eQByAGkAZwBoAHQAIABAACAAIAAyADAAMQA0AAAAeAAoAAEATwByAGkAZwBpAG4AYQBsAEYAaQBs
@@ -2987,8 +2972,8 @@ AGUAbgBhAG0AZQAAAFMAVABfADAAOABhADgAYQBmADQAMwBhADkAYQA0ADQAOAA1ADcAYgBhADMA
 YwBiAGMAMgA1ADYAMgA1ADkANQBjADkAYQAuAGQAbABsAAAAaAAkAAEAUAByAG8AZAB1AGMAdABO
 AGEAbQBlAAAAAABTAFQAXwAwADgAYQA4AGEAZgA0ADMAYQA5AGEANAA0ADgANQA3AGIAYQAzAGMA
 YgBjADIANQA2ADIANQA5ADUAYwA5AGEAAABEAA8AAQBQAHIAbwBkAHUAYwB0AFYAZQByAHMAaQBv
-AG4AAAAxAC4AMAAuADUANAA1ADEALgAxADUANAA1ADAAAAAAAEgADwABAEEAcwBzAGUAbQBiAGwA
-eQAgAFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADUANAA1ADEALgAxADUANAA1ADAAAAAAAAAAAAAA
+AG4AAAAxAC4AMAAuADUANAA4ADYALgAxADUANQA0ADQAAAAAAEgADwABAEEAcwBzAGUAbQBiAGwA
+eQAgAFYAZQByAHMAaQBvAG4AAAAxAC4AMAAuADUANAA4ADYALgAxADUANQA0ADQAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
@@ -6201,7 +6186,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastPayment]"
                               codePage="1252"
                               dataType="str"
-                              length="50"
+                              length="8"
                               name="DateOfLastPayment" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[AmountDue]"
@@ -13405,7 +13390,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Brand Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
+              DTS:ThreadHint="0">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -13424,7 +13409,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Catalog Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="2">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -13443,7 +13428,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate GS1 Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="3">
+              DTS:ThreadHint="2">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -22834,7 +22819,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Invoice Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="0">
+              DTS:ThreadHint="3">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -24726,11 +24711,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="176,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
-          TopLeft="322,249" />
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="159,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
@@ -24739,6 +24720,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Size="143,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
           TopLeft="131.5,65.5" />
+        <NodeLayout
+          Size="176,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
+          TopLeft="322,249" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Sort Output]"
           TopLeft="410,291">
@@ -24770,7 +24755,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -24804,7 +24791,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Common {
     [DataContract]
-	public abstract class BaseQueueMessage {
+    public abstract class BaseQueueMessage {
         #region ctor
         public BaseQueueMessage() {
             CreateDateTime = DateTime.Now;

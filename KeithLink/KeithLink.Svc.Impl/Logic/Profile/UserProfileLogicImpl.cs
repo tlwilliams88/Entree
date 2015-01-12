@@ -168,9 +168,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 8/18/2014 - documented
         /// </remarks>
         private void AssertPasswordComplexity(string password) {
-            if (System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN) == false) {
+            if (PasswordMeetsComplexityRequirements(password) == false) {
                 throw new ApplicationException("Password must contain 1 upper and 1 lower case letter and 1 number");
             }
+        }
+
+        private bool PasswordMeetsComplexityRequirements(string password)
+        {
+            return System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN);
         }
 
         /// <summary>
@@ -324,7 +329,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <param name="branchId"></param>
         /// <returns>Returns a new user profile</returns>
         public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
-            string generatedPassword = System.Web.Security.Membership.GeneratePassword( 8, 0 );
+            string generatedPassword = GenerateTemporaryPassword();
+
             AssertGuestProfile( emailAddress, generatedPassword );
 
             _extAd.CreateUser(
@@ -355,6 +361,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             return GetUserProfile( emailAddress );
+        }
+
+        private string GenerateTemporaryPassword()
+        {
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            for (int i = 0; !PasswordMeetsComplexityRequirements(generatedPassword) && i < 8; i++)
+                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            return generatedPassword;
         }
 
         /// <summary>
@@ -781,7 +795,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             usersReturn.CustomerUserProfiles = usersReturn.CustomerUserProfiles
-                .GroupBy(u => u.CustomerNumber)
+                .GroupBy(u => u.UserId)
                 .Select(grp => grp.First())
                 .ToList();
 

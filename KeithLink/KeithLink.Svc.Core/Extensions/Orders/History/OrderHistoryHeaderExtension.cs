@@ -1,8 +1,10 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Enumerations;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -136,10 +138,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			{
 				System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
 
-				Parallel.ForEach(value.OrderDetails, d =>
-				{
-					lineItems.Add(d.ToOrderLine());
-				});
+                Parallel.ForEach(value.OrderDetails, d => {
+                    lineItems.Add(d.ToOrderLine());
+                });
 
 				retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
 			}
@@ -169,7 +170,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			}
 
 			retVal.DeliveryDate = value.DeliveryDate;
-			retVal.InvoiceNumber = value.InvoiceNumber;
+			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
 			retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
@@ -180,7 +181,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			
 			return retVal;
 		}
-
 
         public static OrderHistoryHeader ToOrderHistoryHeader(this EF.OrderHistoryHeader value)
         {
@@ -199,6 +199,24 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.RouteNumber = value.RouteNumber;
             retVal.StopNumber = value.StropNumber;
 			
+            return retVal;
+        }
+
+        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo) {
+            OrderHistoryHeader retVal = new OrderHistoryHeader();
+
+            retVal.OrderSystem = OrderSource.Entree;
+            retVal.BranchId = customerInfo.BranchId;
+            retVal.CustomerNumber = customerInfo.CustomerId;
+            retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Pending" : value.Properties["MasterNumber"].ToString();
+            retVal.DeliveryDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"];
+            retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
+            retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
+
+            // OrderStatus for Order History is either a blank space (normal), I (invoiced), D (deleted), or P (processing)
+            //retVal.OrderStatus = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2");
+            retVal.OrderStatus = string.Empty;
+
             return retVal;
         }
         #endregion

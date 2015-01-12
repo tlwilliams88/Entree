@@ -220,6 +220,7 @@
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
+    <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
@@ -432,6 +433,10 @@
     <Compile Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.cs" />
     <Compile Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.Designer.cs">
       <DependentUpon>201501061845324_Add_Cust_Branch_To_UserActiveCart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201501092201560_Add indexes to improve item usage report query.cs" />
+    <Compile Include="Repository\EF\Migrations\201501092201560_Add indexes to improve item usage report query.Designer.cs">
+      <DependentUpon>201501092201560_Add indexes to improve item usage report query.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -911,6 +916,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201501061845324_Add_Cust_Branch_To_UserActiveCart.resx">
       <DependentUpon>201501061845324_Add_Cust_Branch_To_UserActiveCart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201501092201560_Add indexes to improve item usage report query.resx">
+      <DependentUpon>201501092201560_Add indexes to improve item usage report query.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

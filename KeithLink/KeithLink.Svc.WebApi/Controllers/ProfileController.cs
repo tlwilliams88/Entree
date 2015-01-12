@@ -157,7 +157,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 // handle customer updates - will need to add security here
                 if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
                 {
-					var customers = _profileLogic.GetCustomersForUser(this.AuthenticatedUser);
+					var customers = _profileLogic.GetCustomersForUser(profile.UserProfiles[0]);
 
 					IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
 					IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
