@@ -142,18 +142,23 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         }
 
         public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value) {
-            return new OrderLine() {
-                LineNumber = value.LineNumber,
-                ItemNumber = value.ItemNumber,
-                Quantity = (short)value.ShippedQuantity,
-                Price = (double)value.SellPrice,
-                QuantityOrdered = value.OrderQuantity,
-                QantityShipped = value.ShippedQuantity,
-                SubstitutedItemNumber = (!String.IsNullOrEmpty(value.ReplacedOriginalItemNumber.Trim()) ? value.ReplacedOriginalItemNumber :
-                    (!String.IsNullOrEmpty(value.SubbedOriginalItemNumber.Trim()) ? value.SubbedOriginalItemNumber : string.Empty)),
-                MainFrameStatus = value.ItemStatus,
-                Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false
-            };
+            OrderLine lineItem = new OrderLine();
+
+            lineItem.LineNumber = value.LineNumber;
+            lineItem.ItemNumber = value.ItemNumber;
+            lineItem.Quantity = (short)value.ShippedQuantity;
+            lineItem.Price = (double)value.SellPrice;
+            lineItem.QuantityOrdered = value.OrderQuantity;
+            lineItem.QantityShipped = value.ShippedQuantity;
+            if (!string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber)) {
+                lineItem.SubstitutedItemNumber = value.ReplacedOriginalItemNumber.Trim();
+            } else if (!string.IsNullOrWhiteSpace(value.SubbedOriginalItemNumber)) {
+                lineItem.SubstitutedItemNumber = value.SubbedOriginalItemNumber.Trim();
+            }
+            lineItem.MainFrameStatus = value.ItemStatus;
+            lineItem.Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false;
+
+            return lineItem;
         }
 
 		public static InvoiceItemModel ToInvoiceItem(this EF.OrderHistoryDetail value)

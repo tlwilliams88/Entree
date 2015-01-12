@@ -75,6 +75,11 @@ angular
         event.preventDefault();
       }
 
+      if (AccessService.isPasswordExpired()) {
+          $state.go('changepassword');
+          event.preventDefault();
+      }
+
       // check if user has access to the route
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');

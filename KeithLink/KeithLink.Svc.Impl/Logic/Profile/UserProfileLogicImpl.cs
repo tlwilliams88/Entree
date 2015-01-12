@@ -571,6 +571,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             UserProfileReturn retVal = new UserProfileReturn();
 
             if (profile != null) {
+                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
                 retVal.UserProfiles.Add(profile);
                 return retVal;
             }
@@ -657,28 +658,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
-            string retVal = null;
+        public bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            bool retVal = false;
 
-            try {
-                if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
 
-                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+            UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
 
-                AssertPasswordLength(newPassword);
-                AssertPasswordComplexity(newPassword);
-                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
+            AssertPasswordLength(newPassword);
+            AssertPasswordComplexity(newPassword);
+            AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
 
-                if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
-                    retVal = "Password update successful";
-                } else {
-                    retVal = "Invalid password";
-                }
-            } catch (ApplicationException appEx) {
-                retVal = appEx.Message;
-            } catch (Exception ex) {
-                retVal = string.Concat("Could not process request: ", ex.Message);
-            }
+            if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                retVal = true;
+            } else {
+                throw new ApplicationException("Password was invalid"); 
+            } 
 
             return retVal;
         }

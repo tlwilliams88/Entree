@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations {
                     UnitOfMeasure = confDetail.BrokenCase.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ? UnitOfMeasure.Package : UnitOfMeasure.Case,
                     ShippedQuantity = confDetail.QuantityShipped,
                     TotalShippedWeight = confDetail.ShipWeight,
-                    SellPrice = (confDetail.BrokenCase.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ? confDetail.SplitPriceGross : confDetail.SalesGross),
+                    SellPrice = (confDetail.BrokenCase.Equals("Y", StringComparison.InvariantCultureIgnoreCase) ? confDetail.SplitPriceGross : confDetail.PriceGross),
                     ItemStatus = confDetail.ReasonNotShipped
                     //CatchWeight,
                     //FutureItem,

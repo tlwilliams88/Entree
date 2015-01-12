@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool IsInternalAddress(string emailAddress);
 
-        string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+        bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 
