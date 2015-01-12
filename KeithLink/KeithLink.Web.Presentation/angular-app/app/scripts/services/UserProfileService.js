@@ -119,7 +119,7 @@ angular.module('bekApp')
 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
-          if (response.data === '"Password update successful"') {
+          if (response.data.successResponse === true) {
             deferred.resolve(response.data);
           } else {
             deferred.reject(response.data);

@@ -17,6 +17,9 @@ namespace KeithLink.Svc.Core.Models.Profile
             get { return "Active Directory"; }
         }
 
+        [DataMember(Name="passwordexpired")]
+        public bool PasswordExpired { get; set; }
+
         [DataMember(Name = "branchid")]
         public string BranchId { get; set; }
 

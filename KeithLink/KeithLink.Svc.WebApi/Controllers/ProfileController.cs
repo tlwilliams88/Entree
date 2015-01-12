@@ -125,8 +125,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
-        public string UpdatePassword(UpdatePasswordModel pwInfo) {
-            return _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+        public OperationReturnModel<bool> UpdatePassword(UpdatePasswordModel pwInfo) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+            try {
+               returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+            } catch (Exception ex) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = ex.Message;
+            }
+
+            return returnValue;
         }
 
         [Authorize]
