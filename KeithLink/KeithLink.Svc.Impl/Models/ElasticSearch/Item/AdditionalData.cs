@@ -67,6 +67,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("mfrname")]
         public string MfrName { get; set; }
 
+        [JsonProperty("mfrname_not_analyzed")]
+        public string MfrNameNotAnalyzed { get; set; }
+
         [JsonProperty("cases")]
         public string Cases { get; set; }
 

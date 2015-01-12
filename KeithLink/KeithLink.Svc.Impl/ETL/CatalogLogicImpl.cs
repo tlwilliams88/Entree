@@ -66,6 +66,10 @@ namespace KeithLink.Svc.Impl.ETL
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
          				},
+						""mfrname_not_analyzed"" : {
+							""type"" : ""string"",
+							""index"" : ""not_analyzed""
+						},
          				""preferreditemcode"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
@@ -463,6 +467,7 @@ namespace KeithLink.Svc.Impl.ETL
                         ItemType = row.GetString("ItemType"),
                         Kosher = row.GetString("Kosher"),
                         MfrName = row.GetString("MfrName"),
+                        MfrNameNotAnalyzed = row.GetString("MfrName"),
                         MfrNumber = row.GetString("MfrNumber"),
                         Name = row.GetString("Name"),
                         NameNotAnalyzed = row.GetString("Name"),
