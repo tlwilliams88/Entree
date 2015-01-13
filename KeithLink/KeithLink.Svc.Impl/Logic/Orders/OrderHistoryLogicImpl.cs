@@ -141,17 +141,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         #region methods
         private void Create(OrderHistoryFile currentFile) {
-            // first attempt to find the order, look by confirmation number
-            EF.OrderHistoryHeader header = null;
-
-            if (currentFile.Header.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
-                header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
-            } else {
-                header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
-            }
-
-            // second attempt to find the order, look by branch/invoice number
-            //if (header == null) {  }
+            // first attempt to find the order, look by branch and invoice number
+            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            
+            // second attempt to find the order, look by confirmation number
+            if (header == null) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
 
             // last ditch effort is to create a new header
             if (header == null) {
