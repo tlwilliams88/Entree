@@ -96,12 +96,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             OrderHistoryFileReturn parsedFiles = ParseFile(lines);
 
             foreach (OrderHistoryFile parsedFile in parsedFiles.Files) {
+                parsedFile.SenderApplicationName = Configuration.ApplicationName;
+                parsedFile.SenderProcessName = "Process Order History Updates From Mainframe (Socket Connection)";
+
                 StringWriter xmlWriter = new StringWriter();
                 XmlSerializer xs = new XmlSerializer(parsedFile.GetType());
 
                 xs.Serialize(xmlWriter, parsedFile);
 
                 _queue.PublishToQueue(xmlWriter.ToString());
+
+                logMsg = new StringBuilder();
+                logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", parsedFile.MessageId));
+                logMsg.AppendLine();
+                logMsg.AppendLine(xmlWriter.ToString());
+
+                _log.WriteInformationLog(logMsg.ToString());
             }
         }
 
