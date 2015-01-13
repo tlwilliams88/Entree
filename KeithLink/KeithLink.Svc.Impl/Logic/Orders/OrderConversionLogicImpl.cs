@@ -46,12 +46,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(trackingNumberClause, options);
 
             if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0) {
-                // Enumerate the results of the search.
-                Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
+                try {
+                    // Enumerate the results of the search.
+                    Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
 
-                // get the guids for the customers associated users and loop if necessary
-                PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
-                return po;
+                    // get the guids for the customers associated users and loop if necessary
+                    PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
+                    return po;
+                } catch {
+                    return null;
+                }
             } else {
                 return null;
             }
