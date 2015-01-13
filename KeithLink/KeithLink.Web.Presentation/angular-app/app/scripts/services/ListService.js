@@ -57,8 +57,9 @@ angular.module('bekApp')
         // WORKSHEET
         } else if (list.isworksheet) {
 
-        // RECOMMENDED -- only shown to DSRs
+        // RECOMMENDED
         } else if (list.isrecommended) {
+          permissions.canEditList = true;
           permissions.canDeleteList = true;
           permissions.canAddItems = true;
           permissions.canDeleteItems = true;

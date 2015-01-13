@@ -362,6 +362,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
 				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				cachedList.ReadOnly = cachedList.ReadOnly || (!user.IsDSR && cachedList.Type.Equals(ListType.RecommendedItems));
 
 				return cachedList;
 			}

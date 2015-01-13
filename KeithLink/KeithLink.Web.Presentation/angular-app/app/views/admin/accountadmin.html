@@ -1,12 +1,12 @@
 <div page-header-bar>
   <div header-message>
-    Account Administration
+    Group Administration
   </div>
   <div header-buttons></div>
 </div>
 
 <div class="page-content">
-<h2 ng-if="accountName">{{accountName}}</h2>
+<h2 ng-if="accountName">Customer Group: {{accountName}}</h2>
 
 <div class="row">
   <div class="col-md-6">
@@ -22,7 +22,45 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    <h3>Assigned User Profiles</h3>
+    <h3>Assigned Admin Users</h3>
+
+    <div class="infiniteScroll">
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortBy1='emailaddress';sortOrder1=!sortOrder1;">Email
+            <span sort-icons field="'emailaddress'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy1='firstname';sortOrder1=!sortOrder1;">First Name
+            <span sort-icons field="'firstname'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy1='lastname';sortOrder1=!sortOrder1;">Last Name
+            <span sort-icons field="'lastname'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="adminUser in adminUsers | orderBy:sortBy1:sortOrder1"
+              ng-class="{ odd : $odd, even: $even }">
+            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress})">{{adminUser.emailaddress}}</a></td>
+            <td>{{adminUser.firstname}}</td>
+            <td>{{adminUser.lastname}}</td>
+            <td>
+              <a ng-click="addUserToRecipients(adminUser)" class="glyphicon glyphicon-plus"></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="adminUsers.length === 0">
+          <tr>
+            <td colspan="4">There are no users to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="text-center" loading-spinner="loadingUsers"></div>
+
+    <h3>Assigned Customer Users</h3>
 
     <div class="infiniteScroll">
       <table class="table no-margin table-border table-striped-rows">
@@ -63,24 +101,20 @@
             <a ng-click="filterFields2 = {}" class="large-icon text-light icon-cross3"></a>
           </td>
         </tr>
-        <tr ng-repeat="user in users | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
+        <tr ng-repeat="customerUser in customerUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: user.emailaddress})">{{user.emailaddress}}</a></td>
-          <td>{{user.firstname}}</td>
-          <td>{{user.lastname}}</td>
-          <td class="text-capitalize">{{user.rolename}}</td>
+          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress})">{{customerUser.emailaddress}}</a></td>
+          <td>{{customerUser.firstname}}</td>
+          <td>{{customerUser.lastname}}</td>
+          <td class="text-capitalize">{{customerUser.rolename}}</td>
           <td>
-            <a ng-click="addUserToRecipients(user)" class="glyphicon glyphicon-plus"></a>
+            <a ng-click="addUserToRecipients(customerUser)" class="glyphicon glyphicon-plus"></a>
           </td>
         </tr>
         </tbody>
-        <tfoot ng-show="users.length === 0">
+        <tfoot ng-show="customerUsers.length === 0">
         <tr>
-          <td>There are no users to display.</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td colspan="5">There are no users to display.</td>
         </tr>
         </tfoot>
       </table>

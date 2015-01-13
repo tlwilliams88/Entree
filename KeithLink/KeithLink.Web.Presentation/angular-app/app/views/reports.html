@@ -3,6 +3,7 @@
     Item Usage
   </div>
   <div header-buttons>
+    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></button>    
   </div>
 </div>
@@ -42,7 +43,7 @@
                 close-text="Close"></a>
               {{itemusagequery.toDate | date:shortDate}}
             </td>
-            <td style="padding-left:25px;">
+            <td style="padding-left:25px;" class="hidden-print">
               <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
             </td>
             </tr>
@@ -66,10 +67,10 @@
               Name
               <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
-            <th>
+            <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
-            <th class="sort-col-header" ng-click="sortTable('Each')">
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('Each')">
               Each
               <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
@@ -81,10 +82,11 @@
               # Shipped
   			<span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
+            <th></th>
           </tr>
   			</thead>
   			<tbody>
-  				<tr ng-repeat="item in itemusages" ng-class="{ odd : $odd, even: $even }">
+  				<tr ng-repeat-start="item in itemusages" ng-class="{ odd : $odd, even: $even }">
             <td>
               <a ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
               <span ng-if="item.name == 'Special Item'">{{item.itemnumber}}</span>
@@ -92,10 +94,10 @@
             <td>
               {{item.name}}
             </td>
-            <td>
+            <td class="hidden-mobile-visible-print">
               {{item.packsize}}
             </td>
-            <td>
+            <td class="hidden-mobile-visible-print">
               {{item.each}}
             </td>
             <td>
@@ -103,6 +105,27 @@
             </td>
             <td>
               {{item.totalquantityshipped}}
+            </td>
+            <td class="large-icon icon-col">
+              <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+            </td>
+          </tr>
+          <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
+            <td colspan="5">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>Pack/Size</td>
+                  <td>{{item.packsize}}</td>
+                </tr>
+                <tr>
+                  <td>Each</td>
+                  <td>{{item.each}}</td>
+                </tr>
+              </table>
             </td>
           </tr>
   			</tbody>
