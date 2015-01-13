@@ -120,13 +120,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Id"] = userId.ToCommerceServerFormat();
 
-            profileQuery.Model.Properties.Add("Id");
-            profileQuery.Model.Properties.Add("Email");
-            profileQuery.Model.Properties.Add("FirstName");
-            profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("GeneralInfo.default_branch");
-            profileQuery.Model.Properties.Add("GeneralInfo.default_customer");
-            profileQuery.Model.Properties.Add("GeneralInfo.tel_number");
+			profileQuery.Model.Properties.Add("Id");
+			profileQuery.Model.Properties.Add("Email");
+			profileQuery.Model.Properties.Add("FirstName");
+			profileQuery.Model.Properties.Add("LastName");
+			profileQuery.Model.Properties.Add("DefaultBranch");
+			profileQuery.Model.Properties.Add("DefaultCustomer");
+			profileQuery.Model.Properties.Add("Telephone");
 
             // Execute the operation and get the results back
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
