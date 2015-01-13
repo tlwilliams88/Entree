@@ -242,8 +242,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
                         Create(historyFile);
-                        //ProcessAsConfirmation(historyFile);
-                        if (historyFile.Header.OrderSystem == OrderSource.Entree) { _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); }
+                        _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); 
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
