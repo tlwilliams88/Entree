@@ -362,8 +362,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
 				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-				cachedList.ReadOnly = cachedList.ReadOnly || (!user.IsDSR && cachedList.Type.Equals(ListType.RecommendedItems));
-
+												
 				return cachedList;
 			}
 
@@ -373,10 +372,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel(catalogInfo);
-			returnList.ReadOnly = returnList.ReadOnly || (!user.IsDSR && returnList.Type.Equals(ListType.RecommendedItems));
-
+			
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
+	
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
 			return returnList;
 		}

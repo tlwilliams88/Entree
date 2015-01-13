@@ -70,7 +70,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/{listId}")]
 		public ListModel List(long listId)
         {
-			return listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+
+			if (list != null)
+				list.ReadOnly = !this.AuthenticatedUser.IsDSR && list.Type == ListType.RecommendedItems;
+
+			return list;
+
         }
 
         [HttpGet]
