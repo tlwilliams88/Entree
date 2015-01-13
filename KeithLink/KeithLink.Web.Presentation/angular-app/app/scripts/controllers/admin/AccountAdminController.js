@@ -13,11 +13,13 @@ angular.module('bekApp')
         $scope.accountName = account.name;
         UserProfileService.getUsersForAccount(account.id).then(function(data) {
           $scope.loadingUsers = false;
-          $scope.users = data.accountUsers.concat(data.customerUsers);
+          $scope.adminUsers = data.accountUsers;
+          $scope.customerUsers = data.customerUsers;
         });
       } else {
         $scope.loadingUsers = false;
-        $scope.users = [];
+        $scope.adminUsers = [];
+        $scope.customerUsers = [];
       }
     });
   }

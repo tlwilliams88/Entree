@@ -5,6 +5,11 @@ angular.module('bekApp')
   function ($stateProvider, $urlRouterProvider) {
 
   // the $stateProvider determines path urls and their related controllers
+  /*
+  data
+    authorize: matches a function in AccessService and checks the user has access to the route
+  */
+
   $stateProvider
     // register
     .state('register', {
