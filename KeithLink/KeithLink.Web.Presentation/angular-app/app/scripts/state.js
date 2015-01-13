@@ -337,14 +337,6 @@ angular.module('bekApp')
       url: '/admin/',
       template: '<ui-view>'
     })
-    .state('menu.admin.accountadmin',{
-      url: 'account/',
-      templateUrl: 'views/admin/accountadmin.html',
-      controller: 'AccountAdminController',
-      data: {
-        authorize: 'canManageAccount'
-      }
-    })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
@@ -368,29 +360,37 @@ angular.module('bekApp')
     })
 
     /*************
-    ADMIN ACCOUNTS
+    ADMIN CUSTOMER GROUPS
     *************/
-    .state('menu.admin.account', {
-      url: 'accounts/',
-      templateUrl: 'views/admin/accounts.html',
-      controller: 'AccountsController',
+    .state('menu.admin.customergroupdashboard',{
+      url: 'customergroup/dashboard/',
+      templateUrl: 'views/admin/customergroupdashboard.html',
+      controller: 'CustomerGroupDashboardController',
       data: {
         authorize: 'canManageAccount'
       }
     })
-    .state('menu.admin.accountdetails', {
-      url: 'accounts/:accountId/',
-      templateUrl: 'views/admin/accountdetails.html',
-      controller: 'AdminAccountDetailsController',
+    .state('menu.admin.customergroup', {
+      url: 'customergroup/',
+      templateUrl: 'views/admin/customergroups.html',
+      controller: 'CustomerGroupsController',
+      data: {
+        authorize: 'canManageAccount'
+      }
+    })
+    .state('menu.admin.customergroupdetails', {
+      url: 'customergroup/:groupId/',
+      templateUrl: 'views/admin/customergroupdetails.html',
+      controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageAccount'
       },
       resolve: {
-        originalAccount: ['$stateParams', 'AccountService', function($stateParams, AccountService) {
-          if ($stateParams.accountId === 'new') {
+        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
+          if ($stateParams.groupId === 'new') {
             return {};
           } else {
-            return AccountService.getAccountDetails($stateParams.accountId);
+            return CustomerGroupService.getGroupDetails($stateParams.groupId);
           }
         }]
       }

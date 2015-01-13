@@ -93,7 +93,7 @@ angular.module('bekApp')
         });
       },
 
-      getUsersForAccount: function(accountId) {
+      getUsersForGroup: function(accountId) {
         var promise = $http.get('/profile/account/' + accountId + '/users');
         return UtilityService.resolvePromise(promise);
       },

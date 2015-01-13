@@ -158,13 +158,13 @@
               <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changePageContext(invoice.customernumber)">{{invoice.customername}}</a>
+              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{invoice.customername}}</a>
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changePageContext(invoice.customernumber)">{{invoice.customernumber}}</a>
+              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{invoice.customernumber}}</a>
             </td>
             <td>
-              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.invoicenumber)" ui-sref="menu.invoiceitems({invoiceNumber: invoice.invoicenumber})">{{invoice.invoicenumber}}</a>
+              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.invoicenumber)">{{invoice.invoicenumber}}</a>
               <span ng-show="invoice.typedescription !== 'Invoice'">{{invoice.invoicenumber}}</span>
             </td>
             <td>

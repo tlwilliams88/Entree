@@ -59,15 +59,30 @@ angular
 .run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location',
   function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, $window, $location) {
 
+  // helper method to display toaster popup message
+  // takes 'success', 'error' types and message as a string
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
 
+  $rootScope.redirectUserToCorrectHomepage = function() {
+    if ( AccessService.isOrderEntryCustomer() ) {
+      $state.go('menu.home');
+    } else {
+      $state.go('menu.catalog.home');
+    }
+  };
+
+  /**********
+  $stateChangeStart
+  **********/
+
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     $log.debug('route: ' + toState.name);
 
-    // check if route is protected
+    // check if route is restricted
     if (toState.data && toState.data.authorize) {
+
       // check if user's token is expired
       if (!AccessService.isLoggedIn()) {
         AuthenticationService.logout();
@@ -76,11 +91,11 @@ angular
       }
 
       if (AccessService.isPasswordExpired()) {
-          $state.go('changepassword');
-          event.preventDefault();
+        $state.go('changepassword');
+        event.preventDefault();
       }
 
-      // check if user has access to the route
+      // check if user has access to the route based on role and permissions
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');
         event.preventDefault();
@@ -89,22 +104,23 @@ angular
 
     // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
-
-      if ( AccessService.isOrderEntryCustomer() ) {
-        $state.go('menu.home');
-      } else {
-        $state.go('menu.catalog.home');
-      }
-
+      $rootScope.redirectUserToCorrectHomepage();
       event.preventDefault();
     }
 
   });
 
+  /**********
+  $stateChangeSuccess
+  **********/
+
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+    // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
+
+    // updates google analytics when state changes
     if (!$window.ga)
       return;
         $window.ga('send', 'pageview', { page: $location.path() });
