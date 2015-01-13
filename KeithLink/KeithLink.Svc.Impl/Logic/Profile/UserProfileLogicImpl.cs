@@ -420,7 +420,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			string dsrRole = string.Empty;
 			string dsrNumber = string.Empty;
 			string dsmRole = string.Empty;
-            if (IsInternalAddress(csProfile.Email))
+            bool isInternalUser = IsInternalAddress( csProfile.Email );
+
+            if (isInternalUser)
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
@@ -432,6 +434,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
 				IsInternalUser = IsInternalAddress(csProfile.Email),
+                PasswordExpired = (isInternalUser) ? false:_extAd.IsPasswordExpired(csProfile.Email),
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
@@ -570,7 +573,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profile != null) {
+            if (IsInternalAddress(emailAddress).Equals(false) && profile != null) {
                 profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
                 retVal.UserProfiles.Add(profile);
                 return retVal;

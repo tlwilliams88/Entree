@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', 'UserProfileService', 'ENV', 'LocalStorage',
-    function ($http, UserProfileService, ENV, LocalStorage) {
+  .factory('AuthenticationService', ['$http', '$q', 'UserProfileService', 'ENV', 'LocalStorage',
+    function ($http, $q, UserProfileService, ENV, LocalStorage) {
 
     var Service = {
 
@@ -27,6 +27,8 @@ angular.module('bekApp')
           token.expires_at = expires_at;
           LocalStorage.setToken(token);
           return username;
+        }, function(error) {
+          return $q.reject('Error authenticating user.');
         });
       },
 

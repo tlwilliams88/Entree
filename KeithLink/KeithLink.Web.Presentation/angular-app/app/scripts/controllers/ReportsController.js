@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ReportsController', ['$scope', '$state', 'ReportService',
-    function ($scope, $state, ReportService) {
+  .controller('ReportsController', ['$scope', '$state', 'ReportService', '$modal',
+    function ($scope, $state, ReportService, $modal) {
         $scope.itemusagequery = {};
         $scope.itemUsageForm = {};
         var initialFromDate = new Date();
@@ -64,7 +64,32 @@ angular.module('bekApp')
               showWeeks: false
             }
           };
-
+        $scope.openExportModal = function() {
+        var modalInstance = $modal.open({
+        templateUrl: 'views/modals/exportmodal.html',
+        controller: 'ExportModalController',
+        resolve: {
+          headerText: function () {
+            return 'Item Usage';
+          },
+          exportMethod: function() {
+            return ReportService.exportItem;
+          },
+          exportConfig: function() {
+            return ReportService.getExportConfig();
+          },
+          exportParams: function() {
+            var params = {
+                fromdate: $scope.itemusagequery.fromDate.toISOString(),
+                todate: $scope.itemusagequery.toDate.toISOString(),
+                sortfield: $scope.sortField,
+                sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
+               };
+            return '/report/itemusage/export?' + jQuery.param(params);
+          }
+        }
+      });
+    };
 
         // INIT
         loadItemUsage();
