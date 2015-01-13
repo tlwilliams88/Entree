@@ -32,7 +32,7 @@ angular
     'ui.select2',
     'configenv'
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
@@ -56,8 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location',
+  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, $window, $location) {
 
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
@@ -105,6 +105,9 @@ angular
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
+    if (!$window.ga)
+      return;
+        $window.ga('send', 'pageview', { page: $location.path() });
   });
 
 }]);

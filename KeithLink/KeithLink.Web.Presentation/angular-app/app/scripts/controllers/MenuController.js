@@ -108,7 +108,8 @@ angular.module('bekApp')
   };
 
   $scope.print = function () {
-    window.print();
+    // console.log('he');
+    $window.print();
   };
 
   $scope.navigateBack = function(){

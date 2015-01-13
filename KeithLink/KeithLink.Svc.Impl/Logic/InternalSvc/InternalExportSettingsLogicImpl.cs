@@ -96,6 +96,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "DueDate", Label= "Due Date" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "Amount", Label = "Amount" });
 					return options;
+				case ExportType.ItemUsage:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityOrdered", Order = 30, Label = "Qty Ordered" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityShipped", Order = 40, Label = "Qty Shipped" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 50, Label = "Pack / Size" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Order = 60, Label = "Each" });
+
+					return options;
 			}
 				
 
