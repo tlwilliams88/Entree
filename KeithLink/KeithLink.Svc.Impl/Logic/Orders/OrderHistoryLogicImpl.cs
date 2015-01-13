@@ -96,12 +96,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             OrderHistoryFileReturn parsedFiles = ParseFile(lines);
 
             foreach (OrderHistoryFile parsedFile in parsedFiles.Files) {
+                parsedFile.SenderApplicationName = Configuration.ApplicationName;
+                parsedFile.SenderProcessName = "Process Order History Updates From Mainframe (Socket Connection)";
+
                 StringWriter xmlWriter = new StringWriter();
                 XmlSerializer xs = new XmlSerializer(parsedFile.GetType());
 
                 xs.Serialize(xmlWriter, parsedFile);
 
                 _queue.PublishToQueue(xmlWriter.ToString());
+
+                logMsg = new StringBuilder();
+                logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", parsedFile.MessageId));
+                logMsg.AppendLine();
+                logMsg.AppendLine(xmlWriter.ToString());
+
+                _log.WriteInformationLog(logMsg.ToString());
             }
         }
 
@@ -122,7 +132,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void SocketExceptionEncountered(object sender, ExceptionEventArgs e) {
-            _log.WriteErrorLog(e.Exception.Message);
+            _log.WriteErrorLog(string.Concat("Exception encountered in OrderHistoryLogic: ", e.Exception.Message));
+            _log.WriteWarningLog("Listener will stop processing and will need to be restarted");
+
+            KeithLink.Common.Core.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
         }
         #endregion
 
@@ -231,16 +244,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     while (rawOrder.Length > 0) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
-                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
-
                         System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
                         System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
 
                         historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
 
+                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
                         Create(historyFile);
-                        //ProcessAsConfirmation(historyFile);
-                        if (historyFile.Header.OrderSystem == OrderSource.Entree) { _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); }
+                        _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); 
 
                         rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
 
