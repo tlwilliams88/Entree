@@ -8,7 +8,12 @@ using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
@@ -21,11 +26,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
         ICustomerRepository customerRepository;
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
+        IOrderHistoryHeaderRepsitory orderHistoryRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
+        IMessageTemplateLogic messageTemplateLogic;
         #endregion
+
+        #region ctor
         public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory)
+            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
+            , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
                     , userMessagingPreferenceRepository, messageProviderFactory)
         {
@@ -35,48 +45,82 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.customerRepository = customerRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
+            this.orderHistoryRepository = orderHistoryRepository;
+            this.messageTemplateLogic = messageTemplateLogic;
         }
+        #endregion
 
         public void ProcessNotification(Core.Models.Messaging.Queue.BaseNotification notification)
         {
-            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
+            if (notification.NotificationType != NotificationType.Eta)
                 throw new ApplicationException("notification/handler type mismatch");
 
             EtaNotification eta = (EtaNotification)notification;
 
             // load up recipients, customer and message
-            // get all orders, then get order details, then get distinct customer list then get recipient by customer, etc ...
-            eventLogRepository.WriteErrorLog("Received ETA Message: " + eta.ToString());
+            eventLogRepository.WriteInformationLog("Received ETA Message with " + eta.Orders.Count + " orders");
+            List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
+            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)); // get all orders for order ETAs
+            Parallel.ForEach(orders, order => {
+                    var etaInfo = eta.Orders.Where(o => o.OrderId == order.InvoiceNumber)
+                        .FirstOrDefault();
+                    
+                }
+                );
+            // send out notifications by customer - this may be enabled eventually, but for now, we just display the data in the UI
+            //List<string> customerNumbers = orders
+            //    .GroupBy(o => o.CustomerNumber)
+            //    .Select(grp => grp.First().CustomerNumber)
+            //    .ToList(); // get list of customer numbers
 
-            //Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber);
-            //List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer);
-            //Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+            // for now, just update the order history entry with the currently estimated/scheduled/arrived times
+            //foreach (string customerNumber in customerNumbers)
+            //{
+            //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber);
+            //    List<Recipient> recipients = base.LoadRecipients(NotificationType.OrderConfirmation, customer);
+            //    Message message = GetEmailMessageForNotification(eta.Orders, orders.Where(o => o.CustomerNumber == customerNumber), customer);
 
-            // send messages to providers...
-            //base.SendMessage(recipients, message);
+                // send messages to providers...
+                //base.SendMessage(recipients, message);
+            //}
         }
 
-        private Message GetEmailMessageForNotification(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
-        { // TODO: plugin message templates so some of this text can come from the database
-            string statusString = String.IsNullOrEmpty(notification.OrderChange.OriginalStatus)
-                ? "Order confirmed with status: " + notification.OrderChange.CurrentStatus
-                : "Order updated from status: " + notification.OrderChange.OriginalStatus + " to " + notification.OrderChange.CurrentStatus;
+        protected Message GetEmailMessageForNotification(IEnumerable<OrderEta> orderEtas, IEnumerable<OrderHistoryHeader> orders, Svc.Core.Models.Profile.Customer customer)
+        {
+            // TODO: Add logic for delivered orders (actualtime) - not needed now, but maybe in the future.
+            StringBuilder orderInfoDetails = new StringBuilder();
+            MessageTemplateModel orderEtaLineTemplate = messageTemplateLogic.ReadForKey("OrderEtaLine");
+            string timeZoneName = string.Empty;
+            foreach (var o in orders)
+            { 
+                OrderEta eta = orderEtas.Where(ordereta => ordereta.OrderId == o.InvoiceNumber).FirstOrDefault();
+                DateTime? estimatedDelivery = DateTime.Parse(eta.EstimatedTime).ToCentralTime(); // will parse into local time, then convert to central
+                DateTime? scheduledDelivery = DateTime.Parse(eta.ScheduledTime).ToCentralTime();
+                DateTime? actualDelivery = DateTime.Parse(eta.ActualTime).ToCentralTime(); 
+                object orderLineDetails =
+                    new {
+                            InvoiceNumber = o.InvoiceNumber,
+                            ProductCount = o.OrderDetails.Count.ToString(),
+                            ShippedQuantity = o.OrderDetails.Sum(od => od.ShippedQuantity).ToString(),
+                            ScheduledDeliveryDate = scheduledDelivery.Value.ToShortDateString(),
+                            ScheduledDeliveryTime = scheduledDelivery.Value.ToShortTimeString(),
+                            EstimatedDeliveryDate = estimatedDelivery.Value.ToShortDateString(),
+                            EstimatedDeliveryTime = estimatedDelivery.Value.ToShortTimeString()
+                        };
+                orderInfoDetails.Append(orderEtaLineTemplate.Body.Inject(orderLineDetails));
 
-            string orderLineChanges = string.Empty;
-            foreach (var line in notification.OrderChange.ItemChanges)
-                orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
-                    (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
-                    "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus)
-                                                        ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
+                if (timeZoneName == string.Empty)
+                {
+                    TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+                    timeZoneName = (centralTimeZone.IsDaylightSavingTime(scheduledDelivery.Value) ? centralTimeZone.DaylightName : centralTimeZone.StandardName);
+                }
+            }
 
-            string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
-            foreach (var line in notification.OrderChange.Items)
-                originalOrderInfo += line.ItemNumber + ", " + line.ItemDescription + " (" + line.QuantityOrdered + ")" + System.Environment.NewLine;
+            MessageTemplateModel orderEtaMainTemplate = messageTemplateLogic.ReadForKey("OrderEtaMain");
 
             Message message = new Message();
-            message.MessageSubject = "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
-            message.MessageBody = statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
-            message.CustomerNumber = customer.CustomerNumber;
+            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = customer.CustomerName });
+            message.MessageBody = orderEtaMainTemplate.Body.Inject(new { TimeZoneName = timeZoneName, EtaOrderLines = orderInfoDetails.ToString() });
             message.CustomerNumber = customer.CustomerNumber;
 			message.NotificationType = NotificationType.OrderConfirmation;
             return message;

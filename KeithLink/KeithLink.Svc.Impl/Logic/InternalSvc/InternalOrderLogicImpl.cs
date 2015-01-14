@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         FutureItems = h.FutureItems,
                         ErrorStatus = h.ErrorStatus,
                         RouteNumber = h.RouteNumber,
-                        StopNumber = h.StropNumber
+                        StopNumber = h.StopNumber
                     }
                 };
 

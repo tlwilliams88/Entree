@@ -43,7 +43,11 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		public string RouteNumber { get; set; }
 		[MaxLength(3)]
 		[Column(TypeName = "char")]
-		public string StropNumber { get; set; }
+		public string StopNumber { get; set; }
+        public DateTime? ScheduledDeliveryTime { get; set; }
+        public DateTime? EstimatedDeliveryTime { get; set; }
+        public DateTime? ActualDeliveryTime { get; set; }
+        public bool? OutOfSequence { get; set; }
 
 		public virtual ICollection<OrderHistoryDetail> OrderDetails { get; set; }
 	}

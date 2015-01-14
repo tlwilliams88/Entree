@@ -81,7 +81,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.FutureItems = value.FutureItems;
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
-            entity.StropNumber = value.StopNumber;
+            entity.StopNumber = value.StopNumber;
         }
 
         public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
-            retVal.StropNumber = value.StopNumber;
+            retVal.StopNumber = value.StopNumber;
 
             return retVal;
         }
@@ -197,7 +197,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
-            retVal.StopNumber = value.StropNumber;
+            retVal.StopNumber = value.StopNumber;
 			
             return retVal;
         }
