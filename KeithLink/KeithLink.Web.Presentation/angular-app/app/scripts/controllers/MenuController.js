@@ -74,7 +74,7 @@ angular.module('bekApp')
 
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
-    if (false) {
+    if (AccessService.isInternalUser()) {
       $state.go('menu.admin.customergroup');
       
     // external owner admin
