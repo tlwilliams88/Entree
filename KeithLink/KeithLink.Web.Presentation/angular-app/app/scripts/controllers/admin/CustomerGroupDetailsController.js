@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AdminAccountDetailsController', ['$scope', '$state', '$stateParams', 'originalAccount', 'AccountService', 'CustomerService', 'UserProfileService',
-    function ($scope, $state, $stateParams, originalAccount, AccountService, CustomerService, UserProfileService) {
+  .controller('CustomerGroupDetailsController', ['$scope', '$state', '$stateParams', 'originalCustomerGroup', 'CustomerGroupService', 'CustomerService', 'UserProfileService',
+    function ($scope, $state, $stateParams, originalCustomerGroup, CustomerGroupService, CustomerService, UserProfileService) {
     
   function init() {
-    if ($stateParams.accountId === 'new') {
-      $scope.originalAccount = {
+    if ($stateParams.groupId === 'new') {
+      $scope.originalCustomerGroup = {
         customers: [],
         adminusers: []
       };
-      $scope.account = angular.copy($scope.originalAccount);
+      $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
       $scope.isNew = true;
     } else {
-      $scope.originalAccount = originalAccount;
-      $scope.account = angular.copy($scope.originalAccount);
+      $scope.originalCustomerGroup = originalCustomerGroup;
+      $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
       $scope.isNew = false;
     }
     
@@ -49,7 +49,7 @@ angular.module('bekApp')
 
       // check if customer is selected
       customers.forEach(function(customer) {
-        $scope.account.customers.forEach(function(selectedCustomer) {
+        $scope.customerGroup.customers.forEach(function(selectedCustomer) {
           if (customer.customerId === selectedCustomer.customerId) {
             customer.selected = true;
           }
@@ -102,13 +102,13 @@ angular.module('bekApp')
   };
 
   $scope.selectCustomer = function(customer) {
-    $scope.account.customers.push(customer);
+    $scope.customerGroup.customers.push(customer);
     customer.selected = true;
   };
 
   $scope.unselectCustomer = function(customer) {
-    var idx = $scope.account.customers.indexOf(customer);
-    $scope.account.customers.splice(idx, 1);
+    var idx = $scope.customerGroup.customers.indexOf(customer);
+    $scope.customerGroup.customers.splice(idx, 1);
     $scope.customers.forEach(function(availableCustomer) {
       if (customer.customerNumber === availableCustomer.customerNumber) {
         availableCustomer.selected = false;
@@ -124,7 +124,7 @@ angular.module('bekApp')
     var isDuplicateUser = false;
 
     // check if user is already in list of selected users
-    $scope.account.adminusers.forEach(function(user) {
+    $scope.customerGroup.adminusers.forEach(function(user) {
       if (user.emailaddress == emailAddress) {
         isDuplicateUser = true;
       }
@@ -140,7 +140,7 @@ angular.module('bekApp')
     };
     UserProfileService.getAllUsers(data).then(function (profiles) {
       if (profiles.length === 1) {
-        $scope.account.adminusers.push(profiles[0]);
+        $scope.customerGroup.adminusers.push(profiles[0]);
       } else {
         // display error message to user
       }
@@ -148,49 +148,49 @@ angular.module('bekApp')
   };
 
   $scope.removeUser = function(user) {
-    var idx = $scope.account.adminusers.indexOf(user);
-    $scope.account.adminusers.splice(idx, 1);
+    var idx = $scope.customerGroup.adminusers.indexOf(user);
+    $scope.customerGroup.adminusers.splice(idx, 1);
   };
 
   /***********
   FORM EVENTS
   ***********/
-  var processingCreateAccount = false;
-  function createNewAccount(account) {
-    if (!processingCreateAccount) {
-      processingCreateAccount = true;
-      AccountService.createAccount(account).then(function(newAccount) {
-        $scope.displayMessage('success', 'Successfully created a new account.');
-        $state.go('menu.admin.accountdetails', { accountId: newAccount.id });
+  var processingCreateCustomerGroup = false;
+  function createNewCustomerGroup(group) {
+    if (!processingCreateCustomerGroup) {
+      processingCreateCustomerGroup = true;
+      CustomerGroupService.createGroup(group).then(function(newGroup) {
+        $scope.displayMessage('success', 'Successfully created a new customer group.');
+        $state.go('menu.admin.editcustomergroup', { groupId: newGroup.id });
       }, function(error) {
         $log.debug(error);
-        $scope.displayMessage('error', 'Error creating new account.');
+        $scope.displayMessage('error', 'Error creating new customer group.');
       }).finally(function() {
-        processingCreateAccount = false;
+        processingCreateCustomerGroup = false;
       });
     }
   };
 
-  var processingSaveAccount = false;
-  function saveAccount(account) {
-    if (!processingSaveAccount) {
-      processingSaveAccount = true;
-      delete account.customerusers;
-      AccountService.updateAccount(account).then(function(accounts) {
-        $scope.displayMessage('success', 'Successfully saved account.');
+  var processingSaveCustomerGroup = false;
+  function saveCustomerGroup(group) {
+    if (!processingSaveCustomerGroup) {
+      processingSaveCustomerGroup = true;
+      delete group.customerusers;
+      CustomerGroupService.updateGroup(group).then(function(groups) {
+        $scope.displayMessage('success', 'Successfully saved customer group.');
       }, function(error) {
-        $scope.displayMessage('error', 'Error saving account.');
+        $scope.displayMessage('error', 'Error saving customer group.');
       }).finally(function() {
-        processingSaveAccount = false;
+        processingSaveCustomerGroup = false;
       });
     }
   };
 
-  $scope.submitForm = function(account) {
+  $scope.submitForm = function(group) {
     if ($scope.isNew) {
-      createNewAccount(account);
+      createNewCustomerGroup(group);
     } else {
-      saveAccount(account);
+      saveCustomerGroup(group);
     }
   }
 

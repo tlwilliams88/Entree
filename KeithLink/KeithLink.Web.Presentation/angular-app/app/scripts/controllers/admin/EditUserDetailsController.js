@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$q', 'UserProfileService', 'userProfile', 'AccountService', 'CustomerService',
-    function ($scope, $q, UserProfileService, userProfile, AccountService, CustomerService) {
+  .controller('EditUserDetailsController', ['$scope', '$q', 'UserProfileService', 'userProfile', 'CustomerService',
+    function ($scope, $q, UserProfileService, userProfile, CustomerService) {
 
   /*---convenience functions---*/
   var processProfile = function(newProfile){
@@ -55,7 +55,6 @@ angular.module('bekApp')
     //pushes profile object to database
     UserProfileService.updateUserProfileFromAdmin($scope.profile).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully updated.');
-      //processProfile(newProfile); // <-- UNCOMMENT WHENEVER DATA SENT BACK IS FRESH
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
     });

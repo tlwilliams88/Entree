@@ -31,7 +31,6 @@ angular.module('bekApp')
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
         }]
-        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home
@@ -274,9 +273,6 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       },
       resolve: {
-        // invoices: [ 'InvoiceService', function(InvoiceService) {
-        //   return InvoiceService.getAllInvoices();
-        // }],
         accounts: ['BankAccountService', function(BankAccountService) {
           return BankAccountService.getAllBankAccounts();
         }]
@@ -305,11 +301,6 @@ angular.module('bekApp')
       controller: 'MarketingController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
-        // }]
       }
     })
 
@@ -337,14 +328,6 @@ angular.module('bekApp')
       url: '/admin/',
       template: '<ui-view>'
     })
-    .state('menu.admin.accountadmin',{
-      url: 'account/',
-      templateUrl: 'views/admin/accountadmin.html',
-      controller: 'AccountAdminController',
-      data: {
-        authorize: 'canManageAccount'
-      }
-    })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
@@ -368,29 +351,37 @@ angular.module('bekApp')
     })
 
     /*************
-    ADMIN ACCOUNTS
+    ADMIN CUSTOMER GROUPS
     *************/
-    .state('menu.admin.account', {
-      url: 'accounts/',
-      templateUrl: 'views/admin/accounts.html',
-      controller: 'AccountsController',
+    .state('menu.admin.customergroupdashboard',{
+      url: 'customergroup/dashboard/',
+      templateUrl: 'views/admin/customergroupdashboard.html',
+      controller: 'CustomerGroupDashboardController',
       data: {
         authorize: 'canManageAccount'
       }
     })
-    .state('menu.admin.accountdetails', {
-      url: 'accounts/:accountId/',
-      templateUrl: 'views/admin/accountdetails.html',
-      controller: 'AdminAccountDetailsController',
+    .state('menu.admin.customergroup', {
+      url: 'customergroup/',
+      templateUrl: 'views/admin/customergroups.html',
+      controller: 'CustomerGroupsController',
+      data: {
+        authorize: 'canManageAccount'
+      }
+    })
+    .state('menu.admin.customergroupdetails', {
+      url: 'customergroup/:groupId/',
+      templateUrl: 'views/admin/customergroupdetails.html',
+      controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageAccount'
       },
       resolve: {
-        originalAccount: ['$stateParams', 'AccountService', function($stateParams, AccountService) {
-          if ($stateParams.accountId === 'new') {
+        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
+          if ($stateParams.groupId === 'new') {
             return {};
           } else {
-            return AccountService.getAccountDetails($stateParams.accountId);
+            return CustomerGroupService.getGroupDetails($stateParams.groupId);
           }
         }]
       }
@@ -401,15 +392,19 @@ angular.module('bekApp')
       url: '/404/',
       templateUrl: 'views/404.html'
     });
+  
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  
+  // redirect when user tries to go to an abstract state
   $urlRouterProvider.when('/lists', '/lists/1');
   $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
-  $urlRouterProvider.otherwise('/404');
 
+  $urlRouterProvider.otherwise('/404');
+  
   // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();

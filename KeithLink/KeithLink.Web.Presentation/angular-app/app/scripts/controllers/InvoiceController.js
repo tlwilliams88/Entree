@@ -88,7 +88,7 @@ angular.module('bekApp')
     }
   });
 
-  function changeUserContext(stateName, stateParams) {
+  function changeUserContext(stateName, stateParams, customerNumber) {
     //generate and set customer context to customerNumber that user selected
     CustomerService.getCustomerDetails(customerNumber).then(function (customer) {
       var generatedUserContext = {
@@ -113,12 +113,17 @@ angular.module('bekApp')
   }
 
   //change the selected user context to the one the user clicked and refresh the page
-  $scope.changePageContext = function (customerNumber) {
-    changeUserContext('menu.invoice', $state.params);
+  $scope.changeCustomerOnClick = function (customerNumber) {
+    changeUserContext('menu.invoice', $state.params, customerNumber);
   };
 
   $scope.linkToReferenceNumber = function(customerNumber, invoiceNumber){
-    changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber });
+    if ($scope.viewingAllCustomers) {
+      // change selected context if viewing all customers
+      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber);
+    } else {
+      $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
+    }
   };
 
   /******************************
