@@ -1,5 +1,6 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
@@ -19,19 +20,22 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderConversionLogicImpl : IOrderConversionLogic {
         #region attributes
+        private readonly IEventLogRepository _log;
         private readonly IOrderHistoryHeaderRepsitory _historyRepo;
         private readonly IUnitOfWork _uow;
         #endregion
 
         #region ctor
-        public OrderConversionLogicImpl(IOrderHistoryHeaderRepsitory historyRepository, IUnitOfWork unitOfWork) {
+        public OrderConversionLogicImpl(IOrderHistoryHeaderRepsitory historyRepository, IUnitOfWork unitOfWork, IEventLogRepository logRepo) {
             _historyRepo = historyRepository;
             _uow = unitOfWork;
+
+            _log = logRepo;
         }
         #endregion
 
         #region methods
-        private static PurchaseOrder GetCsPurchaseOrderByNumber(string poNum) {
+        private PurchaseOrder GetCsPurchaseOrderByNumber(string poNum) {
             System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
             SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", poNum);
@@ -53,7 +57,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     // get the guids for the customers associated users and loop if necessary
                     PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
                     return po;
-                } catch {
+                } catch (Exception ex) {
+                    _log.WriteWarningLog("Could not locate POs for user's ID. This is not an exception, just a notice.", ex);
                     return null;
                 }
             } else {
@@ -169,7 +174,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             orderFormLineItem.ProductId = currentItemNumber;
         }
 
-        private static void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder) {
+        private void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder) {
             if (lineItems.Any(x => ((string)x[Constants.CS_LINE_ITEM_MAIN_FRAME_STATUS]) != Constants.CONFIRMATION_DETAIL_FILLED_STATUS)) { // exceptions
                 if (isChangeOrder)
                     po.Status = Constants.CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_EXCEPTIONS_STATUS;
