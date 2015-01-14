@@ -31,7 +31,6 @@ angular.module('bekApp')
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
         }]
-        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home
@@ -274,9 +273,6 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       },
       resolve: {
-        // invoices: [ 'InvoiceService', function(InvoiceService) {
-        //   return InvoiceService.getAllInvoices();
-        // }],
         accounts: ['BankAccountService', function(BankAccountService) {
           return BankAccountService.getAllBankAccounts();
         }]
@@ -305,11 +301,6 @@ angular.module('bekApp')
       controller: 'MarketingController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
-        // }]
       }
     })
 
@@ -401,15 +392,19 @@ angular.module('bekApp')
       url: '/404/',
       templateUrl: 'views/404.html'
     });
+  
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  
+  // redirect when user tries to go to an abstract state
   $urlRouterProvider.when('/lists', '/lists/1');
   $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
-  $urlRouterProvider.otherwise('/404');
 
+  $urlRouterProvider.otherwise('/404');
+  
   // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();
