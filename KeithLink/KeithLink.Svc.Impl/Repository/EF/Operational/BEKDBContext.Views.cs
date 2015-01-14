@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets58cfecc6c20cd28c356748f72445ae5306ff65aa2104e04d7269a62a906d421a))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets5fe41e2703f15f3af80935482877d3ac5092ea63a2e9547a77b2254e42729c54))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets58cfecc6c20cd28c356748f72445ae5306ff65aa2104e04d7269a62a906d421a : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets5fe41e2703f15f3af80935482877d3ac5092ea63a2e9547a77b2254e42729c54 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "58cfecc6c20cd28c356748f72445ae5306ff65aa2104e04d7269a62a906d421a"; }
+            get { return "5fe41e2703f15f3af80935482877d3ac5092ea63a2e9547a77b2254e42729c54"; }
         }
 
         /// <summary>
@@ -976,7 +976,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeader
-        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StropNumber, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_OutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -991,7 +991,11 @@ namespace Edm_EntityMappingGeneratedViews
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
             T.RouteNumber AS OrderHistoryHeader_RouteNumber, 
-            T.StropNumber AS OrderHistoryHeader_StropNumber, 
+            T.StopNumber AS OrderHistoryHeader_StopNumber, 
+            T.ScheduledDeliveryTime AS OrderHistoryHeader_ScheduledDeliveryTime, 
+            T.EstimatedDeliveryTime AS OrderHistoryHeader_EstimatedDeliveryTime, 
+            T.ActualDeliveryTime AS OrderHistoryHeader_ActualDeliveryTime, 
+            T.OutOfSequence AS OrderHistoryHeader_OutOfSequence, 
             T.CreatedUtc AS OrderHistoryHeader_CreatedUtc, 
             T.ModifiedUtc AS OrderHistoryHeader_ModifiedUtc, 
             True AS _from0
@@ -1071,7 +1075,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeaders
-        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StropNumber, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_OutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1086,7 +1090,11 @@ namespace Edm_EntityMappingGeneratedViews
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
             T.RouteNumber AS OrderHistoryHeader_RouteNumber, 
-            T.StropNumber AS OrderHistoryHeader_StropNumber, 
+            T.StopNumber AS OrderHistoryHeader_StopNumber, 
+            T.ScheduledDeliveryTime AS OrderHistoryHeader_ScheduledDeliveryTime, 
+            T.EstimatedDeliveryTime AS OrderHistoryHeader_EstimatedDeliveryTime, 
+            T.ActualDeliveryTime AS OrderHistoryHeader_ActualDeliveryTime, 
+            T.OutOfSequence AS OrderHistoryHeader_OutOfSequence, 
             T.CreatedUtc AS OrderHistoryHeader_CreatedUtc, 
             T.ModifiedUtc AS OrderHistoryHeader_ModifiedUtc, 
             True AS _from0
