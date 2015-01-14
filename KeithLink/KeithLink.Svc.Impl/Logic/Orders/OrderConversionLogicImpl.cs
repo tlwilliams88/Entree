@@ -46,12 +46,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(trackingNumberClause, options);
 
             if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0) {
-                // Enumerate the results of the search.
-                Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
+                try {
+                    // Enumerate the results of the search.
+                    Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
 
-                // get the guids for the customers associated users and loop if necessary
-                PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
-                return po;
+                    // get the guids for the customers associated users and loop if necessary
+                    PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
+                    return po;
+                } catch {
+                    return null;
+                }
             } else {
                 return null;
             }
@@ -101,22 +105,25 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
-            //_confLogic.ProcessIncomingConfirmation(histFile.ToConfirmationFile());
-            ConfirmationFile confirmation = histFile.ToConfirmationFile();
-            PurchaseOrder po = GetCsPurchaseOrderByNumber(confirmation.Header.ConfirmationNumber);
+            if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
+                ConfirmationFile confirmation = histFile.ToConfirmationFile();
+                PurchaseOrder po = GetCsPurchaseOrderByNumber(confirmation.Header.ConfirmationNumber);
 
-            // need to save away pre and post status info, then if different, add something to the messaging
-            LineItem[] currLineItems = new LineItem[po.LineItemCount];
-            LineItem[] origLineItems = new LineItem[po.LineItemCount];
-            po.OrderForms[0].LineItems.CopyTo(currLineItems, 0);
-            po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
-            string originalStatus = po.Status;
+                if (po != null) {
+                    // need to save away pre and post status info, then if different, add something to the messaging
+                    LineItem[] currLineItems = new LineItem[po.LineItemCount];
+                    LineItem[] origLineItems = new LineItem[po.LineItemCount];
+                    po.OrderForms[0].LineItems.CopyTo(currLineItems, 0);
+                    po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
+                    string originalStatus = po.Status;
 
-            SetCsLineInfo(currLineItems, confirmation);
+                    SetCsLineInfo(currLineItems, confirmation);
 
-            SetCsHeaderInfo(confirmation, po, currLineItems);
+                    SetCsHeaderInfo(confirmation, po, currLineItems);
 
-            po.Save();
+                    po.Save();
+                }
+            }
         }
 
         private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po, LineItem[] lineItems) {

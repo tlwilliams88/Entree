@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile.Cache
         /// </returns>
         private TimeSpan GetCacheExpiration()
         {
-            return new TimeSpan(0, 1, 0);
+            return new TimeSpan(0, 30, 0);
         }
 
         /// <summary>

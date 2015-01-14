@@ -4,384 +4,387 @@ angular.module('bekApp')
   .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state',
     function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state) {
 
-      //handles customer specific invoice loading
-      function loadInvoices(params) {
-        $scope.loadingResults = true;
-        return InvoiceService.getInvoices(params).then(function (data) {
-          $scope.loadingResults = false;
-          $scope.totalInvoices = data.pagedresults.totalResults;
-          $scope.hasPayableInvoices = data.haspayableinvoices;
-          $scope.totaldue = '';
+  function loadInvoices(params) {
+    var promise;
+    $scope.loadingResults = true;
 
-          return data.pagedresults.results; // return array of invoices
-        });
-      }
+    params.filter = createFilterObject();
 
-      //handles loading invoices if the user wishes to view all customers at the same time
-      function loadAllOpenInvoices(params) {
-        $scope.loadingResults = true;
-        return InvoiceService.getAllOpenInvoices(params).then(function (data) {
-          $scope.loadingResults = false;
-          $scope.totalInvoices = data.pagedresults.totalResults;
-          $scope.hasPayableInvoices = data.haspayableinvoices;
-          $scope.totaldue = data.totaldue;
+    if ($scope.viewingAllCustomers) {
+      // handles loading invoices if the user wishes to view all customers at the same time
+      promise = InvoiceService.getAllOpenInvoices(params);
+    } else {
+      // handles customer specific invoice loading
+      promise = InvoiceService.getInvoices(params);
+    }
 
-          return data.pagedresults.results; // return array of invoices
-        });
-      }
+    return promise.then(function(data) {
+      $scope.loadingResults = false;
+      $scope.totalInvoices = data.pagedresults.totalResults;
+      $scope.hasPayableInvoices = data.haspayableinvoices;
+      $scope.totalAmountDue = data.totaldue;
 
-      function setInvoices(invoices) {
-        $scope.invoices = invoices;
-      }
+      return data.pagedresults.results;
+    });
+  }
 
-      //set defaults and instantiate persistent user context
-      $scope.headerText = 'Invoices for: ' + $scope.selectedUserContext.customer.customerName;
+  function setInvoices(invoices) {
+    $scope.invoices = invoices;
+  }
+
+  /************
+  VIEWING INVOICES FOR ALL CUSTOMERS
+  ************/
+
+  function setPageText(customerName, customerNumber) {
+    if ($scope.viewingAllCustomers) {
+      //set button and header text
+      $scope.viewAllButtonText = 'Return to Invoices for: ' + customerNumber + ' - ' + customerName;
+      $scope.headerText = 'Open Invoices of All Customers';
+    } else {
       $scope.viewAllButtonText = 'View Open Invoices for All Customers';
-      var temporarySelectedUserContext = {};
+      $scope.headerText = 'Invoices for: ' + customerName;
+    }
+  }
 
-      //toggles state between all invoices and single customer invoices
-      $scope.viewAllOpenInvoices = function () {
-        //properly set string values for each state and change the selected user context to a placeholder to prevent confusion
-        if (!$scope.viewingAllCustomers) {
-          //set button and header text
-          $scope.viewAllButtonText = 'Return to Invoices for: ' + $scope.selectedUserContext.customer.customerNumber + ' - ' + $scope.selectedUserContext.customer.customerName;
-          $scope.headerText = 'Open Invoices of All Customers';
+  //toggles state between all customer invoices and single customer invoices
+  $scope.switchViewingAllCustomers = function () {
+    //properly set string values for each state and change the selected user context to a placeholder to prevent confusion
+    $scope.viewingAllCustomers = !$scope.viewingAllCustomers;
+    
+    //wipe current invoices out
+    $scope.invoices = [];
+    $scope.totalInvoices = 0;
 
-          //store current user context temporarily
-          temporarySelectedUserContext = $scope.$parent.selectedUserContext;
+    // clear filter row
+    $scope.filterRowFields = {};
 
-          //wipe user context and replace text with all customers
-          $scope.$parent.selectedUserContext = {};
-          $scope.$parent.selectedUserContext.text = 'All Customers';
+    if ($scope.viewingAllCustomers) {
 
-          //wipe current invoices out
-          $scope.invoices = [];
+      setPageText($scope.selectedUserContext.customer.customerName, $scope.selectedUserContext.customer.customerNumber);
+      //store current user context temporarily
+      temporarySelectedUserContext = $scope.selectedUserContext;
 
-          //load all open invoices from all customers and set the customer array to that result
-          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
-        } else {
-          //set button text back to View All
-          $scope.viewAllButtonText = 'View Open Invoices for All Customers';
+      //wipe user context and replace text with all customers
+      var tempContext = {
+        text: 'All Customers'
+      };
+      $scope.setSelectedUserContext(tempContext);
 
-          //restore previous selected user context
-          $scope.$parent.selectedUserContext = temporarySelectedUserContext;
+    } else {
+      setPageText(temporarySelectedUserContext.customer.customerName);
+      //restore previous selected user context
+      $scope.setSelectedUserContext(temporarySelectedUserContext);
+    }
 
-          //restore previous header text
-          $scope.headerText = 'Invoices for: ' + $scope.selectedUserContext.customer.customerName;
-        }
-        $scope.viewingAllCustomers = !$scope.viewingAllCustomers;
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
+
+  //listens for state change event to restore selectedUserContext
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+    //change selected user context back to the one stored in LocalStorage here
+    if (fromState.name === 'menu.invoice' && !$scope.selectedUserContext.id) {
+      $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
+    }
+  });
+
+  function changeUserContext(stateName, stateParams, customerNumber) {
+    //generate and set customer context to customerNumber that user selected
+    CustomerService.getCustomerDetails(customerNumber).then(function (customer) {
+      var generatedUserContext = {
+        id: customer.customerNumber,
+        text: customer.displayname,
+        customer: customer
       };
 
-      //listens for state change event to restore selectedUserContext
-      $rootScope.$on('$stateChangeStart', function () {
-        //change selected user context back to the one stored in LocalStorage here
-        $scope.$parent.selectedUserContext = LocalStorage.getCurrentCustomer();
+      //set the selected context to the generated one
+      $scope.setSelectedUserContext(generatedUserContext);
+
+      //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
+      LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+
+      //refresh the page
+      $state.transitionTo(stateName, stateParams, {
+        reload: true,
+        inherit: false,
+        notify: true
       });
+    });
+  }
 
-      //change the selected user context to the one the user clicked and refresh the page
-      $scope.changePageContext = function (customerNumber) {
-        //generate and set customer context to customerNumber that user selected
-        CustomerService.getCustomerDetails(customerNumber).then(function (success) {
-            //generate new customer context TODO: FIX CODE DUPLICATION HERE
-            var generatedUserContext = {};
-            generatedUserContext.id = success.customerNumber;
-            generatedUserContext.text = success.customerNumber + ' - ' + success.customerName;
-            generatedUserContext.customer = success;
+  //change the selected user context to the one the user clicked and refresh the page
+  $scope.changeCustomerOnClick = function (customerNumber) {
+    changeUserContext('menu.invoice', $state.params, customerNumber);
+  };
 
-            //set the selected context to the generated one
-            $scope.$parent.selectedUserContext = generatedUserContext;
+  $scope.linkToReferenceNumber = function(customerNumber, invoiceNumber){
+    if ($scope.viewingAllCustomers) {
+      // change selected context if viewing all customers
+      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber);
+    } else {
+      $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
+    }
+  };
 
-            //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
-            LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+  /******************************
+  PAGING, SORTING, FILTERING
+  ******************************/
 
-            //refresh the page
-            $state.transitionTo($state.current, $state.params, {
-              reload: true,
-              inherit: false,
-              notify: true
-            });
-          }
-        );
-      };
+  function createFilterObject() {
 
-      $scope.linkToReferenceNumber = function(customerNumber, invoiceNumber){
-        //generate and set customer context to customerNumber that user selected
-        CustomerService.getCustomerDetails(customerNumber).then(function (success) {
-            //generate new customer context TODO: FIX CODE DUPLICATION HERE
-            var generatedUserContext = {};
-            generatedUserContext.id = success.customerNumber;
-            generatedUserContext.text = success.customerNumber + ' - ' + success.customerName;
-            generatedUserContext.customer = success;
+    // create array of filter fields
+    // example filter object
+    // filter: {
+    //   field: 'subject', // this contains the info for the first filter
+    //   value: 'value',
+    //   filter: [ // use this array if filtering by more than one field
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
 
-            //set the selected context to the generated one
-            $scope.$parent.selectedUserContext = generatedUserContext;
+    var filterObject = {
+      // field: 
+      // value:
+      filter: []
+    };
 
-            //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
-            LocalStorage.setSelectedCustomerInfo(generatedUserContext);
-            //redirect to specific invoice page
-            $state.transitionTo('menu.invoiceitems', {invoiceNumber: invoiceNumber}, {
-              reload: true,
-              inherit: false,
-              notify: true
-            })
-          }
-        );
-      };
+    // if viewing all customers, set open filter
+    if ($scope.viewingAllCustomers) {
+      filterObject.filter.push({
+        field: 'statusdescription',
+        value: 'open'
+      });
+    }
 
-      /******************************
-       PAGING, SORTING, FILTERING
-       ******************************/
+    // if filter view is selected, set given filter
+    if ($scope.selectedFilterView && !$scope.viewingAllCustomers) {
+      filterObject.filter = filterObject.filter.concat($scope.selectedFilterView.filterFields);
+    }
 
-      $scope.filterInvoices = function (filterFields) {
-
-        // create array of filter fields
-        // example filter object
-        // filter: {
-        //   field: 'subject', // this contains the info for the first filter
-        //   value: 'value',
-        //   filter: [ // use this array if filtering by more than one field
-        //      {
-        //        field: 'name',
-        //        value: 'value'
-        //      }
-        //   ]
-        // }
-        var filterList = [];
-        for (var propertyName in filterFields) {
-          if (filterFields[propertyName] && filterFields[propertyName] !== '') {
-            var filterObject = {
-              field: propertyName,
-              value: filterFields[propertyName]
-            };
-            filterList.push(filterObject);
-          }
+    // if filter row is used
+    if ($scope.filterRowFields) {
+      // var filterList = [];
+      for (var propertyName in $scope.filterRowFields) {
+        if ($scope.filterRowFields[propertyName] && $scope.filterRowFields[propertyName] !== '') {
+          var filterField = {
+            field: propertyName,
+            value: $scope.filterRowFields[propertyName]
+          };
+          filterObject.filter.push(filterField);
         }
+      }
+    }
 
-        var firstFilter = filterList[0];
-        filterList.splice(0, 1);
+    // if no filters are selected, remove filter object
+    if (filterObject.filter.length === 0) {
+      filterObject = [];
+    
+    
+    // otherwise, pop first filter
+    } else {
+      var firstFilter = filterObject.filter.splice(0, 1)[0];
+      filterObject.field = firstFilter.field;
+      filterObject.value = firstFilter.value;
+      if (firstFilter.type) {
+        filterObject.type = firstFilter.type;
+      }
+    }
 
-        var filterParamObject = {
-          field: firstFilter.field,
-          value: firstFilter.value,
-          filter: filterList
-        };
+    return filterObject;
+  }
 
-        $scope.invoiceParams.filter = filterParamObject;
+  $scope.filterInvoices = function (filterFields) {
+    // reset paging
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
 
-        // reset paging
-        $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
-        $scope.invoiceParams.from = 0;
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
 
-        if(!$scope.viewingAllCustomers) {
-          loadInvoices($scope.invoiceParams).then(setInvoices);
-        } else{
-          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
-        }
-      };
+  $scope.clearFilters = function () {
+    $scope.filterRowFields = {};
+    
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
 
-      $scope.clearFilters = function () {
-        $scope.filterFields = {};
-        $scope.invoiceParams.filter = [];
+  $scope.sortInvoices = function (field, order) {
+    $scope.sortOrder = order;
 
-        if(!$scope.viewingAllCustomers) {
-          loadInvoices($scope.invoiceParams).then(setInvoices);
-        } else {
-          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
-        }
-      };
+    $scope.invoiceParams.sort = [{
+      field: field,
+      order: order ? 'desc' : 'asc'
+    }];
 
-      $scope.sortInvoices = function (field, order) {
-        $scope.sortOrder = order;
+    // reset paging
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
 
-        $scope.invoiceParams.sort = [{
-          field: field
-        }];
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
 
-        if (order === true) {
-          $scope.invoiceParams.sort[0].order = 'desc';
-        } else {
-          $scope.invoiceParams.sort[0].order = 'asc';
-        }
+  $scope.infiniteScrollLoadMore = function () {
+    if (($scope.invoices && $scope.invoices.length >= $scope.totalInvoices) || $scope.loadingResults) {
+      return;
+    }
 
-        // reset paging
-        $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
-        $scope.invoiceParams.from = 0;
+    $scope.invoiceParams.from += $scope.invoiceParams.size;
 
-        if(!$scope.viewingAllCustomers) {
-          loadInvoices($scope.invoiceParams).then(setInvoices);
-        }else {
-          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
-        }
-      };
+    loadInvoices($scope.invoiceParams).then(function (invoices) {
+      $scope.invoices = $scope.invoices.concat(invoices);
+    });
+  };
 
-      $scope.infiniteScrollLoadMore = function () {
-        if (($scope.invoices && $scope.invoices.length >= $scope.totalInvoices) || $scope.loadingResults) {
+  /************
+  Filter Views
+  ************/
+
+  // different filter views for users to choose in the header dropdown
+  $scope.filterViews = [{
+    name: 'All Invoices',
+    filterFields: []
+  }, {
+    name: 'Invoices to Pay',
+    filterFields: [{
+      field: 'ispayable',
+      value: true,
+      type: 'equals'
+    }]
+  },
+  {
+    name: 'Open Invoices',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Open'
+    }]
+  }, {
+    name: 'Past Due Invoices',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Past Due'
+    }]
+  }, {
+    name: 'Paid Invoices',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Paid'
+    }]
+  }];
+
+  $scope.selectFilterView = function (filterView) {
+    $scope.selectedFilterView = filterView;
+
+    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
+    $scope.invoiceParams.from = 0;
+
+    loadInvoices($scope.invoiceParams).then(setInvoices);
+  };
+
+  $scope.selectAccount = function (account) {
+    $scope.selectedAccount = account;
+  };
+
+  $scope.selectInvoice = function (invoice, isSelected) {
+    if (isSelected) {
+      invoice.paymentAmount = invoice.amount.toString();
+    } else {
+      invoice.paymentAmount = '0';
+    }
+  };
+
+  $scope.selectAll = function () {
+    angular.forEach($scope.invoices, function (item, index) {
+      if (item.ispayable) {
+        item.isSelected = $scope.selectAllPayable;
+        $scope.selectInvoice(item, item.isSelected);
+      }
+    });
+  };
+
+  $scope.totalPaymentAmount = function () {
+    var total = 0;
+    $scope.invoices.forEach(function (invoice) {
+      total += parseFloat(invoice.paymentAmount || 0);
+    });
+    $scope.total = total;
+    return total;
+  };
+
+  var processingPayInvoices = false;
+  $scope.payInvoices = function () {
+    if (!processingPayInvoices) {
+      processingPayInvoices = true;
+      var payments = $filter('filter')($scope.invoices, {isSelected: true});
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function () {
+        processingPayInvoices = false;
+      });
+    }
+  };
+
+  $scope.openExportModal = function () {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Invoices';
+        },
+        exportMethod: function () {
+          return InvoiceService.exportInvoice;
+        },
+        exportConfig: function () {
+          return InvoiceService.getExportConfig();
+        },
+        exportParams: function () {
           return;
         }
-
-        $scope.invoiceParams.from += $scope.invoiceParams.size;
-
-        if(!$scope.viewingAllCustomers){
-          loadInvoices($scope.invoiceParams).then(function (invoices) {
-            $scope.invoices = $scope.invoices.concat(invoices);
-          });
-        } else {
-          loadAllOpenInvoices($scope.invoiceParams).then(function (invoices) {
-            $scope.invoices = $scope.invoices.concat(invoices);
-          });
-        }
-      };
+      }
+    });
+  };
 
 
-      /************
-       Filter Views
-       ************/
+  $scope.invoices = [];
+  $scope.accounts = accounts;
+  $scope.selectedAccount = accounts[0];
 
-        // different filter views for users to choose in the header dropdown
-      $scope.filterViews = [{
-        name: 'All Invoices',
-        filterFields: []
-      }, {
-        name: 'Invoices to Pay',
-        filterFields: {
-          field: 'ispayable',
-          value: true,
-          type: 'equals'
-        }
-      },
-        {
-          name: 'Open Invoices',
-          filterFields: {
-            field: 'statusdescription',
-            value: 'Open'
-          }
-        }, {
-          name: 'Past Due Invoices',
-          filterFields: {
-            field: 'statusdescription',
-            value: 'Past Due'
-          }
-        }, {
-          name: 'Paid Invoices',
-          filterFields: {
-            field: 'statusdescription',
-            value: 'Paid'
-          }
-        }];
+  $scope.datepickerOptions = {
+    minDate: new Date(),
+    maxDate: '2015-06-22',
+    options: {
+      dateFormat: 'yyyy-MM-dd',
+      showWeeks: false
+    }
+  };
 
-      $scope.selectFilterView = function (filterView) {
-        $scope.selectedFilterView = filterView;
+  //set defaults and instantiate persistent user context
+  setPageText($scope.selectedUserContext.customer.customerName);
+  var temporarySelectedUserContext = {};
 
-        $scope.invoiceParams.filter = filterView.filterFields;
-        $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
-        $scope.invoiceParams.from = 0;
+  $scope.sortBy = 'invoicenumber';
+  $scope.sortOrder = true;
 
-        if(!$scope.viewingAllCustomers) {
-          loadInvoices($scope.invoiceParams).then(setInvoices);
-        } else {
-          loadAllOpenInvoices($scope.invoiceParams).then(setInvoices);
-        }
-      };
+  $scope.invoiceParams = {
+    size: Constants.infiniteScrollPageSize,
+    from: 0
+    // sort: [{
+    //   field: 'messagecreatedutc',
+    //   order: 'desc'
+    // }]
+    // filter: {
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+  };
 
-      $scope.selectAccount = function (account) {
-        $scope.selectedAccount = account;
-      };
+  $scope.selectedFilterView = $scope.filterViews[0];
+  loadInvoices($scope.invoiceParams).then(setInvoices);
 
-      $scope.selectInvoice = function (invoice, isSelected) {
-        if (isSelected) {
-          invoice.paymentAmount = invoice.amount.toString();
-        } else {
-          invoice.paymentAmount = '0';
-        }
-      };
-
-      $scope.selectAll = function () {
-        angular.forEach($scope.invoices, function (item, index) {
-          if (item.ispayable) {
-            item.isSelected = $scope.selectAllPayable;
-            $scope.selectInvoice(item, item.isSelected);
-          }
-        });
-      };
-
-      $scope.totalPaymentAmount = function () {
-        var total = 0;
-        $scope.invoices.forEach(function (invoice) {
-          total += parseFloat(invoice.paymentAmount || 0);
-        });
-        $scope.total = total;
-        return total;
-      };
-
-      var processingPayInvoices = false;
-      $scope.payInvoices = function () {
-        if (!processingPayInvoices) {
-          processingPayInvoices = true;
-          var payments = $filter('filter')($scope.invoices, {isSelected: true});
-          InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function () {
-            processingPayInvoices = false;
-          });
-        }
-      };
-
-      $scope.openExportModal = function () {
-        var modalInstance = $modal.open({
-          templateUrl: 'views/modals/exportmodal.html',
-          controller: 'ExportModalController',
-          resolve: {
-            headerText: function () {
-              return 'Invoices';
-            },
-            exportMethod: function () {
-              return InvoiceService.exportInvoice;
-            },
-            exportConfig: function () {
-              return InvoiceService.getExportConfig();
-            },
-            exportParams: function () {
-              return;
-            }
-          }
-        });
-      };
-
-
-      $scope.invoices = [];
-      $scope.accounts = accounts;
-      $scope.selectedAccount = accounts[0];
-
-      $scope.datepickerOptions = {
-        minDate: new Date(),
-        maxDate: '2015-06-22',
-        options: {
-          dateFormat: 'yyyy-MM-dd',
-          showWeeks: false
-        }
-      };
-
-      $scope.sortBy = 'invoicenumber';
-      $scope.sortOrder = true;
-
-      $scope.invoiceParams = {
-        size: Constants.infiniteScrollPageSize,
-        from: 0
-        // sort: [{
-        //   field: 'messagecreatedutc',
-        //   order: 'desc'
-        // }]
-        // filter: {
-        //   field: 'subject',
-        //   value: 'value',
-        //   filter: [
-        //      {
-        //        field: 'name',
-        //        value: 'value'
-        //      }
-        //   ]
-        // }
-      };
-
-      $scope.selectedFilterView = $scope.filterViews[0];
-      loadInvoices($scope.invoiceParams).then(setInvoices);
-
-    }]);
+}]);

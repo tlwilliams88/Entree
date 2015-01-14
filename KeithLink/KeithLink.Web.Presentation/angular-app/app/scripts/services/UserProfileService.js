@@ -43,7 +43,7 @@ angular.module('bekApp')
         }, function(error) {
           // log out
           LocalStorage.clearAll();
-          return $q.reject(error);
+          return $q.reject(error.data.error_description);
         });
       },
 
@@ -93,7 +93,7 @@ angular.module('bekApp')
         });
       },
 
-      getUsersForAccount: function(accountId) {
+      getUsersForGroup: function(accountId) {
         var promise = $http.get('/profile/account/' + accountId + '/users');
         return UtilityService.resolvePromise(promise);
       },
@@ -134,7 +134,7 @@ angular.module('bekApp')
 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
-          if (response.data === '"Password update successful"') {
+          if (response.data.successResponse === true) {
             deferred.resolve(response.data);
           } else {
             deferred.reject(response.data);

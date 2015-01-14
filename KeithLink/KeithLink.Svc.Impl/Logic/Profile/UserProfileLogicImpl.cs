@@ -420,7 +420,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			string dsrRole = string.Empty;
 			string dsrNumber = string.Empty;
 			string dsmRole = string.Empty;
-            if (IsInternalAddress(csProfile.Email))
+            bool isInternalUser = IsInternalAddress( csProfile.Email );
+
+            if (isInternalUser)
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 dsrRole = GetUserDsrRole(user);
@@ -432,6 +434,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
 				IsInternalUser = IsInternalAddress(csProfile.Email),
+                PasswordExpired = (isInternalUser) ? false:_extAd.IsPasswordExpired(csProfile.Email),
                 FirstName = csProfile.FirstName,
                 LastName = csProfile.LastName,
                 EmailAddress = csProfile.Email,
@@ -570,7 +573,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             UserProfileReturn retVal = new UserProfileReturn();
 
-            if (profile != null) {
+            if (IsInternalAddress(emailAddress).Equals(false) && profile != null) {
+                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
                 retVal.UserProfiles.Add(profile);
                 return retVal;
             }
@@ -657,28 +661,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public string UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
-            string retVal = null;
+        public bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+            bool retVal = false;
 
-            try {
-                if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
 
-                UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
+            UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
 
-                AssertPasswordLength(newPassword);
-                AssertPasswordComplexity(newPassword);
-                AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
+            AssertPasswordLength(newPassword);
+            AssertPasswordComplexity(newPassword);
+            AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
 
-                if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
-                    retVal = "Password update successful";
-                } else {
-                    retVal = "Invalid password";
-                }
-            } catch (ApplicationException appEx) {
-                retVal = appEx.Message;
-            } catch (Exception ex) {
-                retVal = string.Concat("Could not process request: ", ex.Message);
-            }
+            if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+                retVal = true;
+            } else {
+                throw new ApplicationException("Password was invalid"); 
+            } 
 
             return retVal;
         }

@@ -11,6 +11,7 @@ angular.module('bekApp')
   .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
     function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
+    // gets prepopulated login info for dev environment
     $scope.loginInfo = {
       username: ENV.username,
       password: ENV.password
@@ -24,13 +25,9 @@ angular.module('bekApp')
       $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-        if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalUser() ) {
-          $state.transitionTo('menu.home');  
-        } else {
-          $state.transitionTo('menu.catalog.home');
-        }
-      }, function(error) {
-        $scope.loginErrorMessage = error.data.error_description;
+        $scope.redirectUserToCorrectHomepage();
+      }, function(errorMessage) {
+        $scope.loginErrorMessage = errorMessage;
       });
 
     };

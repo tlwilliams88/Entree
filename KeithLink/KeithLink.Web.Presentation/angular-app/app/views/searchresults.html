@@ -60,6 +60,24 @@
 						</div>
 					</div>
 				</accordion-group>
+
+                <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
+					<accordion-heading>
+						Manufacturer<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+					</accordion-heading>
+					<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
+						<div class="panel-body">
+							<input type="checkbox"
+							value="manufacturerValue_{{manufacturer.name}}"
+							id="Checkbox1"
+							ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+							ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+							ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+							<label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+						</div>
+					</div>
+				</accordion-group>
+
 				<accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
 					<accordion-heading>
 						Dietary<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
@@ -131,6 +149,28 @@
             ng-if="facets.brands.available.length > numberFacetsToShow" 
             ng-click="facets.brands.showMore = !facets.brands.showMore">
             {{facets.brands.showMore ? '+ Show More' : '- Show Less'}}
+          </a>
+				</div>
+			</div>
+		</div>
+		<div class="row" ng-show="facets.mfrname.available.length > 0">
+			<div class="col-sm-12">
+				<h3>Manufacturers</h3>
+				<div ng-repeat="manufacturer in facets.mfrname.available | limitTo: facets.mfrname.showMore ? numberFacetsToShow : facets.mfrname.available.length">
+					<input 
+            type="checkbox"
+  					value="manufacturerValue_{{manufacturer.name}}"
+  					id="Checkbox2"
+  					ng-checked="facets.mfrname.selected.indexOf(manufacturer.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+  					ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+  					ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+					<label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+				</div>
+				<div>
+					<a 
+            ng-if="facets.mfrname.available.length > numberFacetsToShow" 
+            ng-click="facets.mfrname.showMore = !facets.mfrname.showMore">
+            {{facets.mfrname.showMore ? '+ Show More' : '- Show Less'}}
           </a>
 				</div>
 			</div>

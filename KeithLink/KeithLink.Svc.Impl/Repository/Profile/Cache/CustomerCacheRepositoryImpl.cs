@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile.Cache
 
         public void ResetAllItems()
         {
-            throw new NotImplementedException();
+			cache.ClearDataCache(CACHE_PREFIX, CACHE_NAME);
         }
 
         public void RemoveItem(string key)

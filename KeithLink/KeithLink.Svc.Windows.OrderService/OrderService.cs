@@ -274,7 +274,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                        new PurchaseOrderRepositoryImpl(),
                                                                        catLogic,
-                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
                                                                        new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
                                                                        conversionLogic);
 
@@ -371,7 +371,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                                    new PurchaseOrderRepositoryImpl(),
                                                                                    catLogic,
-                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository()),
+                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
                                                                                    new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
                                                                                    conversionLogic);
 
@@ -379,9 +379,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 
                                 foreach (OrderHistoryFile file in parsedFile.Files) {
-
                                     file.SenderApplicationName = Configuration.ApplicationName;
-                                    file.SenderProcessName = "Process Order History Updates From Mainframe";
+                                    file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
 
                                     try {
                                         StringWriter xmlWriter = new StringWriter();
@@ -392,7 +391,12 @@ namespace KeithLink.Svc.Windows.OrderService {
                                         OrderUpdateQueueRepositoryImpl repo = new OrderUpdateQueueRepositoryImpl();
                                         repo.PublishToQueue(xmlWriter.ToString());
 
-                                        _log.WriteInformationLog(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
+                                        StringBuilder logMsg = new StringBuilder();
+                                        logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
+                                        logMsg.AppendLine();
+                                        logMsg.AppendLine(xmlWriter.ToString());
+
+                                        _log.WriteInformationLog(logMsg.ToString());
 
                                         _silenceOrderUpdateMessages = false;
                                     } catch (Exception ex) {

@@ -172,7 +172,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			FilterInfo filter = new FilterInfo();
 			filter.Filters = new List<FilterInfo>();
-			filter.Condition = "||";
+			filter.Filters.Add(new FilterInfo() { Field = "ItemSequence", Value = "0", FilterType = "eq" }); //Header information is is ItemSequence = 0
+
+			var statusFilter = BuildStatusFilter(paging.Filter);
+			if (statusFilter != null)
+				filter.Filters.Add(statusFilter);
+
+			filter.Condition = "&&";
 			//Build customer filter
 			foreach (var cust in customers)
 			{
@@ -198,6 +204,36 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
             };
         }
+
+		private FilterInfo BuildStatusFilter(FilterInfo passedFilter)
+		{
+			if (passedFilter == null)
+				return null;
+
+			if (passedFilter.Filters != null)
+			{
+				foreach (var filter in passedFilter.Filters)
+				{
+					var createdFilter = BuildStatusFilter(filter);
+					if (createdFilter != null) return createdFilter;
+				}
+			}
+
+			if (passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
+			{
+				switch (passedFilter.Value.ToUpper())
+				{
+					case "OPEN":
+						return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
+					case "PAID":
+						return new FilterInfo() { Field = "InvoiceStatus", Value = "C", FilterType = "eq" };
+					case "PAST DUE":
+						return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
+				}
+			}
+
+			return null;
+		}
 		
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{

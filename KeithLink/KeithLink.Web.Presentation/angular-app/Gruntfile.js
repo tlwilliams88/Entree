@@ -461,7 +461,8 @@ module.exports = function (grunt) {
                       //apiEndpoint: 'http://localhost:8080/api',
                       loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
-                      password: 'L1ttleStev1e'
+                      password: 'L1ttleStev1e',
+                      googleAnalytics: 'UA-58495303-1'
                   }
               }
           },
@@ -473,7 +474,8 @@ module.exports = function (grunt) {
                       apiEndpoint: 'https://shopapidev.benekeith.com',
                       loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
-                      password: 'L1ttleStev1e'
+                      password: 'L1ttleStev1e',
+                      googleAnalytics: 'UA-58495303-1'
                   }
               }
           },
@@ -483,7 +485,8 @@ module.exports = function (grunt) {
                       name: 'test',
                       apiKey: 'web_test_v1',
                       apiEndpoint: 'https://shopqa.benekeith.com/api',
-                      loggingEnabled: true
+                      loggingEnabled: true,
+                      googleAnalytics: 'UA-58495303-1'
                   }
               }
           },
@@ -493,7 +496,8 @@ module.exports = function (grunt) {
                       name: 'prod',
                       apiKey: 'web_prod_v1',
                       apiEndpoint: 'https://shop.benekeith.com/api',
-                      loggingEnabled: false
+                      loggingEnabled: false,
+                      googleAnalytics: 'UA-58495303-1'
                   }
               }
           },
@@ -503,7 +507,8 @@ module.exports = function (grunt) {
                       name: 'stage',
                       apiKey: 'web_stage_v1',
                       apiEndpoint: 'https://shopstaging.benekeith.com/api',
-                      loggingEnabled: false
+                      loggingEnabled: false,
+                      googleAnalytics: 'UA-58495303-1'
                   }
               }
           }
