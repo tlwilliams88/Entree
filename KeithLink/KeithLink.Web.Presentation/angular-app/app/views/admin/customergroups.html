@@ -1,0 +1,36 @@
+<div page-header-bar>
+  <div header-message>
+    Customer Groups
+  </div>
+  <div header-buttons></div>
+</div>
+
+<div class="page-content row">
+  <div class="col-md-3">
+
+    <form name="customerSearchForm" class="search-form">
+      <div class="input-group">
+        <input 
+          ng-model="searchTerm" 
+          type="text" 
+          class="form-control" 
+          placeholder="Find customer group by name" />
+        <span class="input-group-btn">
+          <button type="submit" ng-click="searchCustomerGroups(searchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+        </span>
+      </div>
+    </form>
+
+    <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})">Add New Customer Group...</a>
+
+    <ul class="list-no-style sub-content">
+      <li ng-repeat="customerGroup in customerGroups | orderBy:'name'">
+        <a ui-sref="menu.admin.customergroupdetails({groupId: customerGroup.id})">{{customerGroup.name}}</a>
+      </li>
+    </ul>
+
+    <div ng-show="customerGroups && customerGroups.length === 0">No customer groups found.</div>
+
+  </div>
+
+</div>

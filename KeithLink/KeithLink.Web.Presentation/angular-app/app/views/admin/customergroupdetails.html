@@ -1,19 +1,19 @@
 <div page-header-bar>
   <div header-message>
-    {{ isNew ? 'Add New Account' : 'Account Details' }}
+    {{ isNew ? 'Add New Customer Group' : 'Customer Group Details' }}
   </div>
   <div header-buttons></div>
 </div>
 
 <div class="page-content">
-<ng-form name="accountDetailsForm" novalidate>
+<ng-form name="customerGroupDetailsForm" novalidate>
  
   <div class="row">
     <div class="col-md-6">
       <div class="form-group">
-        <label for="accountName" class="control-label">Name</label>
-        <span class="text-red" ng-show="accountDetailsForm.accountName.$dirty && accountDetailsForm.accountName.$error.required">Account name is required.</span>
-        <input type="text" class="form-control" name="accountName" id="accountName" ng-model="account.name" required>
+        <label for="customerGroupName" class="control-label">Name</label>
+        <span class="text-red" ng-show="customerGroupDetailsForm.customerGroupName.$dirty && customerGroupDetailsForm.customerGroupName.$error.required">Customer group name is required.</span>
+        <input type="text" class="form-control" name="customerGroupName" id="customerGroupName" ng-model="customerGroup.name" required>
       </div>
     </div>
     <div class="col-md-6">
@@ -36,7 +36,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="user in account.adminusers" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="user in customerGroup.adminusers" ng-class="{ odd : $odd, even: $even }">
             <td>{{user.firstname}}</td>
             <td>{{user.lastname}}</td>
             <td>{{user.emailaddress}}</td>
@@ -46,7 +46,7 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr ng-show="account.adminusers.length === 0">
+          <tr ng-show="customerGroup.adminusers.length === 0">
             <td colspan="4">There are no users to display.</td>
           </tr>
         </tfoot>
@@ -118,7 +118,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="customer in account.customers" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="customer in customerGroup.customers" ng-class="{ odd : $odd, even: $even }">
             <td>{{customer.customerNumber}}</td>
             <td>{{customer.customerName}}</td>
             <td>
@@ -127,7 +127,7 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr ng-show="account.customers.length === 0">
+          <tr ng-show="customerGroup.customers.length === 0">
             <td colspan="3">There are no selected customers to display.</td>
           </tr>
         </tfoot>
@@ -141,12 +141,12 @@
       <div class="form-group button-row">
         <button 
           type="submit" 
-          ng-disabled="accountDetailsForm.$invalid" 
+          ng-disabled="customerGroupDetailsForm.$invalid" 
           class="btn btn-lg btn-primary" 
-          ng-click="submitForm(account)">
-          {{isNew ? 'Create New Account' : 'Save Account'}}
+          ng-click="submitForm(customerGroup)">
+          {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
         </button>
-        <a ui-sref="menu.admin.account">Cancel</a>
+        <a ui-sref="menu.admin.customergroup">Cancel</a>
       </div>
     </div>
   </div>

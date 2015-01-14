@@ -1,17 +1,17 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountAdminController', ['$scope', 'UserProfileService', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
-    function ($scope, UserProfileService, $state, CustomerService, AccountService, BroadcastService) {
+  .controller('CustomerGroupDashboardController', ['$scope', 'UserProfileService', '$state', 'CustomerService', 'CustomerGroupService', 'BroadcastService',
+    function ($scope, UserProfileService, $state, CustomerService, CustomerGroupService, BroadcastService) {
       
   function init() {
     loadCustomers(customersConfig).then(setCustomers);
 
     $scope.loadingUsers = true;
-    AccountService.getAccountByUser($scope.userProfile.userid).then(function (account) {
-      if (account) {
-        $scope.accountName = account.name;
-        UserProfileService.getUsersForAccount(account.id).then(function(data) {
+    CustomerGroupService.getGroupByUser($scope.userProfile.userid).then(function (customerGroup) {
+      if (customerGroup) {
+        $scope.groupName = customerGroup.name;
+        UserProfileService.getUsersForGroup(customerGroup.id).then(function(data) {
           $scope.loadingUsers = false;
           $scope.adminUsers = data.accountUsers;
           $scope.customerUsers = data.customerUsers;

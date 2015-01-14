@@ -72,6 +72,17 @@ angular.module('bekApp')
     }
   };
 
+  $scope.goToAdminLandingPage = function() {
+    // internal bek admin user
+    if (AccessService.isInternalUser()) {
+      $state.go('menu.admin.customergroup');
+      
+    // external owner admin
+    } else {  
+      $state.go('menu.admin.customergroupdashboard');
+    }
+  };
+
   function refreshPage() {
     $state.transitionTo($state.current, $state.params, {
       reload: true,
@@ -108,7 +119,6 @@ angular.module('bekApp')
   };
 
   $scope.print = function () {
-    // console.log('he');
     $window.print();
   };
 
