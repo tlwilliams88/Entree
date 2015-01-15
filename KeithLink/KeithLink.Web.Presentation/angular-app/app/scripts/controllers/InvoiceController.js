@@ -338,7 +338,9 @@ angular.module('bekApp')
           return InvoiceService.getExportConfig();
         },
         exportParams: function () {
-          return;
+          var params = $scope.invoiceParams;
+          params.filter = createFilterObject();
+          return params;
         }
       }
     });

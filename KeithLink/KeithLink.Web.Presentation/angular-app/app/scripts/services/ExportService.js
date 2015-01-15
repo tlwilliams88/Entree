@@ -56,9 +56,9 @@ angular.module('bekApp')
             // var filename = headers['x-filename'] || 'download.bin';
 
             var filename;
-            if (config.selectedtype === 'CSV') {
+            if (config.selectedtype === 'CSV' || config.export.selectedtype === 'CSV') {
               filename = 'export.csv';
-            } else if (config.selectedtype === 'EXCEL') {
+            } else if (config.selectedtype === 'EXCEL' || config.export.selectedtype === 'EXCEL') {
               filename = 'export.xlsx';
             } else {
               filename = 'export.txt';

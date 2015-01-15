@@ -16,6 +16,10 @@ angular.module('bekApp')
     var Service = {
       // gets customers for current user
       getCustomers: function(searchTerm, size, from, field, order, customerGroupId) {
+        if (!customerGroupId) {
+          customerGroupId = '';
+        }
+
         var data = {
           params: {
             size: size,
