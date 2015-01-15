@@ -516,6 +516,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return returnValue; 
         }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute( "profile/salesrep" )]
+        public OperationReturnModel<bool> GetSalesRep() {
+            // Get the DSR
+            return new OperationReturnModel<bool>() { SuccessResponse = true };
+        }
         #endregion
     }
 }
