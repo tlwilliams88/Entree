@@ -44,8 +44,18 @@ angular.module('bekApp')
         return Invoice.getInvoiceExportConfig({}).$promise;
       },
 
-      exportInvoice: function(config) {
-        ExportService.export('/invoice/export/', config);
+      exportInvoice: function(config, params) {
+        // {
+        //   "paging": {"size":50,"from":0,"filter":{"filter":[],"field":"statusdescription","value":"Past Due"}},
+        //   "export": {"selectedtype": "CSV"}
+        // }
+
+        var exportParams = {
+          paging: params,
+          export: config
+        };
+
+        ExportService.export('/invoice/export/', exportParams);
       },
 
       getDetailExportConfig: function(invoiceNumber) {

@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'UserProfileService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, branches, UserProfileService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, $window, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
   $scope.$state = $state;
 
@@ -53,7 +53,11 @@ angular.module('bekApp')
     query: function (query){
       $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
-      UserProfileService.searchUserCustomers(query.term, $scope.customerInfiniteScroll.size, $scope.customerInfiniteScroll.from).then(function(data) {
+      CustomerService.getCustomers(
+        query.term, 
+        $scope.customerInfiniteScroll.size, 
+        $scope.customerInfiniteScroll.from
+      ).then(function(data) {
         // convert data to match select2 data object
         var obj = {
           results: [],
