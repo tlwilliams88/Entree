@@ -355,7 +355,7 @@ namespace KeithLink.Svc.Impl.Logic
 			var shoppingCart = new ShoppingCart();
 			shoppingCart.Items = new List<ShoppingCartItem>();
 			shoppingCart.BranchId = catalogInfo.BranchId;
-			shoppingCart.Name = string.Format("Quick Add - {0}", DateTime.Now.ToShortDateString());
+			shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
 
 			var itemErrorMessage = new StringBuilder();
 
