@@ -17,7 +17,6 @@ angular.module('bekApp')
     var newItems = $filter('filter')( items, function(item) {
       return item.quantity > 0 && item.itemnumber.length === 6; 
     });
-    console.log(newItems);
     CartService.quickAdd(newItems).then(function(cartId) {
       $modalInstance.close(cartId);
       $scope.displayMessage('success', 'Successfully added new cart.');
