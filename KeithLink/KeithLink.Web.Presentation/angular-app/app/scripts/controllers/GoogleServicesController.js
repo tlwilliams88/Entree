@@ -1,10 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('GoogleAnalyticsController', ['$scope', 'ENV',
+.controller('GoogleServicesController', ['$scope', 'ENV',
   	function ($scope, ENV) {
-
-
 
   	 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -12,5 +10,12 @@ angular.module('bekApp')
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
       ga('create', ENV.googleAnalytics, 'auto');
+
+
+    function googleTranslateElementInit() {
+        new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: ENV.googleAnalytics}, 'google_translate_element');
+    }
+
+
 
 }]);
