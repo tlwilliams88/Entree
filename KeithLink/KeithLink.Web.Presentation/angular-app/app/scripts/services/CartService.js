@@ -163,6 +163,9 @@ angular.module('bekApp')
           } else {
             return $q.reject(response.errormessage);
           }
+        }, function(error){
+
+         return $q.reject('An error has occurred with this Quick Add order.');
         });
       },
 

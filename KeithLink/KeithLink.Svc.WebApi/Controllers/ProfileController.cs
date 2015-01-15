@@ -108,7 +108,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
-				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }).Results.FirstOrDefault();
+				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault();
                 return retVal;
             } else {
                 return _profileLogic.GetUserProfile(email, true);
@@ -335,13 +335,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
-		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging, [FromUri] SortInfo sort)
+		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account)
 		{
             if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field) )
             {
                 paging.Sort = new List<SortInfo>() { sort };
             }
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging);
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account);
 		}
 
         [Authorize]
@@ -515,6 +515,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 
             return returnValue; 
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute( "profile/salesrep" )]
+        public OperationReturnModel<bool> GetSalesRep() {
+            // Get the DSR
+            return new OperationReturnModel<bool>() { SuccessResponse = true };
         }
         #endregion
     }
