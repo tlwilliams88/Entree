@@ -50,7 +50,23 @@ BEGIN
 		ItemDiet
 	WHERE
 		Gtin = @Gtin
-		AND Value IS NOT NULL
+		AND Value IS NOT NULL;
+
+	INSERT INTO @DietTypeValues
+		SELECT
+			@Gtin
+			, 'gluten free'
+			, CASE
+				WHEN ic.[Status] = 0 THEN 'n'
+				WHEN ic.[Status] = 1 THEN 'y'
+				ELSE NULL
+			END
+		FROM
+			ItemCertification ic
+		WHERE
+			Gtin = @Gtin
+			AND ic.CertificationTypeId = 'gluten free'
+			AND ic.[Status] IS NOT NULL;
 	
 	FETCH NEXT FROM c_Gtin INTO @Gtin;
 
@@ -65,3 +81,4 @@ SELECT
 	, Value 
 FROM 
 	@DietTypeValues
+
