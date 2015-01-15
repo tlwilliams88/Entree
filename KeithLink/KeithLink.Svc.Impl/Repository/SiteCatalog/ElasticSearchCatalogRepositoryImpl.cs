@@ -259,7 +259,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             CategoriesReturn results = new CategoriesReturn { Categories = response.Documents.Where(s => s.SubCategories != null 
-                && (!s.Id.Substring(0, 2).Equals("AA") || !s.Id.Substring(0, 2).Equals("ZZ") || !s.Id.Substring(0,2).Equals("TW"))).ToList<Category>() };
+                && !(s.Id.Substring(0, 2).Equals("AA") || s.Id.Substring(0, 2).Equals("ZZ") || s.Id.Substring(0,2).Equals("TW"))).ToList<Category>() };
 
             return results;
         }
