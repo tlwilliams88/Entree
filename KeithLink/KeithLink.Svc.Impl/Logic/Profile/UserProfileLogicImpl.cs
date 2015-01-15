@@ -908,9 +908,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return true;
         }
 		
-		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging)
+		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
 		{
-			List<Customer> allCustomers = GetCustomersForUser(user);
+			List<Customer> allCustomers = new List<Customer>();
+			if (!string.IsNullOrEmpty(account))
+				allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
+			else
+				allCustomers = GetCustomersForUser(user);
 			
 			if (!string.IsNullOrEmpty(searchTerms))
 			{

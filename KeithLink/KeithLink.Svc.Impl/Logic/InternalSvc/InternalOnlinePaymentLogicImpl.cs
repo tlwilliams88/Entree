@@ -170,15 +170,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			else
 				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId) };
 
-			FilterInfo filter = new FilterInfo();
-			filter.Filters = new List<FilterInfo>();
-			filter.Filters.Add(new FilterInfo() { Field = "ItemSequence", Value = "0", FilterType = "eq" }); //Header information is is ItemSequence = 0
-
+			FilterInfo isfilter = new FilterInfo();
+			isfilter.Filters = new List<FilterInfo>();
+			isfilter.Filters.Add(new FilterInfo() { Field = "ItemSequence", Value = "0", FilterType = "eq" }); //Header information is is ItemSequence = 0
 			var statusFilter = BuildStatusFilter(paging.Filter);
 			if (statusFilter != null)
-				filter.Filters.Add(statusFilter);
-
-			filter.Condition = "&&";
+				isfilter.Filters.Add(statusFilter);
+			
+			
+			FilterInfo filter = new FilterInfo();
+			filter.Filters = new List<FilterInfo>();
+			filter.Condition = "||";
 			//Build customer filter
 			foreach (var cust in customers)
 			{
@@ -188,8 +190,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				filter.Filters.Add(inFilter);
 			}
-
-			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(filter, null).ToList();
+			
+			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(isfilter, null).Filter(filter, null).ToList();
 
 			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
