@@ -11,11 +11,4 @@ angular.module('bekApp')
 
       ga('create', ENV.googleAnalytics, 'auto');
 
-
-    function googleTranslateElementInit() {
-        new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: ENV.googleAnalytics}, 'google_translate_element');
-    }
-
-
-
 }]);
