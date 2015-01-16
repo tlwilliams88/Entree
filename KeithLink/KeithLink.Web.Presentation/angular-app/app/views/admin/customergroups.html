@@ -1,0 +1,58 @@
+<div page-header-bar>
+  <div header-message>
+    Customer Groups
+  </div>
+  <div header-buttons></div>
+</div>
+
+<div class="page-content row">
+  <div class="col-md-12">
+
+    <div class="row">
+      <form name="customerSearchForm" class="col-md-3 search-form">
+        <div class="input-group">
+          <input 
+            ng-model="searchTerm" 
+            type="text" 
+            class="form-control" 
+            placeholder="Find customer group by name" />
+          <span class="input-group-btn">
+            <button type="submit" ng-click="searchCustomerGroups(searchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+          </span>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+
+        <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})">Add New Customer Group...</a>
+
+        <table class="table table-striped-rows table-border" ng-show="customerGroups.length > 0">
+          <thead>
+            <tr>
+              <th>Customer Group Name</th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="customerGroup in customerGroups | orderBy:'name'" ng-class="{ odd : $odd, even: $even }">
+              <td>{{customerGroup.name}}</td>
+              <td>
+                <a ui-sref="menu.admin.customergroupdetails({groupId: customerGroup.id})">Edit Details</a>
+              </td>
+              <td>
+                <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: customerGroup.id})">View Dashboard</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div ng-show="customerGroups && customerGroups.length === 0">No customer groups found.</div>  
+      </div>
+    </div>
+    
+  </div>
+
+</div>

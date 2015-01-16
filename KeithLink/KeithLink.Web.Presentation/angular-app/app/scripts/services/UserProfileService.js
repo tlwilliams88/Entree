@@ -60,19 +60,6 @@ angular.module('bekApp')
         });
       },
 
-      searchUserCustomers: function(searchTerm, size, from) {
-        var data = {
-          params: {
-            size: size,
-            from: from,
-            terms: searchTerm
-          }
-        };
-        return $http.get('/profile/customer', data).then(function(response) {
-          return response.data;
-        });
-      },
-
       getAllUserCustomers: function(userId) {
         var promise = $http.get('/profile/user/' + userId + '/customers');
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
@@ -93,7 +80,7 @@ angular.module('bekApp')
         });
       },
 
-      getUsersForAccount: function(accountId) {
+      getUsersForGroup: function(accountId) {
         var promise = $http.get('/profile/account/' + accountId + '/users');
         return UtilityService.resolvePromise(promise);
       },

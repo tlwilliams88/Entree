@@ -2,22 +2,22 @@
 
 /**
  * @ngdoc function
- * @name bekApp.service:AccountService
+ * @name bekApp.service:CustomerGroupService
  * @description
- * # AccountService
+ * # CustomerGroupService
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('AccountService', [ '$http', 'UtilityService', function ($http, UtilityService) {
+  .factory('CustomerGroupService', [ '$http', 'UtilityService', function ($http, UtilityService) {
 
   var Service = {
 
-    getAccountDetails: function(accountId) {
-      var promise = $http.get('/profile/account/' + accountId);
+    getGroupDetails: function(groupId) {
+      var promise = $http.get('/profile/account/' + groupId);
       return UtilityService.resolvePromise(promise);
     },
 
-    getAccountByUser: function(userid) {
+    getGroupByUser: function(userid) {
       var config = {
         params: {
           userid: userid
@@ -37,7 +37,7 @@ angular.module('bekApp')
     //   });
     // },
 
-    searchAccounts: function(searchTerm) {
+    searchGroups: function(searchTerm) {
       var config = {
         params: {
           wildcard: searchTerm
@@ -50,15 +50,15 @@ angular.module('bekApp')
       });
     },
 
-    createAccount: function(account) {
-      var promise = $http.post('/profile/account', account);
+    createGroup: function(customerGroup) {
+      var promise = $http.post('/profile/account', customerGroup);
       return UtilityService.resolvePromise(promise).then(function(successResponse) {
         return successResponse.accounts[0];
       });
     },
 
-    updateAccount: function(account) {
-      var promise = $http.put('/profile/account', account);
+    updateGroup: function(customerGroup) {
+      var promise = $http.put('/profile/account', customerGroup);
       return UtilityService.resolvePromise(promise);
     }
   };

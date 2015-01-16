@@ -1,27 +1,43 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AccountAdminController', ['$scope', 'UserProfileService', '$state', 'CustomerService', 'AccountService', 'BroadcastService',
-    function ($scope, UserProfileService, $state, CustomerService, AccountService, BroadcastService) {
+  .controller('CustomerGroupDashboardController', ['$scope', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService',
+    function (
+      $scope, // angular
+      $stateParams, $state, // ui router
+      UserProfileService, CustomerService, CustomerGroupService, BroadcastService // custom bek services
+    ) {
+
+  function getUsers(customerGroup) {
+   if (customerGroup) {
+      $scope.groupName = customerGroup.name;
       
+      UserProfileService.getUsersForGroup(customerGroup.id).then(function(data) {
+        $scope.loadingUsers = false;
+        $scope.adminUsers = data.accountUsers;
+        $scope.customerUsers = data.customerUsers;
+      });
+    } else {
+      $scope.loadingUsers = false;
+      $scope.adminUsers = [];
+      $scope.customerUsers = [];
+    }
+  }
+
   function init() {
     loadCustomers(customersConfig).then(setCustomers);
 
     $scope.loadingUsers = true;
-    AccountService.getAccountByUser($scope.userProfile.userid).then(function (account) {
-      if (account) {
-        $scope.accountName = account.name;
-        UserProfileService.getUsersForAccount(account.id).then(function(data) {
-          $scope.loadingUsers = false;
-          $scope.adminUsers = data.accountUsers;
-          $scope.customerUsers = data.customerUsers;
-        });
-      } else {
-        $scope.loadingUsers = false;
-        $scope.adminUsers = [];
-        $scope.customerUsers = [];
-      }
-    });
+
+    if ($stateParams.customerGroupId) {
+      // internal bek admins
+      CustomerGroupService.getGroupDetails($stateParams.customerGroupId).then(getUsers);
+    
+    } else {
+      // get group for external admin using the customer group associated with their user id
+      CustomerGroupService.getGroupByUser($scope.userProfile.userid).then(getUsers);
+    }
+
   }
 
   /**********
@@ -34,8 +50,13 @@ angular.module('bekApp')
     size: 30,
     from: 0,
     sortField: $scope.customersSortField,
-    sortOrder: 'asc'
+    sortOrder: 'asc',
+    customerGroupId: ''
   };
+
+  if ($stateParams.customerGroupId) {
+    customersConfig.customerGroupId = $stateParams.customerGroupId;
+  }
 
   function loadCustomers(customersConfig) {
     $scope.loadingCustomers = true;
@@ -44,7 +65,8 @@ angular.module('bekApp')
        customersConfig.size,
        customersConfig.from,
        customersConfig.sortField,
-       customersConfig.sortOrder
+       customersConfig.sortOrder,
+       customersConfig.customerGroupId
     ).then(function(data) {
       $scope.loadingCustomers = false;
       $scope.totalCustomers = data.totalResults;

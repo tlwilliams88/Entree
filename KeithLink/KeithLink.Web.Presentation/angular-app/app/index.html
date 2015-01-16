@@ -6,6 +6,7 @@
     <title>Entree</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="google-translate-customization" content="5a38f0b9c30a1e39-6cd1be521a76df8d-gec30a383844c0600-14"></meta>
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
@@ -103,12 +104,12 @@
     <script type="text/javascript" src="scripts/controllers/modal/ImportModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ItemNotesModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ExportModalController.js"></script>
-    <script type="text/javascript" src="scripts/controllers/admin/AccountDetailsController.js"></script>
-    <script type="text/javascript" src="scripts/controllers/admin/AccountsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDashboardController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/EditUserDetailsController.js"></script>
-    <script type="text/javascript" src="scripts/controllers/admin/AccountAdminController.js"></script>
-    <script type="text/javascript" src="scripts/controllers/GoogleAnalyticsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDetailsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/GoogleServicesController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -149,7 +150,7 @@
     <script type="text/javascript" src="scripts/services/OrderService.js"></script>
     <script type="text/javascript" src="scripts/services/LocalStorage.js"></script>
     <script type="text/javascript" src="scripts/services/CustomerService.js"></script>
-    <script type="text/javascript" src="scripts/services/AccountService.js"></script>
+    <script type="text/javascript" src="scripts/services/CustomerGroupService.js"></script>
     <script type="text/javascript" src="scripts/services/ResolveService.js"></script>
     <script type="text/javascript" src="scripts/services/InvoiceService.js"></script>
     <script type="text/javascript" src="scripts/services/NotificationService.js"></script>
@@ -174,19 +175,10 @@
     <script type="text/javascript" src="scripts/animations/SlideAnimation.js"></script>
     <!-- endbuild -->
 
-
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-    <div ng-controller="GoogleAnalyticsController">
+    <!-- Google Analytics -->
+    <div ng-controller="GoogleServicesController">
     </div>
 
-    // <script>
-    //   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-    //   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-    //   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-    //   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    //   ga('create', {{googleAccount}}, 'auto');
-    // //ga('send', 'pageview');
-    // </script>
+    
 </body>
 </html>
