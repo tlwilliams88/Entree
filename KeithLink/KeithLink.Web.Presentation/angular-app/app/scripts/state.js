@@ -354,7 +354,7 @@ angular.module('bekApp')
     ADMIN CUSTOMER GROUPS
     *************/
     .state('menu.admin.customergroupdashboard',{
-      url: 'customergroup/dashboard/',
+      url: 'customergroup/dashboard/?customerGroupId',
       templateUrl: 'views/admin/customergroupdashboard.html',
       controller: 'CustomerGroupDashboardController',
       data: {

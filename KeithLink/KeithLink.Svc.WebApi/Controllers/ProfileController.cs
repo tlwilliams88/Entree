@@ -335,7 +335,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
-		public PagedResults<Customer> SearchCustomers([FromUri] string terms, [FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account)
+		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", [FromUri] string terms = "")
 		{
             if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field) )
             {

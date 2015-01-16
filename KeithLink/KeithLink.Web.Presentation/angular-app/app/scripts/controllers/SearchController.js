@@ -9,7 +9,11 @@
  */
 angular.module('bekApp')
   .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants',
-    function($scope, $state, $stateParams, $modal, ProductService, CategoryService, Constants) {
+    function(
+      $scope, $state, $stateParams, // angular dependencies
+      $modal, // ui bootstrap library
+      ProductService, CategoryService, Constants // bek custom services
+    ) {
     
     // clear keyword search term at top of the page
     if ($scope.userBar) {

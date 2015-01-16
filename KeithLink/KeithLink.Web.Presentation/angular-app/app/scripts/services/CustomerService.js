@@ -15,14 +15,19 @@ angular.module('bekApp')
 
     var Service = {
       // gets customers for current user
-      getCustomers: function(searchTerm, size, from, field, order) {
+      getCustomers: function(searchTerm, size, from, field, order, customerGroupId) {
+        if (!customerGroupId) {
+          customerGroupId = '';
+        }
+
         var data = {
           params: {
             size: size,
             from: from,
             terms: searchTerm,
             field: field,
-            order: order
+            order: order,
+            account: customerGroupId
           }
         };
         return $http.get('/profile/customer', data).then(function(response) {

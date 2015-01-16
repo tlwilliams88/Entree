@@ -10,8 +10,8 @@ customers : array - list of customer objects the current user has access to shar
 ******/
 
 angular.module('bekApp')
-.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'UserProfileService', 'list',
-  function ($scope, $modalInstance, ListService, UserProfileService, list) {
+.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'CustomerService', 'list',
+  function ($scope, $modalInstance, ListService, CustomerService, list) {
 
   $scope.list = list;
   // $scope.customers = customers;
@@ -24,7 +24,7 @@ angular.module('bekApp')
 
   function loadCustomers(size, from) {
     $scope.loadingResults = true;
-    return UserProfileService.searchUserCustomers('', size, from).then(function(data) {
+    return CustomerService.getCustomers('', size, from).then(function(data) {
       $scope.loadingResults = false;
       $scope.totalCustomers = data.totalResults;
       var customers = data.results;

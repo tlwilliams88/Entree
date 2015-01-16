@@ -12,8 +12,8 @@ angular.module('bekApp')
 
   var Service = {
 
-    getGroupDetails: function(accountId) {
-      var promise = $http.get('/profile/account/' + accountId);
+    getGroupDetails: function(groupId) {
+      var promise = $http.get('/profile/account/' + groupId);
       return UtilityService.resolvePromise(promise);
     },
 
