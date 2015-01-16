@@ -361,6 +361,9 @@ namespace KeithLink.Svc.Impl.Logic
 
 			foreach (var item in items)
 			{
+				if (item == null || string.IsNullOrEmpty(item.ItemNumber))
+					continue;
+
 				//Verify they have access to item, if the item is invalid, log then return error
 				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
 

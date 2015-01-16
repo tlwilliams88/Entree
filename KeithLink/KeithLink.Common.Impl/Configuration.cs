@@ -10,6 +10,8 @@ namespace KeithLink.Common.Impl
     {
         #region attributes
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";
+		private const string KEY_LOG_SYSTEM_PERFORMANCE = "LogSystemPerformanceWithErrors";
+        
         #endregion
 
         #region properties
@@ -29,6 +31,18 @@ namespace KeithLink.Common.Impl
                 return GetConnectionString(KEY_LOGGING_CONNECTIONSTRING);
             }
         }
+
+		public static bool LogSystemPerformance
+		{
+			get
+			{
+				bool retVal;
+
+				bool.TryParse(GetValue(KEY_LOG_SYSTEM_PERFORMANCE, "false"), out retVal);
+
+				return retVal;
+			}
+		}
         #endregion
 
 

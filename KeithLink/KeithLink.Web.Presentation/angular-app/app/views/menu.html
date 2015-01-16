@@ -261,10 +261,16 @@
       <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
     </div>
 
-    <div id="google_translate_element"></div><script type="text/javascript">
-    </script><script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-        
+            
     <div class="text-center sidebar-meta">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+           function googleTranslateElementInit() {
+             new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-58495462-2'}, 'google_translate_element');
+           }
+       </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
       <span>Copyright 2014 Ben E. Keith</span>
       <a href="#">benekeith.com</a>
     </div>
