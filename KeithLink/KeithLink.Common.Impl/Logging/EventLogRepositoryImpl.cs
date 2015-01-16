@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace KeithLink.Common.Impl.Logging
@@ -27,10 +29,19 @@ namespace KeithLink.Common.Impl.Logging
         private string GetLogMessage(string message, Exception ex)
         {
             System.Text.StringBuilder msg = new StringBuilder();
-
-            msg.Append(message);
+					
+			msg.Append(message);
             msg.AppendLine(":");
-            msg.AppendLine(ex.Message);
+
+			if (Configuration.LogSystemPerformance)
+			{
+				msg.AppendFormat("Current System CPU %: {0}%", GetCurrentCPU());
+				msg.AppendLine();
+				msg.AppendFormat("Current System RAM Usage: {0}MB", GetCurrentRAMUsage());
+				msg.AppendLine();
+			}
+
+			msg.AppendLine(ex.Message);
             msg.AppendLine();
             msg.AppendLine("Exception Stack:");
             msg.AppendLine("  Outer Stack:");
@@ -49,6 +60,26 @@ namespace KeithLink.Common.Impl.Logging
 
             return msg.ToString();
         }
+
+		private string GetCurrentCPU()
+		{
+			var cpuCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+			cpuCounter.NextValue();
+			//You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
+			//Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
+			Thread.Sleep(1000);
+			return cpuCounter.NextValue().ToString();
+		}
+
+		private string GetCurrentRAMUsage()
+		{
+			var ramCounter = new PerformanceCounter("Memory", "Available MBytes");
+			ramCounter.NextValue();
+			//You need to read the NextValue twice, with 1 second in between each call: http://blogs.msdn.com/b/bclteam/archive/2006/06/02/618156.aspx
+			//Because of this 1 secound delay, this method should only be called when troubleshooting a specific issue, turn off at other times
+			Thread.Sleep(1000);
+			return ramCounter.NextValue().ToString();
+		}
 
         public void WriteErrorLog(string logMessage)
         {
