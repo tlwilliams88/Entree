@@ -55,10 +55,21 @@ angular.module('bekApp')
             // Get the filename from the x-filename header or default to 'download.bin'
             // var filename = headers['x-filename'] || 'download.bin';
 
-            var filename;
-            if (config.selectedtype === 'CSV' || config.export.selectedtype === 'CSV') {
+            var filename, 
+              selectedType;
+
+            // special config structure for invoices
+            if (config.export) {
+              selectedType = config.export.selectedtype;
+
+            // default config structure
+            } else {
+              selectedType = config.selectedtype;              
+            }
+
+            if (selectedType === 'CSV') {
               filename = 'export.csv';
-            } else if (config.selectedtype === 'EXCEL' || config.export.selectedtype === 'EXCEL') {
+            } else if (selectedType === 'EXCEL') {
               filename = 'export.xlsx';
             } else {
               filename = 'export.txt';
