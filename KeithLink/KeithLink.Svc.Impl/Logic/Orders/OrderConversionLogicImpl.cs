@@ -67,46 +67,50 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public void SaveConfirmationAsOrderHistory(ConfirmationFile confFile) {
-            OrderHistoryFile currentFile = confFile.ToOrderHistoryFile();
+            if (confFile.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)) {
+                SaveRejectedConfirmationAsOrderHistory(confFile);
+            } else {
+                OrderHistoryFile currentFile = confFile.ToOrderHistoryFile();
 
-            EF.OrderHistoryHeader header = _historyRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+                EF.OrderHistoryHeader header = _historyRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
 
-            // second attempt to find the order, look by confirmation number
-            if (header == null) { 
-                header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
-                if (header != null) {
-                    header.InvoiceNumber = confFile.Header.InvoiceNumber;
+                // second attempt to find the order, look by confirmation number
+                if (header == null) {
+                    header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
+                    if (header != null) {
+                        header.InvoiceNumber = confFile.Header.InvoiceNumber;
+                    }
                 }
-            }
 
-            // last ditch effort is to create a new header
-            if (header == null) {
-                header = new EF.OrderHistoryHeader();
-                header.OrderDetails = new List<EF.OrderHistoryDetail>();
-            }
-
-            currentFile.Header.MergeWithEntity(ref header);
-
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
-
-                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
-
-                if (detail == null) {
-                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
-                    tempDetail.BranchId = header.BranchId;
-                    tempDetail.InvoiceNumber = header.InvoiceNumber;
-
-                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
-                } else {
-                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
-
-                    detail.BranchId = header.BranchId;
-                    detail.InvoiceNumber = header.InvoiceNumber;
+                // last ditch effort is to create a new header
+                if (header == null) {
+                    header = new EF.OrderHistoryHeader();
+                    header.OrderDetails = new List<EF.OrderHistoryDetail>();
                 }
-            }
 
-            _historyRepo.CreateOrUpdate(header);
-            _uow.SaveChanges();
+                currentFile.Header.MergeWithEntity(ref header);
+
+                foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
+
+                    EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+                    if (detail == null) {
+                        EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+                        tempDetail.BranchId = header.BranchId;
+                        tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+                        header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+                    } else {
+                        currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+                        detail.BranchId = header.BranchId;
+                        detail.InvoiceNumber = header.InvoiceNumber;
+                    }
+                }
+
+                _historyRepo.CreateOrUpdate(header);
+                _uow.SaveChanges();
+            }
         }
 
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
@@ -128,6 +132,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                     po.Save();
                 }
+            }
+        }
+
+        private void SaveRejectedConfirmationAsOrderHistory(ConfirmationFile confFile) {
+            EF.OrderHistoryHeader header = _historyRepo.ReadByConfirmationNumber(confFile.Header.ConfirmationNumber).FirstOrDefault();
+
+            if (header != null) {
+                header.OrderStatus = Constants.CONFIRMATION_HEADER_REJECTED_CODE;
+                header.InvoiceNumber = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+
+                _historyRepo.CreateOrUpdate(header);
+                _uow.SaveChanges();
             }
         }
 
