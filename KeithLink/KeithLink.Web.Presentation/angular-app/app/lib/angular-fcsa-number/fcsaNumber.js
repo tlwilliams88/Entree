@@ -2,13 +2,17 @@
 /* https://github.com/FCSAmericaDev/angular-fcsa-number */
 
 /*
-OPTIONS
+using the directive, !!!properties must be strings
+fcsa-number="{ 'minDigits': 6 }"
+
+AVAILABLE OPTIONS
 addMissingDecimals (requires maxDecimals to be set)
 maxDecimals
 min
 max
 preventInvalidInput
 maxDigits
+minDigits
 prepend
 append
 */
@@ -21,7 +25,7 @@ append
 
   fcsaNumberModule.directive('fcsaNumber', [
     'fcsaNumberConfig', function(fcsaNumberConfig) {
-      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber, unformatNumber;
+      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMinDigits, makeMaxDigits, makeMaxNumber, makeMinNumber, unformatNumber;
       defaultOptions = fcsaNumberConfig.defaultOptions;
       getOptions = function(attrs) {
         var option, options, value, _ref;
@@ -92,6 +96,11 @@ append
           return validRegex.test(val);
         };
       };
+      makeMinDigits = function(minDigits) {
+        return function(val) {
+          return (val + '').length >= minDigits;
+        };
+      };
       makeIsValid = function(options) {
         var validations;
         validations = [];
@@ -106,6 +115,9 @@ append
         }
         if (options.maxDigits != null) {
           validations.push(makeMaxDigits(options.maxDigits));
+        }
+        if (options.minDigits != null) {
+          validations.push(makeMinDigits(options.minDigits));
         }
         return function(val) {
           var i, number, _i, _ref;

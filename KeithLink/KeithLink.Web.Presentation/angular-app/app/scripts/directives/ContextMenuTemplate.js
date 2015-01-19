@@ -115,8 +115,25 @@ angular.module('bekApp')
         return check;
       }
 
+      function openContextMenuMouseoverEvent(event) {
+        // desktop
+        if (!isMobileDevice() && !opened) {
+          if (ContextMenuService.menuElement !== null) {
+            close(ContextMenuService.menuElement);
+          }
+          ContextMenuService.menuElement = angular.element(event.target).closest('.context-menu-template').find('.context-menu');
+          ContextMenuService.element = event.target;
+
+          event.preventDefault();
+          event.stopPropagation();
+          $scope.$apply(function() {
+            openOnDesktop(event, ContextMenuService.menuElement);
+          });  
+        }
+      }
+
       var modalInstance;
-      function openContextMenuEvent(event) {
+      function openContextMenuClickEvent(event) {
         if (isMobileDevice()) {
           // open modal
           modalInstance = $modal.open({
@@ -131,23 +148,7 @@ angular.module('bekApp')
               }
             }
           });
-        } else {
-          
-          // desktop
-          if (!opened) {
-            if (ContextMenuService.menuElement !== null) {
-              close(ContextMenuService.menuElement);
-            }
-            ContextMenuService.menuElement = angular.element(event.target).closest('.context-menu-template').find('.context-menu');
-            ContextMenuService.element = event.target;
-
-            event.preventDefault();
-            event.stopPropagation();
-            $scope.$apply(function() {
-              openOnDesktop(event, ContextMenuService.menuElement);
-            });  
-          }
-        }
+        } 
       }
 
       function close(menuElement) {
@@ -177,11 +178,13 @@ angular.module('bekApp')
         closeContextMenuModal();
       });
 
-      $element.bind('mouseenter', openContextMenuEvent);
+      $element.bind('mouseenter', openContextMenuMouseoverEvent);
+      $element.bind('click', openContextMenuClickEvent);
       $element.bind('mouseleave', closeContextMenuEvent);
       
       $scope.$on('$destroy', function() {
-        $element.unbind('mouseenter', openContextMenuEvent);
+        $element.unbind('mouseenter', openContextMenuMouseoverEvent);
+        $element.unbind('click', openContextMenuClickEvent);
         $element.unbind('mouseleave', closeContextMenuEvent);
       });
     },

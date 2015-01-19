@@ -48,31 +48,39 @@ angular.module('bekApp')
     size: 15
   };
 
+  var firstPageCustomers; // used to cache the first page of customer results
   // populates upper-left customer dropdown infinite scroll
   $scope.customerSelectOptions = {
     query: function (query){
       $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
-      CustomerService.getCustomers(
-        query.term, 
-        $scope.customerInfiniteScroll.size, 
-        $scope.customerInfiniteScroll.from
-      ).then(function(data) {
-        // convert data to match select2 data object
-        var obj = {
-          results: [],
-          more: query.page * 15 < data.totalResults // boolean if there are more results to display using infinite scroll
-        };
+      if (query.page === 1 && firstPageCustomers) { // use cache if getting first page
+        query.callback(firstPageCustomers);
+      } else {
+        CustomerService.getCustomers(
+          query.term, 
+          $scope.customerInfiniteScroll.size, 
+          $scope.customerInfiniteScroll.from
+        ).then(function(data) {
+          // convert data to match select2 data object
+          var customerList = {
+            results: [],
+            more: query.page * 15 < data.totalResults // boolean if there are more results to display using infinite scroll
+          };
 
-        data.results.forEach(function(customer) {
-          obj.results.push({
-            id: customer.customerNumber, // value
-            text: customer.displayname,  // display text
-            customer: customer
+          data.results.forEach(function(customer) {
+            customerList.results.push({
+              id: customer.customerNumber, // value
+              text: customer.displayname,  // display text
+              customer: customer
+            });
           });
+
+          firstPageCustomers = customerList;
+          query.callback(customerList);
         });
-        query.callback(obj);
-      });
+      }
+
     }
   };
 
@@ -83,7 +91,7 @@ angular.module('bekApp')
       
     // external owner admin
     } else {  
-      $state.go('menu.admin.customergroupdashboard');
+      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
