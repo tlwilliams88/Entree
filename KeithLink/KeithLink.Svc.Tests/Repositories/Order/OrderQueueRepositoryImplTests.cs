@@ -6,6 +6,8 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Impl.Repository.Queue;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {
@@ -59,23 +61,18 @@ namespace KeithLink.Svc.Test.Repositories.Order
 
         [TestMethod]
         public void ReceiveOrderFromQueue() {
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
+			GenericQueueRepositoryImpl queue = new GenericQueueRepositoryImpl();
 
-            string output = queue.ConsumeFromQueue();
+			string output = queue.ConsumeFromQueue(Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostOrder, Configuration.RabbitMQExchangeOrdersCreated);
         }
 
         [TestMethod]
         public void SendOrderToQueue() {
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
+			GenericQueueRepositoryImpl queue = new GenericQueueRepositoryImpl();
 
-            OrderFile order = GetStubOrder();
+            var order = GetStubOrder();			           
 
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(order.GetType());
-
-            xs.Serialize(sw, order);
-
-            queue.PublishToQueue(sw.ToString());
+			queue.PublishToQueue(JsonConvert.SerializeObject(order), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, Configuration.RabbitMQExchangeOrdersCreated);
         }
     }
 }

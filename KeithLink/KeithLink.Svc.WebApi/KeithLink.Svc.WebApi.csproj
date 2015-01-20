@@ -360,6 +360,7 @@
     <Compile Include="App_Start\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Attribute\AddCustomHeaderAttribute.cs" />
     <Compile Include="Attribute\AuthorizationAttribute.cs" />
     <Compile Include="Attribute\RequireHttpsAttribute.cs" />
     <Compile Include="CommerceFoundationServiceAgent.cs" />

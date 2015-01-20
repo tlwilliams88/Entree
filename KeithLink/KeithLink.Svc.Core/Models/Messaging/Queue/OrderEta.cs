@@ -10,22 +10,25 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
     [DataContract(Name="ordereta")]
     public class OrderEta
     {
-        [DataMember(Name="orderId")]
+        [DataMember(Name="orderid")]
         public string OrderId { get; set; }
 
-        [DataMember(Name = "scheduledTime")]
-        public DateTime scheduledTime { get; set; }
+        [DataMember(Name = "scheduledtime")]
+        public string ScheduledTime { get; set; }
 
-        [DataMember(Name="estimatedTime")]
-        public DateTime estimatedTime { get; set; }
+        [DataMember(Name="estimatedtime")]
+        public string EstimatedTime { get; set; }
 
-        [DataMember(Name="routeId")]
+        [DataMember(Name = "actualtime")]
+        public string ActualTime { get; set; }
+
+        [DataMember(Name="routeid")]
         public string RouteId { get; set; }
 
-        [DataMember(Name = "stopNumber")]
+        [DataMember(Name = "stopnumber")]
         public string StopNumber { get; set; }
 
-        [DataMember(Name = "outOfSequence")]
+        [DataMember(Name = "outofsequence")]
         public bool OutOfSequence { get; set; }
     }
 }

@@ -26,6 +26,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 {
 	[RequireHttps]
 	[GlobalExceptionFilterAttribute]
+	[AddCustomHeaderAttribute]
 	public class BaseController : ApiController
     {
         #region attributes
