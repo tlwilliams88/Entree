@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IPriceLogic priceLogic;
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
-		private readonly IQueueRepository queueRepository;
+		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
 		private readonly IListServiceRepository listServiceRepository;
         private readonly IOrderQueueLogic orderQueueLogic;
@@ -38,8 +38,8 @@ namespace KeithLink.Svc.Impl.Logic
 		#endregion
 
         #region ctor
-        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic, 
-                                     IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IQueueRepository queueRepository, 
+        public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
+									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository, 
                                      IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository) {
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;

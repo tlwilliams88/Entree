@@ -12,7 +12,10 @@ namespace KeithLink.Svc.WebApi.Attribute
 		public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
 		{
 			if(Configuration.AddServerNameToHeader)
-				actionExecutedContext.Response.Content.Headers.Add("serverName", System.Environment.MachineName.ToString());
+				try
+				{
+					actionExecutedContext.Response.Content.Headers.Add("serverName", System.Environment.MachineName.ToString());
+				}catch{}
 
 		}
 	}

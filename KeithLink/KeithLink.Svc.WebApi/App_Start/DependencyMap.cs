@@ -44,6 +44,7 @@ using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Core.Interface.Component;
+using KeithLink.Svc.Impl.Repository.Queue;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -88,6 +89,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
 			builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+			builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
