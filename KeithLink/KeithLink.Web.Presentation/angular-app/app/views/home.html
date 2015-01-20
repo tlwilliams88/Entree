@@ -110,7 +110,7 @@
                 <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | LocalTimeZoneTime}}</span>
             </span>
             <span ng-if="order.actualdeliverytime != null">
-              Delilvered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | LocalTimeZoneTimeWithDate}}</span>
+              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | LocalTimeZoneTimeWithDate}}</span>
             </span>
             <span ng-if="(order.actualdeliverytime == null && order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="small-icon icon-truck">
               <span style="white-space: nowrap;"><br />Out For Delivery</span>
