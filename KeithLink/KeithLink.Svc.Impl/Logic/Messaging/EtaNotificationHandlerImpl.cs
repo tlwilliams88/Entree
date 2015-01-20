@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -29,13 +30,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         IOrderHistoryHeaderRepsitory orderHistoryRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
         IMessageTemplateLogic messageTemplateLogic;
+        IUnitOfWork unitOfWork;
         #endregion
 
         #region ctor
         public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
-            , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic)
+            , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
                     , userMessagingPreferenceRepository, messageProviderFactory)
         {
@@ -47,6 +49,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.messageProviderFactory = messageProviderFactory;
             this.orderHistoryRepository = orderHistoryRepository;
             this.messageTemplateLogic = messageTemplateLogic;
+            this.unitOfWork = unitOfWork;
         }
         #endregion
 
@@ -64,9 +67,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             Parallel.ForEach(orders, order => {
                     var etaInfo = eta.Orders.Where(o => o.OrderId == order.InvoiceNumber)
                         .FirstOrDefault();
-                    
+
+                    order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
+                    order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
+                    order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                    order.RouteNumber = etaInfo.RouteId;
+                    order.StopNumber = etaInfo.StopNumber;
+                    order.DeliveryOutOfSequence = etaInfo.OutOfSequence;
                 }
                 );
+
+            foreach (var order in orders)
+            {
+                orderHistoryRepository.Update(order);
+            }
+            unitOfWork.SaveChanges();
             // send out notifications by customer - this may be enabled eventually, but for now, we just display the data in the UI
             //List<string> customerNumbers = orders
             //    .GroupBy(o => o.CustomerNumber)

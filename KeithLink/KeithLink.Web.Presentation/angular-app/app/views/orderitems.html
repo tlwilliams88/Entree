@@ -29,7 +29,10 @@
           <div class="order-item-title">Delivery Date</div>
           <div class="order-item-value-1">{{order.deliverydate || 'N/A' | date:'MM/dd/yyyy'}}</div>
           <div class="order-item-title">Delivered</div>
-          <div class="order-item-value-2">{{order.delivered || 'N/A'}}</div>
+          <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
+          <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | LocalTimeZoneTime}}</div>
+          <div class="order-item-value-2" ng-if="order.actualdeliverytime != null">{{order.actualdeliverytime | LocalTimeZoneTime}}</div>
+          <div class="order-item-value-2" ng-if="order.deliveryoutofsequence == true || (order.scheduleddeliverytime != null && order.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Total Cost</div>

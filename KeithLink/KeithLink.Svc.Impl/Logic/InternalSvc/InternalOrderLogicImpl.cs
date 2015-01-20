@@ -49,6 +49,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         OrderStatus = h.OrderStatus,
                         FutureItems = h.FutureItems,
                         ErrorStatus = h.ErrorStatus,
+                        ActualDeliveryTime = h.ActualDeliveryTime,
+                        EstimatedDeliveryTime = h.EstimatedDeliveryTime,
+                        ScheduledDeliveryTime = h.ScheduledDeliveryTime,
+                        DeliveryOutOfSequence = h.DeliveryOutOfSequence,
                         RouteNumber = h.RouteNumber,
                         StopNumber = h.StopNumber
                     }

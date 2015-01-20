@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
         public DateTime? ScheduledDeliveryTime { get; set; }
         public DateTime? EstimatedDeliveryTime { get; set; }
         public DateTime? ActualDeliveryTime { get; set; }
-        public bool? OutOfSequence { get; set; }
+        public bool? DeliveryOutOfSequence { get; set; }
 
 		public virtual ICollection<OrderHistoryDetail> OrderDetails { get; set; }
 	}

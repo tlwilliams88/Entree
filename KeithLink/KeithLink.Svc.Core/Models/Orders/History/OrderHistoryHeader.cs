@@ -46,16 +46,16 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public string StopNumber { get; set; }
 
         [DataMember(Name = "scheduledtime")]
-        public DateTime? ScheduledTime { get; set; }
+        public DateTime? ScheduledDeliveryTime { get; set; }
 
         [DataMember(Name = "estimatedtime")]
-        public DateTime? EstimatedTime { get; set; }
+        public DateTime? EstimatedDeliveryTime { get; set; }
 
         [DataMember(Name = "actualtime")]
-        public DateTime? ActualTime { get; set; }
+        public DateTime? ActualDeliveryTime { get; set; }
 
-        [DataMember(Name = "outofsequence")]
-        public bool? OutOfSequence { get; set; }
+        [DataMember(Name = "deliveryoutofsequence")]
+        public bool? DeliveryOutOfSequence { get; set; }
 
         [DataMember(Name = "items")]
         public List<OrderHistoryDetail> Items { get; set; }

@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
             _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _custRepo);
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
-            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _cache);
+            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
 
             _acct = new AccountRepository(_log, _custCach);
             _cust = new CustomerRepository(_log, _custCach);
@@ -97,7 +97,8 @@ namespace KeithLink.Svc.Test.Repositories.Order
                 null,
                 null,
                 new Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl(
-                    new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork()))
+                    new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork())),
+                    null
                 );
 
             // create  a list of fake order histories
