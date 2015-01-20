@@ -1,7 +1,7 @@
 ----------------------------app.js--------------------------------
 
-add PhonegapServices and PhonegapPushService to .run
-add PhonegapPushService.register(); under toState.name === 'register' line 495
+add (using Dependency Injection) PhonegapServices and PhonegapPushService to .run block
+add PhonegapPushService.register(); under toState.name === 'register' line
 
 -----------------------------index.html-------------------------------
 
@@ -31,7 +31,7 @@ add these Below resources:
 --------------------------configenv.js----------------------------------
 
 replace line 5 with:
-.constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'qauser@qa.com',password:'Ab21345'})
+.constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'qauser@qa.com',password:'Ab12345',googleAnalytics:'UA-58495462-2'})
 
 
 --------------------------RegisterController.js-------------------------

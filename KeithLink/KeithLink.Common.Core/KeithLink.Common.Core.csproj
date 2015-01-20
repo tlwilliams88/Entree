@@ -81,6 +81,7 @@
     <Compile Include="Crypto.cs" />
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Email\ExceptionEmail.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
