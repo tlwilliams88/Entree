@@ -3,7 +3,6 @@ using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Network;
-using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Repository.EF.Operational;

@@ -24,6 +24,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -135,15 +136,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// </summary>
         /// <param name="rawConfirmation"></param>
         /// <returns></returns>
-        private ConfirmationFile DeserializeConfirmation(string rawConfirmation) {
-            ConfirmationFile confirmation = new ConfirmationFile();
-
-            StringReader reader = new StringReader(rawConfirmation);
-            XmlSerializer xs = new XmlSerializer(confirmation.GetType());
-
-            return (ConfirmationFile)xs.Deserialize(reader);
-        }
-
+       
         private static PurchaseOrder GetCsPurchaseOrderByNumber(string poNum) {
             System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
@@ -182,7 +175,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             else if (String.IsNullOrEmpty(fileFromQueue))
                 throw new ApplicationException("Empty file from Confirmation Queue");
 
-            return DeserializeConfirmation(fileFromQueue);
+            return JsonConvert.DeserializeObject<ConfirmationFile>(fileFromQueue);
         }
 
         /// <summary>
@@ -313,7 +306,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         /// <param name="file"></param>
         /// <param name="location"></param>
         public void PublishToQueue(ConfirmationFile file, ConfirmationQueueLocation location) {
-            string serializedConfirmation = SerializeConfirmation(file);
+            string serializedConfirmation = JsonConvert.SerializeObject(file);
 
             _log.WriteInformationLog(string.Format("Writing confirmation to the queue for message ({0}).{1}{1}{2}", file.MessageId, "\r\n", serializedConfirmation));
 
@@ -330,22 +323,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     break;
             }
         }
-
-        /// <summary>
-        /// Serialize the confirmation
-        /// </summary>
-        /// <param name="confirmation"></param>
-        /// <returns></returns>
-        private string SerializeConfirmation(ConfirmationFile confirmation) {
-            StringWriter writer = new StringWriter();
-            XmlSerializer xs = new XmlSerializer(confirmation.GetType());
-
-            xs.Serialize(writer, confirmation);
-
-            return writer.ToString();
-        }
-
-        private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po, LineItem[] lineItems) {
+		
+		private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po, LineItem[] lineItems) {
             string trimmedConfirmationStatus = confirmation.Header.ConfirmationStatus.Trim().ToUpper();
             if (trimmedConfirmationStatus == Constants.CONFIRMATION_HEADER_CONFIRMED_CODE) { // if confirmation status is blank, then look for exceptions across all line items, not just those in the change order
                 string origOrderNumber = (string)po[Constants.CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER];

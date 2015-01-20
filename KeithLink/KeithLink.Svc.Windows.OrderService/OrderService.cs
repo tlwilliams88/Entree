@@ -19,7 +19,8 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xml.Serialization;
+using KeithLink.Svc.Impl.Repository.Queue;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Windows.OrderService {
     partial class OrderService : ServiceBase {
@@ -269,7 +270,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                        new OrderHistoyrHeaderRepositoryImpl(uow),
                                                                        new OrderHistoryDetailRepositoryImpl(uow),
-                                                                       new OrderUpdateQueueRepositoryImpl(),
+                                                                       new GenericQueueRepositoryImpl(),
                                                                        uow,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                        new PurchaseOrderRepositoryImpl(),
@@ -293,7 +294,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _historyRequestProcessing = true;
 
                 try {
-                    OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new OrderUpdateRequestQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
+					OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new GenericQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
 
                     requestLogic.ProcessRequests();
 
@@ -366,7 +367,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                             OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                                    new OrderHistoyrHeaderRepositoryImpl(uow),
                                                                                    new OrderHistoryDetailRepositoryImpl(uow),
-                                                                                   new OrderUpdateQueueRepositoryImpl(),
+																				   new GenericQueueRepositoryImpl(),
                                                                                    uow,
                                                                                    new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
                                                                                    new PurchaseOrderRepositoryImpl(),
@@ -383,18 +384,14 @@ namespace KeithLink.Svc.Windows.OrderService {
                                     file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
 
                                     try {
-                                        StringWriter xmlWriter = new StringWriter();
-                                        XmlSerializer xs = new XmlSerializer(file.GetType());
-
-                                        xs.Serialize(xmlWriter, file);
-
-                                        OrderUpdateQueueRepositoryImpl repo = new OrderUpdateQueueRepositoryImpl();
-                                        repo.PublishToQueue(xmlWriter.ToString());
+                                        var jsonValue = JsonConvert.SerializeObject(file);
+										GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
+										repo.PublishToQueue(jsonValue, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
 
                                         StringBuilder logMsg = new StringBuilder();
                                         logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
                                         logMsg.AppendLine();
-                                        logMsg.AppendLine(xmlWriter.ToString());
+										logMsg.AppendLine(jsonValue);
 
                                         _log.WriteInformationLog(logMsg.ToString());
 
@@ -437,7 +434,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                 try {
                     OrderQueueLogicImpl orderQueue = new OrderQueueLogicImpl(_log,
-                                                                   new KeithLink.Svc.Impl.Repository.Orders.OrderQueueRepositoryImpl(),
+                                                                   new GenericQueueRepositoryImpl(),
                                                                    new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
                     orderQueue.ProcessOrders();
 

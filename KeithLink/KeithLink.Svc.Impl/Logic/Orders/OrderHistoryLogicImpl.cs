@@ -25,9 +25,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using System.ComponentModel;
 using System.Collections.Concurrent;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         private readonly IEventLogRepository _log;
         private readonly IOrderHistoryDetailRepository _detailRepo;
         private readonly IOrderHistoryHeaderRepsitory _headerRepo;
-        private readonly IOrderHistoryQueueRepository _queue;
+        private readonly IGenericQueueRepository _queue;
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly ISocketListenerRepository _socket;
         private readonly IUnitOfWork _unitOfWork;
@@ -55,8 +55,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region ctor
-        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo, 
-                                     IOrderHistoryQueueRepository queueRepo, IUnitOfWork unitOfWork, ISocketListenerRepository socket, 
+        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo,
+									 IGenericQueueRepository queueRepo, IUnitOfWork unitOfWork, ISocketListenerRepository socket, 
                                      IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic, IUserProfileRepository userProfileRepository, 
                                      ICustomerRepository customerRepository, IOrderConversionLogic conversionLogic) {
             _catalogLogic = catalogLogic;
@@ -99,17 +99,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 parsedFile.SenderApplicationName = Configuration.ApplicationName;
                 parsedFile.SenderProcessName = "Process Order History Updates From Mainframe (Socket Connection)";
 
-                StringWriter xmlWriter = new StringWriter();
-                XmlSerializer xs = new XmlSerializer(parsedFile.GetType());
+				var jsonValue = JsonConvert.SerializeObject(parsedFile);
 
-                xs.Serialize(xmlWriter, parsedFile);
-
-                _queue.PublishToQueue(xmlWriter.ToString());
+				_queue.PublishToQueue(jsonValue, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
 
                 logMsg = new StringBuilder();
                 logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", parsedFile.MessageId));
                 logMsg.AppendLine();
-                logMsg.AppendLine(xmlWriter.ToString());
+				logMsg.AppendLine(jsonValue);
 
                 _log.WriteInformationLog(logMsg.ToString());
             }
@@ -232,23 +229,22 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 int loopCnt = 0;
                 //IUnitOfWork uow = _unitOfWork.GetUniqueUnitOfWork();
 
-                try {
-                    StringBuilder rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
+				
 
-                    while (rawOrder.Length > 0) {
+                try {
+                    var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+
+                    while (!string.IsNullOrEmpty(rawOrder)) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
-                        System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(historyFile.GetType());
-                        System.IO.StringReader xmlData = new System.IO.StringReader(rawOrder.ToString());
-
-                        historyFile = (OrderHistoryFile)xs.Deserialize(xmlData);
+						historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
 
                         _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
 
                         Create(historyFile);
                         _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); 
 
-                        rawOrder = new StringBuilder(_queue.ConsumeFromQueue());
+                        rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
 
                         if (loopCnt++ == 100) {
                             _unitOfWork.SaveChangesAndClearContext();
