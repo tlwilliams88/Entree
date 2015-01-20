@@ -17,6 +17,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
         private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
 		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
+        private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
         // Active Directory Constants
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
@@ -52,6 +53,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_BATCH_SIZE = "ElasticSearchBatchSize";
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
+        private const string KEY_ENABLE_ETA_FOR_USERS = "EnableEtaForUsers";
 
         // Mainframe Keys
         private const string KEY_MF_ADDRESS = "MfAddress";
@@ -350,7 +352,12 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
-        
+
+        public static string EnableEtaForUsers
+        {
+            get { return GetValue(KEY_ENABLE_ETA_FOR_USERS, DEFAULT_ENABLE_ETA_FOR_USERS); }
+        }
+
         public static List<string> ElasticSearchDigitSearchFields
         {
             get 

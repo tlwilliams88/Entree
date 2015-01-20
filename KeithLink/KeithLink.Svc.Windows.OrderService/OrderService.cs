@@ -229,7 +229,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void ProcessConfirmations() {
             try {
                 UnitOfWork uow = new UnitOfWork();
-                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow);
+                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
 
                 ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
@@ -250,7 +250,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void ProcessOrderHistoryListener() {
             try {
                 UnitOfWork uow = new UnitOfWork();
-                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow);
+                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
 
                 KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
 
@@ -342,7 +342,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                         foreach (string filePath in files) {
                             UnitOfWork uow = new UnitOfWork();
-                            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow);
+                            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
 
                             //ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
                             //                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),

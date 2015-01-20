@@ -31,7 +31,13 @@ angular.module('bekApp')
 
     if ($stateParams.customerGroupId) {
       // internal bek admins
-      CustomerGroupService.getGroupDetails($stateParams.customerGroupId).then(getUsers);
+      CustomerGroupService.getGroupDetails($stateParams.customerGroupId).then(
+        getUsers, 
+        function(error) {
+          // request failed, invalid customer group id
+          $scope.displayMessage('error', 'An error occured loading the page with Customer Group ID # ' + $stateParams.customerGroupId);
+          $scope.goToAdminLandingPage(); // inherited from MenuController
+      });
     
     } else {
       // get group for external admin using the customer group associated with their user id

@@ -32,6 +32,11 @@ namespace KeithLink.Svc.Core.Extensions.Messaging
                     ms.Position = 0;
                     return (BaseNotification)new DataContractJsonSerializer(typeof(OrderConfirmationNotification)).ReadObject(ms);
                 }
+                else if (notification.NotificationType == Core.Enumerations.Messaging.NotificationType.Eta)
+                {
+                    ms.Position = 0;
+                    return (BaseNotification)new DataContractJsonSerializer(typeof(EtaNotification)).ReadObject(ms);
+                }
                 return notification;
             }
         }

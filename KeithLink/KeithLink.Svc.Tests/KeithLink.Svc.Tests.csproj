@@ -110,6 +110,7 @@
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
     <Compile Include="Repositories\OnlinePayments\CustomerBankRepositoryTests.cs" />
     <Compile Include="Repositories\OnlinePayments\KPayInvoiceRepositoryTests.cs" />
+    <Compile Include="Repositories\Order\OrderNotificationTests.cs" />
     <Compile Include="Repositories\Order\OrderHistoryRepositoryTests.cs" />
     <Compile Include="Repositories\Order\ShipDateRepositoryImplTests.cs" />
     <Compile Include="Repositories\Order\PurchaseOrderRepositoryTest.cs" />
