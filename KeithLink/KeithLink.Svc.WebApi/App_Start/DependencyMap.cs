@@ -44,6 +44,7 @@ using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Core.Interface.Component;
+using KeithLink.Svc.Impl.Repository.Queue;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -77,7 +78,6 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-			builder.RegisterType<OrderQueueRepositoryImpl>().As<IOrderQueueRepository>();
             builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
@@ -89,12 +89,10 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
 			builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-			builder.RegisterType<OrderQueueRepositoryImpl>().As<IOrderQueueRepository>();
-			builder.RegisterType<OrderQueueRepositoryImpl>().As<IQueueRepository>();
+			builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
-            builder.RegisterType<OrderUpdateRequestQueueRepositoryImpl>().As<IOrderHistoryRequestQueueRepository>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();

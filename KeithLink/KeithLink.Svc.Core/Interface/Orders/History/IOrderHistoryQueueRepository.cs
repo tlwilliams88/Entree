@@ -6,6 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Orders {
-    public interface IOrderHistoryQueueRepository : IQueueRepository {
-    }
+	//public interface IOrderHistoryQueueRepository : IQueueRepository {
+	//}
 }

@@ -6,6 +6,8 @@ using KeithLink.Svc.Impl.Repository.Orders;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Impl.Repository.Queue;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Test.Logic
 {
@@ -61,8 +63,9 @@ namespace KeithLink.Svc.Test.Logic
         public void SendMockOrder()
         {
             // create an order and place it on the queue
-            OrderQueueRepositoryImpl queue = new OrderQueueRepositoryImpl();
-            queue.PublishToQueue(SerializeOrder(GetStubOrder()));
+			GenericQueueRepositoryImpl queue = new GenericQueueRepositoryImpl();
+			
+            queue.PublishToQueue(JsonConvert.SerializeObject(GetStubOrder()), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, Configuration.RabbitMQExchangeOrdersCreated);
 
 
             OrderQueueLogicImpl orderLogic = new OrderQueueLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
@@ -111,23 +114,6 @@ namespace KeithLink.Svc.Test.Logic
 
         //    Assert.IsTrue(orders.Count > 0);
         //}
-
-        private string SerializeOrder(OrderFile order) {
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-            System.IO.StringWriter xmlWriter = new System.IO.StringWriter();
-
-            xml.Serialize(xmlWriter, order);
-
-            return xmlWriter.ToString();
-        }
-
-        private OrderFile DeserializeOrder(string rawOrder) {
-            OrderFile order = new OrderFile();
-
-            System.IO.StringReader xmlReader = new System.IO.StringReader(rawOrder);
-            System.Xml.Serialization.XmlSerializer xml = new System.Xml.Serialization.XmlSerializer(order.GetType());
-
-            return (OrderFile)xml.Deserialize(xmlReader);
-        }
+       
     }
 }

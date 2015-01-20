@@ -94,14 +94,29 @@
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            {{order.deliveryDate || 'TBD'}}
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy'}}</span>
+            <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
             {{order.ordertotal | currency}}
           </div>
-          <div class="nowrap col-md-3 table-col highlight-col">
-            {{order.status}}
-          </div>
+          <!-- Order Status -->
+          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
+              {{order.status}}
+          </div><!-- Display order status before ETA info is available -->
+          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null || order.estimateddeliverytime != null 
+                                                                      || order.actualdeliverytime != null" style="padding:24px 0">
+            <span ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class="small-icon icon-truck">
+                <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | LocalTimeZoneTime}}</span>
+            </span>
+            <span ng-if="order.actualdeliverytime != null">
+              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | LocalTimeZoneTimeWithDate}}</span>
+            </span>
+            <span ng-if="(order.actualdeliverytime == null && order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="small-icon icon-truck">
+              <span style="white-space: nowrap;"><br />Out For Delivery</span>
+            </span>
+          </div> <!-- Display ETA info once it s available -->
+          <!-- Order Status -->
           <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
